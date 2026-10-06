@@ -109,7 +109,12 @@ window.__sheet = {
       }
       for (const s0 of stand) { s0.skin.begin(); for (const q of s0.pts) s0.skin.add(q[0], q[1], q[2], s0.team ? -Math.PI / 2 : Math.PI / 2, 1.15, 1.15, 1.15, s0.pose, s0.team ? [0.35, 0.5, 1] : [1, 0.3, 0.25]); s0.skin.end(); }
     } else if (stand) { for (const s0 of stand) { s0.skin.begin(); s0.skin.end(); } }
-    if (name === 'battle') { /* camera set above */ }
+    if (name === 'breach') {          // Troy gate seen from the besiegers' side
+      const g0 = arena.props.find((p) => p.t === 'arch_gate') || { x: 0, z: 0 }, gy = arena.heightAt(g0.x - 12, g0.z);
+      c.position.set(g0.x - 14, gy + 8, g0.z + 9); c.lookAt(g0.x, arena.heightAt(g0.x, g0.z) + 3, g0.z - 1.5); eng.focus.set(g0.x, arena.heightAt(g0.x, g0.z), g0.z);
+    } else if (name === 'stands') {   // colosseum: the crowd seen from the sand
+      const W2 = W; c.position.set(-W2 * 0.1, arena.cellHeight(-W2 * 0.1, 0) + 3.2, -W2 * 0.02); c.lookAt(W2 * 0.02, arena.cellHeight(0, W2 * 0.2) + 5.5, W2 * 0.21); eng.focus.set(0, 12, W2 * 0.2);
+    } else if (name === 'battle') { /* camera set above */ }
     else if (name === 'top') {
       const H = (half * 1.2) / Math.tan((c.fov / 2) * Math.PI / 180);
       c.position.set(0, H, H * 0.05); c.lookAt(0, 0, 0); eng.focus.set(0, 8, 0);
@@ -123,6 +128,21 @@ window.__sheet = {
     }
     c.updateMatrixWorld();
     return true;
+  },
+  /** W8 scenes: 'collapse' (Troy: the gate doors, the wall beside the gate and one tower collapse, other segments crack), 'cheer' (colosseum crowd roars). */
+  scene(kind) {
+    if (kind === 'collapse') {
+      const idx = (t) => arena.props.map((p, i) => [p, i + 1]).filter(([p]) => p.t === t);
+      const walls = idx('wall_stone').sort((a, b) => Math.abs(a[0].z) - Math.abs(b[0].z));
+      walls.forEach(([p, id], k) => { if (k < 6) pr.remove(id); else if (k < 22 && k % 2 === 0) pr.setStage(id, 1); });
+      idx('gate_door').forEach(([p, id]) => pr.remove(id));
+      const towers = idx('tower').sort((a, b) => Math.abs(a[0].z) - Math.abs(b[0].z));
+      towers.forEach(([p, id], k) => { if (k === 0) pr.remove(id); else if (k < 4) pr.setStage(id, 1); });
+      idx('arch_gate').forEach(([p, id]) => pr.setStage(id, 1));
+      return true;
+    }
+    if (kind === 'cheer') { pr.crowdReact('cheer', 1, 0, 0); return true; }
+    return false;
   },
   render(frames = 2) {
     for (let i = 0; i < 24; i++) { fx.update(0.05); pr.update(0.05, eng.camera); }

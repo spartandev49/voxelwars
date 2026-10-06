@@ -92,7 +92,7 @@ export function mount(root, ctx) {
 
   if (!puzzles.length) {
     frame.content.append(K.emptyState({ icon: 'cube', title: T.empty, text: T.emptySub, action: { label: T.back, icon: 'back', onClick: back, id: 'pz-empty-back' } }));
-    return { onBack() { back(); return true; }, destroy() { d.run(); } };
+    return { onBack() { return !!(K.hasModal && K.hasModal()); }, destroy() { d.run(); } };
   }
 
   // ------------------------------------------------------------ summary row
@@ -198,7 +198,18 @@ export function mount(root, ctx) {
 
   const body = h('div', { class: 'bs-pz-body' }, grid, side);
   frame.content.append(row, body);
-  K.roving(grid, { selector: '.bs-pz-pick', orientation: 'both' });
+  // arrows move through the card grid: left/right by one, up/down by a row (the column count is read from the card positions at key time)
+  const onGridKey = (e) => {
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) return;
+    const picks = Array.from(grid.querySelectorAll('.bs-pz-pick')), i = picks.indexOf(document.activeElement);
+    if (i < 0) return;
+    const top0 = picks[0].getBoundingClientRect().top, cols = Math.max(1, picks.filter((b) => Math.abs(b.getBoundingClientRect().top - top0) < 4).length);
+    const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowDown' ? cols : e.key === 'ArrowUp' ? -cols : 0;
+    let n = e.key === 'Home' ? 0 : e.key === 'End' ? picks.length - 1 : i + step;
+    if (n < 0 || n >= picks.length) n = Math.max(0, Math.min(picks.length - 1, i));
+    e.preventDefault(); picks[n].focus();
+  };
+  grid.addEventListener('keydown', onGridKey);
   paintTotal();
   const start = puzzles.find((p) => p.ok && best(p.id).stars < 3) || puzzles.find((p) => p.ok) || puzzles[0];
   if (isWide() && start) select(start.id); else { paintPanel(); }
@@ -207,7 +218,7 @@ export function mount(root, ctx) {
   K.enter(Array.from(grid.children), 'pop', 0);
 
   return {
-    onBack() { if (K.hasModal && K.hasModal()) return true; back(); return true; },
+    onBack() { return !!(K.hasModal && K.hasModal()); },                      // Esc / Back: the router goes to the previous screen (the campaign map) unless a modal is open
     onKey(e) { if (e.code === 'Enter' && document.activeElement === document.body && selected) { play(cards.get(selected).p); return true; } return false; },
     destroy() { d.run(); },
   };

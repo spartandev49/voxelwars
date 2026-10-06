@@ -106,13 +106,28 @@ export const ICONS = {
   accessibility: ['M12 5a1.8 1.8 0 1 0 0 .01', 'M4 8.5c5 1.5 11 1.5 16 0', 'M12 9v5', 'M9 21l3-7 3 7'],
   image: ['M3 5h18v14H3z', 'M3 16l5-5 4 4 3-3 6 6', dot(8, 9.5, 1.3)],
   database: ['M5 6c0-1.7 3.1-3 7-3s7 1.3 7 3-3.1 3-7 3-7-1.3-7-3z', 'M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6', 'M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6'],
+  // achievement glyphs (HUMOR icon ids)
+  boot: ['M8 3h6v7.5l6 3V19H5.5v-4.5L8 13z', 'M5.5 19h14.5', 'M8 7h6'],
+  dagger: ['M12 2l2.4 10.5h-4.8z', 'M7 12.5h10', 'M12 12.5V19', dot(12, 21, 1.1)],
+  elephant: ['M12 7c-3 0-5.5 2-5.5 5v3', 'M12 7c3 0 5.5 2 5.5 5', 'M5 8.5a3.2 3.2 0 1 0 0 6.4', 'M19 8.5a3.2 3.2 0 1 1 0 6.4', 'M10.5 12.5v6.5c0 1.5 3 1.5 3 0v-2', dot(10, 11, .9), dot(14, 11, .9)],
+  phoenix: ['M12 21c-3.2-3-3.2-6.2 0-9.5 3.2 3.3 3.2 6.5 0 9.5z', 'M12 12.5C9.5 12 6 9.5 3 4c4.5 0 7.5 1.4 9 4.5', 'M12 12.5c2.5-.5 6-3 9-8.5-4.5 0-7.5 1.4-9 4.5'],
+  gift: ['M4 10h16v10H4z', 'M3 7h18v3H3z', 'M12 7v13', 'M12 7C10.5 3.5 6.5 3.8 7.5 6.5 8 7 10 7 12 7z', 'M12 7c1.5-3.5 5.5-3.2 4.5-.5-.5.5-2.5.5-4.5.5z'],
+  statue: ['M12 7.5a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.200z', 'M8.5 21V11.500L12 9.500l3.5 2V21', 'M6.5 21h11', 'M8.5 14.500H5.5', 'M15.5 14.500h3'],
+  meteor: ['M19.5 8.500a4.2 4.2 0 1 1-8.4 0 4.2 4.2 0 0 1 8.4 0z', 'M11.5 11L3 20', 'M9.5 7.500L4 13', 'M16 13.500L10.5 19'],
+  phalanx: ['M3 9h5.200v5.200L5.6 16.5 3 14.200z', 'M9.4 9h5.200v5.200L12 16.5 9.4 14.200z', 'M15.8 9H21v5.200l-2.6 2.3-2.6-2.300z', 'M5.6 3v6', 'M12 3v6', 'M18.4 3v6', 'M3 20h18'],
+  coins: ['M5 6.500c0-1.4 3.1-2.5 7-2.500s7 1.1 7 2.5-3.1 2.5-7 2.5-7-1.1-7-2.500z', 'M5 6.500v3.800c0 1.4 3.1 2.5 7 2.500s7-1.1 7-2.500V6.5', 'M5 10.300v3.800c0 1.4 3.1 2.5 7 2.500s7-1.1 7-2.500v-3.8', 'M5 14.100v3.400C5 18.9 8.1 20 12 20s7-1.1 7-2.500v-3.4'],
+  shovel: ['M14.5 9.500L4.5 19.5', 'M12.5 6l5.5 5.5-3 3L9.5 9z', 'M16.5 4l3.5 3.5', 'M18.5 2.500L21.5 5.5'],
+  anvil: ['M3 7h13.500c2.8 0 4.5 1.1 4.5 3h-6l-1 3H9.500l-1-3H3z', 'M9.5 13v4.500H7V21h10v-3.500h-2.500V13'],
+  column: ['M5 4h14', 'M7 4v2.500h10V4', 'M9 6.500v11', 'M12 6.500v11', 'M15 6.500v11', 'M7 17.500h10V20H7z', 'M5 20h14'],
 };
 
+/** HUMOR ids that map onto an existing glyph (screens may pass either name). */
+export const ICON_ALIAS = { lightning: 'bolt', storm_cloud: 'storm', drumstick: 'chicken', trophy_gold: 'trophy' };
 export const ICON_NAMES = Object.keys(ICONS);
 
 /** Build an <svg class="vw-icon"> for `name`. opts: { class, size (css), title }. Decorative by default (aria-hidden). */
 export function icon(name, opts) {
-  const def = ICONS[name] || ICONS.cube;
+  const def = ICONS[name] || ICONS[ICON_ALIAS[name]] || ICONS.cube;
   const paths = Array.isArray(def) ? def : def.d;
   const svg = document.createElementNS(SVGNS, 'svg');
   svg.setAttribute('viewBox', '0 0 24 24');

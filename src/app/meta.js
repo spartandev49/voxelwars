@@ -549,6 +549,10 @@ export function createMeta(o) {
     if (!base || !M.active || !M.world || M.world.state !== 'ended') return base;
     M.finish();
     if (!M.res) return base;
+    // the sim keeps ticking corpses, projectiles and effects after battle_end (an arrow in flight can still land): the results are frozen at the first call, which Game
+    // makes inside the battle_end event, so the Results screen, the kill-cam and every later results() call agree with the BattleSummary
+    const fz = M.res.frozen || (M.res.frozen = { winner: base.winner, reason: base.reason, time: base.time, teams: JSON.parse(JSON.stringify(base.teams || [])), mvp: base.mvp ? JSON.parse(JSON.stringify(base.mvp)) : null });
+    base.winner = fz.winner; base.reason = fz.reason; base.time = fz.time; base.teams = JSON.parse(JSON.stringify(fz.teams)); base.mvp = fz.mvp ? JSON.parse(JSON.stringify(fz.mvp)) : null;
     base.funnyStats = M.res.funnyStats.map((r) => Object.assign({}, r)); base.lessons = M.res.lessons.map((l) => Object.assign({}, l));
     base.summary = M.res.summary; base.achievements = M.res.achievements; base.canKillcam = !!M.qualKill;          // the Results button is hidden when no hero / boss / streak kill happened (spec ui.md §4)
     if (base.mvp && !base.mvp.quote) { const q = pickDeath(base.mvp.defId, new RNG(((M.world.seed | 0) ^ 0x3c6ef372) >>> 0)); if (q) base.mvp.quote = q; }

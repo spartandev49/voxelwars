@@ -71,7 +71,7 @@ export const WS = {
 export const PT = {
   title: 'Voxel Painter', sub: 'One part at a time. One voxel at a time.', back: 'Done',
   parts: 'Part', view3d: '3D view', viewSlice: 'Slice view', tools: 'Tools', palette: 'Colour', mini: 'Soldier preview',
-  tool: { pencil: 'Pencil', eraser: 'Eraser', paint: 'Recolour', fill: 'Fill', line: 'Line', box: 'Box', picker: 'Eyedropper', select: 'Select', tint: 'Team tint brush', glow: 'Glow brush' },
+  tool: { pencil: 'Pencil', eraser: 'Eraser', paint: 'Recolour', fill: 'Fill', line: 'Line', box: 'Box', picker: 'Eyedropper', select: 'Select', tint: 'Tint brush', glow: 'Glow brush' },
   toolTip: {
     pencil: 'Add voxels. Click a face in 3D, or a cell in the slice view.', eraser: 'Remove voxels.', paint: 'Recolour voxels that are already there. Never adds.', fill: 'Flood-fill a connected area with the colour.',
     line: 'Drag from one cell to another.', box: 'Drag a box. Hollow keeps only the shell.', picker: 'Pick a colour from the model (Alt-click works with any tool).', select: 'Drag a box, then move, flip or rotate what is inside.',

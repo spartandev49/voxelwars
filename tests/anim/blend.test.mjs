@@ -62,13 +62,14 @@ for (const fx of FIX) {
     const keep = { clip: a, t: ta, rate: 1, flinch: 0, dir: 0, prev: a, blend: 1 }, sw = { clip: a, t: ta, rate: 1, flinch: 0, dir: 0, prev: a, blend: 1 };
     Animator.pose(m, keep, ex, outA); Animator.pose(m, sw, ex, outB);
     keep.t = ta + DT; Animator.pose(m, keep, ex, outA);                    // the pose a would show on the next frame anyway
-    sw.prev = a; sw.clip = b; sw.t = 0; sw.blend = DT / 0.14;              // setAnim() resets t and blend: the first frame after the switch shows blend = dt/0.14
+    const BR = 0.14;                                                       // spec 7: the sim advances blend by dt / 0.14 (world.js _tickDying uses 0.1: see docs/requests/anim.md)
+    sw.prev = a; sw.clip = b; sw.t = 0; sw.blend = DT / BR;                // setAnim() resets t and blend: the first frame after the switch shows blend = dt / BR
     Animator.pose(m, sw, ex, outB);
     const pop = maxDelta(outA, outB), popPart = lastPart;                  // what the crossfade adds on top of a's own motion
     n++; if (pop > maxPop) { maxPop = pop; where = `${a}->${b} [${popPart}]`; }
     // the rest of the ramp (informational): the crossfade moves poses, at most ramp-velocity per frame
     let prev = outB.slice(), cur = new Float32Array(P * 9);
-    for (let f = 2; f <= 6; f++) { sw.t = (f - 1) * DT; sw.blend = Math.min(1, f * DT / 0.14); Animator.pose(m, sw, ex, cur); const d = maxDelta(prev, cur); if (d > maxRamp) { maxRamp = d; rampAt = `${a}->${b} f${f} [${lastPart}]`; } prev = cur.slice(); }
+    for (let f = 2; f <= 6; f++) { sw.t = (f - 1) * DT; sw.blend = Math.min(1, f * DT / BR); Animator.pose(m, sw, ex, cur); const d = maxDelta(prev, cur); if (d > maxRamp) { maxRamp = d; rampAt = `${a}->${b} f${f} [${lastPart}]`; } prev = cur.slice(); }
     if (pop > 0.35) failures.push(`${fx.main}+${fx.off}: ${a}->${b} [${popPart}] ${pop.toFixed(3)} (ta ${ta.toFixed(2)})`);
   }
   console.log(`  ${(fx.main + '+' + fx.off).padEnd(22)} style ${String(info.style).padEnd(8)} transitions ${n}  max switch-frame change ${maxPop.toFixed(3)} rad (${where})  ramp ${maxRamp.toFixed(2)} (${rampAt})`);

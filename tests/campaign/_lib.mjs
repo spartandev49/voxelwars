@@ -50,7 +50,12 @@ export function buildMissionWorld(m, bot, seed, o = {}) {
   const groups = o.groups || botGroups(m, bot, seed);
   let pl = o.placements || layoutArmy(groups, arena.zones.A, arena.zones.B, defs, { seed });
   if (bot === 'turtle') pl = pl.map((p) => Object.assign({}, p, { order: 'hold' }));
-  w.addPlacements(0, pl, { defs });
+  const squads = w.addPlacements(0, pl, { defs });
+  // a turtle on a hold_hill mission forms up ON the hill (placement is only allowed in the zone, so it marches there once) and holds it
+  if (bot === 'turtle' && m.objective.type === 'hold_hill') {
+    const hill = (m.arena.markers || []).find((k) => k.type === 'hill'); let i = 0;
+    for (const sq of squads) { sq.order = 'move'; sq.moveTo = { x: hill.x + ((i % 3) - 1) * 1.5, z: hill.z + (((i / 3) | 0) - 2) * 1.5 }; i++; }
+  }
   w.start();
   return { w, rt, groups, placements: pl };
 }

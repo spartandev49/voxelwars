@@ -52,7 +52,7 @@
      K.applyUiSettings(settings) / K.installUiSettings(ctx) -> unsubscribe     (html font-size = 16px x settings.uiScale x window fit; fit is 1 up to 1280x720 and grows to 1.3 at 1920x1080)
    ===================================================================================================== */
 import { icon as makeIcon, ICON_NAMES } from './icons.js';
-import { ROLE_ICON, ROLE_LABEL, ROLE_CHIP, factionColor, counterHints } from './unitinfo.js';
+import { ROLE_ICON, ROLE_LABEL, ROLE_CHIP, factionColor, counterHints, bindContent } from './unitinfo.js';
 
 export const icon = makeIcon;
 export { ICON_NAMES };
@@ -66,6 +66,7 @@ let fitRaf = 0;
 export function init(ctx) {
   if (ctx && ctx !== CTX) {
     CTX = ctx;
+    try { bindContent(ctx.content); } catch (e) { /* content is optional in tests */ }
     try { installUiSettings(ctx); } catch (e) { /* settings may be partial in tests */ }
     if (!init.bound) {
       init.bound = true;

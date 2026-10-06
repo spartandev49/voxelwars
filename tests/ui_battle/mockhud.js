@@ -7,6 +7,7 @@ import { createMockApp } from '../../src/ui/mockctx.js';
 import { generateArena } from '../../src/world/gen.js';
 import { MATERIALS } from '../../src/world/arena.js';
 import { mulberry } from '../../src/ui/hud/_dom.js';
+import { PUZZLES } from '../../src/content/era_ancient/puzzles.js';
 
 export const WORLD = { w: 96, d: 96 };
 
@@ -252,6 +253,13 @@ export function makeResults(g, opts) {
     r.rewards = winner === 0 ? { title: 'Hot Gater', unlockParts: ['Colander Helm'], unlockMutators: ['tiny_titans'], codex: ['Spartan: kicks recorded'] } : null;
     r.canNext = winner === 0;
   }
+  if (kind === 'puzzle') {
+    const m = PUZZLES[1];
+    r.kind = 'puzzle';
+    r.mission = { id: m.id, kind: 'puzzle', title: m.title, index: m.index, next: PUZZLES[2].id, nextTitle: PUZZLES[2].title };
+    r.stars = [{ id: 'win', text: 'Win', earned: winner === 0 }, { id: 'par', text: m.stars[1].text, earned: winner === 0 }, { id: m.stars[2].id, text: m.stars[2].text, earned: false }];
+    r.canNext = winner === 0;
+  }
   if (kind === 'survival') {
     r.survival = { wave: 7, waveName: 'Wave 7: Mildly Annoyed Titans', score: 11230, kills: 233, remainingCost: 1860, best: 9100, rank: 1, board: [{ score: 11230, waves: 7, date: 'Today', arena: 'Marathon Plain' }, { score: 9100, waves: 6, date: '3 Oct', arena: 'Hot Gates' }, { score: 7400, waves: 5, date: '1 Oct', arena: 'Oasis Duel' }, { score: 5200, waves: 4, date: '28 Sep', arena: 'Marathon Plain' }, { score: 2100, waves: 2, date: '27 Sep', arena: 'Colosseum' }] };
     r.winner = 1;
@@ -274,11 +282,11 @@ export function makeRouter(ui, getCtx, registry) {
     return { id, el, inst, meta: mod.meta || {} };
   };
   const kill = (s) => { if (!s) return; try { s.inst.destroy && s.inst.destroy(); } catch (e) { console.error('destroy', e); } s.el.remove(); };
-  R.goto = (id, params) => { R.log.push('goto:' + id); for (const o of R.overlays.splice(0)) kill(o); kill(R.base); R.base = mount(id, params, false); return true; };
+  R.history = []; R.goto = (id, params) => { R.log.push('goto:' + id); if (R.base && R.base.id && R.base.id !== id) R.history.push(R.base.id); for (const o of R.overlays.splice(0)) kill(o); kill(R.base); R.base = mount(id, params, false); return true; };
   R.overlay = (id, params) => { R.log.push('overlay:' + id); const s = mount(id, params, true); R.overlays.push(s); return true; };
   R.closeOverlay = (id) => { R.log.push('close:' + id); for (let i = R.overlays.length - 1; i >= 0; i--) if (!id || R.overlays[i].id === id) { kill(R.overlays[i]); R.overlays.splice(i, 1); if (id) break; } };
   R.hasOverlay = (id) => R.overlays.some((o) => o.id === id);
-  R.back = () => { if (R.overlays.length) { const top = R.overlays[R.overlays.length - 1]; if (top.inst.onBack && top.inst.onBack()) return true; R.closeOverlay(top.id); return true; } if (R.base && R.base.inst.onBack && R.base.inst.onBack()) return true; return false; };
+  R.back = () => { if (R.overlays.length) { const top = R.overlays[R.overlays.length - 1]; if (top.inst.onBack && top.inst.onBack()) return true; R.closeOverlay(top.id); return true; } if (R.base && R.base.inst.onBack && R.base.inst.onBack()) return true; const prev = R.history.pop(); if (prev) { R.goto(prev); R.history.pop(); return true; } return false; };
   R.key = (e) => { const top = R.overlays[R.overlays.length - 1] || R.base; return !!(top && top.inst && top.inst.onKey && top.inst.onKey(e)); };
   R.current = () => (R.base ? R.base.id : '');
   R.destroy = () => { for (const o of R.overlays.splice(0)) kill(o); kill(R.base); R.base = null; };
@@ -288,10 +296,17 @@ export function makeRouter(ui, getCtx, registry) {
 /* ------------------------------------------------------------------ assemble */
 export function createBattleMock(opts) {
   opts = opts || {};
-  const app = createMockApp({ registry: {}, touch: !!opts.touch, phone: opts.phone, noDownloads: !!opts.noDownloads, settings: opts.settings });
+  // createMockApp installs its own never-removed window keydown router (Esc -> its empty registry -> 'title' throws). The battle harness has its own router
+  // and key routing (harness.js), so that listener is dropped while the app is created.
+  const addL = window.addEventListener;
+  window.addEventListener = function (type, fn, o) { if (type === 'keydown') return undefined; return addL.call(this, type, fn, o); };
+  let app;
+  try { app = createMockApp({ registry: {}, touch: !!opts.touch, phone: opts.phone, noDownloads: !!opts.noDownloads, settings: opts.settings }); } finally { window.addEventListener = addL; }
   const ctx = app.ctx;
   ctx.content.humor.killVerbs = KILL_VERBS;
   ctx.content.campaign = { missions: MISSIONS };
+  ctx.content.puzzles = opts.noPuzzles ? [] : opts.puzzles || PUZZLES;
+  if (opts.puzzleBest !== false) ctx.save.progress.set('puzzles', opts.puzzleBest || { spear_wall: { stars: 3, spent: 940, time: 61 }, kiting_101: { stars: 2, spent: 880, time: 98 } });
   ctx.game = buildGame(ctx, opts);
   const m = { app, ctx, game: ctx.game, router: null, calls: app.calls };
   const baseNav = ctx.nav;

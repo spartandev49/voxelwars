@@ -53,6 +53,7 @@ export function boot(mods) {
   for (const id of STUB_IDS) if (!registry[id]) registry[id] = stub(id);
   let stage = null;
   const app = createMockApp({
+    real: true,   // real HUMOR text/arenas/mutators/achievements, real counter table, real ctx.save/ctx.diag/Game army shapes
     registry,
     onScreen(meta, el) {
       if (stage) { stage.remove(); stage = null; }

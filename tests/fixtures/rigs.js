@@ -88,9 +88,9 @@ export function makeHum1Ref(opts = {}) {
   }
   if (o.cape) {
     const cape = new VoxelGrid(10, 14, 2).box(0, 0, 0, 10, 14, 2, T(0xffffff)).box(0, 0, 0, 10, 1, 2, V(GOLD));
-    const cape2 = new VoxelGrid(10, 10, 2).box(0, 0, 0, 10, 10, 2, T(0xf0f0f0)).box(0, 0, 0, 10, 1, 2, V(GOLD));
+    const cape2 = new VoxelGrid(10, 4, 2).box(0, 0, 0, 10, 4, 2, T(0xf0f0f0)).box(0, 0, 0, 10, 1, 2, V(GOLD));      // hem ends at the ground (cape 14 + cape2 4 below the shoulder line)
     m.addPart('cape', cape, { parent: 'body', origin: [0, 8, -3], pivot: [5, 14, 1] });
-    m.addPart('cape2', cape2, { parent: 'cape', origin: [0, -14, 0], pivot: [5, 10, 1] });
+    m.addPart('cape2', cape2, { parent: 'cape', origin: [0, -14, 0], pivot: [5, 4, 1] });
   }
   m.addAttach('grip_main', 'weapon', [4, 10, 4]);
   return m;

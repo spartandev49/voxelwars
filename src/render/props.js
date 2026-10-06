@@ -366,8 +366,13 @@ export class PropRenderer {
 
   /** Editor: add a prop and render it now. def = {t, x, z, r?, s?, v?, id?, stage?, y?}. Returns its id (0 when the type is unknown). */
   add(def) { return this._addItem(def, false); }
-  /** Editor: remove a prop with no rubble and no effects. */
-  removeById(id) {
+  /**
+   * removeById(id): hard removal (editor delete, ghost cursors): no rubble, no effects.
+   * removeById(id, payload) with the sim's `prop_destroyed` payload (what BattleView passes): the prop COLLAPSES to its rubble stage (indestructible
+   * types vanish); the caller spawns the debris cubes, so none are spawned here.
+   */
+  removeById(id, payload) {
+    if (payload && typeof payload === 'object') return this.remove(id, { debris: false });
     const it = this.items.get(id); if (!it) return false;
     if (it.batch) it.batch.remove(it);
     this._setEmitters(it, null);
@@ -427,6 +432,10 @@ export class PropRenderer {
     if (isStaticProp(it.type)) return this.removeById(id);
     this.setStage(id, 2); return true;
   }
+  /** BattleView hook for `prop_damaged`: stage 1 (cracked) below 60% hp, 0 above. */
+  setStageById(id, stage) { return this.setStage(id, stage); }
+  /** Palette (0xRRGGBB list) of a prop type for CubeFX.rubble / debrisBurst. */
+  debrisColors(type) { return debrisColors(type); }
   setBurning(id, on) { const it = this.items.get(id); if (!it) return; if (on) this.burning.set(id, it); else this.burning.delete(id); }
   /** Editor/hover: nearest prop hit by a ray (origin/dir plain {x,y,z}); props are tested as vertical cylinders. Returns {id,t} or null. */
   pick(o, d, maxDist = 400) {
@@ -573,7 +582,7 @@ export class PropRenderer {
     return t >= 12 ? sm(17, 19.5, t) : 1 - sm(4.5, 7, t);
   }
   _updateLights(dt, cam) {
-    const night = this._night(), L = this.lights;
+    const night = this._night(), L = this.lights, shown = this.group.visible;      // hidden group (editor took the canvas): no glow
     this._lightT -= dt;
     if (this._lightT <= 0 && this.emitters.length) {
       this._lightT = 0.3;
@@ -584,7 +593,7 @@ export class PropRenderer {
       for (let i = 0; i < L.length; i++) { const c = cand[i]; L[i].userData.it = this._lightOn && c && c[0] < 55 * 55 ? c[1] : null; }
     }
     for (let i = 0; i < L.length; i++) {
-      const l = L[i], it = l.userData.it, want = it && it.em ? (0.5 + 1.7 * night) * (0.88 + 0.12 * Math.sin(this.time * 17 + i * 3) + 0.06 * Math.sin(this.time * 31 + i)) : 0;
+      const l = L[i], it = shown ? l.userData.it : null, want = it && it.em ? (0.5 + 1.7 * night) * (0.88 + 0.12 * Math.sin(this.time * 17 + i * 3) + 0.06 * Math.sin(this.time * 31 + i)) : 0;
       l.intensity += (want - l.intensity) * Math.min(1, dt * 6);
       if (it && it.em) l.position.set(it.em[0].x, it.em[0].y + 0.25, it.em[0].z);
       l.distance = 9 + 6 * night;

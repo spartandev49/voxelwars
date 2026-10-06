@@ -50,7 +50,7 @@ await test('worlds build for every mission: arena + markers + decor, objective c
     const arena = missionArena(m);
     assert.deepEqual(arena.markers.map((k) => k.id), m.arena.markers.map((k) => k.id)); if (m.arena.env) for (const k of Object.keys(m.arena.env)) assert.equal(arena.env[k], m.arena.env[k]);
     const rules = missionRules(m);
-    for (const k of Object.keys(rules)) assert.ok(['friendlyFire', 'morale', 'speed', 'timeLimit', 'difficulty', 'objective', 'godPowers', 'mutators', 'budget', 'weather', 'time', 'startFormation', 'mission'].includes(k), 'unknown rules key ' + k);
+    for (const k of Object.keys(rules)) assert.ok(['friendlyFire', 'morale', 'speed', 'timeLimit', 'difficulty', 'objective', 'godPowers', 'mutators', 'budget', 'weather', 'time', 'startFormation'].includes(k), 'unknown rules key ' + k);
     assert.deepEqual(rules.mutators, []); assert.equal(rules.budget, m.budget); assert.equal(rules.objective.playerTeam, 0); assert.ok(rules.timeLimit > 0);
     const w = new World({ arena, seed: 7, rules, defs });
     const rt = setupMission(w, m, { seed: 7 });

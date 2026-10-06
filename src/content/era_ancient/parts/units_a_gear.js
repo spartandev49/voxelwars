@@ -71,6 +71,27 @@ M.khopesh_spear_pennon = {
   },
 };
 
+/** The strategos' standard, trimmed to the height budget: the same swung-staff banner as the core `standard` but the pole top stays under y 34 (3.4 u) at rest, so the whole
+ *  unit (cloth >= 9x10 voxels, team colour, emblem and fringe) stays inside U2's height ceiling. The pole leans a little outward so the cloth clears the crest. */
+M.standard_general = {
+  name: 'General\'s standard (banner)', meta: { style: 'bash', ready: 84, len: 24, back: 6, rest: [R_UP, 0, 0.14], grip: [4, 10, 4], minLen: 20, kind: 'melee', noClamp: true, faction: 'hellenes' },
+  build(ctx) {
+    const g = newGrid('weapon'), yt = 9 + ctx.len, y0 = 10 - ctx.back;
+    for (let y = y0 + 1; y <= yt - 2; y++) B(g, 4, y, 4, 4, y, 4, wood(y, 1, 0x7a5030));
+    gripWrap(g, ctx, 8, 11);
+    B(g, 4, y0, 4, 4, y0, 4, V(ctx.m[1]));
+    B(g, 3, yt - 2, 3, 5, yt - 2, 5, V(ctx.m[2])); B(g, 4, yt - 1, 3, 4, yt, 5, V(ctx.m[3])); P(g, 4, yt + 1, 4, V(ctx.m[4]));       // gold spear-leaf finial over a collar
+    const yb = yt - 3;
+    B(g, 0, yb, 4, 8, yb, 4, V(ctx.m[2])); P(g, 0, yb, 4, V(ctx.m[4])); P(g, 8, yb, 4, V(ctx.m[4]));                              // crossbar
+    B(g, 0, yb - 10, 4, 8, yb - 1, 4, (x, y, z) => ((y === yb - 10) ? ((x % 2) ? V(shade(ctx.c.secondary, 0.95)) : V(shade(ctx.c.secondary, 0.75))) : ctx.t(0.9 + 0.16 * hash3(x, y, z, 12))));
+    B(g, 0, yb - 9, 4, 0, yb - 1, 4, V(shade(ctx.c.secondary, 0.9))); B(g, 8, yb - 9, 4, 8, yb - 1, 4, V(shade(ctx.c.secondary, 0.9)));
+    B(g, 0, yb - 1, 4, 8, yb - 1, 4, V(shade(ctx.c.secondary, 0.9)));
+    if (ctx.emblem && ctx.emblem !== 'none') emblem(g, ctx.emblem, 0, yb - 2, 4, V(shade(ctx.c.secondary, 1.05)));
+    else sprite(g, ['..###..', '.#####.', '.#####.', '..###..'], 1, yb - 3, 4, { '#': V(shade(ctx.c.secondary, 1.05)) });
+    return g;
+  },
+};
+
 /** The mummy's club: tomb-wood wrapped in the same linen as its owner (tinted bands), loose strands trailing off the end. */
 M.wrapped_club = {
   name: 'Wrapped tomb club', meta: { style: 'bash', len: 15, back: 5, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 10, kind: 'melee', faction: 'egyptians' },

@@ -9,6 +9,8 @@
 //   dailySetup(plan)             -> the Setup fragment Game.newSetup('daily', ...) takes (arena, rules, armies)
 //   dailyEnemy(plan, defs?)      -> {groups, cost}   the enemy army of the day (generateArmy with the plan's seed: identical everywhere)
 //   resultString(plan, r, names) / streakOf(history, today)
+//   dailyStars(r)                -> 0..3 (ui.md 4a.1: 1 win, 2 win with >= 50% of the army alive by count, 3 win with >= 75% alive)
+//   recordDailyRun(prev, rec)    -> {state:{last, streak, best, history}, counted}   (first run of a date counts, later ones are practice; history capped at 60)
 import { ARENAS } from './arenas.js';
 import { FACTIONS } from './stats.js';
 import { MUTATORS } from '../../sim/mutators.js';
@@ -87,4 +89,27 @@ export function streakOf(history, today) {
   let k = set.has(today) ? today : addDays(today, -1), n = 0;
   while (k && set.has(k)) { n++; k = addDays(k, -1); }
   return n;
+}
+
+/** Stars of a Daily result (ResultsData shape: {winner, teams:[{alive, dead, startCount}]}): 1 win, 2 with >= 50% of the army alive, 3 with >= 75% alive. */
+export function dailyStars(r) {
+  if (!r || r.winner !== 0) return 0;
+  const A0 = (r.teams && r.teams[0]) || {}, start = A0.startCount || ((A0.alive || 0) + (A0.dead || 0)) || 1, frac = (A0.alive || 0) / start;
+  return frac >= 0.75 ? 3 : frac >= 0.5 ? 2 : 1;
+}
+
+export const DAILY_HISTORY_CAP = 60;
+/**
+ * Record a finished Daily. prev = {last, streak, best, history:[{date, result, time, left, string...}]} (newest first) or null; rec = {date, result:'win|loss|draw', ...}.
+ * Only the first completed run of a date is recorded (`counted: false` = practice, nothing changes). A run on the day after the last recorded one extends the streak,
+ * a gap resets it to 1; `best` keeps the longest streak ever. Pure: the caller passes the date, the function never reads the clock.
+ */
+export function recordDailyRun(prev, rec) {
+  const st = { last: (prev && prev.last) || '', streak: (prev && prev.streak) | 0, best: (prev && prev.best) | 0, history: prev && Array.isArray(prev.history) ? prev.history.slice() : [] };
+  if (st.history.some((h) => h.date === rec.date)) return { state: st, counted: false };
+  const yesterday = addDays(rec.date, -1);
+  st.streak = st.history.some((h) => h.date === yesterday) ? st.streak + 1 : 1;
+  st.best = Math.max(st.best, st.streak); st.last = rec.date;
+  st.history.unshift(rec); st.history.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)); st.history = st.history.slice(0, DAILY_HISTORY_CAP);
+  return { state: st, counted: true };
 }

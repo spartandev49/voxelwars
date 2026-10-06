@@ -333,13 +333,12 @@ function markersPanel(app) {
     const o = OBJECTIVE_BY_ID[session.objective], have = new Set(session.arena.markers.map((m) => m.type));
     for (const t of o.markers) reqBox.appendChild(K.chip((have.has(t) ? '✓ ' : '✗ ') + M.types[t], { variant: have.has(t) ? 'olive' : 'danger', class: 'vw-ed__req' }));
     for (const t of o.props) { const ok = session.arena.props.some((p) => p.t === t); reqBox.appendChild(K.chip((ok ? '✓ ' : '✗ ') + (PROP_CATALOG[t] || {}).name, { variant: ok ? 'olive' : 'danger', class: 'vw-ed__req' })); }
-    app.view.setHighlight(o.markers.filter((t) => !have.has(t)));
   }
   const paint = () => { count.textContent = M.count(session.arena.markers.length, LIMITS.markers); count.classList.toggle('is-over', session.arena.markers.length >= LIMITS.markers); };
   app.onMarkerSelection = renderSel;
   offs.push(session.on((e) => { if (e.kind === 'markers' || e.kind === 'all' || e.kind === 'props') { paint(); paintObj(); if (mk.mode === 'select') renderSel(); } if (e.kind === 'objective') paintObj(); }));
   paint(); paintObj(); renderSel();
-  return { el: panel(K, mode, sec(K, S.tools.markers.name, grid, tip, K.field(M.radius, radius, { stack: true }), count), selBox, sec(K, M.objective, objBox, reqBox, note(K, M.objectiveNote))), destroy() { offs.forEach((f) => f()); app.onMarkerSelection = null; app.view.setHighlight([]); } };
+  return { el: panel(K, mode, sec(K, S.tools.markers.name, grid, tip, K.field(M.radius, radius, { stack: true }), count), selBox, sec(K, M.objective, objBox, reqBox, note(K, M.objectiveNote))), destroy() { offs.forEach((f) => f()); app.onMarkerSelection = null; } };
 }
 
 const BUILDERS = { raise: raisePanel, smooth: smoothPanel, flatten: flattenPanel, paint: paintPanel, water: waterPanel, noise: noisePanel, ramp: rampPanel, stamp: stampPanel, props: propsPanel, hazards: hazardsPanel, zones: zonesPanel, symmetry: symmetryPanel, generate: generatePanel, environment: environmentPanel, info: infoPanel, markers: markersPanel };

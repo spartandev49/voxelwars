@@ -14,33 +14,35 @@ import * as m11 from '../ui/screens/pause.js';
 import * as m12 from '../ui/screens/phone_notice.js';
 import * as m13 from '../ui/screens/photo.js';
 import * as m14 from '../ui/screens/placement.js';
-import * as m15 from '../ui/screens/quick.js';
-import * as m16 from '../ui/screens/results.js';
-import * as m17 from '../ui/screens/settings.js';
-import * as m18 from '../ui/screens/splash.js';
-import * as m19 from '../ui/screens/stats.js';
-import * as m20 from '../ui/screens/survival.js';
-import * as m21 from '../ui/screens/title.js';
-import * as m22 from '../ui/hud/announcer.js';
-import * as m23 from '../ui/hud/armymeter.js';
-import * as m24 from '../ui/hud/bubbles.js';
-import * as m25 from '../ui/hud/cameramodes.js';
-import * as m26 from '../ui/hud/helpoverlay.js';
-import * as m27 from '../ui/hud/killfeed.js';
-import * as m28 from '../ui/hud/minimap.js';
-import * as m29 from '../ui/hud/mutators.js';
-import * as m30 from '../ui/hud/objective.js';
-import * as m31 from '../ui/hud/orders.js';
-import * as m32 from '../ui/hud/photo.js';
-import * as m33 from '../ui/hud/powers.js';
-import * as m34 from '../ui/hud/selection.js';
-import * as m35 from '../ui/hud/speed.js';
-import * as m36 from '../ui/hud/takecommand.js';
-import * as m37 from '../ui/hud/teaching.js';
-import * as m38 from '../ui/hud/timer.js';
-import * as m39 from '../ui/hud/typecounts.js';
-import * as m40 from '../editors/arena.js';
-import * as m41 from '../editors/workshop.js';
+import * as m15 from '../ui/screens/puzzles.js';
+import * as m16 from '../ui/screens/quick.js';
+import * as m17 from '../ui/screens/results.js';
+import * as m18 from '../ui/screens/settings.js';
+import * as m19 from '../ui/screens/splash.js';
+import * as m20 from '../ui/screens/stats.js';
+import * as m21 from '../ui/screens/survival.js';
+import * as m22 from '../ui/screens/title.js';
+import * as m23 from '../ui/hud/announcer.js';
+import * as m24 from '../ui/hud/armymeter.js';
+import * as m25 from '../ui/hud/bubbles.js';
+import * as m26 from '../ui/hud/cameramodes.js';
+import * as m27 from '../ui/hud/helpoverlay.js';
+import * as m28 from '../ui/hud/killfeed.js';
+import * as m29 from '../ui/hud/minimap.js';
+import * as m30 from '../ui/hud/mutators.js';
+import * as m31 from '../ui/hud/objective.js';
+import * as m32 from '../ui/hud/orders.js';
+import * as m33 from '../ui/hud/photo.js';
+import * as m34 from '../ui/hud/powers.js';
+import * as m35 from '../ui/hud/selection.js';
+import * as m36 from '../ui/hud/speed.js';
+import * as m37 from '../ui/hud/takecommand.js';
+import * as m38 from '../ui/hud/teaching.js';
+import * as m39 from '../ui/hud/timer.js';
+import * as m40 from '../ui/hud/typecounts.js';
+import * as m41 from '../editors/arena.js';
+import * as m42 from '../editors/painter.js';
+import * as m43 from '../editors/workshop.js';
 export const SCREEN_MODULES = {
   "achievements": m0,
   "battle": m1,
@@ -57,35 +59,37 @@ export const SCREEN_MODULES = {
   "phone_notice": m12,
   "photo": m13,
   "placement": m14,
-  "quick": m15,
-  "results": m16,
-  "settings": m17,
-  "splash": m18,
-  "stats": m19,
-  "survival": m20,
-  "title": m21,
+  "puzzles": m15,
+  "quick": m16,
+  "results": m17,
+  "settings": m18,
+  "splash": m19,
+  "stats": m20,
+  "survival": m21,
+  "title": m22,
 };
 export const HUD_MODULES = {
-  "announcer": m22,
-  "armymeter": m23,
-  "bubbles": m24,
-  "cameramodes": m25,
-  "helpoverlay": m26,
-  "killfeed": m27,
-  "minimap": m28,
-  "mutators": m29,
-  "objective": m30,
-  "orders": m31,
-  "photo": m32,
-  "powers": m33,
-  "selection": m34,
-  "speed": m35,
-  "takecommand": m36,
-  "teaching": m37,
-  "timer": m38,
-  "typecounts": m39,
+  "announcer": m23,
+  "armymeter": m24,
+  "bubbles": m25,
+  "cameramodes": m26,
+  "helpoverlay": m27,
+  "killfeed": m28,
+  "minimap": m29,
+  "mutators": m30,
+  "objective": m31,
+  "orders": m32,
+  "photo": m33,
+  "powers": m34,
+  "selection": m35,
+  "speed": m36,
+  "takecommand": m37,
+  "teaching": m38,
+  "timer": m39,
+  "typecounts": m40,
 };
 export const EDITOR_MODULES = {
-  "arena": m40,
-  "workshop": m41,
+  "arena": m41,
+  "painter": m42,
+  "workshop": m43,
 };

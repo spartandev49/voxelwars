@@ -1,6 +1,10 @@
 // UI copy for the menu-side screens (owner UI-A). Single object `T` so the HUMOR pass can swap/extend it:
 //   ctx.content.humor.ui (or .settingsJokes) is deep-merged over these defaults by getT(ctx).
 // Rules: clarity first, one joke per control at most, specific beats generic, no stereotypes (spec/humor.md).
+// HUMOR owns the wording of settings/quality/rules/empty states/errors (src/content/era_ancient/humor/ui_text.js): overlayHumor() below
+// copies it over these defaults at load, so the strings in this file are the fallback when a key is missing there.
+import * as H from '../content/era_ancient/humor/ui_text.js';
+import { STUDIO_CREDITS, CREDITS_FOOTER } from '../content/era_ancient/humor/credits_text.js';
 
 export const T = {
   common: {
@@ -89,6 +93,11 @@ export const T = {
     mirror: 'Mirror to the other side', undo: 'Undo', redo: 'Redo', clear: 'Clear', clearAsk: { title: 'Clear this army?', text: 'Every soldier on this side will be dismissed. They will not be offended. Probably.', yes: 'Clear army' },
     clearAll: 'Clear both sides',
     presets: 'Army presets', savePreset: 'Save army', loadPreset: 'Load army', presetName: 'Preset name', presetNone: 'No saved armies yet. Place a few soldiers, then press Save army.', presetSaved: (n) => `Saved army "${n}".`, presetLoaded: (n) => `Loaded "${n}".`,
+    presetNameEmpty: 'Give the army a name, even a silly one.', presetNothing: 'Place at least one soldier on this side first.', presetEmpty: 'That army has nothing this build can place.', presetOver: 'Over budget',
+    presetOverBudget: (cost, cap) => `That army costs ${cost} drachmae, but this battle allows ${cap} per side. Raise the budget or save a smaller army.`,
+    presetSkipped: (n) => `${n} unit${n === 1 ? ' was' : 's were'} skipped because ${n === 1 ? 'it is' : 'they are'} not available any more.`,
+    presetSaveFail: 'The army could not be saved. Check the Data tab in Settings.', presetDropped: (name, cap) => `You can keep ${cap} saved armies, so the oldest one ("${name}") was removed.`,
+    exportCopied: 'Army code copied. Anyone can paste it into Import army code.', importBad: 'That code was not understood. Copy the whole code, from the first VW1 to the last character.',
     presetExport: 'Export army code', presetImport: 'Import army code', importOk: 'Army imported.',
     autoFill: 'Auto-fill', autoFillEnemy: 'Auto-fill enemy', autoFillMine: 'Auto-fill mine', autoFillTip: 'Spend the remaining budget with the chosen style.',
     scout: 'Scout report', scoutEmpty: 'Place some soldiers and the scouts will tell you what they think.', scoutBad: 'Weak spot', scoutGood: 'Strong point', scoutTip: 'Tip',
@@ -151,11 +160,11 @@ export const T = {
       ],
     },
     data: {
-      storage: 'Storage', storageOk: 'Saving to this device', storageMemory: 'Not saving: this browser blocks storage, so progress will be forgotten when you close the tab.', storageFull: 'Storage is full: new saves may fail. Export your data, then delete something.',
+      storage: 'Storage', storageFullChip: 'Storage full', storageMemoryChip: 'Not saving', retrySave: 'Try saving again', retryOk: 'Everything is saved now.', retryStill: 'Still no room. Free some space and try again.', storageOk: 'Saving to this device', storageMemory: 'Not saving: this browser blocks storage, so progress will be forgotten when you close the tab.', storageFull: 'Storage is full: new saves may fail. Export your data, then delete something.',
       storageHint: 'Saves live in this browser only. Use Export to carry them elsewhere.',
       export: 'Export everything', exportHint: 'One file with settings, progress, arenas, soldiers and armies.', exportBtn: 'Export all', exported: 'Export ready.',
       exportText: { title: 'Your save data', note: 'Your browser cannot download files here. Copy this text and keep it somewhere safe.' },
-      import: 'Import everything', importHint: 'Replaces matching items from an export file or pasted text.', importBtn: 'Import file', importPaste: 'Paste text', importPasteTitle: 'Paste save data', importPasteNote: 'Paste the text from a previous export.', importOk: 'Import finished.', importFail: (m) => `Import failed: ${m}`,
+      import: 'Import everything', importHint: 'Replaces matching items from an export file or pasted text.', importBtn: 'Import file', importPaste: 'Paste text', importPasteTitle: 'Paste save data', importPasteNote: 'Paste the text from a previous export.', importOk: 'Import finished.', importFail: (m) => `Import failed: ${m}`, exportFail: (m) => `Export failed: ${m}`, resetFail: (m) => `Reset failed: ${m}`,
       reset: 'Reset progress', resetHint: 'Campaign stars, achievements, lifetime stats and unlocks. Arenas, soldiers and armies stay.', resetBtn: 'Reset progress...',
       resetAsk: { title: 'Reset all progress?', text: 'Campaign stars, achievements, stats and unlocks will be wiped. Your arenas, soldiers and armies stay. This cannot be undone.', yes: 'Wipe progress' }, resetDone: 'Progress reset. A clean slate. A little sad.',
       hints: 'Show tutorial hints again', hintsHint: 'Brings back the first-time tips.', hintsBtn: 'Reset hints', hintsDone: 'Hints will show again.',
@@ -199,10 +208,15 @@ export const T = {
   diag: {
     title: 'Diagnostics', sub: 'What this device and browser are telling the game. Handy for bug reports.',
     copy: 'Copy report', copied: 'Report copied.', refresh: 'Refresh', live: 'Live', liveHint: 'Update once a second',
-    sections: { webgl: 'Graphics', perf: 'Performance', audio: 'Audio', storage: 'Storage', csp: 'Blocked by security policy', log: 'Recent log', other: 'Other' },
+    sections: { overview: 'Overview', webgl: 'Graphics', perf: 'Performance', audio: 'Audio', storage: 'Storage', csp: 'Blocked by security policy', errors: 'Errors', log: 'Recent log', build: 'Build files', other: 'Other' },
+    errorsNone: 'No errors recorded.', assetsList: (n) => `Per-asset load path (${n})`,
     none: 'Nothing to report.', cspNone: 'No security-policy violations. The sandbox is content.',
     empty: 'This build did not provide diagnostics.',
-    key: { webgl2: 'WebGL 2', renderer: 'Renderer', vendor: 'Vendor', version: 'Version', tier: 'Quality tier', fps: 'FPS', ms: 'Frame ms', drawCalls: 'Draw calls', triangles: 'Triangles', units: 'Units', heapMB: 'JS heap (MB)', state: 'State', ctxState: 'Context', codecs: 'Codecs', status: 'Status', bytes: 'Bytes used', keys: 'Keys' },
+    key: { webgl2: 'WebGL 2', renderer: 'Renderer', vendor: 'Vendor', version: 'Version', tier: 'Quality tier', fps: 'FPS', ms: 'Frame ms', drawCalls: 'Draw calls', triangles: 'Triangles', units: 'Units', heapMB: 'JS heap', state: 'State', ctxState: 'Context', codecs: 'Codecs', status: 'Status', bytes: 'Bytes used', keys: 'Keys',
+      build: 'Version', buildDate: 'Build date', timeToTitleMs: 'Time to title screen', quality: 'Quality tier', autoScale: 'Auto-scale factor', pixelRatio: 'Pixel ratio', maxTex: 'Max texture size', floatRT: 'Float render targets', ua: 'Browser', dpr: 'Device pixel ratio', screen: 'Screen',
+      frameP50: 'Frame time (median)', frameP95: 'Frame time (95th pct)', cpuMs: 'CPU per frame', geometries: 'Geometries', textures: 'Textures', programs: 'Shader programs', projectiles: 'Projectiles', fxLive: 'Live effects', tick: 'Sim tick',
+      available: 'Available', unlocked: 'Unlocked by a click', muted: 'Muted', sampleRate: 'Sample rate', voices: 'Voices', voiceDrops: 'Dropped voices', loaded: 'Sounds loaded', assetPaths: 'Where sounds came from', embedded: 'Embedded', fetched: 'Fetched', synth: 'Synthesised stand-in', failed: 'Failed', pending: 'Pending',
+      mp3: 'MP3', manifest: 'Manifest', manifestSfx: 'Sound effects listed', manifestMusic: 'Music tracks listed', coreAudio: 'Embedded core sounds', notPublished: 'Not published', core: 'Core sounds', sfx: 'Sound effects', music: 'Music tracks', tts: 'Speech', supported: 'Supported', enabled: 'Enabled', spoken: 'Lines spoken' },
     ok: 'OK', bad: 'Problem',
   },
 
@@ -222,10 +236,11 @@ export const T = {
     title: 'Achievements', sub: 'Proof of tactical brilliance, or at least persistence.', all: 'All', unlocked: 'Unlocked', locked: 'Locked', of: (a, b) => `${a} of ${b} unlocked`,
     progress: (a, b) => `${a.toLocaleString('en-US')} / ${b.toLocaleString('en-US')}`, when: (d) => `Unlocked ${d}`, empty: 'No achievements match this filter yet.', statsLink: 'Lifetime stats',
     hiddenName: 'Locked achievement',
+    allDoneTitle: 'Every medal earned', allDone: 'Nothing left to unlock. The goat is impressed. The goat is not easily impressed.',
   },
 
   stats: {
-    title: 'Lifetime stats', sub: 'Everything the game has been quietly counting.', serious: 'The serious numbers', absurd: 'The absurd numbers', empty: 'No battles fought yet. The statisticians are bored.',
+    title: 'Lifetime stats', sub: 'Everything the game has been quietly counting.', serious: 'The serious numbers', absurd: 'The absurd numbers', fame: 'Hall of fame', topUnits: 'Most kills by soldier type', topArenas: 'Favourite arenas', kills: 'kills', battlesN: (n) => `${n} ${n === 1 ? 'battle' : 'battles'}`, empty: 'No battles fought yet. The statisticians are bored.',
     labels: {
       battles: 'Battles fought', wins: 'Victories', losses: 'Defeats', draws: 'Draws', kills: 'Soldiers defeated', deaths: 'Soldiers lost', damage: 'Damage dealt', playSeconds: 'Time in battle',
       shieldBlocks: 'Shield blocks', kicks: 'Spartan kicks', chickenKills: 'Chicken kills', goatsSaved: 'Goats saved', elephantTramples: 'Elephant tramples', godPowers: 'God powers cast', zeusRageQuits: 'Times Zeus left the chat',
@@ -249,6 +264,90 @@ export const T = {
     back: 'Back to menu', play: 'Play a Quick Battle instead',
   },
 };
+
+/* ---------------------------------------------------------------- HUMOR overlay (ui_text.js) */
+function overlayHumor(T, H) {
+  const str = (v) => (typeof v === 'string' && v.length ? v : undefined);
+  const put = (o, k, v) => { if (o && str(v)) o[k] = v; };
+  const each = (src, fn) => { if (src && typeof src === 'object') for (const k of Object.keys(src)) { try { fn(k, src[k]); } catch (e) { /* a malformed entry never breaks the UI */ } } };
+  const S = T.settings, Q = T.quick, P = T.placement;
+
+  // quality / gore / corpses / difficulty / budgets: label + what it really does
+  S.graphics.presetTip = {};
+  each(H.QUALITY, (id, v) => { put(S.graphics.presets, id, v.name); S.graphics.presetTip[id] = str(v.tip) || ''; });
+  Q.goreTips = {}; each(H.GORE, (id, v) => { put(Q.gores, id, v.label); Q.goreTips[id] = str(v.tip) || ''; });
+  Q.corpseTips = {}; each(H.CORPSES, (id, v) => { put(Q.corpsesOpts, id, v.label); Q.corpseTips[id] = str(v.tip) || ''; });
+  each(H.DIFFICULTY, (id, v) => { put(Q.difficulties, id, v.label); put(Q.difficultyTip, id, v.tip); });
+  Q.budgetLine = {}; each(H.BUDGET_PRESETS, (id, v) => { put(Q.budgets, id, v.label); Q.budgetLine[id] = str(v.line) || ''; });
+  if (H.SPEED_LABELS) Q.speedNames = Object.assign({}, H.SPEED_LABELS);
+
+  // settings tooltips (SETTINGS_TIPS keys are the setting ids)
+  const st = H.SETTINGS_TIPS || {};
+  put(S.graphics, 'autoScaleHint', st.autoScale); put(S.graphics, 'resScaleHint', st.resScale); put(S.graphics, 'shadowsHint', st.shadows); put(S.graphics, 'bloomHint', st.bloom);
+  put(S.graphics, 'cloudsHint', st.clouds); put(S.graphics, 'fpsHint', st.fpsCounter);
+  put(S.gameplay, 'goreHint', st.gore); put(S.gameplay, 'corpsesHint', st.corpses); put(S.gameplay, 'camSensHint', st.camSens); put(S.gameplay, 'edgeScrollHint', st.edgeScroll); put(S.gameplay, 'autoPauseHint', st.autoPauseBlur);
+  put(S.audio, 'mutedHint', st.muted); put(S.audio, 'ttsHint', st.tts); put(S.audio, 'subtitlesHint', st.subtitles);
+  put(S.access, 'reduceHint', st.reduceMotion); put(S.access, 'shakeHint', st.shake); put(S.access, 'flashHint', st.flashLimiter); put(S.access, 'uiScaleHint', st.uiScale); put(S.access, 'paletteHint', st.palette); put(S.access, 'contrastHint', st.highContrastUI);
+
+  // rule tooltips on Quick Battle
+  const rt = H.RULES_TIPS || {};
+  put(Q, 'friendlyFireTip', rt.friendlyFire); put(Q, 'moraleTip', rt.morale); put(Q, 'freePlacementTip', rt.freePlacement); put(Q, 'mirrorTip', rt.mirror);
+  put(Q, 'budgetTip', rt.budget); put(Q, 'mutatorsHint', rt.mutators);
+  Q.timeLimitTip = str(rt.timeLimit) || ''; Q.weatherInfo = str(rt.weather) || ''; Q.formationTip = str(rt.formation) || '';
+
+  // menus and buttons
+  put(T.splash, 'prompt', H.SPLASH); put(T.title, 'roadmap', H.ROADMAP_TAG);
+  const tm = H.TITLE_MENU || {};
+  for (const [src, dst] of [['quick', 'quick'], ['campaign', 'campaign'], ['survival', 'survival'], ['builder', 'arena'], ['workshop', 'workshop'], ['codex', 'codex'], ['achievements', 'achievements']]) {
+    if (tm[src] && T.title[dst]) { put(T.title[dst], 'name', tm[src].label); put(T.title[dst], 'sub', tm[src].sub); }
+  }
+  const bt = H.BUTTONS || {};
+  put(Q, 'quickFight', bt.quickFight); put(Q, 'place', bt.placeArmies); put(P, 'fight', bt.fight); put(P, 'savePreset', bt.saveArmy); put(P, 'loadPreset', bt.loadArmy);
+  put(T.common, 'ok', bt.ok); put(T.common, 'cancel', bt.cancel); put(T.common, 'back', bt.back); put(T.common, 'copy', bt.copy);
+  put(S.about, 'line', (H.ABOUT || {}).tagline); S.about.disclaimer = str((H.ABOUT || {}).disclaimer) || '';
+  const md = H.MODALS || {};
+  if (md.deleteItem) T.common.deleteAsk = { title: md.deleteItem.title, text: md.deleteItem.body, yes: md.deleteItem.yes, no: md.deleteItem.no };
+  if (md.overwrite) T.common.overwriteAsk = { title: md.overwrite.title, text: md.overwrite.body, yes: md.overwrite.yes, no: md.overwrite.no };
+  // NOTE: MODALS.resetProgress claims saved armies are erased; Reset progress only wipes progress (docs.progress.reset), so S.data.resetAsk keeps its own accurate copy.
+
+  // empty states
+  const es = H.EMPTY_STATES || {};
+  if (es.armies) { put(P, 'presetNone', es.armies.body); P.presetNoneTitle = str(es.armies.title) || P.loadPreset; }
+  if (es.soldiers) put(P, 'mineEmpty', es.soldiers.body);
+  if (es.achievements) { put(T.ach, 'empty', es.achievements.body); T.ach.emptyTitle = str(es.achievements.title) || T.ach.title; }
+  if (es.stats) { put(T.stats, 'empty', es.stats.body); T.stats.emptyTitle = str(es.stats.title) || T.stats.title; }
+  if (es.codexSearch) { T.codex.noResults = es.codexSearch.body; T.codex.noResultsTitle = es.codexSearch.title; }
+
+  // errors: plain words first; the joke (if any) is shown at most once per screen by the screen that owns it
+  const er = H.ERRORS || {};
+  const fatalMap = { webgl2: 'webgl2', cdn: 'scriptBlocked', unknown: 'crash' };
+  for (const k of Object.keys(fatalMap)) { const e = er[fatalMap[k]]; if (e && T.fatal[k]) { put(T.fatal[k], 'cause', e.title); T.fatal[k].body = str(e.body) || ''; T.fatal[k].joke = str(e.joke) || ''; } }
+  if (er.clipboard) T.common.clipboardFail = { title: er.clipboard.title, body: er.clipboard.body };
+  if (er.storageBlocked) { put(S.data, 'storageMemory', er.storageBlocked.body); S.data.storageMemoryTitle = er.storageBlocked.title; }
+  if (er.storageFull) put(S.data, 'storageFull', er.storageFull.body);
+  if (er.notSaved) S.data.notSavedBody = er.notSaved.body;
+  if (er.importFail) S.data.importFailInfo = { title: er.importFail.title, body: er.importFail.body };
+  if (er.shareBad) P.importBad = er.shareBad.body;
+  if (er.shareTooBig) P.exportTooBig = er.shareTooBig.body;
+  if (er.fetchFail) T.diag.fetchFail = er.fetchFail.body;
+  if (er.typeCap) put(P, 'typesFull', er.typeCap.body);
+  if (er.budget) put(P, 'cantAfford', er.budget.body);
+  if (er.unitCap) { const b = er.unitCap.body; P.capFull = (cap) => `${b} (${cap} per side.)`; }
+  P.reasons = Object.assign({}, H.PLACEMENT_REASONS || {});
+
+  // toasts
+  const ts = H.TOASTS || {};
+  if (str(ts.armySaved)) P.presetSaved = () => ts.armySaved;
+  put(T.common, 'copied', ts.copied);
+  put(S.data, 'resetDone', ts.progressReset);
+  S.data.settingsResetDone = str(ts.settingsReset) || '';
+
+  // credits: in-universe department list from HUMOR
+  if (Array.isArray(STUDIO_CREDITS) && STUDIO_CREDITS.length) T.credits.studio = STUDIO_CREDITS.filter((c) => c && c.role && c.name).map((c) => [c.role, c.name]);
+  if (Array.isArray(CREDITS_FOOTER)) T.credits.footer = CREDITS_FOOTER.slice();
+  return T;
+}
+try { overlayHumor(T, H); } catch (e) { /* defaults stay */ }
 
 /** Deep-merge `ctx.content.humor.ui` / `.settingsJokes` over the defaults (new object each call; T itself is never mutated). */
 export function getT(ctx) {

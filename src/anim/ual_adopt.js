@@ -1,4 +1,4 @@
-// Which retargeted UAL clips the game uses, and how they are tuned (docs/anim_coverage.md is generated from this table).
+// Which retargeted UAL clips the game uses, and how they are tuned (docs/anim_coverage.md is written from this table and the boot report).
 // A clip is adopted only when it passes the review criteria (A3): no limb flips, sane joint ranges, ends near a neutral pose so crossfades
 // stay subtle, and a hit/contact moment that can be retimed to the sim's design numbers. Rejected UAL clips are replaced by authored ones.
 //
@@ -14,21 +14,21 @@ export const UAL_ADOPT = [
   { id: 'sit', src: 'sit', why: 'seated idle for the throne gag (hip pivot 0.45 u below standing: the throne seat must match)' },
   { id: 'block_hold', src: 'block_hold', why: 'shield-raised stance (UAL Idle_Shield_Loop)' },
   { id: 'hit_front', src: 'hit_front', why: 'chest hit flinch (UAL Hit_Chest), 0.37 s' },
-  { id: 'death_back', src: 'death_back', warp: [[0, 0], [1.35, 0.95], [2.43, 1.7]], meta: { fall: Math.PI, fallBlend: 0.4 }, why: 'the only real death in the free packs: a convincing backwards fall; the lying hold is shortened (2.43 s -> 1.7 s)' },
-  { id: 'getup', src: 'getup', warp: [[0, 0], [0.5, 0.35], [1.57, 1.1]], why: 'lying -> standing (UAL LayToIdle), retimed to 1.1 s' },
+  { id: 'death_back', src: 'death_back', warp: [[0, 0], [1.35, 0.95], [2.43, 1.7]], meta: { fall: Math.PI, fallBlend: 0.4, enter: 'neutral', exit: 'lying' }, why: 'the only real death in the free packs (a backwards fall, lying hold shortened 2.43 s -> 1.7 s) but the retarget hyperextends both elbows in 41 samples: the hinge-limit check (A3) rejects it at boot and the authored death_back plays' },
+  { id: 'getup', src: 'getup', warp: [[0, 0], [0.5, 0.35], [1.57, 1.1]], meta: { enter: 'lying', exit: 'neutral' }, why: 'lying -> standing (UAL LayToIdle), retimed to 1.1 s' },
   // ---- extras: no authored twin; reachable through model.meta.clipMap / direct requests ----
   { id: 'zombie_idle', src: 'zombie_idle', use: 'extra', why: 'mummy stooped idle (clipMap idle -> zombie_idle)' },
   { id: 'zombie_walk', src: 'zombie_walk', use: 'extra', why: 'mummy shuffle, speedRef 1.03 u/s (clipMap walk -> zombie_walk)' },
   { id: 'dance', src: 'dance', use: 'extra', why: 'silly dance loop (victory / throne gag)' },
   { id: 'point_order', src: 'point_order', use: 'extra', why: 'officer pointing / command gesture (hero taunt candidate)' },
   { id: 'talk', src: 'talk', use: 'extra', why: 'gesticulating idle (philosopher monologue)' },
-  { id: 'smug', src: 'smug', use: 'extra', why: 'arms folded (senator idle)' },
+  { id: 'smug', src: 'smug', use: 'extra', why: 'arms folded (senator idle); the retarget hyperextends the elbows (150 samples): rejected at boot by the hinge-limit check' },
   { id: 'walk_formal', src: 'walk_formal', use: 'extra', why: 'upright officer walk, speedRef 1.06 u/s (clipMap for senators / officers at low speed)' },
   { id: 'roll', src: 'roll', use: 'extra', why: 'forward roll (dodge / gladiator net escape)' },
   { id: 'crouch', src: 'crouch', use: 'extra', why: 'low crouch loop' },
-  { id: 'knockdown', src: 'knockdown', use: 'extra', why: 'thrown backwards (Hit_Knockback), starts mid-stumble: short blend only' },
+  { id: 'knockdown', src: 'knockdown', use: 'extra', meta: { enter: 'stumble', exit: 'neutral' }, why: 'thrown backwards (Hit_Knockback), starts mid-stumble: short blend only' },
   { id: 'hit_head', src: 'hit_head', use: 'extra', why: 'head snap flinch' },
-  { id: 'sit_enter', src: 'sit_enter', use: 'extra', why: 'sitting down transition' },
+  { id: 'sit_enter', src: 'sit_enter', use: 'extra', meta: { enter: 'neutral', exit: 'seated' }, why: 'sitting down transition' },
 ];
 // UAL clips that were reviewed and REJECTED for the sim's attack/locomotion slots, with the measured reason (shown in docs/anim_coverage.md)
 export const UAL_REJECT = {

@@ -9,7 +9,7 @@
 import fs from 'node:fs';
 import { test, finish, assert } from '../sim/_util.mjs';
 import { MISSIONS, missionHash } from '../../src/content/era_ancient/campaign.js';
-import { runMission } from './_lib.mjs';
+import { runMission, botGroups } from './_lib.mjs';
 
 const rec = JSON.parse(fs.readFileSync(new URL('./feasibility.json', import.meta.url), 'utf8'));
 const MIN = { counter: 20, greedy: 20, turtle: 10 };
@@ -47,6 +47,14 @@ await test('stars: every mission\'s star 3 was earned by at least one recorded b
 await test('determinism: the first stored battle of mission 1 (counter, seed 1) replays to the same result and time', () => {
   const m = MISSIONS[0], b = rec.runs[m.id].bots.counter, r = runMission(m, 'counter', 1);
   assert.equal(r.win ? 1 : 0, b.perSeed[0][0], 'win/loss reproduces'); assert.ok(Math.abs(r.t - b.perSeed[0][1]) < 0.2, 'end time reproduces: ' + r.t.toFixed(1) + ' vs ' + b.perSeed[0][1]); assert.equal(r.stars, b.perSeed[0][2]);
+});
+
+await test('briefing numbers: units.A is what the reference deployment fields (within 15%), units.B counts every enemy unit of the mission (placed army + waves)', () => {
+  for (const m of MISSIONS) {
+    const n = [1, 2, 3, 4, 5].map((s) => botGroups(m, 'counter', s).reduce((a, g) => a + g.n, 0)), avg = n.reduce((a, b) => a + b, 0) / n.length;
+    assert.ok(Math.abs(avg - m.units.A) <= 0.15 * avg, m.id + ' units.A ' + m.units.A + ' vs reference ' + avg.toFixed(1));
+    const all = (m.enemy.groups || []).concat(...((m.script && m.script.waves) ? m.script.waves.list.map((w) => w.groups) : [])); assert.equal(m.units.B, all.reduce((a, g) => a + g.n, 0), m.id + ' units.B');
+  }
 });
 
 finish('feasibility');

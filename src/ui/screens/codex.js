@@ -58,6 +58,12 @@ export function mount(root, ctx, params) {
       renderDetail(units[id]);
       if (window.matchMedia && window.matchMedia('(max-width: 900px)').matches) { S.mobileDetail = true; layout.classList.add('is-detail'); detail.scrollTop = 0; const b = detail.querySelector('.vw-cx__back'); if (b) b.focus(); }
     }
+    function openUnit(id) {
+      const u = units[id]; if (!u) return;
+      if (S.search) { S.search = ''; search.input.value = ''; }
+      if (u.faction !== S.faction) { S.faction = u.faction; LAST.faction = u.faction; layout.fTabs.select(u.faction); }
+      select(id);
+    }
     function closeDetailLocal() { S.mobileDetail = false; layout.classList.remove('is-detail'); killTurn(); const c = grid.querySelector(`[data-id="${S.sel}"]`); if (c) c.focus(); }
     layoutCloseDetail = closeDetailLocal;
     function renderDetail(d) {
@@ -84,7 +90,8 @@ export function mount(root, ctx, params) {
         ? K.h('ul', { class: 'vw-list vw-cx__abil' }, ...abil.map((a) => { const info = abilityInfo(a, ctx.content.glossary); return K.h('li', { class: 'vw-cx__ab' }, K.h('span', { class: 'vw-card__art vw-cx__ab-ico', style: { '--fc': fc } }, K.icon(info.icon)), K.h('div', { class: 'vw-grow' }, K.h('div', { class: 'vw-card__name', text: info.name + (a.cd ? ` · ${a.cd}s` : '') }), K.h('div', { class: 'vw-small vw-dim', text: info.text }))); }))
         : K.h('p', { class: 'vw-note', text: T.noAbilities });
       const cnt = counterHints(d);
-      const mk = (arr, variant) => (arr.length ? K.h('div', { class: 'vw-chips' }, ...arr.map((x) => K.chip(x, { variant }))) : K.h('span', { class: 'vw-small vw-dim', text: T.none }));
+      // matchups from the real counter table are unit ids: each chip opens that unit's page (heuristic hints are plain labels)
+      const mk = (arr, variant, ids) => (arr.length ? K.h('div', { class: 'vw-chips' }, ...arr.map((x, i) => (ids && units[ids[i]] ? K.chip(x, { variant, id: 'cx-vs-' + ids[i], onClick: () => openUnit(ids[i]) }) : K.chip(x, { variant })))) : K.h('span', { class: 'vw-small vw-dim', text: T.none }));
       const txt = d.text || {};
       detail.replaceChildren(
         K.h('div', { class: 'vw-row vw-cx__head' }, back,
@@ -94,7 +101,7 @@ export function mount(root, ctx, params) {
         K.tablet(T.stats, stats, { tight: true, id: 'cx-stats', icon: 'target' }),
         K.tablet(T.abilities, abilEl, { tight: true, id: 'cx-abilities', icon: 'sparkle' }),
         K.tablet(T.lore, K.h('div', { class: 'vw-col' }, K.h('p', { class: 'vw-epigraph vw-cx__lore', text: txt.lore || '' }), txt.codexJoke ? K.h('p', { class: 'vw-cx__joke' }, K.h('span', { class: 'vw-label', text: T.joke + ' ' }), txt.codexJoke) : null), { tight: true, id: 'cx-lore', icon: 'scroll' }),
-        K.tablet(T.counters, K.h('div', { class: 'vw-col' }, K.h('div', { class: 'vw-label', text: T.beats }), mk(cnt.beats, 'olive'), K.h('div', { class: 'vw-label', text: T.weak }), mk(cnt.weak, 'danger'), (d.tags && d.tags.length) ? K.h('div', { class: 'vw-label', text: T.tags }) : null, (d.tags && d.tags.length) ? K.h('div', { class: 'vw-chips' }, ...d.tags.map((x) => K.chip(x, { variant: 'dash' }))) : null), { tight: true, id: 'cx-counters', icon: 'shield' }));
+        K.tablet(T.counters, K.h('div', { class: 'vw-col' }, K.h('div', { class: 'vw-label', text: T.beats }), mk(cnt.beats, 'olive', cnt.beatIds), K.h('div', { class: 'vw-label', text: T.weak }), mk(cnt.weak, 'danger', cnt.weakIds), (d.tags && d.tags.length) ? K.h('div', { class: 'vw-label', text: T.tags }) : null, (d.tags && d.tags.length) ? K.h('div', { class: 'vw-chips' }, ...d.tags.map((x) => K.chip(x, { variant: 'dash' }))) : null), { tight: true, id: 'cx-counters', icon: 'shield' }));
     }
     renderGrid();
     return layout;

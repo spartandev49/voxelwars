@@ -12,22 +12,9 @@ import { fileURLToPath } from 'url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EXE = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
-// VoxSkin refuses models with more than 24 parts (spec allows 48; see docs/requests/anim.md). The review renderer lifts the limit
-// at bundle time so composed models (horse + rider, chariot, howdah) can be inspected.
-const liftPartLimit = {
-  name: 'lift-part-limit',
-  setup(b) {
-    b.onLoad({ filter: /render[\\/]voxskin\.js$/ }, (args) => {
-      let s = fs.readFileSync(args.path, 'utf8');
-      s = s.replace('this.P > 24', 'this.P > 48');
-      return { contents: s, loader: 'js' };
-    });
-  },
-};
-
 export async function runJobs(jobs, opts = {}) {
   const t0 = Date.now();
-  const bundle = await build({ entryPoints: [path.join(root, 'tools/anim_page.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', loader: { '.json': 'json' }, plugins: [liftPartLimit] });
+  const bundle = await build({ entryPoints: [path.join(root, 'tools/anim_page.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', loader: { '.json': 'json' } });
   const js = bundle.outputFiles[0].text;
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#dfe5ec}canvas{display:block}</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script></head><body><script>${js.replace(/<\/script>/g, '<\\/script>')}</script></body></html>`;

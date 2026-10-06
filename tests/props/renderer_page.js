@@ -80,6 +80,13 @@ function view(pr, a, h = 60) { eng.camera.position.set(0, h, a.worldSize() * 0.5
   eng.render(0.016);
 
   // ---- events (what world.events emits)
+  // BattleView / editor compatibility API
+  const cw = a.props.findIndex((p) => PROP_CATALOG[p.t].hp !== Infinity && PROP_CATALOG[p.t].hp >= 100) + 1;
+  pr.setStageById(cw, 1); t('setStageById() (BattleView prop_damaged hook)', pr.get(cw).stage === 1);
+  fx.clear(); pr.removeById(cw, { id: cw, type: a.props[cw - 1].t }); fx.update(0.016);
+  t('removeById(id, payload) collapses to rubble and leaves the debris to the caller', pr.get(cw) && pr.get(cw).stage === 2 && fx.liveCount === 0, fx.liveCount);
+  const dc = pr.debrisColors('tower'); t('debrisColors(type) palette', Array.isArray(dc) && dc.length >= 3);
+  pr.setArena(a); view(pr, a);
   const bus = new EventBus(); pr.bindEvents(bus);
   const wall = a.props.findIndex((p) => PROP_CATALOG[p.t].hp !== Infinity) + 1;
   bus.emit('prop_damaged', { id: wall, type: a.props[wall - 1].t, hpFrac: 0.5, x: a.props[wall - 1].x, y: 5, z: a.props[wall - 1].z });

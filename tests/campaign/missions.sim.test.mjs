@@ -147,4 +147,25 @@ await test('mission 9 (survive_waves + Zeus): four scripted waves, a wave counts
   const s = battleSummary(w, m, null); s.startDefs = { hoplite: 30, strategos: 1 }; s.heroesLost = 0; s.aliveDefs = { hoplite: 30, strategos: 1 }; s.playerCostStart = 3380; s.win = true; assert.equal(evaluateStars(m, s).earned[2], true);
 });
 
+await test('S17 fail paths: every objective type loses correctly (timeout loses for hold_hill, kill_general, protect_vip, survive_waves, destroy; a wiped army loses; plain elimination is decided by cost at the limit)', () => {
+  const quick = (m, t) => Object.assign({}, m, { timeLimit: t });
+  for (const id of ['thermopylae_snack', 'pyramid_scheme', 'troy_giftshop', 'zeus_bad_day', 'nile_crossing']) {
+    const m = quick(M(id), 12), pl = id === 'nile_crossing' ? [{ defId: 'medjay', n: 4 }] : [{ defId: 'hoplite', n: 4 }];
+    const { w } = world(m, { mission: m, noEnemy: id === 'zeus_bad_day', thin: id === 'zeus_bad_day' ? undefined : (u) => u.def.role === 'melee' && u.id % 9 === 0, player: pl });
+    for (const u of w.units) if (u.team === 1) { pin(u); u.hp = u.hpMax = 1e9; } for (const sq of w.squads) sq.order = 'hold';
+    w.start(); for (let i = 0; i < 30 * 40 && w.state !== 'ended'; i++) { w.tick(); w.lastDamageT = w.time; }
+    assert.equal(w.state, 'ended', id + ' ends at its timeout'); assert.equal(w.winner, 1, id + ' a timeout is a loss'); assert.equal(w.endReason, 'time'); assert.ok(w.time >= 11.9 && w.time < 13.5, id + ' ended at the limit: ' + w.time.toFixed(1));
+    assert.equal(evaluateStars(M(id), battleSummary(w, M(id), null)).stars, 0, 'a loss earns no stars');
+  }
+  // plain elimination (missions 1 and 5): the limit decides by remaining cost, the stronger side wins (reason time)
+  const m1 = quick(M('marathon_sort_of'), 10), { w } = world(m1, { mission: m1, thin: (u) => u.def.id === 'sparabara', player: [{ defId: 'hoplite', n: 40 }] });
+  for (const u of w.units) if (u.team === 1) pin(u); for (const u of w.units) if (u.team === 0) pin(u); w.start(); for (let i = 0; i < 30 * 30 && w.state !== 'ended'; i++) { w.tick(); w.lastDamageT = w.time; }
+  assert.equal(w.endReason, 'time'); assert.equal(w.winner, w.stats[0].aliveCost > w.stats[1].aliveCost * 1.02 ? 0 : w.stats[1].aliveCost > w.stats[0].aliveCost * 1.02 ? 1 : -1);
+  // a wiped player army loses every objective type at once
+  for (const id of ['marathon_sort_of', 'thermopylae_snack', 'pyramid_scheme', 'alps_elephant', 'troy_giftshop', 'cyclops_meet']) {
+    const m = M(id), { w: x } = world(m, { player: [{ defId: 'hoplite', n: 3 }] }); x.start(); x.step(3); for (const u of x.units.slice()) if (u.team === 0) slay(x, u); x.step(3);
+    assert.equal(x.state, 'ended', id); assert.equal(x.winner, 1, id + ' wiped army loses');
+  }
+});
+
 finish('missions.sim');

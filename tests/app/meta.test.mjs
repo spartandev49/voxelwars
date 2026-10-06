@@ -61,6 +61,13 @@ assert.equal(R.lessons.length, 3, 'three lessons'); for (const l of R.lessons) {
 assert.ok(R.mvp && typeof R.mvp.quote === 'string' && R.mvp.quote.length > 5, 'the MVP gets last words'); assert.equal(R.summary, S);
 const again = meta.decorateResults({ mvp: { defId: 'hoplite', name: 'x', kills: 1 }, funnyStats: [], lessons: [] }); assert.deepEqual(again.funnyStats, R.funnyStats, 'results are computed once per battle: a second call returns the same rows'); assert.deepEqual(again.lessons.map((l) => l.id), R.lessons.map((l) => l.id));
 
+// -- the sim keeps ticking after battle_end (arrows in flight can still land): results are frozen at the first call, so the Results screen / kill-cam / BattleSummary agree
+{
+  const k0 = world.stats[0].kills, d1 = world.stats[1].dead; world.stats[0].kills += 7; world.stats[1].dead += 3; world.winner = world.winner === 0 ? 1 : 0;       // simulate a late kill and even a (impossible) winner flip
+  const late = meta.decorateResults({ winner: world.winner, reason: 'x', time: world.time + 9, teams: [0, 1].map((t) => ({ alive: world.stats[t].alive, dead: world.stats[t].dead, kills: world.stats[t].kills, damage: 0, lostCost: 0 })), mvp: null, funnyStats: [], lessons: [] });
+  assert.equal(late.teams[0].kills, handlerResults.teams[0].kills, 'frozen teams'); assert.equal(late.teams[1].dead, handlerResults.teams[1].dead); assert.equal(late.winner, handlerResults.winner); assert.equal(late.time, handlerResults.time); assert.equal(late.reason, handlerResults.reason);
+  world.stats[0].kills = k0; world.stats[1].dead = d1; world.winner = world.winner === 0 ? 1 : 0;
+}
 // -- kill feed: funny verbs, killer/victim split, key per kill, never more than 5
 assert.ok(game.killfeed.length >= 1 && game.killfeed.length <= 5);
 const allVerbs = new Set(Object.values(KILL_VERBS).flatMap((e) => (e.by || []).concat(e.solo || [])));

@@ -47,6 +47,10 @@ Leaderboard: `recordRun(prev, {score, waves, date, arena}) -> {state:{best, boar
 ## 7. Daily (src/content/era_ancient/daily.js)
 `dailyKey(date)`, `dailyPlan(key)`, `dailySetup(plan)`, `dailyEnemy(plan)` (the army of the day: identical generateArmy call everywhere). The Daily screen's own `_daily_plan.js` agrees with it for 400 dates (tests/campaign/daily.test.mjs).
 
+## 8. Daily: what is data and what differs between the specs and the screen
+`daily.js` follows the CODE (ui/screens/_daily_plan.js, proven equal for 400 dates): fixed 3,000 dr budget (spec.md 14 "Skirmish 3,000"), a seeded twist mutator on 67% of days, result string `VOXELWARS Daily <date> | <arena> | A vs B | WIN in m:ss | n% of the army left | seed n`.
+ui.md 4a.1 says Battle 8,000, no mutators and the string `... | WIN | 62% alive | 1:34 | 2/3 stars`: one of the two documents is stale (the screen and spec.md 14 agree with the code). Also pure and ready: `dailyStars(results)` (1 win, 2 >= 50% alive, 3 >= 75% alive), `recordDailyRun(prev, rec)` (first run of a date counts, streak, best streak, history capped at **60** as ui.md says; `ui/screens/daily.js recordDaily` slices to 14 today).
+
 ## UI findings (data was fixed where possible; these need the UI/COORD owner)
 1. `briefing.js` prints `'Workshop: ' + x` for every `rewards.unlockParts` entry, i.e. "Workshop: silly_helms". Use `m.rewards.partNames[i]` ("Silly Helms").
 2. `campaign.js normMission` takes `units` as `{A, B}` and the briefing prints `~A units`; the data now carries both (A = what the reference army fields, B = the enemy's whole force incl. later waves).

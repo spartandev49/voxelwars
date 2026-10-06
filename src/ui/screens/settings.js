@@ -29,7 +29,7 @@ export function mount(root, ctx, params) {
   function graphics() {
     const capsEl = K.h('p', { class: 'vw-note', id: 'set-caps' });
     const paintCaps = () => { const c = QUALITY_CAPS[get('quality', 'marble')] || QUALITY_CAPS.marble; capsEl.textContent = T.graphics.caps(c); };
-    const q = K.segmented({ id: idOf('quality'), label: T.graphics.quality, value: get('quality', 'marble'), options: Object.keys(T.graphics.presets).map((k) => ({ value: k, label: T.graphics.presets[k], sub: T.graphics.presetSub[k] })),
+    const q = K.segmented({ id: idOf('quality'), label: T.graphics.quality, value: get('quality', 'marble'), options: Object.keys(T.graphics.presets).map((k) => ({ value: k, label: T.graphics.presets[k], sub: T.graphics.presetSub[k], title: (T.graphics.presetTip || {})[k] })),
       onChange: (v) => { set('quality', v); const f = PRESET_FLAGS[v]; if (f) for (const k of Object.keys(f)) set(k, f[k]); paintCaps(); } });
     syncs.push(() => { q.set(get('quality', 'marble'), true); paintCaps(); });
     paintCaps();
@@ -43,8 +43,8 @@ export function mount(root, ctx, params) {
   /* ---------------------------------------------------------------- Gameplay */
   function gameplay() {
     return K.h('div', { class: 'vw-col' },
-      seg('gore', T.gameplay.gore, Object.keys(T0.quick.gores).map((k) => ({ value: k, label: T0.quick.gores[k] })), T.gameplay.goreHint),
-      seg('corpses', T.gameplay.corpses, Object.keys(T0.quick.corpsesOpts).map((k) => ({ value: k, label: T0.quick.corpsesOpts[k] })), T.gameplay.corpsesHint),
+      seg('gore', T.gameplay.gore, Object.keys(T0.quick.gores).map((k) => ({ value: k, label: T0.quick.gores[k], title: (T0.quick.goreTips || {})[k] })), T.gameplay.goreHint),
+      seg('corpses', T.gameplay.corpses, Object.keys(T0.quick.corpsesOpts).map((k) => ({ value: k, label: T0.quick.corpsesOpts[k], title: (T0.quick.corpseTips || {})[k] })), T.gameplay.corpsesHint),
       K.field(T.gameplay.camSens, sld('camSens', T.gameplay.camSens, { min: 0.25, max: 2, step: 0.05, format: (v) => v.toFixed(2) + '×', valueWidth: '4rem', ticks: [{ v: 0.25, label: '0.25' }, { v: 1, label: '1.0' }, { v: 2, label: '2.0' }] }), { hint: T.gameplay.camSensHint, stack: true }),
       tgl('edgeScroll', T.gameplay.edgeScroll, T.gameplay.edgeScrollHint), tgl('autoPauseBlur', T.gameplay.autoPause, T.gameplay.autoPauseHint));
   }
@@ -156,15 +156,23 @@ export function mount(root, ctx, params) {
   }
 
   /* ---------------------------------------------------------------- Data */
+  let paintStatusRef = null;
   function data() {
     const statusEl = K.h('div', { class: 'vw-col', id: 'set-storage' });
+    let lastSt = null;
+    const retry = K.button(T.data.retrySave, { icon: 'refresh', size: 'sm', variant: 'secondary', id: 'set-retry-save', onClick: () => {
+      let left = -1; try { left = ctx.save.store.flushPending(); } catch (e) { left = -1; }
+      K.toast(left === 0 ? T.data.retryOk : T.data.retryStill, { kind: left === 0 ? 'success' : 'warn' }); paintStatus();
+    } });
     const paintStatus = () => {
-      const st = safe(() => ctx.save.status(), 'ok');
-      const chipEl = st === 'ok' ? K.chip(T.data.storageOk, { variant: 'olive', icon: 'check' }) : st === 'full' ? K.chip('Storage full', { variant: 'gold', icon: 'warning' }) : K.chip('Not saving', { variant: 'danger', icon: 'warning' });
+      const st = safe(() => ctx.save.status(), 'ok'); lastSt = st;
+      const chipEl = st === 'ok' ? K.chip(T.data.storageOk, { variant: 'olive', icon: 'check' }) : st === 'full' ? K.chip(T.data.storageFullChip, { variant: 'gold', icon: 'warning' }) : K.chip(T.data.storageMemoryChip, { variant: 'danger', icon: 'warning' });
       const msg = st === 'ok' ? T.data.storageHint : st === 'full' ? T.data.storageFull : T.data.storageMemory;
-      statusEl.replaceChildren(K.h('div', { class: 'vw-row vw-wrapflex', role: 'status' }, chipEl), K.h('p', { class: st === 'ok' ? 'vw-small vw-dim' : 'vw-note vw-note--' + (st === 'full' ? 'warn' : 'bad'), text: msg }));
+      statusEl.replaceChildren(K.h('div', { class: 'vw-row vw-wrapflex', role: 'status' }, chipEl), K.h('p', { class: st === 'ok' ? 'vw-small vw-dim' : 'vw-note vw-note--' + (st === 'full' ? 'warn' : 'bad'), text: msg }), st === 'full' ? K.h('div', { class: 'vw-row' }, retry) : null);
     };
-    paintStatus();
+    const iv = setInterval(() => { if (safe(() => ctx.save.status(), 'ok') !== lastSt) paintStatus(); }, 1000);
+    cleanups.push(() => clearInterval(iv));
+    paintStatus(); paintStatusRef = paintStatus;
     const exportBtn = K.button(T.data.exportBtn, { icon: 'download', id: 'set-export', onClick: doExport });
     const importFile = K.button(T.data.importBtn, { icon: 'upload', id: 'set-import-file', onClick: doImportFile });
     const importPaste = K.button(T.data.importPaste, { icon: 'copy', variant: 'ghost', id: 'set-import-paste', onClick: doImportPaste });
@@ -180,7 +188,7 @@ export function mount(root, ctx, params) {
   }
   async function doExport() {
     let text = '';
-    try { text = await ctx.save.exportAll(); } catch (e) { K.toast(T.data.importFail((e && e.message) || 'export failed'), { kind: 'error' }); return; }
+    try { text = await ctx.save.exportAll(); } catch (e) { K.toast(T.data.exportFail((e && e.message) || 'unknown error'), { kind: 'error', ms: 6000 }); return; }
     if (typeof text !== 'string') text = JSON.stringify(text);
     const name = `voxelwars-save-${todayKey()}.json`;
     let done = false;
@@ -192,12 +200,23 @@ export function mount(root, ctx, params) {
     let f = null;
     try { f = ctx.platform && ctx.platform.pickFile ? await ctx.platform.pickFile('.json,application/json') : null; } catch (e) { f = null; }
     if (!f) { await doImportPaste(); return; }
-    try { await ctx.save.importAll(f); K.toast(T.data.importOk, { kind: 'success' }); } catch (e) { K.toast(T.data.importFail((e && e.message) || 'unknown error'), { kind: 'error' }); }
+    try { const r = await ctx.save.importAll(f); importDone(r); } catch (e) { importFailed(e); }
   }
   async function doImportPaste() {
     const res = await K.textModal({ title: T.data.importPasteTitle, note: T.data.importPasteNote, ok: T0.common.apply, rows: 8,
-      onSubmit: async (t) => { try { await ctx.save.importAll(t.trim()); return null; } catch (e) { return T.data.importFail((e && e.message) || 'unknown error'); } } });
-    if (res != null) K.toast(T.data.importOk, { kind: 'success' });
+      onSubmit: async (t) => { try { lastImport = await ctx.save.importAll(t.trim()); return null; } catch (e) { return importMessage(e); } } });
+    if (res != null) importDone(lastImport);
+  }
+  // ctx.save.importAll resolves {ok, warnings[], applied[], counts} and REJECTS with the first plain-English reason (e.result has the full list); nothing is applied on failure
+  let lastImport = null;
+  const importMessage = (e) => { const m = e && e.message; return m ? T.data.importFail(m) : ((T.data.importFailInfo && T.data.importFailInfo.body) || T.data.importFail('unknown error')); };
+  function importFailed(e) { K.sfx('ui_error'); K.toast(importMessage(e), { kind: 'error', ms: 6000 }); }
+  function importDone(r) {
+    K.toast(T.data.importOk, { kind: 'success' });
+    const w = r && Array.isArray(r.warnings) ? r.warnings.filter(Boolean) : [];
+    if (w.length) K.toast(w.slice(0, 2).join(' '), { kind: 'warn', ms: 7000 });
+    syncs.forEach((f) => { try { f(); } catch (e) { /* ignore */ } });   // settings may have changed
+    paintStatusRef && paintStatusRef();
   }
   async function doReset() {
     const ok = await K.ask({ title: T.data.resetAsk.title, text: T.data.resetAsk.text, yes: T.data.resetAsk.yes, danger: true });
@@ -207,7 +226,7 @@ export function mount(root, ctx, params) {
       if (typeof p.reset === 'function') await p.reset();
       else if (typeof p.list === 'function') for (const it of p.list()) p.remove(it.id);
       K.toast(T.data.resetDone, { kind: 'success' });
-    } catch (e) { K.toast(T.data.importFail((e && e.message) || 'reset failed'), { kind: 'error' }); }
+    } catch (e) { K.toast(T.data.resetFail((e && e.message) || 'unknown error'), { kind: 'error' }); }
   }
 
   /* ---------------------------------------------------------------- About */
@@ -215,6 +234,7 @@ export function mount(root, ctx, params) {
     const v = ctx.version || {};
     return K.h('div', { class: 'vw-col' },
       K.h('p', { class: 'vw-epigraph vw-set-about-line', text: T.about.line }),
+      T.about.disclaimer ? K.h('p', { class: 'vw-note vw-set-about-disc', text: T.about.disclaimer }) : null,
       K.h('div', { class: 'vw-row vw-wrapflex' }, K.chip(`${T.about.version} ${v.version || v.build || '1.0.0'}`, { variant: 'gold' }), K.chip(`${T.about.build} ${v.date || ''}`, { variant: 'ink' })),
       K.h('h3', { class: 'vw-keys-title vw-display', text: T.about.honest }),
       K.h('ul', { class: 'vw-list vw-set-honest' }, ...T.about.honestList.map((t) => K.h('li', { class: 'vw-note', text: t }))),

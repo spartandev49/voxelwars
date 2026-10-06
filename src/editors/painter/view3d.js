@@ -24,8 +24,11 @@ export class PartView {
     this.sun = new THREE.DirectionalLight(0xfff4e0, 0.95); this.scene.add(this.sun);
     this.group = new THREE.Group(); this.scene.add(this.group);
     this.mesh = null; this.walls = []; this.wallGroup = new THREE.Group(); this.scene.add(this.wallGroup);
-    this.box = null; this.pivot = null; this.cursor = null; this.cursorLines = null; this.prevGroup = new THREE.Group(); this.scene.add(this.prevGroup); this.selBox = null; this.mirrorGroup = new THREE.Group(); this.scene.add(this.mirrorGroup);
+    this.box = null; this.pivot = null; this.prevGroup = new THREE.Group(); this.scene.add(this.prevGroup); this.selBox = null; this.mirrorGroup = new THREE.Group(); this.scene.add(this.mirrorGroup);
     this.gizmo = null;
+    this.cursor = new THREE.Mesh(new THREE.BoxGeometry(1.02, 1.02, 1.02), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35, depthWrite: false })); this.cursor.visible = false; this.scene.add(this.cursor);
+    this.cursorLines = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.04, 1.04, 1.04)), new THREE.LineBasicMaterial({ color: 0xffffff })); this.cursorLines.visible = false; this.scene.add(this.cursorLines);
+    this.size = [10, 10, 10]; this.off = [-5, -5, -5];
     this.view = { yaw: -0.65, pitch: 0.4, zoom: 1 }; this.orbitMode = false; this.spaceDown = false; this.pointers = new Map(); this.drag = null; this.pinch0 = 0; this.tool = null;
     this._ray = new THREE.Raycaster(); this._v = new THREE.Vector3();
     this._bind();
@@ -35,12 +38,12 @@ export class PartView {
 
   // ---------------------------------------------------------------- content
   setPart(part) {
-    this.part = part; const g = part.grid, THREE = T();
+    this.part = part; if (!this.ok) return; const g = part.grid;
     this.size = [g.sx, g.sy, g.sz]; this.off = [-g.sx / 2, -g.sy / 2, -g.sz / 2];
     this.group.position.set(this.off[0], this.off[1], this.off[2]);
     this._buildFrame(); this.rebuild(); this.frame();
   }
-  frame() { this.view.zoom = 1; this.dist = Math.max(this.size[0], this.size[1], this.size[2]) * 2.2 + 6; this.dirty = true; }
+  frame() { this.view.zoom = 1; this.dist = Math.max(this.size[0], this.size[1] * 0.9, this.size[2]) * 1.9 + 7; this.dirty = true; }
   _buildFrame() {
     const THREE = T(), [sx, sy, sz] = this.size;
     for (const o of this.walls) { this.wallGroup.remove(o.mesh); o.mesh.geometry.dispose(); o.mesh.material.dispose(); }
@@ -69,10 +72,6 @@ export class PartView {
     this.scene.add(this.gizmo);
     // selection / cursor / mirror planes
     if (this.selBox) { this.scene.remove(this.selBox); this.selBox.geometry.dispose(); this.selBox.material.dispose(); this.selBox = null; }
-    if (!this.cursor) {
-      this.cursor = new THREE.Mesh(new THREE.BoxGeometry(1.02, 1.02, 1.02), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.35, depthWrite: false })); this.cursor.visible = false; this.scene.add(this.cursor);
-      this.cursorLines = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.04, 1.04, 1.04)), new THREE.LineBasicMaterial({ color: 0xffffff })); this.cursorLines.visible = false; this.scene.add(this.cursorLines);
-    }
     this.setMirror(this.part ? this.part.mirror : { x: false, y: false, z: false });
   }
   /** Remesh the grid after edits (cheap: at most 3,888 cells). */

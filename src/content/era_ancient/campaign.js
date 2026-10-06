@@ -10,6 +10,7 @@
 import { STAT_TABLE } from './stats.js';
 import { CAMPAIGN_TEXT, ACTS as ACT_TEXT, MISSION_ORDER, TEACHING_BEATS, TEACHING_SKIP, REWARD_PARTS } from './campaign_text.js';
 import { UNLOCKS } from './parts/_registry.js';
+import { PUZZLES } from './puzzles.js';
 import { validateMission, validatePuzzle, OBJECTIVE_TYPES, MARKER_TYPES } from './campaign_validate.js';
 import { missionArena, missionRules, setupMission, enemyForces, objectiveSpec, markerOf, battleSummary, MissionRuntime, MissionTracker, ScriptedWaves, layoutGroups } from './campaign_run.js';
 
@@ -44,7 +45,7 @@ const T = {
 // ------------------------------------------------------------------------------------------------------------------------------ the missions
 const RAW = [
   {
-    id: 'marathon_sort_of', act: 1, mood: 'calm',
+    id: 'marathon_sort_of', unitsA: 30, act: 1, mood: 'calm',
     arena: { recipe: 'marathon', size: 'medium', seed: 11, env: {}, markers: [] },
     playerFaction: 'hellenes', roster: ['hoplite', 'cretan_archer', 'peltast'], budget: 3000, par: 2250,
     enemy: { faction: 'persians', style: 'mixed', difficulty: 'normal', special: 'cavalry on both flanks',
@@ -56,79 +57,79 @@ const RAW = [
     rewards: { unlockMutators: ['big_heads'], unlockParts: [], codex: ['immortal', 'cataphract', 'sparabara'] },
   },
   {
-    id: 'thermopylae_snack', act: 1, mood: 'epic',
+    id: 'thermopylae_snack', unitsA: 47, act: 1, mood: 'epic',
     arena: { recipe: 'thermopylae', size: 'medium', seed: 3, env: {},
       markers: [{ id: 'pass', type: 'hill', x: -8, z: 0, r: 6 }],
       props: [{ t: 'barrel', x: -13.5, z: -2.6, s: 1.1 }, { t: 'crate', x: -13.5, z: -1.3, s: 1.1, v: 1 }, { t: 'barrel', x: -13.5, z: 1.4, s: 1.1, v: 2 }, { t: 'crate', x: -13.5, z: 2.7, s: 1.1 }] },
     playerFaction: 'hellenes', roster: ['spartan', 'hoplite', 'philosopher', 'peltast', 'cretan_archer', 'strategos'], budget: 6000, par: 0,
     core: [{ defId: 'spartan', n: 8 }],
     enemy: { faction: 'persians', style: 'waves', difficulty: 'normal', special: 'four waves',
-      groups: [{ defId: 'immortal', n: 8 }, { defId: 'sparabara', n: 6 }, { defId: 'camel_rider', n: 2 }] },
+      groups: [{ defId: 'immortal', n: 10 }, { defId: 'sparabara', n: 7 }, { defId: 'camel_rider', n: 2 }] },
     objective: { type: 'hold_hill', params: { time: 120 }, markerIds: ['pass'] }, timeLimit: 330,
     script: { waves: { placed: true, firstAfter: 28, interval: 30, breather: 3,
       list: [
-        { groups: [{ defId: 'immortal', n: 10 }, { defId: 'sparabara', n: 6 }], after: 30 },
-        { groups: [{ defId: 'immortal', n: 8 }, { defId: 'cataphract', n: 2 }, { defId: 'sparabara', n: 4 }], after: 30 },
-        { groups: [{ defId: 'immortal', n: 10 }, { defId: 'camel_rider', n: 3 }, { defId: 'xerxes', n: 1 }, { defId: 'sparabara', n: 4 }] },
+        { groups: [{ defId: 'immortal', n: 12 }, { defId: 'sparabara', n: 7 }], after: 30 },
+        { groups: [{ defId: 'immortal', n: 10 }, { defId: 'cataphract', n: 2 }, { defId: 'sparabara', n: 5 }], after: 30 },
+        { groups: [{ defId: 'immortal', n: 12 }, { defId: 'camel_rider', n: 4 }, { defId: 'xerxes', n: 1 }, { defId: 'sparabara', n: 5 }] },
       ] } },
     rules: ['Hold the hill behind the wall for 120 seconds in total. The clock stops while an enemy stands on it.', 'Four waves of Persians arrive, about thirty seconds apart.', 'Star 3 needs at least six Spartans on the field, and none may fall.'],
     starTests: [null, null, T.noSpartanLost],
     rewards: { unlockMutators: ['tiny_titans'], unlockParts: [], codex: ['xerxes', 'spartan'] },
   },
   {
-    id: 'pyramid_scheme', act: 1, mood: 'epic',
+    id: 'pyramid_scheme', unitsA: 52, act: 1, mood: 'epic',
     arena: { recipe: 'giza', size: 'large', seed: 5, env: {}, markers: [{ id: 'pharaoh_start', type: 'general_spawn', x: 47, z: 4, r: 3 }] },
     playerFaction: 'romans', roster: ['legionary', 'pilum_thrower', 'gladiator', 'equites', 'ballista', 'centurion', 'senator'], budget: 7500, par: 0,
     enemy: { faction: 'egyptians', style: 'guarded general', difficulty: 'normal', generals: ['pharaoh'], special: 'the pharaoh avoids contact',
-      groups: [{ defId: 'pharaoh', n: 1, at: { x: 47, z: 4 }, order: 'hold' }, { defId: 'anubis_guard', n: 6, at: { x: 44, z: 4 }, order: 'advance', formation: 'circle' }, { defId: 'medjay', n: 18 }, { defId: 'khopesh_warrior', n: 12 }, { defId: 'nubian_archer', n: 10 }, { defId: 'chariot_archer', n: 4 }, { defId: 'priest_of_ra', n: 3 }] },
+      groups: [{ defId: 'pharaoh', n: 1, at: { x: 47, z: 4 }, order: 'hold' }, { defId: 'anubis_guard', n: 8, at: { x: 44, z: 4 }, order: 'advance', formation: 'circle' }, { defId: 'medjay', n: 23 }, { defId: 'khopesh_warrior', n: 15 }, { defId: 'nubian_archer', n: 13 }, { defId: 'chariot_archer', n: 5 }, { defId: 'priest_of_ra', n: 4 }] },
     objective: { type: 'kill_general', params: {}, markerIds: ['pharaoh_start'], binding: true }, timeLimit: 300,
     rules: ['Kill the Pharaoh. The rest of his army does not matter, but it will try to matter.', 'The Pharaoh avoids contact and hides behind his guards. Cavalry and archers reach him fastest.', 'Star 3: the Pharaoh must fall within 90 seconds.'],
     starTests: [null, null, T.quick(90)],
     rewards: { unlockMutators: ['moon_gravity'], unlockParts: ['silly_helms'], codex: ['pharaoh', 'anubis_guard'] },
   },
   {
-    id: 'nile_crossing', act: 2, mood: 'tense',
+    id: 'nile_crossing', unitsA: 50, act: 2, mood: 'tense',
     arena: { recipe: 'nile', size: 'medium', seed: 4, env: {}, markers: [{ id: 'goat_start', type: 'vip_start', x: -24, z: -22, r: 3 }, { id: 'far_bank', type: 'exit', x: 8, z: 12, r: 4 }] },
     playerFaction: 'egyptians', roster: ['medjay', 'nubian_archer', 'khopesh_warrior', 'chariot_archer', 'anubis_guard', 'priest_of_ra'], budget: 6500, par: 0,
     fixed: [{ defId: 'battle_goat', marker: 'goat_start', vip: true, heading: Math.PI / 2, name: 'The Goat', def: { melee: null, abilities: [], ai: { style: 'hold' } } }],
     enemy: { faction: 'barbarians', style: 'ford ambush', difficulty: 'normal', special: 'goes for the goat',
-      groups: [{ defId: 'berserker', n: 14, at: { x: 4, z: 17 }, order: 'hold', squad: 7 }, { defId: 'axe_thrower', n: 14, at: { x: 10, z: 20 }, order: 'hold', squad: 7 }, { defId: 'druid', n: 3, at: { x: 12, z: 24 }, order: 'hold' }, { defId: 'chieftain', n: 1, at: { x: 8, z: 18 }, order: 'hold' }, { defId: 'warhound', n: 12 }] },
+      groups: [{ defId: 'berserker', n: 12, at: { x: 4, z: 17 }, order: 'hold', squad: 6 }, { defId: 'axe_thrower', n: 8, at: { x: 10, z: 20 }, order: 'hold', squad: 8 }, { defId: 'druid', n: 10, at: { x: 12, z: 24 }, order: 'hold', squad: 5 }, { defId: 'chieftain', n: 4, at: { x: 8, z: 18 }, order: 'hold' }, { defId: 'warhound', n: 20 }] },
     objective: { type: 'protect_vip', params: { time: 150, reachOnly: true }, markerIds: ['goat_start', 'far_bank'], binding: true }, timeLimit: 200,
     script: { vipMarch: { to: 'far_bank', delay: 12, clear: 14 } },
-    rules: ['The Goat is a free extra unit. It walks to the far bank by itself after fourteen seconds: clear the way.', 'Win by getting the Goat inside the exit marker. If it falls, you lose.', 'Star 3: the Goat takes no damage at all.'],
+    rules: ['The Goat is a free extra unit. It waits at its start and walks to the far bank by itself once nothing hostile stands near the way (never before twelve seconds): clear the road.', 'Win by getting the Goat inside the exit marker. If it falls, you lose.', 'Star 3: the Goat takes no damage at all.'],
     starTests: [null, null, T.goatUntouched],
     rewards: { unlockMutators: ['chicken_rain'], unlockParts: [], codex: ['battle_goat', 'chieftain'] },
   },
   {
-    id: 'alps_elephant', act: 2, mood: 'ominous',
+    id: 'alps_elephant', unitsA: 83, act: 2, mood: 'ominous',
     arena: { recipe: 'alpine', size: 'medium', seed: 9, env: {}, markers: [] },
     playerFaction: 'carthage', roster: ['war_elephant', 'numidian', 'catapult', 'hannibal', 'berserker', 'axe_thrower', 'warhound'], budget: 11000, par: 0,
     core: [{ defId: 'war_elephant', n: 2 }],
     enemy: { faction: 'romans', style: 'legion with fire', difficulty: 'normal', special: 'auxiliary archers with fire arrows',
-      groups: [{ defId: 'legionary', n: 28 }, { defId: 'pilum_thrower', n: 12 }, { defId: 'nubian_archer', n: 14 }, { defId: 'equites', n: 6 }, { defId: 'ballista', n: 2 }, { defId: 'centurion', n: 2 }] },
+      groups: [{ defId: 'legionary', n: 34 }, { defId: 'pilum_thrower', n: 14 }, { defId: 'nubian_archer', n: 17 }, { defId: 'equites', n: 7 }, { defId: 'ballista', n: 2 }, { defId: 'centurion', n: 2 }] },
     objective: { type: 'eliminate', params: {}, markerIds: [] }, timeLimit: 360,
     rules: ['Elephants charge hard and panic when set on fire: Rome brings auxiliary archers with fire arrows. Keep your elephants behind the lines until the archers are dead.', 'Star 3: win with at least one war elephant still alive.'],
     starTests: [null, null, T.elephantAlive],
     rewards: { unlockMutators: ['wine_rain_always'], unlockParts: ['silly_weapons'], codex: ['war_elephant', 'hannibal'] },
   },
   {
-    id: 'teutoburg_peekaboo', act: 2, mood: 'ominous',
+    id: 'teutoburg_peekaboo', unitsA: 68, act: 2, mood: 'ominous',
     arena: { recipe: 'teutoburg', size: 'large', seed: 8, env: { weather: 'fog' }, markers: [{ id: 'centurion_start', type: 'general_spawn', x: 47, z: 0, r: 3 }] },
     playerFaction: 'barbarians', roster: ['berserker', 'axe_thrower', 'warhound', 'druid', 'chieftain'], budget: 7500, par: 0,
     enemy: { faction: 'romans', style: 'marching column', difficulty: 'normal', generals: ['centurion'], special: 'arrives in a column',
-      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 10 }, { defId: 'pilum_thrower', n: 6 }] },
+      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 8 }, { defId: 'pilum_thrower', n: 5 }] },
     objective: { type: 'kill_general', params: {}, markerIds: ['centurion_start'], binding: true }, timeLimit: 240,
     script: { waves: { placed: true, firstAfter: 14, interval: 14, breather: 2, list: [
-      { groups: [{ defId: 'legionary', n: 12 }, { defId: 'pilum_thrower', n: 6 }], after: 14 },
-      { groups: [{ defId: 'legionary', n: 12 }, { defId: 'equites', n: 4 }], after: 14 },
-      { groups: [{ defId: 'legionary', n: 12 }, { defId: 'ballista', n: 2 }, { defId: 'senator', n: 2 }] },
+      { groups: [{ defId: 'legionary', n: 9 }, { defId: 'pilum_thrower', n: 5 }], after: 14 },
+      { groups: [{ defId: 'legionary', n: 9 }, { defId: 'equites', n: 3 }], after: 14 },
+      { groups: [{ defId: 'legionary', n: 9 }, { defId: 'ballista', n: 2 }, { defId: 'senator', n: 2 }] },
     ] } },
     rules: ['The Roman column arrives in four pieces, one after another. Beat each piece before the next closes up.', 'Kill the Centurion. He stays at the back and avoids contact.', 'Star 3: finish in 75 seconds.'],
     starTests: [null, null, T.quick(75)],
     rewards: { unlockMutators: ['friendly_fire_fiesta'], unlockParts: [], codex: ['centurion', 'druid'] },
   },
   {
-    id: 'troy_giftshop', act: 3, mood: 'epic',
+    id: 'troy_giftshop', unitsA: 71, act: 3, mood: 'epic',
     arena: { recipe: 'troy', size: 'large', seed: 12, env: {}, markers: [] },
     playerFaction: 'hellenes', roster: ['hoplite', 'spartan', 'peltast', 'cretan_archer', 'companion_cavalry', 'philosopher', 'strategos', 'trojan_horse', 'catapult'], budget: 10000, par: 0,
     core: [{ defId: 'trojan_horse', n: 1 }],
@@ -140,19 +141,19 @@ const RAW = [
     rewards: { unlockMutators: ['speedy_soldiers'], unlockParts: [], codex: ['trojan_horse', 'catapult'] },
   },
   {
-    id: 'cyclops_meet', act: 3, mood: 'tense',
+    id: 'cyclops_meet', unitsA: 62, act: 3, mood: 'tense',
     arena: { recipe: 'cyclops', size: 'medium', seed: 14, env: {}, markers: [{ id: 'cyclops_start', type: 'general_spawn', x: 30, z: 0, r: 3 }] },
     playerFaction: 'hellenes', roster: ['hoplite', 'spartan', 'peltast', 'cretan_archer', 'companion_cavalry', 'philosopher', 'strategos'], budget: 8000, par: 0,
     friendlyFire: true,
     enemy: { faction: 'mythic', style: 'boss and goats', difficulty: 'normal', generals: ['cyclops'], special: 'throws boulders, misses a quarter',
-      groups: [{ defId: 'cyclops', n: 1, at: { x: 30, z: 0 } }, { defId: 'battle_goat', n: 30 }, { defId: 'sacred_chicken', n: 16 }] },
+      groups: [{ defId: 'cyclops', n: 1, at: { x: 30, z: 0 } }, { defId: 'battle_goat', n: 54 }, { defId: 'sacred_chicken', n: 29 }] },
     objective: { type: 'kill_general', params: {}, markerIds: ['cyclops_start'], binding: true }, timeLimit: 300,
     rules: ['Friendly fire is ON: arrows and thrown javelins hurt your own soldiers.', 'Kill the Cyclops. The goats and chickens are an optional extra.', 'Star 3: not a single friendly hit.'],
     starTests: [null, null, T.noFriendlyFire],
     rewards: { unlockMutators: ['ragdoll_frenzy'], unlockParts: [], codex: ['cyclops', 'battle_goat'] },
   },
   {
-    id: 'zeus_bad_day', act: 3, mood: 'epic',
+    id: 'zeus_bad_day', unitsA: 125, act: 3, mood: 'epic',
     arena: { recipe: 'olympus', size: 'large', seed: 10, env: { weather: 'storm' }, markers: [] },
     playerFaction: 'mixed', roster: null, budget: 15000, par: 0,
     enemy: { faction: 'mythic', style: 'mythic waves', difficulty: 'normal', special: 'Zeus throws lightning at everyone', groups: [] },
@@ -182,7 +183,7 @@ function build(raw, i) {
     script: raw.script || null, teaching: !!raw.teaching, rules: raw.rules, stars,
     rewards: { title: tx.reward.title, blurb: tx.reward.blurb, unlockParts: raw.rewards.unlockParts, partNames: raw.rewards.unlockParts.map((k) => (REWARD_PARTS[k] ? REWARD_PARTS[k].name : k)), unlockMutators: raw.rewards.unlockMutators, codex: raw.rewards.codex },
     bots: { greedy: [0.25, 0.7], counter: [0.6, 0.9], turtle: [0.1, 0.6] },
-    units: { A: 0, B: enemyCount },
+    units: { A: raw.unitsA, B: enemyCount },
     enemyCost: (raw.enemy.groups || []).reduce((a, g) => a + g.n * cost(g.defId), 0) + ((raw.script && raw.script.waves) ? raw.script.waves.list.reduce((a, w) => a + w.groups.reduce((b, g) => b + g.n * cost(g.defId), 0), 0) : 0),
     textId: raw.id,
   };
@@ -268,6 +269,6 @@ export const campaignApi = {
 };
 
 /** What COORD wires to ctx.content.campaign. */
-export const CAMPAIGN = { acts: ACTS, missions: MISSIONS, order: MISSION_ORDER, api: campaignApi };
+export const CAMPAIGN = { acts: ACTS, missions: MISSIONS, puzzles: PUZZLES, order: MISSION_ORDER, api: campaignApi };
 export { validateMission, validatePuzzle, OBJECTIVE_TYPES, MARKER_TYPES, missionArena, missionRules, setupMission, enemyForces, objectiveSpec, markerOf, battleSummary, MissionRuntime, MissionTracker, ScriptedWaves, layoutGroups, UNLOCKS, REWARD_PARTS };
 export default CAMPAIGN;

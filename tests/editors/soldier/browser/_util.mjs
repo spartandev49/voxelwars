@@ -1,0 +1,6 @@
+// shared helpers for the browser scenarios
+export const noAuto = (page) => page.evaluate(() => window.__vw.app.settings.set('autoScale', false));
+export const openWorkshop = async (page, params) => { await page.evaluate((p) => { try { localStorage.removeItem('vw.draft.soldier'); } catch (e) { /* ignore */ } window.__vw.goto('workshop', p || { fresh: true }); }, params); await page.waitForSelector('#ws-stage canvas', { timeout: 20000 }); await new Promise((r) => setTimeout(r, 700)); };
+export const setSlider = (page, sel, v) => page.evaluate(([s, val]) => { const el = document.querySelector(s); el.value = String(val); el.dispatchEvent(new Event('input', { bubbles: true })); }, [sel, v]);
+export const wsState = (page) => page.evaluate(() => { const w = window.__ws; const cs = w.doc.cs; return { name: cs.name, stats: cs.stats, abilities: cs.abilities, main: cs.blueprint.main, off: cs.blueprint.off, helm: cs.blueprint.head.helm, rev: w.info.def.rev, cost: w.info.def.cost, parts: w.info.comp.compiled.parts, voxels: w.info.comp.compiled.voxels, dirty: w.doc.dirty, colors: cs.blueprint.colors, height: cs.height, body: cs.blueprint.body.type }; });
+export const flush = (page, ms = 250) => page.evaluate((m) => new Promise((r) => setTimeout(r, m)), ms);

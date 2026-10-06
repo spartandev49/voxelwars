@@ -8,34 +8,21 @@ import { newArenaFrom, EditSession } from './session.js';
 import { createController } from './controller.js';
 import { EditorView } from './view3d.js';
 import { PropThumbs } from './thumbs.js';
-import { buildToolPanel, buildChecksPanel, PLACEABLE } from './panels.js';
+import { buildToolPanel, buildChecksPanel } from './panels.js';
 import { validateArena } from './validate.js';
 import { applyFix } from './fixes.js';
 import { libraryFor, draftFor, makeDraft, readDraft, looksLikeDraft } from './library.js';
 import { openLibrary, exportDialog, importDialog, showShortcuts, askLeave, askResize, askName, askDiscardForNew, offerDraft, arenaFromTemplate } from './dialogs.js';
 import { getS } from './strings.js';
+import { defaultState } from './state.js';
 import { eicon } from './icons.js';
-import { TOOLS, TOOL_BY_ID, BRUSH, AUTOSAVE_MS, LIMITS, SIZE_ORDER, OBJECTIVE_BY_ID } from './consts.js';
-import { SIZES, MAT } from '../../world/arena.js';
-import { RECIPES } from '../../world/gen.js';
+import { TOOLS, TOOL_BY_ID, AUTOSAVE_MS, LIMITS, SIZE_ORDER, OBJECTIVE_BY_ID } from './consts.js';
+import { SIZES } from '../../world/arena.js';
 
 export const meta = { id: 'arena_builder', layer: 'editor', music: 'editor', canvas: 'scene' };
 
 /** Survives screen remounts within a page session: the live document while a playtest is running (and its camera). */
 let LIVE = null;
-
-const defaultState = (settings) => ({
-  tool: 'raise',
-  brush: { radius: BRUSH.radiusDefault, strength: 0.4, shape: 'circle', falloff: 'smooth' },
-  strengths: { raise: 0.4, smooth: 0.6, flatten: 0.8, paint: 1, noise: 0.5 },
-  material: MAT.grass, flattenTarget: null, noise: { scale: 12, seed: 7 }, ramp: { width: 4, a: null },
-  stamp: { kind: 'hill', radius: 8, strength: 0.5, rot: 0 },
-  props: { cat: 'all', q: '', type: 'tree_oak', scale: 1, rot: 0, variant: -1, density: 4, snap: false, randRot: false, mode: 'place', selected: null },
-  hazard: { kind: 'quicksand', r: 4, mode: 'place', selected: null },
-  marker: { type: 'hill', r: 6, mode: 'place', selected: null },
-  zoneKey: 'A', gen: { recipe: 'marathon', seed: 11, parts: 'both' },
-  panelTab: 'tool', touchCamera: false, touchLower: false, overlays: true, top: false, settings,
-});
 
 const safe = (fn, d) => { try { const v = fn(); return v === undefined ? d : v; } catch (e) { return d; } };
 /** Icon-only button with one of the builder's own glyphs (the kit builds buttons from its icon set only). */
@@ -57,7 +44,7 @@ export function mount(root, ctx, params) {
   const resume = !!(LIVE && LIVE.session && (LIVE.pending || (params && params.resume)));
   const session = resume ? LIVE.session : new EditSession(newArenaFrom('arenalab', 'medium', 1, S.untitled));
   const lib = libraryFor(ctx), draft = draftFor(ctx), thumbs = new PropThumbs(56);
-  const st = defaultState(ctx.settings);
+  const st = defaultState();
   if (resume && LIVE.st) Object.assign(st, LIVE.st, { props: Object.assign({}, st.props, LIVE.st.props, { selected: null }), hazard: Object.assign({}, LIVE.st.hazard, { selected: null }), marker: Object.assign({}, LIVE.st.marker, { selected: null }) });
   const app = { ctx, K, S, st, session, host, lib, draft, thumbs, view: null, ctl: null, issues: null, brushWidgets: null };
   Object.defineProperty(app, 'modalOpen', { get: () => K.hasModal() });
@@ -241,8 +228,9 @@ export function mount(root, ctx, params) {
   const offSession = session.on((e) => {
     switch (e.kind) {
       case 'history': paintHistory(); break;
+      case 'objective': app.view.setHighlight(OBJECTIVE_BY_ID[session.objective].markers); paintTitle(); scheduleValidate(); break;
       case 'symmetry': paintSymmetry(); break;
-      case 'all': paintSize(); nameIn.value = session.arena.name; app.view.setSelection(null); st.props.selected = null; st.hazard.selected = null; st.marker.selected = null; paintTitle(); scheduleValidate(); host.rig.setArena(session.arena); break;
+      case 'all': app.view.setHighlight(OBJECTIVE_BY_ID[session.objective].markers); paintSize(); nameIn.value = session.arena.name; app.view.setSelection(null); st.props.selected = null; st.hazard.selected = null; st.marker.selected = null; paintTitle(); scheduleValidate(); host.rig.setArena(session.arena); break;
       case 'meta': paintTitle(); if (e.saved) paintTitle(); break;
       case 'terrain': if (!e.live) { paintTitle(); } scheduleValidate(); break;
       default: paintTitle(); scheduleValidate(); break;
@@ -384,7 +372,7 @@ export function mount(root, ctx, params) {
   function installReturnChip() { installReturn(ctx, S); }
 
   // ------------------------------------------------------------------------------------------------ initial paint
-  app.view.setOverlays(st.overlays);
+  app.view.setOverlays(st.overlays); app.view.setHighlight(OBJECTIVE_BY_ID[session.objective].markers);
   app.onToolChanged(st.tool); app.ctl.setTool(st.tool);
   paintTitle(); paintHistory(); paintSymmetry(); paintSize();
   app.validateNow();
@@ -452,4 +440,3 @@ function installReturn(ctx, S) {
   }, 400);
 }
 function removeReturn() { clearInterval(chipTimer); chipTimer = 0; const w = document.getElementById('ed-return-wrap'); if (w) w.remove(); }
-void RECIPES; void PLACEABLE;

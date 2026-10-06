@@ -366,11 +366,14 @@ BK.pilum_pair = {
     const g = newGrid('back');
     const wood = (x, y, z) => V(shade(0x8a5a2e, 0.86 + 0.24 * hash3(x, y, z, 91)));
     const pil = (xa, xb, z) => {
+      let px = Math.round(xa);
       for (let y = 0; y <= 13; y++) {
         const x = Math.round(xa + (xb - xa) * (y / 13));
-        if (y <= 7) { P(g, x, y, z, wood(x, y, z)); if (y >= 3 && y <= 5) P(g, x + 1, y, z, wood(x + 1, y, z)); }
-        else if (y <= 11) P(g, x, y, z, V(ctx.m[y % 2 ? 2 : 1]));
-        else P(g, x, y, z, V(ctx.m[y === 13 ? 4 : 3]));
+        const col = y <= 7 ? wood(x, y, z) : (y <= 11 ? V(ctx.m[y % 2 ? 2 : 1]) : V(ctx.m[y === 13 ? 4 : 3]));
+        P(g, x, y, z, col);
+        if (x !== px) P(g, px, y, z, col);                                         // stair-step so the shaft stays face-connected
+        if (y <= 7 && y >= 3 && y <= 5) P(g, x + 1, y, z, wood(x + 1, y, z));
+        px = x;
       }
       P(g, Math.round(xa + (xb - xa) * 7 / 13), 7, z, V(ctx.m[0]));                                                // socket where wood meets iron
     };

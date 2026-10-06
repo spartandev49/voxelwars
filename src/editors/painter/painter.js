@@ -25,7 +25,7 @@ const guard = (fn, d) => { try { const v = fn(); return v === undefined ? d : v;
 const plain = (o) => JSON.parse(JSON.stringify(o));
 const TOOLS = [
   ['pencil', 'brush', 'KeyP', 'P'], ['eraser', 'eraser', 'KeyE', 'E'], ['paint', 'palette', 'KeyC', 'C'], ['fill', 'flask', 'KeyG', 'G'], ['line', 'line', 'KeyL', 'L'],
-  ['box', 'block', 'KeyB', 'B'], ['picker', 'crosshair', 'KeyI', 'I'], ['select', 'grid', 'KeyS', 'S'], ['tint', 'flag', 'KeyT', 'T'], ['glow', 'sparkle', 'KeyH', 'H'],
+  ['box', 'block', 'KeyB', 'B'], ['picker', 'crosshair', 'KeyI', 'I'], ['select', 'pointer', 'KeyS', 'S'], ['tint', 'flag', 'KeyT', 'T'], ['glow', 'sparkle', 'KeyH', 'H'],
 ];
 const ADD_TOOLS = new Set(['pencil', 'line', 'box']);
 const RECENT_KEY = 'painter.recent';
@@ -76,18 +76,18 @@ export function mount(root, ctx, params = {}) {
   K.roving(partList, { selector: '.pt-part', orientation: 'vertical' });
   const toolGrid = h('div', { class: 'pt-tools', role: 'radiogroup', 'aria-label': PT.tools, id: 'pt-tools' }), toolBtns = {};
   for (const [id, icon, code, key] of TOOLS) {
-    const b = h('button', { type: 'button', class: 'pt-tool', role: 'radio', 'aria-checked': 'false', id: 'pt-tool-' + id, 'aria-label': PT.tool[id], dataset: { tool: id } }, K.icon(icon), h('span', { text: PT.tool[id] }), h('kbd', { class: 'vw-kbd pt-tool__key', text: key }));
+    const b = h('button', { type: 'button', class: 'pt-tool', role: 'radio', 'aria-checked': 'false', id: 'pt-tool-' + id, 'aria-label': PT.tool[id], 'aria-keyshortcuts': key, dataset: { tool: id } }, K.icon(icon));
     K.tooltip(b, `${PT.tool[id]} (${key}): ${PT.toolTip[id]}`); b.addEventListener('click', () => { K.sfx('ui_click'); setTool(id); }); toolBtns[id] = b; toolGrid.appendChild(b);
   }
   K.roving(toolGrid, { selector: '.pt-tool', orientation: 'both' });
-  const sizeSeg = K.segmented({ id: 'pt-size', label: PT.brush, value: 1, options: [1, 2, 3].map((n) => ({ value: n, label: String(n) })), onChange: (v) => { S.size = v; refreshHover(); } });
+  const sizeSeg = K.segmented({ id: 'pt-size', label: PT.brush, value: 1, fill: true, options: [1, 2, 3].map((n) => ({ value: n, label: String(n) })), onChange: (v) => { S.size = v; refreshHover(); } });
   const hollowChip = K.chip(PT.boxHollow, { pressed: false, id: 'pt-hollow', onClick: () => { S.hollow = !S.hollow; hollowChip.setPressed(S.hollow); } });
   const fillSeg = K.segmented({ id: 'pt-fillmode', label: 'Fill', value: '3d', options: [{ value: '3d', label: PT.fillMode['3d'] }, { value: 'layer', label: PT.fillMode.layer }], onChange: (v) => { S.fillMode = v; } });
   const mirrorChips = {};
-  const mirrorRow = h('div', { class: 'vw-row vw-wrapflex', role: 'group', 'aria-label': PT.mirror }, h('span', { class: 'vw-label', text: PT.mirror }));
+  const mirrorRow = h('div', { class: 'pt-mirror', role: 'group', 'aria-label': PT.mirror }, h('span', { class: 'vw-label', text: PT.mirror }));
   for (const a of ['x', 'y', 'z']) { const c = K.chip(PT.mirrorAxis[a], { pressed: false, id: 'pt-mirror-' + a, onClick: () => toggleMirror(a) }); K.tooltip(c, `Mirror across the ${a.toUpperCase()} axis (${a.toUpperCase()})`); mirrorChips[a] = c; mirrorRow.appendChild(c); }
-  const options = h('div', { class: 'vw-col pt-options' }, h('div', { class: 'vw-row vw-between' }, h('span', { class: 'vw-label', text: PT.brush }), sizeSeg), h('div', { class: 'vw-row vw-wrapflex' }, hollowChip), fillSeg, mirrorRow);
-  const left = K.tablet(null, h('div', { class: 'pt-left__body' }, h('div', { class: 'vw-label', text: PT.parts }), partList, h('div', { class: 'vw-label', text: PT.tools }), toolGrid, options), { id: 'pt-left', class: 'pt-left', variant: 'glass', tight: true, headless: true });
+  const sizeBox = h('div', { class: 'pt-sizebox' }, h('span', { class: 'vw-label', text: PT.brush }), sizeSeg);
+  const options = h('div', { class: 'vw-col pt-options' }, sizeBox, h('div', { class: 'vw-row vw-wrapflex' }, hollowChip), fillSeg, mirrorRow);
 
   // ---------------------------------------------------------------- centre: views
   const viewHost = h('div', { class: 'pt-view', id: 'pt-view' });
@@ -113,7 +113,9 @@ export function mount(root, ctx, params = {}) {
   const flipBtn = mk(PT.flipX, 'mirror', 'pt-flip', () => doOp(() => part().flipSelection(S.axis === 'x' ? 'z' : 'x')), 'Flip the selection left-right');
   const delBtn = mk(PT.del, 'x', 'pt-delsel', () => doOp(() => part().deleteSelection()), 'Delete the selected voxels (Delete)');
   const selTools = h('div', { class: 'vw-row vw-wrapflex pt-seltools vw-hide' }, rotBtn, flipBtn, delBtn);
-  const toolbar = h('div', { class: 'pt-toolbar' }, viewSeg, orbitBtn, h('span', { class: 'vw-spacer' }), resetBtn, clearBtn, oppBtn);
+  const actions = h('div', { class: 'pt-actions' }, resetBtn, clearBtn, oppBtn);
+  const left = K.tablet(null, h('div', { class: 'pt-left__body' }, h('div', { class: 'vw-label', text: PT.parts }), partList, options, actions), { id: 'pt-left', class: 'pt-left', variant: 'glass', tight: true, headless: true });
+  const toolbar = h('div', { class: 'pt-toolbar' }, toolGrid, viewSeg, orbitBtn);
   const status = h('div', { class: 'pt-status vw-small', id: 'pt-status', role: 'status', 'aria-live': 'off' }), hint = h('div', { class: 'pt-hint vw-micro', id: 'pt-hint' });
   const centre = h('div', { class: 'pt-centre' }, toolbar, sliceBar, selTools, h('div', { class: 'pt-viewwrap' }, viewHost), h('div', { class: 'pt-statusrow' }, status, hint));
 
@@ -269,11 +271,8 @@ export function mount(root, ctx, params = {}) {
   }
   function onSlice(ev) {
     if (ev.type === 'cancel' || ev.type === 'leave') { pointer(ev.type, {}, ev.e); return; }
-    const c = ev.cell; const g = part().grid;
-    const hit = c && g.get(c[0], c[1], c[2]) ? c : null;
-    const t = { cell: c, hit: S.tool === 'pencil' || S.tool === 'line' || S.tool === 'box' ? c : (hit || (S.tool === 'select' ? c : null)), add: c, normal: null, plane: S.axis, down: ev.down };
-    // eraser / recolour / flags work on the cell under the pointer (empty cells are simply ignored by the tools)
-    t.hit = c; pointer(ev.type, t, ev.e);
+    const c = ev.cell;   // in a slice every tool works on the cell under the pointer (the tools ignore empty cells where that makes sense)
+    pointer(ev.type, { cell: c, hit: c, add: c, normal: null, plane: S.axis, down: ev.down }, ev.e);
   }
   function updateHover(t) {
     const tool = S.tool, p = part(); let cell = null, erase = false;

@@ -42,7 +42,8 @@ export function mount(root, ctx, params) {
   }
 
   const frame = K.pageFrame({ id: 'cr', title: T.title, sub: T.sub, onBack: () => ctx.nav.back() });
-  frame.content.appendChild(K.h('div', { class: 'vw-credits' }, K.h('div', { class: 'vw-credits__col' }, studio, libs, anim), K.h('div', { class: 'vw-credits__col' }, ledger)));
+  frame.content.appendChild(K.h('div', { class: 'vw-credits-wrap vw-col' }, K.h('div', { class: 'vw-credits' }, K.h('div', { class: 'vw-credits__col' }, studio, libs, anim), K.h('div', { class: 'vw-credits__col' }, ledger)),
+    (T.footer && T.footer.length) ? K.h('div', { class: 'vw-credits__footer' }, ...T.footer.map((l) => K.h('p', { class: 'vw-epigraph', text: l }))) : null));
   frame.mount(root);
   K.enter(Array.from(frame.content.querySelectorAll('.vw-tablet')), 'pop', 0);
   cleanups.push(frame.destroy);

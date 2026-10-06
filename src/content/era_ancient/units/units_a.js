@@ -19,7 +19,7 @@ export const BLUEPRINTS = {
     shoulders: 'none', cape: 'none', back: 'none', main: 'scroll', off: 'none', colors: Object.assign({}, HELLENE, { primary: '#3a7a3a' }), emblem: 'none', paint: {} }),
   strategos: bp({ v: 1, id: 'strategos', name: 'Strategos', body: { type: 'average', skin: '#dba67e', hair: '#3a2a1a' },
     head: { helm: 'attic_fan', hair: 'short', face: 'beard_short', eyes: '#222222' }, torso: { armor: 'thorax_strategos', tunic: 'chiton' }, legs: { armor: 'greaves_bronze', skirt: 'pteruges' },
-    shoulders: 'none', cape: 'long', back: 'none', main: 'standard', off: 'round_shield', colors: HELLENE, emblem: 'lambda', paint: {} }),
+    shoulders: 'none', cape: 'long', back: 'none', main: 'standard_general', off: 'round_shield', colors: HELLENE, emblem: 'lambda', paint: {} }),
   pilum_thrower: bp({ v: 1, id: 'pilum_thrower', name: 'Pilum Thrower', body: { type: 'average', skin: '#e2b08a', hair: '#3a2a1a' },
     head: { helm: 'galea_light', hair: 'short', face: 'none', eyes: '#2a2a2a' }, torso: { armor: 'none', tunic: 'tunic' }, legs: { armor: 'caligae_fasciae', skirt: 'pteruges' },
     shoulders: 'scarf', cape: 'none', back: 'pilum_pair', main: 'pilum', off: 'parma_small', colors: ROMAN, emblem: 'bolt', paint: {} }),

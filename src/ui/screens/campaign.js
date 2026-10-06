@@ -47,7 +47,9 @@ export function mount(root, ctx) {
   const cont = K.button(missions.length && stars[missions[0].id] ? 'Continue' : 'Start', { variant: 'primary', icon: 'play', id: 'camp-continue', onClick: () => open(nextIdx) });
   const frame = K.pageFrame({ title: 'Campaign', sub: 'The Ancient Era: nine battles, three acts, one goat', onBack: () => ctx.nav.goto('title'), id: 'camp-frame', bg: false });
   frame.mount(root);
-  const bar = h('div', { class: 'bs-camp-bar' }, chipStars, cont);
+  const nPuz = (() => { try { return ctx.content.puzzles.length || 6; } catch (e) { return 6; } })();
+  const puz = K.button('Puzzles (' + nPuz + ')', { variant: 'secondary', icon: 'cube', id: 'camp-puzzles', onClick: () => ctx.nav.goto('puzzles') });
+  const bar = h('div', { class: 'bs-camp-bar' }, chipStars, puz, cont);
 
   // ------------------------------------------------------------ map stage
   const mapSvg = buildMapSvg();

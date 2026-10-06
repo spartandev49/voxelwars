@@ -111,12 +111,12 @@ export function mount(root, ctx, params) {
   function paintTime() { timeAuto.setPressed(S.timeAuto); timeOut.textContent = S.timeAuto ? T.arenaDefault : `${K.fmtClock(S.time)} · ${timeName(T, S.time)}`; timeSlider.classList.toggle('is-auto', S.timeAuto); }
   const conditions = K.tablet(T.conditions, K.h('div', { class: 'vw-col' },
     K.field(T.size, sizeSeg, { stack: true }),
-    K.field(T.weather, K.h('div', { class: 'vw-col vw-grow' }, weatherSel, weatherTip), { stack: true }),
+    K.field(T.weather, K.h('div', { class: 'vw-col vw-grow' }, weatherSel, weatherTip), { stack: true, info: T.weatherInfo || undefined }),
     K.field(T.time, K.h('div', { class: 'vw-col vw-grow' }, K.h('div', { class: 'vw-row vw-between vw-wrapflex' }, timeOut, timeAuto), timeSlider), { stack: true })), { id: 'qb-conditions', icon: 'sun' });
   conditions.setAttribute('data-adv-only', '');
 
   /* ---------------------------------------------------------------- rules */
-  const budgetSeg = K.segmented({ id: 'qb-budget', label: T.budget, value: S.budget, options: Object.keys(T.budgets).map((k) => ({ value: k, label: T.budgets[k], sub: k === 'custom' ? '' : (T.budgetSub[k]) })), onChange: (v) => { S.budget = v; customRow.classList.toggle('vw-hide', v !== 'custom'); paintSummary(); } });
+  const budgetSeg = K.segmented({ id: 'qb-budget', label: T.budget, value: S.budget, options: Object.keys(T.budgets).map((k) => ({ value: k, label: T.budgets[k], sub: k === 'custom' ? '' : (T.budgetSub[k]), title: (T.budgetLine || {})[k] })), onChange: (v) => { S.budget = v; customRow.classList.toggle('vw-hide', v !== 'custom'); paintSummary(); } });
   const customSlider = K.slider({ id: 'qb-budget-custom', min: 500, max: 40000, step: 500, value: S.custom, label: T.budgets.custom, format: (v) => K.fmtNum(v), valueWidth: '4.6rem', onInput: (v) => { S.custom = v; paintSummary(); } });
   const customRow = K.h('div', { class: ['vw-qb__custom', S.budget !== 'custom' && 'vw-hide'] }, customSlider);
   const capNote = K.h('p', { class: 'vw-field__hint', id: 'qb-cap-note' });
@@ -124,9 +124,9 @@ export function mount(root, ctx, params) {
   const diffSeg = K.segmented({ id: 'qb-difficulty', label: T.difficulty, value: S.difficulty, options: ['easy', 'normal', 'hard'].map((k) => ({ value: k, label: T.difficulties[k], title: T.difficultyTip[k] })), onChange: (v) => { S.difficulty = v; diffHint.textContent = T.difficultyTip[v]; paintSummary(); } });
   const diffHint = K.h('p', { class: 'vw-field__hint', text: T.difficultyTip[S.difficulty] });
   const tog = (id, label, key, tip) => K.field(label, K.toggle({ id, label, value: S[key], onChange: (v) => { S[key] = v; } }), { info: tip, id: id + '-row' });
-  const speedSeg = K.segmented({ id: 'qb-speed', label: T.speed, value: S.speed, options: [[0.25, '¼×'], [0.5, '½×'], [1, '1×'], [2, '2×'], [4, '4×']].map(([v, l]) => ({ value: v, label: l })), onChange: (v) => { S.speed = v; } });
-  const goreSeg = K.segmented({ id: 'qb-gore', label: T.gore, value: S.gore, options: Object.keys(T.gores).map((k) => ({ value: k, label: T.gores[k] })), onChange: (v) => { S.gore = v; } });
-  const corpseSeg = K.segmented({ id: 'qb-corpses', label: T.corpses, value: S.corpses, options: Object.keys(T.corpsesOpts).map((k) => ({ value: k, label: T.corpsesOpts[k] })), onChange: (v) => { S.corpses = v; } });
+  const speedSeg = K.segmented({ id: 'qb-speed', label: T.speed, value: S.speed, options: [[0.25, '¼×'], [0.5, '½×'], [1, '1×'], [2, '2×'], [4, '4×']].map(([v, l]) => ({ value: v, label: l, title: (T.speedNames || {})[v] })), onChange: (v) => { S.speed = v; } });
+  const goreSeg = K.segmented({ id: 'qb-gore', label: T.gore, value: S.gore, options: Object.keys(T.gores).map((k) => ({ value: k, label: T.gores[k], title: (T.goreTips || {})[k] })), onChange: (v) => { S.gore = v; } });
+  const corpseSeg = K.segmented({ id: 'qb-corpses', label: T.corpses, value: S.corpses, options: Object.keys(T.corpsesOpts).map((k) => ({ value: k, label: T.corpsesOpts[k], title: (T.corpseTips || {})[k] })), onChange: (v) => { S.corpses = v; } });
   const formSel = K.select({ id: 'qb-formation', label: T.formation, value: S.formation, options: (ctx.content.formations || Object.keys(T.formations)).map((k) => ({ value: k, label: T.formations[k] || k })), onChange: (v) => { S.formation = v; } });
   const limitSeg = K.segmented({ id: 'qb-limit', label: T.timeLimit, value: S.timeLimit, options: Object.keys(T.timeLimits).map((k) => ({ value: +k, label: T.timeLimits[k] })), onChange: (v) => { S.timeLimit = v; } });
   const moodSel = K.select({ id: 'qb-mood', label: T.mood, value: S.mood, options: Object.keys(T.moods).map((k) => ({ value: k, label: T.moods[k] })), onChange: (v) => { S.mood = v; } });
@@ -134,11 +134,11 @@ export function mount(root, ctx, params) {
   for (const m of (ctx.content.mutators || [])) {
     const locked = stars < (m.stars || 0);
     const c = K.chip(m.name, { pressed: S.mutators.indexOf(m.id) >= 0, id: 'qb-mut-' + m.id, icon: locked ? 'lock' : null, onClick: () => {
-      if (locked) { K.sfx('ui_error'); K.toast(T.mutatorLocked(m.stars), { kind: 'warn' }); return; }
+      if (locked) { K.sfx('ui_error'); K.toast(m.locked || T.mutatorLocked(m.stars), { kind: 'warn' }); return; }
       const i = S.mutators.indexOf(m.id); if (i >= 0) S.mutators.splice(i, 1); else S.mutators.push(m.id); c.setPressed(S.mutators.indexOf(m.id) >= 0);
     } });
     if (locked) c.setAttribute('aria-disabled', 'true');
-    K.tooltip(c, locked ? T.mutatorLocked(m.stars) : m.desc);
+    K.tooltip(c, locked ? (m.locked || T.mutatorLocked(m.stars)) : (m.desc || m.blurb));
     mutBox.appendChild(c);
   }
   const advRules = K.h('div', { class: 'vw-col', 'data-adv-only': '' },
@@ -148,9 +148,9 @@ export function mount(root, ctx, params) {
     K.field(T.freePlacement, K.toggle({ id: 'qb-free', label: T.freePlacement, value: S.freePlacement, onChange: (v) => { S.freePlacement = v; } }), { info: T.freePlacementTip }),
     K.field(T.mirror, K.toggle({ id: 'qb-mirror', label: T.mirror, value: S.mirror, onChange: (v) => { S.mirror = v; } }), { info: T.mirrorTip }),
     K.field(T.gore, goreSeg, { info: T.goreTip, stack: true }),
-    K.field(T.corpses, corpseSeg, { stack: true }),
-    K.field(T.formation, formSel),
-    K.field(T.timeLimit, limitSeg, { stack: true }),
+    K.field(T.corpses, corpseSeg, { stack: true, info: T0.settings.gameplay.corpsesHint }),
+    K.field(T.formation, formSel, { info: T.formationTip || undefined }),
+    K.field(T.timeLimit, limitSeg, { stack: true, info: T.timeLimitTip || undefined }),
     K.field(T.mood, moodSel),
     K.field(T.mutators, mutBox, { hint: T.mutatorsHint, stack: true }));
   const rules = K.tablet(T.rules, K.h('div', { class: 'vw-col' },

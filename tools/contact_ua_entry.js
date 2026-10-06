@@ -7,6 +7,7 @@ import { compileSoldier } from '../src/content/era_ancient/blueprints.js';
 import { teamColorsLinear } from '../src/render/style.js';
 import { readyPose } from './contact_pose.js';
 import '../src/content/era_ancient/units/units_a.js';
+import { BUILDERS } from '../src/content/era_ancient/beasts/index.js';
 
 const THREE = () => window.THREE;
 let eng = null, stage = null, ground = null;
@@ -31,10 +32,15 @@ function setSize(w, h, quality) {
 }
 
 function buildItem(it) {
-  const c = compileSoldier(it.bp, it.opts || {});
+  let c;
+  if (it.chariot) {      // the chariot with UNITS-A's crew composed in (BEASTS builder): bp = {driver, archer}
+    const model = BUILDERS.chariot_archer({ driver: compileSoldier(it.chariot.driver).model, archer: compileSoldier(it.chariot.archer).model });
+    c = { model, scale: [1, 1, 1], voxels: model.voxelCount(), parts: model.parts.length, height: 3, reach: 0, radius: 0.9, weaponLen: 0, warnings: [] };
+  } else c = compileSoldier(it.bp, it.opts || {});
   const skin = new VoxSkin(eng, c.model, { capacity: 4, shadow: true });
   let pose;
   if (it.pose === 'rest') { pose = new Float32Array(c.model.parts.length * 9); for (let i = 0; i < c.model.parts.length; i++) pose[i * 9 + 6] = pose[i * 9 + 7] = pose[i * 9 + 8] = 1; }
+  else if (it.chariot) { pose = new Float32Array(c.model.parts.length * 9); for (let i = 0; i < c.model.parts.length; i++) pose[i * 9 + 6] = pose[i * 9 + 7] = pose[i * 9 + 8] = 1; }
   else pose = readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded, ready: c.weaponReady });
   return { c, skin, pose, us: it.unitScale || 1, cs: it.camScale || 1 };
 }

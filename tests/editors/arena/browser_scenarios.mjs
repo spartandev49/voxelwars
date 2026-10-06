@@ -14,7 +14,7 @@ export async function run(name, h) {
     if (o.hold) await sleep(o.hold);
     await page.mouse.up(); await sleep(120);
   }
-  const closeModals = async () => { for (let i = 0; i < 4; i++) { if (await page.$('.vw-modal')) { await page.keyboard.press('Escape'); await sleep(350); } } };
+  const closeModals = async () => { for (let i = 0; i < 4; i++) { if (await page.$('.vw-modal-wrap')) { await page.keyboard.press('Escape'); await page.waitForSelector('.vw-modal-wrap', { state: 'detached', timeout: 3000 }).catch(() => {}); await sleep(250); } } };
   const key = async (k) => { await page.keyboard.press(k); await sleep(80); };
   const setRange = (sel, v) => page.$eval(sel, (el, val) => { el.value = String(val); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }, v);
 
@@ -25,6 +25,15 @@ export async function run(name, h) {
     step('cur ' + await ev(() => window.__vw.app.router.current()) + ' modal ' + !!(await page.$('.vw-modal')) + ' root ' + !!(await page.$('#ed-root')));
     await page.keyboard.press('Escape'); await sleep(500);
     step('cur ' + await ev(() => window.__vw.app.router.current()) + ' modal ' + !!(await page.$('.vw-modal')) + ' root ' + !!(await page.$('#ed-root')));
+    return;
+  }
+  if (name === 'dbg2') {
+    await openBuilder({ closeModal: true });
+    const v = await view(), cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    await page.mouse.move(cx, cy); await sleep(800);
+    const info = await A(() => { const b = window.__vw.arenaBuilder, c = b.view.cursor, m = c.mesh; return { n: c.n, count: m.count, col: Array.from(m.instanceColor.array.slice(0, 15)).map((x) => +x.toFixed(2)), mat: m.material.type, order: m.renderOrder, transparent: m.material.transparent, depthTest: m.material.depthTest, matColor: m.material.color.getHex(), vis: m.visible, parent: !!m.parent, castShadow: m.castShadow }; });
+    step(JSON.stringify(info));
+    await shot('dbg_cursor');
     return;
   }
   if (name === 'shots') {
@@ -92,7 +101,7 @@ export async function run(name, h) {
     await page.click('#ed-status'); await sleep(400); await shot('10_checks');
     await key('z'); await page.click('#ed-zone-remove'); await sleep(500); await page.click('#ed-status'); await sleep(500);
     expect((await st()).issues.includes('zone_missing'), 'removing a zone raises "zone missing"'); await shot('11_checks_error');
-    await page.click('#ed-fix-add_zone-A'); await sleep(500); expect(!(await st()).issues.includes('zone_missing') || (await st()).issues.filter((x) => x === 'zone_missing').length < 1, 'Fix resolves it');
+    await page.click('#ed-fix-add_zone-B'); await sleep(500); expect(!(await st()).issues.includes('zone_missing') || (await st()).issues.filter((x) => x === 'zone_missing').length < 1, 'Fix resolves it');
     return;
   }
   if (name === 'save') {
@@ -126,6 +135,72 @@ export async function run(name, h) {
     await page.waitForSelector('#ed-root', { timeout: 8000 }); await sleep(900); await shot('16_back_in_builder');
     const after = await A(() => { const a = window.__vw.arenaBuilder.session.arena; return { h: Array.from(a.h).reduce((s, x) => s + x, 0), props: a.props.length, depth: window.__vw.arenaBuilder.session.undo.depth }; });
     expect(JSON.stringify(before) === JSON.stringify(after), 'edits and undo history survive the playtest ' + JSON.stringify(after));
+    return;
+  }
+  if (name === 'a11y') {
+    await openBuilder({ closeModal: true });
+    const scan = () => A(() => {
+      const root = document.getElementById('ed-root'), out = { small: [], noname: [], dupIds: [], overflow: [] };
+      const ids = new Map();
+      for (const el of root.querySelectorAll('[id]')) ids.set(el.id, (ids.get(el.id) || 0) + 1);
+      for (const [id, n] of ids) if (n > 1) out.dupIds.push(id);
+      const vis = (el) => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none'; };
+      for (const el of root.querySelectorAll('button, [role=radio], [role=tab], input:not([type=hidden]), select, textarea, a[href]')) {
+        if (!vis(el)) continue;
+        const r = el.getBoundingClientRect();
+        if (el.type !== 'range' && (r.width < 43.5 || r.height < 43.5)) out.small.push((el.id || el.className) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+        const name = (el.getAttribute('aria-label') || el.textContent || el.getAttribute('title') || el.getAttribute('placeholder') || '').trim();
+        const lab = el.id && document.querySelector('label[for="' + el.id + '"]');
+        if (!name && !lab && !el.getAttribute('aria-labelledby')) out.noname.push(el.id || el.className);
+      }
+      const R = root.getBoundingClientRect();
+      for (const el of root.querySelectorAll('.vw-ed__top, .vw-ed__bottom, .vw-ed__insp, .vw-ed__tools')) { const r = el.getBoundingClientRect(); if (r.right > innerWidth + 1 || r.left < -1 || r.bottom > innerHeight + 1) out.overflow.push(el.className + ' ' + JSON.stringify([r.left, r.right, r.bottom].map(Math.round))); }
+      out.docOverflow = document.documentElement.scrollWidth > innerWidth + 1;
+      void R; return out;
+    });
+    for (const t of ['raise', 'paint', 'water', 'stamp', 'props', 'hazards', 'zones', 'symmetry', 'generate', 'environment', 'info', 'markers']) {
+      await page.click('#ed-tool-' + t); await sleep(500);
+      const r = await scan();
+      expect(r.small.length === 0 && r.noname.length === 0 && r.dupIds.length === 0 && r.overflow.length === 0 && !r.docOverflow, 'a11y scan of the ' + t + ' panel at ' + h.W + 'x' + h.H + ' ' + (r.small.length + r.noname.length + r.dupIds.length + r.overflow.length ? JSON.stringify(r) : ''));
+    }
+    await page.click('#ed-status'); await sleep(400); const rc = await scan(); expect(rc.small.length === 0 && rc.noname.length === 0 && rc.overflow.length === 0, 'a11y scan of the Checks panel ' + (rc.small.length + rc.noname.length ? JSON.stringify(rc) : ''));
+    await page.click('#ed-tool-props'); await sleep(900); await shot('20_props_panel_' + h.W);
+    await page.click('#ed-tool-paint'); await sleep(400); await shot('21_paint_panel_' + h.W);
+    return;
+  }
+  if (name === 'draft') {
+    await openBuilder({ closeModal: true });
+    const v = await view(), cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    await key('9'); for (let k = 0; k < 3; k++) { await page.mouse.click(cx - 120 + k * 40, cy - 40); await sleep(120); }
+    await page.fill('#ed-name', 'Draft Hill'); await sleep(200);
+    const p0 = (await counts()).props; expect(p0 === 3, 'three props placed before the reload');
+    step('waiting for the 20 s autosave...'); await sleep(21500);
+    const draft = await A(() => { try { const o = JSON.parse(localStorage.getItem('vw.draft.arena')); return o && o.data ? { name: o.data.name, parts: (o.data.parts || []).length } : null; } catch (e) { return null; } });
+    expect(draft && draft.name === 'Draft Hill' && draft.parts >= 1, 'autosave wrote vw.draft.arena after 20 s ' + JSON.stringify(draft));
+    await page.reload(); await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 90000 }); await sleep(700); await page.keyboard.press('Space'); await sleep(800);
+    await ev(() => window.__vw.goto('arena_builder')); await page.waitForSelector('#ed-root'); await sleep(900); await shot('17_draft_offer');
+    const title = await page.$eval('.vw-modal__title', (e) => e.textContent).catch(() => '');
+    expect(/Pick up where you left off/i.test(title), 'after a reload the draft is offered back (' + title + ')');
+    await page.click('#ed-draft-continue'); await sleep(1500);
+    const back = await st(); expect(back && back.props === 3 && back.name === 'Draft Hill', 'continuing restores the arena ' + JSON.stringify(back));
+    await page.click('#ed-save'); await sleep(500); await page.click('#ed-name-ok'); await sleep(900);
+    const cleared = await A(() => localStorage.getItem('vw.draft.arena')); expect(cleared === null, 'an explicit save clears the draft');
+    return;
+  }
+  if (name === 'phone') {
+    await ev(() => window.__vw.goto('arena_builder')); await sleep(1200);
+    const cur = await ev(() => window.__vw.app.router.current()); expect(cur === 'phone_notice', 'phones are sent to the friendly notice (' + cur + ')'); await shot('18_phone');
+    return;
+  }
+  if (name === 'keys') {
+    await openBuilder({ closeModal: true });
+    const seq = [];
+    await page.focus('#ed-back');
+    for (let i = 0; i < 40; i++) { await page.keyboard.press('Tab'); const info = await A(() => { const e = document.activeElement, r = e.getBoundingClientRect(), cs = getComputedStyle(e); return { id: e.id || e.className.toString().slice(0, 30), vis: r.width > 0 && r.height > 0, ring: cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2 }; }); seq.push(info); }
+    step('tab order: ' + seq.map((s) => s.id).join(' > '));
+    expect(seq.every((s) => s.vis), 'every tab stop is visible'); expect(seq.filter((s) => !s.ring).length === 0, 'every tab stop shows the gold focus ring (' + seq.filter((s) => !s.ring).map((s) => s.id).join(',') + ')');
+    await page.focus('#ed-tool-raise'); await page.keyboard.press('ArrowRight'); await sleep(100); expect((await A(() => document.activeElement.id)) === 'ed-tool-smooth', 'arrow keys rove inside the toolbar');
+    await page.keyboard.press('?'); await sleep(500); expect(!!(await page.$('#ed-sc-close')), '? opens the shortcuts overlay'); await shot('19_shortcuts'); await page.keyboard.press('Escape'); await sleep(400);
     return;
   }
 }

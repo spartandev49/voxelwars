@@ -101,7 +101,6 @@ H.murmillo = {
     for (const [y0, y1] of [[8, 9], [12, 13]]) for (let y = y0; y <= y1; y++) Bs(hs, 4, y, 0, 4, y, 0, ctx.t(y < 10 ? 0.84 : 1.14));   // forked tail fin
     Bs(hs, 2, 10, 7, 2, 11, 7, V(0xf4f4ee)); Bs(hs, 2, 10, 8, 2, 10, 8, V(0x14141a));  // bulging eyes (white, pupil looking forward)
     Bs(hs, 1, 9, 4, 1, 10, 5, ctx.t(0.76));                                            // pectoral fins
-    Bs(hs, 3, 13, 3, 3, 13, 3, ctx.t(1.1));                                            // dorsal fin spike
     P(hs, 4, 8, 9, V(ctx.m[3])); P(hs, 5, 8, 9, V(ctx.m[3]));                         // a gold lip on the snout
     return { head, crest };
   },

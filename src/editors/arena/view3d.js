@@ -17,10 +17,11 @@ class Cubes {
     const t = T();
     this.cap = cap; this.n = 0;
     this.mesh = new t.InstancedMesh(new t.BoxGeometry(1, 1, 1), new t.MeshBasicMaterial({ color: 0xffffff }), cap);
-    this.mesh.name = name || 'cubes'; this.mesh.frustumCulled = false; this.mesh.renderOrder = order; this.mesh.count = 0;
+    this.mesh.name = name || 'cubes'; this.mesh.frustumCulled = false; this.mesh.renderOrder = order;
     this.mesh.instanceMatrix.setUsage(t.DynamicDrawUsage);
-    this.mesh.setColorAt(0, new t.Color(1, 1, 1));
+    this.mesh.setColorAt(0, new t.Color(1, 1, 1));            // allocates the colour attribute at full capacity (it uses mesh.count): do this BEFORE count = 0
     this.mesh.instanceColor.setUsage(t.DynamicDrawUsage);
+    this.mesh.count = 0;
     this.m = new t.Matrix4(); this.q = new t.Quaternion(); this.p = new t.Vector3(); this.s = new t.Vector3(); this.axis = new t.Vector3(0, 1, 0);
     this.cols = new Map();
     root.add(this.mesh);

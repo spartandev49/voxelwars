@@ -34,7 +34,7 @@ for (const [faction, ids] of Object.entries(ROSTER)) for (const id of ids) {
 for (const id of CREW) assert.ok(MODELS[id], id);
 const cue = (id, path, want) => { const bp = BLUEPRINTS[id]; const v = path.split('.').reduce((o, k) => o[k], bp); assert.equal(v, want, `${id}.${path}`); };
 cue('philosopher', 'head.face', 'philosopher_beard'); cue('philosopher', 'main', 'scroll'); cue('philosopher', 'torso.tunic', 'himation'); cue('philosopher', 'head.helm', 'laurel');
-cue('strategos', 'main', 'standard'); cue('strategos', 'back', 'none'); cue('strategos', 'torso.armor', 'thorax_strategos'); cue('strategos', 'cape', 'long');
+cue('strategos', 'main', 'standard_general'); cue('strategos', 'back', 'none'); cue('strategos', 'torso.armor', 'thorax_strategos'); cue('strategos', 'cape', 'long');
 cue('peltast', 'head.helm', 'thracian_fox'); cue('peltast', 'legs.armor', 'thracian_leggings'); cue('peltast', 'off', 'pelte_wicker'); cue('peltast', 'back', 'javelin_baldric'); cue('peltast', 'main', 'javelin');
 cue('pilum_thrower', 'main', 'pilum'); cue('pilum_thrower', 'back', 'pilum_pair'); cue('pilum_thrower', 'head.helm', 'galea_light');
 cue('centurion', 'main', 'vine_staff'); cue('centurion', 'head.helm', 'centurion_gilded'); cue('centurion', 'torso.armor', 'harness_phalerae');

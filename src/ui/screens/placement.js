@@ -5,6 +5,7 @@ import * as K from '../kit.js';
 import { getT } from '../strings.js';
 import { safe, unitsOf, factionIds, AI_STYLES, seenHint, setSeenHint } from './_shared.js';
 import { factionColor, factionName, ROLES, ROLE_LABEL, ROLE_ICON } from '../unitinfo.js';
+import { encodeShare, importShare } from '../../save/share.js';
 
 export const meta = { id: 'placement', layer: 'battle', music: 'battle', canvas: 'scene' };
 
@@ -169,11 +170,8 @@ export function mount(root, ctx, params) {
   } });
   const saveBtn = K.button(T.savePreset, { icon: 'save', size: 'sm', id: 'pl-save-army', onClick: () => savePreset() });
   const loadBtn = K.button(T.loadPreset, { icon: 'folder', size: 'sm', id: 'pl-load-army', onClick: () => loadPreset() });
-  const exportBtn = K.button(T.presetExport, { icon: 'upload', size: 'sm', variant: 'ghost', id: 'pl-export-army', onClick: async () => { let code = ''; try { code = String(await G.tools.exportArmy()); } catch (e) { K.toast(String(e && e.message || e), { kind: 'error' }); return; } K.copyText(code, { title: T.presetExport }); } });
-  const importBtn = K.button(T.presetImport, { icon: 'download', size: 'sm', variant: 'ghost', id: 'pl-import-army', onClick: async () => {
-    const txt = await K.textModal({ title: T.presetImport, ok: T0.common.apply, placeholder: 'VW1.army...', rows: 5, onSubmit: async (t) => { try { await G.tools.importArmy(t.trim()); return null; } catch (e) { return (e && e.message) || 'That code was not understood.'; } } });
-    if (txt != null) { K.toast(T.importOk, { kind: 'success' }); lastSig = ''; refresh(true); }
-  } });
+  const exportBtn = K.button(T.presetExport, { icon: 'upload', size: 'sm', variant: 'ghost', id: 'pl-export-army', onClick: () => exportArmy() });
+  const importBtn = K.button(T.presetImport, { icon: 'download', size: 'sm', variant: 'ghost', id: 'pl-import-army', onClick: () => importArmy() });
   const styleSel = K.select({ id: 'pl-style', label: T0.quick.style, value: S.style, options: AI_STYLES.map((k) => ({ value: k, label: T0.quick.styles[k] })), onChange: (v) => { S.style = v; } });
   const fillFaction = (t) => { const f = safe(() => setup.armies[t ? 'B' : 'A'].faction, null); return f || 'mixed'; };
   const fillMine = K.button(T.autoFillMine, { icon: 'wand', size: 'sm', id: 'pl-fill-mine', onClick: () => { G.tools.autoFill(0, { style: S.style, faction: fillFaction(0), budget: budget(0).cap }); lastSig = ''; refresh(true); K.sfx('ui_place'); } });
@@ -216,30 +214,102 @@ export function mount(root, ctx, params) {
     G.fight();
   }
 
-  /* ------------------------------------------------------------ presets */
+  /* ------------------------------------------------------------ army presets: ctx.save.armies + VW1.army share codes
+     Game.tools.saveArmy(name) returns {name, records:[{team, defId, positions, heading, order}]} for BOTH teams and persists nothing; loadArmy(data) ADDS records
+     (no clearing, no budget/cap check). This screen filters to the selected team, stores it, mirrors it onto the other team when needed, and checks budget + caps. */
+  const ARMY_CAP = () => safe(() => ctx.save.armies.cap, 24) || 24;
+  const defsMap = () => ctx.content.defs || ctx.content.units;
+  const newId = () => 'army_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const recN = (recs) => recs.reduce((n, r) => n + (r.positions ? r.positions.length : 0), 0);
+  const recCost = (recs) => recs.reduce((c, r) => c + ((defOf(r.defId) || {}).cost || 0) * (r.positions ? r.positions.length : 0), 0);
+  const teamRecords = (team) => safe(() => (G.tools.saveArmy('').records || []).filter((r) => r.team === team), []).map((r) => JSON.parse(JSON.stringify(r)));
+  const packArmy = (name, team) => { const records = teamRecords(team); return { v: 1, name, team, records, n: recN(records), cost: recCost(records) }; };
+  /** The records of an army, moved onto `team` (point reflection through the arena centre, like the Mirror brush) when it was built for the other side. */
+  function remap(item, team) {
+    const src = item.team != null ? item.team : ((item.records && item.records[0] && item.records[0].team) || 0);
+    return (item.records || []).filter((r) => r.team === src).map((r) => (src === team ? Object.assign({}, r) : Object.assign({}, r, { team, positions: (r.positions || []).map((p) => [-p[0], -p[1]]), heading: team === 0 ? Math.PI / 2 : -Math.PI / 2 })));
+  }
+  function applyArmy(item) {
+    const team = S.team;
+    let recs = remap(item, team);
+    const unknown = recs.filter((r) => !defOf(r.defId));
+    recs = recs.filter((r) => defOf(r.defId));
+    if (!recs.length) { K.sfx('ui_error'); K.toast(T.presetEmpty, { kind: 'error' }); return false; }
+    const cost = recCost(recs), cap = budget(team).cap, c = counts(team), n = recN(recs), types = new Set(recs.map((r) => r.defId)).size;
+    if (cap && cost > cap) { K.sfx('ui_error'); K.toast(T.presetOverBudget(K.fmtNum(cost), K.fmtNum(cap)), { kind: 'error', ms: 5000 }); return false; }
+    if (c.cap && n > c.cap) { K.sfx('ui_error'); K.toast(T.capFull(c.cap), { kind: 'error', ms: 5000 }); return false; }
+    if (types > (c.typeCap || 16)) { K.sfx('ui_error'); K.toast(T.typesFull, { kind: 'error', ms: 5000 }); return false; }
+    G.tools.clear(team);
+    G.tools.loadArmy({ name: item.name, records: recs });
+    lastSig = ''; refresh(true); K.sfx('ui_place');
+    if (unknown.length) K.toast(T.presetSkipped(unknown.length), { kind: 'warn' });
+    return true;
+  }
   async function savePreset() {
-    if (!counts(S.team).total) { K.toast(T.fightEmpty, { kind: 'warn' }); return; }
+    const team = S.team;
+    if (!counts(team).total) { K.toast(T.presetNothing, { kind: 'warn' }); return; }
     const input = K.h('input', { class: 'vw-input', id: 'pl-preset-name', type: 'text', maxlength: 32, 'aria-label': T.presetName, value: 'My Army ' + (safe(() => ctx.save.armies.list().length, 0) + 1) });
     const err = K.h('p', { class: 'vw-note vw-note--bad vw-hide', role: 'alert' });
     const res = await K.modal({ title: T.savePreset, icon: 'save', dismissValue: null, body: () => K.h('div', { class: 'vw-col' }, K.h('label', { class: 'vw-label', for: 'pl-preset-name', text: T.presetName }), input, err),
-      buttons: [{ label: T0.common.cancel, value: null, cancel: true }, { label: T0.common.save, variant: 'primary', keep: true, id: 'pl-preset-ok', onClick: (api) => { const n = input.value.trim(); if (!n) { err.textContent = 'Give the army a name, even a silly one.'; err.classList.remove('vw-hide'); K.sfx('ui_error'); input.focus(); return; } api.close(n); } }] });
-    if (res) { try { G.tools.saveArmy(res); K.toast(T.presetSaved(res), { kind: 'success' }); } catch (e) { K.toast(String((e && e.message) || e), { kind: 'error' }); } }
+      buttons: [{ label: T0.common.cancel, value: null, cancel: true }, { label: T0.common.save, variant: 'primary', keep: true, id: 'pl-preset-ok', onClick: (api) => { const n = input.value.trim(); if (!n) { err.textContent = T.presetNameEmpty; err.classList.remove('vw-hide'); K.sfx('ui_error'); input.focus(); return; } api.close(n); } }] });
+    if (!res) return;
+    const items = safe(() => ctx.save.armies.list(), []);
+    const same = items.find((a) => String(a.name || '').toLowerCase() === res.toLowerCase());
+    if (same) {
+      const o = T0.common.overwriteAsk || {};
+      if (!(await K.ask({ title: o.title || 'Replace the saved one?', text: o.text || 'Something with this name already exists. Saving will replace it.', yes: o.yes || 'Replace', danger: false }))) return;
+    }
+    const dropped = !same && items.length >= ARMY_CAP() ? items[items.length - 1] : null;
+    const item = Object.assign(packArmy(res, team), { id: same ? same.id : newId(), saved: Date.now() });
+    let ok = false; try { ok = ctx.save.armies.put(item) !== false; } catch (e) { ok = false; }
+    if (!ok) { K.sfx('ui_error'); K.toast(T.presetSaveFail, { kind: 'error' }); return; }
+    K.toast(T.presetSaved(res), { kind: 'success' });
+    if (dropped) K.toast(T.presetDropped(dropped.name || '?', ARMY_CAP()), { kind: 'warn', ms: 6000 });
   }
   async function loadPreset() {
     const items = safe(() => ctx.save.armies.list(), []);
+    const cap = budget(S.team).cap;
     const body = (api) => {
-      if (!items.length) return K.emptyState({ icon: 'folder', title: T.loadPreset, text: T.presetNone });
+      if (!items.length) return K.emptyState({ icon: 'folder', title: T.presetNoneTitle || T.loadPreset, text: T.presetNone });
       const ul = K.h('ul', { class: 'vw-list' });
       items.forEach((a) => {
-        const row = K.h('li', { class: 'vw-pl__preset' }, K.h('div', { class: 'vw-grow' }, K.h('div', { class: 'vw-card__name', text: a.name }), K.h('div', { class: 'vw-small vw-dim', text: `${a.n || '?'} ${T0.common.units} · ${K.fmtNum(a.cost || 0)} ${T0.common.drachmae}` })),
-          K.button(T0.common.load, { size: 'sm', variant: 'primary', onClick: () => api.close(a.id) }),
-          K.iconButton('trash', T0.common.delete + ' ' + a.name, { variant: 'danger', onClick: async () => { if (await K.ask({ title: T0.common.delete + '?', text: a.name, yes: T0.common.delete, danger: true })) { ctx.save.armies.remove(a.id); row.remove(); } } }));
+        const over = cap && (a.cost || 0) > cap;
+        const row = K.h('li', { class: 'vw-pl__preset', id: 'pl-preset-' + a.id }, K.h('div', { class: 'vw-grow' },
+          K.h('div', { class: 'vw-card__name', text: a.name }),
+          K.h('div', { class: 'vw-small vw-dim vw-row vw-wrapflex' }, K.chip(a.team === 1 ? 'B' : 'A', { variant: a.team === 1 ? 'team-b' : 'team-a' }), K.h('span', { text: `${a.n || '?'} ${T0.common.units} · ${K.fmtNum(a.cost || 0)} ${T0.common.drachmae}` }), over ? K.chip(T.presetOver, { variant: 'danger' }) : null)),
+          K.button(T0.common.load, { size: 'sm', variant: 'primary', id: 'pl-load-' + a.id, onClick: () => api.close(a.id) }),
+          K.iconButton('trash', T0.common.delete + ' ' + a.name, { variant: 'danger', id: 'pl-del-' + a.id, onClick: async () => {
+            const d = T0.common.deleteAsk || {};
+            if (await K.ask({ title: d.title || (T0.common.delete + '?'), text: a.name, yes: d.yes || T0.common.delete, danger: true })) { ctx.save.armies.remove(a.id); items.splice(items.indexOf(a), 1); row.remove(); if (!items.length) ul.replaceWith(K.emptyState({ icon: 'folder', title: T.presetNoneTitle || T.loadPreset, text: T.presetNone })); }
+          } }));
         ul.appendChild(row);
       });
       return ul;
     };
     const id = await K.modal({ title: T.loadPreset, icon: 'folder', dismissValue: null, body, buttons: [{ label: T0.common.close, value: null, cancel: true }] });
-    if (id) { try { G.tools.loadArmy(id); K.toast(T.presetLoaded(safe(() => ctx.save.armies.get(id).name, ''))); lastSig = ''; refresh(true); } catch (e) { K.toast(String((e && e.message) || e), { kind: 'error' }); } }
+    if (!id) return;
+    const item = safe(() => ctx.save.armies.get(id), null);
+    if (!item) { K.toast(T.presetEmpty, { kind: 'error' }); return; }
+    try { if (applyArmy(item)) K.toast(T.presetLoaded(item.name || '')); } catch (e) { K.toast(String((e && e.message) || e), { kind: 'error' }); }
+  }
+  async function exportArmy() {
+    const team = S.team, name = (S.team ? T0.quick.armyB : T0.quick.armyA).replace(/\s*\(.*\)/, '');
+    const a = packArmy(name, team);
+    if (!a.records.length) { K.toast(T.presetNothing, { kind: 'warn' }); return; }
+    let r = null;
+    try { r = await encodeShare('army', { v: 1, name: a.name, records: a.records }); } catch (e) { K.toast(String((e && e.message) || e), { kind: 'error' }); return; }
+    if (r.tooLong) { K.toast(T.exportTooBig || 'That is too big to share as text.', { kind: 'error', ms: 6000 }); return; }
+    K.copyText(r.code, { title: T.presetExport, done: T.exportCopied });
+  }
+  async function importArmy() {
+    let value = null;
+    const txt = await K.textModal({ title: T.presetImport, ok: T0.common.apply, placeholder: 'VW1.army...', rows: 5,
+      onSubmit: async (t) => { try { const r = await importShare(String(t).trim(), 'army', { defs: defsMap() }); value = r.value; return null; } catch (e) { return (e && e.message) || T.importBad || 'That code was not understood.'; } } });
+    if (txt == null || !value) return;
+    const records = value.records || [], team = records[0] ? records[0].team : 0;
+    const item = { id: newId(), name: value.name || 'Imported army', v: 1, team, records, n: recN(records), cost: recCost(records), saved: Date.now() };
+    try { ctx.save.armies.put(item); } catch (e) { /* the army still loads; saving is best effort */ }
+    if (applyArmy(item)) K.toast(T.importOk, { kind: 'success' });
   }
 
   /* ------------------------------------------------------------ refresh (poll + events, writes only on change) */
@@ -271,7 +341,7 @@ export function mount(root, ctx, params) {
   }
   function refreshScout() {
     let adv = []; try { adv = G.info.scout(S.team) || []; } catch (e) { adv = []; }
-    const key = S.team + JSON.stringify(adv.map((a) => [a.id, a.text]));
+    const key = S.team + JSON.stringify(adv.map((a) => [a.code || a.id, a.text, a.counters]));
     if (key === lastScout) return; lastScout = key;
     scoutStrip.classList.toggle('is-empty', !adv.length);
     if (!adv.length) { scoutList.replaceChildren(K.h('li', { class: 'vw-pl__adv vw-pl__adv--empty', text: T.scoutEmpty })); return; }
@@ -287,8 +357,20 @@ export function mount(root, ctx, params) {
   const iv = setInterval(() => refresh(false), 250);
   cleanups.push(() => clearInterval(iv));
   const offs = ['placement', 'placed', 'placement_changed', 'brush'].map((ev) => safe(() => G.on(ev, () => { lastSig = ''; refresh(true); }), null)).filter(Boolean);
-  const offHover = safe(() => G.on('placement_hover', (p) => { if (p && p.reason) K.showTip({ x: p.sx || 0, y: p.sy || 0, text: p.reason, kind: 'bad' }); else K.hideTip(); }), null);
-  cleanups.push(() => offs.forEach((f) => f()), () => { if (offHover) offHover(); K.hideTip(); });
+  // Game emits 'ghost' {valid, reason, code?} whenever the placement ghost moves over the ground: show WHY it cannot be placed next to the cursor
+  // (HUMOR's PLACEMENT_REASONS by `code` when the game supplies one, else the game's own reason text).
+  let ghostMsg = null, ghostShown = false; const ptr = { x: 0, y: 0, ui: true };
+  const UI_SEL = '.vw-pl__top, .vw-pl__pal, .vw-pl__tools, .vw-pl__bottom, .vw-pl__hint, .vw-pl__prev, .vw-modal, .vw-toasts';
+  const reasonText = (p) => (p && p.code && T.reasons && T.reasons[p.code]) || (p && p.reason) || T.invalid;
+  function paintGhostTip() {
+    if (ghostMsg && !ptr.ui) { K.showTip({ x: ptr.x, y: ptr.y, text: ghostMsg, kind: 'bad' }); ghostShown = true; }
+    else if (ghostShown) { K.hideTip(); ghostShown = false; }
+  }
+  const onMove = (e) => { ptr.x = e.clientX; ptr.y = e.clientY; const t = e.target; ptr.ui = !!(t && t.closest && t.closest(UI_SEL)); if (ghostMsg || ghostShown) paintGhostTip(); };
+  const onLeave = () => { ptr.ui = true; paintGhostTip(); };
+  window.addEventListener('pointermove', onMove, true); document.documentElement.addEventListener('pointerleave', onLeave);
+  const offGhost = safe(() => G.on('ghost', (p) => { ghostMsg = p && p.valid === false ? reasonText(p) : null; paintGhostTip(); }), null);
+  cleanups.push(() => offs.forEach((f) => f()), () => { if (offGhost) offGhost(); window.removeEventListener('pointermove', onMove, true); document.documentElement.removeEventListener('pointerleave', onLeave); if (ghostShown) K.hideTip(); });
 
   /* ------------------------------------------------------------ tutorial hints (dismiss permanently) */
   let hintEl = null;

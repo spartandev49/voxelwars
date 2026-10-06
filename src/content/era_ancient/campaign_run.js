@@ -13,6 +13,7 @@ import { generateArena } from '../../world/gen.js';
 import { generateArmy, layoutArmy, zoneFrame, groupsCost } from '../../sim/armygen.js';
 import { formationOffsets, placeOffsets } from '../../sim/formations.js';
 import { WaveSystem } from '../../sim/waves.js';
+import { FlowField } from '../../world/nav.js';
 import { RNG } from '../../core/rng.js';
 
 const TEAM_PLAYER = 0, TEAM_ENEMY = 1;
@@ -49,9 +50,9 @@ export function objectiveSpec(m) {
 export function missionRules(m, o = {}) {
   const diff = (m.enemy && m.enemy.difficulty) || 'normal';
   const rules = {
-    friendlyFire: !!m.friendlyFire, morale: m.morale !== false, speed: 1, timeLimit: m.timeLimit > 0 ? m.timeLimit : 360,
+    friendlyFire: !!m.friendlyFire, morale: m.morale !== false, speed: 1, timeLimit: m.timeLimit > 0 ? m.timeLimit + (m.objective && m.objective.type !== 'eliminate' ? 1 : 0) : 360,   // +1: the objective's own timeout (a loss) must fire before the decided-by-cost limit
     difficulty: { A: 'normal', B: diff }, objective: objectiveSpec(m), godPowers: m.godPowers !== false, mutators: [], budget: m.budget, weather: null, time: null,
-    startFormation: 'block', mission: m.id,
+    startFormation: 'block',
   };
   if (o.difficulty) rules.difficulty = o.difficulty;
   return rules;
@@ -248,6 +249,26 @@ export class MissionTracker {
   destroy() { for (const f of this.off) f(); this.off.length = 0; }
 }
 
+// ------------------------------------------------------------------------------------------------------------------------------ routes
+/**
+ * A walking route from (from) to (to) over the world's nav grid: a Dijkstra descent from the target (the same flow-field machinery the armies use, soft props
+ * cost extra so a route avoids reeds and walls when it can), returned as waypoints about `step` units apart ending in `to`. Squads only walk straight
+ * lines to a `moveTo`, so a VIP that has to find a ford walks it leg by leg.
+ */
+export function routeTo(world, from, to, step = 6) {
+  const nav = world.nav, ff = new FlowField(nav), out = [0, 0], pts = [];
+  ff.compute([nav.cx(to.x) + nav.cz(to.z) * nav.n], 1, 1e9, null);
+  let x = from.x, z = from.z, acc = 0;
+  for (let guard = 0; guard < 2000; guard++) {
+    if (Math.hypot(x - to.x, z - to.z) < 1.5) break;
+    if (!ff.dir(x, z, out)) break;
+    x += out[0]; z += out[1]; acc++;
+    if (acc >= step) { pts.push({ x, z }); acc = 0; }
+  }
+  pts.push({ x: to.x, z: to.z });
+  return pts;
+}
+
 // ------------------------------------------------------------------------------------------------------------------------------ runtime
 export class MissionRuntime {
   /** o: {seed, onWave?}. Constructed by setupMission(); the world calls tick() through world.onTick. */
@@ -280,7 +301,7 @@ export class MissionRuntime {
     const w = this.w;
     for (const u of w.units) if (u.alive && u.team === TEAM_PLAYER && u.vip) {
       const mk = this.vipMarch && this.vipMarch.to ? markerOf(this.m, this.vipMarch.to) : null;
-      if (mk && u.squad) { this.vipUnit = u; this.vipSquad = u.squad; u.squad.order = 'hold'; u.squad.moveTo = { x: mk.x, z: mk.z }; this.vipExit = mk; this.vipAt = this.vipMarch.delay || 0; this.vipCheck = 0; }
+      if (mk && u.squad) { this.vipUnit = u; this.vipSquad = u.squad; u.squad.order = 'hold'; u.squad.moveTo = null; this.vipExit = mk; this.vipAt = this.vipMarch.delay || 0; this.vipCheck = 0; this.vipRoute = routeTo(w, u, mk, 5); this.vipLeg = 0; }
     }
   }
   /** Distance from point (px,pz) to the segment (ax,az)-(bx,bz). */
@@ -289,17 +310,29 @@ export class MissionRuntime {
     let t = ((px - ax) * dx + (pz - az) * dz) / l2; t = t < 0 ? 0 : t > 1 ? 1 : t;
     return Math.hypot(px - (ax + t * dx), pz - (az + t * dz));
   }
-  /** The VIP leaves when the delay is over and no enemy stands within `clear` u of the way to the exit marker (the player can still order the squad by hand). */
+  /**
+   * The VIP leaves when the delay is over and no enemy stands within `clear` u of its route to the exit marker (the player can still order the squad by
+   * hand); it then walks the route leg by leg (routeTo) and the objective ends the mission when it stands inside the exit marker.
+   */
   _vip(w, dt) {
     const sq = this.vipSquad, u = this.vipUnit;
     if (!u.alive) return;
-    if (!this.vipGone && sq.order === 'advance') sq.order = 'hold';        // the stalemate watchdog turns every Hold into Advance after 18 s: the goat must not march into the enemy
-    if (sq.order !== 'hold' || this.t < this.vipAt) return;
-    this.vipCheck -= dt; if (this.vipCheck > 0) return;
-    this.vipCheck = 0.5;
-    const clear = this.vipMarch.clear || 0, e = this.vipExit;
-    if (clear > 0) for (const o of w.units) if (o.alive && o.team !== TEAM_PLAYER && MissionRuntime.segDist(o.x, o.z, u.x, u.z, e.x, e.z) < clear) return;
-    sq.order = 'move'; this.vipGone = true;
+    if (!this.vipGone) {
+      if (sq.order === 'advance') sq.order = 'hold';            // the stalemate watchdog turns every Hold into Advance after 18 s: the goat must not march into the enemy
+      if (sq.order !== 'hold' || this.t < this.vipAt) return;
+      this.vipCheck -= dt; if (this.vipCheck > 0) return;
+      this.vipCheck = 0.5;
+      const clear = this.vipMarch.clear || 0;
+      if (clear > 0) {
+        for (const o of w.units) {
+          if (!o.alive || o.team === TEAM_PLAYER) continue;
+          let px = u.x, pz = u.z;
+          for (const q of this.vipRoute) { if (MissionRuntime.segDist(o.x, o.z, px, pz, q.x, q.z) < clear) return; px = q.x; pz = q.z; }
+        }
+      }
+      this.vipGone = true;
+    }
+    if (sq.order === 'hold' && this.vipLeg < this.vipRoute.length) { sq.moveTo = this.vipRoute[this.vipLeg++]; sq.order = 'move'; }
   }
   tick(w, dt) {
     if (w.state !== 'running') return;

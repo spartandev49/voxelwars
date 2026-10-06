@@ -319,5 +319,98 @@ const overlays = (p) => p.evaluate(`__ui.router.overlays.map((o) => o.id).join()
   await close();
 }
 
+
+// ---------------------------------------------------------------------------------------------- puzzles (ui.md 4a.2)
+{
+  console.log('Puzzles');
+  const { page: p, logs, close } = await open(browser, { width: 1280, height: 720 });
+  await p.evaluate(`${SETUP()} __ui.router.goto('puzzles');`); await p.waitForTimeout(300);
+  check('six puzzle cards in a 3 x 2 grid (desktop)', await p.evaluate(() => { const c = [...document.querySelectorAll('.bs-pz')]; const xs = new Set(c.map((e) => e.offsetLeft)); return c.length === 6 && xs.size === 3 && c[3].offsetTop > c[0].offsetTop; }));
+  check('each card: number + title, goal line, Budget and Par chips, roster strip, three star slots, Play', await p.evaluate(() => [...document.querySelectorAll('.bs-pz')].every((c) => c.querySelector('.bs-pz-n') && c.querySelector('.bs-pz-title').textContent.length > 3 && c.querySelector('.bs-pz-goal span').textContent.length > 5 && /Budget/.test(c.querySelector('.bs-pz-chips').textContent) && /Par/.test(c.querySelector('.bs-pz-chips').textContent) && c.querySelectorAll('.bs-pz-unit').length >= 2 && c.querySelectorAll('.bs-pz-stars .ic').length === 3 && /Play/.test(c.querySelector('.bs-pz-foot button').textContent))));
+  check('titles are the frozen spec titles', (await p.evaluate(() => [...document.querySelectorAll('.bs-pz-title')].map((e) => e.textContent).join('|'))) === 'Please Hold Still|Kiting for Beginners|The Elephant in the Room|Knock Knock|Goat Logistics|Do Not Look Directly');
+  check('all six are open (no locks) and saved stars show (3 + 2 = 5 of 18)', await p.evaluate(() => document.querySelectorAll('.bs-pz.is-broken').length === 0 && /5 \/ 18 stars/.test(document.querySelector('#pz-total').textContent) && document.querySelectorAll('.bs-pz-stars .is-on').length === 5));
+  check('the goat puzzle lists the free VIP in its roster', await p.evaluate(() => /Goat/.test(document.querySelector('[data-id="goat_logistics"] .bs-pz-roster').textContent)));
+  check('wide: the side panel is open for the first unfinished puzzle (the 2nd: 2 stars), in the right-hand column', await p.evaluate(() => { const pn = document.querySelector('#pz-panel'); const sd = document.querySelector('.bs-pz-side'); return !!pn && sd.contains(pn) && /Kiting/.test(pn.textContent) && document.querySelector('[data-id="kiting_101"]').classList.contains('is-selected'); }));
+  check('the hint is hidden until asked for ("Need a hint?")', await p.evaluate(() => document.querySelector('#pz-hint').hidden && /Need a hint/.test(document.querySelector('#pz-hint-btn').textContent)));
+  await p.click('#pz-hint-btn'); await p.waitForTimeout(60);
+  check('...then shown, and the button says how to hide it', await p.evaluate(() => !document.querySelector('#pz-hint').hidden && document.querySelector('#pz-hint').textContent.length > 20 && /Hide/.test(document.querySelector('#pz-hint-btn').textContent) && document.querySelector('#pz-hint-btn').getAttribute('aria-expanded') === 'true'));
+  await p.click('#pz-pick-spear_wall'); await p.waitForTimeout(80);
+  check('selecting another card swaps the panel, re-hides the hint and shows the best result', await p.evaluate(() => document.querySelector('#pz-hint').hidden && /Please Hold Still/.test(document.querySelector('#pz-panel').textContent) && /3 stars/.test(document.querySelector('#pz-best').textContent) && /940 dr/.test(document.querySelector('#pz-best').textContent) && /1:01/.test(document.querySelector('#pz-best').textContent)));
+  check('three star conditions are listed, earned ones marked', await p.evaluate(() => document.querySelectorAll('.bs-pz-stars-list li').length === 3 && document.querySelectorAll('.bs-pz-stars-list li.is-earned').length === 3));
+  await p.click('#pz-reset'); await p.waitForTimeout(150);
+  check('Reset best asks first (in-page modal)', await p.evaluate(() => !!document.querySelector('.vw-modal') && /Reset this best/.test(document.querySelector('.vw-modal').textContent)));
+  await p.keyboard.press('Escape'); await p.waitForTimeout(150);
+  check('Esc cancels (best untouched)', await p.evaluate(() => __ui.mock.ctx.save.progress.get('puzzles').spear_wall.stars === 3));
+  await p.click('#pz-reset'); await p.waitForTimeout(150); await p.click('.vw-modal .vw-btn--danger'); await p.waitForTimeout(150);
+  check('confirming clears the best, the stars and the card, and disables Reset', await p.evaluate(() => !__ui.mock.ctx.save.progress.get('puzzles').spear_wall && /Not tried yet/.test(document.querySelector('#pz-best').textContent) && document.querySelector('#pz-reset').disabled && /2 \/ 18 stars/.test(document.querySelector('#pz-total').textContent)));
+  await p.click('#pz-play-kiting_101'); await p.waitForTimeout(500);
+  check('Play opens the briefing overlay for that puzzle (goal, par, roster, fixed rules)', (await overlays(p)) === 'briefing' && await p.evaluate(() => { const t = document.querySelector('.bs-brief-card').textContent; return /Kiting for Beginners/.test(t) && /Puzzle 2 of 6/.test(t) && /Par for the 2nd star/.test(t) && /900 dr/.test(t) && document.querySelectorAll('.bs-brief-card .bs-pz-unit').length === 2 && /Retries are free/.test(t) && /already placed/.test(t); }));
+  await p.click('#brief-deploy'); await p.waitForTimeout(150);
+  const setup = await p.evaluate(() => JSON.stringify(__ui.mock.game.setup));
+  check('Deploy builds a puzzle setup (kind, mission id, arena, budget, roster, hand-placed enemy, no mutators or god powers)', /"kind":"puzzle"/.test(setup) && /"mission":"kiting_101"/.test(setup) && /"puzzle":"kiting_101"/.test(setup) && /"presetId":"oasis"/.test(setup) && /"budget":1200/.test(setup) && /"roster":\["cretan_archer","peltast"\]/.test(setup) && /"defId":"mummy"/.test(setup) && /"godPowers":false/.test(setup) && /"mutators":\[\]/.test(setup), setup.slice(0, 400));
+  await p.evaluate(`${SETUP()} __ui.router.goto('campaign'); __ui.router.goto('puzzles');`); await p.waitForTimeout(250);
+  await p.focus('#pz-pick-spear_wall'); await p.keyboard.press('ArrowRight'); await p.keyboard.press('ArrowDown');
+  check('arrow keys move through the grid (right = next card, down = next row)', await p.evaluate(() => document.activeElement && document.activeElement.id === 'pz-pick-goat_logistics'), await p.evaluate(() => document.activeElement && document.activeElement.id));
+  check('Back returns to the campaign map (no recursion)', await p.evaluate(() => { document.querySelector('#pz-frame-back').click(); return true; }) && (await p.evaluate(`__ui.router.current()`)) === 'campaign');
+  check('no console errors', logs.length === 0, logs.join(' | '));
+  await close();
+}
+{
+  const { page: p, logs, close } = await open(browser, { width: 390, height: 844, touch: true });
+  await p.evaluate(`${SETUP({ touch: true })} __ui.router.goto('puzzles');`); await p.waitForTimeout(300);
+  check('phone: one column, no horizontal scroll, nothing selected yet', await p.evaluate(() => { const c = [...document.querySelectorAll('.bs-pz')]; return new Set(c.map((e) => e.offsetLeft)).size === 1 && document.documentElement.scrollWidth <= innerWidth && !document.querySelector('#pz-panel'); }));
+  await p.tap('#pz-pick-knock_knock'); await p.waitForTimeout(150);
+  check('phone: tapping a card opens its panel right under it, full width', await p.evaluate(() => { const c = document.querySelector('[data-id="knock_knock"]'); const pn = document.querySelector('#pz-panel'); return !!pn && c.nextElementSibling === pn && pn.getBoundingClientRect().width > 300; }));
+  check('phone: every control is at least 44 px', await p.evaluate(() => [...document.querySelectorAll('.bs-pz-pick, .bs-pz-foot button, #pz-panel button')].every((b) => { const r = b.getBoundingClientRect(); return r.height >= 43.5 && r.width >= 43.5; })));
+  await p.tap('#pz-pick-knock_knock'); await p.waitForTimeout(100);
+  check('phone: tapping the selected card again closes the panel', await p.evaluate(() => !document.querySelector('#pz-panel')));
+  check('no console errors', logs.length === 0, logs.join(' | '));
+  await close();
+}
+{
+  const { page: p, close } = await open(browser, { width: 820, height: 1180, touch: true });
+  await p.evaluate(`${SETUP({ touch: true })} __ui.router.goto('puzzles');`); await p.waitForTimeout(300);
+  check('tablet: 2 x 3 grid', await p.evaluate(() => new Set([...document.querySelectorAll('.bs-pz')].map((e) => e.offsetLeft)).size === 2));
+  await close();
+}
+{
+  console.log('Puzzles: empty and error states');
+  const { page: p, logs, close } = await open(browser, { width: 1280, height: 720 });
+  await p.evaluate(`${SETUP({ noPuzzles: true })} __ui.router.goto('puzzles');`); await p.waitForTimeout(250);
+  check('no puzzle data: an empty state with a Back button (not a blank page)', await p.evaluate(() => /No puzzles found/.test(document.body.textContent) && !!document.querySelector('#pz-empty-back')));
+  await p.evaluate(`${SETUP({ puzzles: [{ id: 'spear_wall', title: 'Please Hold Still', kind: 'puzzle' }, { id: 'ok_one', title: 'Fine One', arena: { recipe: 'marathon', size: 'medium', seed: 1 }, player: { roster: ['hoplite', 'peltast'], budget: 1000 }, par: 700, goal: { type: 'eliminate' }, enemy: { placements: [] } }, null] })} __ui.mock.ctx.save.status = () => 'memory'; __ui.router.goto('puzzles');`); await p.waitForTimeout(300);
+  check('a puzzle that fails validation says it is being re-chiselled, with Play disabled; the others still work', await p.evaluate(() => { const b = document.querySelector('[data-id="spear_wall"]'); const ok = document.querySelector('[data-id="ok_one"]'); return /re-chiselled/.test(b.textContent) && b.querySelector('.bs-pz-foot button').disabled && !ok.querySelector('.bs-pz-foot button').disabled; }));
+  check('...null entries and missing text do not crash (3 cards, no "undefined")', await p.evaluate(() => document.querySelectorAll('.bs-pz').length === 3 && !/undefined|NaN|\[object/.test(document.querySelector('.bs-puzzles').textContent)));
+  check('blocked storage shows "Not saving"', await p.evaluate(() => !!document.querySelector('#pz-notsaving') && /Not saving/.test(document.querySelector('#pz-notsaving').textContent)));
+  await p.click('[data-id="spear_wall"] .bs-pz-foot button', { force: true, timeout: 1500 }).catch(() => {});
+  check('a disabled Play does nothing', (await overlays(p)) === '');
+  check('no console errors', logs.length === 0, logs.join(' | '));
+  await close();
+}
+{
+  const { page: p, logs, close } = await open(browser, { width: 1280, height: 720 });
+  await p.evaluate(RES('puzzle', 0));
+  check('puzzle results: "Puzzle 2" with its three stars, Retry (R), Next puzzle (sub = title), Puzzles', await p.evaluate(() => { const t = document.querySelector('.bs-res-actions').textContent; return /Puzzle 2/.test(document.querySelector('.bs-res-mission').textContent) && document.querySelectorAll('.bs-res-star').length === 3 && /Retry/.test(t) && /Next puzzle/.test(t) && /The Elephant in the Room/.test(t) && /Puzzles/.test(t) && !/Again, but smarter/.test(t) && !/Next mission/.test(t); }));
+  await p.click('#res-next'); await p.waitForTimeout(150);
+  check('Next puzzle opens that puzzle\'s briefing', (await p.evaluate(`__ui.router.current()`)) === 'briefing' && /The Elephant in the Room/.test(await txt(p, '.bs-brief-title')));
+  await p.evaluate(RES('puzzle', 0)); await p.click('#res-menu'); await p.waitForTimeout(150);
+  check('"Puzzles" goes back to the puzzle list', (await p.evaluate(`__ui.router.current()`)) === 'puzzles');
+  check('no console errors', logs.length === 0, logs.join(' | '));
+  await close();
+}
+{
+  const { page: p, close } = await open(browser, { width: 1280, height: 720 });
+  await p.evaluate(`${SETUP()} __ui.router.goto('campaign');`); await p.waitForTimeout(300);
+  check('the campaign map has a "Puzzles (6)" button that opens the puzzles', /Puzzles \(6\)/.test(await txt(p, '#camp-puzzles')) && await p.evaluate(() => { document.querySelector('#camp-puzzles').click(); return true; }) && (await p.evaluate(`__ui.router.current()`)) === 'puzzles');
+  await close();
+}
+{
+  const { page: p, close } = await open(browser, { width: 1280, height: 720 });
+  await p.evaluate(`${SETUP()} for (const id of ['campaign', 'survival', 'daily', 'puzzles']) __ui.router.goto(id); __ui.router.goto('campaign'); __ui.router.overlay('briefing', { mission: 'pyramid_scheme' }); __ui.router.closeOverlay('briefing'); __ui.router.overlay('briefing', { puzzle: 'knock_knock' });`); await p.waitForTimeout(200);
+  const miss = await p.evaluate(`__ui.missingIcons()`);
+  check('every HUD-set icon the screens ask for exists (no placeholder diamonds)', miss.length === 0, miss.join(','));
+  await close();
+}
+
 await browser.close();
 finish('screens');

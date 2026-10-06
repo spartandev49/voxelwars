@@ -74,6 +74,10 @@ if (catArg) {
     items.push({ id, name: bp.name || id, bp, opts: optsFor(id), unitScale: (STAT_TABLE[id] && STAT_TABLE[id].scale) || 1, camScale: String(opt('tall', '')).split(',').includes(id) ? 1.2 : 1 });
   }
 }
+if (opt('chariot', false)) {      // render the chariot_archer with the UNITS-A crew composed in (BEASTS builder), instead of the unit list
+  const u = await loadUnits();
+  items = [{ id: 'chariot_archer (UNITS-A crew)', name: 'chariot', bp: u.crew_chariot_driver.blueprint, opts: {}, unitScale: 1, camScale: 1.7, chariot: { driver: u.crew_chariot_driver.blueprint, archer: u.crew_chariot_archer.blueprint } }];
+}
 if (!items.length) { console.error('nothing to render'); process.exit(1); }
 
 // ------------------------------------------------------------------------------------------------ layouts
@@ -163,7 +167,7 @@ const perFile = catArg ? 20 : per;
 for (let i = 0, n = 0; i < items.length; i += perFile, n++) {
   const slice = items.slice(i, i + perFile);
   const lay = sheetFor(slice, i);
-  const job = { items: slice.map((it) => ({ bp: it.bp, opts: it.opts, pose, unitScale: it.unitScale || 1, camScale: it.camScale || 1 })), cells: lay.cells, texts: lay.texts, width: lay.width, height: lay.height, palette };
+  const job = { items: slice.map((it) => ({ bp: it.bp, opts: it.opts, pose, unitScale: it.unitScale || 1, camScale: it.camScale || 1, chariot: it.chariot || null })), cells: lay.cells, texts: lay.texts, width: lay.width, height: lay.height, palette };
   const res = await page.evaluate((j) => window.__contact.run(j), job);
   const file = path.join(root, 'docs/sheets', items.length > perFile ? `${name}_${n + 1}.png` : `${name}.png`);
   fs.writeFileSync(file, Buffer.from(res.png.split(',')[1], 'base64'));

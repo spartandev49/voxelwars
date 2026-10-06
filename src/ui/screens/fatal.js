@@ -42,12 +42,14 @@ export function renderFatal(host, info, ctx) {
   }
   const panel = K.tablet(T.title, K.h('div', { class: 'vw-col' },
     K.h('div', { class: 'vw-fatal__cause', role: 'alert', text: cause }),
-    info.message ? K.h('p', { class: 'vw-dim', text: info.message }) : null,
+    k.body ? K.h('p', { class: 'vw-fatal__body', text: k.body }) : null,
+    info.message ? K.h('p', { class: 'vw-dim vw-fatal__msg', text: info.message }) : null,
     K.h('div', { class: 'vw-label', text: T.whatNow }),
     K.h('ol', {}, ...k.steps.map((s) => K.h('li', { text: s }))),
     K.h('p', { class: 'vw-note', id: 'fatal-safe-hint', text: T.safeHint + (kind === 'webgl2' ? ' (Not available here: it needs WebGL 2 too.)' : '') }),
     K.h('div', { class: 'vw-label', text: T.reportHint }), ta,
-    K.h('div', { class: 'vw-row vw-wrapflex' }, ...btns), status), { id: 'fatal-panel', icon: 'warning' });
+    K.h('div', { class: 'vw-row vw-wrapflex' }, ...btns), status,
+    k.joke ? K.h('p', { class: 'vw-epigraph vw-fatal__joke', text: k.joke }) : null), { id: 'fatal-panel', icon: 'warning' });
   panel.classList.add('vw-fatal__panel');
   const el = K.h('div', { class: 'vw-fatal', id: 'vw-fatal', role: 'alertdialog', 'aria-modal': 'true', 'aria-labelledby': 'fatal-panel-t' }, panel);
   host.appendChild(el);

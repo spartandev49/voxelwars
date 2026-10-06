@@ -3,13 +3,26 @@
 //   import { createMockApp } from '../../src/ui/mockctx.js';
 //   const app = createMockApp({ registry: { title: titleModule, ... } });   // app.ctx, app.game, app.nav (router), app.goto(id, params)
 // Data comes from the REAL content: STAT_TABLE + FACTIONS, the real arena generator (thumbnails are drawn from generated terrain),
-// the real prop catalog. Unit text, achievements, humor lists are sample copy standing in for the HUMOR agent's content.
+// the real prop catalog. createMockApp({ real: true }) (what tests/ui and tools/shot_ui use) also takes the real HUMOR text, arenas, mutators, achievements,
+// the real counter table and the real shapes of ctx.save / ctx.diag / Game army tools (see docs/requests/ui-a.md). Without `real` the older sample data
+// is kept ONLY because tests/ui_battle (UI-B) still assert on it; move to `real: true` and the legacy builder can go.
 import { STAT_TABLE, FACTIONS } from '../content/era_ancient/stats.js';
 import { PROP_CATALOG } from '../content/era_ancient/props/catalog.js';
 import { generateArena, RECIPES } from '../world/gen.js';
 import { MATERIALS } from '../world/arena.js';
 import { FORMATIONS } from '../sim/formations.js';
-import { normalizeDef } from '../sim/defs.js';
+import { normalizeDef, buildSimDefs } from '../sim/defs.js';
+import { counterTable } from '../sim/armygen.js';
+import { MUTATORS as SIM_MUTATORS } from '../sim/mutators.js';
+import { UNIT_TEXT as REAL_UNIT_TEXT } from '../content/era_ancient/humor/units_text.js';
+import { ARENAS as REAL_ARENAS } from '../content/era_ancient/arenas.js';
+import { MUTATORS_TEXT, MUTATORS_HEADING } from '../content/era_ancient/humor/mutators_text.js';
+import { TIPS } from '../content/era_ancient/humor/tips.js';
+import { ACHIEVEMENTS as REAL_ACHIEVEMENTS } from '../content/era_ancient/humor/achievements.js';
+import { KILL_VERBS } from '../content/era_ancient/humor/killverbs.js';
+import { FIRST_NAMES, TITLES, EPITHETS, randomName } from '../content/era_ancient/humor/names.js';
+import { SETTINGS_TIPS, RULES_TIPS } from '../content/era_ancient/humor/ui_text.js';
+import { SCOUT_TEXT } from '../content/era_ancient/humor/scout_text.js';
 
 /* ------------------------------------------------------------------ sample copy */
 const UNIT_TEXT = {
@@ -143,7 +156,40 @@ function arenaThumbFor(recipe, seed, w, h) {
   return { url: cv.toDataURL('image/jpeg', 0.62), arena: a };
 }
 
-export function buildContent() {
+/** Real-shape content: the same assembly as src/content/era_ancient/content.js minus 3D models (pure modules only). */
+const MUTATOR_STARS = { big_heads: 3, tiny_titans: 6, moon_gravity: 9, chicken_rain: 12, wine_rain_always: 15, friendly_fire_fiesta: 18, speedy_soldiers: 21, ragdoll_frenzy: 24, glass_cannons: 27 };
+function buildRealContent() {
+  const extra = {};
+  for (const id of Object.keys(STAT_TABLE)) extra[id] = { model: null, text: REAL_UNIT_TEXT[id] || null, name: (REAL_UNIT_TEXT[id] && REAL_UNIT_TEXT[id].name) || undefined };
+  const defs = buildSimDefs(extra);
+  for (const id of Object.keys(defs)) { const d = defs[id]; if (!d.name || d.name === id) d.name = id.split('_').map((w) => w[0].toUpperCase() + w.slice(1)).join(' '); }
+  const thumbs = {};
+  const arenas = REAL_ARENAS;
+  const arenaThumbSync = (id) => {
+    if (thumbs[id]) return thumbs[id];
+    const a = arenas.find((x) => x.id === id);
+    if (!a) return '';
+    try { thumbs[id] = arenaThumbFor(a.recipe, a.seed, 192, 108).url; } catch (e) { thumbs[id] = ''; }
+    return thumbs[id];
+  };
+  const promised = new Map();
+  const arenaThumb = (id) => { if (!promised.has(id)) promised.set(id, new Promise((res) => setTimeout(() => res(arenaThumbSync(id)), 20))); return promised.get(id); };
+  const props = {};
+  for (const id of Object.keys(PROP_CATALOG)) props[id] = Object.assign({ id }, PROP_CATALOG[id]);
+  const mutators = SIM_MUTATORS.map((m) => { const t = MUTATORS_TEXT.find((x) => x.id === m.id) || {}; return { id: m.id, name: t.name || m.name, desc: t.desc || m.desc, blurb: t.desc || m.desc, short: t.short || '', locked: t.locked || '', stars: MUTATOR_STARS[m.id] || 0, mods: m.mods }; });
+  const missions = [['marathon_sort_of', 'Marathon (Sort Of)'], ['thermopylae_snack', 'The 300 Slightly Overweight Spartans'], ['pyramid_scheme', 'Pyramid Scheme'], ['nile_crossing', 'Goat Across the Nile'], ['alps_elephant', 'Hannibal Ante Portas'], ['teutoburg_peekaboo', 'Teutoburg Hide and Seek'], ['troy_giftshop', 'Siege of Troy (Gift Shop Not Included)'], ['cyclops_meet', 'Cyclops Isle Meet-and-Greet'], ['zeus_bad_day', 'Zeus Has a Bad Day']]
+    .map(([id, title], i) => ({ id, title, act: 1 + Math.floor(i / 3), index: i }));
+  let counters = null;
+  return {
+    defs, units: defs, factions: FACTIONS, unitList: () => Object.values(defs), arenas, arenaThumb, arenaThumbSync, props, formations: FORMATIONS, mutators,
+    humor: { tips: TIPS.map((t) => t.text), achievements: REAL_ACHIEVEMENTS, killVerbs: KILL_VERBS, names: { first: FIRST_NAMES, titles: TITLES, epithets: EPITHETS, random: randomName }, settingsTips: SETTINGS_TIPS, rulesTips: RULES_TIPS, mutatorsHeading: MUTATORS_HEADING, scout: SCOUT_TEXT },
+    campaign: { missions }, get counters() { return counters || (counters = counterTable(defs)); }, glossary: null, parts: {},
+    customDef: (cs) => ({ id: cs.id, name: cs.name, role: cs.role || 'melee', cost: cs.cost || 100, faction: 'custom', tags: [], hp: 100, armor: 0.1, speed: 3, melee: { dmg: 12, cd: 1.1, range: 1.5 }, text: { blurb: 'Made in the Soldier Workshop.' } }),
+  };
+}
+
+export function buildContent(o) {
+  if (o && o.real) return buildRealContent();
   const units = buildUnits();
   const unitList = () => Object.keys(units).map((k) => units[k]);
   const thumbs = {};
@@ -163,7 +209,7 @@ export function buildContent() {
   const missions = [['marathon_sort_of', 'Marathon (Sort Of)'], ['thermopylae_snack', 'The 300 Slightly Overweight Spartans'], ['pyramid_scheme', 'Pyramid Scheme'], ['nile_crossing', 'Goat Across the Nile'], ['alps_elephant', 'Hannibal Ante Portas'], ['teutoburg_peekaboo', 'Teutoburg Hide and Seek'], ['troy_giftshop', 'Siege of Troy (Gift Shop Not Included)'], ['cyclops_meet', 'Cyclops Isle Meet-and-Greet'], ['zeus_bad_day', 'Zeus Has a Bad Day']]
     .map(([id, title], i) => ({ id, title, act: 1 + Math.floor(i / 3), index: i }));
   return {
-    units, unitList, factions: FACTIONS, arenas, arenaThumb, arenaThumbSync, props,
+    units, defs: units, unitList, factions: FACTIONS, arenas, arenaThumb, arenaThumbSync, props,
     campaign: { missions },
     humor: {
       tips: ['Spears beat cavalry. Cavalry beat archers. Archers beat everyone who stands still.', 'Chickens are not a strategy. They are, however, effective.'],
@@ -180,10 +226,15 @@ export function buildContent() {
 }
 
 /* ------------------------------------------------------------------ save layer */
-function collection(items) {
-  const m = new Map(items.map((i) => [i.id, i]));
-  return { list: () => Array.from(m.values()), get: (id) => m.get(id) || null, put: (it) => { if (!it.id) it.id = makeId('item'); m.set(it.id, it); return it; }, remove: (id) => m.delete(id), count: () => m.size };
+// Mirrors save/store.js Collection: newest first, size cap (oldest dropped), put() returns the write status.
+function collection(items, cap) {
+  let arr = items.slice();
+  const c = { cap: cap || 48, list: () => arr.slice(), get: (id) => arr.find((x) => x.id === id) || null,
+    put: (it) => { if (!it.id) it.id = makeId('item'); arr = arr.filter((x) => x.id !== it.id); arr.unshift(it); if (arr.length > c.cap) arr.length = c.cap; return true; },
+    remove: (id) => { arr = arr.filter((x) => x.id !== id); return true; }, count: () => arr.length };
+  return c;
 }
+const rec = (team, defId, n, x0, z0) => ({ team, defId, positions: Array.from({ length: n }, (_, i) => [x0 + (i % 6) * 1.4, z0 + Math.floor(i / 6) * 1.4]), heading: team ? -Math.PI / 2 : Math.PI / 2, order: 'advance' });
 export function buildSave(content, opts) {
   opts = opts || {};
   const st = { status: opts.storage || 'ok' };
@@ -196,14 +247,41 @@ export function buildSave(content, opts) {
     totals: { battles: 58, wins: 41, losses: 15, draws: 2, kills: 684, deaths: 530, damage: 61234, playSeconds: 9420, shieldBlocks: 1190, kicks: 17, chickenKills: 41, goatsSaved: 2, elephantTramples: 9, godPowers: 63, zeusRageQuits: 1, arenasSaved: 2, soldiersSaved: 3, arenasPlayed: 9, drachmaeSpent: 301400, boulders: 212, arrows: 4802, unitsPlaced: 2310, commandKills: 12, campaignStars: 6, bestWave: 7, dailyStreak: 3 },
     get() { return stats.totals; },
   };
+  const REAL = !!opts.real;
   const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', size: 'medium', thumb: content.arenaThumbSync('marathon') }, { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', size: 'small', thumb: content.arenaThumbSync('oasis') }]);
   const soldiers = collection([{ id: 'cs_chad', name: 'Sir Chadius the Mildly Concerned', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 140 }, { id: 'cs_pan', name: 'Frying Pan Dave', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 95 }, { id: 'cs_olive', name: 'Olive Branch Olga', blueprint: { v: 1 }, stats: {}, role: 'support', cost: 120 }]);
-  const armies = collection([{ id: 'army_phalanx', name: 'Big Phalanx Energy', n: 38, cost: 3900 }, { id: 'army_birds', name: 'Chicken Rain Insurance', n: 61, cost: 2400 }]);
+  const armies = collection(REAL
+    ? [{ id: 'army_phalanx', name: 'Big Phalanx Energy', v: 1, team: 0, records: [rec(0, 'hoplite', 24, -30, -6), rec(0, 'spartan', 8, -26, -6), rec(0, 'cretan_archer', 6, -34, 4)], n: 38, cost: 3900, saved: Date.UTC(2026, 9, 3) },
+       { id: 'army_birds', name: 'Chicken Rain Insurance', v: 1, team: 0, records: [rec(0, 'sacred_chicken', 24, -30, -6), rec(0, 'battle_goat', 6, -26, 4)], n: 30, cost: 2400, saved: Date.UTC(2026, 9, 4) }]
+    : [{ id: 'army_phalanx', name: 'Big Phalanx Energy', n: 38, cost: 3900 }, { id: 'army_birds', name: 'Chicken Rain Insurance', n: 61, cost: 2400 }], 24);
+  if (REAL) {
+    // real shapes: docs/lifetime_stats.md (nested maps, no `n` counters in the progress doc) and save/docs.js
+    progress.data = { stars: { marathon_sort_of: 3, thermopylae_snack: 2, pyramid_scheme: 1 }, achievements: { first_victory: { at: Date.UTC(2026, 8, 30) }, blitz: { at: Date.UTC(2026, 9, 2) }, landscaper: { at: Date.UTC(2026, 9, 4) }, soldier_smith: { at: Date.UTC(2026, 9, 4) }, zeus_left: { at: Date.UTC(2026, 9, 5) } },
+      codex: { locked: ['cyclops', 'medusa', 'minotaur'], seen: {} }, unlockedMutators: [], titles: [], parts: [], survivalBest: 7, dailyLast: '2026-10-05' };
+    stats.totals = { battles: 58, wins: 41, losses: 15, draws: 2, kills: 684, unitsLost: 530, deaths: 530, damage: 61234, playSeconds: 9420, shieldBlocks: 1190, kicks: 17, chickenKills: 41, goatKills: 5, goatsSaved: 2, elephantTramples: 9, trampleKills: 14, cyclopsMisses: 3,
+      godPowers: { zeus: 40, meteor: 23 }, zeusRagequits: 1, zeusRageQuits: 1, arenasSaved: 2, soldiersSaved: 3, arenasPlayed: { marathon: 12, thermopylae: 8, colosseum: 6, nile: 4, giza: 3, oasis: 9, troy: 2, olympus: 1, styx: 1 }, drachmaeSpent: 301400, boulders: 212, arrows: 4802, unitsPlaced: 2310,
+      takeCommandKills: 12, commandKills: 12, campaign: { stars: { marathon_sort_of: 3, thermopylae_snack: 2, pyramid_scheme: 1 }, completed: false }, campaignStars: 6, bestWave: 7, dailyStreak: 3, byDef: { hoplite: { spawned: 900, kills: 210, deaths: 190 }, spartan: { spawned: 300, kills: 160, deaths: 70 }, cretan_archer: { spawned: 400, kills: 120, deaths: 90 }, sacred_chicken: { spawned: 120, kills: 41, deaths: 100 }, war_elephant: { spawned: 30, kills: 55, deaths: 12 } } };
+  }
+  const store = { flushPending: () => (st.status === 'full' ? (st.status = 'ok', 0) : 0), pending: () => [], status: () => st.status };
+  const OK = (n) => ({ ok: true, errors: [], warnings: [], applied: ['settings', 'progress'], counts: { arenas: n, soldiers: 0, armies: 0 } });
   return {
-    arenas, soldiers, armies, progress, stats,
+    arenas, soldiers, armies, progress, stats, store,
     status: () => st.status, setStatus: (s) => { st.status = s; },
-    exportAll: async () => JSON.stringify({ v: 1, settings: {}, arenas: arenas.list(), soldiers: soldiers.list(), armies: armies.list(), progress: progress.data }),
-    importAll: async (x) => { const t = typeof x === 'string' ? x : await x.text(); let o; try { o = JSON.parse(t); } catch (e) { throw new Error('That does not look like VOXELWARS save data.'); } if (!o || o.v !== 1) throw new Error('Unknown save data version.'); return { imported: Object.keys(o).length }; },
+    exportAll: REAL
+      ? async () => 'VW1.save.' + btoa(JSON.stringify({ f: 1, app: 'voxelwars', at: Date.now(), keys: { armies: { v: 1, data: armies.list() }, progress: { v: 1, data: progress.data } } })).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_') + '.0badc0de'
+      : async () => JSON.stringify({ v: 1, settings: {}, arenas: arenas.list(), soldiers: soldiers.list(), armies: armies.list(), progress: progress.data }),
+    // real contract (main.js): resolves {ok, errors, warnings, applied, counts}; REJECTS with the first plain-English reason (e.result = the full result)
+    importAll: async (x) => {
+      const t = typeof x === 'string' ? x : await x.text();
+      if (REAL) {
+        const fail = (m) => { const e = new Error(m); e.result = { ok: false, errors: [m], warnings: [], applied: [], counts: {} }; throw e; };
+        if (!String(t).trim()) fail('There is nothing to import: the text is empty');
+        if (!/^\s*(\{|VW1\.save\.)/.test(t)) fail('That does not look like a VOXELWARS code (expected VW1.type.data.check)');
+        if (/^\s*VW1\.save\.[^.]*\.[0-9a-f]{8}\s*$/.test(t) || /^\s*\{/.test(t)) { const r = OK(0); if (opts.importWarns) r.warnings.push('The save came from a newer build; unknown parts were skipped.'); return r; }
+        fail('The code is damaged (check value does not match). Was it cut off when copied?');
+      }
+      let o; try { o = JSON.parse(t); } catch (e) { throw new Error('That does not look like VOXELWARS save data.'); } if (!o || o.v !== 1) throw new Error('Unknown save data version.'); return { imported: Object.keys(o).length };
+    },
   };
 }
 
@@ -307,6 +385,7 @@ export function buildGame(content, save, settings) {
   const on = (ev, fn) => { (em[ev] || (em[ev] = [])).push(fn); return () => { em[ev] = (em[ev] || []).filter((f) => f !== fn); }; };
   const emit = (ev, p) => (em[ev] || []).slice().forEach((f) => f(p));
   const units = content.units;
+  const changed = () => { emit('placement', {}); emit('placement_changed'); };
   const CAP = () => ({ potato: 100, papyrus: 200, marble: 300, olympian: 400 }[settings.get('quality')] || 300);
   const G = {
     get setup() { return G._setup; },
@@ -321,36 +400,41 @@ export function buildGame(content, save, settings) {
     rematch() { G.log.push('rematch'); }, tweak() { G.log.push('tweak'); G.state = 'placement'; emit('state', 'placement'); }, exitToMenu() { G.log.push('exit'); G.state = 'idle'; emit('state', 'idle'); },
     tools: {
       setBrush(b) { Object.assign(G._brush, b); emit('brush', G._brush); }, brush() { return G._brush; },
-      place(team, defId, n) { const def = units[defId]; if (!def) return false; const cost = def.cost * n; if (G.info.budget(team).left < cost) return false; for (let i = 0; i < n; i++) G._p[team].push({ defId, x: (i % 5) * 1.2 + (team ? 20 : -20), z: Math.floor(i / 5) * 1.2, heading: team ? Math.PI : 0 }); G._undo.push({ team, n }); G._redo = []; emit('placed', { team, defId, n }); emit('placement_changed'); return true; },
-      undo() { const u = G._undo.pop(); if (!u) return; G._p[u.team].splice(-u.n); G._redo.push(u); emit('placement_changed'); }, redo() { const u = G._redo.pop(); if (!u) return; G._undo.push(u); for (let i = 0; i < u.n; i++) G._p[u.team].push({ defId: 'hoplite', x: 0, z: 0, heading: 0 }); emit('placement_changed'); },
+      place(team, defId, n) { const def = units[defId]; if (!def) return false; const cost = def.cost * n; if (G.info.budget(team).left < cost) return false; for (let i = 0; i < n; i++) G._p[team].push({ defId, x: (i % 5) * 1.2 + (team ? 20 : -20), z: Math.floor(i / 5) * 1.2, heading: team ? Math.PI : 0 }); G._undo.push({ team, n }); G._redo = []; emit('placed', { team, defId, n }); changed(); return true; },
+      undo() { const u = G._undo.pop(); if (!u) return; G._p[u.team].splice(-u.n); G._redo.push(u); changed(); }, redo() { const u = G._redo.pop(); if (!u) return; G._undo.push(u); for (let i = 0; i < u.n; i++) G._p[u.team].push({ defId: 'hoplite', x: 0, z: 0, heading: 0 }); changed(); },
       canUndo() { return G._undo.length > 0; }, canRedo() { return G._redo.length > 0; },
-      clear(team) { if (team === undefined) { G._p = [[], []]; } else G._p[team] = []; G._undo = []; G._redo = []; emit('placement_changed'); },
+      clear(team) { if (team === undefined) { G._p = [[], []]; } else G._p[team] = []; G._undo = []; G._redo = []; changed(); },
       autoFill(team, o) {
         o = o || {};
         const target = Math.min(o.budget || G._budget[team], G._budget[team]);
         const pool = Object.keys(units).filter((id) => (!o.faction || o.faction === 'mixed' || units[id].faction === o.faction) && units[id].role !== 'monster' && units[id].cost <= target);
         let guard = 0;
         while (guard++ < 400) { const spent = G.info.budget(team).spent; const afford = pool.filter((id) => spent + units[id].cost <= target); if (!afford.length || G._p[team].length >= CAP()) break; const id = afford[(guard * 7 + team * 3) % afford.length]; G._p[team].push({ defId: id, x: 0, z: 0, heading: 0 }); }
-        G._undo.push({ team, n: 1 }); emit('placement_changed');
+        G._undo.push({ team, n: 1 }); changed();
       },
-      saveArmy(name) { const it = { id: makeId('army'), name, n: G._p[0].length, cost: G._p[0].reduce((s, p) => s + units[p.defId].cost, 0), placements: clone(G._p[0]) }; save.armies.put(it); return it; },
-      loadArmy(idOrData) { const a = typeof idOrData === 'string' ? save.armies.get(idOrData) : idOrData; if (!a) return false; G._p[G._brush.team] = a.placements ? clone(a.placements) : G._p[G._brush.team]; emit('placement_changed'); return true; },
-      exportArmy() { return 'VW1.army.' + btoa(JSON.stringify(G._p[0].slice(0, 5))).replace(/=+$/, '') + '.0badc0de'; },
-      importArmy(text) { if (typeof text === 'string' && !text.startsWith('VW1.army.')) throw new Error('This code is for something else, not an army.'); return true; },
+      // real Game (src/app/game.js): saveArmy returns {name, records:[{team, defId, positions, heading, order}]} for BOTH teams and persists nothing;
+      // loadArmy(data) ADDS the records as placed (no clearing, no budget check). Persistence + share codes are the screen's job (ctx.save.armies, save/share.js).
+      saveArmy(name) {
+        const records = [];
+        for (const team of [0, 1]) { const by = new Map(); for (const p of G._p[team]) { if (!by.has(p.defId)) by.set(p.defId, []); by.get(p.defId).push([p.x, p.z]); } by.forEach((positions, defId) => records.push({ team, defId, custom: undefined, positions, heading: team ? -Math.PI / 2 : Math.PI / 2, order: 'advance' })); }
+        return { name, records };
+      },
+      loadArmy(data) { for (const r of ((data && data.records) || [])) for (const pos of r.positions) G._p[r.team].push({ defId: r.defId, x: pos[0], z: pos[1], heading: r.heading || 0 }); G._undo = []; G._redo = []; emit('placement', {}); changed(); return true; },
     },
     info: {
       budget(team) { const spent = G._p[team].reduce((s, p) => s + (units[p.defId] ? units[p.defId].cost : 0), 0); const cap = G._budget[team]; return { spent, cap, left: cap - spent }; },
       counts(team) { const by = {}; for (const p of G._p[team]) by[p.defId] = (by[p.defId] || 0) + 1; const types = Object.keys(by); return { total: G._p[team].length, cap: CAP(), types: types.length, typeCap: 16, byType: types.map((d) => ({ defId: d, n: by[d] })) }; },
       validity(x, z) { if (z > 30) return 'In the enemy’s zone'; if (x > 40) return 'Underwater'; return null; },
+      // real shape: [{code, severity:'weak'|'tip', kind:'warn'|'tip', text, counters:[unit ids], share}] worded by humor.scout[code].text
       scout(team) {
         const by = {}; for (const p of G._p[team]) by[units[p.defId].role] = (by[units[p.defId].role] || 0) + 1;
         const n = G._p[team].length;
         if (!n) return [];
+        const W = (code) => (content.humor && content.humor.scout && content.humor.scout[code] && content.humor.scout[code].text) || code;
         const out = [];
-        if (!by.ranged) out.push({ id: 'no_ranged', severity: 'weak', text: 'No ranged units. Your line has nothing to say at a distance.', counters: ['cretan_archer', 'peltast'] });
-        if (!by.cavalry) out.push({ id: 'no_cav', severity: 'weak', text: 'No cavalry to chase archers or punish a flank.', counters: ['companion_cavalry'] });
-        if (by.melee > n * 0.5) out.push({ id: 'melee_heavy', severity: 'strong', text: 'A solid wall of infantry. Cavalry will think twice.', counters: [] });
-        out.push({ id: 'tip', severity: 'tip', text: 'Spears hold the line against a cavalry charge. Keep them in front.', counters: ['hoplite'] });
+        if (!by.ranged) out.push({ code: 'no_ranged', severity: 'weak', kind: 'warn', text: W('no_ranged'), counters: ['cretan_archer', 'peltast'], share: 0 });
+        if (!by.cavalry) out.push({ code: 'no_cavalry', severity: 'weak', kind: 'warn', text: W('no_cavalry'), counters: ['companion_cavalry'], share: 0 });
+        if ((by.melee || 0) > n * 0.5 && by.melee > 6) out.push({ code: 'one_note', severity: 'tip', kind: 'tip', text: W('one_note'), counters: ['philosopher'], share: by.melee / n });
         return out;
       },
     },
@@ -367,13 +451,13 @@ export function buildGame(content, save, settings) {
 export function createMockApp(opts) {
   opts = opts || {};
   const registry = opts.registry || {};
-  const content = buildContent();
+  const content = buildContent(opts);
   const store = Object.assign({}, DEFAULT_SETTINGS, clone(opts.settings || {}));
   const setEm = emitter();
   const settings = {
     get: (k) => store[k], set: (k, v) => { store[k] = v; setEm.emit(k, v); }, on: (fn) => setEm.on(fn), all: () => Object.assign({}, store),
   };
-  const save = buildSave(content, { storage: opts.storage });
+  const save = buildSave(content, { storage: opts.storage, real: !!opts.real, importWarns: !!opts.importWarns });
   const calls = { audio: [], toasts: [], downloads: [], clipboard: [], misc: [] };
   const audio = {
     play: (cue, o) => { calls.audio.push(cue); }, music: { setMood() {}, setIntensity() {} }, duck() {}, setVolume: (b, v) => { store['vol.' + b] = v; }, getVolume: (b) => store['vol.' + b], state: () => 'running',
@@ -386,16 +470,21 @@ export function createMockApp(opts) {
     pickFile: async () => { const f = new File(['{"v":1}'], 'save.json', { type: 'application/json' }); return f; },
     isTouch: !!opts.touch, viewport: () => ({ w: window.innerWidth, h: window.innerHeight }), isPhone: () => (opts.phone !== undefined ? !!opts.phone : window.innerWidth < 640),
   };
+  // the REAL snapshot is flat (src/app/diagnostics.js + audio/engine.js diagnostics()); ctx.diag.log is [{t (ms), msg}]
+  const audioPaths = { hit_blade_1: 'embedded', hit_blade_2: 'embedded', ui_click: 'embedded', ui_confirm: 'embedded', horn_war_1: 'fetched', crowd_cheer_1: 'fetched', thunder_1: 'fetched', 'synth:fanfare': 'synth', pickup_coin: 'failed' };
+  for (let i = 0; i < 60; i++) audioPaths['sfx_filler_' + i] = i % 3 ? 'fetched' : 'embedded';
   const diag = {
-    log: [{ t: 12.1, level: 'info', msg: 'boot: three r128 from cdnjs' }, { t: 12.9, level: 'info', msg: 'audio: 38 embedded, 71 fetched' }, { t: 14.2, level: 'warn', msg: 'music: track "olympus_choir" fell back to synth' }],
+    log: [{ t: 812, msg: 'boot: three r128 from cdnjs' }, { t: 1290, msg: 'audio: 38 embedded, 71 fetched' }, { t: 14200, msg: 'music: track "olympus_choir" fell back to synth' }],
     snapshot: () => ({
-      webgl: { webgl2: true, renderer: 'ANGLE (SwiftShader Device, Vulkan 1.3)', vendor: 'Google Inc. (Google)', version: 'WebGL 2.0 (OpenGL ES 3.0 Chromium)', maxTexture: 8192 },
-      perf: { tier: store.quality, fps: 58, ms: 17.2, drawCalls: 126, triangles: 884210, units: 140, heapMB: 112 },
-      audio: { state: 'running', ctxState: 'running', codecs: { mp3: 'probably', ogg: 'probably', wav: 'probably' }, loaded: { embedded: 38, fetched: 71, synth: 3, failed: 0 }, assets: [{ id: 'hit_blade_1', path: 'embedded' }, { id: 'horn_war_1', path: 'fetched' }, { id: 'music_olympus', path: 'synth' }] },
-      storage: { status: save.status(), bytes: 48211, keys: 6 },
-      csp: opts.csp || [],
-      log: diag.log,
-      build: { version: '1.0.0', date: '2026-10-06' },
+      build: '1.0.0', buildDate: '2026-10-06', timeToTitleMs: 1840,
+      caps: { renderer: 'ANGLE (SwiftShader Device, Vulkan 1.3)', vendor: 'Google Inc. (Google)', maxTex: 8192, floatRT: true, ua: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/131.0 Safari/537.36', dpr: 1, screen: '1920x1080' },
+      errors: opts.errors || [], csp: opts.csp || [],
+      quality: store.quality, autoScale: 0.9, pixelRatio: 1, drawCalls: 126, triangles: 884210, geometries: 212, textures: 31, programs: 14,
+      fps: 58, frameP50: 16.6, frameP95: 21.4, cpuMs: 6.2, units: 140, projectiles: 12, fxLive: 340, tick: 1820, heapMB: 112,
+      storage: save.status(), storageBytes: 48211,
+      audio: { state: 'running', ctxState: 'running', available: true, sampleRate: 48000, unlocked: true, muted: false, voices: 9, voiceBudget: 32, voiceDrops: 0, loaded: { embedded: 38, fetched: 71, synth: 3, failed: 1 }, paths: audioPaths,
+        failedAssets: [{ id: 'pickup_coin', url: 'assets/sfx/pickup_coin.mp3', err: 'HTTP 404' }], codecs: { mp3: true }, manifest: { sfx: 109, music: 14, has: true, core: 38, notPublished: 0 }, tts: { supported: true, enabled: false, spoken: 0 } },
+      manifest: { sfx: 109, music: 14, coreAudio: 38 },
     }),
   };
   const game = buildGame(content, save, settings);

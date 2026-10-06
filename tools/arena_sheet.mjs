@@ -59,6 +59,18 @@ if (opt('env')) {
   for (const t of files) fs.unlinkSync(t.f);
   console.log(logs.slice(0, 10).join('\n')); await b.close(); process.exit(0);
 }
+// --scene collapse|cheer: W8 shots (Troy gate collapse into rubble, colosseum crowd cheering) -> <out>/w8_<recipe>_<scene>_<cam>.png
+if (opt('scene')) {
+  const sc = opt('scene'), recipe = sc === 'collapse' ? 'troy' : 'colosseum';
+  await p.evaluate(([rr, s, sd, o]) => window.__sheet.load(rr, s, sd, o), [recipe, size, seed, loadOpts]);
+  await p.evaluate((k) => window.__sheet.scene(k), sc);
+  for (const c of (sc === 'collapse' ? ['breach', 'oblique'] : ['stands', 'oblique'])) {
+    await p.evaluate(([cc, w, h]) => window.__sheet.cam(cc, w, h), [c, W, H]);
+    await p.evaluate(() => window.__sheet.render(2)); await p.waitForTimeout(150);
+    const f = path.join(outDir, `w8_${recipe}_${sc}_${c}.png`); await p.screenshot({ path: f }); console.log('wrote', f);
+  }
+  console.log(logs.slice(0, 10).join('\n')); await b.close(); process.exit(0);
+}
 for (const r of (flag('index-only') ? [] : list)) {
   const t0 = Date.now();
   const info = await p.evaluate(([rr, s, sd, o]) => window.__sheet.load(rr, s, sd, o), [r, size, seed, loadOpts]);

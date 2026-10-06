@@ -680,7 +680,7 @@ R.troy = (g) => {
   g.slopeMat(MAT.dirt, 2, [MAT.sand]);
   // the walls: segments tile along z on the plateau lip, a gate arch with two doors, towers beside the gate and every ~14 u
   const wx = edge + 2.4, seg = 2.6 * 0.995;
-  g.levelStrip(wx, -W / 2, wx, W / 2, 2.0, top);
+  g.levelStrip(wx, -W / 2, wx, W / 2, 2.8, top);
   g.keepClearPath([[-W * 0.4, 0], [W * 0.4, 0]], 3);
   for (const sg of [-1, 1]) {
     const z0 = sg * 8.7, z1 = sg * (W / 2 - 2.2), n = Math.max(1, Math.floor(Math.abs(z1 - z0) / seg));

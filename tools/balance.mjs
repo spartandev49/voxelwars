@@ -98,10 +98,12 @@ const JOBS = {
   /** pairs: unit i vs unit j at equal cost, both orientations */
   pair(j) {
     const defs = M.H.DEFS, n1 = equalCost(defs, j.i, j.budget), n2 = equalCost(defs, j.j, j.budget);
-    const r = battle({ a: [{ defId: j.i, n: n1 }], b: [{ defId: j.j, n: n2 }], seed: j.seed, arena: 'marathon', arenaSeed: 5 });
-    const s = battle({ b: [{ defId: j.i, n: n1 }], a: [{ defId: j.j, n: n2 }], seed: j.seed + 1, arena: 'marathon', arenaSeed: 5 });
     const score = (rec, side) => (rec.winner < 0 ? 0.5 : rec.winner === side ? 1 : 0);
-    return { i: j.i, j: j.j, n: [n1, n2], score: (score(r, 0) + score(s, 1)) / 2, o: [score(r, 0), score(s, 1)], keep: [r.winner === 0 ? r.keep : -r.keep, s.winner === 1 ? s.keep : -s.keep], t: (r.t + s.t) / 2, reason: [r.reason, s.reason] };
+    const r = j.side === 1 ? null : battle({ a: [{ defId: j.i, n: n1 }], b: [{ defId: j.j, n: n2 }], seed: j.seed, arena: 'marathon', arenaSeed: 5 });
+    const s = j.side === 0 ? null : battle({ b: [{ defId: j.i, n: n1 }], a: [{ defId: j.j, n: n2 }], seed: j.seed + 1, arena: 'marathon', arenaSeed: 5 });
+    const o = [r ? score(r, 0) : null, s ? score(s, 1) : null].filter((x) => x !== null);
+    const tt = [r, s].filter(Boolean);
+    return { i: j.i, j: j.j, n: [n1, n2], score: o.reduce((a, b) => a + b, 0) / o.length, o, t: tt.reduce((a, b) => a + b.t, 0) / tt.length, reason: tt.map((x) => x.reason) };
   },
   perf(j) {
     return j;
@@ -266,12 +268,18 @@ const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
 
 async function sectionPairs(pool) {
   const defs = M.H.DEFS, ids = Object.keys(defs).sort();
-  const budget = 2000, jobs = [];
-  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) jobs.push({ i: ids[i], j: ids[j], budget, seed: 100 + hashStr(ids[i] + ids[j]) % 9000 });
-  const res = await pool.map('pair', QUICK ? jobs.filter((_, k) => k % 3 === 0) : jobs, 'pairs');
-  const m = {}; for (const id of ids) m[id] = {};
+  const budget = +flag('budget', QUICK ? 1200 : 2000), jobs = [];
+  const only = flag('units', '').split(',').filter(Boolean);
+  let k = 0;
+  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+    if (only.length && !only.includes(ids[i]) && !only.includes(ids[j])) continue;
+    jobs.push({ i: ids[i], j: ids[j], budget, seed: 100 + hashStr(ids[i] + ids[j]) % 9000, side: QUICK ? (k++ & 1) : -1 });
+  }
+  const res = await pool.map('pair', jobs, 'pairs');
+  let m = {}; for (const id of ids) m[id] = {};
+  if (only.length) { try { const old = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')).pairs; if (old && old.matrix) for (const id of ids) m[id] = Object.assign({}, old.matrix[id] || {}); } catch (e) { /* first run */ } }
   for (const r of res) { m[r.i][r.j] = r.score; m[r.j][r.i] = 1 - r.score; }
-  return { budget, ids, matrix: m, quick: QUICK, battles: res.length * 2, rows: res.map((r) => [r.i, r.j, r.score, r.n[0], r.n[1], +r.t.toFixed(0)]) };
+  return { budget, ids, matrix: m, quick: QUICK, partial: only.length > 0, battles: res.reduce((a, r) => a + r.o.length, 0), rows: res.map((r) => [r.i, r.j, r.score, r.n[0], r.n[1], +r.t.toFixed(0)]) };
 }
 
 async function sectionDuels(pool) {

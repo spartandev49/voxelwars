@@ -22,7 +22,19 @@ export function factionName(factions, id) {
 const has = (d, t) => !!(d.tags && d.tags.indexOf(t) >= 0);
 
 /** Rule-of-thumb counters for a def: { beats: string[], weak: string[] } (human labels, <= 2 each). */
+let CONTENT = null;
+/** K.init(ctx) binds ctx.content so counterHints() can use the real counter table (content.counters[id] = {counters:[ids], prey:[ids], strong}). */
+export function bindContent(content) { CONTENT = content || null; }
+const nameOf = (id) => { const u = CONTENT && CONTENT.units && CONTENT.units[id]; return (u && u.name) || id; };
+
+/** {beats:[names], weak:[names]}: the real matchup table when the content provides one, else a tag/role heuristic. */
 export function counterHints(def) {
+  let t = null;
+  try { t = CONTENT && CONTENT.counters ? CONTENT.counters[def.id] : null; } catch (e) { t = null; }
+  if (t && Array.isArray(t.prey) && Array.isArray(t.counters)) return { beats: t.prey.slice(0, 3).map(nameOf), weak: t.counters.slice(0, 3).map(nameOf), beatIds: t.prey.slice(0, 3), weakIds: t.counters.slice(0, 3), strong: !!t.strong, table: true };
+  return counterHeuristic(def);
+}
+function counterHeuristic(def) {
   const beats = [], weak = [];
   const role = def.role;
   if (has(def, 'spear') || has(def, 'pike')) { beats.push('Cavalry'); weak.push('Archers'); }

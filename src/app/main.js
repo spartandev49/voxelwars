@@ -55,6 +55,7 @@ async function start() {
   const game = new Game({ engine, content, settings, audio, bus });
   const loop = new Loop({ game, engine, settings });
   const collections = { arenas: new Collection(store, 'arenas', 48), soldiers: new Collection(store, 'soldiers', 24), armies: new Collection(store, 'armies', 24) };
+  if (CUSTOM && CUSTOM.bindContent) CUSTOM.bindContent(content, collections.soldiers);   // saved custom soldiers resolve by id (Game.placeAt, World.addUnit) and get their own models (content/era_ancient/custom.js)
 
   // meta layer: progress documents (vw.progress / survival / daily / seen), lifetime stats (vw.stats), achievements, announcer, kill feed, aim / Take Command / teaching / kill-cam
   const stats = new LifetimeStats({ adapter: storeAdapter(store) });
