@@ -73,6 +73,7 @@ export function buildMissionWorld(m, bot, seed, o = {}) {
   const rt = setupMission(w, m, { seed });
   const groups = o.groups || botGroups(m, bot, seed);
   let pl = o.placements || layoutArmy(groups, arena.zones.A, arena.zones.B, defs, { seed });
+  if (o.orders) pl = pl.map((p) => (o.orders[p.defId] ? Object.assign({}, p, { order: o.orders[p.defId] }) : p));       // e.g. elephants on 'hold': the sim's own watchdog releases them after 18 s
   if (bot === 'turtle') pl = pl.map((p) => Object.assign({}, p, { order: 'hold' }));
   const squads = w.addPlacements(0, pl, { defs });
   // a turtle on a hold_hill mission forms up ON the hill (placement is only allowed in the zone, so it marches there once) and holds it
@@ -144,3 +145,13 @@ export function runPuzzle(p, placements, o = {}) {
   return { win: summary.win, t: w.time, reason: w.endReason, stars: ev.stars, earned: ev.earned, summary, spent: summary.spent, alive: [w.stats[0].alive, w.stats[1].alive] };
 }
 export { PUZZLES };
+
+/** Fingerprint of the simulation sources (src/sim + src/world): feasibility records carry it, so a record made on another sim is recognisable. */
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+export function simHash() {
+  const h = crypto.createHash('sha1'), root = path.resolve(new URL('../../src', import.meta.url).pathname);
+  for (const d of ['sim', 'world']) for (const f of fs.readdirSync(path.join(root, d)).filter((x) => x.endsWith('.js')).sort()) h.update(f).update(fs.readFileSync(path.join(root, d, f)));
+  return h.digest('hex').slice(0, 10);
+}

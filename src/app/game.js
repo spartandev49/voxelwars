@@ -73,7 +73,7 @@ export class Game {
 
   on(ev, fn) { return this.bus.on('game:' + ev, fn); }
   emit(ev, p) { if (this.isDiorama) return; this.bus.emit('game:' + ev, p || {}); }
-  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 38, marble: 56, olympian: 76 }[this.tier] || 56; }
+  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 38, marble: 56, olympian: 76 }[this.tier] || 56; this.view.nearBudget = { potato: 40, papyrus: 80, marble: 140, olympian: 260 }[this.tier] || 140; }
   setTier(t) { this.tier = t; this._applyTier(); }
 
   // ------------------------------------------------------------------ setup / lifecycle
@@ -132,6 +132,7 @@ export class Game {
     w.events.on('battle_countdown', (p) => this.emit('countdown', p));
     w.events.on('explosion', (p) => this.rig.hint(p.x, p.z, 'explosion', 2));
     w.events.on('hero_down', () => { this.rig.addTrauma(0.35); });
+    if (this.audio && this.audio.setPlayerTeam) { try { this.audio.setPlayerTeam(0); } catch (e) { /* optional */ } }
     if (this.audio && this.audio.attach) { try { this.audio.attach(w.events, { arena: w.arena, world: w, defs: this.content.defs, getListener: () => this.rig.listener }); } catch (e) { console.warn('audio attach failed', e); } }
     this.labels.bind(w); this.mini.setArena(w.arena); this._miniDirty = 0;
     w.events.on('crater', () => { this._miniDirty = this.clock; });

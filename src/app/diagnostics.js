@@ -13,7 +13,7 @@ export class Diagnostics {
     const e = app && app.engine, r = e && e.renderer, info = r && r.info;
     const o = { build: typeof __VW_VERSION__ !== 'undefined' ? __VW_VERSION__ : 'dev', buildDate: typeof __VW_BUILD__ !== 'undefined' ? __VW_BUILD__ : '', caps: this.caps && this.caps.info, timeToTitleMs: this.timeToTitle, errors: this.errors.slice(-10), csp: this.csp.slice(-10) };
     if (e) { o.quality = e.qualityKey; o.autoScale = +e.autoScale.toFixed(2); o.pixelRatio = r.getPixelRatio(); }
-    if (info) { o.drawCalls = info.render.calls; o.triangles = info.render.triangles; o.geometries = info.memory.geometries; o.textures = info.memory.textures; o.programs = info.programs ? info.programs.length : 0; }
+    if (info) { o.drawCalls = e.stats ? e.stats.calls : info.render.calls; o.triangles = e.stats ? e.stats.triangles : info.render.triangles; o.geometries = info.memory.geometries; o.textures = info.memory.textures; o.programs = info.programs ? info.programs.length : 0; }
     if (app && app.loop) { o.fps = Math.round(app.loop.fps); o.frameP50 = +app.loop.percentile(0.5).toFixed(1); o.frameP95 = +app.loop.percentile(0.95).toFixed(1); o.cpuMs = +(app.loop.cpuMs || 0).toFixed(2); }
     if (app && app.game && app.game.world) { o.units = app.game.world.units.length; o.projectiles = app.game.world.proj.live; o.fxLive = app.game.fx.liveCount; o.tick = app.game.world.tickN; }
     try { if (performance.memory) o.heapMB = Math.round(performance.memory.usedJSHeapSize / 1048576); } catch (err) { /* ignore */ }

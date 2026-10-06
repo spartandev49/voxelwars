@@ -28,6 +28,10 @@
 .vw-hud.is-hidden :is(.hud-top, .hud-bottom, .hud-world, .hud-aim, .hud-paused-flag, .hud-teach) { visibility: hidden; }
 .vw-hud.is-photo :is(.hud-top, .hud-bottom, .hud-world, .hud-aim, .hud-paused-flag, .hud-teach) { visibility: hidden; }
 .vw-hud.possessing :is(.hud-powers, .hud-orders, .hud-sel) { display: none; }
+/* Take Command on touch layouts: the joystick (bottom left) and Attack (bottom right) own the corners, so the radar steps aside and the announcer rides above the joystick */
+.vw-hud.possessing:is([data-layout="tablet"], [data-layout="phone"]) :is(.hud-mini, .hud-types) { display: none; }
+.vw-hud.possessing[data-layout="tablet"] .hud-ann { transform: translateY(-9.6rem); }
+.vw-hud.possessing[data-layout="phone"] .hud-ann { transform: translateY(-6.9rem); }
 .vw-hud.menu-open .hud-paused-flag { display: none; }
 
 /* ---------------------------------------------------------------- shared: panel, buttons, bars, tooltips */
@@ -337,7 +341,7 @@
 .hud-tc { position: absolute; inset: 0; pointer-events: none; }
 .hud-tc[hidden] { display: none; }
 .hud-tc-banner { position: absolute; left: .6rem; top: .6rem; display: flex; align-items: center; gap: .55rem; padding: .3rem .45rem .3rem .6rem; background: var(--gold); color: var(--ink); width: min(19rem, calc(100vw - 1.2rem)); }
-.vw-hud[data-layout="tablet"] .hud-tc-banner { top: 5.6rem; }
+.vw-hud[data-layout="tablet"] .hud-tc-banner { top: 8rem; }
 .vw-hud[data-layout="phone"] .hud-tc-banner { top: 9.2rem; left: .4rem; }
 .hud-tc-banner .ic { width: 1.5rem; height: 1.5rem; flex: none; }
 .hud-tc-who { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: .15rem; }
@@ -464,6 +468,9 @@
 .vw-hud[data-layout="phone"] .hud-paused-flag { top: 9.5rem; }
 .vw-hud[data-layout="phone"] .hud-focus-chip { bottom: 13rem; }
 .vw-hud[data-layout="phone"] .hud-tc-abilities { grid-area: pow; justify-self: center; }
+.vw-hud[data-layout="phone"] .hud-tc-abilities { gap: .3rem; padding: .25rem .3rem; }
+.vw-hud[data-layout="phone"] .hud-joy { width: 6.5rem; height: 6.5rem; left: .6rem; bottom: .9rem; border-width: 3px; } .vw-hud[data-layout="phone"] .hud-joy-thumb { width: 2.7rem; height: 2.7rem; }
+.vw-hud[data-layout="phone"] .hud-tc-attack { width: 5.2rem; height: 5.2rem; right: .6rem; bottom: 1.1rem; }
 
 /* landscape phone: army centred, controls to the right, powers/orders stay low; nothing else competes for the short screen */
 @media (orientation: landscape) {
@@ -508,6 +515,7 @@
 /* ---------------------------------------------------------------- pause / controls overlays */
 .bs-pause-card { width: min(46rem, 100%); max-height: 100%; display: flex; flex-direction: column; }
 .bs-pause-card > .vw-tablet__body { overflow: auto; }
+.bs-pause-card .vw-tablet__head { flex-wrap: wrap; row-gap: .1rem; } .bs-pause-card .vw-tablet__sub { flex: 1 1 100%; }
 .bs-pause-body { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 1.2rem; }
 .bs-pause-menu { display: flex; flex-direction: column; gap: .7rem; }
 .bs-pause-quick { display: flex; flex-direction: column; gap: .15rem; min-width: 0; }

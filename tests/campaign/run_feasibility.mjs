@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { MISSIONS, sweep } from './_lib.mjs';
 import { missionHash } from '../../src/content/era_ancient/campaign.js';
 import { puzzleReport } from './_puzzle_report.mjs';
+import { simHash } from './_lib.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
@@ -24,7 +25,7 @@ for (const i of idx) for (const bot of bots) {
   const m = MISSIONS[i - 1];
   const mm = bot === 'thrifty' ? Object.assign({}, m, { budget: m.par || Math.round(m.budget * 0.75) }) : m;
   const powers = bot === 'thrifty' || bot === 'expert', r = sweep(mm, bot === 'thrifty' || bot === 'expert' ? 'counter' : bot, n, { seedBase: base, powers });
-  const rec = { id: m.id, index: i, bot, hash: missionHash(m), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
+  const rec = { id: m.id, index: i, bot, hash: missionHash(m), sim: simHash(), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
   fs.writeFileSync(path.join(dir, `m${i}_${bot}.json`), JSON.stringify(rec));
   console.log(m.id, bot, `${r.wins}/${n}`, 'stars', r.starHits.join('/'), 'avgWinT', r.avgWinT.toFixed(0), 'cpu', (r.cpuMs / n / 1000).toFixed(1) + 's');
 }
@@ -34,7 +35,7 @@ function collect() {
   const out = { version: 1, runs: {} };
   MISSIONS.forEach((m, k) => {
     const rec = { hash: missionHash(m), bots: {} };
-    for (const bot of ['counter', 'greedy', 'turtle', 'thrifty', 'melee', 'raid', 'expert']) { const f = path.join(dir, `m${k + 1}_${bot}.json`); if (fs.existsSync(f)) { const r = JSON.parse(fs.readFileSync(f, 'utf8')); rec.bots[bot] = { n: r.n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, budget: r.budget, hash: r.hash || rec.hash, perSeed: r.perSeed.map((x) => [x.win ? 1 : 0, x.t, x.stars]) }; } }
+    for (const bot of ['counter', 'greedy', 'turtle', 'thrifty', 'melee', 'raid', 'expert']) { const f = path.join(dir, `m${k + 1}_${bot}.json`); if (fs.existsSync(f)) { const r = JSON.parse(fs.readFileSync(f, 'utf8')); rec.bots[bot] = { sim: r.sim || '', n: r.n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, budget: r.budget, hash: r.hash || rec.hash, perSeed: r.perSeed.map((x) => [x.win ? 1 : 0, x.t, x.stars]) }; } }
     out.runs[m.id] = rec;
   });
   fs.writeFileSync(path.join(root, 'tests/campaign/feasibility.json'), JSON.stringify(out));

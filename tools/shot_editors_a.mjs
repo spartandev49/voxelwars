@@ -50,18 +50,21 @@ async function boot() {
   await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 90000 });
   await sleep(600); await page.keyboard.press('Space'); await sleep(900);
 }
+// the panels slide in on mount: wait until the toolbar has reached its place
+async function settled() { await page.waitForFunction(() => { const e = document.getElementById('ed-tool-raise'); return !!e && e.getBoundingClientRect().x >= 0 && e.getBoundingClientRect().x < 60; }, null, { timeout: 30000 }).catch(() => {}); await sleep(200); }
 async function openBuilder(opts = {}) {
   await ev(() => window.__vw.goto('arena_builder'));
   await page.waitForSelector('#ed-root', { timeout: 90000 });
+  await settled();
   await sleep(600);
-  if (opts.closeModal !== false) { for (let i = 0; i < 3; i++) { if (await page.$('.vw-modal-wrap')) { await page.keyboard.press('Escape'); await page.waitForSelector('.vw-modal-wrap', { state: 'detached', timeout: 3000 }).catch(() => {}); await sleep(250); } } }
+  if (opts.closeModal !== false) { for (let i = 0; i < 2; i++) { if (await page.$('.vw-modal-wrap')) { await page.keyboard.press('Escape'); await page.waitForSelector('.vw-modal-wrap', { state: 'detached', timeout: 20000 }).catch(() => {}); await sleep(250); } } }
   await sleep(opts.wait || 1200);
 }
 let ok = true;
 try {
   await boot();
   const mod = await import(path.join(root, 'tests/editors/arena/browser_scenarios.mjs'));
-  await mod.run(scenario, Object.assign(H_, { boot, openBuilder, arg }));
+  await mod.run(scenario, Object.assign(H_, { boot, openBuilder, settled, arg }));
 } catch (e) { problems.push('driver: ' + (e && e.stack || e)); }
 await browser.close();
 const shown = problems.filter((p) => !/Failed to load resource: net::ERR_FAILED/.test(p));

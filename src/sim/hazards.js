@@ -2,7 +2,7 @@
 // a real effect and AI avoidance (nav cost x8 on hazard cells in world/nav.js; units deflect around hazard cells they are not already standing in).
 // Events: telegraph{kind,x,z,r,t,h,a}, hazard_trigger{kind,x,z,r}. The rolling boulder is public state on its hazard (hz.boulder = {active,x,y,z}).
 import { ST, SE } from './consts.js';
-import { applyDamage, dotDamage, killUnit, applyStatus, staggerUnit, newHit } from './combat.js';
+import { applyDamage, dotDamage, killUnit, applyStatus, staggerUnit, newHit, setAnim } from './combat.js';
 
 const H = newHit(), HB = newHit();
 const CYCLE = { spikes: 3, geyser: 8, boulders: 12 };

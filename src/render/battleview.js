@@ -40,7 +40,7 @@ export class BattleView {
     this.gore = o.gore || 'red'; this.corpseMode = o.corpses || 'stay'; this.fxScale = 1;
     this.skins = new Map(); this.corpses = []; this.maxCorpses = 60;
     this.world = null; this.off = []; this.animLod = true;
-    this.lodDist = 56; this.hitStop = 1; this.onImpact = null; this._hs = new Map(); this._hsAnim = { clip: 'idle', t: 0, rate: 1, flinch: 0, dir: 0, prev: 'idle', blend: 1 };
+    this.lodDist = 56; this.lodScale = 1; this.nearBudget = 140; this.hitStop = 1; this.onImpact = null; this._hs = new Map(); this._hsAnim = { clip: 'idle', t: 0, rate: 1, flinch: 0, dir: 0, prev: 'idle', blend: 1 };
     this.extra = { speed: 0, gait: 0, dead: false, t: 0, root: { y: 0, x: 0, z: 0, pitch: 0, roll: 0, yaw: 0 }, team: 0 };
     this.frustum = new (T().Frustum)(); this._pm = new (T().Matrix4)(); this._sph = new (T().Sphere)();
     this.selected = 0; this.hover = 0; this.hpBars = true; this.projectilesOn = true;
@@ -80,6 +80,7 @@ export class BattleView {
       const model = mm.model;
       const skin = new VoxSkin(this.engine, model, { capacity: 32, shadow: true, lod: true });
       r = { key, model, skin, pose: newPose(model.parts.length), scaleVec: mm.scale || [1, 1, 1], palette: this._palette(model), glow: mm.glow || 0 };
+      r.lodK2 = Math.min(1, Math.max(0.2, 6000 / Math.max(1, skin.triangles)));   // heavy models (cavalry 17-25K tris) switch to the far mesh earlier (distance^2 factor)
       this.skins.set(key, r);
     }
     return r;
@@ -104,6 +105,8 @@ export class BattleView {
     for (const r of this.skins.values()) r.skin.begin();
     const cx = camera.position.x, cy = camera.position.y, cz = camera.position.z;
     const far = this.farDist || 260;
+    const ldE = this.lodDist * this.lodScale, ld2 = ldE * ldE;      // adaptive: with more near units than the tier's budget the near radius shrinks (smoothly), and grows back
+    const fcs = this.engine.focus, fcx = fcs ? fcs.x : cx, fcz = fcs ? fcs.z : cz, sr = (this.engine.shadowRadius || 55) * 1.05, fr2 = sr * sr;   // units outside the shadow area cast no shadow anyway: draw them with the (shadowless) far mesh
     this.drawn = 0;
     const draw = (u, dead) => {
       const r = this._rec(u);
@@ -121,7 +124,7 @@ export class BattleView {
       let st = u.anim;
       if (this._hs.size) { const hs = this._hs.get(u.id); if (hs) { if (this.time >= hs.until) this._hs.delete(u.id); else { const a = this._hsAnim; a.clip = st.clip; a.t = hs.t; a.rate = st.rate; a.flinch = st.flinch; a.dir = st.dir; a.prev = st.prev; a.blend = st.blend; st = a; } } }
       this.animator.pose(r.model, st, ex, r.pose);
-      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow + 4 * statusMode(u.se), (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll, d2 > this.lodDist * this.lodDist ? 1 : 0);
+      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow + 4 * statusMode(u.se), (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll, (d2 > ld2 * r.lodK2 || (x - fcx) * (x - fcx) + (z - fcz) * (z - fcz) > fr2) ? 1 : 0);
       this.drawn++;
     };
     const U = w.units;
@@ -134,7 +137,8 @@ export class BattleView {
       const dx = c.x - cx, dz = c.z - cz, cd2 = dx * dx + dz * dz; if (cd2 > far * far * 0.6) continue;
       r.skin.add(c.x, c.y, c.z, c.h, c.sx, c.sy, c.sz, c.pose, this._team(c.team), 0, c.stone, 0, c.pitch, c.roll, cd2 > this.lodDist * this.lodDist ? 1 : 0);
     }
-    for (const r of this.skins.values()) r.skin.end();
+    let nearN = 0; for (const r of this.skins.values()) { r.skin.end(); nearN += r.skin.nNear; }
+    const tgt = Math.min(1, Math.max(0.35, Math.sqrt(this.nearBudget / Math.max(1, nearN)))); this.lodScale += (tgt - this.lodScale) * Math.min(1, dt * 2.5);
     this._updateProjectiles(alpha, camera);
     this._updateBars(camera);
     this._ambientFx(dt, camera);

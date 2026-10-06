@@ -23,7 +23,7 @@ export async function run({ page, shot, step, check, sleep }) {
   const idDup = list[0].id; await page.click('#ws-lib-rename-' + idDup); await page.waitForSelector('#ws-rename-input'); await page.fill('#ws-rename-input', 'Renamed Randall'); await page.click('#ws-rename-ok'); await sleep(500);
   list = await saved(); check(list.some((x) => x.name === 'Renamed Randall'), 'rename through the in-page modal');
   await page.click('#ws-lib-delete-' + idDup); await page.waitForSelector('.vw-modal [id^="vw-modal"]', { timeout: 3000 }).catch(() => {});
-  await sleep(300); const askText = await page.evaluate(() => (document.querySelector('.vw-modal') || {}).textContent || ''); check(/gone for good/.test(askText), 'delete asks in an in-page modal: ' + askText.slice(0, 60));
+  await sleep(300); const askText = await page.evaluate(() => [...document.querySelectorAll('.vw-modal')].map((m) => m.textContent).join(' | ')); check(/gone for good/.test(askText), 'delete asks in an in-page modal: ' + askText.slice(-80));
   await page.evaluate(() => { const b = Array.from(document.querySelectorAll('.vw-modal-wrap:last-child .vw-modal__foot button')).find((x) => /^Delete$/i.test(x.textContent.trim())); b.click(); }); await sleep(500);
   list = await saved(); check(list.length === 1, 'deleted: ' + list.length);
   await page.keyboard.press('Escape'); await sleep(400);
@@ -45,13 +45,13 @@ export async function run({ page, shot, step, check, sleep }) {
   // ---- the roster cap (24)
   await page.evaluate(() => { const l = JSON.parse(localStorage.getItem('vw.soldiers')).data; const base = l[0]; const items = []; for (let i = 0; i < 24; i++) items.push(Object.assign({}, base, { id: 'cs_fill' + i, name: 'Filler ' + i, blueprint: Object.assign({}, base.blueprint, { id: 'cs_fill' + i }) })); localStorage.setItem('vw.soldiers', JSON.stringify({ v: 1, data: items })); });
   await page.fill('#ws-name', 'Number Twenty Five'); await page.click('#ws-save'); await page.waitForSelector('.vw-modal'); await sleep(300);
-  const full = await page.evaluate(() => (document.querySelector('.vw-modal') || {}).textContent || ''); check(/roster is full/i.test(full), 'the 25th soldier is refused with a plain message');
+  const full = await page.evaluate(() => [...document.querySelectorAll('.vw-modal')].map((m) => m.textContent).join(' | ')); check(/roster is full/i.test(full), 'the 25th soldier is refused with a plain message');
   await page.keyboard.press('Escape'); await sleep(300);
   check((await saved()).length === 24, 'roster stays at 24');
   // ---- draft: leave dirty, come back, resume
   await page.evaluate(() => window.__vw.goto('title')); await sleep(600);
   await page.evaluate(() => window.__vw.goto('workshop')); await page.waitForSelector('.vw-modal', { timeout: 5000 }); await sleep(300);
-  const dtext = await page.evaluate(() => (document.querySelector('.vw-modal') || {}).textContent || ''); check(/Unfinished business/.test(dtext), 'unsaved work is offered back: ' + dtext.slice(0, 40));
+  const dtext = await page.evaluate(() => [...document.querySelectorAll('.vw-modal')].map((m) => m.textContent).join(' | ')); check(/Unfinished business/.test(dtext), 'unsaved work is offered back: ' + dtext.slice(0, 40));
   await page.evaluate(() => { const b = Array.from(document.querySelectorAll('.vw-modal-wrap:last-child .vw-modal__foot button')).find((x) => /Resume/i.test(x.textContent)); b.click(); }); await sleep(600);
   check((await wsState(page)).name === 'Number Twenty Five', 'draft resumed with the unsaved name');
 }

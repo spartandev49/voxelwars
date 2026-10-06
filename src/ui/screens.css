@@ -168,6 +168,7 @@
 .vw-pl__top-ctl { gap: .6rem; padding-top: .3rem; }
 .vw-pl__brow { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .5rem; }
 .vw-pl__budgets { gap: .45rem; }
+.vw-pl__par { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem; }
 [data-team="0"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-a-deep); color: #fff; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .3); }
 [data-team="1"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-b-deep); color: #fff; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .3); }
 .vw-pl__sec { margin-top: .7rem; border-top: 3px dashed var(--line); padding-top: .15rem; }

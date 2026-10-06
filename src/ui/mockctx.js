@@ -23,6 +23,7 @@ import { KILL_VERBS } from '../content/era_ancient/humor/killverbs.js';
 import { FIRST_NAMES, TITLES, EPITHETS, randomName } from '../content/era_ancient/humor/names.js';
 import { SETTINGS_TIPS, RULES_TIPS } from '../content/era_ancient/humor/ui_text.js';
 import { SCOUT_TEXT } from '../content/era_ancient/humor/scout_text.js';
+import { PUZZLES } from '../content/era_ancient/puzzles.js';
 
 /* ------------------------------------------------------------------ sample copy */
 const UNIT_TEXT = {
@@ -183,7 +184,7 @@ function buildRealContent() {
   return {
     defs, units: defs, factions: FACTIONS, unitList: () => Object.values(defs), arenas, arenaThumb, arenaThumbSync, props, formations: FORMATIONS, mutators,
     humor: { tips: TIPS.map((t) => t.text), achievements: REAL_ACHIEVEMENTS, killVerbs: KILL_VERBS, names: { first: FIRST_NAMES, titles: TITLES, epithets: EPITHETS, random: randomName }, settingsTips: SETTINGS_TIPS, rulesTips: RULES_TIPS, mutatorsHeading: MUTATORS_HEADING, scout: SCOUT_TEXT },
-    campaign: { missions }, get counters() { return counters || (counters = counterTable(defs)); }, glossary: null, parts: {},
+    campaign: { missions }, puzzles: PUZZLES, get counters() { return counters || (counters = counterTable(defs)); }, glossary: null, parts: {},
     customDef: (cs) => ({ id: cs.id, name: cs.name, role: cs.role || 'melee', cost: cs.cost || 100, faction: 'custom', tags: [], hp: 100, armor: 0.1, speed: 3, melee: { dmg: 12, cd: 1.1, range: 1.5 }, text: { blurb: 'Made in the Soldier Workshop.' } }),
   };
 }
@@ -531,7 +532,9 @@ export function createMockApp(opts) {
     destroy() { if (cur) { try { cur.api.destroy(); } catch (e) { /* ignore */ } cur.el.remove(); cur = null; } },
   };
   // Esc/key routing like the real shell: modal handler (kit) swallows Esc first; otherwise the screen gets onKey/onBack.
-  window.addEventListener('keydown', (e) => { if (e.defaultPrevented) return; app.key(e); });
+  const onKeyDown = (e) => { if (e.defaultPrevented) return; app.key(e); };
+  if (opts.keys !== false) window.addEventListener('keydown', onKeyDown);   // opts.keys === false: the host harness routes keys itself
+  app.dispose = () => { window.removeEventListener('keydown', onKeyDown); app.destroy(); };
   return app;
 }
 

@@ -777,6 +777,14 @@ export function progress(o) {
     if (lab) lab.textContent = text != null ? text : (typeof o.label === 'string' ? o.label : '');
     el.classList.toggle('is-over', !!over);
   };
+  // optional tick (e.g. a puzzle's par): el.setMark(fraction 0..1 | null, label?)
+  let mark = null;
+  el.setMark = (f, label) => {
+    if (f == null || !isFinite(f)) { if (mark) { mark.remove(); mark = null; } return; }
+    if (!mark) { mark = h('span', { class: 'vw-progress__mark', 'aria-hidden': 'true' }); el.appendChild(mark); }
+    mark.style.setProperty('--m', String(clamp(f, 0, 1)));
+    if (label) mark.title = label;
+  };
   el.set(o.value || 0, typeof o.label === 'string' ? o.label : null);
   return el;
 }

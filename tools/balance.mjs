@@ -1,11 +1,11 @@
 // VOXELWARS balance & battle-quality harness (owned by SIM). Headless, deterministic, parallel (worker_threads).
 //
 //   node tools/balance.mjs [section ...] [--quick] [--workers=N] [--seed=N] [--no-report]
-//   sections: pairs duels comp fuzz mirror fun perf metrics soldier   (default: all)
+//   sections: pairs duels comp fuzz mirror fun diff perf metrics soldier   (default: all);  tune / applytune: the stats.js auto-tuner (see its comment)
 //
 // RUNTIME BUDGET (4 cores, idle machine; a busy machine is up to 2x slower):
 //   full run   ~ 35-50 min :  pairs 6 min, duels 1 min, comp 4 min, fuzz 10 min (2000 matchups + 100 NC), mirror 15 min (15 arenas x 400),
-//                             fun 10 min (3 setups x 200), metrics 3 min, soldier 4 min (5000 blueprints + 1000 sim runs), perf 1 min
+//                             fun 10 min (3 setups x 200), diff 3 min (3 tiers x 400), metrics 3 min, soldier 4 min (5000 blueprints + 1000 sim runs), perf 1 min
 //   --quick    ~  6-8 min  :  every section at ~1/5 of its sample size (verdicts for sample-size criteria are marked "(quick)")
 // Results are merged into docs/balance_data.json section by section and docs/balance_report.md is regenerated from them, so partial runs
 // (`node tools/balance.mjs pairs`) only refresh their own section. Same code + same seeds => same numbers (perf is the only wall-clock section).
@@ -35,7 +35,7 @@ async function jobsModule() {
   const SC = await import('./lib/scale.mjs');
   return { H, G, S, P, R, GEN, ST, ABI, D, SC };
 }
-let M = null;
+let M = null, BASE = null;
 
 const BOSS = (d) => d.tags.includes('boss') || d.role === 'monster';
 function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
@@ -105,8 +105,15 @@ const JOBS = {
     const tt = [r, s].filter(Boolean);
     return { i: j.i, j: j.j, n: [n1, n2], score: o.reduce((a, b) => a + b, 0) / o.length, o, t: tt.reduce((a, b) => a + b.t, 0) / tt.length, reason: tt.map((x) => x.reason) };
   },
-  perf(j) {
-    return j;
+  /** tuning: apply power multipliers {id: m} to this worker's DEFS (hp and every damage number scale with sqrt(m)); m = 1 restores the shipped numbers */
+  setMult(j) {
+    const defs = M.H.DEFS; BASE = BASE || {};
+    for (const id of Object.keys(defs)) {
+      const d = defs[id]; if (!BASE[id]) BASE[id] = { hp: d.hp, md: d.melee ? d.melee.dmg : 0, rd: d.ranged ? d.ranged.dmg : 0 };
+      const b = BASE[id], k = Math.sqrt(j.mult[id] || 1);
+      d.hp = Math.round(b.hp * k); if (d.melee) d.melee.dmg = +(b.md * k).toFixed(2); if (d.ranged) d.ranged.dmg = +(b.rd * k).toFixed(2);
+    }
+    return true;
   },
   /** custom soldier: compile, derive, check efficiency, run a tiny sim */
   soldier(j) {
@@ -183,6 +190,19 @@ const JOBS = {
     }
     return out;
   },
+  /** S21: behaviour/army difficulty d (A) against the fixed reference bot (style 'counter', normal behaviour) at equal cost, sides swapped */
+  diffBattle(j) {
+    const { G, H } = M;
+    const arena = H.getArena('marathon', 'medium', 5);
+    const ref = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.budget, seed: j.seed + 500, team: 0, arena });
+    const bot = G.generateArmy({ faction: 'mixed', style: 'counter', budget: j.budget, seed: j.seed + 900, team: 1, arena, against: ref.counts });
+    const me = G.generateArmy({ faction: 'mixed', style: 'balanced', difficulty: j.d, budget: j.budget, seed: j.seed + 100, team: 0, arena, against: bot.counts });
+    const dm = { easy: 0, normal: 1, hard: 2 }[j.d];
+    const o1 = battle({ aP: me.placements, bP: bot.placements, seed: j.seed, arena: 'marathon', rules: { difficulty: { 0: dm, 1: 1 } } });
+    const o2 = battle({ a: bot.groups, b: me.groups, seed: j.seed + 1, arena: 'marathon', rules: { difficulty: { 0: 1, 1: dm } } });
+    const sc = (o, side) => (o.winner < 0 ? 0.5 : o.winner === side ? 1 : 0);
+    return { d: j.d, score: (sc(o1, 0) + sc(o2, 1)) / 2, kills: o1.kills + o2.kills };
+  },
   /** composition: faction/style matrix cell */
   comp(j) {
     const { G, H } = M;
@@ -223,7 +243,9 @@ class Pool {
       const w = new Worker(SELF, { workerData: {} });
       w.on('message', (m) => {
         if (m.ready) { this.idle.push(w); resolve(); return; }
-        const p = this.pending.get(m.id); this.pending.delete(m.id); this.done++;
+        const p = this.pending.get(m.id); this.pending.delete(m.id);
+        if (p.bcast) { if (m.err) p.reject(new Error(m.err)); else p.resolve(m.res); return; }          // broadcast replies do not free the worker for the queue (it was already counted idle/busy)
+        this.done++;
         this.idle.push(w);
         if (m.err) p.reject(new Error(m.err)); else p.resolve(m.res);
         this._pump();
@@ -239,6 +261,7 @@ class Pool {
       this.pending.set(id, t); w.postMessage({ id, kind: t.kind, job: t.job });
     }
   }
+  broadcast(kind, job) { return Promise.all(this.workers.map((w) => new Promise((resolve, reject) => { const id = this.nextId++; this.pending.set(id, { resolve, reject, bcast: true }); w.postMessage({ id, kind, job }); }))); }
   async map(kind, jobs, label) {
     const t0 = Date.now(); let last = 0;
     const tick = setInterval(() => { const el = (Date.now() - t0) / 1000; if (el - last >= 15) { last = el; process.stderr.write(`  [${label}] ${this.done}/${this.total} jobs  ${el.toFixed(0)}s\n`); } }, 5000);
@@ -256,7 +279,7 @@ class Pool {
 const argv = process.argv.slice(2);
 const flag = (n, d) => { const a = argv.find((x) => x.startsWith('--' + n + '=')); return a ? a.split('=')[1] : d; };
 const QUICK = argv.includes('--quick');
-const ALL = ['pairs', 'duels', 'comp', 'fuzz', 'mirror', 'fun', 'metrics', 'soldier', 'perf'];
+const ALL = ['pairs', 'duels', 'comp', 'fuzz', 'mirror', 'fun', 'diff', 'metrics', 'soldier', 'perf'];
 const wanted = argv.filter((a) => !a.startsWith('--'));
 const sections = wanted.length ? wanted : ALL;
 const DATA_FILE = path.join(ROOT, 'docs/balance_data.json');
@@ -280,6 +303,66 @@ async function sectionPairs(pool) {
   if (only.length) { try { const old = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')).pairs; if (old && old.matrix) for (const id of ids) m[id] = Object.assign({}, old.matrix[id] || {}); } catch (e) { /* first run */ } }
   for (const r of res) { m[r.i][r.j] = r.score; m[r.j][r.i] = 1 - r.score; }
   return { budget, ids, matrix: m, quick: QUICK, partial: only.length > 0, battles: res.reduce((a, r) => a + r.o.length, 0), rows: res.map((r) => [r.i, r.j, r.score, r.n[0], r.n[1], +r.t.toFixed(0)]) };
+}
+
+
+// -------------------------------------------------------------------------------------------------------------------------------------
+// Auto-tuner: equalises the combat field win rate of the mass-battle units by nudging a per-unit power multiplier (hp and damage by sqrt(m)).
+//   node tools/balance.mjs tune --rounds=5 [--budget=1000] [--fresh]      iterate (resumes the multipliers stored in docs/balance_data.json)
+//   node tools/balance.mjs applytune                                       write the multipliers into src/content/era_ancient/stats.js (hp and dmg numbers) and reset them to 1
+const TUNE_ROLES = ['melee', 'ranged', 'cavalry', 'beast', 'swarm', 'monster', 'siege'];
+async function sectionTune(pool) {
+  const defs = M.H.DEFS, ids = Object.keys(defs).sort().filter((id) => TUNE_ROLES.includes(defs[id].role));
+  const rounds = +flag('rounds', 5), budget = +flag('budget', 1000);
+  let prev = {}; try { prev = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')).tune || {}; } catch (e) { /* none */ }
+  const mult = argv.includes('--fresh') ? {} : Object.assign({}, prev.mult || {});
+  const history = argv.includes('--fresh') ? [] : (prev.history || []);
+  const isBoss = (id) => BOSS(defs[id]) || defs[id].role === 'siege';
+  for (let r = 0; r < rounds; r++) {
+    await pool.broadcast('setMult', { mult });
+    const jobs = [];
+    for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) jobs.push({ i: ids[i], j: ids[j], budget, seed: 300 + r * 7 + hashStr(ids[i] + ids[j]) % 9000, side: -1 });
+    const res = await pool.map('pair', jobs, 'tune r' + (r + 1));
+    const sc = {}, cnt = {};
+    for (const x of res) {
+      for (const [a, b, v] of [[x.i, x.j, x.score], [x.j, x.i, 1 - x.score]]) {
+        if (isBoss(a) && defs[b].cost < 120 && !isBoss(b)) continue;          // bosses are not judged against low tier (by design)
+        sc[a] = (sc[a] || 0) + v; cnt[a] = (cnt[a] || 0) + 1;
+      }
+    }
+    const rows = ids.map((id) => ({ id, f: sc[id] / cnt[id], m: mult[id] || 1 }));
+    const spread = Math.sqrt(mean(rows.map((x) => (x.f - 0.5) * (x.f - 0.5))));
+    console.log(`round ${r + 1}: spread (rms of field win rate - 50%) ${(spread * 100).toFixed(1)} pts`);
+    console.log(rows.slice().sort((a, b) => b.f - a.f).map((x) => `  ${x.id.padEnd(18)} ${(x.f * 100).toFixed(0).padStart(3)}%  m=${x.m.toFixed(2)}`).join('\n'));
+    history.push({ round: history.length + 1, spread, rows: rows.map((x) => [x.id, +x.f.toFixed(3), +x.m.toFixed(3)]) });
+    for (const x of rows) {
+      const target = BOSS(defs[x.id]) ? 0.58 : 0.5;
+      const lm = Math.log(x.m) + 0.85 * (target - x.f) * 1.5;
+      mult[x.id] = Math.min(2.4, Math.max(0.42, Math.exp(lm)));
+    }
+    const data0 = (() => { try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch (e) { return {}; } })();
+    data0.tune = { mult, history, budget }; fs.writeFileSync(DATA_FILE, JSON.stringify(data0));
+  }
+  await pool.broadcast('setMult', { mult: {} });
+  return { mult, history, budget };
+}
+
+function applyTune() {
+  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')), mult = (data.tune && data.tune.mult) || {};
+  const file = path.join(ROOT, 'src/content/era_ancient/stats.js'); let txt = fs.readFileSync(file, 'utf8');
+  const fmt = (v, orig) => { const dec = /\./.test(orig) ? 1 : 0; return dec ? String(+v.toFixed(1)) : String(Math.round(v)); };
+  let changed = 0; const lines = txt.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const m = lines[i].match(/^  ([a-z_]+): \{ faction/); if (!m || !mult[m[1]]) continue;
+    const k = Math.sqrt(mult[m[1]]); let L = lines[i];
+    L = L.replace(/\bhp: (\d+)/, (a, v) => 'hp: ' + Math.round(+v * k));
+    L = L.replace(/\bmelee: M\((\d+(?:\.\d+)?),/, (a, v) => 'melee: M(' + fmt(+v * k, v) + ',');
+    L = L.replace(/\branged: R\('([a-z_]+)', (\d+(?:\.\d+)?),/, (a, p, v) => `ranged: R('${p}', ` + fmt(+v * k, v) + ',');
+    if (L !== lines[i]) { changed++; lines[i] = L; }
+  }
+  fs.writeFileSync(file, lines.join('\n'));
+  data.tune = { mult: {}, history: data.tune.history || [], budget: data.tune.budget, applied: new Date().toISOString().slice(0, 10) }; fs.writeFileSync(DATA_FILE, JSON.stringify(data));
+  console.log('stats.js: rewrote ' + changed + ' unit lines; multipliers reset');
 }
 
 async function sectionDuels(pool) {
@@ -368,6 +451,16 @@ async function sectionFun(pool) {
     };
   }
   return { setups: out };
+}
+
+async function sectionDiff(pool) {
+  const N = QUICK ? 40 : 200, out = {};
+  for (const d of ['easy', 'normal', 'hard']) {
+    const jobs = []; for (let k = 0; k < N; k++) jobs.push({ d, seed: 5000 + k * 11, budget: 1500 });
+    const res = await pool.map('diffBattle', jobs, 'diff/' + d);
+    out[d] = { n: N * 2, win: mean(res.map((r) => r.score)) };
+  }
+  return { rows: out };
 }
 
 async function sectionMetrics(pool) {
@@ -484,6 +577,10 @@ function verdicts(data) {
     for (const k of Object.keys(rows)) { const r = rows[k], lo = r.asym ? 0.35 : 0.45, hi = r.asym ? 0.65 : 0.55; if (r.winA < lo || r.winA > hi) bad.push(`${k} ${pct(r.winA)}`); }
     add('S22', bad.length === 0, `side-swapped mirror fairness, ${data.mirror.per * 2} battles per arena: ${bad.length ? 'outside band: ' + bad.join(', ') : 'all 15 arenas inside their band'}`);
   }
+  if (data.diff) {
+    const r = data.diff.rows;
+    add('S21', r.easy.win < 0.35 && r.normal.win >= 0.45 && r.normal.win <= 0.55 && r.hard.win > 0.65, `win rate vs the reference counter bot, equal cost, n=${r.easy.n} each: easy ${pct(r.easy.win, 0)} (<35), normal ${pct(r.normal.win, 0)} (45-55), hard ${pct(r.hard.win, 0)} (>65)`);
+  }
   if (data.soldier) {
     const s = data.soldier;
     add('U8', s.over === 0 && s.crash === 0 && s.bad === 0, `${s.n} random blueprints: ${s.over} above 1.35x role efficiency (worst ${s.worst.toFixed(3)}x), ${s.crash} crashes, ${s.bad} invalid defs, ${s.sim} sim runs`);
@@ -570,6 +667,12 @@ function renderReport(data) {
     L.push(table(['setup', 'n', 'len med/p10/p90 s', 'lead change>=1', 'steamroll>80%', 'close<40%', 'dead air>=20s', 'gag', 'kills', 'endings'], Object.keys(data.fun.setups).map((k) => { const x = data.fun.setups[k]; return [x.label, x.n, `${x.lenMed.toFixed(0)}/${x.lenP10.toFixed(0)}/${x.lenP90.toFixed(0)}`, pct(x.leadChange, 0), pct(x.steamroll, 0), pct(x.close, 0), pct(x.deadAir, 0), pct(x.gag, 0), x.kills.toFixed(0), JSON.stringify(x.reasons)]; })));
     L.push('');
   }
+  if (data.diff) {
+    L.push('## Difficulty tiers (S21)');
+    L.push('');
+    L.push(table(['AI tier', 'battles', 'win rate vs reference counter bot'], ['easy', 'normal', 'hard'].map((k) => [k, data.diff.rows[k].n, pct(data.diff.rows[k].win)])));
+    L.push('');
+  }
   if (data.metrics) {
     L.push('## Battle quality metrics (S5-S9)');
     L.push('');
@@ -600,12 +703,13 @@ function renderReport(data) {
 
 async function main() {
   M = await jobsModule();
+  if (argv.includes('applytune') || sections.includes('applytune')) { applyTune(); process.exit(0); }
   const workers = Math.max(1, Math.min(+flag('workers', Math.min(4, os.cpus().length)), 16));
   let data = {};
   try { data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch (e) { data = {}; }
   const pool = new Pool(workers); await pool.start();
   const t0 = Date.now();
-  const runners = { pairs: sectionPairs, duels: sectionDuels, comp: sectionComp, fuzz: sectionFuzz, mirror: sectionMirror, fun: sectionFun, metrics: sectionMetrics, soldier: sectionSoldier };
+  const runners = { diff: sectionDiff, tune: sectionTune, pairs: sectionPairs, duels: sectionDuels, comp: sectionComp, fuzz: sectionFuzz, mirror: sectionMirror, fun: sectionFun, metrics: sectionMetrics, soldier: sectionSoldier };
   for (const s of sections) {
     if (s === 'perf') continue;
     if (!runners[s]) { console.error('unknown section ' + s); continue; }

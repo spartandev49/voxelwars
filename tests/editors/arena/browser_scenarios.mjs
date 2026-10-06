@@ -132,7 +132,11 @@ export async function run(name, h) {
     await page.click('#pl-back').catch(() => {}); await sleep(600);
     const back1 = await A(() => window.__vw.app.router.current());
     if (back1 !== 'arena_builder' && chip) { await page.click('#ed-return'); await sleep(1200); }
-    await page.waitForSelector('#ed-root', { timeout: 8000 }); await sleep(900); await shot('16_back_in_builder');
+    await page.waitForSelector('#ed-root', { timeout: 8000 }); await h.settled(); await sleep(300);
+    const lay = await A(() => { const r = (id) => { const e = document.getElementById(id); if (!e) return null; const b = e.getBoundingClientRect(); return { w: Math.round(b.width), h: Math.round(b.height), x: Math.round(b.x), y: Math.round(b.y) }; }; const root = document.getElementById('ed-root'); return { root: root && root.className, tool: r('ed-tool-raise'), play: r('ed-playtest'), insp: r('ed-insp-tabs-tool'), name: r('ed-name'), host: window.__vw.arenaBuilder.host.visible }; });
+    step('layout after return ' + JSON.stringify(lay));
+    expect(lay.tool && lay.tool.w > 20 && lay.play && lay.play.w > 20 && lay.insp && lay.insp.w > 20, 'toolbar, bottom bar and inspector are all back after the playtest');
+    await shot('16_back_in_builder');
     const after = await A(() => { const a = window.__vw.arenaBuilder.session.arena; return { h: Array.from(a.h).reduce((s, x) => s + x, 0), props: a.props.length, depth: window.__vw.arenaBuilder.session.undo.depth }; });
     expect(JSON.stringify(before) === JSON.stringify(after), 'edits and undo history survive the playtest ' + JSON.stringify(after));
     return;

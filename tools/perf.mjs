@@ -34,9 +34,16 @@ const r = await page.evaluate(async ({ budget, ticks, quality, prof }) => {
   const tick = T(() => w.tick(), ticks);
   g.frameArmies(true); const cam = v.engine.camera; cam.updateMatrixWorld(); cam.matrixWorldInverse.copy(cam.matrixWorld).invert();
   window.__prof && 0;
-  const upd = T(() => g.view.update(0.5, 0.016, cam), 30);
+  const upd = T(() => g.view.update(0.5, 0.05, cam), 40);
   const heap = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1e6) : null;
-  return { units0, unitsNow: w.units.length, tickMs: +tick.toFixed(2), viewUpdateMs: +upd.toFixed(2), drawn: g.view.drawn, heapMB: heap, cap: g.tier };
+  g.view.update(0.5, 0.016, cam); v.engine.render(0.016); const st = v.engine.stats;
+  const parts = {}; const meas = (name, fn) => { fn(true); v.engine.render(0.016); parts[name] = [v.engine.stats.calls, v.engine.stats.triangles]; fn(false); };
+  meas('noTerrain', (h) => { g.terrain.group.visible = !h; });
+  meas('noProps', (h) => { if (g.props && g.props.group) g.props.group.visible = !h; });
+  meas('noSkins', (h) => { for (const r of g.view.skins.values()) { r.skin.mesh.visible = !h; if (r.skin.far) r.skin.far.visible = !h; } });
+  meas('noShadow', (h) => { v.engine.renderer.shadowMap.enabled = !h; });
+  v.engine.render(0.016); const tri = []; for (const r of g.view.skins.values()) tri.push(r.key + ':' + r.skin.triangles + '/' + r.skin.trianglesFar + ' n=' + r.skin.nNear + '+' + r.skin.nFar);
+  return { tri, parts, calls: st.calls, tris: st.triangles, units0, unitsNow: w.units.length, tickMs: +tick.toFixed(2), viewUpdateMs: +upd.toFixed(2), drawn: g.view.drawn, heapMB: heap, cap: g.tier };
 }, { budget, ticks, quality, prof });
 console.log(JSON.stringify(r));
 if (prof) {

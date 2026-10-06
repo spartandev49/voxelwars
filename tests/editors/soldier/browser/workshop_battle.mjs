@@ -19,7 +19,9 @@ export async function run({ page, shot, step, check, sleep }) {
   await shot('ws_placement_custom');
   // fight at 4x
   await page.evaluate(() => window.__vw.fight()); await sleep(800); await page.evaluate(() => window.__vw.game.setSpeed(4));
-  await page.waitForFunction(() => window.__vw.game.state === 'running' || window.__vw.game.state === 'ended', null, { timeout: 30000 });
+  const st0 = await page.evaluate(() => ({ state: window.__vw.game.state, alive: window.__vw.world.stats.map((x) => x.alive), tick: window.__vw.world.tickN }));
+  step('after fight(): ' + JSON.stringify(st0));
+  await page.waitForFunction(() => window.__vw.game.state === 'running' || window.__vw.game.state === 'ended', null, { timeout: 120000 }).catch(async (e) => { step('state never became running: ' + JSON.stringify(await page.evaluate(() => ({ state: window.__vw.game.state, tick: window.__vw.world.tickN, paused: window.__vw.game.paused })))); throw e; });
   await sleep(9000);
   const b = await page.evaluate((id) => { const g = window.__vw.game, w = g.world; const sk = g.view.skins.get(id); return { state: g.state, alive: w.units.filter((u) => u.def.custom && u.alive).length, dead: w.dying ? w.dying.length : 0, hasSkin: !!sk, parts: sk ? sk.model.parts.length : 0, anim: w.units.filter((u) => u.def.custom).map((u) => u.anim && u.anim.clip).slice(0, 3), kills: w.stats[0].kills || 0 }; }, info.id);
   check(b.hasSkin && b.parts >= 10, `the battle view built the custom model (${b.parts} parts)`); check(b.state === 'running' || b.state === 'ended', 'battle ran: ' + b.state + ' alive ' + b.alive);

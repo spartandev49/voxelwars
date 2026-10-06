@@ -5,7 +5,7 @@ import { CELL, HSTEP } from '../world/arena.js';
 import { meshTerrainChunk } from './terrainMesh.js';
 import { lin } from './engine.js';
 
-const CH = 16;
+const CH = 32;   // cells per chunk side (R2: 32-cell chunks keep a large arena at <= 64 terrain draw calls in view)
 
 export class TerrainRenderer {
   constructor(scene, quality = {}) {

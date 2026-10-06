@@ -355,6 +355,6 @@ export function mount(root, ctx, params = {}) {
   // ---------------------------------------------------------------- start
   setTool('pencil'); setView(S.view); selectPart(S.pid); refreshColorUI(); schedulePreview();
   K.enter([left, centre, right, bottom], 'fade', 0);
-  guard(() => { window.__pt = { pd, S, view, slice, stage, part, get cs() { return cs; } }; }, null);
+  guard(() => { window.__pt = { pd, S, view, slice, stage, part, afterEdit, get cs() { return cs; } }; }, null);
   return { destroy() { alive = false; clearTimeout(prevTimer); clearTimeout(persistTimer); persist(false); cleanups.forEach((f) => guard(f, null)); guard(() => { delete window.__pt; }, null); }, onBack };
 }

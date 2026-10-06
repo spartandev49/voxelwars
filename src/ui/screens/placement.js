@@ -21,12 +21,21 @@ export function mount(root, ctx, params) {
   const cleanups = [];
   const units = ctx.content.units;
   const list = unitsOf(ctx);
-  const factions = factionIds(ctx);
   const setup = (params && params.setup) || safe(() => G.setup, null) || null;
+  // Puzzle Challenges (UI-B request): setup.puzzle = id and/or armies.A.roster = [defIds]. The palette is limited to the roster, only army A is editable (the enemy is hand-placed),
+  // the A budget bar gets a par tick, Clear becomes a free Reset and the goal/hint replace the empty scout text.
+  const rosterIds = safe(() => setup.armies.A.roster, null);
+  const restricted = Array.isArray(rosterIds) && rosterIds.length ? new Set(rosterIds) : null;
+  const puzzleId = safe(() => setup.puzzle, null) || (safe(() => setup.kind, '') === 'puzzle' ? safe(() => setup.mission, null) : null);
+  const puzzle = puzzleId ? Object.assign({ id: puzzleId }, safe(() => (ctx.content.puzzles || []).find((x) => x.id === puzzleId), null) || {}, safe(() => ctx.content.humor.puzzles[puzzleId], null) || {}) : null;
+  const puzzleMode = !!(puzzle || restricted);
+  const factions = restricted ? factionIds(ctx).filter((f) => list.some((u) => u.faction === f && restricted.has(u.id))) : factionIds(ctx);
+  const par = +(puzzle && puzzle.par) || +safe(() => setup.rules.par, 0) || +safe(() => setup.par, 0) || 0;
   const S = { team: 0, tab: null, search: '', role: 'all', sel: null, mode: 'single', count: 9, countTouched: false, style: 'balanced', sheet: null };
 
   /* ------------------------------------------------------------ helpers */
   const arenaName = () => {
+    if (puzzle && puzzle.arena && (params && params.arenaName) == null) { const pa = (ctx.content.arenas || []).find((x) => x.id === puzzle.arena.recipe); if (pa) return pa.name; }
     const id = safe(() => setup.arena.presetId, null);
     const a = id && (ctx.content.arenas || []).find((x) => x.id === id);
     return (params && params.arenaName) || (a && a.name) || T.arena('Arena');
@@ -43,11 +52,11 @@ export function mount(root, ctx, params) {
   K.tooltip(backBtn, T.backTip);
   const helpBtn = K.iconButton('help', T.help, { id: 'pl-help', variant: 'ghost', onClick: () => showHints(0) });
   const mute = K.muteButton(); cleanups.push(() => mute.destroy && mute.destroy());
-  const title = K.h('div', { class: 'vw-pl__title' }, K.h('span', { class: 'vw-pl__arena', text: arenaName() }), K.h('span', { class: 'vw-pl__sub vw-micro', text: T0.quick.armies }));
+  const title = K.h('div', { class: 'vw-pl__title' }, K.h('span', { class: 'vw-pl__arena', text: arenaName() }), K.h('span', { class: 'vw-pl__sub vw-micro', text: puzzle ? (puzzle.title || T.puzzle.label) : T0.quick.armies }));
   const top = K.h('header', { class: 'vw-pl__top' }, backBtn, title, K.h('span', { class: 'vw-spacer' }), helpBtn, mute);
 
   /* ------------------------------------------------------------ palette */
-  const tabItems = factions.map((f) => ({ id: f, label: factionName(ctx.content.factions, f), dot: factionColorOf(f) })).concat([{ id: 'custom', label: T.mine, icon: 'hammer' }]);
+  const tabItems = factions.map((f) => ({ id: f, label: factionName(ctx.content.factions, f), dot: factionColorOf(f) })).concat(restricted ? [] : [{ id: 'custom', label: T.mine, icon: 'hammer' }]);
   S.tab = (setup && safe(() => setup.armies.A.faction, null)) && setup.armies.A.faction !== 'mixed' && factions.indexOf(setup.armies.A.faction) >= 0 ? setup.armies.A.faction : factions[0];
   const tabs = K.tabs(tabItems, { id: 'pl-faction', label: T.palette, value: S.tab, scroll: true, onChange: (id) => { S.tab = id; renderCards(); } });
   const search = K.searchBox({ id: 'pl-search', label: T.search, placeholder: T.searchPh, onInput: (v) => { S.search = v.trim().toLowerCase(); renderCards(); } });
@@ -65,7 +74,7 @@ export function mount(root, ctx, params) {
 
   const cardEls = new Map();
   function visibleDefs() {
-    let defs = S.tab === 'custom' ? customDefs() : list.filter((u) => u.faction === S.tab);
+    let defs = S.tab === 'custom' ? customDefs() : list.filter((u) => u.faction === S.tab && (!restricted || restricted.has(u.id)));
     if (S.role !== 'all') defs = defs.filter((u) => u.role === S.role);
     if (S.search) defs = defs.filter((u) => (u.name + ' ' + u.role + ' ' + (u.tags || []).join(' ')).toLowerCase().indexOf(S.search) >= 0);
     return defs;
@@ -130,7 +139,8 @@ export function mount(root, ctx, params) {
   teamSeg.dataset.team = '0';
   const barA = K.progress({ id: 'pl-budget-a', tone: 'team-a', tall: true, aria: T.teamA + ' ' + T.budget });
   const barB = K.progress({ id: 'pl-budget-b', tone: 'team-b', tall: true, aria: T.teamB + ' ' + T.budget });
-  const budgetBox = K.h('div', { class: 'vw-col vw-pl__budgets' }, K.h('div', { class: 'vw-label', text: T.budget }), K.h('div', { class: 'vw-pl__brow' }, K.chip('A', { variant: 'team-a' }), barA), K.h('div', { class: 'vw-pl__brow' }, K.chip('B', { variant: 'team-b' }), barB));
+  const parNote = par ? K.h('div', { class: 'vw-small vw-dim vw-pl__par', id: 'pl-par' }, K.chip(T.puzzle.par(K.fmtNum(par)), { variant: 'gold', icon: 'target' }), K.h('span', { text: T.puzzle.parHint })) : null;
+  const budgetBox = K.h('div', { class: 'vw-col vw-pl__budgets' }, K.h('div', { class: 'vw-label', text: T.budget }), K.h('div', { class: 'vw-pl__brow' }, K.chip('A', { variant: 'team-a' }), barA), puzzleMode ? null : K.h('div', { class: 'vw-pl__brow' }, K.chip('B', { variant: 'team-b' }), barB), parNote);
 
   const modeBtns = {};
   const modeGrid = K.h('div', { class: 'vw-pl__modes', role: 'radiogroup', 'aria-label': T.brush, id: 'pl-brush' });
@@ -163,7 +173,8 @@ export function mount(root, ctx, params) {
   const undoBtn = K.iconButton('undo', T.undo, { id: 'pl-undo', onClick: () => { G.tools.undo(); lastSig = ''; refresh(true); } });
   const redoBtn = K.iconButton('redo', T.redo, { id: 'pl-redo', onClick: () => { G.tools.redo(); lastSig = ''; refresh(true); } });
   K.tooltip(undoBtn, `${T.undo} (Ctrl+Z)`); K.tooltip(redoBtn, `${T.redo} (Ctrl+Shift+Z)`);
-  const clearBtn = K.button(T.clear, { icon: 'trash', variant: 'danger', size: 'sm', id: 'pl-clear', onClick: async () => {
+  const clearBtn = K.button(puzzleMode ? T.puzzle.reset : T.clear, { icon: puzzleMode ? 'refresh' : 'trash', variant: 'danger', size: 'sm', id: 'pl-clear', onClick: async () => {
+    if (puzzleMode) { G.tools.clear(0); lastSig = ''; refresh(true); K.sfx('ui_back'); K.toast(T.puzzle.resetDone, { kind: 'info', ms: 1800 }); return; }
     const both = await K.modal({ title: T.clearAsk.title, body: T.clearAsk.text, alert: true, icon: 'warning', dismissValue: null, focus: 'cancel',
       buttons: [{ label: T0.common.cancel, value: null, cancel: true }, { label: T.clearAsk.yes + ' ' + (S.team ? 'B' : 'A'), variant: 'danger', value: 'one' }, { label: T.clearAll, variant: 'danger', value: 'both' }] });
     if (!both) return;
@@ -189,12 +200,12 @@ export function mount(root, ctx, params) {
   const histBar = K.h('div', { class: 'vw-toolbar vw-pl__hist', role: 'toolbar', 'aria-label': 'History' }, undoBtn, redoBtn, clearBtn);
   const tools = K.h('aside', { class: 'vw-pl__tools vw-tablet vw-tablet--glass', 'aria-label': 'Placement tools', id: 'pl-tools' },
     K.h('div', { class: 'vw-pl__pal-head' }, K.h('h2', { class: 'vw-tablet__title', text: T.tools }), K.h('button', { type: 'button', class: 'vw-pl__sheet-x', 'aria-label': T0.common.close, onclick: () => setSheet(null) }, K.icon('x'))),
-    K.h('div', { class: 'vw-pl__tools-pin' }, histBar, K.h('div', { class: 'vw-col vw-pl__top-ctl' }, K.h('div', { class: 'vw-label', text: T.team }), teamSeg, budgetBox)),
+    K.h('div', { class: 'vw-pl__tools-pin' }, histBar, K.h('div', { class: 'vw-col vw-pl__top-ctl' }, puzzleMode ? null : K.h('div', { class: 'vw-label', text: T.team }), puzzleMode ? null : teamSeg, budgetBox)),
     K.h('div', { class: 'vw-pl__tools-scroll vw-scroll' },
-      section('pl-sec-brush', T.brush, 'brush', true, modeGrid, formRow, countRow, K.field(T.order, orderSeg, { stack: true, class: 'vw-pl__row' }), K.field(T.mirror, mirrorTog, { class: 'vw-pl__row' })),
+      section('pl-sec-brush', T.brush, 'brush', true, modeGrid, formRow, countRow, K.field(T.order, orderSeg, { stack: true, class: 'vw-pl__row' }), puzzleMode ? null : K.field(T.mirror, mirrorTog, { class: 'vw-pl__row' })),
       section('pl-sec-army', T.presets, 'save', true,
         K.h('div', { class: 'vw-chips' }, saveBtn, loadBtn, exportBtn, importBtn),
-        K.h('div', { class: 'vw-label vw-pl__lbl', text: T.autoFill }), styleSel, K.h('div', { class: 'vw-chips' }, fillMine, fillEnemy))));
+        ...(puzzleMode ? [] : [K.h('div', { class: 'vw-label vw-pl__lbl', text: T.autoFill }), styleSel, K.h('div', { class: 'vw-chips' }, fillMine, fillEnemy)]))));   // auto-fill ignores a puzzle's roster
   const scoutStrip = K.h('section', { class: 'vw-pl__scout-strip', 'aria-label': T.scout, id: 'pl-scout-strip' }, K.h('div', { class: 'vw-pl__scout-h' }, K.icon('eye'), K.h('span', { class: 'vw-display', text: T.scout })), scoutList);
   const mid = K.h('div', { class: 'vw-pl__mid' }, scoutStrip);
 
@@ -322,6 +333,7 @@ export function mount(root, ctx, params) {
     if (!force && sig === lastSig) return;
     lastSig = sig;
     barA.setMax(b0.cap || 1); barA.set(b0.spent, `${K.fmtNum(b0.spent)} / ${K.fmtNum(b0.cap)}`, b0.spent > b0.cap);
+    if (par) barA.setMark(b0.cap ? par / b0.cap : null, T.puzzle.par(K.fmtNum(par)));
     barB.setMax(b1.cap || 1); barB.set(b1.spent, `${K.fmtNum(b1.spent)} / ${K.fmtNum(b1.cap)}`, b1.spent > b1.cap);
     capBar.setMax(ct.cap || 1); capBar.set(ct.total, T.count_(ct.total, ct.cap));
     typeBar.setMax(ct.typeCap || 16); typeBar.set(ct.types, T.types(ct.types, ct.typeCap || 16));
@@ -342,6 +354,7 @@ export function mount(root, ctx, params) {
   }
   function refreshScout() {
     let adv = []; try { adv = G.info.scout(S.team) || []; } catch (e) { adv = []; }
+    if (puzzle) adv = [puzzle.goalText ? { code: 'goal', severity: 'goal', text: puzzle.goalText } : null, puzzle.hint ? { code: 'hint', severity: 'hint', text: puzzle.hint } : null].filter(Boolean).concat(adv);
     const key = S.team + JSON.stringify(adv.map((a) => [a.code || a.id, a.text, a.counters]));
     if (key === lastScout) return; lastScout = key;
     scoutStrip.classList.toggle('is-empty', !adv.length);
@@ -349,7 +362,7 @@ export function mount(root, ctx, params) {
     scoutList.replaceChildren(...adv.map((a) => {
       const sev = a.severity || a.kind || 'tip';
       const li = K.h('li', { class: 'vw-pl__adv vw-pl__adv--' + sev },
-        K.h('div', { class: 'vw-pl__adv-h' }, K.chip(sev === 'weak' ? T.scoutBad : sev === 'strong' ? T.scoutGood : T.scoutTip, { variant: sev === 'weak' ? 'danger' : sev === 'strong' ? 'olive' : 'gold' }), K.h('span', { class: 'vw-pl__adv-t', text: a.text })));
+        K.h('div', { class: 'vw-pl__adv-h' }, K.chip(sev === 'weak' ? T.scoutBad : sev === 'strong' ? T.scoutGood : sev === 'goal' ? T.puzzle.goal : sev === 'hint' ? T.puzzle.hintLabel : T.scoutTip, { variant: sev === 'weak' ? 'danger' : sev === 'strong' ? 'olive' : sev === 'goal' ? 'lava' : sev === 'hint' ? 'sky' : 'gold' }), K.h('span', { class: 'vw-pl__adv-t', text: a.text })));
       const cs = (a.counters || []).filter((id) => units[id]);
       if (cs.length) li.appendChild(K.h('div', { class: 'vw-chips vw-pl__adv-c' }, ...cs.map((id) => K.chip(units[id].name, { variant: 'sky', id: 'pl-counter-' + id, onClick: () => { const d = units[id]; tabs.select(d.faction); S.search = ''; search.input.value = ''; S.role = 'all'; for (const k in roleBtns) roleBtns[k].setPressed(k === 'all'); renderCards(); pick(d); const c = cardEls.get(id); if (c && c.scrollIntoView) c.scrollIntoView({ block: 'nearest' }); } }))));
       return li;

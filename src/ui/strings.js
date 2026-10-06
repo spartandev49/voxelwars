@@ -115,6 +115,7 @@ export const T = {
       never: 'Do not show this again', dismiss: 'Dismiss',
     },
     invalid: 'Cannot place here',
+    puzzle: { label: 'Puzzle', goal: 'Goal', hintLabel: 'Hint', par: (n) => `Par ${n}`, parHint: 'Spend this much or less to earn the par star.', reset: 'Reset', resetDone: 'Placement reset. Retries are free.' },
   },
 
   settings: {
@@ -203,7 +204,7 @@ export const T = {
       { name: 'Rubik', lic: 'SIL Open Font Licence 1.1', url: 'https://fonts.google.com/specimen/Rubik', note: 'Body text, served by Google Fonts.' },
       { name: 'Cinzel', lic: 'SIL Open Font Licence 1.1', url: 'https://fonts.google.com/specimen/Cinzel', note: 'Epigraphs and flavour text, served by Google Fonts.' },
     ],
-    animText: 'Only a handful of clips are borrowed: idle, ready stance, shield block, a hit from the front, getting up and sitting down (plus a few extras) are CC0 motion capture from the Quaternius Universal Animation Library. Everything else, from walking and every attack to deaths, horses and chickens, is animated by hand for this game.',
+    animText: 'Only a handful of clips are borrowed: idle, ready stance, shield block, a front hit, getting up and sitting (plus a few extras) are CC0 motion capture from the Quaternius Universal Animation Library. Everything else, from walking and every attack to deaths, horses and chickens, is animated by hand for this game.',
     animLinks: [{ name: 'Quaternius Universal Animation Library', lic: 'CC0', url: 'https://quaternius.com' }],
     noLedger: 'The asset ledger was not included in this build, so the audio credits are empty. They are generated from the ledger at build time.',
     open: 'Opens in a new tab', licence: 'Licence', author: 'Author',

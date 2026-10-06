@@ -99,10 +99,11 @@ export function mount(parent, ctx) {
     return { x: (Math.max(0, Math.min(1, u)) - 0.5) * world.w, z: (Math.max(0, Math.min(1, v)) - 0.5) * world.d };
   }
   function jump(e) {
-    const cam = ctx.game && ctx.game.camera; if (!cam) return;
+    const cam = ctx.game && ctx.game.camera, rig = ctx.game && ctx.game.rig;          // preferred: game.camera.jumpTo(x, z); the real Game exposes the CameraRig as game.rig (panTo)
+    if (!cam && !rig) return;
     const p = toWorld(e);
-    const f = cam.jumpTo || cam.panTo || cam.focusOn || cam.lookAt;
-    try { if (f) f.call(cam, p.x, p.z); } catch (err) { /* not ready */ }
+    const f = cam && (cam.jumpTo || cam.panTo || cam.focusOn || cam.lookAt);
+    try { if (f) f.call(cam, p.x, p.z); else if (rig && rig.panTo) rig.panTo(p.x, p.z); } catch (err) { /* not ready */ }
   }
   let dragging = false;
   cv.addEventListener('pointerdown', (e) => { dragging = true; try { cv.setPointerCapture(e.pointerId); } catch (err) { /* synthetic pointer */ } jump(e); sfx(ctx, 'ui_tick', { vol: 0.3 }); e.stopPropagation(); });

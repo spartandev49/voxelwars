@@ -45,6 +45,7 @@ export class Engine {
     this.q = QUALITY.marble;
     this.autoScale = 1;
     this.renderer = new T.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: false });
+    this.renderer.info.autoReset = false; this.stats = { calls: 0, triangles: 0, frameCalls: 0 };   // counters accumulate over every pass of a frame (shadow + scene + bloom + composite)
     this.renderer.toneMapping = T.NoToneMapping;       // tone mapping + sRGB encode happen once, in Post (HDR path at every tier)
     this.renderer.autoClear = true;
     this.post = new Post(this.renderer);
@@ -217,7 +218,9 @@ export class Engine {
     if (this.clouds) { this.clouds.position.x += (this.cloudSpeed || 1) * dt; if (this.clouds.position.x > 260) this.clouds.position.x -= 520; this.clouds.position.set(this.clouds.position.x, 0, 0); }
     this._updateShadow();
     this.post.hurt = this.hurt || 0;
+    const info = this.renderer.info; info.reset();
     this.post.render(this.scene, c, dt, this.time);
+    this.stats.calls = info.render.calls; this.stats.triangles = info.render.triangles;
   }
   dispose() { window.removeEventListener('resize', this.onResize); this.renderer.dispose(); this.renderer.domElement.remove(); }
 }

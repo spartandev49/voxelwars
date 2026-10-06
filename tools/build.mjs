@@ -78,7 +78,7 @@ const core = {};
 for (const kind of ['sfx', 'music']) for (const e of manifest[kind] || []) if (e.core) { const rel = e.path || `audio/${kind}/${e.file}`; const p = rel.startsWith('assets/') ? rel : `assets/${rel}`; if (exists(p)) core[e.id] = fs.readFileSync(path.join(root, p)).toString('base64'); }
 const ualPath = ['src/anim/data/humanoid_clips.json', 'assets/anim/humanoid_clips.json'].find(exists);
 const ual = ualPath ? read(ualPath) : 'null';
-const inlineJs = `window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};window.__VW_CORE_AUDIO__=${JSON.stringify(core)};window.__VW_UAL_CLIPS__=${ual};`;
+const inlineJs = `window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};window.__VW_CORE_AUDIO__=${JSON.stringify(core)};window.__VW_UAL_CLIPS__=${ual};window.__VW_FILES__=${JSON.stringify(Object.keys(files))};`;
 const inlineData = `<script>${inlineJs}</script>`;
 const script = `<script>\n${js}\n</script>`;
 

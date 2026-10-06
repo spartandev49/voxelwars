@@ -361,8 +361,12 @@ function rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, 
   }
   if (melee && gap <= melee.range && gap < 1.6 && u.cd <= 0 && !info.siege) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.face = want; startMelee(w, u); return true; }
   if (gap <= range * 0.98 && gap >= minR) {
-    // in range: hold and shoot
+    // in range: hold and shoot. Shooters take their stand at 0.85 x range (spec S13): a shot may be loosed from anywhere inside the range once the weapon is ready and
+    // aimed, but between shots a unit that is farther out than 0.85 x range keeps closing to its standoff.
     u.engaged = true;
+    if (gap > range * 0.85 && !(u.cdR <= 0 && fdiff < 0.4) && !r.whileMoving && !info.siege && !info.support && (!sq || sq.order !== 'hold')) {
+      u.state = ST.MOVE; steer(w, u, t.x, t.z, speedBase * 0.8); playMove(u); return true;
+    }
     if (!r.whileMoving) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
     else { steer(w, u, t.x, t.z, speedBase * 0.9); u.state = ST.MOVE; }
     if (u.cdR <= 0 && fdiff < 0.4) { startRanged(w, u); return true; }

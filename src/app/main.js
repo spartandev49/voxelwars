@@ -140,7 +140,11 @@ async function start() {
   glc.addEventListener('webglcontextrestored', () => { engine.resize(); game.onResize(); loop.start(); router.toast('Graphics are back. Carry on.', { kind: 'success' }); });
 
   // the base screen decides what the 3D canvas does: live diorama behind the title, nothing behind opaque menus, the scene in battle/editors
-  router.onChange((id) => { const mod = router._mod(id); game.setCanvasMode((mod && mod.meta && mod.meta.canvas) || 'scene'); });
+  router.onChange((id) => {
+    const mod = router._mod(id), meta = (mod && mod.meta) || {};
+    game.setCanvasMode(meta.canvas || 'scene');
+    if ((meta.music === 'menu' || meta.music === 'editor') && audio.music && audio.music.setMood) { try { audio.music.setMood(meta.music, {}); } catch (e) { /* audio is optional */ } }
+  });
 
   // test hook (always installed; data + loop control only)
   installHook(app, input);
@@ -201,6 +205,7 @@ function installHook(app, input) {
     async quick(opts = {}) { const g = app.game; const s = g.newSetup('quick', opts); await g.begin(s); g.autoFill(0, {}); g.autoFill(1, {}); app.router.goto('placement'); return g.state; },
     fight() { app.game.fight(); }, version: typeof __VW_VERSION__ !== 'undefined' ? __VW_VERSION__ : 'dev',
   });
+  if (app.audio && app.audio.installTestHook) { try { app.audio.installTestHook(hook); } catch (e) { /* the hook is for tests only */ } }
 }
 
 // ---- entry: wait for the loader's CDN promise (three), then start ----

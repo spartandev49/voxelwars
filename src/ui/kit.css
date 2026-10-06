@@ -304,6 +304,7 @@ textarea.vw-input { min-height: 7rem; resize: vertical; font-family: ui-monospac
 .vw-progress--olive { --tone: var(--olive); } .vw-progress--lapis { --tone: var(--lapis); } .vw-progress--crimson { --tone: var(--crimson); } .vw-progress--lava { --tone: var(--lava); } .vw-progress--sky { --tone: var(--sky); }
 .vw-progress--team-a { --tone: var(--team-a); } .vw-progress--team-b { --tone: var(--team-b); }
 .vw-progress.is-over .vw-progress__fill { --tone: var(--danger); }
+.vw-progress__mark { position: absolute; top: 0; bottom: 0; left: calc(var(--m, 0) * 100%); width: 4px; margin-left: -2px; background: var(--gold-hi); box-shadow: 0 0 0 1.5px var(--ink); pointer-events: none; }
 
 .vw-meter { --a: .5; position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .5rem; font: 400 .9rem/1 var(--font-display); font-variant-numeric: tabular-nums; }
 .vw-meter__bar { position: relative; height: 1.5rem; background: var(--team-b); border: var(--outline); border-radius: 999px; overflow: hidden; box-shadow: 0 3px 0 var(--ink); }

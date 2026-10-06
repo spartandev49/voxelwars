@@ -120,6 +120,7 @@ await ev(() => Array.from(document.querySelectorAll('.vw-modal')).pop().querySel
 check('army: confirming removes it from ctx.save.armies', await ev(() => !window.__ui.app.save.armies.get('army_huge')));
 await p.keyboard.press('Escape'); await wait(450);
 // share code round trip with the real encodeShare / importShare
+const exportedN = await ev(() => window.__ui.game.info.counts(0).total);
 await ev(() => { window.__ui.app.calls.clipboard.length = 0; document.getElementById('pl-export-army').click(); }); await wait(900);
 const code = await ev(() => window.__ui.app.calls.clipboard[window.__ui.app.calls.clipboard.length - 1] || '');
 check('army: Export army code copies a real VW1.army.<data>.<check> code', /^VW1\.army\.[A-Za-z0-9_-]+\.[0-9a-f]{8}$/.test(code), code.slice(0, 40));
@@ -130,8 +131,17 @@ check('army: a damaged code shows a plain-English error and keeps the dialog ope
 await p.fill('.vw-modal textarea', 'VW1.soldier.AAAA.00000000'); await p.click('#vw-textmodal-ok'); await wait(350);
 check('army: a code for another type is named as such', await ev(() => /army|soldier|damaged/.test(document.querySelector('.vw-modal [role=alert]').textContent)));
 await p.fill('.vw-modal textarea', code); await p.click('#vw-textmodal-ok'); await wait(700);
-check('army: importing the exported code loads the army onto the current team and keeps it in the saved list', await ev(() => window.__ui.game.info.counts(0).total === 16 && window.__ui.app.save.armies.list().length >= 3), JSON.stringify(await ev(() => window.__ui.game.info.counts(0).total)));
+check('army: importing the exported code loads the army onto the current team and keeps it in the saved list', await ev((n) => window.__ui.game.info.counts(0).total === n && window.__ui.app.save.armies.list().length >= 3, exportedN), String(exportedN));
 
+
+/* ---------------- placement for a Puzzle Challenge (UI-B request): roster-limited palette, army A only, par tick, free Reset, goal + hint ---------------- */
+await L.run('placement_puzzle'); await wait(500);
+check('puzzle: the palette lists only the roster (hoplite, peltast) and has no My Soldiers tab', await ev(() => { const ids = Array.from(document.querySelectorAll('#pl-cards .vw-card')).map((c) => c.id || c.dataset.id); return document.querySelectorAll('#pl-cards .vw-card').length === 2 && !document.getElementById('pl-faction-custom') && /Hoplite/.test(document.getElementById('pl-cards').textContent) && /Peltast/.test(document.getElementById('pl-cards').textContent) && !/Spartan/.test(document.getElementById('pl-cards').textContent); }));
+check('puzzle: only army A is editable (no team switch, no mirror, no enemy auto-fill)', await ev(() => !document.getElementById('pl-team') && !document.getElementById('pl-mirror') && !document.getElementById('pl-fill-enemy') && !document.getElementById('pl-fill-mine')));
+check('puzzle: the budget bar shows a par tick and the par amount', await ev(() => !!document.querySelector('#pl-budget-a .vw-progress__mark') && /Par 1,000/.test(document.getElementById('pl-par').textContent) && Math.abs(parseFloat(getComputedStyle(document.querySelector('#pl-budget-a .vw-progress__mark')).left) / document.getElementById('pl-budget-a').getBoundingClientRect().width - 1000 / 1400) < 0.06));
+check('puzzle: the scout strip leads with the Goal and the Hint', await ev(() => /Goal/.test(document.getElementById('pl-scout').textContent) && /Defeat all eight cavalry/.test(document.getElementById('pl-scout').textContent) && /Hint/.test(document.getElementById('pl-scout').textContent)));
+await p.click('#pl-clear'); await wait(250);
+check('puzzle: Reset clears army A at once (no dialog; retries are free)', await ev(() => window.__ui.game.info.counts(0).total === 0 && !document.querySelector('.vw-modal')));
 
 /* ---------------- quick: copy seed, rules reach the Setup ---------------- */
 await L.run('quick'); await wait(300);
