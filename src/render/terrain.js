@@ -78,6 +78,8 @@ export class TerrainRenderer {
     if (n && this.arena.water > 0) this._buildLiquid();
     return n;
   }
+  /** Rebuild the water / lava plane after the arena's water or lava changed (the Arena Builder; removing the water removes the plane). */
+  refreshLiquid() { this._buildLiquid(); }
   _buildLiquid() {
     const T = window.THREE, a = this.arena;
     if (this.water) { this.group.remove(this.water); this.water.geometry.dispose(); this.water = null; }

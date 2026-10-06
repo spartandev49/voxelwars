@@ -120,10 +120,10 @@ const RAW = [
     playerFaction: 'barbarians', roster: ['berserker', 'axe_thrower', 'warhound', 'druid', 'chieftain'], budget: 7500, par: 0,
     reference: [{ defId: 'warhound', n: 34 }, { defId: 'berserker', n: 26 }, { defId: 'druid', n: 6 }, { defId: 'chieftain', n: 1 }, { defId: 'axe_thrower', n: 10 }],
     enemy: { faction: 'romans', style: 'marching column', difficulty: 'normal', generals: ['centurion'], special: 'arrives in a column',
-      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 12 }, { defId: 'equites', n: 4 }] },
+      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }] },
     objective: { type: 'kill_general', params: {}, markerIds: ['centurion_start'], binding: true }, timeLimit: 240,
     script: { waves: { placed: true, firstAfter: 14, interval: 14, breather: 2, list: [
-      { groups: [{ defId: 'legionary', n: 12 }, { defId: 'equites', n: 4 }], after: 14 },
+      { groups: [{ defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }], after: 14 },
       { groups: [{ defId: 'legionary', n: 13 }, { defId: 'gladiator', n: 4 }], after: 14 },
       { groups: [{ defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }, { defId: 'ballista', n: 1 }] },
     ] } },
@@ -187,7 +187,7 @@ function build(raw, i) {
     enemy: raw.enemy, objective: Object.assign({ text: objectiveText(raw) }, raw.objective), timeLimit: raw.timeLimit, friendlyFire: !!raw.friendlyFire, godPowers: raw.godPowers !== false,
     script: raw.script || null, teaching: !!raw.teaching, rules: raw.rules, stars, reference: raw.reference || null,
     rewards: { title: tx.reward.title, blurb: tx.reward.blurb, unlockParts: raw.rewards.unlockParts, partNames: raw.rewards.unlockParts.map((k) => (REWARD_PARTS[k] ? REWARD_PARTS[k].name : k)), unlockMutators: raw.rewards.unlockMutators, codex: raw.rewards.codex },
-    bots: Object.assign({ greedy: [0.25, 0.7], counter: [0.6, 1.0], turtle: [0.1, 0.6] }, raw.bots || {}),            // win-rate bands of the reference players (docs/campaign_report.md); a mission may widen one with a stated reason (raw.bots)
+    bots: Object.assign({ greedy: [0.25, 0.7], counter: [0.6, 1.0], turtle: [0.1, 0.6] }, raw.bots || {}), botsWhy: raw.botsWhy || '',            // win-rate bands of the reference players (docs/campaign_report.md); a mission may widen one with a stated reason (raw.bots)
     units: { A: raw.unitsA, B: enemyCount },
     enemyCost: (raw.enemy.groups || []).reduce((a, g) => a + g.n * cost(g.defId), 0) + ((raw.script && raw.script.waves) ? raw.script.waves.list.reduce((a, w) => a + w.groups.reduce((b, g) => b + g.n * cost(g.defId), 0), 0) : 0),
     textId: raw.id,

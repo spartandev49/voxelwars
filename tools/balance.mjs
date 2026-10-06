@@ -333,7 +333,7 @@ async function sectionPairs(pool) {
 // Auto-tuner: equalises the combat field win rate of the mass-battle units by nudging a per-unit power multiplier (hp and damage by sqrt(m)).
 //   node tools/balance.mjs tune --rounds=5 [--budget=1000] [--fresh]      iterate (resumes the multipliers stored in docs/balance_data.json)
 //   node tools/balance.mjs applytune                                       write the multipliers into src/content/era_ancient/stats.js (hp and dmg numbers) and reset them to 1
-const TUNE_ROLES = ['melee', 'ranged', 'cavalry', 'beast', 'swarm', 'monster', 'siege'];
+const TUNE_ROLES = ['melee', 'ranged', 'cavalry', 'beast', 'swarm', 'monster', 'siege', 'hero'];
 async function sectionTune(pool) {
   const defs = M.H.DEFS, ids = Object.keys(defs).sort().filter((id) => TUNE_ROLES.includes(defs[id].role));
   const rounds = +flag('rounds', 5), budget = +flag('budget', 1000);
@@ -359,7 +359,7 @@ async function sectionTune(pool) {
     console.log(rows.slice().sort((a, b) => b.f - a.f).map((x) => `  ${x.id.padEnd(18)} ${(x.f * 100).toFixed(0).padStart(3)}%  m=${x.m.toFixed(2)}`).join('\n'));
     history.push({ round: history.length + 1, spread, rows: rows.map((x) => [x.id, +x.f.toFixed(3), +x.m.toFixed(3)]) });
     for (const x of rows) {
-      const target = BOSS(defs[x.id]) ? 0.58 : 0.5;
+      const target = BOSS(defs[x.id]) ? 0.58 : defs[x.id].role === 'hero' ? 0.42 : 0.5;          // heroes are singletons in real armies: a little under par at equal cost
       const lm = Math.log(x.m) + 0.85 * (target - x.f) * 1.5;
       mult[x.id] = Math.min(1.5, Math.max(0.67, Math.exp(lm)));
     }

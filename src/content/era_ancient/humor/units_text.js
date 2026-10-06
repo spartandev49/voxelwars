@@ -401,6 +401,7 @@ export const UNIT_TEXT = {
     codexJoke: 'Enemy cavalry: -35% speed. Camel apologies: 0%.',
   },
   xerxes: {
+    proper: true,
     name: 'Xerxes', plural: 'Xerxeses',
     blurb: 'Brings a throne to battle so he can watch comfortably.',
     lore: 'King of Kings, builder of bridges, whipper of seas. Watched his own battles from a throne on a hill and ordered the sea punished when it disagreed. Retreats loudly and from a seated position.',
@@ -463,6 +464,7 @@ export const UNIT_TEXT = {
     codexJoke: 'Misfire: 4%. Colleague compensation: pending a union.',
   },
   hannibal: {
+    proper: true,
     name: 'Hannibal', plural: 'Hannibals',
     blurb: 'Crossed the Alps with elephants to get a better view of Rome.',
     lore: 'Carthaginian general who surrounded a larger army at Cannae with a formation that looked like a hug until it closed. Lost an eye in a marsh and most elephants to the Alps.',
@@ -587,6 +589,7 @@ export const UNIT_TEXT = {
     codexJoke: '25% of throws land 4-9 u off. 100% of excuses: sun in eye.',
   },
   medusa: {
+    proper: true,
     name: 'Medusa', plural: 'Medusas',
     blurb: 'Turns enemies into statues. Her garden has never looked better.',
     lore: 'A gorgon whose gaze turns enemies to stone, so her home is full of lifelike statues and her social calendar is empty. The snakes are not a hairstyle; they are a team.',
@@ -668,6 +671,13 @@ export const UNIT_IDS = Object.keys(UNIT_TEXT);
 
 /** Display names for announcer slots and kill feed: {id: {name, plural}} */
 export const UNIT_NAMES = Object.fromEntries(UNIT_IDS.map((id) => [id, { name: UNIT_TEXT[id].name, plural: UNIT_TEXT[id].plural }]));
+
+/** True for units whose display name is a person's name (no "the" before it: "Hannibal", not "the Hannibal") and for custom soldiers (cs_ ids). */
+export function isProper(id) {
+  if (!id) return false;
+  const t = UNIT_TEXT[id];
+  return t ? t.proper === true : String(id).indexOf('cs_') === 0;
+}
 
 /** Safe display name for any def id, including custom soldiers and unknown ids. */
 export function unitName(id, plural) {

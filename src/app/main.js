@@ -217,7 +217,7 @@ function platformApi() {
     downloads: downloadsApi(),
     clipboard: async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; } },
     pickFile: (accept) => new Promise((resolve) => { const i = document.createElement('input'); i.type = 'file'; if (accept) i.accept = accept; i.onchange = () => resolve(i.files && i.files[0] || null); i.click(); }),
-    isTouch: matchMedia('(pointer: coarse)').matches, viewport: () => ({ w: innerWidth, h: innerHeight }), isPhone: () => Math.min(innerWidth, innerHeight) < 600,
+    isTouch: matchMedia('(pointer: coarse)').matches, viewport: () => ({ w: innerWidth, h: innerHeight }), isPhone: () => innerWidth < 768 || innerHeight < 480,     // tablets and small laptop windows (960x540) are not phones; the editors need >= 768 x 480
   };
 }
 

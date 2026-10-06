@@ -260,20 +260,6 @@ export async function run(name, h) {
     await key('t'); await sleep(1200); const m2 = await A(() => window.__vw.arenaBuilder.host.rig.mode); expect(m2 === 'orbit', 'T switches back to the orbit view (' + m2 + ')');
     return;
   }
-  if (name === 'probe') {
-    await ev(() => window.__vw.goto('arena_builder')); await sleep(4000);
-    const d = await A(() => { const r = document.getElementById('ed-root'); const b = r && r.getBoundingClientRect(); const cs = r && getComputedStyle(r); const lay = r && r.parentElement; const lb = lay && lay.getBoundingClientRect(); return { cur: window.__vw.app.router.current(), root: b && [b.x, b.y, b.width, b.height], disp: cs && [cs.display, cs.visibility, cs.opacity], parent: lay && [lay.className, lb.width, lb.height], inner: [innerWidth, innerHeight], modal: !!document.querySelector('.vw-modal-wrap'), kids: r ? r.children.length : -1 }; });
-    step('probe ' + JSON.stringify(d)); await shot('probe');
-    return;
-  }
-  if (name === 'panprobe') {
-    await openBuilder({ closeModal: true });
-    const rd = () => A(() => { const b = window.__vw.arenaBuilder, r = b.host.rig; return { tx: r.tx, tz: r.tz, sdist: r.sdist, syaw: r.syaw, keys: Array.from(b.ctl.keys), vis: b.host.visible, mode: r.mode }; });
-    step('before ' + JSON.stringify(await rd()));
-    await page.focus('#ed-tool-raise'); await page.keyboard.down('ArrowRight'); await sleep(300); step('down ' + JSON.stringify(await rd())); await sleep(700); step('later ' + JSON.stringify(await rd())); await page.keyboard.up('ArrowRight'); await sleep(200); step('up ' + JSON.stringify(await rd()));
-    await page.mouse.move(640, 360); await page.keyboard.down('KeyD'); await sleep(900); await page.keyboard.up('KeyD'); step('after D ' + JSON.stringify(await rd()));
-    return;
-  }
   if (name === 'keys') {
     await openBuilder({ closeModal: true });
     const seq = [];

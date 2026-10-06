@@ -5,13 +5,14 @@
 //              once: at most once per battle.  cd: minimum seconds between uses (used by persistent callbacks).  follow: chain beat, never picked alone.
 // SLOTS        {unit} {unit2} {killer} {team} {team2} {faction} {faction2} {arena} {mission} {n} {streak} {ratio} {flank} {pct} {prop}
 //              {lifetime:<stat>} reads the live lifetime-stats object passed to createAnnouncer.
-//              Filters: {unit|pl} plural  {unit|a} indefinite article  {unit|up} UPPERCASE  {n|ord} third  {n|words} three  {n|num} 1,234
+//              Also {secs} {mins} (durations), {nth} (session counters, use {nth|ord}), {theirs} (enemy survivors in a close defeat).
+//              Filters: {unit|pl} plural  {unit|a} indefinite article ("an Immortal", "Hannibal")  {unit|the} "the Hoplite" / "Hannibal"  {unit|up} UPPERCASE  {n|ord} third  {n|words} three  {n|num} 1,234
 // COND KEYS    sub, def, def2, faction, team ('player'|'enemy'), minN, maxN, arena, mission, flank, cluster (big_swing payload has a cluster), ratioMin, ratioMax,
 //              stat {name,min?,max?} (or an array of these), milestone {name, at:[...]}
 // A line is eligible only when every slot in its text can be resolved, so a line that names {unit2} never runs without one.
 
 import { STAT_TABLE } from '../stats.js';
-import { unitName } from './units_text.js';
+import { unitName, isProper } from './units_text.js';
 
 const mk = (who) => (cat, key, text, o) => Object.assign({ id: cat + '_' + key, cat, who, text }, o);
 const b = mk('brutus');
@@ -349,7 +350,7 @@ export const TEMPLATES = [
 export const CATEGORY_PRIORITY = {
   battle_start: 5, first_blood: 5, kill_streak: 4, hero_down: 5, friendly_fire: 4, rout: 4, charge: 3, brace: 4, volley: 2,
   boulder: 4, misfire: 5, misaim: 4, chicken: 4, goat: 4, philosopher: 4, senator: 4, trojan: 5, medusa: 4, elephant: 4,
-  kick: 4, immortal: 4, throne: 4, hazard: 3, lead_change: 4, comeback: 5, big_swing: 4, army_low: 4, stalemate: 5, zeus: 5,
+  kick: 4, immortal: 4, throne: 4, ability: 3, hazard: 3, lead_change: 4, comeback: 5, big_swing: 4, army_low: 4, stalemate: 5, zeus: 5,
   victory: 5, defeat: 5, timeout: 5, mass_death: 3, prop_destroyed: 3, god_power: 4, wave: 4, idle_filler: 1,
 };
 export function categoryPriority(cat) { return cat.indexOf('campaign_') === 0 ? 5 : (CATEGORY_PRIORITY[cat] || 3); }
@@ -393,6 +394,13 @@ export const DEFAULT_CONFIG = {
   hunger: 2.5,          // a category that has been silent for 2+ minutes gains up to this much, so rare gags get a turn over frequent ones
 };
 
+/** Moments whose generic lines would be false (a 1v1 has no armies, no flank and no "survivors"): only lines with a matching cond.sub may speak. */
+const EXCLUSIVE = new Set(['battle_start:duel', 'victory:duel', 'defeat:duel', 'victory:last_man', 'rout:rally']);
+/** Moments that are stale once the battle has ended: a first-blood line must never follow the defeat line. */
+const STALE_AT_END = new Set(['first_blood', 'kill_streak', 'mass_death', 'volley', 'charge', 'brace', 'boulder', 'prop_destroyed', 'big_swing', 'lead_change', 'army_low', 'comeback', 'friendly_fire', 'rout', 'misfire', 'misaim', 'hazard', 'ability', 'philosopher', 'senator', 'goat', 'chicken', 'elephant', 'medusa', 'trojan', 'throne', 'god_power', 'kick', 'immortal', 'idle_filler', 'stalemate', 'wave']);
+/** ability_cast ids the booth reacts to, and the sub-moment each one becomes (category 'ability'). */
+const ABILITY_SUB = { dot_cloud: 'locusts', war_horn: 'horn', execute: 'execute', net: 'net', chain_lightning: 'druid' };
+
 const TOKEN_RE = /\{([a-z0-9_]+)(?::([A-Za-z0-9_]+))?(?:\|([a-z]+))?\}/g;
 const ORD = ['zeroth', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth', 'tenth', 'eleventh', 'twelfth'];
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
@@ -423,8 +431,10 @@ function resolveToken(t, slots, stats) {
   if (t.name === 'lifetime') v = stats ? stats[t.arg] : undefined;
   else v = slots[t.name];
   if (!hasValue(v)) return null;
+  const proper = t.name !== 'lifetime' && isProper(slots[t.name + 'Def']);          // "Hannibal" and named custom soldiers take no article
   if (t.filter === 'pl') { const pl = slots[t.name + '_pl']; if (hasValue(pl)) v = pl; }
-  else if (t.filter === 'a') v = withArticle(String(v));
+  else if (t.filter === 'a') v = proper ? String(v) : withArticle(String(v));
+  else if (t.filter === 'the') v = proper ? String(v) : 'the ' + String(v);
   else if (t.filter === 'up') v = String(v).toUpperCase();
   else if (t.filter === 'lc') v = String(v).toLowerCase();
   else if (t.filter === 'ord') v = ordinal(Number(v));
@@ -486,10 +496,12 @@ export function createAnnouncer(opts) {
     onceUsed: new Set(), voice: { brutus: 0, plato: 0, cassandra: 0 }, emitted: 0, catLast: Object.create(null), offered: Object.create(null), expired: Object.create(null), noLine: Object.create(null),
     // per-battle
     bs: null,
+    // per-session: survives reset(), so "third battle on the same arena" and "three losses in a row" are real facts
+    sess: { battles: 0, lastArena: null, sameArena: 0, winStreak: 0, lossStreak: 0 },
     // context snapshot
     arenaId: null, arenaName: null, factions: null, teamNames: null, playerTeam: 0, mission: null, unitNameFn: null, nameOfFn: null,
   };
-  const freshBattle = () => ({ firstBlood: false, lastKill: null, killT: [], routT: [[], []], arrowT: [], ffCount: 0, chickenKills: 0, goatKills: 0, deficit: [1, 1], midDone: false, massAt: -1e9, fbCand: null });
+  const freshBattle = () => ({ firstBlood: false, lastKill: null, killT: [], routT: [[], []], rallyT: [], arrowT: [], ffCount: 0, chickenKills: 0, goatKills: 0, deficit: [1, 1], midDone: false, massAt: -1e9, fbCand: null, t0: 0, pc: 0, ec: 0 });
   st.bs = freshBattle();
 
   function teamName(i) { return (st.teamNames && st.teamNames[i]) || ['Blue', 'Red'][i] || 'Team'; }
@@ -603,7 +615,9 @@ export function createAnnouncer(opts) {
     if (!lines) return null;
     const pool = [], weights = [];
     let total = 0, freshCount = 0;
+    const excl = EXCLUSIVE.has(cat + ':' + cand.sub);
     for (const L of lines) {
+      if (excl && !(L.cond && L.cond.sub !== undefined)) continue;       // a duel has no flanks, armies or survivors: only lines written for it may speak
       if (L.who === st.lastWho) continue;
       if (isRecent(L.id)) continue;
       if (L.once && st.onceUsed.has(L.id)) continue;
@@ -692,16 +706,26 @@ export function createAnnouncer(opts) {
   const KILL_WINDOW = 2, MASS_N = 7, ROUT_WINDOW = 3, ROUT_N = 5, VOLLEY_WINDOW = 1.5, VOLLEY_N = 14;
   function prune(arr, now, win) { while (arr.length && now - arr[0] > win) arr.shift(); }
 
+  /** A contextual sub-moment is used most of the time, not always, so a rematch loop does not turn into a loop of the same four jokes. */
+  const maybe = (sub, p) => (rand() < (p === undefined ? 0.7 : p) ? sub : null);
+
   function battleEnd(pl) {
-    const bs = st.bs;
+    const bs = st.bs, sess = st.sess;
     st.inBattle = false;
+    for (let i = st.cands.length - 1; i >= 0; i--) if (STALE_AT_END.has(st.cands[i].cat)) st.cands.splice(i, 1);
     const winner = pl.winner;
     const s = baseSlots();
-    let n = 0, topDef = null, topN = 0, chickens = 0;
+    let n = 0, topDef = null, topN = 0, chickens = 0, goats = 0;
     const pd = pl.perDef && (pl.perDef[winner] || pl.perDef[String(winner)]);
-    if (pd) for (const k in pd) { n += pd[k]; if (pd[k] > topN) { topN = pd[k]; topDef = k; } if (k === 'sacred_chicken') chickens = pd[k]; }
-    if (pd) { s.n = n; setUnit(s, 'unit', topDef); }
+    if (pd) for (const k in pd) { n += pd[k]; if (pd[k] > topN) { topN = pd[k]; topDef = k; } if (k === 'sacred_chicken') chickens = pd[k]; if (k === 'battle_goat') goats = pd[k]; }
+    if (pd) { s.n = n; s.value = n; setUnit(s, 'unit', topDef); }
+    const secs = typeof pl.t === 'number' ? pl.t : 0;
+    if (secs > 0) { s.secs = Math.max(1, Math.round(secs)); s.mins = Math.max(1, Math.round(secs / 60)); }
+    const S = pl.stats, ps = S && S[st.playerTeam], es = S && S[1 - st.playerTeam];
+    const duel = bs.pc === 1 && bs.ec === 1;
     const mission = st.mission;
+    if (winner === st.playerTeam) { sess.winStreak++; sess.lossStreak = 0; }
+    else if (winner === 0 || winner === 1) { sess.lossStreak++; sess.winStreak = 0; }
     if (winner === -1 || winner === undefined || winner === null) {
       if (pl.reason === 'intervention') offer('zeus', 'draw', s); else offer('timeout', 'draw', s);
     } else if (pl.reason === 'time') {
@@ -709,10 +733,25 @@ export function createAnnouncer(opts) {
       offer('timeout', 'time', s);
     } else if (winner === st.playerTeam) {
       s.team = teamName(winner); s.teamIdx = winner;
-      if (mission) offer('campaign_' + mission, 'win', s); else offer('victory', null, s);
+      let sub = null;
+      if (duel) sub = 'duel';
+      else if (n === 1) sub = 'last_man';
+      else if (ps && ps.startCount >= 6 && ps.alive === ps.startCount) sub = maybe('flawless', 0.8);
+      else if (ps && es && ps.startCost > 0 && ps.startCost * 2 <= es.startCost) sub = maybe('tiny', 0.8);
+      if (!sub && goats > 0) sub = maybe('goat', 0.8);
+      if (!sub && pl.reason === 'rout') sub = maybe('rout');
+      if (!sub && secs > 0 && secs < 25) sub = maybe('quick');
+      if (!sub && secs >= 240) sub = maybe('long');
+      if (mission) offer('campaign_' + mission, 'win', s); else offer('victory', sub, s);
     } else {
       s.team = teamName(st.playerTeam); s.teamIdx = st.playerTeam;
-      if (mission) offer('campaign_' + mission, 'lose', s); else offer('defeat', chickens > 0 ? 'chicken' : null, s);
+      let sub = null;
+      if (duel) sub = 'duel';
+      else if (chickens > 0) sub = 'chicken';
+      else if (sess.lossStreak >= 3) sub = maybe('third_loss', 0.85);
+      else if (es && es.startCount >= 6 && es.alive / es.startCount >= 0.9) sub = maybe('crush');
+      else if (es && es.startCount >= 8 && n > 0 && n <= 2) sub = maybe('close', 0.85);
+      if (mission) offer('campaign_' + mission, 'lose', s); else offer('defeat', sub, s);
     }
     st.bs = freshBattle();
   }
@@ -757,8 +796,27 @@ export function createAnnouncer(opts) {
       switch (type) {
         case 'battle_start': {
           st.bs = freshBattle(); st.onceUsed.clear(); st.inBattle = true; st.lastActivity = st.now; st.lastWho = null;
-          const s = baseSlots();
-          if (st.mission) offer('campaign_' + st.mission, 'start', s); else offer('battle_start', null, s);
+          st.bs.t0 = st.sim;
+          const sess = st.sess, s = baseSlots();
+          sess.battles++;
+          const again = !st.mission && !!st.arenaId && st.arenaId === sess.lastArena;
+          sess.sameArena = again ? sess.sameArena + 1 : 0; sess.lastArena = st.mission ? null : st.arenaId;
+          if (st.mission) { offer('campaign_' + st.mission, 'start', s); break; }
+          const T = pl && Array.isArray(pl.teams) ? pl.teams : null;
+          const pc = (T && T[st.playerTeam] && T[st.playerTeam].count) || 0, ec = (T && T[1 - st.playerTeam] && T[1 - st.playerTeam].count) || 0;
+          st.bs.pc = pc; st.bs.ec = ec;
+          let sub = null;
+          if (pc > 0 && ec > 0) { s.n = pc + ec; s.value = s.n; }
+          if (pc === 1 && ec === 1) sub = 'duel';
+          else if (sess.battles === 10) { s.nth = 10; sub = 'tenth'; }
+          else if (pc > 0 && ec > 0 && ec / pc >= 2.5) { s.ratio = fmtRatio(ec / pc); sub = maybe('outnumbered', 0.6); }
+          else if (pc > 0 && ec > 0 && pc / ec >= 2.5) { s.ratio = fmtRatio(pc / ec); sub = maybe('outnumbering', 0.6); }
+          if (!sub && sess.lossStreak >= 2) sub = maybe('losing', 0.6);
+          if (!sub && sess.winStreak >= 3) sub = maybe('winning', 0.6);
+          if (!sub && sess.sameArena >= 2) { s.nth = sess.sameArena + 1; sub = maybe('loyal', 0.6); }
+          if (!sub && sess.sameArena === 1) sub = maybe('rematch', 0.5);
+          if (!sub && st.factions && st.factions[0] && st.factions[0] === st.factions[1]) sub = maybe('mirror', 0.7);
+          offer('battle_start', sub, s);
           break;
         }
         case 'battle_end': battleEnd(pl); break;
@@ -767,18 +825,20 @@ export function createAnnouncer(opts) {
           if (st.speed > cfg.fastSpeed && rand() < 0.5) break; // when the game is fast-forwarded first blood is only announced half the time
           const s = baseSlots();
           if (bs.lastKill && st.now - bs.lastKill.t < 1) { setUnit(s, 'unit', bs.lastKill.srcDef); setUnit(s, 'unit2', bs.lastKill.dstDef); }
-          bs.fbCand = offer('first_blood', null, s, { delay: 0.25 });
+          const sec = st.sim - bs.t0;
+          s.secs = Math.max(1, Math.round(sec));
+          bs.fbCand = offer('first_blood', sec <= 6 ? 'early' : sec >= 25 ? 'late' : null, s, { delay: 0.25 });
           break;
         }
         case 'unit_kill': onKill(pl); break;
         case 'kill_streak': {
           const s = baseSlots(); s.streak = pl.count; s.value = pl.count; setUnit(s, 'unit', pl.def);
-          s.killer = (st.nameOfFn && st.nameOfFn(pl.id)) || 'the ' + defName(pl.def, false);
+          s.killer = (st.nameOfFn && st.nameOfFn(pl.id)) || (isProper(pl.def) ? defName(pl.def, false) : 'the ' + defName(pl.def, false));
           offer('kill_streak', null, s, { pri: pl.count >= 10 ? 5 : 4 });
           break;
         }
         case 'hero_down': { const s = baseSlots(); setUnit(s, 'unit', pl.def); s.team = teamName(pl.team); s.teamIdx = pl.team; offer('hero_down', null, s); break; }
-        case 'friendly_fire': { bs.ffCount++; if (bs.ffCount % 6 === 0) offer('friendly_fire', 'generic', baseSlots(), { pri: 3 }); break; }
+        case 'friendly_fire': { bs.ffCount++; if (bs.ffCount % 6 === 0) { const s = baseSlots(); s.n = bs.ffCount; s.value = s.n; offer('friendly_fire', 'generic', s, { pri: 3 }); } break; }
         case 'unit_rout': {
           const arr = bs.routT[pl.team ? 1 : 0]; arr.push(st.sim); prune(arr, st.sim, ROUT_WINDOW);
           if (arr.length >= ROUT_N) { const s = baseSlots(); s.n = arr.length; s.value = s.n; s.team = teamName(pl.team); s.teamIdx = pl.team; arr.length = 0; offer('rout', null, s); }
@@ -793,12 +853,12 @@ export function createAnnouncer(opts) {
           break;
         }
         case 'big_swing': {
-          const r = pl.ratio > 0 ? pl.ratio : 1;
+          const r = pl.ratio > 0 ? pl.ratio : 1;        // the sim sends team 0's power over team 1's (not the gaining team's), so a deficit is read from that
           const s = baseSlots(); s.team = teamName(pl.team); s.teamIdx = pl.team; s.ratio = fmtRatio(r); s.ratioVal = r >= 1 ? r : 1 / r;
           if (pl.flank) s.flank = pl.flank;
           s.hasCluster = !!pl.cluster;
-          if (r >= 1) bs.deficit[pl.team ? 0 : 1] = Math.max(bs.deficit[pl.team ? 0 : 1], r); else bs.deficit[pl.team ? 1 : 0] = Math.max(bs.deficit[pl.team ? 1 : 0], 1 / r);
-          offer('big_swing', r >= 1 ? 'gain' : 'loss', s);
+          if (r < 1) bs.deficit[0] = Math.max(bs.deficit[0], 1 / r); else bs.deficit[1] = Math.max(bs.deficit[1], r);
+          offer('big_swing', pl.team === st.playerTeam ? 'gain' : 'loss', s);
           break;
         }
         case 'stalemate_warning': { const s = baseSlots(); s.n = Math.round(pl.t || 12); offer('stalemate', null, s); break; }
@@ -818,6 +878,12 @@ export function createAnnouncer(opts) {
           break;
         }
         case 'unit_convert': offer('senator', 'bribe', baseSlots()); break;
+        case 'unit_rally': {
+          bs.rallyT.push(st.sim); prune(bs.rallyT, st.sim, 4);
+          if (bs.rallyT.length >= 4) { bs.rallyT.length = 0; offer('rout', 'rally', baseSlots()); }
+          break;
+        }
+        case 'crowd_roar': offer('ability', 'crowd', baseSlots()); break;
         case 'trojan_reveal': offer('trojan', null, baseSlots()); break;
         case 'stone_gaze': { const s = baseSlots(); s.n = pl.count; s.value = pl.count; offer('medusa', null, s); break; }
         case 'throne_sit': offer('throne', null, baseSlots()); break;
@@ -836,7 +902,11 @@ export function createAnnouncer(opts) {
         case 'catapult_misfire': offer('misfire', null, baseSlots()); break;
         case 'cyclops_misaim': offer('misaim', null, baseSlots()); break;
         case 'prop_destroyed': { const nm = PROP_NAMES[pl.type]; if (nm) { const s = baseSlots(); s.prop = nm; offer('prop_destroyed', null, s); } break; }
-        case 'ability_cast': if (pl.ability === 'kick') { offer('kick', 'cast', baseSlots()); } break;
+        case 'ability_cast': {
+          if (pl.ability === 'kick') offer('kick', 'cast', baseSlots());
+          else if (ABILITY_SUB[pl.ability]) offer('ability', ABILITY_SUB[pl.ability], baseSlots());
+          break;
+        }
         default: break;
       }
       pick();
@@ -860,7 +930,7 @@ export function createAnnouncer(opts) {
     reset() { st.bs = freshBattle(); st.onceUsed.clear(); st.cands.length = 0; st.inBattle = false; },
     setStats(s) { stats = s || {}; },
     setSpeed(x) { st.speed = x; },
-    debug() { return { offered: st.offered, expired: st.expired, noLine: st.noLine, now: st.now, tokens: st.tokens, lastWho: st.lastWho, recent: st.recent.slice(), pending: st.cands.length, queued: st.out.length, emitted: st.emitted, voice: Object.assign({}, st.voice) }; },
+    debug() { return { offered: st.offered, expired: st.expired, noLine: st.noLine, now: st.now, tokens: st.tokens, lastWho: st.lastWho, recent: st.recent.slice(), pending: st.cands.length, queued: st.out.length, emitted: st.emitted, voice: Object.assign({}, st.voice), session: Object.assign({}, st.sess) }; },
   };
   return api;
 }

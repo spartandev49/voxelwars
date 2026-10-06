@@ -32,6 +32,8 @@ export const MAT = Object.fromEntries(MATERIALS.map((m) => [m.key, m.id]));
 
 export const WEATHERS = ['clear', 'cloudy', 'rain', 'storm', 'snow', 'sandstorm', 'fog'];
 
+const OBJECTIVES = ['eliminate', 'kill_general', 'hold_hill', 'protect_vip', 'destroy'];
+
 export class Arena {
   constructor(size = 128) {
     this.size = size | 0;
@@ -49,6 +51,8 @@ export class Arena {
     this.env = { time: 11, weather: 'clear', fog: 0.25, theme: 'greek', wind: 0.3, mood: 'auto' };
     this.hazards = [];                                          // {t:'quicksand'|'spikes'|'fire'|'boulders'|'geyser', x, z, r}
     this.biome = 'grass';
+    this.objective = 'eliminate';                              // the arena author's default objective (the Quick Battle picker starts on it)
+    this.tags = [];                                            // <= 5 short labels the author gave the arena
     this.markers = [];                                          // objective markers {id,type:'hill|exit|vip_start|general_spawn|waypoint',x,z,r}
   }
   worldSize() { return this.size * CELL; }
@@ -123,7 +127,7 @@ export class Arena {
   toJSON() {
     return {
       v: this.v, name: this.name, author: this.author, desc: this.desc, seed: this.seed, size: this.size,
-      water: this.water, lava: this.lava, biome: this.biome, env: this.env, zones: this.zones, hazards: this.hazards, markers: this.markers,
+      water: this.water, lava: this.lava, biome: this.biome, env: this.env, zones: this.zones, hazards: this.hazards, markers: this.markers, objective: this.objective, tags: this.tags,
       props: this.props.map((p) => [p.t, +p.x.toFixed(2), +p.z.toFixed(2), +(p.r || 0).toFixed(3), +(p.s || 1).toFixed(2), p.v || 0]),
       h: rle(this.h), m: rle(this.m),
     };
@@ -142,6 +146,8 @@ export class Arena {
     a.biome = String(o.biome || 'grass');
     a.env = Object.assign({ time: 11, weather: 'clear', fog: 0.25, theme: 'greek', wind: 0.3, mood: 'auto' }, sanitizeEnv(o.env));
     a.markers = Array.isArray(o.markers) ? o.markers.slice(0, 8).filter((m) => m && typeof m.type === 'string').map((m) => ({ id: String(m.id || m.type).slice(0, 16), type: String(m.type).slice(0, 16), x: +m.x || 0, z: +m.z || 0, r: Math.max(1, Math.min(30, +m.r || 4)) })) : [];
+    if (OBJECTIVES.includes(o.objective)) a.objective = o.objective;
+    if (Array.isArray(o.tags)) a.tags = o.tags.filter((t) => typeof t === 'string').map((t) => t.replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 16)).filter(Boolean).slice(0, 5);
     if (o.zones && o.zones.A && o.zones.B) a.zones = { A: sanitizeZone(o.zones.A, a), B: sanitizeZone(o.zones.B, a) };
     a.hazards = Array.isArray(o.hazards) ? o.hazards.slice(0, 60).filter((h) => h && typeof h.t === 'string').map((h) => ({ t: h.t, x: +h.x || 0, z: +h.z || 0, r: Math.max(1, Math.min(30, +h.r || 4)) })) : [];
     unrle(o.h, a.h, MAX_H); unrle(o.m, a.m, MATERIALS.length - 1);

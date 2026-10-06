@@ -21,13 +21,13 @@ fs.mkdirSync(dir, { recursive: true });
 
 if (process.argv.includes('--report')) { writeReport(); process.exit(0); }
 
-const append = process.argv.includes('--append');
+const append = process.argv.includes('--append'), simAtStart = simHash();          // fingerprint of the sim as loaded by this process (other owners edit src/sim while a long run is going)
 const idx = arg('missions', '1,2,3,4,5,6,7,8,9').split(',').map(Number), bots = arg('bots', 'counter,greedy,turtle').split(','), n = +arg('n', '20'), base = +arg('seedBase', '0');
 for (const i of idx) for (const bot of bots) {
   const m = MISSIONS[i - 1];
   const mm = bot === 'thrifty' ? Object.assign({}, m, { budget: m.par || Math.round(m.budget * 0.75) }) : m;
   const powers = bot === 'thrifty' || bot === 'expert', r = sweep(mm, bot === 'thrifty' || bot === 'expert' ? 'counter' : bot, n, { seedBase: base, powers });
-  let rec = { id: m.id, index: i, bot, hash: missionHash(m), sim: simHash(), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
+  let rec = { id: m.id, index: i, bot, hash: missionHash(m), sim: simAtStart, n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
   const file = path.join(dir, `m${i}_${bot}.json`);
   if (append && fs.existsSync(file)) {          // --append: seeds base+1..base+n are added to the stored run (same data and same sim only), so a 20-seed run grows into a 40-seed one
     const old = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -75,6 +75,13 @@ function writeReport() {
     const g = (m.enemy.groups || []).concat(...((m.script && m.script.waves) ? m.script.waves.list.map((w) => w.groups) : []));
     lines.push(`| ${k + 1} | ${m.id} | ${m.arena.recipe} ${m.arena.size} #${m.arena.seed} | ${m.playerFaction} (${m.budget}) | ${m.enemy.faction} (${m.enemyCost || '?'} dr, ${g.reduce((s, x) => s + x.n, 0)}) | ${m.objective.type} | ${m.timeLimit} s |`);
   });
+  lines.push('', '## Reference deployments (the `counter` player)', '');
+  MISSIONS.forEach((m, k) => { lines.push(`- ${k + 1}. ${m.id}: ` + (m.reference ? 'authored (`mission.reference`): ' + m.reference.map((g) => g.n + ' ' + g.defId + (g.order ? ' (' + g.order + ')' : '')).join(', ') : 'generated counter-pick against the whole enemy list (`generateArmy` style counter, difficulty hard)')); });
+  const ex = MISSIONS.filter((m) => m.bots.greedy[0] !== 0.25 || m.bots.counter[0] !== 0.6 || m.bots.turtle[0] !== 0.1 || m.bots.turtle[1] !== 0.6 || m.bots.greedy[1] !== 0.7);
+  lines.push('', '## Band exceptions (mission.bots differs from the default counter 60-100 / greedy 25-70 / turtle 10-60)', '');
+  if (!ex.length) lines.push('none'); for (const m of ex) lines.push(`- ${m.id}: counter ${m.bots.counter.map((x) => x * 100).join('-')}, greedy ${m.bots.greedy.map((x) => x * 100).join('-')}, turtle ${m.bots.turtle.map((x) => x * 100).join('-')} ` + (m.botsWhy ? '(' + m.botsWhy + ')' : ''));
+  const simsSeen = new Set(); for (let i = 1; i <= 9; i++) for (const bot of ['counter', 'greedy', 'turtle', 'thrifty', 'melee', 'raid', 'expert']) { const r = get(i, bot); if (r) simsSeen.add(r.sim || '?'); }
+  lines.push('', '## Provenance', '', 'Sim fingerprint (src/sim + src/world + the unit stat table) of the records: ' + Array.from(simsSeen).join(', ') + '. Mission data hash per row is in tests/campaign/feasibility.json. Every battle is deterministic for (mission data, sim, bot, seed).');
   const pr = puzzleReport(dir); if (pr) lines.push('', pr);
   lines.push('');
   fs.writeFileSync(path.join(root, 'docs/campaign_report.md'), lines.join('\n'));
