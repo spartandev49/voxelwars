@@ -46,7 +46,7 @@ await test('protect_vip: VIP death loses; surviving T seconds wins; reaching the
   [w, g] = mk({ markerIds: ['exit'] }); pin(g); g.x = 9; g.z = 0; run(w, 0.3); assert.equal(w.winner, 0, 'reached the exit');
   assert.ok(w.objective.vip === g);
 });
-await test('survive_waves: stragglers do not hold the intermission hostage (<= 10% of the wave for 5 s, or only routed units for 3 s); removeUnit works during an intermission', () => {
+await test('survive_waves: stragglers do not hold the intermission hostage (<= 25% of the wave for 4 s, or only routed units for 3 s); removeUnit works during an intermission', () => {
   const w = world({ rules: { morale: false, timeLimit: 0, objective: { type: 'survive_waves', params: { waves: 3 } }, waves: { autoAdvance: false } }, size: 'medium' }); const log = record(w, ['wave_spawn', 'wave_intermission']);
   block(w, 'hoplite', 0, 4, -30, 25); w.units.forEach((u) => { u.hp = u.hpMax = 1e9; pin(u); });                  // the player's army is far away and harmless: only the wave rules are tested
   run(w, 1); assert.equal(w.waves.state, 'fighting'); const wave = w.units.filter((u) => u.team === 1); assert.ok(wave.length >= 10);
@@ -56,7 +56,7 @@ await test('survive_waves: stragglers do not hold the intermission hostage (<= 1
   run(w, 1);
   const left = w.units.filter((u) => u.alive && u.team === 1); assert.ok(left.length <= keep + 1, 'stragglers left ' + left.length + ' of ' + keep);
   left.forEach((u) => { pin(u); u.hp = u.hpMax = 1e9; });
-  stepUntil(w, 8, () => w.waves.state === 'intermission'); assert.equal(w.waves.state, 'intermission', 'a handful of stragglers is a cleared wave after 5 s');
+  stepUntil(w, 8, () => w.waves.state === 'intermission'); assert.equal(w.waves.state, 'intermission', 'a handful of stragglers is a cleared wave after 4 s');
   assert.equal(count(log, 'wave_intermission'), 1); assert.ok(w.waves.timer < 20);
   // the Game removes units while the world is in the intermission
   const u = w.units.find((x) => x.team === 0); assert.equal(w.removeUnit(u), true, 'removeUnit is allowed in a survival intermission'); assert.ok(!w.units.includes(u));

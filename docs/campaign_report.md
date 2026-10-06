@@ -10,15 +10,15 @@ Bands (W6 of docs/verification.md: greedy 25-75, counter 50-90, turtle 10-60, in
 
 | # | mission | counter | band | greedy | band | turtle | band | seeds |
 |---|---|---|---|---|---|---|---|---|
-| 1 | marathon_sort_of | 70% (14/20) | PASS | 35% (7/20) | PASS | 70% (7/10) | PASS | 20/20/10 |
-| 2 | thermopylae_snack | 100% (20/20) | PASS | 45% (9/20) | PASS | 60% (6/10) | PASS | 20/20/10 |
-| 3 | pyramid_scheme | 85% (17/20) | PASS | 45% (9/20) | PASS | 20% (2/10) | PASS | 20/20/10 |
-| 4 | nile_crossing | 90% (18/20) | PASS | 45% (9/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
-| 5 | alps_elephant | 100% (20/20) | PASS | 40% (8/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
-| 6 | teutoburg_peekaboo | 95% (19/20) | PASS | 60% (12/20) | PASS | 70% (7/10) | PASS | 20/20/10 |
-| 7 | troy_giftshop | 85% (17/20) | PASS | 55% (11/20) | PASS | 100% (10/10) | PASS | 20/20/10 |
-| 8 | cyclops_meet | 90% (18/20) | PASS | 5% (1/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
-| 9 | zeus_bad_day | 65% (13/20) | PASS | 50% (10/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
+| 1 | marathon_sort_of | 70% (14/20) | PASS | 35% (7/20) | PASS | 30% (3/10) | PASS | 20/20/10 |
+| 2 | thermopylae_snack | 100% (20/20) | PASS | 35% (7/20) | PASS | 60% (6/10) | PASS | 20/20/10 |
+| 3 | pyramid_scheme | 60% (12/20) | PASS | 40% (8/20) | PASS | 40% (4/10) | PASS | 20/20/10 |
+| 4 | nile_crossing | 95% (19/20) | PASS | 50% (10/20) | PASS | 80% (8/10) | PASS | 20/20/10 |
+| 5 | alps_elephant | 100% (20/20) | PASS | 35% (7/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
+| 6 | teutoburg_peekaboo | 100% (20/20) | PASS | 70% (14/20) | PASS | 60% (6/10) | PASS | 20/20/10 |
+| 7 | troy_giftshop | 90% (18/20) | PASS | 55% (11/20) | PASS | 90% (9/10) | PASS | 20/20/10 |
+| 8 | cyclops_meet | 90% (18/20) | PASS | 20% (4/20) | PASS | 10% (1/10) | PASS | 20/20/10 |
+| 9 | zeus_bad_day | 70% (14/20) | PASS | 45% (9/20) | PASS | 0% (0/10) | PASS | 20/20/10 |
 
 Bands passing: **27/27** runs recorded.
 
@@ -26,42 +26,42 @@ Bands passing: **27/27** runs recorded.
 
 | # | mission | bot | win | star 2 (half alive) | star 3 | avg win time |
 |---|---|---|---|---|---|---|
-| 1 | marathon_sort_of | counter | 14/20 | 1/20 | 0/20 | 113 s |
-| 1 | marathon_sort_of | greedy | 7/20 | 2/20 | 0/20 | 105 s |
-| 1 | marathon_sort_of | turtle | 7/10 | 0/10 | 0/10 | 119 s |
-| 1 | marathon_sort_of | thrifty | 12/12 | 12/12 | 12/12 | 36 s |
-| 2 | thermopylae_snack | counter | 20/20 | 20/20 | 4/20 | 113 s |
-| 2 | thermopylae_snack | greedy | 9/20 | 1/20 | 0/20 | 140 s |
-| 2 | thermopylae_snack | turtle | 6/10 | 0/10 | 0/10 | 127 s |
+| 1 | marathon_sort_of | counter | 14/20 | 4/20 | 0/20 | 90 s |
+| 1 | marathon_sort_of | greedy | 7/20 | 0/20 | 0/20 | 107 s |
+| 1 | marathon_sort_of | turtle | 3/10 | 0/10 | 0/10 | 104 s |
+| 1 | marathon_sort_of | thrifty | 12/12 | 12/12 | 12/12 | 38 s |
+| 2 | thermopylae_snack | counter | 20/20 | 18/20 | 3/20 | 117 s |
+| 2 | thermopylae_snack | greedy | 7/20 | 0/20 | 0/20 | 139 s |
+| 2 | thermopylae_snack | turtle | 6/10 | 1/10 | 0/10 | 126 s |
 | 2 | thermopylae_snack | melee | 0/10 | 0/10 | 0/10 | - |
-| 2 | thermopylae_snack | expert | 8/8 | 5/8 | 0/8 | 81 s |
-| 3 | pyramid_scheme | counter | 17/20 | 4/20 | 4/20 | 122 s |
-| 3 | pyramid_scheme | greedy | 9/20 | 3/20 | 2/20 | 108 s |
-| 3 | pyramid_scheme | turtle | 2/10 | 0/10 | 0/10 | 126 s |
-| 3 | pyramid_scheme | raid | 9/10 | 3/10 | 6/10 | 97 s |
-| 3 | pyramid_scheme | expert | 8/8 | 6/8 | 8/8 | 72 s |
-| 4 | nile_crossing | counter | 18/20 | 0/20 | 18/20 | 70 s |
-| 4 | nile_crossing | greedy | 9/20 | 0/20 | 8/20 | 65 s |
-| 4 | nile_crossing | turtle | 0/10 | 0/10 | 0/10 | - |
-| 5 | alps_elephant | counter | 20/20 | 20/20 | 20/20 | 42 s |
-| 5 | alps_elephant | greedy | 8/20 | 0/20 | 6/20 | 80 s |
+| 2 | thermopylae_snack | expert | 8/8 | 6/8 | 1/8 | 79 s |
+| 3 | pyramid_scheme | counter | 12/20 | 2/20 | 0/20 | 144 s |
+| 3 | pyramid_scheme | greedy | 8/20 | 0/20 | 0/20 | 131 s |
+| 3 | pyramid_scheme | turtle | 4/10 | 0/10 | 0/10 | 164 s |
+| 3 | pyramid_scheme | raid | 6/10 | 1/10 | 4/10 | 90 s |
+| 3 | pyramid_scheme | expert | 8/8 | 4/8 | 6/8 | 81 s |
+| 4 | nile_crossing | counter | 19/20 | 0/20 | 19/20 | 76 s |
+| 4 | nile_crossing | greedy | 10/20 | 0/20 | 9/20 | 74 s |
+| 4 | nile_crossing | turtle | 8/10 | 5/10 | 4/10 | 75 s |
+| 5 | alps_elephant | counter | 20/20 | 20/20 | 20/20 | 43 s |
+| 5 | alps_elephant | greedy | 7/20 | 0/20 | 5/20 | 80 s |
 | 5 | alps_elephant | turtle | 0/10 | 0/10 | 0/10 | - |
-| 6 | teutoburg_peekaboo | counter | 19/20 | 4/20 | 0/20 | 117 s |
-| 6 | teutoburg_peekaboo | greedy | 12/20 | 2/20 | 0/20 | 150 s |
-| 6 | teutoburg_peekaboo | turtle | 7/10 | 0/10 | 0/10 | 163 s |
-| 6 | teutoburg_peekaboo | raid | 10/10 | 2/10 | 0/10 | 109 s |
-| 6 | teutoburg_peekaboo | expert | 8/8 | 6/8 | 6/8 | 68 s |
-| 7 | troy_giftshop | counter | 17/20 | 14/20 | 17/20 | 100 s |
-| 7 | troy_giftshop | greedy | 11/20 | 5/20 | 11/20 | 94 s |
-| 7 | troy_giftshop | turtle | 10/10 | 5/10 | 10/10 | 115 s |
-| 8 | cyclops_meet | counter | 18/20 | 1/20 | 0/20 | 110 s |
-| 8 | cyclops_meet | greedy | 1/20 | 0/20 | 0/20 | 63 s |
-| 8 | cyclops_meet | turtle | 0/10 | 0/10 | 0/10 | - |
-| 8 | cyclops_meet | melee | 12/12 | 12/12 | 12/12 | 68 s |
-| 9 | zeus_bad_day | counter | 13/20 | 5/20 | 8/20 | 121 s |
-| 9 | zeus_bad_day | greedy | 10/20 | 1/20 | 1/20 | 101 s |
+| 6 | teutoburg_peekaboo | counter | 20/20 | 2/20 | 0/20 | 126 s |
+| 6 | teutoburg_peekaboo | greedy | 14/20 | 1/20 | 0/20 | 159 s |
+| 6 | teutoburg_peekaboo | turtle | 6/10 | 0/10 | 0/10 | 152 s |
+| 6 | teutoburg_peekaboo | raid | 9/10 | 2/10 | 0/10 | 106 s |
+| 6 | teutoburg_peekaboo | expert | 8/8 | 4/8 | 5/8 | 71 s |
+| 7 | troy_giftshop | counter | 18/20 | 14/20 | 18/20 | 104 s |
+| 7 | troy_giftshop | greedy | 11/20 | 3/20 | 11/20 | 93 s |
+| 7 | troy_giftshop | turtle | 9/10 | 1/10 | 9/10 | 114 s |
+| 8 | cyclops_meet | counter | 18/20 | 0/20 | 0/20 | 109 s |
+| 8 | cyclops_meet | greedy | 4/20 | 0/20 | 0/20 | 118 s |
+| 8 | cyclops_meet | turtle | 1/10 | 0/10 | 0/10 | 136 s |
+| 8 | cyclops_meet | melee | 12/12 | 9/12 | 12/12 | 74 s |
+| 9 | zeus_bad_day | counter | 14/20 | 2/20 | 7/20 | 140 s |
+| 9 | zeus_bad_day | greedy | 9/20 | 4/20 | 2/20 | 93 s |
 | 9 | zeus_bad_day | turtle | 0/10 | 0/10 | 0/10 | - |
-| 9 | zeus_bad_day | expert | 8/8 | 6/8 | 8/8 | 88 s |
+| 9 | zeus_bad_day | expert | 8/8 | 7/8 | 7/8 | 91 s |
 
 ## Mission facts
 
@@ -69,8 +69,8 @@ Bands passing: **27/27** runs recorded.
 |---|---|---|---|---|---|---|
 | 1 | marathon_sort_of | marathon medium #11 | hellenes (3000) | persians (3415 dr, 24) | eliminate | 300 s |
 | 2 | thermopylae_snack | thermopylae medium #3 | hellenes (6000) | persians (9486 dr, 73) | hold_hill | 330 s |
-| 3 | pyramid_scheme | giza large #5 | romans (7500) | egyptians (7515 dr, 60) | kill_general | 300 s |
-| 4 | nile_crossing | nile medium #4 | egyptians (6500) | barbarians (5170 dr, 43) | protect_vip | 150 s |
+| 3 | pyramid_scheme | giza large #5 | romans (7500) | egyptians (7795 dr, 63) | kill_general | 300 s |
+| 4 | nile_crossing | nile medium #4 | egyptians (6500) | barbarians (4655 dr, 38) | protect_vip | 150 s |
 | 5 | alps_elephant | alpine medium #9 | carthage (11000) | romans (10220 dr, 80) | eliminate | 360 s |
 | 6 | teutoburg_peekaboo | teutoburg large #8 | barbarians (7500) | romans (9296 dr, 66) | kill_general | 240 s |
 | 7 | troy_giftshop | troy large #12 | hellenes (10000) | hellenes (6975 dr, 65) | destroy | 420 s |
@@ -93,7 +93,7 @@ Bands passing: **27/27** runs recorded.
 
 - marathon_sort_of: counter 60-100, greedy 25-70, turtle 10-80 (a line of hoplites that holds is a legitimate way to win the teaching mission (the lesson is that spears beat horses), so the passive army may win up to 80%)
 - thermopylae_snack: counter 60-100, greedy 25-70, turtle 10-80 (the mission is about holding the pass: the defensive army is the intended plan, passive play may win up to 80%)
-- nile_crossing: counter 60-100, greedy 25-70, turtle 0-60 (the goat only crosses once the road is clear: an army that holds its ground never clears it (0% is the design, not a bug))
+- nile_crossing: counter 60-100, greedy 25-70, turtle 10-100 (the goat walks by itself once the road is clear or after sixty seconds, so an army that simply holds its ground and survives gets it across (the reference still wins more because it clears the road sooner))
 - alps_elephant: counter 60-100, greedy 25-70, turtle 0-60 (the legion walks into a line without artillery or healers and wins: the passive balanced army needs the catapults of the reference to hold)
 - teutoburg_peekaboo: counter 60-100, greedy 25-70, turtle 10-80 (the column arrives in four pieces one after another: a line that holds and beats each piece in turn is a fair plan (the Centurion still has to be reached, so the greedy rush and the reference stay below it))
 - troy_giftshop: counter 60-100, greedy 25-70, turtle 10-100 (the Trojan defenders hold behind the walls and never attack: a patient army wins however it stands (the mission is slow, not dangerous))
@@ -102,15 +102,15 @@ Bands passing: **27/27** runs recorded.
 
 ## Provenance
 
-Sim fingerprint (src/sim + src/world + the unit stat table) of the records: 5b371d3304. Mission data hash per row is in tests/campaign/feasibility.json. Every battle is deterministic for (mission data, sim, bot, seed).
+Sim fingerprint (src/sim + src/world + the unit stat table) of the records: 489eccc492. Mission data hash per row is in tests/campaign/feasibility.json. Every battle is deterministic for (mission data, sim, bot, seed).
 
 ## Puzzles (6)
 
 | id | arena | roster | budget / par | enemy | goal | solution (cost, units) | stars | time |
 |---|---|---|---|---|---|---|---|---|
-| spear_wall | marathon | hoplite, peltast | 1400 / 1000 | 4 companion_cavalry | Defeat all four cavalry | 1000 dr: 10 hoplite | 3 | 32.9 s |
-| kiting_101 | oasis | cretan_archer, peltast | 1200 / 900 | 6 mummy | Defeat all six mummies | 900 dr: 10 cretan_archer | 3 | 33.5 s |
-| elephant_room | marathon | hoplite, peltast, nubian_archer | 2000 / 1600 | 1 war_elephant, 6 hoplite | Defeat the elephant and its escort | 1530 dr: 18 peltast | 3 | 62 s |
-| knock_knock | troy | catapult, hoplite, peltast | 1500 / 1200 | 8 hoplite, 2 ballista | Destroy both gate doors in 120 seconds | 1146 dr: 8 peltast, 2 hoplite, 1 catapult | 3 | 42.2 s |
-| goat_logistics | nile | hoplite, peltast, cretan_archer | 1000 / 700 | 6 axe_thrower, 3 berserker | Get the goat to the far bank | 700 dr: 7 hoplite | 3 | 59.7 s |
-| gaze_avoidance | oasis | cretan_archer, peltast, companion_cavalry | 1100 / 800 | 1 medusa, 5 immortal | Kill Medusa | 790 dr: 5 cretan_archer, 4 peltast | 3 | 46.5 s |
+| spear_wall | marathon | hoplite, peltast | 1400 / 1000 | 4 companion_cavalry | Defeat all four cavalry | 1000 dr: 10 hoplite | 3 | 32.7 s |
+| kiting_101 | oasis | cretan_archer, peltast | 1200 / 900 | 6 mummy | Defeat all six mummies | 900 dr: 10 cretan_archer | 3 | 32 s |
+| elephant_room | marathon | hoplite, peltast, nubian_archer | 2000 / 1600 | 1 war_elephant, 6 hoplite | Defeat the elephant and its escort | 1530 dr: 18 peltast | 3 | 71.1 s |
+| knock_knock | troy | catapult, hoplite, peltast | 1500 / 1200 | 8 hoplite, 2 ballista | Destroy both gate doors in 120 seconds | 1064 dr: 4 catapult | 3 | 18.2 s |
+| goat_logistics | nile | hoplite, peltast, cretan_archer | 1000 / 700 | 6 axe_thrower, 3 berserker | Get the goat to the far bank | 660 dr: 4 cretan_archer, 3 hoplite | 3 | 58.4 s |
+| gaze_avoidance | oasis | cretan_archer, peltast, companion_cavalry | 1100 / 800 | 1 medusa, 5 immortal | Kill Medusa | 765 dr: 9 peltast | 3 | 36.2 s |

@@ -321,7 +321,8 @@ export class MissionRuntime {
     const sq = this.vipSquad, u = this.vipUnit;
     if (!u.alive) return;
     if (!this.vipGone) {
-      if (sq.order === 'advance') sq.order = 'hold';            // the stalemate watchdog turns every Hold into Advance after 18 s: the goat must not march into the enemy
+      w.forceAdvance = false;                                    // the stalemate / dead-air watchdog (squads.js turns every Hold into Advance while this flag is up) must not send the waiting goat into the enemy
+      if (sq.order === 'advance') sq.order = 'hold';
       if (sq.order !== 'hold' || this.t < this.vipAt) return;
       this.vipCheck -= dt; if (this.vipCheck > 0) return;
       this.vipCheck = 0.5;

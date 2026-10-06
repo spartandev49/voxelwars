@@ -315,7 +315,7 @@ function generateOnce(opts, capLimit) {
     else if (style === 'counter' && against) {
       let s = 0, n = 0;
       for (const eid of Object.keys(against)) { if (!defs[eid]) continue; s += Math.log(matchup(d, defs[eid])) * against[eid] * defs[eid].cost; n += against[eid] * defs[eid].cost; }
-      w = Math.exp(n ? s / n * 1.4 : 0);
+      w = Math.exp(n ? s / n * 1.8 : 0);
     } else w = 1 / Math.sqrt(d.cost / 100);
     if (difficulty === 'easy') w = 0.5 + rng.next();                // easy: sloppier composition
     return w;

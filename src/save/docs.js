@@ -199,7 +199,7 @@ function validateSurvival(d) {
 }
 function validateDaily(d) {
   if (typeof d.last !== 'string') d.last = ''; d.streak = Math.max(0, Math.floor(+d.streak) || 0);
-  if (!Array.isArray(d.history)) d.history = []; d.history = d.history.filter(isObj).slice(0, 14);
+  if (!Array.isArray(d.history)) d.history = []; d.history = d.history.filter(isObj).slice(0, 60);     // 60 entries: the streak counts back through them (the Daily screen lists the last 14)
   return d;
 }
 

@@ -864,3 +864,4 @@
 
 /* phones: the objective may use two lines instead of "Defeat the ene..." */
 .vw-hud[data-layout="phone"] .hud-obj-title { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.vw-hud[data-layout="phone"] .hud-mute { display: none; }          /* phones: Pause > quick settings carries the mute switch; the top bar has no room */

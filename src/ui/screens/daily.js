@@ -24,7 +24,7 @@ export function recordDaily(ctx, r) {
   const A0 = (r.teams && r.teams[0]) || {};
   const start = A0.startCount || ((A0.alive || 0) + (A0.dead || 0)) || 1;
   const rec = { date: plan.date, result: r.winner === 0 ? 'win' : r.winner === 1 ? 'loss' : 'draw', time: Math.round(r.time || 0), left: Math.round(100 * (A0.alive || 0) / start), seed: plan.seed, arena: plan.arenaName, string: str };
-  const history = [rec].concat(info.history).slice(0, 14);
+  const history = [rec].concat(info.history).slice(0, 60);
   writeKey(ctx, 'daily', { last: plan.date, streak: streakOf(history, plan.date), history });
   return rec;
 }
@@ -69,7 +69,7 @@ export function mount(root, ctx) {
   const today1 = K.tablet('Today’s battle', h('div', { class: 'vw-col' }, summary, done ? h('p', { class: 'bs-daily-done', text: 'Played today: ' + done.result.toUpperCase() + ' in ' + fmtTime(done.time) + ', ' + done.left + '% left.' }) : null, play), { variant: 'glass', icon: 'calendar', id: 'daily-today' });
 
   const hist = info.history.length
-    ? h('ul', { class: 'bs-daily-hist' }, info.history.map((x) => h('li', { class: 'is-' + x.result }, h('b', { class: 'bs-daily-hd', text: x.date }), h('span', { class: 'bs-daily-ha', text: x.arena || '' }), K.chip(x.result.toUpperCase(), { variant: x.result === 'win' ? 'olive' : x.result === 'loss' ? 'danger' : 'ink' }), h('span', { class: 'bs-daily-ht', text: fmtTime(x.time) + ' · ' + x.left + '%' }),
+    ? h('ul', { class: 'bs-daily-hist' }, info.history.slice(0, 14).map((x) => h('li', { class: 'is-' + x.result }, h('b', { class: 'bs-daily-hd', text: x.date }), h('span', { class: 'bs-daily-ha', text: x.arena || '' }), K.chip(x.result.toUpperCase(), { variant: x.result === 'win' ? 'olive' : x.result === 'loss' ? 'danger' : 'ink' }), h('span', { class: 'bs-daily-ht', text: fmtTime(x.time) + ' · ' + x.left + '%' }),
       K.iconButton('copy', 'Copy result for ' + x.date, { variant: 'ghost', size: 'sm', onClick: () => K.copyText(x.string || '', { title: 'Result for ' + x.date, done: 'Copied.' }) }))))
     : K.emptyState({ icon: 'calendar', title: 'No history yet', text: 'Your first daily battle starts the streak. The streak is imaginary but motivating.' });
   const histTab = K.tablet('History', hist, { variant: 'glass', icon: 'scroll', id: 'daily-history', sub: 'last 14 days' });

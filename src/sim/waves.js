@@ -57,13 +57,13 @@ export class WaveSystem {
     if (this.state === 'fighting') {
       this.timer += dt;
       const enemyAlive = w.stats[this.enemy].alive;
-      // the field counts as clear when the wave is wiped, or only stragglers are left: <= 10% of the wave's start count for 5 s, or nothing but routed units for 3 s
+      // the field counts as clear when the wave is wiped, or only stragglers are left: <= 25% of the wave's start count for 4 s, or nothing but routed units for 3 s
       if (enemyAlive > 0) {
-        this.lowT = enemyAlive <= Math.max(1, Math.ceil(this.startAlive * 0.1)) ? this.lowT + dt : 0;
+        this.lowT = enemyAlive <= Math.max(1, Math.ceil(this.startAlive * 0.25)) ? this.lowT + dt : 0;
         let allRout = true; for (let i = 0; i < w.units.length; i++) { const u = w.units[i]; if (u.alive && u.team === this.enemy && u.state !== ST.ROUT) { allRout = false; break; } }
         this.routT = allRout ? this.routT + dt : 0;
       }
-      if (enemyAlive <= 0 || this.lowT >= 5 || this.routT >= 3) {
+      if (enemyAlive <= 0 || this.lowT >= 4 || this.routT >= 3) {
         this.cleared = this.n; this.state = 'intermission'; this.inter = 0;
         const nn = this.n + 1, e = w.P.wave_intermission; e.n = nn; e.budget = reinforceBudget(this.n); e.name = waveName(nn); e.boss = isBossWave(nn) ? bossOf(nn) : ''; w.emit('wave_intermission', e);
       } else if (this.timer >= this.interval && !(this.maxWaves && this.n >= this.maxWaves)) {

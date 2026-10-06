@@ -78,7 +78,7 @@ export class World {
     this.effects = [];                               // ground effects (dot clouds, fire patches)
     this.weather = weatherMods(this.rules.weather || arena.env.weather);
     this.stats = [newStats(), newStats(), newStats()];
-    this.lastDamageT = 0; this.lastKillT = 0; this.dryMark = -1; this.firstBlood = false; this.stalemateWarned = false; this.stalemateStage = 0;
+    this.lastDamageT = 0; this.lastKillT = 0; this.dryNext = 0; this.firstBlood = false; this.stalemateWarned = false; this.stalemateStage = 0;
     this.countdown = 0; this.leadTeam = -1; this.lastRatio = 1;
     this.officers = [];
     this.forceAdvance = false;
@@ -815,11 +815,11 @@ export class World {
     if (idle > G.stalemateAdvance && !this.forceAdvance) this.forceAdvance = true;
     if (idle > G.stalemateZeus && this.stalemateStage < 1) { this.stalemateStage = 1; this.zeusIntervene(); }
     if (idle > G.stalemateQuit && this.stalemateStage < 2) { this.stalemateStage = 2; const e = this.P.intervention; e.kind = 'ragequit'; this.emit('intervention', e); this.end(-1, 'intervention'); return; }
-    // dead air: once the fight has started, 16 s without a kill brings Zeus (and a goat for the weaker side); 11 s already makes everyone advance (S23)
+    // dead air: once the fight has started, 13 s without a kill brings Zeus (and a goat for the weaker side); 9 s already makes everyone advance (S23)
     if (this.firstBlood) {
       const dry = this.time - this.lastKillT;
-      if (dry > 11) this.forceAdvance = true;
-      if (dry > 16 && this.dryMark !== this.lastKillT) { this.dryMark = this.lastKillT; this.zeusIntervene(); }
+      if (dry > 9) this.forceAdvance = true;
+      if (dry > 13 && this.time >= this.dryNext) { this.dryNext = this.time + 3; this.zeusIntervene(); }                      // and again every 3 s while the dry spell lasts
     }
     // pacing governor: lopsided long battles collapse faster; even idle ones advance
     const ca = this.stats[0].aliveCost, cb = this.stats[1].aliveCost;
@@ -869,6 +869,7 @@ export class World {
     const weaker = this.stats[0].aliveCost <= this.stats[1].aliveCost ? 0 : 1;
     const zone = this.arena.zones[weaker === 0 ? 'A' : 'B'];
     const g = this.addUnit('battle_goat', weaker, zone.x, zone.z, {});
+    { const st = this.stats[weaker]; st.startCount--; st.startCost -= g.def.cost; }      // a divine gift is not part of the roster the battle started with (battle_start / stats.startCost stay the roster)
     const e2 = this.P.intervention; e2.kind = 'goat'; this.emit('intervention', e2);
     this.forceAdvance = true;
     return g;

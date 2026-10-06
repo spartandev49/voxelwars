@@ -71,14 +71,14 @@ function battle(j) {
     if (j.s9 && (w.tickN % 15) === 0) hazardBad += blockedUnits(w, hz++);
   }
   const ms = performance.now() - t0;
-  if (kk > 0 && w.time - lastKill > maxGap) maxGap = w.time - lastKill;
+  const tailGap = kk > 0 ? w.time - lastKill : 0;                   // last kill -> the end of the battle (routers running away): reported, not counted as dead air
   let changes = 0; for (let i = 1; i < leaders.length; i++) if (leaders[i] !== leaders[i - 1]) changes++;
   const sc = w.stats, win = w.winner;
   const keep = win >= 0 ? sc[win].aliveCost / Math.max(1, sc[win].startCost) : 0;
   return {
     winner: win, reason: w.endReason, t: +w.time.toFixed(2), ticks: w.tickN, ms: +ms.toFixed(1),
     alive: [sc[0].alive, sc[1].alive], keep: +keep.toFixed(3), startCost: [sc[0].startCost, sc[1].startCost], startCount: [sc[0].startCount, sc[1].startCount],
-    aliveCost: [sc[0].aliveCost, sc[1].aliveCost], changes, leadEvents: leaders.length, maxGap: +maxGap.toFixed(1), kills: kk, flavor, metrics: met ? met.report() : null, hazardBad,
+    aliveCost: [sc[0].aliveCost, sc[1].aliveCost], changes, leadEvents: leaders.length, maxGap: +maxGap.toFixed(1), tailGap: +tailGap.toFixed(1), kills: kk, flavor, metrics: met ? met.report() : null, hazardBad,
   };
 }
 /** S9: grounded units standing inside blocked cells (blocking prop footprint / deep water / lava). */
@@ -537,8 +537,8 @@ async function sectionPerf() {
   const budgets = { 150: 1.2, 300: 2, 500: 3, 1000: 6 }, rows = [];
   for (const n of [150, 300, 500, 1000]) {
     let r = null;
-    for (let rep = 0; rep < (QUICK ? 1 : 3); rep++) { const x = measure(n, { seed: 3 + rep, ticks: n > 500 ? 300 : 600 }); if (!r || x.msPerTick < r.msPerTick) r = x; }
-    rows.push({ units: n, alive: Math.round(r.alive), msPerTick: +r.msPerTick.toFixed(2), budget: budgets[n], pass: r.msPerTick <= budgets[n] });
+    for (let rep = 0; rep < (QUICK ? 1 : 3); rep++) { const x = measure(n, { seed: 3 + rep, ticks: n > 500 ? 300 : 600, scenario: 'marathon150' }); if (!r || x.msPerTick < r.msPerTick) r = x; }
+    rows.push({ units: n, built: r.n0, alive: Math.round(r.alive), msPerTick: +r.msPerTick.toFixed(2), p99: +r.p99.toFixed(1), max: +r.max.toFixed(1), budget: budgets[n], pass: r.msPerTick <= budgets[n] });
   }
   // heap growth: a long fight between very tanky armies (10k ticks), GC forced before/after
   let heap = null;
@@ -771,7 +771,7 @@ function renderReport(data) {
   if (data.perf) {
     L.push('## Performance (S3)');
     L.push('');
-    L.push(table(['units', 'avg alive', 'ms/tick (CPU)', 'budget', 'result'], data.perf.rows.map((r) => [r.units, r.alive, r.msPerTick, r.budget, r.pass ? 'PASS' : 'FAIL'])));
+    L.push(table(['units', 'built', 'avg alive', 'ms/tick (thread CPU, warm JIT)', 'p99', 'worst tick', 'budget', 'result'], data.perf.rows.map((r) => [r.units, r.built, r.alive, r.msPerTick, r.p99, r.max, r.budget, r.pass ? 'PASS' : 'FAIL'])));
     L.push('');
     L.push('Heap growth: ' + JSON.stringify(data.perf.heap));
     L.push('');
