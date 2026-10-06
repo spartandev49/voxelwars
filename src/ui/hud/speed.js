@@ -11,10 +11,11 @@ export function mount(parent, ctx, layers) {
   const g = () => ctx.game;
   const pauseBtn = h('button', { class: 'hud-btn hud-pause', id: 'hud-pause', type: 'button', 'aria-label': 'Pause', 'data-tip': 'Pause (' + keyOf(ctx.settings, 'pause') + ')', 'data-tip-pos': 'below' }, icon('pause'));
   const gear = h('button', { class: 'hud-btn hud-gear', id: 'hud-gear', type: 'button', 'aria-label': 'Menu and settings', 'data-tip': 'Menu (Esc)', 'data-tip-pos': 'below' }, icon('gear'));
+  const muteBtn = h('button', { class: 'hud-btn hud-mute', id: 'hud-mute', type: 'button', 'aria-label': 'Mute sound', 'aria-pressed': 'false', 'data-tip': 'Mute sound', 'data-tip-pos': 'below' }, icon('speaker'));
   const btns = SPEEDS.map((s) => h('button', { class: 'hud-btn hud-spd', type: 'button', id: 'hud-speed-' + String(s).replace('.', '_'), 'data-speed': s, 'aria-pressed': 'false', 'aria-label': 'Speed ' + s + 'x', 'data-tip': s + 'x speed', 'data-tip-pos': 'below', text: LABEL[s] }));
   const seg = h('div', { class: 'hud-seg', role: 'group', 'aria-label': 'Game speed' }, btns);
   const cycle = h('button', { class: 'hud-btn hud-spd-cycle', type: 'button', id: 'hud-speed-cycle', 'aria-label': 'Change speed', 'data-tip': 'Next speed', 'data-tip-pos': 'below', text: '1x' });
-  const el = h('div', { class: 'hud-speed hud-panel', 'data-hud': 'speed', role: 'toolbar', 'aria-label': 'Speed controls' }, pauseBtn, seg, cycle, gear);
+  const el = h('div', { class: 'hud-speed hud-panel', 'data-hud': 'speed', role: 'toolbar', 'aria-label': 'Speed controls' }, pauseBtn, seg, cycle, muteBtn, gear);
   parent.appendChild(el);
 
   // "Paused" ribbon lives in the overlay layer so it is centred on the screen
@@ -44,6 +45,12 @@ export function mount(parent, ctx, layers) {
     flag.hidden = !paused;
   }
 
+  // every screen shows the sound state (AU9): the battle HUD has its own mute toggle, in step with Settings and the pause menu
+  const isMuted = () => { try { return !!ctx.settings.get('muted'); } catch (e) { return false; } };
+  function paintMute() { const m = isMuted(); setCls(muteBtn, 'is-muted', m); setAttr(muteBtn, 'aria-pressed', m); setAttr(muteBtn, 'aria-label', m ? 'Unmute sound' : 'Mute sound'); setAttr(muteBtn, 'data-tip', m ? 'Sound is off. Click to unmute' : 'Mute sound'); }
+  muteBtn.addEventListener('click', () => { try { ctx.settings.set('muted', !isMuted()); } catch (e) { /* settings unavailable */ } paintMute(); sfx(ctx, 'ui_click', { vol: 0.5 }); });
+  let offMute = null; try { if (ctx.settings && typeof ctx.settings.on === 'function') offMute = ctx.settings.on(paintMute); } catch (e) { offMute = null; }
+  paintMute();
   pauseBtn.addEventListener('click', togglePause);
   gear.addEventListener('click', () => el.dispatchEvent(new CustomEvent('hud:menu', { bubbles: true })));
   btns.forEach((b, i) => b.addEventListener('click', () => setSpeed(SPEEDS[i])));
@@ -56,6 +63,6 @@ export function mount(parent, ctx, layers) {
       const s = hud.speed || 1, p = !!hud.paused;
       if (s !== speed || p !== paused) { speed = s; paused = p; paint(); }
     },
-    destroy() { el.remove(); flag.remove(); },
+    destroy() { if (typeof offMute === 'function') offMute(); el.remove(); flag.remove(); },
   };
 }

@@ -64,6 +64,23 @@ const appRoot = () => document.getElementById('vw-root') || document.body;
 
 /* ---------------------------------------------------------------- core */
 let fitRaf = 0;
+/** The first Tab on a menu page must land on its first control, not on <body> (the browser starts from the document when nothing was clicked yet).
+ *  Skipped in battle (a .vw-hud is mounted: Tab hides the HUD there) and while the page has focus somewhere real. Shift+Tab goes to the last control. */
+function firstTab(e) {
+  if (e.key !== 'Tab' || e.defaultPrevented || e.ctrlKey || e.altKey || e.metaKey) return;
+  const ae = document.activeElement;
+  if (ae && ae !== document.body && ae !== document.documentElement) return;
+  if (document.querySelector('.vw-hud')) return;
+  const modals = document.querySelectorAll('.vw-modal');
+  let scope = modals.length ? modals[modals.length - 1] : null;
+  if (!scope) { const ss = document.querySelectorAll('.vw-screen'); scope = ss.length ? ss[ss.length - 1] : null; }
+  if (!scope) return;
+  const list = focusables(scope);
+  if (!list.length) return;
+  e.preventDefault();
+  const t = e.shiftKey ? list[list.length - 1] : list[0];
+  try { t.focus({ preventScroll: true }); } catch (err) { t.focus(); }
+}
 export function init(ctx) {
   if (ctx && ctx !== CTX) {
     CTX = ctx;
@@ -71,6 +88,7 @@ export function init(ctx) {
     try { installUiSettings(ctx); } catch (e) { /* settings may be partial in tests */ }
     if (!init.bound) {
       init.bound = true;
+      window.addEventListener('keydown', firstTab, true);
       window.addEventListener('resize', () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(() => { if (CTX) applyUiSettings(CTX.settings); }); });
     }
   }

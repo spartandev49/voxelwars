@@ -506,6 +506,7 @@ export function createMockApp(opts) {
     const el = document.createElement('div');
     el.className = 'vw-screen vw-screen--' + id;
     el.dataset.screen = id;
+    el.style.pointerEvents = (mod.meta && mod.meta.layer === 'battle') ? 'none' : 'auto';   // like the real router: battle-layer screens let clicks fall through to the canvas
     rootEl().appendChild(el);
     if (opts.onScreen) opts.onScreen(mod.meta || { id }, el);
     const api = mod.mount(el, ctx, params || {}) || {};

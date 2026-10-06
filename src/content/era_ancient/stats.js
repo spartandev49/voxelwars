@@ -63,7 +63,7 @@ export const STAT_TABLE = {
   centaur_archer: { faction: 'mythic', role: 'ranged', cost: 203, hp: 148, armor: 0.10, speed: 3.9, runMul: 1.7, mass: 2.6, radius: 0.7, melee: M(12, 1.2, 1.8, 'blunt', 'bash'), ranged: R('arrow', 16, 1.4, 38, { spread: 0.035, speed: 42, gravity: 22 }), abilities: [], tags: ['archer', 'cavalry'], ai: { style: 'skirmish' } },
   trojan_horse: { faction: 'mythic', role: 'siege', cost: 450, hp: 358, armor: 0.30, speed: 1.4, mass: 8, radius: 1.4, melee: M(27, 1.5, 2.5, 'blunt', 'ram', { kb: 12.1 }), abilities: [{ id: 'summon_on_death', spawn: 'hoplite', count: 6, onContact: 25, hpFrac: 0.4 }], tags: ['large', 'siege', 'fire_weak'], ai: { style: 'charge' } },
   sacred_chicken: { faction: 'mythic', role: 'swarm', cost: 28, hp: 22, armor: 0, speed: 4.6, mass: 0.3, radius: 0.25, melee: M(3, 0.3, 0.8, 'pierce', 'peck'), abilities: [{ id: 'tantrum', chance: 0.3, duration: 5, dmg: 3, speed: 1.5 }, { id: 'cluck', radius: 5, taunt: 2, cd: 12 }], tags: ['animal'], ai: { style: 'charge' } },
-  battle_goat: { faction: 'mythic', role: 'beast', cost: 45, hp: 65, armor: 0.05, speed: 4.0, runMul: 1.4, mass: 1.2, radius: 0.4, melee: M(11, 1.5, 1.2, 'blunt', 'headbutt', { kb: 6 }), abilities: [{ id: 'dash', kind: 'goat_charge', dist: 8, dmgMul: 2, cd: 9 }], tags: ['animal'], ai: { style: 'charge' } },
+  battle_goat: { faction: 'mythic', role: 'beast', cost: 51, hp: 55, armor: 0.05, speed: 4.0, runMul: 1.4, mass: 1.2, radius: 0.4, melee: M(10, 1.5, 1.2, 'blunt', 'headbutt', { kb: 6 }), abilities: [{ id: 'dash', kind: 'goat_charge', dist: 8, dmgMul: 2, cd: 9 }], tags: ['animal'], ai: { style: 'charge' } },
 };
 
 export const FACTIONS = {

@@ -29,6 +29,9 @@ check('UI5: Quick Fight reaches a running fight in 2 clicks after the splash', c
 await ev(() => { window.__ui.app.settings.set('seenHints', {}); });
 await L.run('placement'); await wait(900);
 check('UI5: first-run placement tutorial shows', await ev(() => !!document.getElementById('pl-hint')));
+check('M1: the tutorial card is clickable (the screen layer is pointer-events:none): elementFromPoint hits NEXT, DISMISS and the checkbox label', await ev(() => ['pl-hint-next', 'pl-hint-dismiss', 'pl-hint-never'].every((id) => { const b = document.getElementById(id); const r = b.getBoundingClientRect(); const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2); return !!hit && (hit === b || b.contains(hit) || (hit.closest && hit.closest('label') && hit.closest('label').contains(b))); })));
+check('M2: the first-time card tells where to place soldiers (the glowing zone)', await ev(() => { const b = document.getElementById('pl-hint-next'); b.click(); return /glowing blue zone/i.test(document.getElementById('pl-hint').textContent); }));
+check('M2: until the first soldier is down the header says where to place them', await ev(() => { window.__ui.game.tools.clear(); return true; }) && await (async () => { await wait(350); return ev(() => /glowing blue zone/i.test(document.getElementById('pl-sub').textContent)); })());
 await p.check('#pl-hint-never'); await p.click('#pl-hint-next'); await wait(200);
 check('UI5: "do not show again" persists in settings.seenHints', await ev(() => window.__ui.app.settings.get('seenHints').placementTutorial === true));
 await L.run('placement'); await wait(900);
@@ -36,6 +39,10 @@ check('UI5: the tutorial does not return after being dismissed permanently', awa
 check('UI16: scout report shows advice with counter chips', await ev(() => document.querySelectorAll('#pl-scout .vw-pl__adv').length >= 2 && document.querySelectorAll('#pl-scout .vw-chip--btn').length >= 1));
 await p.click('#pl-counter-cretan_archer'); await wait(150);
 check('UI16: clicking a counter chip selects that unit as the brush', await ev(() => window.__ui.game.tools.brush().defId === 'cretan_archer' && document.querySelector('#pl-cards .vw-card.is-selected') !== null));
+await ev(() => { const G = window.__ui.game; G.tools.clear(0); G.tools.place(0, 'hoplite', 1); }); await wait(350);
+check('scout: one soldier gets no composition advice (three are needed) and the strip says so', await ev(() => document.querySelectorAll('#pl-scout .vw-pl__adv:not(.vw-pl__adv--empty)').length === 0 && /three or more/.test(document.getElementById('pl-scout').textContent)));
+await ev(() => { window.__ui.game.tools.place(0, 'hoplite', 5); }); await wait(350);
+check('scout: advice returns with three or more soldiers, and the strip stays compact (<= 9.5rem)', await ev(() => document.querySelectorAll('#pl-scout .vw-pl__adv').length >= 1 && document.getElementById('pl-scout-strip').getBoundingClientRect().height <= 9.5 * parseFloat(getComputedStyle(document.documentElement).fontSize) + 2));
 const beforeUndo = await ev(() => window.__ui.game.info.counts(0).total);
 await ev(() => { window.__ui.game.tools.place(0, 'hoplite', 5); });
 await wait(120);
@@ -142,6 +149,14 @@ check('puzzle: the budget bar shows a par tick and the par amount', await ev(() 
 check('puzzle: the scout strip leads with the Goal and the Hint', await ev(() => /Goal/.test(document.getElementById('pl-scout').textContent) && /Defeat all eight cavalry/.test(document.getElementById('pl-scout').textContent) && /Hint/.test(document.getElementById('pl-scout').textContent)));
 await p.click('#pl-clear'); await wait(250);
 check('puzzle: Reset clears army A at once (no dialog; retries are free)', await ev(() => window.__ui.game.info.counts(0).total === 0 && !document.querySelector('.vw-modal')));
+
+/* ---------------- campaign / daily / survival placement: army B is locked (Game mode.locked) ---------------- */
+await ev(async () => { const G = window.__ui.game; await G.begin(G.newSetup('campaign', { mission: 'marathon_sort_of', arena: { presetId: 'marathon', size: 'medium', seed: 1, env: {} }, rules: { budget: 3000 }, armies: { A: { faction: 'hellenes', placements: [], budget: 3000 }, B: { faction: 'persians', placements: [], budget: null } } })); window.__ui.goto('placement'); }); await wait(600);
+check('campaign placement: army B is locked (no team switch, no B budget bar, no mirror, no enemy auto-fill, Clear has no "both sides")', await ev(() => !document.getElementById('pl-team') && !document.getElementById('pl-budget-b') && !document.getElementById('pl-mirror') && !document.getElementById('pl-fill-enemy') && !!document.getElementById('pl-fill-mine')));
+await ev(() => { const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); window.__ui.game.tools.place(0, 'hoplite', 3); }); await wait(300);
+await p.click('#pl-clear'); await wait(400);
+check('campaign placement: Clear offers only this army', await ev(() => { const m = document.querySelector('.vw-modal'); return !!m && !/both sides/i.test(m.textContent); }));
+await p.keyboard.press('Escape'); await wait(450);
 
 /* ---------------- quick: copy seed, rules reach the Setup ---------------- */
 await L.run('quick'); await wait(300);

@@ -70,7 +70,7 @@ export function mount(root, ctx, params) {
   K.roving(grid, { selector: '.vw-ed__tool', orientation: 'both' });
 
   // top bar
-  const backBtn = K.button(S.common.back, { icon: 'back', variant: 'secondary', sound: 'ui_back', id: 'ed-back', onClick: () => app.leave() });
+  const backBtn = K.button(S.common.back, { icon: 'back', variant: 'secondary', sound: 'ui_back', id: 'ed-back', class: 'vw-ed__lbl-n', onClick: () => app.leave() });
   K.tooltip(backBtn, S.bar.back);
   const titleName = K.h('span', { class: 'vw-ed__title-name', id: 'ed-title-name' });
   const dirtyDot = K.h('span', { class: 'vw-ed__dirty vw-hide', id: 'ed-dirty', role: 'img', 'aria-label': S.status.unsaved });

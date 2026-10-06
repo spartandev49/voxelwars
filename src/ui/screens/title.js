@@ -12,6 +12,8 @@ export function mount(root, ctx, params) {
   K.init(ctx);
   const T = getT(ctx).title;
   const cleanups = [];
+  // warm the arena thumbnail queue (one arena per idle slice) while the player reads the menu, so Quick Battle opens with its maps already drawn
+  { const arenaList = safe(() => ctx.content.arenas, []) || []; const warm = setTimeout(() => { for (const a of arenaList) { try { ctx.content.arenaThumb(a.id); } catch (e) { /* no thumbnails in this build */ } } }, 1200); cleanups.push(() => clearTimeout(warm)); }
   const go = (id, p) => ctx.nav.goto(id, p);
   const isPhone = safe(() => ctx.platform.isPhone(), false);
   const editor = (id) => () => (isPhone ? go('phone_notice', { editor: id }) : go(id));

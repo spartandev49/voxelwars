@@ -140,6 +140,9 @@
 /* short windows: the prop grid needs the room: one scrolling row of categories, and the tip that the top hint already says */
 @media (max-height: 600px) { .vw-ed__cats { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .3rem; scrollbar-width: thin; } .vw-ed__cats > * { flex: none; } #ed-props-modetip { display: none; } }
 @media (max-width: 900px) {
+  .vw-ed__lbl-n .vw-btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .vw-ed__lbl-n .vw-btn__face { padding-left: .7rem; padding-right: .7rem; }
+  .vw-ed__bar-name { flex: 1 1 8rem; }
   .vw-ed { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 38%) auto; grid-template-areas: "top" "tools" "view" "insp" "bottom"; }
   .vw-ed__tools { align-self: stretch; padding: .4rem; margin-bottom: .45rem; overflow-x: auto; overflow-y: hidden; }
   .vw-ed__toolgrid { grid-template-columns: repeat(8, 3rem); grid-auto-flow: row; }

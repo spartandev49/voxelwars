@@ -80,6 +80,7 @@ export function mount(root, ctx, params) {
     return rows;
   }
   function valueNode(k, v) {
+    if (k === 'muted') return K.chip(v ? 'Yes' : 'No', { variant: 'ink' });                 // information, not a health check: sound on is the normal state
     if (v === true) return K.chip(T.ok, { variant: 'olive', icon: 'check' });
     if (v === false) return K.chip(T.bad, { variant: 'danger', icon: 'warning' });
     if (k === 'ua' || k === 'renderer') return K.h('span', { class: 'vw-diag__val vw-mono vw-diag__long', text: String(v) });

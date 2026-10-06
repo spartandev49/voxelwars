@@ -124,7 +124,7 @@ export class EditorHost {
     this.terrain.setArena(arena);
     this.props.setArena(arena);
     this.rig.setWorld(null); this.rig.setArena(arena);
-    this.rig.limits.maxDist = Math.max(160, arena.worldSize() * 2.2);   // room to fit the whole arena in a small window
+    this.rig.limits.maxDist = Math.max(200, arena.worldSize() * 3);   // room to fit the whole arena in a small window
     this.setEnvironment(arena.env);
     return this;
   }
@@ -158,8 +158,8 @@ export class EditorHost {
       const fw = Math.max(240, vw - i.left - i.right), fh = Math.max(180, vh - i.top - i.bottom);
       const k = 2 * Math.tan(((cam.fov || 48) * Math.PI) / 360) * 0.9;           // world units per pixel-of-height at distance 1, with a 10% margin
       const extH = W * (Math.abs(Math.cos(yaw)) + Math.abs(Math.sin(yaw))), extV = extH * Math.sin(pitch) + 10;
-      const d = Math.max(extH / (k * fw / vh), extV / (k * fh / vh));
-      return isFinite(d) ? Math.max(min, d) : min;
+      const d = Math.max(extH / (k * fw / vh), 0.7 * extV / (k * fh / vh));   // width first; a tall, thin free area may hide the near and far corners under the panels
+      return isFinite(d) ? Math.min(this.rig.limits.maxDist, Math.max(min, d)) : min;
     } catch (e) { return min; }
   }
 

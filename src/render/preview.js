@@ -98,7 +98,7 @@ export class PreviewService {
     it.skin.begin(); const s = it.defScale;
     it.skin.add(0, ex.root.y, 0, 0, it.scale[0] * s, it.scale[1] * s, it.scale[2] * s, it.pose, tc, 0, 0, 0, ex.root.pitch, ex.root.roll); it.skin.end();
     // orbit camera around the unit; the distance fits the model's height AND width into this view's aspect
-    const c = this.camera, aspect = pw / ph, th = Math.tan(c.fov * Math.PI / 360), hgt = it.height * 0.5, d = Math.max(hgt / th, (it.wide * 0.72) / (th * Math.min(1, aspect)), 2.2) * 1.0, h = it.height * 0.5;
+    const c = this.camera, aspect = pw / ph, th = Math.tan(c.fov * Math.PI / 360), hgt = it.height * 0.5, d = Math.max(hgt / th, (it.wide * 0.72) / (th * Math.min(1, aspect)), 2.2) * 1.28, h = it.height * 0.5;   /* 1.28: margin for horns/crests/perspective (QA round 1: Minotaur cropped) */
     c.aspect = aspect; c.updateProjectionMatrix();
     c.position.set(Math.sin(it.yaw) * d, h + d * 0.16, Math.cos(it.yaw) * d); c.lookAt(0, h, 0); c.updateMatrixWorld();
     it.ground.scale.setScalar(Math.max(0.8, it.height / 3));

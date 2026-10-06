@@ -120,10 +120,10 @@ const RAW = [
     playerFaction: 'barbarians', roster: ['berserker', 'axe_thrower', 'warhound', 'druid', 'chieftain'], budget: 7500, par: 0,
     reference: [{ defId: 'warhound', n: 34 }, { defId: 'berserker', n: 26 }, { defId: 'druid', n: 6 }, { defId: 'chieftain', n: 1 }, { defId: 'axe_thrower', n: 10 }],
     enemy: { faction: 'romans', style: 'marching column', difficulty: 'normal', generals: ['centurion'], special: 'arrives in a column',
-      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }] },
+      groups: [{ defId: 'centurion', n: 1, at: { x: 47, z: 0 }, order: 'hold' }, { defId: 'legionary', n: 12 }, { defId: 'equites', n: 4 }] },
     objective: { type: 'kill_general', params: {}, markerIds: ['centurion_start'], binding: true }, timeLimit: 240,
     script: { waves: { placed: true, firstAfter: 14, interval: 14, breather: 2, list: [
-      { groups: [{ defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }], after: 14 },
+      { groups: [{ defId: 'legionary', n: 12 }, { defId: 'equites', n: 4 }], after: 14 },
       { groups: [{ defId: 'legionary', n: 13 }, { defId: 'gladiator', n: 4 }], after: 14 },
       { groups: [{ defId: 'legionary', n: 13 }, { defId: 'equites', n: 4 }, { defId: 'ballista', n: 1 }] },
     ] } },

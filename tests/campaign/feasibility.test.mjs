@@ -44,13 +44,13 @@ await test('stars: every mission star 3 was earned by at least one recorded batt
   const th = rec.runs.marathon_sort_of.bots.thrifty; assert.ok(th && th.starHits[2] >= 1, 'a thrifty army (<= 2,250) wins mission 1 and earns the thrift star');
 });
 
-await test('determinism: stored battles of missions 1 and 8 (counter, seed 1) replay to the same result; exactly (time too) when the sim sources are the ones the records were made on, otherwise the win/loss and the stars must still hold (and a STALE warning names the re-run)', () => {
+await test('determinism: stored battles of missions 1 and 8 (counter, seed 1) replay to the same result and time when the sim sources are the ones the records were made on; after a sim or stats change the replay is only reported (STALE) and the slow re-measurement (feasibility.slow.test.mjs) is the check', () => {
   const now = simHash();
   for (const m of [MISSIONS[0], MISSIONS[7]]) {
-    const b = rec.runs[m.id].bots.counter, r = runMission(m, 'counter', 1);
-    assert.equal(r.win ? 1 : 0, b.perSeed[0][0], m.id + ' win/loss reproduces'); assert.equal(r.stars, b.perSeed[0][2], m.id + ' stars reproduce');
-    if (b.sim === now) assert.ok(Math.abs(r.t - b.perSeed[0][1]) < 0.2, m.id + ' end time reproduces: ' + r.t.toFixed(1) + ' vs ' + b.perSeed[0][1]);
-    else console.log('  STALE: ' + m.id + ' records were made on sim ' + (b.sim || '?') + ', the sim is now ' + now + ' (re-run tests/campaign/run_feasibility.mjs for the numbers in docs/campaign_report.md)');
+    const b = rec.runs[m.id].bots.counter;
+    if (b.sim !== now) { console.log('  STALE: ' + m.id + ' records were made on sim ' + (b.sim || '?') + ', the sim is now ' + now + ': re-run tests/campaign/run_feasibility.mjs and --report (docs/campaign_report.md is of the old sim)'); continue; }
+    const r = runMission(m, 'counter', 1);
+    assert.equal(r.win ? 1 : 0, b.perSeed[0][0], m.id + ' win/loss reproduces'); assert.equal(r.stars, b.perSeed[0][2], m.id + ' stars reproduce'); assert.ok(Math.abs(r.t - b.perSeed[0][1]) < 0.2, m.id + ' end time reproduces: ' + r.t.toFixed(1) + ' vs ' + b.perSeed[0][1]);
   }
 });
 

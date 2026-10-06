@@ -20,8 +20,9 @@ for (const p of list) {
   const { best, result } = solve(p, { iters: +iters, seed: +seed, seeds, log: (m) => console.log(p.id, m) });
   if (!best || !result.win) { console.log(p.id, 'NO WINNING PLACEMENT FOUND'); continue; }
   let prev = out[p.id];
-  if (prev) { const re = runPuzzle(p, prev.placements); if (!re.win || re.stars < prev.stars) { console.log(p.id, 'the stored solution no longer wins (stars ' + re.stars + '): replaced'); prev = null; } }
-  const better = !prev || result.stars > prev.stars || (result.stars === prev.stars && best.cost < prev.cost);
+  let prevRobust = false;
+  if (prev) { const re = runPuzzle(p, prev.placements); if (!re.win || re.stars < prev.stars) { console.log(p.id, 'the stored solution no longer wins (stars ' + re.stars + '): replaced'); prev = null; } else prevRobust = [3, 7].every((d) => { const x = runPuzzle(p, prev.placements, { seed: (p.arena.seed || 1) + d }); return x.win && x.stars >= re.stars; }); }
+  const better = !prev || result.stars > prev.stars || (result.robust && !prevRobust) || (result.stars === prev.stars && !!result.robust === prevRobust && best.cost < prev.cost);
   console.log(p.id, 'best: stars', result.stars, 'cost', best.cost, 't', result.t.toFixed(1), better ? '(stored)' : '(kept the previous)');
   if (better) out[p.id] = { placements: best.placements, cost: best.cost, stars: result.stars, earned: result.earned, t: +result.t.toFixed(1), lost: result.summary.unitsLost, alive: result.alive[0] };
 }

@@ -1,5 +1,6 @@
 // Campaign feasibility runner (W6, S21). Fights every mission with the scripted reference players of spec/world.md section 6 and records win rates.
 //   node tests/campaign/run_feasibility.mjs --missions=1,2 --bots=counter,greedy,turtle --n=20       run (one JSON per mission+bot in .cache/campaign/)
+//   ... --append --seedBase=20 --n=20                                                           add seeds 21..40 to the stored 20-seed run of the same data and sim
 //   node tests/campaign/run_feasibility.mjs --report                                                 write docs/campaign_report.md from the stored runs
 // Bots: counter = counter-pick against the whole enemy list (the reference player), greedy = random composition, every squad advances (the naive deployment),
 // turtle = balanced composition, every squad holds. Star-hunting variants (not part of the bands): 'thrifty' = counter bot with the par budget (star 3 of
@@ -20,14 +21,22 @@ fs.mkdirSync(dir, { recursive: true });
 
 if (process.argv.includes('--report')) { writeReport(); process.exit(0); }
 
+const append = process.argv.includes('--append');
 const idx = arg('missions', '1,2,3,4,5,6,7,8,9').split(',').map(Number), bots = arg('bots', 'counter,greedy,turtle').split(','), n = +arg('n', '20'), base = +arg('seedBase', '0');
 for (const i of idx) for (const bot of bots) {
   const m = MISSIONS[i - 1];
   const mm = bot === 'thrifty' ? Object.assign({}, m, { budget: m.par || Math.round(m.budget * 0.75) }) : m;
   const powers = bot === 'thrifty' || bot === 'expert', r = sweep(mm, bot === 'thrifty' || bot === 'expert' ? 'counter' : bot, n, { seedBase: base, powers });
-  const rec = { id: m.id, index: i, bot, hash: missionHash(m), sim: simHash(), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
-  fs.writeFileSync(path.join(dir, `m${i}_${bot}.json`), JSON.stringify(rec));
-  console.log(m.id, bot, `${r.wins}/${n}`, 'stars', r.starHits.join('/'), 'avgWinT', r.avgWinT.toFixed(0), 'cpu', (r.cpuMs / n / 1000).toFixed(1) + 's');
+  let rec = { id: m.id, index: i, bot, hash: missionHash(m), sim: simHash(), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
+  const file = path.join(dir, `m${i}_${bot}.json`);
+  if (append && fs.existsSync(file)) {          // --append: seeds base+1..base+n are added to the stored run (same data and same sim only), so a 20-seed run grows into a 40-seed one
+    const old = JSON.parse(fs.readFileSync(file, 'utf8'));
+    if (old.hash !== rec.hash || old.sim !== rec.sim || old.n !== base) { console.log(m.id, bot, 'cannot append: the stored run is of other data/sim or has ' + old.n + ' seeds, not ' + base); continue; }
+    const perSeed = old.perSeed.concat(rec.perSeed), wins = perSeed.filter((x) => x.win).length, wt = perSeed.filter((x) => x.win);
+    rec = Object.assign({}, old, { n: perSeed.length, wins, rate: wins / perSeed.length, starHits: old.starHits.map((v, k) => v + rec.starHits[k]), avgWinT: wt.length ? wt.reduce((a, x) => a + x.t, 0) / wt.length : 0, cpuMs: old.cpuMs + rec.cpuMs, perSeed });
+  }
+  fs.writeFileSync(file, JSON.stringify(rec));
+  console.log(m.id, bot, `${rec.wins}/${rec.n}`, 'stars', rec.starHits.join('/'), 'avgWinT', rec.avgWinT.toFixed(0), 'cpu', (r.cpuMs / n / 1000).toFixed(1) + 's');
 }
 
 function collect() {

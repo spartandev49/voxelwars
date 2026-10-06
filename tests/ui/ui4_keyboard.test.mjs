@@ -7,6 +7,15 @@ const active = () => p.evaluate(() => { const a = document.activeElement; if (!a
 const screen = () => p.evaluate(() => window.__ui.app.nav.current());
 const press = async (k, n = 1) => { for (let i = 0; i < n; i++) { await p.keyboard.press(k); await p.waitForTimeout(25); } };
 
+/* ---------------- first Tab (QA round 1): lands on the first control of the page, not on <body> ---------------- */
+for (const scr of ['quick', 'settings', 'codex', 'credits']) {
+  await L.ev((id) => window.__ui.goto(id), scr); await p.waitForTimeout(350);
+  await p.evaluate(() => { const a = document.activeElement; if (a && a !== document.body && a.blur) a.blur(); });
+  await press('Tab');
+  const t = await p.evaluate(() => { const a = document.activeElement; const sc = document.querySelector('.vw-screen'); return { onBody: !a || a === document.body, inside: !!(sc && a && sc.contains(a)) }; });
+  check(`first Tab on ${scr} lands on a control inside the page`, !t.onBody && t.inside, JSON.stringify(t));
+}
+
 /* ---------------- title ---------------- */
 await L.run('title');
 await p.waitForTimeout(250);

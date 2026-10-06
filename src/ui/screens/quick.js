@@ -38,7 +38,8 @@ export function mount(root, ctx, params) {
 
   /* ---------------------------------------------------------------- arena carousel */
   const img = K.h('img', { class: 'vw-qb__thumb-img', alt: '', width: 384, height: 216 });
-  const thumbBox = K.h('div', { class: 'vw-qb__thumb-fallback vw-hide', 'aria-hidden': 'true' }, K.icon('map'));
+  const fbName = K.h('span', { class: 'vw-qb__thumb-fb-name' });
+  const thumbBox = K.h('div', { class: 'vw-qb__thumb-fallback vw-hide', 'aria-hidden': 'true' }, K.icon('map'), fbName);   // placeholder while the thumbnail queue draws this arena
   const nameEl = K.h('h3', { class: 'vw-qb__arena-name', 'aria-live': 'polite' });
   const blurbEl = K.h('p', { class: 'vw-qb__arena-blurb' });
   const tacticsEl = K.h('div', { class: 'vw-chips' });
@@ -52,6 +53,8 @@ export function mount(root, ctx, params) {
   seedRow.append(K.h('label', { class: 'vw-label', for: 'qb-seed', text: T.random.seed }), seedInput, rerollBtn, copySeedBtn);
   seedInput.addEventListener('change', () => { const v = parseInt(seedInput.value, 10); S.seed = isFinite(v) && v >= 0 ? v >>> 0 : S.seed; seedInput.value = String(S.seed); paintArena(); });
 
+  // the thumbnail queue draws one arena per idle slice (50-150 ms each): ask for the SELECTED arena first so it is never the one left blank
+  safe(() => ctx.content.arenaThumb(curArena().id));
   const strip = K.h('div', { class: 'vw-qb__strip vw-scroll', role: 'radiogroup', 'aria-label': T.arena });
   const stripBtns = arenas.map((a, i) => {
     const im = K.h('img', { class: 'vw-qb__mini-img', alt: '', width: 96, height: 54, loading: 'lazy' });
@@ -86,6 +89,7 @@ export function mount(root, ctx, params) {
   function paintArena() {
     const a = curArena();
     nameEl.textContent = a.id === 'random' ? T.random.name : a.name;
+    fbName.textContent = (a.id === 'random' ? T.random.name : a.name) + ' ' + T.thumbWait;
     blurbEl.textContent = a.id === 'random' ? T.random.blurb : a.blurb;
     tacticsEl.replaceChildren(...(a.tactics || []).map((t) => K.chip(t, { variant: 'sky' })));
     recLabel.textContent = T.recommended(a.recommendedBudget || 8000);

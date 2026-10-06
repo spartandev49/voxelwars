@@ -128,9 +128,9 @@ export function puzzleArena(p) { let a = puzArena.get(p.id); if (!a) { a = missi
 
 /** Build and start a puzzle world with the player's placements (records {defId, x, z, heading, squadId?, order?, formation?}). */
 export function buildPuzzleWorld(p, placements, o = {}) {
-  const m = puzzleAsMission(p), arena = puzzleArena(p);
-  const w = new World({ arena, seed: o.seed || 1, rules: Object.assign(missionRules(m), { godPowers: !!p.godPowers }), defs });
-  const rt = setupMission(w, m, { seed: o.seed || 1 });
+  const m = puzzleAsMission(p), arena = puzzleArena(p), seed = o.seed || p.arena.seed || 1;       // the game builds the World with seed = the puzzle's arena seed: verify exactly that battle
+  const w = new World({ arena, seed, rules: Object.assign(missionRules(m), { godPowers: !!p.godPowers }), defs });
+  const rt = setupMission(w, m, { seed });
   w.addPlacements(0, placements, { defs });
   w.start();
   return { w, rt, m };
@@ -148,12 +148,13 @@ export function runPuzzle(p, placements, o = {}) {
 }
 export { PUZZLES };
 
-/** Fingerprint of the simulation sources (src/sim + src/world): feasibility records carry it, so a record made on another sim is recognisable. */
+/** Fingerprint of the simulation sources (src/sim + src/world + the unit stat table): feasibility records carry it, so a record made on another sim is recognisable. */
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 export function simHash() {
   const h = crypto.createHash('sha1'), root = path.resolve(new URL('../../src', import.meta.url).pathname);
   for (const d of ['sim', 'world']) for (const f of fs.readdirSync(path.join(root, d)).filter((x) => x.endsWith('.js')).sort()) h.update(f).update(fs.readFileSync(path.join(root, d, f)));
+  h.update('stats').update(fs.readFileSync(path.join(root, 'content/era_ancient/stats.js')));          // unit stats and costs decide every battle too
   return h.digest('hex').slice(0, 10);
 }

@@ -10,12 +10,12 @@ export class CameraRig {
     this.engine = engine; this.cam = engine.camera;
     this.mode = 'orbit';
     // desired state (what input drives) and smoothed state (what is rendered)
-    this.tx = 0; this.ty = 0; this.tz = 0; this.yaw = -0.8; this.pitch = 0.62; this.dist = 40;
+    this.userTouched = false; this.tx = 0; this.ty = 0; this.tz = 0; this.yaw = -0.8; this.pitch = 0.62; this.dist = 40;
     this.sx = 0; this.sy = 0; this.sz = 0; this.syaw = this.yaw; this.spitch = this.pitch; this.sdist = this.dist;
     this.fov = 48; this.sfov = 48;
     this.world = null; this.arena = null;
     this.followId = 0; this.cmdId = 0;
-    this.limits = { minDist: 6, maxDist: 150, minPitch: 0.08, maxPitch: 1.5 };
+    this.limits = { minDist: 6, maxDist: 240, minPitch: 0.08, maxPitch: 1.5 };
     this.shakeAmp = 1; this.reduceMotion = false; this.trauma = 0; this.shakeT = 0; this.shakeOff = [0, 0, 0];
     this.fovKick = 0;
     this.dir = { t: 0, shot: 'orbit', cd: 0, spin: 0.12, hot: null, lock: 0 };
@@ -42,15 +42,15 @@ export class CameraRig {
   kickFov(a) { if (!this.reduceMotion) this.fovKick = Math.min(10, this.fovKick + a); }
 
   /** Manual controls (called by app/input.js). dx/dy in radians, pan in world units/s along camera right/forward. */
-  rotate(dyaw, dpitch) { this.yaw += dyaw; this.pitch = clamp(this.pitch + dpitch, this.limits.minPitch, this.limits.maxPitch); this.userInputT = 4; }
-  zoom(f) { this.dist = clamp(this.dist * f, this.limits.minDist, this.limits.maxDist); this.userInputT = 4; }
+  rotate(dyaw, dpitch) { this.yaw += dyaw; this.pitch = clamp(this.pitch + dpitch, this.limits.minPitch, this.limits.maxPitch); this.userInputT = 4; this.userTouched = true; }
+  zoom(f) { this.dist = clamp(this.dist * f, this.limits.minDist, this.limits.maxDist); this.userInputT = 4; this.userTouched = true; }
   pan(right, fwd, dt) {
     const s = this.sdist * 0.9 * dt, c = Math.cos(this.syaw), sn = Math.sin(this.syaw);
     // camera right = (cos yaw, -sin yaw) on ground, forward = away from camera = (-sin yaw, -cos yaw)... derive from look direction
     const fx = -Math.sin(this.syaw), fz = -Math.cos(this.syaw), rx = Math.cos(this.syaw), rz = -Math.sin(this.syaw);
     this.tx = clamp(this.tx + (rx * right + fx * fwd) * s, -this.bounds, this.bounds); this.tz = clamp(this.tz + (rz * right + fz * fwd) * s, -this.bounds, this.bounds);
     if (this.mode === 'follow' || this.mode === 'cinematic') { this.mode = 'orbit'; }
-    this.userInputT = 4;
+    this.userInputT = 4; this.userTouched = true;
   }
   panTo(x, z) { this.tx = clamp(x, -this.bounds, this.bounds); this.tz = clamp(z, -this.bounds, this.bounds); }
 

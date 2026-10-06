@@ -66,16 +66,18 @@ export function solve(p, o = {}) {
   let best = null, bestR = null, bestS = -1e9;
   const tryIt = (cand, tag) => {
     if (cand.cost > p.player.budget) return;
-    const r = runPuzzle(p, cand.placements);
-    const s = score(r, cand);
-    if (s > bestS) { best = cand; bestR = r; bestS = s; log(tag + ' best: win ' + r.win + ' stars ' + r.stars + ' t ' + r.t.toFixed(0) + ' cost ' + cand.cost + ' ' + JSON.stringify(cand.counts)); }
+    const r = runPuzzle(p, cand.placements);                          // the battle the game plays: World seed = the puzzle's arena seed
+    // robustness: the same placement on two other sim seeds must also win with the same stars, so a small change of the sim does not break the stored solution
+    r.robust = r.win && [3, 7].every((d) => { const x = runPuzzle(p, cand.placements, { seed: (p.arena.seed || 1) + d }); return x.win && x.stars >= r.stars; });
+    const s = score(r, cand) - (r.win && !r.robust ? 150 : 0);
+    if (s > bestS) { best = cand; bestR = r; bestS = s; log(tag + ' best: win ' + r.win + ' stars ' + r.stars + (r.robust ? ' robust' : '') + ' t ' + r.t.toFixed(0) + ' cost ' + cand.cost + ' ' + JSON.stringify(cand.counts)); }
     return r;
   };
   for (const seedCand of o.seeds || []) tryIt(seedCand, 'seed');
   for (let i = 0; i < iters; i++) {
     const cand = i % 3 === 2 && best ? mutate(p, best, rng) : randomCandidate(p, rng, o);
     tryIt(cand, 'iter ' + i);
-    if (bestR && bestR.stars === 3 && bestR.t <= 0.7 * p.timeLimit && o.stopAtThree !== false) break;       // a robust solution wins with 30% of the time limit to spare
+    if (bestR && bestR.stars === 3 && bestR.robust && bestR.t <= 0.7 * p.timeLimit && o.stopAtThree !== false) break;       // a robust solution wins with 30% of the time limit to spare
   }
   return { best, result: bestR };
 }

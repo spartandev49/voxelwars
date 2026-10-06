@@ -2,6 +2,8 @@
 import { SCREEN_MODULES, EDITOR_MODULES } from '../_generated/registry.ui.js';
 import { KIT } from '../_generated/registry.optional.js';
 
+const TRANSIENT = new Set(['battle', 'splash']);
+
 export class Router {
   /** @param {HTMLElement} ui container  @param {()=>object} getCtx  @param {Record<string,object>} fallbacks screen modules used when the UI agents' module is absent */
   constructor(ui, getCtx, fallbacks = {}) {
@@ -24,24 +26,37 @@ export class Router {
     return { id, el, inst, meta: mod.meta || {} };
   }
   _destroy(s) { if (!s) return; try { if (s.inst && s.inst.destroy) s.inst.destroy(); } catch (e) { console.warn('screen destroy failed', e); } s.el.remove(); }
-  goto(id, params) {
+  goto(id, params, o = {}) {
     for (const o of this.overlays.splice(0)) this._destroy(o);
     const prev = this.base ? this.base.id : null;
     this._destroy(this.base); this.base = null;
     // a modal belongs to the screen that opened it: it must not outlive that screen (the arena builder's "start a new arena" dialog used to stay on top of the workshop)
     try { if (KIT && KIT.closeModals) KIT.closeModals(); } catch (e) { console.warn('closeModals failed', e); }
     const s = this._mount(id, params, false);
-    this.base = s; if (prev && prev !== id) this.history.push(prev); if (this.history.length > 20) this.history.shift();
+    // the battle and the splash are never somewhere Back returns to (Tweak army -> Back used to land on the battle HUD with the game still in placement)
+    this.base = s; if (prev && prev !== id && !o.noHistory && !TRANSIENT.has(prev)) this.history.push(prev); if (this.history.length > 20) this.history.shift();
     for (const f of this.listeners) f(id, params);
     return !!s;
   }
   overlay(id, params) { const s = this._mount(id, params, true); if (s) this.overlays.push(s); return !!s; }
   closeOverlay(id) { for (let i = this.overlays.length - 1; i >= 0; i--) if (!id || this.overlays[i].id === id) { this._destroy(this.overlays[i]); this.overlays.splice(i, 1); if (id) break; } }
   hasOverlay(id) { return this.overlays.some((o) => o.id === id); }
+  /**
+   * Back: the top overlay or the base screen may handle it (`inst.onBack() -> true`); otherwise the history is popped (never to the screen we are on), and with no history
+   * a screen other than the title returns to the title. A screen's onBack that itself calls `nav.back()` (daily, survival did) re-enters here: the hooks are skipped on
+   * the nested call so it performs the default step instead of recursing without end.
+   */
   back() {
-    if (this.overlays.length) { const top = this.overlays[this.overlays.length - 1]; if (top.inst && top.inst.onBack && top.inst.onBack()) return true; this.closeOverlay(top.id); return true; }
-    if (this.base && this.base.inst && this.base.inst.onBack && this.base.inst.onBack()) return true;
-    const prev = this.history.pop(); if (prev) { this.goto(prev); this.history.pop(); return true; } return false;
+    const nested = this._inBack; this._inBack = true;
+    try {
+      if (this.overlays.length) { const top = this.overlays[this.overlays.length - 1]; if (!nested && top.inst && top.inst.onBack && top.inst.onBack()) return true; this.closeOverlay(top.id); return true; }
+      if (!nested && this.base && this.base.inst && this.base.inst.onBack && this.base.inst.onBack()) return true;
+      const cur = this.current(); let prev = null;
+      while (this.history.length) { prev = this.history.pop(); if (prev !== cur) break; prev = null; }
+      if (prev) { this.goto(prev, undefined, { noHistory: true }); return true; }
+      if (cur && cur !== 'title' && cur !== 'splash' && this.has('title')) { this.goto('title', undefined, { noHistory: true }); return true; }
+      return false;
+    } finally { this._inBack = nested; }
   }
   key(e) { const top = this.overlays[this.overlays.length - 1] || this.base; return !!(top && top.inst && top.inst.onKey && top.inst.onKey(e)); }
 

@@ -15,7 +15,7 @@ import { teamColorsLinear } from '../render/style.js';
 import { formationOffsets, placeOffsets } from '../sim/formations.js';
 import { WorldLabels } from '../render/labels.js';
 import { MinimapFeed } from '../render/minimap.js';
-import { MarkerLayer } from '../render/markers.js';
+import { MarkerLayer, ZoneLayer } from '../render/markers.js';
 import { UndoStack } from '../core/undo.js';
 import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
@@ -52,6 +52,7 @@ export class Game {
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
     this.fx = new CubeFX(this.engine.scene, null, 24000);
     this.markers = new MarkerLayer(this.engine.scene);                    // mission zones: the hill to hold, the far bank
+    this.zoneLayer = new ZoneLayer(this.engine.scene);                    // the deployment zones while the player places soldiers
     const A = ANIMATOR && ANIMATOR.Animator; const animator = A ? (typeof A === 'function' ? new A() : A) : new TempAnimator();
     this.animator = animator;
     this.view = new BattleView({ engine: this.engine, fx: this.fx, animator, modelFor: (d, u) => this.content.modelFor(d, u), palette: this.settings.get('palette') || 'classic', gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay' });
@@ -124,8 +125,8 @@ export class Game {
     this.engine.setEnvironment(w.arena.env, w.arena);
     this.view.gore = setup.rules.gore || 'red'; this.view.corpseMode = setup.rules.corpses || 'stay';
     this.view.setWorld(w, this.terrain, this.props);
-    this.rig.setWorld(w); this.rig.setMode('orbit'); this.rig.yaw = -0.7; this.rig.pitch = 0.65;
-    this.rig.frame(0, 0, w.arena.worldSize() * 0.55);
+    this.rig.setWorld(w); this.rig.setMode('orbit'); this.rig.yaw = -0.35; this.rig.pitch = 0.95;          // placement: a steep, nearly side-on table view so both zones are readable
+    this.rig.frame(0, 0, w.arena.worldSize() * 0.55); this.rig.userTouched = false;
     this.undo.clear(); this.records.length = 0; this.killfeed.length = 0;
     this.acc = 0; this.paused = false; this.speed = 1; this.selectedId = 0; this.hoverId = 0;
     if (diorama) {
@@ -147,9 +148,11 @@ export class Game {
     this.labels.bind(w); this.mini.setArena(w.arena); this._miniDirty = 0;
     w.events.on('crater', () => { this._miniDirty = this.clock; });
     this.state = 'placement';
+    this.zoneLayer.set(w.arena, mode.locked ? [0] : [0, 1], teamColorsLinear(this.settings.get('palette') || 'classic'));
     // restore / generate placements
     if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) { if (key === 'B' && mode.locked) continue; for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); } }
     if (mode.kind === 'daily') this.autoFill(1, { force: true, style: (setup.armies.B && setup.armies.B.style) || 'balanced', seed: dailySeed(setup.rules) });   // the army of the day: the same for every player
+    this.frameZones(true); this._applyViewOffset();
     this.emit('placement', { arena: w.arena });
     this.emit('state', { state: 'placement' });
     this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('editor');
@@ -162,7 +165,7 @@ export class Game {
     const w = this.world, n = p.n;
     this._inter = { n, budget: p.budget, base: w.stats[0].startCost };
     this.records.length = 0; this.undo.clear(); this.select(0);
-    this.state = 'placement'; this.acc = 0;
+    this.state = 'placement'; this.acc = 0; this._applyViewOffset();
     this.brushState.team = 0;
     this.emit('intermission', { wave: n, waveName: waveName(n - 1), nextName: waveName(n), nextStyle: waveStyle(n), boss: !!p.boss, bonus: p.budget, faction: this.setup.armies.A.faction, score: w.waves ? w.waves.score() : 0, cleared: w.waves ? w.waves.cleared : 0 });
     this.emit('state', { state: 'placement' });
@@ -403,20 +406,61 @@ export class Game {
     this.ghost.visible = false; this.ghostInfo.show = false;
     // freeze the placement into the setup so rematch/tweak can replay it
     for (const k of ['A', 'B']) if (!(k === 'B' && this.mode && this.mode.locked)) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));
-    w.start(3); this.state = 'countdown'; this.acc = 0;
+    if (this.paused) this.pause(false);                         // FIGHT while paused used to leave a frozen countdown
+    if (!this.rig.userTouched) { this.rig.yaw = -0.7; this.rig.pitch = 0.65; }               // the battle camera is lower and more dramatic than the placement table view
+    this.rig.userTouched = false; this.zoneLayer.visible = false;
+    w.start(3); this.state = 'countdown'; this.acc = 0; this._applyViewOffset();
     this.rig.setMode(this.settings.get('cinematicStart') ? 'cinematic' : 'orbit');
     this.frameArmies();
     this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('battle', { theme: w.arena.env.theme });
     this.emit('state', { state: 'countdown' });
   }
-  /** Aim the orbit camera at the middle of the fight and pull back just far enough to hold both armies (smoothed by the rig). */
+  /**
+   * Fit the orbit camera around world points [[x, y, z]]: the target is the middle of their ground box, the distance is the smallest one at which every point projects
+   * inside the safe part of the screen (the HUD takes the top and bottom edges). Uses the real camera fov / aspect and the rig's yaw / pitch, so it also works after a resize.
+   */
+  _fit(points, snap, o = {}) {
+    const w = this.world, rig = this.rig, cam = this.engine.camera; if (!w || !points.length) return;
+    const tv = Math.tan((cam.fov || 50) * Math.PI / 360), asp = cam.aspect || 1.78, fitX = o.fitX || 0.8, fitY = o.fitY || 0.6;
+    let x0 = Infinity, x1 = -Infinity, z0 = Infinity, z1 = -Infinity;
+    for (const p of points) { if (p[0] < x0) x0 = p[0]; if (p[0] > x1) x1 = p[0]; if (p[2] < z0) z0 = p[2]; if (p[2] > z1) z1 = p[2]; }
+    const cx = (x0 + x1) / 2, cz = (z0 + z1) / 2, cy = w.arena.heightAt(cx, cz) + 1;
+    const sy = Math.sin(rig.yaw), cyw = Math.cos(rig.yaw), sp = Math.sin(rig.pitch), cp = Math.cos(rig.pitch);
+    const fx = -sy * cp, fy = -sp, fz = -cyw * cp, rx = cyw, rz = -sy, ux = -sy * sp, uy = cp, uz = -cyw * sp;
+    const need = (D) => {
+      const px = cx + sy * cp * D, py = cy + sp * D, pz = cz + cyw * cp * D; let m = 0;
+      for (const p of points) {
+        const vx = p[0] - px, vy = p[1] - py, vz = p[2] - pz, depth = vx * fx + vy * fy + vz * fz; if (depth < 0.5) return Infinity;
+        const nx = Math.abs(vx * rx + vz * rz) / (depth * asp * tv) / fitX, ny = Math.abs(vx * ux + vy * uy + vz * uz) / (depth * tv) / fitY;
+        if (nx > m) m = nx; if (ny > m) m = ny;
+      }
+      return m;
+    };
+    let lo = rig.limits.minDist, hi = rig.limits.maxDist;
+    if (need(lo) <= 1) hi = lo; else for (let i = 0; i < 14; i++) { const mid = (lo + hi) / 2; if (need(mid) <= 1) hi = mid; else lo = mid; }
+    this._lastFit = { n: points.length, cx, cz, cy, x0, x1, z0, z1, hi, needHi: need(hi), tv, asp };
+    rig.tx = cx; rig.tz = cz; rig.ty = cy; rig.dist = Math.max(o.minDist || 0, hi);
+    if (snap) rig.snap();
+  }
+  /** The middle of the fight: both armies inside the screen. Soldiers further out than the 3% outliers (a runner, a straggler) do not decide the zoom. */
   frameArmies(snap) {
     const w = this.world; if (!w || !w.units.length) return;
-    let cx = 0, cz = 0; for (const u of w.units) { cx += u.x; cz += u.z; } cx /= w.units.length; cz /= w.units.length;
-    let r = 0; for (const u of w.units) r = Math.max(r, Math.hypot(u.x - cx, u.z - cz));
-    const dist = Math.min(this.rig.limits.maxDist, Math.max(this.rig.limits.minDist, r * 1.12 + 14));
-    this.rig.tx = cx; this.rig.tz = cz; this.rig.ty = w.arena.heightAt(cx, cz) + 1; this.rig.dist = dist;
-    if (snap) this.rig.snap();
+    const pts = []; for (const u of w.units) if (u.alive !== false) pts.push([u.x, u.y + 1.2, u.z]);
+    if (pts.length > 40) {                                        // trim the outer 3% along both ground axes
+      const xs = pts.map((p) => p[0]).sort((a, b) => a - b), zs = pts.map((p) => p[2]).sort((a, b) => a - b), k = Math.floor(pts.length * 0.03);
+      const lx = xs[k], hx = xs[xs.length - 1 - k], lz = zs[k], hz = zs[zs.length - 1 - k];
+      for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; if (p[0] < lx || p[0] > hx || p[2] < lz || p[2] > hz) pts.splice(i, 1); }
+    }
+    this._fit(pts, snap);
+  }
+  /** Placement: the deployment zones (and the soldiers already standing) fill the screen, so the player sees where soldiers may go. */
+  frameZones(snap) {
+    const w = this.world; if (!w) return;
+    const a = w.arena, pts = [];
+    const corners = (z) => { if (!z) return; for (const sx of [-1, 1]) for (const sz of [-1, 1]) { const x = z.x + sx * z.w / 2, q = z.z + sz * z.d / 2; pts.push([x, a.heightAt(x, q) + 1, q]); } };
+    corners(a.zones.A); corners(a.zones.B);
+    for (const u of w.units) pts.push([u.x, u.y + 1.2, u.z]);
+    this._fit(pts, snap, { fitX: 0.56, fitY: 0.6 });            // the soldier list and the tools panel take the sides of the screen, the FIGHT bar the bottom
   }
   pause(b) { this.paused = !!b; this.emit('pause', { paused: this.paused }); }
   isPaused() { return this.paused; }
@@ -526,6 +570,8 @@ export class Game {
       this.view.update(this.alpha, dt, this.engine.camera);
       this.fx.update(rdt);
       this.markers.update(this.clock);
+      this.zoneLayer.visible = this.state === 'placement' && !this.isDiorama; this.zoneLayer.update(this.clock);
+      if ((this.state === 'running' || this.state === 'countdown') && !this.paused) this._autoFrame(dt);
       this.terrain.update(dt);
       if (this.props && this.props.update) this.props.update(dt, this.engine.camera);
       this._countsT -= dt;
@@ -539,17 +585,30 @@ export class Game {
   setCanvasMode(m) {
     if (m === this.canvasMode) return; this.canvasMode = m;
     const el = this.engine.renderer.domElement; el.style.visibility = (m === 'none' || m === 'preview') ? 'hidden' : 'visible';
-    if (m === 'diorama') this.startDiorama(); else if (this.state === 'diorama') this.stopDiorama();
+    if (m === 'diorama') { if (this.state !== 'idle' && this.state !== 'diorama') this.exitToMenu(); this.startDiorama(); }          // leaving a placement / battle for the title: no frozen leftover world behind the menu
+    else if (this.state === 'diorama') this.stopDiorama();
     this._applyViewOffset();
   }
   /** Shift the 3D image to the right while the title menu occupies the left column of the screen. */
   _applyViewOffset() {
     const cam = this.engine.camera, el = this.engine.renderer.domElement;
     const W = el.clientWidth || window.innerWidth, H = el.clientHeight || window.innerHeight;
-    if (this.state === 'diorama' && W > 900) { cam.setViewOffset(W, H, -W * 0.17, 0, W, H); } else if (cam.view && cam.view.enabled) cam.clearViewOffset();
+    if (this.state === 'diorama' && W > 900) { cam.setViewOffset(W, H, -W * 0.17, 0, W, H); }
+    else if (this.state === 'placement' && !this._inter && W > 900) { cam.setViewOffset(W, H, 0, H * 0.08, W, H); }          // the tools bar and scout strip take the bottom of the placement screen: lift the table
+    else if (cam.view && cam.view.enabled) cam.clearViewOffset();
     cam.updateProjectionMatrix();
   }
-  onResize() { this._applyViewOffset(); }
+  onResize() {
+    this._applyViewOffset();
+    const r = this.rig; if (!this.world || this.isDiorama || r.userTouched || r.mode !== 'orbit') return;          // a window resize / phone rotation re-fits the view unless the player has taken the camera
+    if (this.state === 'placement') this.frameZones(false); else if (this.state === 'countdown' || this.state === 'running') this.frameArmies(false);
+  }
+  /** While the battle runs the orbit camera keeps the clash in frame (about once a second) until the player touches the camera: armies that meet fill the screen instead of staying two specks. */
+  _autoFrame(dt) {
+    const r = this.rig; if (r.mode !== 'orbit' || r.userTouched || r.userInputT > 0 || this.settings.get('autoFrame') === false || this.killcamActive()) return;
+    this._afT = (this._afT || 0) - dt; if (this._afT > 0) return; this._afT = 0.9;
+    const d0 = r.dist; this.frameArmies(false); if (Math.abs(r.dist - d0) < 0.8) r.dist = d0;       // dead band: no endless tiny zooms
+  }
   async startDiorama() {
     if (this.state !== 'idle' && this.state !== 'diorama') return;
     if (this.state === 'diorama' && this.world) return;
@@ -615,7 +674,7 @@ export class Game {
     if (this.audio && this.audio.detach) { try { this.audio.detach(); } catch (e) { /* ignore */ } }
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
-    this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.ghost.visible = false; this.records.length = 0;
+    this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.zoneLayer.clear(); this.ghost.visible = false; this.records.length = 0;
     this.run = null; this._inter = null;
   }
 }

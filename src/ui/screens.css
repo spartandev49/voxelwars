@@ -80,7 +80,9 @@
 .vw-qb__thumb { position: relative; aspect-ratio: 16 / 9; border: var(--outline); border-radius: var(--r-md); overflow: hidden; background: var(--ink); box-shadow: 0 4px 0 var(--ink); }
 .vw-qb__thumb-img { display: block; width: 100%; height: 100%; object-fit: cover; image-rendering: auto; }
 .vw-qb__thumb-fallback { position: absolute; inset: 0; display: grid; place-items: center; background: linear-gradient(135deg, var(--night-3), var(--night)); color: var(--marble-dim); }
+.vw-qb__thumb-fallback { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .5rem; text-align: center; padding: 1rem; }
 .vw-qb__thumb-fallback .vw-icon { width: 3rem; height: 3rem; }
+.vw-qb__thumb-fb-name { font: 600 .85rem/1.2 var(--font-body); color: var(--marble); max-width: 90%; }
 .vw-qb__nav { position: absolute; top: 50%; margin-top: -1.6rem; }
 .vw-qb__nav--l { left: .4rem; } .vw-qb__nav--r { right: .4rem; }
 .vw-qb__arena-name { font: 400 1.3rem/1.1 var(--font-display); text-transform: uppercase; letter-spacing: .04em; color: var(--gold); margin-bottom: .35rem; }
@@ -186,11 +188,11 @@
 .vw-pl__mode[aria-checked="true"] { background: var(--gold); color: var(--ink); box-shadow: 0 3px 0 var(--ink), inset 0 -3px 0 var(--gold-deep); }
 .vw-pl__mode .vw-icon { width: 1.3rem; height: 1.3rem; }
 .vw-pl__mid { grid-area: mid; position: relative; min-width: 0; min-height: 0; display: flex; align-items: flex-end; margin-bottom: .9rem; pointer-events: none; }
-.vw-pl__scout-strip { pointer-events: auto; width: 100%; display: flex; align-items: stretch; gap: .6rem; padding: .45rem .6rem; background: var(--glass); border: var(--outline); border-radius: var(--r-lg); box-shadow: var(--shadow-hard); min-width: 0; }
+.vw-pl__scout-strip { pointer-events: auto; max-height: 9.5rem; overflow: hidden; width: 100%; display: flex; align-items: stretch; gap: .6rem; padding: .45rem .6rem; background: var(--glass); border: var(--outline); border-radius: var(--r-lg); box-shadow: var(--shadow-hard); min-width: 0; }
 .vw-pl__scout-h { flex: 0 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .15rem; padding-right: .6rem; border-right: 3px dashed var(--line); font-size: .7rem; color: var(--gold); text-align: center; }
 .vw-pl__scout-h .vw-icon { width: 1.3rem; height: 1.3rem; }
 .vw-pl__scout-list { flex: 1 1 auto; min-width: 0; margin: 0; padding: 0 0 .15rem; list-style: none; display: flex; gap: .6rem; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--night-3) transparent; scroll-snap-type: x proximity; }
-.vw-pl__adv { flex: 0 0 min(19rem, 78%); scroll-snap-align: start; display: flex; flex-direction: column; gap: .3rem; padding: .4rem .6rem; background: var(--night-2); border: 3px solid var(--ink); border-radius: var(--r-md); font-size: .82rem; line-height: 1.25; }
+.vw-pl__adv { flex: 0 0 min(19rem, 78%); max-height: 100%; overflow-y: auto; scroll-snap-align: start; display: flex; flex-direction: column; gap: .3rem; padding: .4rem .6rem; background: var(--night-2); border: 3px solid var(--ink); border-radius: var(--r-md); font-size: .82rem; line-height: 1.25; }
 .vw-pl__adv--weak { border-color: #7a2a35; } .vw-pl__adv--strong { border-color: #3e6a1d; }
 .vw-pl__adv--empty { flex: 1 1 auto; border-style: dashed; border-color: var(--line); background: transparent; color: var(--text-dim); justify-content: center; }
 .vw-pl__adv-h { display: flex; gap: .45rem; align-items: flex-start; }
@@ -203,7 +205,7 @@
 .vw-pl__counts { display: flex; gap: 1.2rem; flex: 1 1 auto; min-width: 0; }
 .vw-pl__count { flex: 1 1 0; min-width: 7rem; display: flex; flex-direction: column; gap: .3rem; }
 .vw-btn.is-soft-disabled { filter: saturate(.5) brightness(.9); }
-.vw-pl__hint { position: absolute; top: 4.6rem; left: 0; right: 0; margin: 0 auto; width: min(24rem, calc(100% - 2rem)); z-index: 30; }
+.vw-pl__hint { position: absolute; top: 4.6rem; left: 0; right: 0; margin: 0 auto; width: min(24rem, calc(100% - 2rem)); z-index: 30; pointer-events: auto; }   /* the screen layer is pointer-events:none (clicks go to the canvas): the card must opt back in */
 .vw-pl__check { width: 1.4rem; height: 1.4rem; accent-color: var(--gold); }
 
 @media (max-width: 1100px) { .vw-pl { grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr) minmax(16rem, 18.5rem); } }
@@ -385,3 +387,7 @@
 .vw-diag__assets { list-style: none; margin: .25rem 0 0; padding: 0; max-height: 14rem; overflow: auto; }
 
 @media (max-width: 420px) { .vw-pl__tgls .vw-btn__face .vw-icon { display: none; } }
+
+/* tap targets: credit links are full-size targets (inline ledger links get their hit area from vertical padding) */
+.vw-credit-link { display: inline-flex; align-items: center; min-height: var(--tap); }
+.vw-md a { padding-block: 14px; margin-block: -14px; }

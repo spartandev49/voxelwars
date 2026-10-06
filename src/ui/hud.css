@@ -788,7 +788,7 @@
 .bs-daily-thumb { max-width: 22rem; }
 .bs-daily-arena { font: 400 1.2rem/1.15 var(--font-display); text-transform: uppercase; margin: 0; }
 .bs-daily-vs { display: flex; align-items: center; gap: .6rem; font: 400 1rem/1 var(--font-display); text-transform: uppercase; } .bs-daily-vs i { font: 600 .8rem/1 var(--font-body); font-style: normal; color: var(--marble-dim); }
-.bs-daily-vs .is-a { color: var(--a); } .bs-daily-vs .is-b { color: var(--b); }
+.bs-daily-vs .is-a { color: var(--team-a-text, var(--a)); } .bs-daily-vs .is-b { color: var(--team-b-text, var(--b)); }   /* UI-A: 7:1 on the glass panel (QA round 1) */
 .bs-daily-twist { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; } .bs-daily-twist > span { font: 700 .66rem/1 var(--font-body); text-transform: uppercase; letter-spacing: .1em; color: var(--marble-dim); }
 .bs-daily-twist-none { margin: 0; color: var(--marble-dim); font-size: .85rem; }
 .bs-daily-done { margin: 0; padding: .45rem .7rem; background: rgba(95, 143, 36, .35); border: 2px solid var(--ink); border-radius: var(--r-sm); font: 600 .85rem/1.3 var(--font-body); }
@@ -856,3 +856,8 @@
 
 /* ---------------------------------------------------------------- shared helpers */
 .hud-hide { display: none !important; }
+
+/* the battle HUD's own mute toggle: a diagonal strike across the speaker while muted */
+.hud-mute { position: relative; }
+.hud-mute.is-muted { color: var(--crimson); }
+.hud-mute.is-muted::after { content: ''; position: absolute; left: 22%; right: 22%; top: 50%; height: 3px; margin-top: -1.5px; background: currentColor; border-radius: 2px; transform: rotate(-45deg); box-shadow: 0 0 0 1.5px var(--ink); }

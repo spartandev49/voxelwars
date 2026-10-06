@@ -32,7 +32,7 @@ await page.route('**/*', (route) => {
 const shot = (n) => page.screenshot({ path: path.join(out, n + '.png') });
 const state = () => page.evaluate(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current(), tick: window.__vw.game.world ? window.__vw.game.world.tickN : -1, alive: window.__vw.game.world ? [window.__vw.game.world.stats[0].alive, window.__vw.game.world.stats[1].alive] : null }));
 let fail = '';
-const ONLY = arg('only', 'campaign,puzzle,survival,daily').split(',');
+const ONLY = arg('only', 'campaign,puzzle,survival,daily,nav').split(',');
 const ev = (fn, a) => page.evaluate(fn, a);
 // run the sim in small chunks until the predicate holds (the headless browser is slow: world.step is the same code the frame loop runs)
 const verbose = process.argv.includes('--verbose');
@@ -125,6 +125,31 @@ try {
     const r = await ev(() => { const r = window.__vw.game.results(); return { winner: r.winner, survival: r.survival && { wave: r.survival.wave, score: r.survival.score, rank: r.survival.rank, board: (r.survival.board || []).length } }; }); log('results: ' + JSON.stringify(r));
     if (!r.survival) throw new Error('survival results lack the survival block');
     await page.waitForTimeout(2200); await shot('s2_results');
+  }
+
+  if (ONLY.includes('nav')) {
+    log('--- navigation: Back / Esc never dead-ends or recurses');
+    for (const scr of ['daily', 'survival', 'campaign', 'codex', 'settings']) {
+      await ev(() => window.__vw.goto('title')); await page.waitForTimeout(500);
+      await ev((id) => window.__vw.goto(id), scr); await page.waitForTimeout(700);
+      await page.keyboard.press('Escape'); await page.waitForTimeout(600);
+      const cur = await ev(() => window.__vw.app.router.current()); log('Esc on ' + scr + ' -> ' + cur);
+      if (cur === scr) throw new Error('Esc did nothing on ' + scr);
+      await ev((id) => window.__vw.goto(id), scr); await page.waitForTimeout(700);
+      await page.locator('[id$="-back"]').first().click().catch(() => {}); await page.waitForTimeout(600);
+      const cur2 = await ev(() => window.__vw.app.router.current()); log('BACK on ' + scr + ' -> ' + cur2);
+      if (cur2 === scr) throw new Error('BACK did nothing on ' + scr);
+    }
+    // Tweak army, then Back: lands on the screen the battle was started from, and the title behind it has a live diorama, not the leftover placement world
+    await ev(async () => { const v = window.__vw; v.goto('quick'); await v.quick({ rules: { budget: 1500 } }); v.fight(); v.step(30); await v.game.tweak(); });
+    await page.waitForTimeout(800);
+    const t1 = await ev(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current(), hist: window.__vw.app.router.history.slice() })); log('after tweak: ' + JSON.stringify(t1));
+    await page.keyboard.press('Escape'); await page.waitForTimeout(800);
+    const t2 = await ev(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current() })); log('Esc after tweak: ' + JSON.stringify(t2));
+    if (t2.scr === 'battle') throw new Error('Esc after Tweak landed on the battle HUD');
+    await ev(() => window.__vw.goto('title')); await page.waitForTimeout(2500);
+    const t3 = await ev(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current() })); log('title: ' + JSON.stringify(t3));
+    if (t3.s !== 'diorama' && t3.s !== 'idle') throw new Error('title shows a leftover world: ' + t3.s);
   }
 
   if (ONLY.includes('daily')) {

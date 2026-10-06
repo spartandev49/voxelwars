@@ -93,12 +93,26 @@ function blockedUnits(w, k) {
 }
 
 function equalCost(defs, id, budget) { return Math.max(1, Math.round(budget / defs[id].cost)); }
+/** Counts (ni, nj) whose total costs agree within ~4%: scan budgets upward from `budget` until both sides field a sensible number of units (>= 3, or >= 2 for units over 400). */
+function equalCounts(defs, a, b, budget) {
+  const ca = defs[a].cost, cb = defs[b].cost, mina = ca > 400 ? 2 : 3, minb = cb > 400 ? 2 : 3;
+  let best = null;
+  for (let B = budget; B <= budget * 3.2; B += 25) {
+    const na = Math.round(B / ca), nb = Math.round(B / cb);
+    if (na < mina || nb < minb) continue;
+    const err = Math.abs(na * ca - nb * cb) / Math.max(na * ca, nb * cb);
+    if (!best || err < best.err - 1e-9) best = { na, nb, err, B };
+    if (err <= 0.03) { best = { na, nb, err, B }; break; }
+  }
+  if (!best) { const na = Math.max(mina, Math.round(budget / ca)), nb = Math.max(minb, Math.round(budget / cb)); best = { na, nb, err: Math.abs(na * ca - nb * cb) / Math.max(na * ca, nb * cb), B: budget }; }
+  return best;
+}
 
 const JOBS = {
   battle,
   /** pairs: unit i vs unit j at equal cost, both orientations */
   pair(j) {
-    const defs = M.H.DEFS, n1 = equalCost(defs, j.i, j.budget), n2 = equalCost(defs, j.j, j.budget);
+    const defs = M.H.DEFS, eq = equalCounts(defs, j.i, j.j, j.budget), n1 = eq.na, n2 = eq.nb;
     const score = (rec, side) => (rec.winner < 0 ? 0.5 : rec.winner === side ? 1 : 0);
     const r = j.side === 1 ? null : battle({ a: [{ defId: j.i, n: n1 }], b: [{ defId: j.j, n: n2 }], seed: j.seed, arena: 'marathon', arenaSeed: 5 });
     const s = j.side === 0 ? null : battle({ b: [{ defId: j.i, n: n1 }], a: [{ defId: j.j, n: n2 }], seed: j.seed + 1, arena: 'marathon', arenaSeed: 5 });
