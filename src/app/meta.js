@@ -305,7 +305,7 @@ export function watchQuota(o) {
 }
 
 // ====================================================================================================== the meta object
-const LOG_FIELDS = { unit_spawn: ['id', 'team', 'def'], friendly_fire: ['src', 'dst', 'dmg'], charge_hit: ['id', 'dst', 'mul'], unit_brace: ['id', 'dst'], army_low: ['team', 'frac'], big_swing: ['team', 'ratio', 'flank'], hero_down: ['id', 'def', 'team'], unit_rout: ['id', 'team'], stalemate_warning: ['t'], trample: ['id', 'count'] };
+const LOG_FIELDS = { unit_spawn: ['id', 'team', 'def'], friendly_fire: ['src', 'dst', 'dmg'], charge_hit: ['id', 'dst', 'mul'], unit_brace: ['id', 'dst'], army_low: ['team', 'frac'], big_swing: ['team', 'ratio', 'flank'], hero_down: ['id', 'def', 'team'], unit_rout: ['id', 'team'], stalemate_warning: ['t'], trample: ['id', 'count', 'team'], unit_rally: ['id', 'team'] };
 const LOG_MAX = 6000;
 
 /**

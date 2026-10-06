@@ -23,6 +23,7 @@ import { PROP_RENDERER, ARMYGEN, ANIMATOR, LESSONS, POWER, MUTATORS } from '../_
 import { TempAnimator } from '../render/tempanimator.js';
 import { waveName, waveStyle } from '../sim/waves.js';
 import { scoutText } from '../content/era_ancient/humor/scout_text.js';
+import { createWarmup } from '../sim/warmup.js';
 import { resolveMode, applyModeRules, dailySeed } from './modes.js';
 
 const T = () => window.THREE;
@@ -149,6 +150,8 @@ export class Game {
     this.labels.bind(w); this.mini.setArena(w.arena); this._miniDirty = 0;
     w.events.on('crater', () => { this._miniDirty = this.clock; });
     this.state = 'placement';
+    // a throw-away battle in 5 ms slices while the player places: V8 optimises the sim before the real one starts (cold spikes were the worst frames); it never touches this world
+    this._warm = createWarmup({ defs: this.content.defs });
     this.zoneLayer.set(w.arena, mode.locked ? [0] : [0, 1], teamColorsLinear(this.settings.get('palette') || 'classic'));
     // restore / generate placements
     if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) { if (key === 'B' && mode.locked) continue; for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); } }
@@ -294,9 +297,7 @@ export class Game {
   }
   _reAdd(rec) { this._applyRecord(rec, false); }
   _removeRecord(rec) {
-    const w = this.world, st = w.state;
-    if (this._inter) w.state = 'placing';                       // World.removeUnit only works in the placing phase: a survival intermission is one (the sim itself is paused)
-    try { for (const u of rec.units) w.removeUnit(u); } finally { w.state = st; }
+    for (const u of rec.units) this.world.removeUnit(u);        // allowed while placing and during a survival intermission
     rec.units = []; this.records = this.records.filter((r) => r !== rec);
   }
 
@@ -597,6 +598,7 @@ export class Game {
       this.markers.update(this.clock);
       this.zoneLayer.visible = this.state === 'placement' && !this.isDiorama; this.zoneLayer.update(this.clock);
       if ((this.state === 'running' || this.state === 'countdown') && !this.paused) this._autoFrame(dt);
+      if (this._warm && (this.state === 'placement' || this.state === 'countdown') && this._warm.step(5)) this._warm = null;
       this.terrain.update(dt);
       if (this.props && this.props.update) this.props.update(dt, this.engine.camera);
       this._countsT -= dt;
@@ -700,6 +702,6 @@ export class Game {
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
     this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.zoneLayer.clear(); this.ghost.visible = false; this.records.length = 0;
-    this.run = null; this._inter = null;
+    this.run = null; this._inter = null; this._warm = null;
   }
 }
