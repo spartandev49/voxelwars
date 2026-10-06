@@ -3,6 +3,7 @@
 
 import { CELL, HSTEP } from '../world/arena.js';
 import { meshTerrainChunk } from './terrainMesh.js';
+import { lin } from './engine.js';
 
 const CH = 16;
 
@@ -90,10 +91,10 @@ export class TerrainRenderer {
       depthWrite: lava,
       uniforms: {
         uTime: { value: 0 },
-        uDeep: { value: new T.Color(lava ? 0xb02a08 : 0x1c5f8f) },
-        uShallow: { value: new T.Color(lava ? 0xff7a1a : 0x4fc3d9) },
+        uDeep: { value: lin(lava ? 0xb02a08 : 0x1c5f8f) },
+        uShallow: { value: lin(lava ? 0xff7a1a : 0x4fc3d9) },
         uSun: { value: new T.Vector3(0.5, 0.8, 0.3) },
-        uFog: { value: new T.Color(0xaec6dc) },
+        uFog: { value: lin(0xaec6dc) },
         uFogNear: { value: 80 }, uFogFar: { value: 400 },
         uOpacity: { value: lava ? 1 : 0.82 },
       },

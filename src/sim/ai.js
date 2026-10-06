@@ -1,250 +1,390 @@
-// Unit AI: tactical targeting (scored, with persistence + engagement slots), movement intent (formation slots, flow field,
-// kiting, rout), and the per-unit state machine. Movement integration + collisions live in world.js.
+// Unit AI (spec §8.1 layers 2+3): scored targeting with persistence and attack tokens (engagement slots), role behaviours
+// (melee line, spear reach, archers that hold and kite, skirmishers, siege, support, heroes), and movement intent.
+// Movement integration and collision live in world.js. Allocation-free per tick.
 
 import { ST, SE, G } from './consts.js';
-import { startMelee, startRanged, resolveMelee, setAnim, angleDiff } from './combat.js';
+import { startMelee, startRanged, resolveMelee, setAnim, angleDiff, releaseClaim } from './combat.js';
 import { ClipLib } from '../anim/clips.js';
+import { CLS } from './squads.js';
 
 const TAU = Math.PI * 2;
+const hyp = (a, b) => Math.sqrt(a * a + b * b);
 const _d = [0, 0];
 
-export function aggroRadius(u) {
-  const d = u.def, st = d.ai ? d.ai.style : 'charge';
-  const rng = d.ranged ? d.ranged.range : 0;
+/** Cached per-def AI facts. */
+export function aiInfo(d) {
+  if (d._ai) return d._ai;
+  const st = d.ai ? d.ai.style : 'charge', rng = d.ranged ? d.ranged.range : 0;
+  const tags = d.tags;
+  const a = { style: st, cav: tags.includes('cavalry') && d.role === 'cavalry', spear: tags.includes('spear') || tags.includes('pike') || (d.melee && d.melee.range >= 2.0), siege: d.role === 'siege', support: d.role === 'support', hero: d.role === 'hero' || tags.includes('officer'),
+    ranged1st: !!d.ranged && (!d.melee || st === 'skirmish' || st === 'siege' || st === 'support' || d.role === 'ranged'), kiter: false, aggro: 12, scan: 12, flees: st === 'guard' };
+  a.kiter = a.ranged1st && !!d.melee && (tags.includes('skirmisher') || st === 'skirmish') && d.role !== 'support';
+  a.archer = tags.includes('archer');
+  let ag;
   switch (st) {
-    case 'hold': return 11 + (rng ? rng * 0.5 : 0);
-    case 'skirmish': return Math.max(rng + 8, 20);
-    case 'siege': return rng + 6;
-    case 'support': return 16;
-    case 'hero': return 26;
-    case 'guard': return 14;
-    default: return 42;               // charge / flank
+    case 'hold': ag = 11; break;
+    case 'skirmish': ag = rng + 4; break;
+    case 'siege': ag = rng + 6; break;
+    case 'support': ag = Math.max(12, rng + 2); break;
+    case 'hero': ag = 15; break;
+    case 'guard': ag = 10; break;
+    case 'flank': ag = 42; break;
+    default: ag = 17;                // charge
   }
+  if (d.ai && d.ai.aggro) ag = d.ai.aggro;
+  if (a.ranged1st && d.role !== 'support') ag = Math.max(ag, rng + 3);
+  a.aggro = ag;
+  a.scan = ag;
+  a.prefer = d.ai && d.ai.preferTargets ? d.ai.preferTargets : null;
+  d._ai = a;
+  return a;
+}
+export function aggroRadius(u) { return aiInfo(u.def).aggro; }
+
+export function slotsFor(t) { return t.def.tags.includes('large') ? G.slotsLarge : G.slotsBase + Math.floor(t.radius * G.slotsPerRadius); }
+
+/** Scored target pick. Returns the best enemy unit or null. */
+export function pickTarget(w, u) {
+  const info = aiInfo(u.def), d = u.def;
+  const units = w.units, q = w.qbuf, hash = w.hash;
+  let best = null, bestScore = -1e9, curScore = -1e9;
+  const cur = u.target && u.target.alive ? u.target : null;
+  const hard = w.diff[u.team] === 2;
+  const sq = u.squad, focusU = sq && sq.focus ? w.unitById(sq.focus) : null;
+  const R = info.scan;
+  const ring1 = info.cav ? 0 : Math.min(R, 8.5);
+  for (let pass = 0; pass < 2 && !best; pass++) {
+    const rad = pass === 0 && ring1 > 0 && ring1 < R ? ring1 : R;
+    const n = hash.query(u.x, u.z, rad, q), r2 = rad * rad;
+    for (let k = 0; k < n; k++) {
+      const c = units[q[k]];
+      if (!c || !c.alive || c.team === u.team || c.state === ST.DOWN) continue;
+      const dx = c.x - u.x, dz = c.z - u.z, d2 = dx * dx + dz * dz;
+      if (d2 > r2) continue;
+      const dist = Math.sqrt(d2);
+      let s = 100 - dist * 2.2;
+      if (c === cur) s += 25;
+      const ct = c.def.tags;
+      if (!info.ranged1st) { const lim = info.spear ? slotsFor(c) * 2 : slotsFor(c); if (c.claims >= lim && c !== u.claim) s -= 40; }
+      if (info.cav && (ct.includes('archer') || c.def.role === 'siege' || c.def.role === 'support' || c.def.role === 'ranged')) s += 40;
+      if (info.spear && ct.includes('cavalry')) s += 24;
+      if (info.siege) s += (c.def.role === 'siege' ? 12 : 0) + clusterBonus(w, c);
+      if (info.ranged1st && !info.siege && c.hp < c.hpMax * 0.5) s += 8;
+      if (hard) s += 14 * (1 - c.hp / c.hpMax);
+      if (c.def.role === 'hero' || ct.includes('officer')) s += info.hero ? 10 : 6;
+      if (c.stone > 0.5) s -= 20;
+      if (c.se[SE.SLEEP] > 0) s += 6;
+      if (c === focusU) s += 90;
+      if (info.prefer) for (let i = 0; i < info.prefer.length; i++) if (ct.includes(info.prefer[i])) s += 20;
+      if (c.vip) s += 5;
+      if (c === cur) curScore = s;
+      if (s > bestScore) { bestScore = s; best = c; }
+    }
+  }
+  if (best && cur && best !== cur && curScore > -1e8 && bestScore < curScore + 18) return cur;     // hysteresis
+  return best;
 }
 
-function slotsFor(t) { return t.def.tags.includes('large') ? 8 : 2 + Math.floor(t.radius * 4); }
-
-/** Scored target pick. Returns best enemy unit or null. */
-export function pickTarget(w, u) {
-  const R = aggroRadius(u), R2 = R * R;
-  const n = w.hash.query(u.x, u.z, R, w.qbuf);
-  const d = u.def, tags = d.tags, ranged = !!d.ranged && !d.melee ? true : (d.ranged && d.ai.style === 'skirmish');
-  let best = null, bestScore = -1e9;
-  const prefer = d.ai && d.ai.preferTargets;
-  const cavalry = tags.includes('cavalry'), spear = tags.includes('spear') || tags.includes('pike'), isSiege = d.role === 'siege';
-  for (let k = 0; k < n; k++) {
-    const c = w.units[w.qbuf[k]];
-    if (!c || !c.alive || c.team === u.team || c.se[SE.STONE] > 0 && false) continue;
-    const dx = c.x - u.x, dz = c.z - u.z, d2 = dx * dx + dz * dz;
-    if (d2 > R2) continue;
-    const dist = Math.sqrt(d2);
-    let score = 100 - dist * 2.2;
-    if (c === u.target) score += 25;                       // persistence
-    if (c.atkCount >= slotsFor(c) && !(d.melee && d.melee.range >= 2) && !ranged) score -= 18;   // slot full: prefer others
-    const ct = c.def.tags;
-    if (cavalry && (ct.includes('archer') || c.def.role === 'siege' || c.def.role === 'support')) score += 28;
-    if (spear && ct.includes('cavalry')) score += 22;
-    if (isSiege) { /* clusters preferred: count neighbours cheaply via atkCount proxy */ score += Math.min(20, c.atkCount * 4) + (c.def.role === 'siege' ? 15 : 0); }
-    if (ranged && c.hp < c.hpMax * 0.5) score += 8;
-    if (c.def.role === 'hero' || ct.includes('officer')) score += (d.ai.style === 'hero' ? 10 : 6);
-    if (u.def.role === 'hero' || ct.includes('boss')) score += 4;
-    if (c.se[SE.TAUNT] < 0) score += 0;
-    if (c.stone > 0.5) score -= 20;                        // statues are low priority
-    if (c.se[SE.SLEEP] > 0) score += 6;
-    if (prefer) for (let i = 0; i < prefer.length; i++) if (ct.includes(prefer[i])) score += 20;
-    if (c.def.id === 'sacred_chicken') score += 0;
-    if (score > bestScore) { bestScore = score; best = c; }
-  }
-  if (best && u.target && best !== u.target && u.target.alive) {
-    // hysteresis: only switch if clearly better
-    const ct = u.target, dx = ct.x - u.x, dz = ct.z - u.z, dd = Math.sqrt(dx * dx + dz * dz);
-    if (dd <= R && bestScore < 100 - dd * 2.2 + 25 + 20) return ct;
-  }
-  return best;
+function clusterBonus(w, c) {
+  const n = w.hash.query(c.x, c.z, 3, w.qbuf2);
+  let cnt = 0;
+  for (let k = 0; k < n; k++) { const o = w.units[w.qbuf2[k]]; if (o && o.alive && o.team === c.team) cnt++; }
+  return Math.min(26, cnt * 2.5);
 }
 
 function enemyDir(w, u, out) {
   const f = w.fields[u.team];
-  if (f && f.valid && f.dir(u.x, u.z, out)) return true;
-  return false;
+  return !!(f && f.valid && f.dir(u.x, u.z, out));
 }
 
 /** Steer toward a world point; falls back to the team flow field when the straight line is blocked. */
 function steer(w, u, tx, tz, speed) {
-  const dx = tx - u.x, dz = tz - u.z, l = Math.hypot(dx, dz);
+  const dx = tx - u.x, dz = tz - u.z, l = hyp(dx, dz);
   if (l < 0.02) { u.dvx = 0; u.dvz = 0; return; }
-  if (u.lineT <= 0) { u.lineOk = w.nav.clearLine(u.x, u.z, tx, tz); u.lineT = 0.35 + (u.id % 5) * 0.04; }
+  if (u.lineT <= 0) { u.lineOk = w.nav.clearLine(u.x, u.z, tx, tz); u.lineT = 0.4 + (u.id % 5) * 0.05; }
   let nx = dx / l, nz = dz / l;
   if (!u.lineOk && enemyDir(w, u, _d)) { nx = _d[0]; nz = _d[1]; }
+  // blocked by bodies: slide sideways (alternating per unit) so queues open up instead of pushing
+  if (u.blockT > 0.45) { const s = u.sideSign * 0.8; const px = -nz * s, pz = nx * s; nx += px; nz += pz; const m = hyp(nx, nz) || 1; nx /= m; nz /= m; }
   u.dvx = nx * speed; u.dvz = nz * speed;
-  u.face = Math.atan2(nx, nz);
+  setFace(u, Math.atan2(nx, nz));
+}
+
+/** Face update with hysteresis: tiny direction changes while moving don't re-aim the unit (fewer heading flips). */
+function setFace(u, a) {
+  if (Math.abs(angleDiff(u.face, a)) > 0.12 || u.state !== ST.MOVE) u.face = a;
 }
 
 function clipForMove(u, speed) {
   const d = u.def;
   if (d.role === 'cavalry' || d.tags.includes('cavalry')) return speed > d.speed * 1.35 ? 'gallop' : 'trot';
   if (d.role === 'beast' || d.tags.includes('animal')) return speed > d.speed * 1.2 ? 'gallop' : 'trot';
-  return speed > d.speed * 1.25 ? 'run' : 'walk';
+  return speed > d.speed * 1.3 ? 'run' : 'walk';
 }
+function playMove(u, sp) {
+  const clip = clipForMove(u, sp), ref = ClipLib.meta(clip).speedRef || 2.6;
+  setAnim(u, clip, Math.max(0.5, Math.min(2.2, sp / ref)));
+}
+function playIdle(u, combat) { setAnim(u, combat ? 'idle_combat' : 'idle', 1); }
 
 export function think(w, u, dt) {
-  const se = u.se, def = u.def;
+  const se = u.se, def = u.def, info = def._ai || aiInfo(def);
   u.lineT -= dt;
+  u.engaged = false;
   // ----- hard disables -----
-  if (se[SE.STUN] > 0 || se[SE.SLEEP] > 0 || se[SE.STONE] > 0) {
-    u.dvx = 0; u.dvz = 0; u.state = ST.STUN;
+  const st0 = u.state;
+  if (se[SE.STUN] > 0 || se[SE.SLEEP] > 0 || se[SE.STONE] > 0 || st0 === ST.DOWN) {
+    u.dvx = 0; u.dvz = 0;
+    if (st0 === ST.DOWN) return;
+    u.state = ST.STUN;
     setAnim(u, se[SE.SLEEP] > 0 ? 'cower' : 'stun', 1);
     if (se[SE.STONE] > 0) u.anim.rate = 0;
     return;
   }
-  if (u.state === ST.STUN) { u.state = ST.IDLE; u.stateT = 0; }
+  if (st0 === ST.STUN) { u.state = ST.IDLE; u.stateT = 0; }
   // ----- timed states -----
   switch (u.state) {
     case ST.WINDUP: {
       u.stateT += dt;
-      // keep facing the target during windup
-      if (u.target && u.target.alive) { u.face = Math.atan2(u.target.x - u.x, u.target.z - u.z); if (u.atkKind === 1 && def.ranged.whileMoving) { /* moves on */ } else { u.dvx = 0; u.dvz = 0; } }
+      const t = u.target;
+      if (t && t.alive) { u.face = Math.atan2(t.x - u.x, t.z - u.z); }
+      if (!(u.atkKind === 1 && def.ranged && def.ranged.whileMoving)) { u.dvx = 0; u.dvz = 0; }
       if (!u.hitDone && u.stateT >= u.hitAt) {
         u.hitDone = true;
         if (u.atkKind === 0) resolveMelee(w, u);
-        else if (u.target && u.target.alive) w.fireRanged(u);
+        else if (t && t.alive) w.fireRanged(u);
       }
-      if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; setAnim(u, 'idle_combat', 1); }
+      if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; playIdle(u, true); }
+      u.engaged = true;
       return;
     }
     case ST.STAGGER: u.stateT += dt; u.dvx = 0; u.dvz = 0; if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; } return;
-    case ST.CAST: case ST.SIT: case ST.GETUP: u.stateT += dt; u.dvx = 0; u.dvz = 0; if (u.state !== ST.SIT && u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; } return;
-    case ST.ROUT: break;
+    case ST.CAST: case ST.GETUP: case ST.COWER: u.stateT += dt; u.dvx = 0; u.dvz = 0; if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; } return;
+    case ST.SIT: u.dvx = 0; u.dvz = 0; return;
+    case ST.FLY: u.dvx = 0; u.dvz = 0; return;
+    case ST.CHEER: return;
     default: break;
   }
-  const speedBase = def.speed * u.mSpeed;
+  if (u.controlled) return;                      // possession.js drives movement and attacks
+  const sq = u.squad && u.squad.alive ? u.squad : null;
+  let speedBase = u.speedBase * u.mSpeed;
   // ----- rout / fear -----
   if (u.state === ST.ROUT || se[SE.SCARE] > 0) { flee(w, u, speedBase * 1.25); return; }
-  // ----- confusion: stumble around -----
-  if (se[SE.CONFUSE] > 0) {
-    if (((w.tickN + u.id) & 15) === 0) { u.face = w.rng.next() * TAU; }
+  const order = sq ? sq.order : 'advance';
+  // ----- confusion: stumble around, but still swing at what is adjacent -----
+  if (se[SE.CONFUSE] > 0 && ((u.id * 7 + w.tickN) % 40) < 24) {
+    if (((w.tickN + u.id) & 15) === 0) u.face = w.rng.next() * TAU;
     u.dvx = Math.sin(u.face) * speedBase * 0.5; u.dvz = Math.cos(u.face) * speedBase * 0.5; u.state = ST.MOVE;
-    setAnim(u, 'dizzy', 1); return;
-  }
-  // ----- target management -----
-  if (u.target && (!u.target.alive || u.target.team === u.team)) u.target = null;
-  u.targetT -= 1;
-  if (se[SE.TAUNT] > 0 && u.tauntSrc && u.tauntSrc.alive) { u.target = u.tauntSrc; }
-  else if (u.targetT <= 0) {
-    u.targetT = G.retargetEvery + ((u.id * 7) & 3);
-    u.target = pickTarget(w, u);
-  }
-  const t = u.target;
-  const melee = def.melee, ranged = def.ranged;
-  let acted = false;
-  if (t) {
-    const dx = t.x - u.x, dz = t.z - u.z, dist = Math.hypot(dx, dz), gap = dist - u.radius - t.radius;
-    const want = Math.atan2(dx, dz);
-    u.face = want;
-    const fdiff = Math.abs(angleDiff(u.heading, want));
-    // ---- ranged behaviour ----
-    const useRanged = !!ranged && (!melee || gap > melee.range + 1.2);
-    if (useRanged) {
-      const range = ranged.range, minR = ranged.minRange || 0;
-      const skirm = def.ai.style === 'skirmish' || def.tags.includes('skirmisher');
-      if (gap < minR || (skirm && gap < Math.min(range * 0.38, 6) && !melee) || (skirm && gap < 4.5 && u.cdR > 0.35)) {
-        // kite away
-        const l = dist || 1; u.dvx = -dx / l * speedBase * 1.05; u.dvz = -dz / l * speedBase * 1.05; u.state = ST.MOVE; acted = true;
-        setAnim(u, clipForMove(u, speedBase), speedBase / (ClipLib.meta('walk').speedRef || 2.6));
-        if (!w.nav.walkable(u.x + u.dvx * 0.3, u.z + u.dvz * 0.3)) { u.dvx = 0; u.dvz = 0; }
-        if (gap < 1.4 && melee && u.cd <= 0) { u.target = t; startMelee(w, u); }
-        return;
-      }
-      if (gap <= range * 0.98) {
-        // in range: hold and shoot
-        if (!ranged.whileMoving) { u.dvx = 0; u.dvz = 0; } else steer(w, u, t.x, t.z, speedBase * 0.9);
-        u.state = ranged.whileMoving ? ST.MOVE : ST.IDLE;
-        if (u.cdR <= 0 && fdiff < 0.4 && w.hasShot(u, t)) { startRanged(w, u); return; }
-        setAnim(u, ranged.whileMoving ? clipForMove(u, speedBase) : 'idle_combat', 1);
-        return;
-      }
-      // approach to 0.85*range
-      steer(w, u, t.x, t.z, speedBase); u.state = ST.MOVE; acted = true;
-      setAnim(u, clipForMove(u, u.speedNow || speedBase), Math.max(0.6, (u.speedNow || speedBase) / (ClipLib.meta(u.anim.clip).speedRef || 2.6)));
-      return;
-    }
-    // ---- melee behaviour ----
-    if (melee) {
-      const reach = melee.range;
-      if (gap <= reach + 0.15) {
-        u.dvx = 0; u.dvz = 0; u.state = ST.IDLE;
-        t.atkCount++;
-        if (u.cd <= 0 && fdiff < 0.55) { startMelee(w, u); return; }
-        setAnim(u, 'idle_combat', 1);
-        return;
-      }
-      // charge: cavalry & beasts build speed; others walk/run at 1.0-1.3x
-      let sp = speedBase;
-      if (def.runMul > 1.2 || def.tags.includes('cavalry')) sp = speedBase * (gap > 6 ? def.runMul : 1.2);
-      else if (gap > 6) sp = speedBase * 1.15;
-      steer(w, u, t.x, t.z, sp); u.state = ST.MOVE;
-      setAnim(u, clipForMove(u, sp), Math.max(0.5, sp / (ClipLib.meta(clipForMove(u, sp)).speedRef || 2.6)));
-      return;
-    }
-    // units with no weapons (support): keep distance, fall through to support behaviour below
-  }
-  // ----- no (usable) target: follow squad slot or the flow field -----
-  u.state = ST.MOVE;
-  const sq = u.squad;
-  let goalX = 0, goalZ = 0, have = false, sp = speedBase;
-  if (sq && sq.alive) {
-    if (sq.mode === 'form') {
-      const c = Math.cos(sq.facing), s = Math.sin(sq.facing);
-      // slot = anchor + left*lx + forward*lz   (left = (cos h, -sin h), forward = (sin h, cos h))
-      goalX = sq.ax + c * u.sox + s * u.soz; goalZ = sq.az - s * u.sox + c * u.soz; have = true;
-      const dx = goalX - u.x, dz = goalZ - u.z, dd = Math.hypot(dx, dz);
-      sp = Math.min(speedBase * 1.6, sq.speed + dd * 2.2);
-      if (dd < 0.35) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.face = sq.facing; setAnim(u, 'idle', 1); return; }
-    } else if (sq.order === 'hold' || sq.order === 'guard') {
-      // engaged hold squad with nothing in sight: drift back toward the slot
-      const c = Math.cos(sq.facing), s = Math.sin(sq.facing);
-      goalX = sq.ax + c * u.sox + s * u.soz; goalZ = sq.az - s * u.sox + c * u.soz; have = true;
-      const dd = Math.hypot(goalX - u.x, goalZ - u.z);
-      if (dd < 1.0) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; setAnim(u, 'idle', 1); return; }
-    }
-  }
-  if (!have) {
-    // lone wolf / engaged squad member without target: advance on the nearest enemy via the flow field (not for 'hold' style)
-    if (def.ai.style === 'hold' && sq && sq.order === 'hold') { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; setAnim(u, 'idle', 1); return; }
-    if (def.role === 'support') { supportMove(w, u, speedBase); return; }
-    if (enemyDir(w, u, _d)) { u.dvx = _d[0] * speedBase; u.dvz = _d[1] * speedBase; u.face = Math.atan2(_d[0], _d[1]); }
-    else { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
-    setAnim(u, u.state === ST.IDLE ? 'idle' : clipForMove(u, speedBase), 1);
+    setAnim(u, 'dizzy', 1);
     return;
   }
-  if (def.role === 'support' && sq && sq.mode !== 'form') { supportMove(w, u, speedBase); return; }
-  steer(w, u, goalX, goalZ, sp);
-  setAnim(u, clipForMove(u, sp), Math.max(0.5, sp / (ClipLib.meta(clipForMove(u, sp)).speedRef || 2.6)));
+  // ----- retreat order: run away without fighting -----
+  if (order === 'retreat') { retreatMove(w, u, sq, speedBase); return; }
+  // ----- target management -----
+  let t = u.target;
+  if (t && (!t.alive || t.team === u.team || t.state === ST.DOWN)) { releaseClaim(u); t = u.target = null; }
+  u.targetT--;
+  if (se[SE.TAUNT] > 0 && u.tauntSrc && u.tauntSrc.alive) { if (t !== u.tauntSrc) { releaseClaim(u); u.target = t = u.tauntSrc; } }
+  else if (u.targetT <= 0) {
+    u.targetT = w.retarget[u.team] + ((u.id * 7) & 3);
+    // units far from any enemy skip the scan entirely (path distance >= straight distance)
+    const f = w.fields[u.team];
+    let skip = false;
+    if (f.valid && !info.cav) { const fd = f.distAt(u.x, u.z); if (fd > info.scan * 1.7 + 6) skip = true; }
+    if (!skip) {
+      const nt = pickTarget(w, u);
+      if (nt !== t) { releaseClaim(u); u.target = t = nt; }
+      if (t && !info.ranged1st && !u.claim) { const lim = info.spear ? slotsFor(t) * 2 : slotsFor(t); if (t.claims < lim) { t.claims++; u.claim = t; } }
+      else if (!t) releaseClaim(u);
+    } else if (t) { releaseClaim(u); u.target = t = null; }
+    // leash: hold-style units do not chase beyond their leash
+    if (t && sq && order === 'hold') { const dd = hyp(u.x - sq.ax, u.z - sq.az); if (dd > 16) { releaseClaim(u); u.target = t = null; u.targetT = 20; } }
+  }
+  const melee = def.melee, ranged = def.ranged;
+  if (t) {
+    const dx = t.x - u.x, dz = t.z - u.z, dist = hyp(dx, dz), gap = dist - u.radius - t.radius;
+    const want = Math.atan2(dx, dz);
+    if (ranged && info.ranged1st) { if (rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, sq)) return; }
+    else if (melee) { if (meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq)) return; }
+    else if (ranged) { if (rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, sq)) return; }
+  }
+  // ----- no (usable) target: formation slot or the flow field -----
+  followFormation(w, u, sq, speedBase, info);
+}
+
+// ------------------------------------------------------------------ melee
+function meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq) {
+  const def = u.def, m = def.melee, reach = m.range + u.mReach;
+  const fdiff = Math.abs(angleDiff(u.heading, want));
+  // opportunity attack: anything in reach beats walking around (no in-contact idling)
+  if (gap > reach + 0.15 && !u.claim) {
+    u.oppT--;
+    if (u.oppT <= 0) { u.oppT = 4; const o = nearestInReach(w, u, reach + 0.15); if (o) { u.target = t = o; gap = hyp(o.x - u.x, o.z - u.z) - u.radius - o.radius; want = Math.atan2(o.x - u.x, o.z - u.z); } }
+  }
+  u.face = want;
+  const inReach = gap <= reach + 0.15;
+  if (inReach || (u.hold && gap <= reach + 0.55)) {
+    u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.hold = true; u.engaged = true; u.blockT = 0;
+    if (u.cd <= 0 && (fdiff < 0.55 || inReach && gap < 0.3)) { startMelee(w, u); return true; }
+    playIdle(u, true);
+    return true;
+  }
+  u.hold = false;
+  // approach (with a token) or queue behind the front rank (reserve)
+  if (!u.claim && !info.spear && gap > reach + 2.6) {
+    // reserve: close up behind friends, re-scan quickly so a freed slot is taken within a few ticks
+    u.state = ST.MOVE; u.engaged = false;
+    if (u.targetT > 4) u.targetT = 4;
+    steer(w, u, t.x, t.z, speedBase * 0.9); u.blockT = u.speedNow < 0.3 * speedBase ? u.blockT + dt : 0;
+    playMove(u, speedBase * 0.9);
+    return true;
+  }
+  if (!u.claim && info.spear && gap <= reach + 1.2) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
+  let sp = speedBase;
+  if (def.runMul > 1.2 && (info.cav || def.role === 'beast' || def.tags.includes('large'))) sp = speedBase * (gap > 7 ? def.runMul : 1.25);
+  else if (gap > 5) sp = speedBase * 1.2;
+  u.state = ST.MOVE; u.engaged = gap < 5;
+  steer(w, u, t.x, t.z, sp);
+  u.blockT = u.speedNow < 0.25 * sp ? u.blockT + dt : 0;
+  playMove(u, sp);
+  // melee units with a ranged side-arm (elephant archers, cyclops boulders, pharaoh's scepter) throw while closing in
+  if (def.ranged && u.cdR <= 0 && gap > reach + 2 && gap > (def.ranged.minRange || 0) && gap <= def.ranged.range * 0.95 && fdiffOk(u, want)) { startRanged(w, u); }
+  return true;
+}
+function fdiffOk(u, want) { return Math.abs(angleDiff(u.heading, want)) < 0.45; }
+
+function nearestInReach(w, u, reach) {
+  const n = w.hash.query(u.x, u.z, reach + u.radius + 1.2, w.qbuf2);
+  let best = null, bd = 1e9;
+  for (let k = 0; k < n; k++) {
+    const c = w.units[w.qbuf2[k]];
+    if (!c || !c.alive || c.team === u.team || c.state === ST.DOWN) continue;
+    const dd = hyp(c.x - u.x, c.z - u.z) - u.radius - c.radius;
+    if (dd <= reach && dd < bd) { bd = dd; best = c; }
+  }
+  return best;
+}
+
+// ------------------------------------------------------------------ ranged
+function rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, sq) {
+  const def = u.def, r = def.ranged, range = r.range, minR = r.minRange || 0, melee = def.melee;
+  const fdiff = Math.abs(angleDiff(u.heading, want));
+  const diff = w.diff[u.team];
+  u.face = want;
+  // kite: shoot-and-scoot when an enemy gets close (skirmishers always on normal+, plain archers only on hard)
+  const kiteGap = info.kiter ? 5.2 : (info.archer && diff === 2 && !info.siege ? 3.4 : 0);
+  if (!w.rules.noKite && (gap < minR || (kiteGap > 0 && diff > 0 && gap < kiteGap && u.cdR > 0.25 && !(info.siege)))) {
+    if (kiteAway(w, u, t, dist, dx, dz, speedBase, sq)) { u.engaged = true; return true; }
+    // cornered: fight back
+    if (melee && gap <= melee.range + 0.4 && u.cd <= 0) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; startMelee(w, u); return true; }
+  }
+  if (melee && gap <= melee.range && gap < 1.6 && u.cd <= 0 && !info.siege) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.face = want; startMelee(w, u); return true; }
+  if (gap <= range * 0.98 && gap >= minR) {
+    // in range: hold and shoot
+    u.engaged = true;
+    if (!r.whileMoving) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
+    else { steer(w, u, t.x, t.z, speedBase * 0.9); u.state = ST.MOVE; }
+    if (u.cdR <= 0 && fdiff < 0.4) { startRanged(w, u); return true; }
+    if (r.whileMoving) playMove(u, speedBase * 0.9); else playIdle(u, true);
+    return true;
+  }
+  if (gap < minR) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
+  // out of range: siege/support units hold position (squad moves them); others close to 0.85*range
+  if (info.siege || info.support) return false;
+  if (sq && sq.cls === CLS.RANGED && sq.order !== 'hold' && sq.engF === 0 && gap > range + 2) return false;   // keep marching with the squad
+  u.state = ST.MOVE;
+  steer(w, u, t.x, t.z, speedBase);
+  playMove(u, speedBase);
+  return true;
+}
+
+function kiteAway(w, u, t, dist, dx, dz, speedBase, sq) {
+  const l = dist || 1;
+  let vx = -dx / l, vz = -dz / l;
+  // drift back toward the friendly line (squad slot) rather than into the arena corner
+  if (sq) { const bx = sq.ax - u.x, bz = sq.az - u.z, bl = hyp(bx, bz) || 1; vx += bx / bl * 0.35; vz += bz / bl * 0.35; const m = hyp(vx, vz) || 1; vx /= m; vz /= m; }
+  const sp = speedBase * 1.05;
+  if (!w.nav.walkable(u.x + vx * 0.9, u.z + vz * 0.9)) {
+    // try the two perpendicular escapes
+    const px = -vz, pz = vx;
+    if (w.nav.walkable(u.x + px * 0.9, u.z + pz * 0.9)) { vx = px; vz = pz; }
+    else if (w.nav.walkable(u.x - px * 0.9, u.z - pz * 0.9)) { vx = -px; vz = -pz; }
+    else return false;
+  }
+  u.dvx = vx * sp; u.dvz = vz * sp; u.state = ST.MOVE;
+  u.face = Math.atan2(-dx, -dz) ;
+  // keep looking at the enemy while backing away (shoot-and-scoot reads better)
+  u.face = Math.atan2(dx, dz);
+  setAnim(u, 'walk', Math.max(0.6, sp / 2.6));
+  return true;
+}
+
+// ------------------------------------------------------------------ formation / idle movement
+function followFormation(w, u, sq, speedBase, info) {
+  if (sq) {
+    const cs = Math.cos(sq.facing), sn = Math.sin(sq.facing);
+    const gx = sq.ax + cs * u.sox + sn * u.soz, gz = sq.az - sn * u.sox + cs * u.soz;
+    const ex = gx - u.x, ez = gz - u.z, ed = hyp(ex, ez);
+    if (sq.speed < 0.05 && ed < 0.2) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.face = sq.facing; playIdle(u, false); u.hold = false; return; }
+    let vx = sq.vx + ex * 2.5, vz = sq.vz + ez * 2.5;
+    const cap = speedBase * (ed > 5 ? 1.7 : 1.35);
+    const l = hyp(vx, vz);
+    if (l > cap) { vx = vx / l * cap; vz = vz / l * cap; }
+    if (l < 0.12) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false); return; }
+    // blocked-by-prop fallback: when the slot is not walkable in a straight line follow the flow field
+    if (ed > 2.5) {
+      if (u.lineT <= 0) { u.lineOk = w.nav.clearLine(u.x, u.z, gx, gz); u.lineT = 0.5 + (u.id % 5) * 0.05; }
+      if (!u.lineOk && enemyDir(w, u, _d)) { vx = _d[0] * Math.min(l, cap); vz = _d[1] * Math.min(l, cap); }
+    }
+    u.dvx = vx; u.dvz = vz; u.state = ST.MOVE;
+    const fa = l > 0.3 ? Math.atan2(vx, vz) : sq.facing;
+    setFace(u, ed < 1.5 && sq.speed < 0.3 ? sq.facing : fa);
+    playMove(u, Math.min(l, cap));
+    return;
+  }
+  // lone unit: advance on the nearest enemy via the flow field
+  if (info.support) { supportMove(w, u, speedBase); return; }
+  if (enemyDir(w, u, _d)) { u.dvx = _d[0] * speedBase; u.dvz = _d[1] * speedBase; setFace(u, Math.atan2(_d[0], _d[1])); u.state = ST.MOVE; playMove(u, speedBase); }
+  else { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false); }
+}
+
+function retreatMove(w, u, sq, speedBase) {
+  const ec = w.centroid[1 - u.team];
+  let dx = 0, dz = 0;
+  if (ec && ec.n) { dx = u.x - ec.x; dz = u.z - ec.z; } else { dx = u.x; dz = u.z; }
+  const l = hyp(dx, dz) || 1;
+  u.dvx = dx / l * speedBase * 1.15; u.dvz = dz / l * speedBase * 1.15; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE;
+  if (!w.nav.walkable(u.x + u.dvx * 0.3, u.z + u.dvz * 0.3)) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
+  playMove(u, speedBase * 1.15);
 }
 
 /** Support units stay behind friendly melee and away from enemies. */
 function supportMove(w, u, speed) {
-  const n = w.hash.query(u.x, u.z, 9, w.qbuf);
+  const n = w.hash.query(u.x, u.z, 9, w.qbuf2);
   let ex = 0, ez = 0, en = 0, fx = 0, fz = 0, fn = 0;
   for (let k = 0; k < n; k++) {
-    const c = w.units[w.qbuf[k]]; if (!c || !c.alive || c === u) continue;
+    const c = w.units[w.qbuf2[k]]; if (!c || !c.alive || c === u) continue;
     if (c.team !== u.team) { ex += c.x; ez += c.z; en++; }
     else if (c.def.role === 'melee' || c.def.role === 'hero') { fx += c.x; fz += c.z; fn++; }
   }
-  if (en > 0) { const l = Math.hypot(u.x - ex / en, u.z - ez / en) || 1; u.dvx = (u.x - ex / en) / l * speed; u.dvz = (u.z - ez / en) / l * speed; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE; setAnim(u, 'walk', 1); return; }
-  if (fn > 0) { const tx = fx / fn, tz = fz / fn, d = Math.hypot(tx - u.x, tz - u.z); if (d > 4) { steer(w, u, tx, tz, speed); setAnim(u, 'walk', 1); u.state = ST.MOVE; return; } }
-  if (enemyDir(w, u, _d) && fn === 0) { u.dvx = _d[0] * speed * 0.8; u.dvz = _d[1] * speed * 0.8; u.face = Math.atan2(_d[0], _d[1]); setAnim(u, 'walk', 1); return; }
-  u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; setAnim(u, 'idle', 1);
+  if (en > 0) { const l = hyp(u.x - ex / en, u.z - ez / en) || 1; u.dvx = (u.x - ex / en) / l * speed; u.dvz = (u.z - ez / en) / l * speed; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE; playMove(u, speed); return; }
+  if (fn > 0) { const tx = fx / fn, tz = fz / fn, d = hyp(tx - u.x, tz - u.z); if (d > 4) { steer(w, u, tx, tz, speed); playMove(u, speed); u.state = ST.MOVE; return; } }
+  if (enemyDir(w, u, _d) && fn === 0) { u.dvx = _d[0] * speed * 0.8; u.dvz = _d[1] * speed * 0.8; u.face = Math.atan2(_d[0], _d[1]); u.state = ST.MOVE; playMove(u, speed * 0.8); return; }
+  u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false);
 }
 
 function flee(w, u, speed) {
-  // run away from the nearest enemies / enemy centroid
-  const n = w.hash.query(u.x, u.z, 14, w.qbuf);
+  // run away from the nearest enemies / enemy centroid; fire-panicked animals use their stored flee point
+  const n = w.hash.query(u.x, u.z, 14, w.qbuf2);
   let ex = 0, ez = 0, en = 0;
-  for (let k = 0; k < n; k++) { const c = w.units[w.qbuf[k]]; if (c && c.alive && c.team !== u.team) { const wgt = 1 / (0.5 + Math.hypot(c.x - u.x, c.z - u.z)); ex += (c.x - u.x) * wgt; ez += (c.z - u.z) * wgt; en += wgt; } }
+  for (let k = 0; k < n; k++) { const c = w.units[w.qbuf2[k]]; if (c && c.alive && c.team !== u.team) { const wgt = 1 / (0.5 + hyp(c.x - u.x, c.z - u.z)); ex += (c.x - u.x) * wgt; ez += (c.z - u.z) * wgt; en += wgt; } }
   let dx, dz;
-  if (en > 0) { dx = -ex; dz = -ez; } else { const ec = w.centroid[1 - u.team === 0 ? 0 : 1]; dx = u.x - (ec ? ec.x : 0); dz = u.z - (ec ? ec.z : 0); }
-  const l = Math.hypot(dx, dz) || 1;
-  u.dvx = dx / l * speed; u.dvz = dz / l * speed; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.ROUT;
+  if (u.routFrom) { dx = u.x - u.routFrom.x; dz = u.z - u.routFrom.z; }
+  else if (en > 0) { dx = -ex; dz = -ez; }
+  else { const ec = w.centroid[1 - u.team]; dx = u.x - (ec ? ec.x : 0); dz = u.z - (ec ? ec.z : 0); }
+  const l = hyp(dx, dz) || 1;
+  u.dvx = dx / l * speed; u.dvz = dz / l * speed; u.face = Math.atan2(u.dvx, u.dvz);
+  if (!w.nav.walkable(u.x + u.dvx * 0.4, u.z + u.dvz * 0.4)) { const px = -u.dvz, pz = u.dvx; if (w.nav.walkable(u.x + px * 0.4, u.z + pz * 0.4)) { u.dvx = px; u.dvz = pz; } else if (w.nav.walkable(u.x - px * 0.4, u.z - pz * 0.4)) { u.dvx = -px; u.dvz = -pz; } }
+  if (u.state !== ST.ROUT) u.state = ST.MOVE;
   setAnim(u, 'rout', 1);
 }

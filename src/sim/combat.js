@@ -1,18 +1,33 @@
 // Combat resolution: damage formula, shields, crits, backstab, charge, knockback, kills, attack state machine.
-// Rules per spec.md §7.1. Pure sim code (no render imports; clip timing comes from anim/clips.js data).
+// Rules per spec.md §8.1. Pure sim code (no render imports; clip timing comes from anim/clips.js data).
+// No allocation on the hit path: callers fill a reusable Hit scratch object (see newHit()).
 
-import { ST, SE, G, AP } from './consts.js';
+import { ST, SE, SE_NAMES, G, AP } from './consts.js';
 import { ClipLib } from '../anim/clips.js';
 
 const TAU = Math.PI * 2;
 export function angleDiff(a, b) { let d = (b - a) % TAU; if (d > Math.PI) d -= TAU; else if (d < -Math.PI) d += TAU; return d; }
 
-/** Is attacker at (ax,az) inside the target's front arc of half-angle `arc` (radians)? */
+/** Is the point (ax,az) inside t's front arc of half-angle `arc` (radians)? */
 export function inFrontArc(t, ax, az, arc) {
   const dx = ax - t.x, dz = az - t.z, l = Math.hypot(dx, dz) || 1;
-  const fx = Math.sin(t.heading), fz = Math.cos(t.heading);
-  return (dx * fx + dz * fz) / l >= Math.cos(arc);
+  return (dx * Math.sin(t.heading) + dz * Math.cos(t.heading)) / l >= Math.cos(arc);
 }
+
+/** Reusable hit descriptor. Fields are reset by reset(); kb < 0 means "default 4". */
+export class Hit {
+  constructor() { this.reset(); }
+  reset() {
+    this.type = 'slash'; this.ap = -1; this.kb = 4; this.hasDir = false; this.dx = 0; this.dz = 0; this.x = 0; this.z = 0; this.hasPos = false;
+    this.proj = false; this.aoe = false; this.dot = false; this.charge = 0; this.noBlock = false; this.noCrit = false; this.fixed = false;
+    this.cause = ''; this.bash = false; this.nonLethal = false; this.kind = ''; this.friendlyFire = false; this.noBackstab = false; this.fire = false;
+    return this;
+  }
+  dir(dx, dz) { this.hasDir = true; this.dx = dx; this.dz = dz; return this; }
+  at(x, z) { this.hasPos = true; this.x = x; this.z = z; return this; }
+}
+export const newHit = () => new Hit();
+const H_DOT = new Hit(), H_BRACE = new Hit(), H_MELEE = new Hit(), H_CLEAVE = new Hit();
 
 const SLASH1 = ['strike_slash_1', 'strike_slash_2'];
 export function meleeClip(def, n) {
@@ -23,107 +38,9 @@ export function meleeClip(def, n) {
 export function rangedClip(def) {
   const p = def.ranged.proj;
   if (p === 'arrow') return 'shoot_bow';
-  if (p === 'boulder' || p === 'bolt') return def.role === 'siege' ? 'launch' : (def.role === 'monster' ? 'launch' : 'throw');
+  if (p === 'boulder' || p === 'bolt') return def.role === 'siege' || def.role === 'monster' ? 'launch' : 'throw';
   if (p === 'sunbeam' || p === 'scepter' || p === 'thunderbolt') return 'cast';
   return 'throw';
-}
-
-/**
- * Central damage entry point.
- * @param src attacker unit or null (environment)  @param dst target unit
- * opts: {type, ap, kb, dir:[dx,dz]|null, proj:boolean, aoe:boolean, charge:number, noBlock, noCrit, fixed}
- * returns final damage dealt (0 if blocked)
- */
-export function applyDamage(w, src, dst, base, opts) {
-  if (!dst.alive) return 0;
-  const type = opts.type || 'slash';
-  let raw = base * (0.9 + w.rng.next() * 0.2);
-  let crit = false, back = false;
-  const melee = !opts.proj && !opts.aoe && !opts.dot;
-  // ---- shield block ----
-  const sh = dst.def.shield;
-  if (sh && !opts.noBlock && !opts.dot && dst.se[SE.SLEEP] <= 0 && dst.se[SE.STONE] <= 0 && dst.se[SE.STUN] <= 0 && dst.se[SE.DISARM] <= 0) {
-    const ax = src ? src.x : (opts.x !== undefined ? opts.x : dst.x), az = src ? src.z : (opts.z !== undefined ? opts.z : dst.z);
-    if (opts.aoe !== true && inFrontArc(dst, ax, az, sh.arc * Math.PI / 180)) {
-      const chance = Math.min(0.95, (opts.proj ? sh.proj + dst.mProj : sh.block + dst.mBlock));
-      if (w.rng.next() < chance) {
-        // blocked
-        dst.flash = 0.0;
-        dst.anim.flinch = 0.4;
-        if (w.ev.has('unit_block')) { const p = w.P.unit_block; p.src = src ? src.id : 0; p.dst = dst.id; p.x = dst.x; p.y = dst.y + 1.2; p.z = dst.z; p.kind = opts.proj ? 'proj' : 'melee'; w.emit('unit_block', p); }
-        if (src && opts.bash) staggerUnit(w, src, 0.25);
-        if (src && !opts.proj && src.def.melee && src.def.melee.style === 'bash') staggerUnit(w, src, 0.25);
-        if (src && opts.breaksShield) dst.se[SE.DISARM] = Math.max(dst.se[SE.DISARM], opts.breaksShield);
-        return 0;
-      }
-    }
-  }
-  // ---- crit / backstab / charge ----
-  if (!opts.noCrit && !opts.dot && w.rng.next() < G.critChance) { raw *= G.critMul; crit = true; }
-  if (melee && src) {
-    const dx = src.x - dst.x, dz = src.z - dst.z, l = Math.hypot(dx, dz) || 1;
-    if ((dx * Math.sin(dst.heading) + dz * Math.cos(dst.heading)) / l < G.backstabArcCos) { raw *= G.backstabMul; back = true; }
-  }
-  const ch = opts.charge || 0;
-  if (ch > 0.15) raw *= 1 + G.chargeDmg * ch;
-  if (src) raw *= src.mDmg;
-  raw *= dst.mDmgTaken;
-  if (type === 'fire' && dst.def.tags.includes('fire_weak')) raw *= dst.def.tags.includes('undead') ? 2 : 1.8;
-  if (dst.se[SE.SLEEP] > 0) raw *= 1.5;
-  if (dst.se[SE.STONE] > 0 && type === 'blunt') raw *= 2;
-  if (w.weather && w.weather.fireMul !== 1 && type === 'fire') raw *= w.weather.fireMul;
-  const apv = opts.ap !== undefined ? opts.ap : AP[type];
-  const eff = Math.max(0, Math.min(0.9, (dst.def.armor + dst.mArmor) * (1 - apv)));
-  let fin = opts.fixed ? raw : Math.max(1, raw * (1 - eff));
-  if (dst.def.tags && fin > dst.hp && opts.nonLethal) fin = Math.max(0, dst.hp - 1);
-  // ---- apply ----
-  dst.hp -= fin; dst.dmgTaken += fin;
-  if (src) { src.dmgDealt += fin; dst.lastAttacker = src; }
-  dst.flash = 1;
-  dst.anim.flinch = Math.min(1, 0.5 + fin / dst.hpMax * 3);
-  w.stats[dst.team].damageTaken += fin; if (src) w.stats[src.team].damageDealt += fin;
-  w.lastDamageT = w.time;
-  // knockback
-  const kbBase = opts.kb !== undefined ? opts.kb : 4;
-  if (kbBase > 0 && !opts.dot) {
-    let dx, dz;
-    if (opts.dir) { dx = opts.dir[0]; dz = opts.dir[1]; }
-    else if (src) { dx = dst.x - src.x; dz = dst.z - src.z; }
-    else { dx = dst.x - (opts.x || dst.x); dz = dst.z - (opts.z || dst.z); }
-    const l = Math.hypot(dx, dz) || 1;
-    let kb = kbBase * fin / dst.mass;
-    if (ch > 0.15) kb *= 1 + G.chargeKb * ch;
-    kb = Math.min(kb, 14);
-    dst.kx += dx / l * kb; dst.kz += dz / l * kb;
-    if (kb > 2.5 && dst.hp > 0 && dst.state !== ST.STUN && dst.def.mass < 6) staggerUnit(w, dst, Math.min(0.9, 0.2 + kb * 0.05));
-  } else if (!opts.dot && fin > dst.hpMax * 0.12 && dst.state < ST.WINDUP + 1) {
-    // small flinch
-  }
-  // events
-  if (!opts.dot) {
-    const p = w.P.unit_hit;
-    p.src = src ? src.id : 0; p.dst = dst.id; p.dmg = fin; p.type = type; p.crit = crit; p.backstab = back; p.charge = ch; p.blocked = false; p.x = dst.x; p.y = dst.y + dst.height * 0.6; p.z = dst.z;
-    p.srcDef = src ? src.def.id : ''; p.dstDef = dst.def.id; p.proj = !!opts.proj; p.aoe = !!opts.aoe;
-    w.emit('unit_hit', p);
-    // hit-stop on notable hits (render time-scale hint): hero, boss, crit or charge hits
-    if (crit || ch > 0.5 || fin > 40) { dst.hitStop = Math.max(dst.hitStop, crit ? 0.1 : 0.07); if (src) src.hitStop = Math.max(src.hitStop, 0.06); }
-  }
-  if (dst.hp <= 0) killUnit(w, dst, src, opts.cause || (opts.proj ? 'ranged' : opts.aoe ? 'aoe' : type === 'fire' ? 'fire' : type === 'magic' ? 'magic' : 'melee'), opts);
-  else {
-    if (dst.hp < dst.hpMax * G.moraleLowHp && dst.hp > 0) { /* handled in morale tick */ }
-    if (src && src.team === dst.team && !opts.dot) { const p = w.P.friendly_fire; p.src = src.id; p.dst = dst.id; p.dmg = fin; w.emit('friendly_fire', p); }
-  }
-  // ability hooks
-  if (src) w.abilityHook('onHitDealt', src, dst, fin, opts);
-  w.abilityHook('onDamaged', dst, src, fin, opts);
-  return fin;
-}
-
-export function staggerUnit(w, u, dur) {
-  if (!u.alive || u.state === ST.STUN) return;
-  if (u.def.mass >= 8 && dur < 1.0) return;     // very heavy units shrug off stagger
-  u.state = ST.STAGGER; u.stateT = 0; u.stateDur = dur; u.dvx = 0; u.dvz = 0; u.hitDone = true;
-  setAnim(u, 'stagger', 1);
 }
 
 export function setAnim(u, clip, rate) {
@@ -132,35 +49,165 @@ export function setAnim(u, clip, rate) {
   a.prev = a.clip; a.clip = clip; a.t = 0; a.rate = rate; a.blend = 0;
 }
 
-export function killUnit(w, u, src, cause, opts) {
+/** Set a status timer (keeps the larger duration) and emit status_apply on a fresh application. */
+export function applyStatus(w, u, slot, secs) {
+  if (!u.alive || secs <= 0) return false;
+  const was = u.se[slot] > 0;
+  if (secs > u.se[slot]) u.se[slot] = secs;
+  if (!was) { const e = w.P.status_apply; e.id = u.id; e.status = SE_NAMES[slot]; w.emit('status_apply', e); }
+  return true;
+}
+
+/** Heal (respects NOHEAL), emits unit_heal. Returns the amount actually healed. */
+export function healUnit(w, u, amount) {
+  if (!u.alive || u.se[SE.NOHEAL] > 0 || amount <= 0) return 0;
+  const a = Math.min(amount, u.hpMax - u.hp); if (a <= 0.01) return 0;
+  u.hp += a;
+  const e = w.P.unit_heal; e.id = u.id; e.amount = a; w.emit('unit_heal', e);
+  return a;
+}
+
+/**
+ * Central damage entry point.
+ * @param src attacker unit or null (environment)  @param dst target unit  @param base pre-armor damage (def value / falloff applied)
+ * @param o Hit descriptor. Returns final damage dealt (0 if blocked).
+ */
+export function applyDamage(w, src, dst, base, o) {
+  if (!dst.alive) return 0;
+  const type = o.type;
+  const mut = w.mut;
+  let raw = base * (0.9 + w.rng.next() * 0.2);
+  let crit = false, back = false;
+  const melee = !o.proj && !o.aoe && !o.dot;
+  const ax = src ? src.x : (o.hasPos ? o.x : dst.x), az = src ? src.z : (o.hasPos ? o.z : dst.z);
+  // ---- shield block ----
+  const sh = dst.def.shield;
+  if (sh && !o.noBlock && !o.dot && !o.aoe && dst.se[SE.SLEEP] <= 0 && dst.se[SE.STONE] <= 0 && dst.se[SE.STUN] <= 0 && dst.se[SE.DISARM] <= 0 && dst.state !== ST.DOWN) {
+    if (inFrontArc(dst, ax, az, sh.arc * Math.PI / 180)) {
+      const chance = Math.min(0.95, o.proj ? sh.proj + dst.mProj : sh.block + dst.mBlock);
+      if (w.rng.next() < chance) {
+        dst.anim.flinch = 0.4;
+        if (w.ev.has('unit_block')) { const p = w.P.unit_block; p.src = src ? src.id : 0; p.dst = dst.id; p.x = dst.x; p.y = dst.y + 1.2; p.z = dst.z; p.kind = o.proj ? 'proj' : 'melee'; w.emit('unit_block', p); }
+        if (src && src.alive && !o.proj && (o.bash || (src.def.melee && src.def.melee.style === 'bash'))) staggerUnit(w, src, 0.25);
+        if (src) w.abilityHook('onBlocked', src, dst, o);
+        w.abilityHook('onBlock', dst, src, o);
+        return 0;
+      }
+    }
+  }
+  // ---- crit / backstab / charge ----
+  if (!o.noCrit && !o.dot && w.rng.next() < G.critChance * (mut ? mut.crit : 1)) { raw *= G.critMul; crit = true; }
+  if (melee && src && !o.noBackstab) {
+    const dx = src.x - dst.x, dz = src.z - dst.z, l = Math.hypot(dx, dz) || 1;
+    if ((dx * Math.sin(dst.heading) + dz * Math.cos(dst.heading)) / l < G.backstabArcCos) {
+      raw *= G.backstabMul; back = true;
+      if (w.rules.morale && w.time - dst.lastFlankT > 3) { dst.lastFlankT = w.time; dst.morale -= G.moraleFlanked; }
+    }
+  }
+  const ch = o.charge;
+  if (ch > 0.15) raw *= 1 + G.chargeDmg * ch;
+  if (src) raw *= src.mDmg;
+  if (mut) raw *= mut.dmg;
+  raw *= dst.mDmgTaken;
+  if (type === 'fire') {
+    if (dst.def.tags.includes('fire_weak')) raw *= dst.def.tags.includes('undead') ? 2 : (dst.def.id === 'trojan_horse' ? 1.6 : 1.8);
+    raw *= w.weather.fireMul;
+  }
+  if (dst.se[SE.SLEEP] > 0) raw *= 1.5;
+  if (dst.se[SE.STONE] > 0 && type === 'blunt') raw *= 2;
+  const apv = o.ap >= 0 ? o.ap : AP[type];
+  const eff = Math.max(0, Math.min(0.9, (dst.def.armor + dst.mArmor) * (1 - apv)));
+  let fin = o.fixed ? raw : Math.max(1, raw * (1 - eff));
+  if (o.nonLethal && fin > dst.hp) fin = Math.max(0, dst.hp - 1);
+  // ---- apply ----
+  dst.hp -= fin; dst.dmgTaken += fin; dst.lastHitT = w.time;
+  if (src) { src.dmgDealt += fin; dst.lastAttacker = src; }
+  dst.flash = 1;
+  dst.anim.flinch = Math.min(1, 0.5 + fin / dst.hpMax * 3);
+  w.stats[dst.team].damageTaken += fin; if (src) w.stats[src.team].damageDealt += fin;
+  w.lastDamageT = w.time;
+  // knockback: v0 = kb * dmg / mass * KB_SCALE (u/s); travel = v0 / friction
+  if (o.kb > 0 && !o.dot) {
+    let dx, dz;
+    if (o.hasDir) { dx = o.dx; dz = o.dz; } else { dx = dst.x - ax; dz = dst.z - az; }
+    const l = Math.hypot(dx, dz) || 1;
+    let kb = o.kb * base / dst.mass * G.kbScale * (mut ? mut.kb : 1);
+    if (ch > 0.15) kb *= 1 + G.chargeKb * ch;
+    if (kb > G.kbMax) kb = G.kbMax;
+    if (dst.state === ST.DOWN) kb = 0;
+    dst.kx += dx / l * kb; dst.kz += dz / l * kb;
+    if (kb > G.staggerKb && dst.hp > 0 && dst.state !== ST.STUN && dst.mass < 6) staggerUnit(w, dst, Math.min(0.9, 0.2 + kb * 0.04));
+  }
+  if (type === 'blunt' && o.kb > 0 && fin > dst.hpMax * 0.1 && dst.hp > 0 && dst.mass < 6 && !o.dot && !o.aoe) staggerUnit(w, dst, 0.2);
+  // events
+  if (!o.dot) {
+    const p = w.P.unit_hit;
+    p.src = src ? src.id : 0; p.dst = dst.id; p.dmg = fin; p.type = type; p.crit = crit; p.backstab = back; p.charge = ch; p.x = dst.x; p.y = dst.y + dst.height * 0.6; p.z = dst.z;
+    p.srcDef = src ? src.def.id : ''; p.dstDef = dst.def.id; p.proj = !!o.proj; p.aoe = !!o.aoe;
+    w.emit('unit_hit', p);
+    if (src && src.team === dst.team && src !== dst) { const f = w.P.friendly_fire; f.src = src.id; f.dst = dst.id; f.dmg = fin; w.emit('friendly_fire', f); }
+  }
+  // ability hooks (before death so hooks see the state; killUnit runs onLethal)
+  if (src && src.alive) w.abilityHook('onHitDealt', src, dst, fin, o);
+  if (dst.hp <= 0) killUnit(w, dst, src, o.cause || (o.proj ? 'ranged' : o.aoe ? 'aoe' : type === 'fire' ? 'fire' : type === 'magic' ? 'magic' : 'melee'), o);
+  else w.abilityHook('onDamaged', dst, src, fin, o);
+  return fin;
+}
+
+/** Damage over time / hazards: no events, no knockback, no block. */
+export function dotDamage(w, u, amt, cause, src) {
+  if (!u.alive || u.state === ST.DOWN) return;
+  const h = H_DOT.reset(); h.dot = true; h.noBlock = true; h.noCrit = true; h.fixed = true; h.kb = 0; h.type = cause === 'fire' ? 'fire' : 'magic'; h.cause = cause;
+  u.hp -= amt; u.flash = Math.max(u.flash, 0.4); w.lastDamageT = w.time; w.stats[u.team].damageTaken += amt;
+  if (src) { src.dmgDealt += amt; w.stats[src.team].damageDealt += amt; u.lastAttacker = src; }
+  if (u.hp <= 0) killUnit(w, u, src || u.lastAttacker, cause, h);
+}
+
+export function staggerUnit(w, u, dur) {
+  if (!u.alive || u.state === ST.STUN || u.state === ST.DOWN || u.state === ST.FLY) return;
+  if (u.mass >= 8 && dur < 1.0) return;     // very heavy units shrug off stagger
+  if (u.state === ST.SIT || u.state === ST.COWER || u.state === ST.CAST) return;
+  u.state = ST.STAGGER; u.stateT = 0; u.stateDur = dur; u.dvx = 0; u.dvz = 0; u.hitDone = true;
+  setAnim(u, 'stagger', 1);
+  const e = w.P.unit_stagger; e.id = u.id; w.emit('unit_stagger', e);
+}
+
+export function killUnit(w, u, src, cause, o) {
   if (!u.alive) return;
   // revive / death-prevention hooks may cancel the death
-  if (w.abilityHook('onLethal', u, src, cause, opts) === true) return;
+  if (w.abilityHook('onLethal', u, src, cause, o) === true) return;
   u.alive = false; u.hp = 0; u.deadT = 0;
-  u.target = null;
+  u.target = null; releaseClaim(u);
   const team = u.team;
-  w.stats[team].dead++; w.stats[team].deadCost += u.def.cost; w.stats[team].alive--; w.stats[team].aliveCost -= u.def.cost;
+  const st = w.stats[team];
+  st.dead++; st.deadCost += u.def.cost; st.alive--; st.aliveCost -= u.def.cost;
   if (src && src.alive) { src.kills++; w.stats[src.team].kills++; }
   const friendly = !!src && src.team === u.team && src !== u;
   // death clip + fling
   const sp = Math.hypot(u.kx, u.kz);
   let clip = 'death_back';
   if (cause === 'stone') clip = 'stun';
-  else if (sp > 6) { clip = 'death_spin'; u.deathKind = 2; }
+  else if (cause === 'kick' || sp > 6) { clip = 'death_spin'; u.deathKind = 2; }
   else if (src) { const dx = src.x - u.x, dz = src.z - u.z; clip = (dx * Math.sin(u.heading) + dz * Math.cos(u.heading)) >= 0 ? 'death_back' : 'death_front'; }
   if (u.def.role === 'monster' || u.def.tags.includes('large')) clip = 'death_back';
   u.anim.dir = Math.atan2(u.kx, u.kz);
   setAnim(u, clip, 1);
-  u.state = ST.IDLE; u.stateT = 0;
+  u.state = ST.IDLE; u.stateT = 0; u.dvx = 0; u.dvz = 0;
   const p = w.P.unit_kill;
   p.src = src ? src.id : 0; p.dst = u.id; p.srcDef = src ? src.def.id : ''; p.dstDef = u.def.id; p.srcTeam = src ? src.team : -1; p.dstTeam = u.team; p.friendly = friendly; p.cause = cause;
+  p.byPlayer = !!(src && src.controlled); p.revived = !!u.revived;
   p.x = u.x; p.y = u.y; p.z = u.z;
   w.emit('unit_kill', p);
-  // morale shock for nearby allies
   w.moraleShock(u);
   w.abilityHook('onKilled', u, src, cause);
-  if (src) w.abilityHook('onKill', src, u, cause);
+  if (src && src.alive) w.abilityHook('onKill', src, u, cause);
   w.checkFirstBlood(src, u);
+}
+
+/** Give back a unit's attack-token on its target. */
+export function releaseClaim(u) {
+  const c = u.claim;
+  if (c) { if (c.claims > 0) c.claims--; u.claim = null; }
 }
 
 /** Start a melee attack on u.target. */
@@ -193,49 +240,49 @@ export function resolveMelee(w, u) {
   const t = u.target, m = u.def.melee;
   if (!t || !t.alive) return;
   const dx = t.x - u.x, dz = t.z - u.z, dist = Math.hypot(dx, dz);
-  const reach = m.range + u.radius + t.radius;
-  if (dist > reach * 1.35) return;                      // target slipped away
+  const reach = m.range + u.mReach + u.radius + t.radius;
+  if (dist > reach * 1.35 + 0.2) return;                      // target slipped away
   const chargeMul = chargeFactor(u);
-  const opts = { type: m.type, ap: m.ap, kb: m.kb !== undefined ? m.kb : 4, charge: chargeMul, bash: m.style === 'bash', hook: m.hook };
+  const o = H_MELEE.reset();
+  o.type = m.type; o.ap = m.ap !== undefined ? m.ap : -1; o.kb = m.kb !== undefined ? m.kb : 4; o.charge = chargeMul; o.bash = m.style === 'bash';
   // brace: a spear/pike target facing a cavalry charger punishes it
-  if (chargeMul > 0.3 && u.def.tags.includes('cavalry') && t.def.tags.some((x) => x === 'spear' || x === 'pike')) {
+  if (chargeMul > 0.3 && u.def.tags.includes('cavalry') && (t.def.tags.includes('spear') || t.def.tags.includes('pike'))) {
     const ax = u.x - t.x, az = u.z - t.z, l = Math.hypot(ax, az) || 1;
     const facing = (ax * Math.sin(t.heading) + az * Math.cos(t.heading)) / l;
     if (facing >= G.braceArcCos && t.speedNow < t.def.speed * 0.5) {
-      // charger is hurt and stopped
       const p = w.P.unit_brace; p.id = t.id; p.dst = u.id; w.emit('unit_brace', p);
-      applyDamage(w, t, u, t.def.melee.dmg * G.braceMul * 1.2, { type: 'pierce', kb: 6, charge: 0, cause: 'melee' });
-      u.kx *= 0; u.kz *= 0; u.vx = 0; u.vz = 0;
+      const b = H_BRACE.reset(); b.type = 'pierce'; b.kb = 6; b.cause = 'melee'; b.noBlock = true;
+      applyDamage(w, t, u, t.def.melee.dmg * G.braceMul, b);
+      u.kx = 0; u.kz = 0; u.vx = 0; u.vz = 0; u.dvx = 0; u.dvz = 0;          // momentum cancelled
       if (!u.alive) return;
-      opts.charge = 0;
+      o.charge = 0; o.kb = 1;
+      staggerUnit(w, u, 0.5);
     }
   }
-  if (chargeMul > 0.5) { const p = w.P.charge_hit; p.id = u.id; p.dst = t.id; p.mul = chargeMul; w.emit('charge_hit', p); }
-  let dmg = m.dmg;
-  const fin = applyDamage(w, u, t, dmg, opts);
-  if (fin > 0 && m.hook && t.alive && w.rng.next() < m.hook) { t.se[SE.DISARM] = Math.max(t.se[SE.DISARM], 3); }
-  if (fin > 0 && m.poison && t.alive) t.se[SE.POISON] = Math.max(t.se[SE.POISON], 3);
-  // sweeping attacks for big weapons hit a second nearby enemy
-  if (u.def.tags.includes('large') && u.def.role === 'monster') cleave(w, u, t, dmg * 0.5, opts);
+  if (o.charge > 0.5) { const p = w.P.charge_hit; p.id = u.id; p.dst = t.id; p.mul = o.charge; w.emit('charge_hit', p); }
+  const fin = applyDamage(w, u, t, m.dmg, o);
+  // sweeping attacks for big weapons hit nearby enemies
+  if (fin > 0 && u.alive && u.def.tags.includes('large') && u.def.role === 'monster') cleave(w, u, t, m.dmg * 0.5, m);
 }
 
-function cleave(w, u, first, dmg, opts) {
-  const reach = u.def.melee.range + u.radius;
+function cleave(w, u, first, dmg, m) {
+  const reach = m.range + u.radius;
   const n = w.hash.query(first.x, first.z, 2.2, w.qbuf);
   let hit = 0;
+  const q = w.qbuf;
   for (let k = 0; k < n && hit < 3; k++) {
-    const o = w.units[w.qbuf[k]]; if (!o || o === first || !o.alive || o.team === u.team) continue;
+    const o = w.units[q[k]]; if (!o || o === first || !o.alive || o.team === u.team) continue;
     if ((o.x - u.x) ** 2 + (o.z - u.z) ** 2 > (reach + o.radius + 0.8) ** 2) continue;
-    applyDamage(w, u, o, dmg, Object.assign({}, opts, { kb: (opts.kb || 4) * 0.7, charge: 0 })); hit++;
+    const h = H_CLEAVE.reset(); h.type = m.type; h.kb = (m.kb !== undefined ? m.kb : 4) * 0.7; h.aoe = true; h.cause = 'melee'; h.at(u.x, u.z);
+    applyDamage(w, u, o, dmg, h); hit++;
   }
 }
 
 /** 0..1 how much of its charge speed the unit currently has (cavalry/elephant/Minotaur) */
 export function chargeFactor(u) {
   const d = u.def;
-  const run = d.runMul || 1.5;
   if (!(d.tags.includes('cavalry') || d.tags.includes('large') || d.role === 'beast')) return 0;
   const walk = d.speed;
-  const f = (u.speedNow / walk - 1) / Math.max(0.05, run - 1);
-  return Math.max(0, Math.min(1, f));
+  const f = (u.speedNow / walk - 1) / Math.max(0.05, (d.runMul || 1.5) - 1);
+  return f < 0 ? 0 : f > 1 ? 1 : f;
 }

@@ -16,12 +16,12 @@ for t in titles:
     base = os.path.join(RAW, 'commons-' + slug(os.path.splitext(t[5:])[0]))
     if os.path.exists(base): print('exists', t); continue
     os.makedirs(base)
-    fn = os.path.join(base, os.path.basename(urllib.parse.unquote(d['url'])))
+    fn = os.path.join(base, os.path.basename(urllib.parse.unquote(urllib.parse.urlparse(d['url']).path)))
     import time
     d['http'] = '0'
     for attempt in range(8):
         hdr = os.path.join(base, '_hdr.txt')
-        r = subprocess.run(['curl', '-sS', '-L', '-m', '300', '-A', commons.UA, '-D', hdr, '-o', fn, '-w', '%{http_code}', d['url']], capture_output=True, text=True)
+        r = subprocess.run(['curl', '-sS', '-L', '-m', '300', '-A', commons.UA, '-D', hdr, '-o', fn, '-w', '%{http_code}', d['url'].split('?')[0]], capture_output=True, text=True)
         d['http'] = r.stdout.strip()
         if d['http'] == '200': break
         wait = 60
@@ -29,11 +29,11 @@ for t in titles:
             m = re.findall(r'(?im)^retry-after:\s*(\d+)', open(hdr).read())
             if m: wait = int(m[-1]) + 5
         except Exception: pass
-        print('  HTTP', d['http'], 'for', t, '- sleeping', wait, 's', flush=True)
-        time.sleep(min(wait, 900))
+        print('  HTTP', d['http'], 'for', t, '- rate limited (Retry-After %s s); stopping so the ban is not extended. Re-run later.' % wait, flush=True)
+        import shutil; shutil.rmtree(base); sys.exit(2)
     if os.path.exists(os.path.join(base, '_hdr.txt')): os.remove(os.path.join(base, '_hdr.txt'))
     if d['http'] != '200':
         print('FAILED', t, d['http'], flush=True); import shutil; shutil.rmtree(base); continue
-    time.sleep(12)   # be polite: ~5 requests/minute
+    time.sleep(20)   # be polite: ~3 requests/minute
     json.dump(d, open(os.path.join(base, 'meta.json'), 'w'), indent=1)
     print(t, '|', d['license'], '|', d['artist'][:30], '|', d['http'], os.path.getsize(fn), flush=True)

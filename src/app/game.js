@@ -1,0 +1,445 @@
+// Game: the battle-side controller the UI talks to (see docs/app_contract.md §3).
+// Owns the 3D scene objects (terrain, props, fx, battle view, camera rig), the sim World lifecycle, placement tools and HUD data.
+// Pointer events on the canvas are routed here by app/input.js.
+
+import { World } from '../sim/world.js';
+import { DT } from '../sim/consts.js';
+import { generateArena } from '../world/gen.js';
+import { Arena, SIZES } from '../world/arena.js';
+import { TerrainRenderer } from '../render/terrain.js';
+import { CubeFX } from '../render/fx.js';
+import { BattleView } from '../render/battleview.js';
+import { CameraRig } from '../render/cameras.js';
+import { lin } from '../render/engine.js';
+import { teamColorsLinear } from '../render/style.js';
+import { formationOffsets, placeOffsets } from '../sim/formations.js';
+import { UndoStack } from '../core/undo.js';
+import { RNG } from '../core/rng.js';
+import { EventBus } from '../core/events.js';
+import { PROP_RENDERER, ARMYGEN, ANIMATOR, LESSONS, POWER, MUTATORS } from '../_generated/registry.optional.js';
+import { TempAnimator } from '../render/tempanimator.js';
+
+const T = () => window.THREE;
+export const BUDGET_PRESETS = { skirmish: 3000, battle: 8000, war: 20000, epic: 40000 };
+export const TIER_CAP = { potato: 100, papyrus: 200, marble: 300, olympian: 400 };
+const TYPE_CAP = 16;
+
+export class Game {
+  /** @param {{engine:any, content:any, settings:any, audio:any, bus?:EventBus}} app */
+  constructor(app) {
+    this.app = app; this.engine = app.engine; this.content = app.content; this.settings = app.settings; this.audio = app.audio;
+    this.bus = app.bus || new EventBus();
+    this.state = 'idle'; this.world = null; this.setup = null;
+    this.rig = new CameraRig(this.engine);
+    this.terrain = new TerrainRenderer(this.engine.scene);
+    this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
+    this.fx = new CubeFX(this.engine.scene, null, 24000);
+    const animator = ANIMATOR && ANIMATOR.Animator ? new ANIMATOR.Animator() : new TempAnimator();
+    this.animator = animator;
+    this.view = new BattleView({ engine: this.engine, fx: this.fx, animator, modelFor: (d, u) => this.content.modelFor(d, u), palette: this.settings.get('palette') || 'classic', gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay' });
+    this.view.onShake = (a, x, z) => { this.rig.addTrauma(a); this.rig.kickFov(a * 3); };
+    this.paused = false; this.speed = 1; this.acc = 0; this.alpha = 1; this.clock = 0;
+    this.brushState = { mode: 'single', defId: 'hoplite', team: 0, formation: 'block', count: 9, mirror: false, order: 'advance', custom: null };
+    this.undo = new UndoStack(100); this.records = [];
+    this.ghost = this._makeGhost(); this.ghostInfo = { x: 0, z: 0, valid: false, reason: null, show: false };
+    this.rng = new RNG(1);
+    this.killfeed = []; this.announce = null; this.toasts = [];
+    this.hoverId = 0; this.selectedId = 0; this.possessId = 0;
+    this._counts = null; this._countsT = 0;
+    this.cinematic = false;
+    this._pointer = { x: 0, y: 0, down: false, lastPlace: null, button: 0 };
+    this.listeners = [];
+    this.tier = this.settings.get('quality') || 'marble';
+    this._applyTier();
+    this.rules = {};
+  }
+
+  on(ev, fn) { return this.bus.on('game:' + ev, fn); }
+  emit(ev, p) { this.bus.emit('game:' + ev, p || {}); }
+  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; }
+  setTier(t) { this.tier = t; this._applyTier(); }
+
+  // ------------------------------------------------------------------ setup / lifecycle
+  newSetup(kind = 'quick', preset = {}) {
+    const dateSeed = kind === 'daily' ? Number(new Date().toISOString().slice(0, 10).replace(/-/g, '')) : (Math.random() * 1e9) >>> 0;
+    const s = {
+      kind, arena: Object.assign({ presetId: 'marathon', size: 'medium', seed: dateSeed, env: {} }, preset.arena || {}),
+      rules: Object.assign({ budget: BUDGET_PRESETS.battle, difficulty: 'normal', friendlyFire: false, morale: true, speed: 1, gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay', freePlacement: false, mirror: false, timeLimit: 360, weather: null, mood: 'auto', mutators: [] }, preset.rules || {}),
+      armies: Object.assign({ A: { faction: 'hellenes', placements: [], budget: null }, B: { faction: 'persians', placements: [], budget: null } }, preset.armies || {}),
+      mission: preset.mission || null,
+    };
+    return s;
+  }
+
+  _arenaFor(setup) {
+    const a = setup.arena;
+    if (a.data) { return a.data instanceof Arena ? a.data : Arena.fromJSON(a.data); }
+    const arena = generateArena(a.presetId || 'marathon', a.size || 'medium', a.seed || 1);
+    Object.assign(arena.env, a.env || {});
+    if (setup.rules.weather) arena.env.weather = setup.rules.weather;
+    if (setup.rules.time !== undefined && setup.rules.time !== null) arena.env.time = setup.rules.time;
+    return arena;
+  }
+
+  /** Build the world + scene and enter PLACEMENT. */
+  async begin(setup, { keepPlacements = false } = {}) {
+    this.dispose(false);
+    this.setup = setup; this.rules = setup.rules;
+    const arena = this._arenaFor(setup);
+    const rules = Object.assign({}, setup.rules, { timeLimit: setup.rules.timeLimit || 360 });
+    this.world = new World({ arena, seed: (setup.arena.seed || 1) >>> 0, rules, defs: this.content.defs });
+    const w = this.world;
+    if (MUTATORS && MUTATORS.applyMutators) MUTATORS.applyMutators(w, setup.rules.mutators || []);
+    this.terrain.setArena(w.arena);
+    if (this.props) { this.props.setArena ? this.props.setArena(w.arena, w.props) : null; }
+    this.fx.setArena(w.arena); this.fx.clear();
+    const env = this.engine.setEnvironment(w.arena.env, w.arena); this.terrain.setFog(env.color, env.near, env.far);
+    this.engine.setEnvironment(w.arena.env, w.arena);
+    this.view.gore = setup.rules.gore || 'red'; this.view.corpseMode = setup.rules.corpses || 'stay';
+    this.view.setWorld(w, this.terrain, this.props);
+    this.rig.setWorld(w); this.rig.setMode('orbit'); this.rig.yaw = -0.7; this.rig.pitch = 0.65;
+    this.rig.frame(0, 0, w.arena.worldSize() * 0.55);
+    this.undo.clear(); this.records.length = 0; this.killfeed.length = 0;
+    this.acc = 0; this.paused = false; this.speed = 1; this.selectedId = 0; this.hoverId = 0;
+    w.events.on('unit_kill', (p) => this._feed(p));
+    w.events.on('battle_end', (p) => { this.state = 'ended'; this.emit('battle_end', this.results()); this.emit('state', { state: 'ended' }); });
+    w.events.on('battle_start', () => { this.state = 'running'; this.emit('state', { state: 'running' }); this.emit('battle_start', {}); });
+    w.events.on('battle_countdown', (p) => this.emit('countdown', p));
+    w.events.on('explosion', (p) => this.rig.hint(p.x, p.z, 'explosion', 2));
+    w.events.on('hero_down', () => { this.rig.addTrauma(0.35); });
+    this.state = 'placement';
+    // restore / generate placements
+    if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); }
+    this.emit('placement', { arena: w.arena });
+    this.emit('state', { state: 'placement' });
+    this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('editor');
+  }
+
+  zones() { return this.world.arena.zones; }
+  _heading(team) { return team === 0 ? Math.PI / 2 : -Math.PI / 2; }
+
+  // ------------------------------------------------------------------ placement
+  tools = {
+    setBrush: (b) => { Object.assign(this.brushState, b); this._refreshGhost(); this.emit('brush', this.brushState); },
+    brush: () => Object.assign({}, this.brushState),
+    undo: () => { const ok = this.undo.undo(); this.emit('placement', {}); return ok; },
+    redo: () => { const ok = this.undo.redo(); this.emit('placement', {}); return ok; },
+    canUndo: () => this.undo.canUndo(), canRedo: () => this.undo.canRedo(),
+    clear: (team) => { if (this.state !== 'placement') return; const before = this.records.slice(); for (const r of before) if (team === undefined || r.team === team) this._removeRecord(r); this.undo.clear(); this.emit('placement', {}); },
+    autoFill: (team, o = {}) => this.autoFill(team, o),
+    saveArmy: (name) => ({ name, records: this.records.map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, heading: r.heading, order: r.order })) }),
+    loadArmy: (data) => { for (const r of (data.records || [])) this._applyRecord(Object.assign({}, r), true); this.emit('placement', {}); },
+  };
+
+  info = {
+    budget: (team) => { const cap = this._budgetCap(team); const spent = this.world ? this.world.stats[team].startCost : 0; return { spent, cap, left: Math.max(0, cap - spent) }; },
+    counts: (team) => {
+      const w = this.world; const by = new Map(); let total = 0;
+      if (w) for (const u of w.units) if (u.team === team) { total++; by.set(u.def.id, (by.get(u.def.id) || 0) + 1); }
+      return { total, cap: this._teamCap(), types: by.size, typeCap: TYPE_CAP, byType: Array.from(by, ([defId, n]) => ({ defId, n })) };
+    },
+    validity: (x, z, team) => this._validity(x, z, team === undefined ? this.brushState.team : team),
+    scout: (team) => this._scout(team),
+  };
+  _teamCap() { return TIER_CAP[this.tier] || 300; }
+  _budgetCap(team) { const k = team === 0 ? 'A' : 'B'; const a = this.setup && this.setup.armies[k]; return (a && a.budget) || (this.setup ? this.setup.rules.budget : BUDGET_PRESETS.battle); }
+
+  _validity(x, z, team) {
+    const w = this.world; if (!w) return 'No arena loaded';
+    const a = w.arena;
+    if (!w.nav.inside(x, z)) return 'Outside the arena';
+    if (!w.nav.walkable(x, z)) return a.water > 0 && a.waterDepth(x, z) > 0.8 ? (a.lava ? 'That is lava. The soldiers vote no.' : 'Too deep: soldiers do not swim') : 'Not walkable';
+    if (!this.setup.rules.freePlacement) {
+      const z0 = team === 0 ? a.zones.A : a.zones.B;
+      if (Math.abs(x - z0.x) > z0.w / 2 || Math.abs(z - z0.z) > z0.d / 2) return team === 0 ? 'Outside the blue deployment zone' : 'Outside the red deployment zone';
+    }
+    return null;
+  }
+  _unitsToPlace(mode) { return mode === 'single' ? 1 : this.brushState.count; }
+  _brushPositions(x, z, team) {
+    const b = this.brushState, def = this.content.defs[b.defId]; if (!def) return [];
+    const heading = this._heading(team);
+    if (b.mode === 'single') return [[x, z]];
+    const spacing = Math.max(1.2, def.radius * 2.4);
+    const kind = b.mode === 'line' ? 'line' : b.mode === 'scatter' ? 'skirmish' : (b.formation || 'block');
+    const offs = formationOffsets(kind, b.count, spacing, this.rng);
+    return placeOffsets(offs, x, z, heading);
+  }
+
+  _refreshGhost() {
+    const g = this.ghostInfo; if (this.state !== 'placement' || !g.show) { this.ghost.visible = false; return; }
+    const b = this.brushState;
+    if (b.mode === 'erase' || b.mode === 'select') { this._setGhost([[g.x, g.z]], this._validity(g.x, g.z, b.team) === null, 1.6); return; }
+    const pos = this._brushPositions(g.x, g.z, b.team);
+    const reason = this._validity(g.x, g.z, b.team);
+    let ok = reason === null;
+    for (const p of pos) { if (this._validity(p[0], p[1], b.team)) { ok = false; break; } }
+    g.valid = ok; g.reason = ok ? null : (reason || 'Part of the formation is out of bounds');
+    this._setGhost(pos, ok, 0.9);
+    this.emit('ghost', { valid: ok, reason: g.reason });
+  }
+  _makeGhost() {
+    const THREE = T(), cap = 600;
+    const m = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.55, depthWrite: false }), cap);
+    m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); m.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(cap * 3), 3); m.frustumCulled = false; m.count = 0; m.renderOrder = 18; m.visible = false;
+    this.engine.scene.add(m); m.userData.cap = cap; return m;
+  }
+  _setGhost(pos, ok, size) {
+    const m = this.ghost, a = this.world.arena, arr = m.instanceMatrix.array, col = m.instanceColor.array;
+    const tc = this.view.teamColors[this.brushState.team === 1 ? 1 : 0];
+    let n = 0;
+    for (const p of pos) {
+      if (n >= m.userData.cap) break;
+      const gy = a.cellHeight(p[0], p[1]); const o = n * 16;
+      const w = 0.8, h = 2.6;
+      arr[o] = w; arr[o + 1] = 0; arr[o + 2] = 0; arr[o + 3] = 0; arr[o + 4] = 0; arr[o + 5] = h; arr[o + 6] = 0; arr[o + 7] = 0; arr[o + 8] = 0; arr[o + 9] = 0; arr[o + 10] = w; arr[o + 11] = 0; arr[o + 12] = p[0]; arr[o + 13] = gy + h / 2; arr[o + 14] = p[1]; arr[o + 15] = 1;
+      if (ok) { col[n * 3] = tc[0] * 1.2 + 0.1; col[n * 3 + 1] = tc[1] * 1.2 + 0.1; col[n * 3 + 2] = tc[2] * 1.2 + 0.1; } else { col[n * 3] = 1.6; col[n * 3 + 1] = 0.05; col[n * 3 + 2] = 0.05; }
+      n++;
+    }
+    m.count = n; m.visible = n > 0; m.instanceMatrix.needsUpdate = true; m.instanceColor.needsUpdate = true;
+  }
+
+  /** Create units for a record and register undo. Returns the record or null. */
+  _applyRecord(rec, withUndo) {
+    const w = this.world; if (!w) return null;
+    const def = this.content.defs[rec.defId]; if (!def) return null;
+    rec.units = [];
+    const team = rec.team;
+    if (rec.positions.length === 1 && !rec.squadSize) {
+      const sq = null;
+      const u = w.addUnit(rec.defId, team, rec.positions[0][0], rec.positions[0][1], { heading: rec.heading, custom: rec.custom || undefined, def: rec.custom ? rec.custom.def : undefined });
+      rec.units.push(u);
+    } else {
+      const sq = w.addSquad(rec.defId, team, rec.positions.length, rec.cx !== undefined ? rec.cx : rec.positions[0][0], rec.cz !== undefined ? rec.cz : rec.positions[0][1], { heading: rec.heading, order: rec.order || 'advance', offsets: rec.offsets, def: rec.custom ? rec.custom.def : undefined });
+      // addSquad positions by offsets; snap each unit to our explicit positions
+      sq.units.forEach((u, i) => { if (rec.positions[i]) { u.x = u.px = rec.positions[i][0]; u.z = u.pz = rec.positions[i][1]; u.y = u.py = w.arena.cellHeight(u.x, u.z); } });
+      rec.units.push(...sq.units);
+    }
+    this.records.push(rec);
+    if (withUndo) {
+      this.undo.push({ do: () => { this._reAdd(rec); }, undo: () => { this._removeRecord(rec); } });
+    }
+    return rec;
+  }
+  _reAdd(rec) { this._applyRecord(rec, false); }
+  _removeRecord(rec) { for (const u of rec.units) this.world.removeUnit(u); rec.units = []; this.records = this.records.filter((r) => r !== rec); }
+
+  placeAt(x, z) {
+    if (this.state !== 'placement') return false;
+    const b = this.brushState, team = b.team;
+    if (b.mode === 'erase') { return this._eraseAt(x, z, team); }
+    if (b.mode === 'select') { return false; }
+    const def = this.content.defs[b.defId]; if (!def) return false;
+    const reason = this._validity(x, z, team); if (reason) { this.emit('toast', { text: reason, kind: 'error' }); this.audio && this.audio.ui && this.audio.ui('error'); return false; }
+    const positions = this._brushPositions(x, z, team);
+    // validate every position + budget + caps
+    const n = positions.length;
+    for (const p of positions) { const r = this._validity(p[0], p[1], team); if (r) { this.emit('toast', { text: r, kind: 'error' }); this.audio && this.audio.ui && this.audio.ui('error'); return false; } }
+    const bud = this.info.budget(team);
+    if (def.cost * n > bud.left) { this.emit('toast', { text: 'Over budget. The treasury has opinions.', kind: 'error' }); this.audio && this.audio.ui && this.audio.ui('error'); return false; }
+    const cnt = this.info.counts(team);
+    if (cnt.total + n > cnt.cap) { this.emit('toast', { text: `Unit cap reached (${cnt.cap} per side at this quality)`, kind: 'error' }); return false; }
+    if (!cnt.byType.some((t) => t.defId === def.id) && cnt.types >= TYPE_CAP) { this.emit('toast', { text: `Max ${TYPE_CAP} different unit types per battle`, kind: 'error' }); return false; }
+    const rec = { team, defId: b.defId, custom: b.custom, positions: positions.map((p) => [p[0], p[1]]), cx: x, cz: z, heading: this._heading(team), order: b.order, squadSize: n > 1 ? n : 0 };
+    this._applyRecord(rec, true);
+    if (b.mirror) {
+      const mt = 1 - team, mp = positions.map((p) => [-p[0], -p[1]]);
+      if (mp.every((p) => !this._validity(p[0], p[1], mt)) && def.cost * n <= this.info.budget(mt).left) this._applyRecord({ team: mt, defId: b.defId, custom: b.custom, positions: mp, cx: -x, cz: -z, heading: this._heading(mt), order: b.order, squadSize: n > 1 ? n : 0 }, true);
+    }
+    this.audio && this.audio.play && this.audio.play('ui_place', { pitch: 1 });
+    this.emit('placement', {});
+    return true;
+  }
+  _eraseAt(x, z, team) {
+    const w = this.world; let hit = null, bd = 2.2 * 2.2;
+    for (const u of w.units) { if (u.team !== team) continue; const d = (u.x - x) ** 2 + (u.z - z) ** 2; if (d < bd) { bd = d; hit = u; } }
+    if (!hit) return false;
+    const rec = this.records.find((r) => r.units.includes(hit));
+    if (rec) { const units = rec.units.slice(); this._removeRecord(rec); this.undo.push({ do: () => this._removeRecord(rec), undo: () => this._reAdd(rec) }); }
+    this.audio && this.audio.play && this.audio.play('ui_erase');
+    this.emit('placement', {});
+    return true;
+  }
+
+  autoFill(team, o = {}) {
+    if (this.state !== 'placement') return;
+    const w = this.world, a = w.arena, zone = team === 0 ? a.zones.A : a.zones.B;
+    const budget = o.budget || this._budgetCap(team) - this.info.budget(team).spent;
+    const faction = o.faction || (this.setup.armies[team === 0 ? 'A' : 'B'].faction) || 'mixed';
+    // remove existing units of that team first when asked
+    if (o.replace !== false) this.tools.clear(team);
+    let plan = null;
+    if (ARMYGEN && ARMYGEN.generateArmy) {
+      try { plan = ARMYGEN.generateArmy({ faction, budget: this._budgetCap(team), style: o.style || 'balanced', difficulty: this.setup.rules.difficulty, defs: this.content.defs, zone, arena: a, team, world: w, against: this._enemyComposition(team), unitCap: this._teamCap() }); } catch (e) { console.warn('armygen failed, using fallback', e); }
+    }
+    if (!plan) plan = this._fallbackPlan(team, faction, this._budgetCap(team), zone, o.style);
+    for (const rec of plan) { rec.team = team; rec.heading = this._heading(team); this._applyRecord(rec, false); }
+    this.undo.clear();
+    this.emit('placement', {});
+  }
+  _enemyComposition(team) { const by = {}; if (this.world) for (const u of this.world.units) if (u.team !== team) by[u.def.id] = (by[u.def.id] || 0) + 1; return by; }
+  _fallbackPlan(team, faction, budget, zone, style) {
+    const defs = Object.values(this.content.defs).filter((d) => (faction === 'mixed' || d.faction === faction) && d.role !== 'hero' && d.cost <= budget * 0.5);
+    const rng = this.rng.fork('fill' + team); const out = []; let left = budget, guard = 0;
+    const melee = defs.filter((d) => d.role === 'melee'), ranged = defs.filter((d) => d.role === 'ranged'), cav = defs.filter((d) => d.role === 'cavalry');
+    const rows = [[melee, 0.55], [ranged, 0.2], [cav, 0.15]];
+    let zi = 0;
+    for (const [pool, frac] of rows) {
+      if (!pool.length) continue; const d = rng.pick(pool); const n = Math.max(1, Math.min(12, Math.floor(budget * frac / d.cost)));
+      const spacing = Math.max(1.2, d.radius * 2.4), offs = formationOffsets(d.role === 'ranged' ? 'line' : 'block', n, spacing, rng);
+      const side = team === 0 ? -1 : 1;
+      const cx = zone.x + side * 0 + (zi === 0 ? (team === 0 ? 4 : -4) : zi === 1 ? (team === 0 ? -6 : 6) : 0), cz = zone.z + (zi - 1) * 9;
+      const pos = placeOffsets(offs, cx, cz, this._heading(team)); zi++;
+      out.push({ defId: d.id, positions: pos, cx, cz, order: 'advance', squadSize: n }); left -= n * d.cost;
+    }
+    return out;
+  }
+  _scout(team) {
+    const adv = []; const c = this._enemyComposition(team); const mine = this.info.counts(team).byType;
+    const myRoles = {}; for (const t of mine) { const d = this.content.defs[t.defId]; if (d) myRoles[d.role] = (myRoles[d.role] || 0) + t.n; }
+    const enemyCav = Object.keys(c).some((id) => this.content.defs[id] && this.content.defs[id].role === 'cavalry');
+    const mySpears = mine.some((t) => (this.content.defs[t.defId].tags || []).includes('spear'));
+    if (enemyCav && !mySpears) adv.push({ kind: 'warn', text: 'Enemy cavalry detected and you have no spears. Hoplites like horses (at a distance).' });
+    if ((myRoles.ranged || 0) > 0 && !(myRoles.melee || 0)) adv.push({ kind: 'warn', text: 'Archers with no front line. They will have to fight the enemy with strongly worded arrows.' });
+    return adv;
+  }
+
+  // ------------------------------------------------------------------ battle control
+  fight() {
+    if (this.state !== 'placement') return;
+    const w = this.world;
+    if (w.stats[0].alive === 0 || w.stats[1].alive === 0) { this.emit('toast', { text: 'Both armies need at least one soldier. Fighting yourself is allowed but lonely.', kind: 'error' }); return; }
+    this.ghost.visible = false; this.ghostInfo.show = false;
+    // freeze the placement into the setup so rematch/tweak can replay it
+    for (const k of ['A', 'B']) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));
+    w.start(3); this.state = 'countdown'; this.acc = 0;
+    this.rig.setMode(this.settings.get('cinematicStart') ? 'cinematic' : 'orbit');
+    this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('battle', { theme: w.arena.env.theme });
+    this.emit('state', { state: 'countdown' });
+  }
+  pause(b) { this.paused = !!b; this.emit('pause', { paused: this.paused }); }
+  isPaused() { return this.paused; }
+  setSpeed(s) { this.speed = s; this.emit('speed', { speed: s }); }
+  getSpeed() { return this.speed; }
+  rematch() { const s = this.setup; if (!s) return; return this.begin(s, { keepPlacements: true }).then(() => this.fight()); }
+  tweak() { const s = this.setup; if (!s) return; return this.begin(s, { keepPlacements: true }); }
+  exitToMenu() { this.dispose(true); this.state = 'idle'; this.emit('state', { state: 'idle' }); }
+
+  command(c) { if (!this.world) return; this.world.input(this.world.tickN + 1, c); }
+  cast(power, x, z, team = 0) { if (!this.world) return; this.world.input(this.world.tickN + 1, { type: 'cast', power, x, z, team }); }
+  select(id) { this.selectedId = id || 0; this.view.selected = this.selectedId; this.emit('select', { id: this.selectedId }); }
+  selected() { return this.selectedId; }
+  possess(id) {
+    if (!this.world) return;
+    if (id) { this.possessId = id; this.rig.setMode('command', { unit: id }); } else { this.possessId = 0; this.rig.setMode('orbit'); }
+    this.world.input(this.world.tickN + 1, { type: 'possess', unit: id || 0, release: !id });
+  }
+  /** Take Command: tick-stamped movement input (world-space direction), attack flag and ability slot. */
+  sendPossess(dx, dz, attack, ability) { if (!this.world || !this.possessId) return; this.world.input(this.world.tickN + 1, { type: 'possess', unit: this.possessId, move: { x: dx, z: dz }, attack: !!attack, ability: ability | 0 }); }
+  godPowers() { const gp = this.world && this.world.godpowers; return gp && gp.list ? gp.list() : []; }
+  camera = {
+    mode: () => this.rig.mode,
+    setMode: (m) => { if (m === 'follow') { const sel = this.selectedId || this._anyUnit(); this.rig.setMode('follow', { unit: sel }); } else if (m === 'command') this.possess(this.selectedId || this._anyUnit()); else this.rig.setMode(m); this.emit('camera', { mode: m }); },
+    follow: (id) => this.rig.setMode('follow', { unit: id }),
+    photo: async () => { this.engine.render(0.0); return this.engine.renderer.domElement.toDataURL('image/png'); },
+  };
+  _anyUnit() { const w = this.world; if (!w) return 0; const u = w.units.find((x) => x.alive); return u ? u.id : 0; }
+
+  _feed(p) {
+    const w = this.world; const verbs = (this.content.humor && this.content.humor.killVerbs) || null;
+    const sd = w.defs[p.srcDef], dd = w.defs[p.dstDef];
+    const verb = verbs && verbs[p.cause] ? verbs[p.cause][(Math.random() * verbs[p.cause].length) | 0] : { melee: 'bonked', ranged: 'perforated', aoe: 'flattened', fire: 'toasted', trample: 'trampled', magic: 'zapped', stone: 'petrified', kick: 'yeeted' }[p.cause] || 'defeated';
+    this.killfeed.push({ t: w.time, team: p.srcTeam, verb, text: `${sd ? sd.name : 'Fate'} ${verb} ${dd ? dd.name : '???'}`, srcDef: p.srcDef, dstDef: p.dstDef });
+    if (this.killfeed.length > 5) this.killfeed.shift();
+  }
+
+  // ------------------------------------------------------------------ pointer routing (from app/input.js)
+  _ray(clientX, clientY) {
+    const THREE = T(), cam = this.engine.camera, el = this.engine.renderer.domElement, r = el.getBoundingClientRect();
+    const nx = ((clientX - r.left) / r.width) * 2 - 1, ny = -((clientY - r.top) / r.height) * 2 + 1;
+    const v = new THREE.Vector3(nx, ny, 0.5).unproject(cam).sub(cam.position).normalize();
+    return { o: cam.position, d: v };
+  }
+  groundAt(clientX, clientY) { const ray = this._ray(clientX, clientY); const hit = this.terrain.raycast({ x: ray.o.x, y: ray.o.y, z: ray.o.z }, { x: ray.d.x, y: ray.d.y, z: ray.d.z }, 500); return hit; }
+  pointerMove(cx, cy) {
+    this._pointer.x = cx; this._pointer.y = cy;
+    if (!this.world) return;
+    const hit = this.groundAt(cx, cy); if (!hit) { this.ghostInfo.show = false; this._refreshGhost(); return; }
+    if (this.state === 'placement') {
+      this.ghostInfo.x = hit.x; this.ghostInfo.z = hit.z; this.ghostInfo.show = true; this._refreshGhost();
+      if (this._pointer.down && (this.brushState.mode === 'scatter' || this.brushState.mode === 'erase')) {
+        const lp = this._pointer.lastPlace; if (!lp || Math.hypot(lp[0] - hit.x, lp[1] - hit.z) > (this.brushState.mode === 'erase' ? 1.2 : 3.0)) { this._pointer.lastPlace = [hit.x, hit.z]; this.placeAt(hit.x, hit.z); }
+      }
+    } else if (this.state === 'running' || this.state === 'countdown') {
+      let best = 0, bd = 3.5 * 3.5;
+      for (const u of this.world.units) { const d = (u.x - hit.x) ** 2 + (u.z - hit.z) ** 2; if (d < bd) { bd = d; best = u.id; } }
+      this.hoverId = best; this.view.hover = best;
+    }
+  }
+  pointerDown(cx, cy, button = 0) {
+    this._pointer.down = true; this._pointer.button = button; this._pointer.lastPlace = null;
+    if (!this.world || button !== 0) return;
+    const hit = this.groundAt(cx, cy);
+    if (this.state === 'placement') { if (hit) { this.ghostInfo.x = hit.x; this.ghostInfo.z = hit.z; this.placeAt(hit.x, hit.z); this._pointer.lastPlace = [hit.x, hit.z]; } }
+    else if (this.state === 'running') { this.select(this.hoverId); this.emit('select', { id: this.hoverId }); }
+  }
+  pointerUp() { this._pointer.down = false; }
+
+  // ------------------------------------------------------------------ frame
+  /** Called once per rendered frame by app/loop.js. */
+  frame(dt) {
+    const w = this.world; this.clock += dt;
+    const eng = this.engine;
+    if (w) {
+      if ((this.state === 'countdown' || this.state === 'running' || this.state === 'ended') && !this.paused) {
+        this.acc += Math.min(dt, 0.1) * this.speed;
+        let n = 0;
+        while (this.acc >= DT && n < 5) { w.tick(); this.acc -= DT; n++; this.fx.update(0); }
+        if (this.acc > DT * 5) this.acc = 0;
+        this.alpha = this.acc / DT;
+      } else this.alpha = 1;
+      const rdt = this.paused ? 0 : dt * this.speed;
+      this.rig.update(dt, this.alpha);
+      this.view.update(this.alpha, dt, this.engine.camera);
+      this.fx.update(rdt);
+      this.terrain.update(dt);
+      if (this.props && this.props.update) this.props.update(dt);
+      this._countsT -= dt;
+    } else { this.rig.update(dt, 1); this.terrain.update(dt); }
+    eng.render(dt);
+    if (this.audio && this.audio.setListener) { const l = this.rig.listener; this.audio.setListener(l.x, l.y, l.z, l.yaw); }
+  }
+
+  // ------------------------------------------------------------------ HUD / results
+  hud() {
+    const w = this.world; if (!w) return { state: this.state };
+    const teams = [0, 1].map((t) => { const s = w.stats[t]; return { team: t, name: t === 0 ? 'Blue' : 'Red', alive: s.alive, start: s.startCount, cost: s.aliveCost, costStart: s.startCost, byType: this._byType(t) }; });
+    const sel = this.selectedId ? (w.units.find((u) => u.id === this.selectedId) || null) : null;
+    const hv = this.hoverId ? (w.units.find((u) => u.id === this.hoverId) || null) : null;
+    const show = sel || hv;
+    return {
+      state: this.state, time: w.time, speed: this.speed, paused: this.paused, fps: this.fps || 0, cam: this.rig.mode, teams, countdown: this.state === 'countdown' ? Math.ceil(w.countdown) : 0,
+      objective: w.objective && w.objective.hud ? w.objective.hud(w) : null, killfeed: this.killfeed.slice(), announcer: this.announce,
+      selection: show ? { id: show.id, defId: show.def.id, name: show.name || show.def.name, hp: show.hp, hpMax: show.hpMax, kills: show.kills, status: [], blurb: (show.def.text && show.def.text.blurb) || '' } : null,
+      powers: this.godPowers(), minimap: null,
+    };
+  }
+  _byType(team) {
+    const w = this.world; const m = new Map();
+    for (const u of w.units) if (u.team === team) m.set(u.def.id, (m.get(u.def.id) || 0) + 1);
+    for (const k of this.records) if (k.team === team) {/* start counts are derived from stats below */}
+    return Array.from(m, ([defId, alive]) => ({ defId, alive, start: alive }));
+  }
+  results() {
+    const w = this.world; const s = w.stats; let mvp = null;
+    for (const u of w.units) if (!mvp || u.kills > mvp.kills) mvp = u; for (const u of w.dying) if (!mvp || u.kills > mvp.kills) mvp = u;
+    const lessons = LESSONS && LESSONS.generateLessons ? LESSONS.generateLessons(w) : [];
+    return { winner: w.winner, reason: w.endReason, time: w.time, teams: [0, 1].map((t) => ({ alive: s[t].alive, dead: s[t].dead, kills: s[t].kills, damage: s[t].damageDealt, lostCost: s[t].deadCost })), mvp: mvp ? { defId: mvp.def.id, name: mvp.name || mvp.def.name, kills: mvp.kills } : null, funnyStats: [], lessons, canRematch: true, canNext: false, setup: this.setup };
+  }
+
+  dispose(full) {
+    this.view.unbind();
+    if (this.world) { this.world = null; }
+    this.terrain.clear(); this.fx.clear(); this.ghost.visible = false; this.records.length = 0;
+  }
+}

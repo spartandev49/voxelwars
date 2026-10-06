@@ -1,0 +1,352 @@
+{
+ "smoke_01": {
+  "size": 45180,
+  "tags": [
+   "smoke",
+   "puff",
+   "dust",
+   "soft"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "smoke_04": {
+  "size": 50302,
+  "tags": [
+   "smoke",
+   "puff",
+   "cloud"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "smoke_07": {
+  "size": 38324,
+  "tags": [
+   "smoke",
+   "wisp",
+   "trail"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "smoke_09": {
+  "size": 41744,
+  "tags": [
+   "smoke",
+   "puff",
+   "heavy"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "fire_01": {
+  "size": 47586,
+  "tags": [
+   "fire",
+   "flame",
+   "burn"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "fire_02": {
+  "size": 42462,
+  "tags": [
+   "fire",
+   "flame",
+   "burn"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "flame_01": {
+  "size": 27080,
+  "tags": [
+   "flame",
+   "fire",
+   "torch"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "flame_03": {
+  "size": 24305,
+  "tags": [
+   "flame",
+   "fire",
+   "torch"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "flame_05": {
+  "size": 8575,
+  "tags": [
+   "flame",
+   "ember",
+   "small"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "spark_01": {
+  "size": 45948,
+  "tags": [
+   "spark",
+   "hit",
+   "impact"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "spark_03": {
+  "size": 36218,
+  "tags": [
+   "spark",
+   "hit",
+   "impact"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "spark_05": {
+  "size": 34356,
+  "tags": [
+   "spark",
+   "clash",
+   "metal"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "spark_07": {
+  "size": 20722,
+  "tags": [
+   "spark",
+   "glint"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "slash_01": {
+  "size": 14480,
+  "tags": [
+   "slash",
+   "sword",
+   "swipe"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "slash_02": {
+  "size": 20860,
+  "tags": [
+   "slash",
+   "sword",
+   "swipe"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "slash_03": {
+  "size": 11955,
+  "tags": [
+   "slash",
+   "claw",
+   "swipe"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "slash_04": {
+  "size": 11692,
+  "tags": [
+   "slash",
+   "sword",
+   "swipe"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "muzzle_01": {
+  "size": 41398,
+  "tags": [
+   "impact",
+   "burst",
+   "flash"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "muzzle_03": {
+  "size": 32603,
+  "tags": [
+   "impact",
+   "burst",
+   "flash"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "scratch_01": {
+  "size": 32023,
+  "tags": [
+   "scratch",
+   "claw",
+   "decal"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "star_01": {
+  "size": 23312,
+  "tags": [
+   "star",
+   "sparkle",
+   "confetti"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "star_04": {
+  "size": 17288,
+  "tags": [
+   "star",
+   "sparkle",
+   "victory"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "star_06": {
+  "size": 20569,
+  "tags": [
+   "star",
+   "sparkle",
+   "victory"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "magic_01": {
+  "size": 38236,
+  "tags": [
+   "magic",
+   "glow",
+   "heal"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "magic_03": {
+  "size": 37735,
+  "tags": [
+   "magic",
+   "glow",
+   "spell"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "magic_05": {
+  "size": 38891,
+  "tags": [
+   "magic",
+   "glow",
+   "curse"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "circle_02": {
+  "size": 27802,
+  "tags": [
+   "circle",
+   "ring",
+   "shockwave"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "circle_05": {
+  "size": 31976,
+  "tags": [
+   "circle",
+   "glow",
+   "soft"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "flare_01": {
+  "size": 18499,
+  "tags": [
+   "flare",
+   "glow",
+   "light"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "light_01": {
+  "size": 51348,
+  "tags": [
+   "light",
+   "glow",
+   "flash"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "dirt_01": {
+  "size": 37519,
+  "tags": [
+   "dirt",
+   "debris",
+   "rubble"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "dirt_03": {
+  "size": 95350,
+  "tags": [
+   "dirt",
+   "debris",
+   "rubble"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "scorch_01": {
+  "size": 30743,
+  "tags": [
+   "scorch",
+   "burn",
+   "decal"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "twirl_01": {
+  "size": 30524,
+  "tags": [
+   "twirl",
+   "whirl",
+   "wind"
+  ],
+  "width": 256,
+  "height": 256
+ },
+ "trace_01": {
+  "size": 17215,
+  "tags": [
+   "trace",
+   "trail",
+   "streak"
+  ],
+  "width": 256,
+  "height": 256
+ }
+}

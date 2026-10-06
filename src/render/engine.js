@@ -2,6 +2,8 @@
 // Owns nothing about gameplay. The app calls engine.render(dt) once per frame.
 
 import { clamp, lerp } from '../core/rng.js';
+import { Post } from './post.js';
+import { POST_TIERS, GRADE, LIGHT } from './style.js';
 
 const THREE = () => window.THREE;
 
@@ -43,9 +45,9 @@ export class Engine {
     this.q = QUALITY.marble;
     this.autoScale = 1;
     this.renderer = new T.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: false });
-    this.renderer.outputEncoding = T.sRGBEncoding;
-    this.renderer.toneMapping = T.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMapping = T.NoToneMapping;       // tone mapping + sRGB encode happen once, in Post (HDR path at every tier)
+    this.renderer.autoClear = true;
+    this.post = new Post(this.renderer);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = T.PCFSoftShadowMap;
     this.renderer.domElement.id = 'vw-canvas';
@@ -61,8 +63,8 @@ export class Engine {
     this.hemi = new T.HemisphereLight(0xcfe6ff, 0x7a6a50, 0.8);
     this.sun = new T.DirectionalLight(0xfff0d8, 1.3);
     this.sun.castShadow = true;
-    this.sun.shadow.bias = -0.0006;
-    this.sun.shadow.normalBias = 0.04;
+    this.sun.shadow.bias = LIGHT.shadowBias;
+    this.sun.shadow.normalBias = LIGHT.shadowNormalBias;
     this.sunTarget = new T.Object3D();
     this.sun.target = this.sunTarget;
     this.scene.add(this.hemi, this.sun, this.sunTarget);
@@ -86,8 +88,6 @@ export class Engine {
     this.fogColor = new T.Color(0xbfdcf2);
     this.scene.fog = new T.Fog(0xbfdcf2, 80, 320);
     this.time = 0;
-    this.composer = null;
-    this.bloomPass = null;
     this.onResize = () => this.resize();
     window.addEventListener('resize', this.onResize);
     this.resize();
@@ -107,26 +107,12 @@ export class Engine {
         if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; }
       }
     }
-    this._buildPost();
+    const pt = POST_TIERS[key] || POST_TIERS.marble;
+    this.post.configure({ levels: pt.levels, bloom: pt.bloom, samples: pt.samples, exposure: GRADE.exposure, saturation: GRADE.saturation, contrast: GRADE.contrast, vignette: GRADE.vignette });
     this._buildClouds();
     this.resize();
     // materials need to recompile when shadows toggle
     this.scene.traverse((o) => { if (o.material) { const m = Array.isArray(o.material) ? o.material : [o.material]; m.forEach((x) => (x.needsUpdate = true)); } });
-  }
-
-  _buildPost() {
-    const T = THREE();
-    this.composer = null; this.bloomPass = null;
-    if (!this.q.post) return;
-    if (!(T.EffectComposer && T.RenderPass && T.UnrealBloomPass)) return; // CDN scripts unavailable: render directly
-    try {
-      const size = this.renderer.getDrawingBufferSize(new T.Vector2());
-      const rt = new T.WebGLRenderTarget(size.x, size.y, { format: T.RGBAFormat, encoding: T.sRGBEncoding, type: T.HalfFloatType, samples: 4 });
-      this.composer = new T.EffectComposer(this.renderer, rt);
-      this.composer.addPass(new T.RenderPass(this.scene, this.camera));
-      this.bloomPass = new T.UnrealBloomPass(new T.Vector2(size.x, size.y), this.qualityKey === 'olympian' ? 0.42 : 0.3, 0.55, 0.88);
-      this.composer.addPass(this.bloomPass);
-    } catch (e) { console.warn('post-processing disabled:', e); this.composer = null; }
   }
 
   _buildClouds() {
@@ -185,7 +171,7 @@ export class Engine {
     this.hemi.intensity = 0.34 + 0.34 * (1 - night) * (1 - grey * 0.3) + 0.1 * night;
     this.hemi.color.copy(horizon).lerp(lin(0xffffff), 0.35);
     this.hemi.groundColor.copy(lin(0x6e5c40)).lerp(lin(0x1a1830), night * 0.8);
-    this.renderer.toneMappingExposure = 1.0;
+    this.post.exposure = GRADE.exposure * (1 + 0.1 * (1 - night));
     // fog
     const fogK = clamp(e.fog + (w === 'fog' ? 0.35 : w === 'rain' || w === 'storm' ? 0.18 : w === 'sandstorm' ? 0.4 : 0), 0, 1);
     const near = lerp(130, 12, fogK), far = lerp(480, 80, Math.pow(fogK, 0.8));
@@ -218,7 +204,8 @@ export class Engine {
     this.renderer.setSize(w, h, false);
     this.renderer.domElement.style.width = '100%'; this.renderer.domElement.style.height = '100%';
     this.camera.aspect = w / h; this.camera.updateProjectionMatrix();
-    if (this.composer) { this.composer.setPixelRatio(Math.max(0.4, dpr)); this.composer.setSize(w, h); }
+    const bs = this.renderer.getDrawingBufferSize(new (window.THREE.Vector2)());
+    this.post.setSize(bs.x, bs.y);
   }
   setAutoScale(s) { s = clamp(s, 0.5, 1); if (Math.abs(s - this.autoScale) > 0.01) { this.autoScale = s; this.resize(); } }
 
@@ -229,7 +216,8 @@ export class Engine {
     this.skyMat.uniforms.uTime.value = this.time;
     if (this.clouds) { this.clouds.position.x += (this.cloudSpeed || 1) * dt; if (this.clouds.position.x > 260) this.clouds.position.x -= 520; this.clouds.position.set(this.clouds.position.x, 0, 0); }
     this._updateShadow();
-    if (this.composer) this.composer.render(dt); else this.renderer.render(this.scene, c);
+    this.post.hurt = this.hurt || 0;
+    this.post.render(this.scene, c, dt, this.time);
   }
   dispose() { window.removeEventListener('resize', this.onResize); this.renderer.dispose(); this.renderer.domElement.remove(); }
 }

@@ -16,8 +16,15 @@ const VERSION = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
 const exists = (p) => fs.existsSync(path.join(root, p));
 
+// ---------- registries ----------
+import { spawnSync } from 'child_process';
+const gr = spawnSync('node', [path.join(root, 'tools/gen-registry.mjs')], { encoding: 'utf8' });
+if (gr.status !== 0) { console.error(gr.stderr); process.exit(1); }
+
 // ---------- JS bundle ----------
+const noThree = { name: 'no-three-import', setup(b) { b.onResolve({ filter: /^three$/ }, () => ({ errors: [{ text: "import from 'three' is forbidden: use window.THREE (CDN global)" }] })); } };
 const result = await build({
+  plugins: [noThree],
   entryPoints: [path.join(root, 'src/app/main.js')],
   bundle: true, write: false, format: 'iife', target: ['chrome100', 'firefox100', 'safari15'],
   minify, legalComments: 'none', logLevel: 'warning',
@@ -28,7 +35,7 @@ let js = result.outputFiles[0].text;
 js = js.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--');
 
 // ---------- CSS ----------
-const cssFiles = ['src/ui/kit.css', 'src/ui/screens.css', 'src/ui/hud.css', 'src/ui/editors.css'].filter(exists);
+const cssFiles = ['src/ui/boot.css', 'src/ui/kit.css', 'src/ui/screens.css', 'src/ui/hud.css', 'src/ui/editors.css'].filter(exists);
 let css = cssFiles.map(read).join('\n');
 if (minify) css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ');
 
@@ -38,8 +45,8 @@ let manifest = { sfx: [], music: [], vfx: [] };
 if (exists('assets/manifest.json')) {
   manifest = JSON.parse(read('assets/manifest.json'));
   for (const kind of ['sfx', 'music', 'vfx']) for (const e of manifest[kind] || []) {
-    const rel = e.path || e.file;
-    const p = rel.startsWith('assets/') ? rel : `assets/${kind === 'vfx' ? 'vfx' : 'audio/' + kind}/${rel}`;
+    const rel = e.path || `${kind === 'vfx' ? 'vfx' : 'audio/' + kind}/${e.file}`;
+    const p = rel.startsWith('assets/') ? rel : `assets/${rel}`;
     if (!exists(p)) { console.warn('manifest file missing:', p); continue; }
     files[p] = p;
   }
@@ -47,18 +54,10 @@ if (exists('assets/manifest.json')) {
 const credits = exists('assets/CREDITS.md') ? read('assets/CREDITS.md') : '';
 
 // ---------- templates ----------
-const CDN = [
-  'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js',
-  'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js',
-];
 const FONTS = 'https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@500;700&family=Rubik:wght@400;500;600;700&display=swap';
-const cdnTags = CDN.map((u) => `<script src="${u}"></script>`).join('\n');
+// Inline loader: three (required) and gsap (optional) with a CDN fallback chain cdnjs -> jsDelivr -> unpkg (same pinned versions).
+const LOADER = `(function(){var L={three:['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js','https://unpkg.com/three@0.128.0/build/three.min.js'],gsap:['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js','https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js','https://unpkg.com/gsap@3.12.5/dist/gsap.min.js']};function load(u,i){return new Promise(function(res){if(i>=u.length)return res(false);var s=document.createElement('script');s.src=u[i];s.onload=function(){res(true)};s.onerror=function(){s.remove();load(u,i+1).then(res)};document.head.appendChild(s)})}window.__vwReady=load(L.three,0).then(function(t){return load(L.gsap,0).then(function(g){return{three:t,gsap:g}})})})();`;
+const cdnTags = `<script>${LOADER}</script>`;
 
 const bodyHtml = `<div id="vw-root"><div id="vw-boot"><div class="boot-logo">VOXELWARS</div><div class="boot-bar"><i></i></div><div class="boot-msg">Polishing helmets…</div></div></div>`;
 const noscript = `<noscript>VOXELWARS needs JavaScript and WebGL.</noscript>`;
@@ -71,7 +70,12 @@ const head = `${title}
 ${css}
 </style>
 ${cdnTags}`;
-const inlineData = `<script>window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};</script>`;
+// core audio (guaranteed fallback) embedded as base64; retargeted animation clips inlined as JSON
+const core = {};
+for (const kind of ['sfx', 'music']) for (const e of manifest[kind] || []) if (e.core) { const rel = e.path || `audio/${kind}/${e.file}`; const p = rel.startsWith('assets/') ? rel : `assets/${rel}`; if (exists(p)) core[e.id] = fs.readFileSync(path.join(root, p)).toString('base64'); }
+const ualPath = ['src/anim/data/humanoid_clips.json', 'assets/anim/humanoid_clips.json'].find(exists);
+const ual = ualPath ? read(ualPath) : 'null';
+const inlineData = `<script>window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};window.__VW_CORE_AUDIO__=${JSON.stringify(core)};window.__VW_UAL_CLIPS__=${ual};</script>`;
 const script = `<script>\n${js}\n</script>`;
 
 const fragment = `${head}\n${bodyHtml}\n${noscript}\n${inlineData}\n${script}\n`;
@@ -93,7 +97,7 @@ fs.writeFileSync(path.join(root, 'dist/artifact/index.html'), fragment);
 fs.writeFileSync(path.join(root, 'dist/artifact/files.json'), JSON.stringify(files, null, 1));
 
 // ---------- CSP lint: every external load must be on the artifact allowlist ----------
-const ALLOW = [/^https:\/\/cdnjs\.cloudflare\.com\//, /^https:\/\/cdn\.jsdelivr\.net\/npm\//, /^https:\/\/unpkg\.com\//, /^https:\/\/fonts\.googleapis\.com\//, /^https:\/\/fonts\.gstatic\.com/];
+const ALLOW = [/^https:\/\/cdnjs\.cloudflare\.com\//, /^https:\/\/cdn\.jsdelivr\.net\/npm\//, /^https:\/\/unpkg\.com\//, /^https:\/\/fonts\.googleapis\.com(\/|$)/, /^https:\/\/fonts\.gstatic\.com(\/|$)/];
 const loads = [...standalone.matchAll(/(?:src|href)=["'](https?:[^"']+)["']/g)].map((m) => m[1]);
 const bad = loads.filter((u) => !ALLOW.some((r) => r.test(u)));
 if (bad.length) { console.error('CSP LINT FAILED, non-allowlisted loads:\n' + bad.join('\n')); process.exit(1); }

@@ -1,0 +1,36 @@
+import { Engine } from '../../src/render/engine.js';
+import { generateArena } from '../../src/world/gen.js';
+import { TerrainRenderer } from '../../src/render/terrain.js';
+import { CubeFX } from '../../src/render/fx.js';
+import { BattleView } from '../../src/render/battleview.js';
+import { TempAnimator } from '../../src/render/tempanimator.js';
+import { World } from '../../src/sim/world.js';
+import { buildSimDefs } from '../../src/sim/defs.js';
+import { humFixture } from '../fixtures/hum_fixture.js';
+const q = new URLSearchParams(location.search);
+const eng = new Engine(document.body);
+eng.setQuality(q.get('q') || 'marble');
+const arena = generateArena(q.get('a') || 'marathon', 'medium', 3);
+const defs = buildSimDefs();
+const world = new World({ arena, seed: 7, defs });
+const A = world.arena.zones.A, B = world.arena.zones.B;
+const kinds = ['hoplite', 'cretan_archer', 'legionary', 'spartan', 'medjay', 'nubian_archer'];
+world.addSquad('hoplite', 0, 24, A.x, A.z - 6, { heading: Math.PI / 2 }); world.addSquad('spartan', 0, 12, A.x + 3, A.z + 6, { heading: Math.PI / 2 }); world.addSquad('cretan_archer', 0, 10, A.x - 6, A.z, { heading: Math.PI / 2 });
+world.addSquad('legionary', 1, 24, B.x, B.z - 6, { heading: -Math.PI / 2 }); world.addSquad('medjay', 1, 16, B.x - 3, B.z + 6, { heading: -Math.PI / 2 }); world.addSquad('nubian_archer', 1, 10, B.x + 6, B.z, { heading: -Math.PI / 2 });
+const tr = new TerrainRenderer(eng.scene); tr.setArena(world.arena);
+const f = eng.setEnvironment(world.arena.env, world.arena); tr.setFog(f.color, f.near, f.far);
+const fx = new CubeFX(eng.scene, world.arena, 12000);
+const fixtures = {}; const mf = (def) => fixtures[def.faction] || (fixtures[def.faction] = { model: humFixture({ cloth: def.faction === 'romans' ? 0xb33a3a : def.faction === 'egyptians' ? 0xf0ead0 : 0xe8e2d0, metal: def.faction === 'romans' ? 0xc9c9d0 : 0xb87333 }) });
+const view = new BattleView({ engine: eng, fx, animator: new TempAnimator(), modelFor: mf });
+view.setWorld(world, tr, null);
+world.start();
+const ticks = +(q.get('ticks') || 900);
+for (let i = 0; i < ticks; i++) world.tick();
+let cx = 0, cz = 0, n = 0; for (const u of world.units) { cx += u.x; cz += u.z; n++; }
+cx /= n || 1; cz /= n || 1;
+const cy = world.arena.heightAt(cx, cz);
+eng.camera.position.set(cx - 22, cy + 17, cz + 24); eng.camera.lookAt(cx, cy + 1.5, cz); eng.focus.set(cx, cy, cz); eng.shadowRadius = 48;
+eng.camera.updateMatrixWorld(); eng.camera.matrixWorldInverse.copy(eng.camera.matrixWorld).invert();
+for (let k = 0; k < 3; k++) { world.tick(); fx.update(0.033); }
+view.update(1, 0.033, eng.camera); eng.render(0.033);
+console.log('units', world.units.length, 'dying', world.dying.length, 'proj', world.proj.live, 'fx', fx.liveCount, 'alive A/B', world.stats[0].alive, world.stats[1].alive, 'drawn', view.drawn);

@@ -1,0 +1,12 @@
+/* Boot loader + base page rules (owned by COORD; UI kit CSS loads after this and may restyle). */
+:root { color-scheme: dark; --ink:#14163a; --night:#1d2150; --marble:#f3f6fb; --gold:#ffc93c; }
+html, body { margin: 0; padding: 0; height: 100%; background: #101428; color: #f3f6fb; overflow: hidden; font-family: Rubik, system-ui, 'Segoe UI', Roboto, sans-serif; }
+#vw-root { position: fixed; inset: 0; overflow: hidden; background: #101428; }
+#vw-stage canvas { display: block; width: 100%; height: 100%; }
+#vw-boot { position: absolute; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: radial-gradient(ellipse at 50% 40%, #2a2f6b 0%, #14163a 70%); }
+#vw-boot .boot-logo { font: 400 clamp(36px, 9vw, 96px) Bungee, Impact, 'Arial Black', sans-serif; color: #ffc93c; text-shadow: 0 6px 0 #0b0d22; letter-spacing: .02em; }
+#vw-boot .boot-bar { width: min(320px, 70vw); height: 16px; border: 3px solid #0b0d22; border-radius: 10px; background: #1d2150; overflow: hidden; box-shadow: 0 4px 0 #0b0d22; }
+#vw-boot .boot-bar i { display: block; height: 100%; width: 40%; background: #ffc93c; animation: vwboot 1.1s ease-in-out infinite alternate; }
+#vw-boot .boot-msg { font: 500 14px Rubik, system-ui, sans-serif; color: #b9c2e0; }
+@keyframes vwboot { from { margin-left: 0; } to { margin-left: 60%; } }
+@media (prefers-reduced-motion: reduce) { #vw-boot .boot-bar i { animation: none; width: 100%; } }

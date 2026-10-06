@@ -1,9 +1,14 @@
 // Clip library: PURE DATA. The sim reads timing (duration, hit frame) from here without touching rendering code.
 //
-// A Clip (see spec.md §6) = {id, fps, frames, loop, rig, parts:{partId:[rx,ry,rz per frame...]}, rootY?, pitch?, meta:{hitFrame, recoverFrame, speedRef}}
-// Real clip data (retargeted mocap + authored) is registered at boot via ClipLib.register(); until then the DEFAULT_META
-// below keeps the sim fully functional (headless tests, balance harness). Timings here are the design targets the authored
-// and retargeted clips must meet; registering a real clip replaces the entry, so durations always agree with what is on screen.
+// A Clip (spec.md §7) = {id, rig, fps, frames, loop, q:{partId:[rx,ry,rz per frame...]}, t?, s?, root?:{y,x,z,pitch,roll,yaw}, meta:{hitFrame, recoverFrame, speedRef, fx}}
+// Real clip data (retargeted mocap + authored) is registered at boot via ClipLib.register() (anim/boot.js); until then the
+// DEFAULT_META below keeps the sim fully functional (headless tests, balance harness). Timings here are the design targets the
+// authored and retargeted clips meet; registering a real clip replaces the entry, so durations always agree with what is on screen.
+//
+// Rig-qualified clips: the same clip id can exist for several rigs ('walk' for hum1, elephant1, catapult1, ...). Every clip is stored
+// under 'rig:id'. The PLAIN id (what the sim asks for) belongs to hum1 when hum1 has the id, otherwise to the first rig that registered
+// it. All variants of one id share the timing the sim needs (hit time, speedRef): boot/tests enforce that, so sim and visuals agree.
+// ClipLib.meta/dur/hit/get accept an optional rig argument and prefer the rig-qualified entry (the animator always passes it).
 
 /** seconds: dur = full clip length, hit = time of the damage/release moment, loop = repeats */
 export const DEFAULT_META = {
@@ -37,6 +42,10 @@ export const DEFAULT_META = {
   rout:            { dur: 0.6, loop: true, speedRef: 5.0 },
   cower:           { dur: 1.0, loop: true },
   sit:             { dur: 1.5, loop: true },
+  // mounted / crew
+  ride_idle:       { dur: 2.0, loop: true },
+  ride_strike:     { dur: 0.72, hit: 0.28 },
+  ride_shoot:      { dur: 0.95, hit: 0.60 },
   // beasts / mounts / siege (quad1 & bespoke)
   gallop:          { dur: 0.55, loop: true, speedRef: 7.5 },
   trot:            { dur: 0.8, loop: true, speedRef: 4.0 },
@@ -53,34 +62,68 @@ export const DEFAULT_META = {
   flap:            { dur: 0.8 },
   tantrum:         { dur: 1.0, loop: true },
   reveal:          { dur: 1.6, hit: 0.8 },
+  // extras the sim/render may request (all authored)
+  sleep:           { dur: 3.0, loop: true },
+  flail:           { dur: 0.8, loop: true },
+  tumble:          { dur: 0.9, loop: true },
 };
 
-const meta = Object.create(null);
-const clips = Object.create(null);
-for (const k of Object.keys(DEFAULT_META)) meta[k] = Object.assign({ loop: false }, DEFAULT_META[k]);
+const meta = Object.create(null);       // plain id -> timing record
+const clips = Object.create(null);      // plain id -> clip data
+const qmeta = Object.create(null);      // 'rig:id' -> timing record
+const qclips = Object.create(null);     // 'rig:id' -> clip data
+const owner = Object.create(null);      // plain id -> rig that owns the plain slot ('' = DEFAULT_META only)
+for (const k of Object.keys(DEFAULT_META)) { meta[k] = Object.assign({ loop: false }, DEFAULT_META[k]); owner[k] = ''; }
+
+function timingOf(clip) {
+  const fps = clip.fps || 30;
+  const m = { dur: clip.frames / fps, loop: !!clip.loop };
+  if (clip.meta) {
+    if (clip.meta.hitFrame !== undefined) m.hit = clip.meta.hitFrame / fps;
+    if (clip.meta.recoverFrame !== undefined) m.recover = clip.meta.recoverFrame / fps;
+    if (clip.meta.speedRef !== undefined) m.speedRef = clip.meta.speedRef;
+  }
+  // keep default hit time when the baked clip carries none (e.g. non-attack clips)
+  const d = DEFAULT_META[clip.id];
+  if (m.hit === undefined && d && d.hit !== undefined) m.hit = Math.min(d.hit, m.dur * 0.9);
+  return m;
+}
 
 export const ClipLib = {
+  /** bumps on every register(): animator caches key off it */
+  version: 0,
   has(id) { return !!meta[id]; },
-  /** timing record {dur, hit?, loop, speedRef?} (never null; unknown clips fall back to idle timing) */
-  meta(id) { return meta[id] || meta.idle; },
-  dur(id) { return (meta[id] || meta.idle).dur; },
-  hit(id) { const m = meta[id] || meta.idle; return m.hit === undefined ? m.dur * 0.5 : m.hit; },
-  get(id) { return clips[id] || null; },
+  /** timing record {dur, hit?, loop, speedRef?} (never null; unknown clips fall back to idle timing). `rig` selects a rig-specific variant. */
+  meta(id, rig) { return (rig !== undefined && qmeta[rig + ':' + id]) || meta[id] || meta.idle; },
+  dur(id, rig) { return this.meta(id, rig).dur; },
+  hit(id, rig) { const m = this.meta(id, rig); return m.hit === undefined ? m.dur * 0.5 : m.hit; },
+  get(id, rig) { return (rig !== undefined && qclips[rig + ':' + id]) || clips[id] || null; },
+  /** rig-specific variant only (no fallback to the plain id) */
+  getQualified(id, rig) { return qclips[rig + ':' + id] || null; },
+  owner(id) { return owner[id]; },
   /** Register baked clip data; replaces timing meta so sim and visuals agree. */
   register(clip) {
     if (!clip || !clip.id || !(clip.frames > 0)) throw new Error('bad clip');
-    const fps = clip.fps || 30;
-    const m = { dur: clip.frames / fps, loop: !!clip.loop };
-    if (clip.meta) {
-      if (clip.meta.hitFrame !== undefined) m.hit = clip.meta.hitFrame / fps;
-      if (clip.meta.recoverFrame !== undefined) m.recover = clip.meta.recoverFrame / fps;
-      if (clip.meta.speedRef !== undefined) m.speedRef = clip.meta.speedRef;
-    }
-    // keep default hit time when the baked clip carries none (e.g. non-attack clips)
-    const d = DEFAULT_META[clip.id];
-    if (m.hit === undefined && d && d.hit !== undefined) m.hit = Math.min(d.hit, m.dur * 0.9);
-    meta[clip.id] = m;
-    clips[clip.id] = clip;
+    const rig = clip.rig || 'hum1';
+    const m = timingOf(clip);
+    const key = rig + ':' + clip.id;
+    qmeta[key] = m; qclips[key] = clip;
+    const o = owner[clip.id];
+    if (o === undefined || o === '' || o === rig || rig === 'hum1') { meta[clip.id] = m; clips[clip.id] = clip; owner[clip.id] = rig; }
+    ClipLib.version++;
   },
+  /** every plain id (timing known to the sim) */
   ids() { return Object.keys(meta); },
+  /** every registered clip, rig-qualified keys 'rig:id' */
+  qualifiedIds() { return Object.keys(qclips); },
+  /** test helper: drop all registered clip data and restore DEFAULT_META */
+  reset() {
+    for (const k of Object.keys(clips)) delete clips[k];
+    for (const k of Object.keys(qclips)) delete qclips[k];
+    for (const k of Object.keys(qmeta)) delete qmeta[k];
+    for (const k of Object.keys(meta)) delete meta[k];
+    for (const k of Object.keys(owner)) delete owner[k];
+    for (const k of Object.keys(DEFAULT_META)) { meta[k] = Object.assign({ loop: false }, DEFAULT_META[k]); owner[k] = ''; }
+    ClipLib.version++;
+  },
 };

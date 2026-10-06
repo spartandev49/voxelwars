@@ -42,7 +42,7 @@ def resolve(src):
     # collapse duplicates that differ only by extension (and _0 suffix)
     groups = {}
     for f in fl:
-        key = re.sub(r'(_0)?\.[a-z0-9]+$', '', f.lower())
+        key = re.sub(r'(_0)?\.[a-z0-9]+$', '', os.path.basename(f).lower())
         groups.setdefault(key, []).append(f)
     if len(groups) > 1:
         raise SystemExit('ambiguous %s -> %s' % (src, [os.path.basename(k) for k in groups][:8]))
@@ -61,7 +61,10 @@ def process(spec):
     o = dict(max=1.6, kbps=80, start_db=-42, end_db=-46, fout=0.05, gain=0.0)
     o.update(spec.get('opts', {}))
     src = spec['src']
-    if 'layers' in o:                       # composite: list of (src, offset, gain_db, opts)
+    if src.startswith('synth:'):
+        a = synth(src[6:], o); srcfile = 'synthesized by tools/build_sfx.py (' + src + ')'
+        o['notrim'] = True; o['nolimit'] = True
+    elif 'layers' in o:                       # composite: list of (src, offset, gain_db, opts)
         parts = []
         for (s, off, g, po) in o['layers']:
             f = resolve(s)
@@ -81,6 +84,15 @@ def process(spec):
             sg = A.segments(a, thresh_db=o.get('thr', -38), min_gap=o.get('gap', 0.12))
             if o['seg'] >= len(sg): raise SystemExit('%s: only %d segments' % (spec['id'], len(sg)))
             t0, t1 = sg[o['seg']]; a = a[int(t0 * A.SR):int(t1 * A.SR)]
+        if o.get('peak') is not None:       # cut a window around the k-th strongest local maximum (whooshes / swings in long recordings)
+            e, h = A.env_db(a, 0.02, A.SR)
+            w = int(0.25 / 0.02)
+            cand = [i for i in range(w, len(e) - w) if e[i] == e[i - w:i + w + 1].max()]
+            cand.sort(key=lambda i: -e[i])
+            if o['peak'] >= len(cand): raise SystemExit('%s: only %d peaks' % (spec['id'], len(cand)))
+            t = cand[o['peak']] * 0.02
+            s0 = max(0, int((t - o.get('pre', 0.3)) * A.SR)); a = a[s0:s0 + int((o.get('pre', 0.3) + o.get('post', 0.5)) * A.SR)]
+            o['notrim'] = True; o.setdefault('fin', 0.03); o['fout'] = max(o.get('fout', 0.05), 0.15)
         if o.get('on') is not None:         # slice starting at an onset
             ons = A.onsets(a, rise_db=o.get('rise', 9.0), refractory=o.get('refr', 0.15))
             mode = o['on']
@@ -94,12 +106,21 @@ def process(spec):
                 if t is None: raise SystemExit('%s: no isolated onset' % spec['id'])
             a = a[max(0, int((t - 0.004) * A.SR)):]
     # processing chain
+    if 'rate' in o:                          # speed/pitch change by resampling (rate<1 = slower and lower)
+        n = int(len(a) / o['rate']); a = np.interp(np.linspace(0, len(a) - 1, n), np.arange(len(a)), a).astype(np.float32)
     if 'lp' in o: a = lowpass(a, o['lp'])
-    a, _, _ = A.trim_silence(a, o['start_db'], o['end_db'])
+    if not o.get('notrim'): a, _, _ = A.trim_silence(a, o['start_db'], o['end_db'])
     mx = int(o['max'] * A.SR)
     cut = len(a) > mx
     if cut: a = a[:mx]
-    a = A.fade(a, 0.002, o['fout'] if not cut else max(o['fout'], 0.12))
+    if o.get('xfade'):                       # seamless loop: cross-fade tail into head
+        xf = int(o['xfade'] * A.SR); L = len(a)
+        r = a[xf:].copy(); r[-xf:] = a[L - xf:] * np.linspace(1, 0, xf) + a[:xf] * np.linspace(0, 1, xf); a = r
+        o['fin'] = 0.0; o['fout'] = 0.0
+    else:
+        a = A.fade(a, o.get('fin', 0.002), o['fout'] if not cut else max(o['fout'], 0.12))
+    lim_g = 1.0
+    if not o.get('nolimit'): a, lim_g = A.soft_limit(a, max_gain=o.get('limgain', 3.5))
     pk = float(np.max(np.abs(a)) + 1e-9)
     a = a * (10 ** (-3.0 / 20) / pk) * (10 ** (o['gain'] / 20))
     a = np.clip(a, -0.999, 0.999)
@@ -108,7 +129,20 @@ def process(spec):
     mp3 = os.path.join(OUT, spec['id'] + '.mp3')
     A.encode_mp3(mfile, mp3, o['kbps'], mono=True)
     d = A.descriptors(a)
+    try: d['n_on'] = len(A.onsets(a, rise_db=9.0, refractory=0.08))
+    except Exception: d['n_on'] = None
     return dict(srcfile=srcfile, duration=round(A.probe_duration(mp3), 3), size=os.path.getsize(mp3), desc=d, cut=cut)
+
+def synth(kind, o):
+    """Tiny deterministic synth for UI beeps (original work, released CC0 with the project)."""
+    sr = A.SR
+    if kind == 'beep':
+        f = o.get('freq', 660.0); d = o.get('dur', 0.18)
+        t = np.arange(int(d * sr)) / sr
+        y = np.sin(2 * np.pi * f * t) + 0.3 * np.sin(2 * np.pi * 2 * f * t) + 0.12 * np.sin(2 * np.pi * 3 * f * t)
+        env = np.minimum(1, t / 0.004) * np.exp(-t / (d * o.get('decay', 0.6)))
+        return (y * env).astype(np.float32)
+    raise SystemExit('unknown synth ' + kind)
 
 def lowpass(a, hz):
     n = len(a); sp = np.fft.rfft(a); fr = np.fft.rfftfreq(n, 1 / A.SR)
@@ -129,7 +163,7 @@ if __name__ == '__main__':
         try:
             r = process(s); res[s['id']] = r
             d = r['desc']
-            print('%-26s %5.2fs %6dB  cen=%-5s low=%-4s crest=%-5s %s%s' % (s['id'], r['duration'], r['size'], d.get('centroid'), d.get('low'), d.get('crest'), os.path.basename(r['srcfile'])[:34], ' CUT' if r['cut'] else ''))
+            print('%-26s %5.2fs %6dB  cen=%-5s low=%-4s crest=%-5s on=%-2s %s%s' % (s['id'], r['duration'], r['size'], d.get('centroid'), d.get('low'), d.get('crest'), d.get('n_on'), os.path.basename(r['srcfile'])[:34], ' CUT' if r['cut'] else ''))
         except SystemExit as e:
             errs += 1; print('ERROR', s['id'], e)
         except Exception as e:

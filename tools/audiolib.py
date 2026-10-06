@@ -191,3 +191,17 @@ def onsets(a, sr=SR, rise_db=9.0, refractory=0.2, floor_db=-30.0, win=0.003):
             pk = float(np.max(np.abs(a[i * h:(i + int(0.1 * sr)) * 1 if False else i * h + int(0.1 * sr)]))) if i * h < len(a) else 0.0
             out.append((i * win, 20 * math.log10(pk + 1e-9))); last = i
     return out
+
+
+def soft_limit(a, knee=0.5, max_gain=3.5, pct=99.7):
+    """Perceptual loudness lift for transient-heavy SFX: pre-gain so the 99.7th percentile sits at the knee, then soft-knee tanh limiter.
+    Peaks are squashed instead of the whole sound being quiet when peak-normalised."""
+    x = a.astype(np.float64)
+    p = float(np.percentile(np.abs(x), pct)) + 1e-9
+    g = min(max_gain, max(1.0, knee / p))
+    x = x * g
+    ab = np.abs(x)
+    over = ab > knee
+    y = x.copy()
+    y[over] = np.sign(x[over]) * (knee + (1 - knee) * np.tanh((ab[over] - knee) / (1 - knee)))
+    return y.astype(np.float32), g
