@@ -207,6 +207,7 @@ export function think(w, u, dt) {
     if (!skip) {
       const nt = pickTarget(w, u);
       if (nt !== t) { releaseClaim(u); u.target = t = nt; }
+      if (t && !u.barkedTaunt && hyp(t.x - u.x, t.z - u.z) < 6) { u.barkedTaunt = true; if (w.barkRoll(u, 4)) w.bark(u, 'taunts'); }      // the first meeting
       if (t && !info.ranged1st && !u.claim) { const lim = info.spear ? slotsFor(t) * 2 : slotsFor(t); if (t.claims < lim) { t.claims++; u.claim = t; } }
       else if (!t) releaseClaim(u);
     } else if (t) { releaseClaim(u); u.target = t = null; }

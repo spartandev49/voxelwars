@@ -65,6 +65,7 @@ export class Unit {
     this.fleeX = 0; this.fleeZ = 0;
     this.routFrom = null;
     this.mutScale = 1;
+    this.barkedEngage = false; this.barkedHurt = false; this.barkedTaunt = false;      // one-shot speech-bubble triggers (deterministic rolls in world.barkRoll)
   }
   get isRanged() { return !!this.def.ranged; }
 }
