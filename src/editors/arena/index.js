@@ -32,7 +32,8 @@ export function mount(root, ctx, params) {
   K.init(ctx);
   const S = getS(ctx), cleanups = [];
   const host = ctx.editorHost;
-  const phone = safe(() => ctx.platform.isPhone(), false) || window.innerWidth < 768;
+  // editors.md §0: tablet and up = at least 768 px wide (the shell's isPhone() also flags short desktop windows such as 960x540, which still have room); a landscape phone is too short for the panels
+  const phone = window.innerWidth < 768 || window.innerHeight < 480;
   if (phone || !host) {
     // phones (and a build without the editor host) get the friendly notice instead of a dead editor
     if (phone) { setTimeout(() => ctx.nav.goto('phone_notice', { editor: 'arena_builder' }), 0); return { destroy() {} }; }

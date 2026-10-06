@@ -28,6 +28,8 @@ export class Router {
     for (const o of this.overlays.splice(0)) this._destroy(o);
     const prev = this.base ? this.base.id : null;
     this._destroy(this.base); this.base = null;
+    // a modal belongs to the screen that opened it: it must not outlive that screen (the arena builder's "start a new arena" dialog used to stay on top of the workshop)
+    try { if (KIT && KIT.closeModals) KIT.closeModals(); } catch (e) { console.warn('closeModals failed', e); }
     const s = this._mount(id, params, false);
     this.base = s; if (prev && prev !== id) this.history.push(prev); if (this.history.length > 20) this.history.shift();
     for (const f of this.listeners) f(id, params);

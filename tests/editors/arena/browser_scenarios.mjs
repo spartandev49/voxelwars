@@ -196,6 +196,12 @@ export async function run(name, h) {
     const cur = await ev(() => window.__vw.app.router.current()); expect(cur === 'phone_notice', 'phones are sent to the friendly notice (' + cur + ')'); await shot('18_phone');
     return;
   }
+  if (name === 'probe') {
+    await ev(() => window.__vw.goto('arena_builder')); await sleep(4000);
+    const d = await A(() => { const r = document.getElementById('ed-root'); const b = r && r.getBoundingClientRect(); const cs = r && getComputedStyle(r); const lay = r && r.parentElement; const lb = lay && lay.getBoundingClientRect(); return { cur: window.__vw.app.router.current(), root: b && [b.x, b.y, b.width, b.height], disp: cs && [cs.display, cs.visibility, cs.opacity], parent: lay && [lay.className, lb.width, lb.height], inner: [innerWidth, innerHeight], modal: !!document.querySelector('.vw-modal-wrap'), kids: r ? r.children.length : -1 }; });
+    step('probe ' + JSON.stringify(d)); await shot('probe');
+    return;
+  }
   if (name === 'panprobe') {
     await openBuilder({ closeModal: true });
     const rd = () => A(() => { const b = window.__vw.arenaBuilder, r = b.host.rig; return { tx: r.tx, tz: r.tz, sdist: r.sdist, syaw: r.syaw, keys: Array.from(b.ctl.keys), vis: b.host.visible, mode: r.mode }; });
