@@ -271,8 +271,12 @@ export class EditorView {
     if (!def) { if (this._ghost) { pr.removeById(this._ghost); this._ghost = null; this._ghostKey = ''; } return; }
     const key = def.t + '|' + def.v;
     if (this._ghost && key !== this._ghostKey) { pr.removeById(this._ghost); this._ghost = null; }
-    if (!this._ghost) { this._ghost = pr.add({ t: def.t, x: def.x, z: def.z, r: def.r, s: def.s, v: def.v }); this._ghostKey = key; }
-    else pr.transform(this._ghost, { x: def.x, z: def.z, r: def.r, s: def.s });
+    if (!this._ghost) { this._ghost = pr.add({ t: def.t, x: def.x, z: def.z, r: def.r, s: def.s, v: def.v }); this._ghostKey = key; this._ghostS = def.s; }
+    else {
+      const patch = { x: def.x, z: def.z, r: def.r };
+      if (def.s !== this._ghostS) { patch.s = def.s; this._ghostS = def.s; }      // a scale change re-meshes the instance: only send it when it changed
+      pr.transform(this._ghost, patch);
+    }
   }
   propGhostId() { return this._ghost; }
   /** Footprint radius (u) of a prop def for rings. */

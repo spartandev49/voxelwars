@@ -264,7 +264,7 @@ function breachBehaviour(w, u, t, dt, speedBase, info) {
   }
   // an enemy in reach beats the wall
   const def = u.def, dx = p.x - u.x, dz = p.z - u.z, dist = hyp(dx, dz), gap = dist - u.radius - p.radius;
-  if (info.siege || (def.ranged && !def.melee)) {
+  if ((info.siege && def.ranged) || (def.ranged && !def.melee)) {
     // siege engines shell the obstacle from range; infantry ranged units just wait
     if (!info.siege) { u.breach = null; return false; }
     if (t && t.alive) { u.breach = null; return false; }

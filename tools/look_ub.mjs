@@ -59,7 +59,7 @@ for (const a of arenas) {
     return { units: g.world.units.length, ids: g.world.units.map((u) => u.def.id).filter((v, i, arr) => arr.indexOf(v) === i).length, tick: g.world.tickN, dist: r.dist };
   }, { a, size, ticks, cam, ids });
   await page.waitForTimeout(900);
-  const file = path.join(out, `ub_${a}_${cam}.png`); await page.screenshot({ path: file });
+  const file = path.join(out, `ub_${a}_${cam}.png`); await page.screenshot({ path: file, timeout: 240000 });
   console.log('[look_ub]', JSON.stringify(info), '->', path.relative(root, file));
 }
 await browser.close();

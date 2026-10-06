@@ -54,7 +54,7 @@ for (const a of arenas) {
     return { units: g.world.units.length, tick: g.world.tickN, arena: a, dist: r.dist };
   }, { a, size, ticks, cam, se: seArg });
   await page.waitForTimeout(700);
-  const file = path.join(out, `${a}_${cam}.png`); await page.screenshot({ path: file });
+  const file = path.join(out, `${a}_${cam}.png`); await page.screenshot({ path: file, timeout: 180000 });
   console.log('[look]', JSON.stringify(info), '->', path.relative(root, file));
 }
 await browser.close();

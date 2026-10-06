@@ -308,7 +308,7 @@ O.gerron = {
     B(g, 7, 3, 5, 8, 11, 5, V(shade(0x6a4a2a, 0.95)));
     // the boss is a gold asterisk on a dark patch: the Immortal revives once*
     B(g, 5, 5, 5, 9, 9, 5, V(shade(0x4a2e18, 0.9)));
-    sprite(g, ['..#..', '#.#.#', '.###.', '#.#.#', '..#..'], 5, 9, 5, { '#': V(ctx.m[4]) });
+    sprite(g, ['..#..', '#.#.#', '.###.', '#.#.#', '..#..'], 5, 9, 5, { '#': V(shade(ctx.c.secondary, 1.05)) });
     return g;
   },
 };

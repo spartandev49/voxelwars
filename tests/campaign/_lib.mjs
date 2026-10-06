@@ -24,7 +24,7 @@ export function enemyAll(m) {
 
 /**
  * The player's army for a bot. kinds: 'counter' (counter-pick against the full enemy list), 'greedy' (spend everything on a random composition, every squad
- * advances), 'turtle' (balanced composition, every squad holds), 'melee' (infantry and heroes only, no ranged: the friendly-fire-safe army), 'raid' (the rush
+ * advances), 'turtle' (balanced composition, every squad holds; on a hold_hill mission it forms up on the hill, on any other it holds for 25 s and then advances), 'melee' (infantry and heroes only, no ranged: the friendly-fire-safe army), 'raid' (the rush
  * style: fast cavalry and beasts, for the missions with a time star).
  * `core` units the mission asks for (the Trojan horse, elephants, Spartans) are always bought first.
  */
@@ -42,6 +42,30 @@ export function botGroups(m, kind, seed) {
   return Array.from(by, ([defId, n]) => ({ defId, n }));
 }
 
+/**
+ * God-power play of the 'expert' bots: Zeus lightning and meteors on the densest enemy cluster whenever they are ready (a human has six powers and uses
+ * them; the three scripted bots of the bands do not). Called every tick by the world's onTick chain.
+ */
+export function installPowers(w) {
+  if (!w.godpowers) return;
+  const prev = w.onTick; let next = 0;
+  w.onTick = (ww, dt) => {
+    if (prev) prev(ww, dt);
+    if (ww.time < next || ww.state !== 'running') return;
+    next = ww.time + 0.5;
+    for (const power of ['meteor', 'zeus_lightning']) {
+      if (!ww.godpowers.ready(power, 0)) continue;
+      let best = null, bn = 0;
+      for (let i = 0; i < ww.units.length; i += 2) {
+        const u = ww.units[i]; if (!u.alive || u.team !== 1) continue;
+        let c = 0; for (let k = 0; k < ww.units.length; k += 2) { const o = ww.units[k]; if (o.alive && o.team === 1 && (o.x - u.x) ** 2 + (o.z - u.z) ** 2 < 25) c++; }
+        if (c > bn) { bn = c; best = u; }
+      }
+      if (best && bn >= (power === 'meteor' ? 4 : 2)) ww.godpowers.cast(power, best.x, best.z, 0);
+    }
+  };
+}
+
 /** Build a ready world: arena, rules, enemy, fixed units, the bot's army. Returns {w, rt, groups}. */
 export function buildMissionWorld(m, bot, seed, o = {}) {
   const arena = o.arena || arenaOf(m);
@@ -53,9 +77,17 @@ export function buildMissionWorld(m, bot, seed, o = {}) {
   const squads = w.addPlacements(0, pl, { defs });
   // a turtle on a hold_hill mission forms up ON the hill (placement is only allowed in the zone, so it marches there once) and holds it
   if (bot === 'turtle' && m.objective.type === 'hold_hill') {
-    const hill = (m.arena.markers || []).find((k) => k.type === 'hill'); let i = 0;
-    for (const sq of squads) { sq.order = 'move'; sq.moveTo = { x: hill.x + ((i % 3) - 1) * 1.5, z: hill.z + (((i / 3) | 0) - 2) * 1.5 }; i++; }
+    const hill = (m.arena.markers || []).find((k) => k.type === 'hill');
+    const front = squads.filter((sq) => sq.cls === 0 || sq.cls === 1 || sq.cls === 5), back = squads.filter((sq) => !(sq.cls === 0 || sq.cls === 1 || sq.cls === 5));    // squad classes: LINE, HERO, CAV hold the front, the rest stand behind
+    const rank = (list, x) => list.forEach((sq, i) => { sq.order = 'move'; sq.moveTo = { x, z: hill.z + (i - (list.length - 1) / 2) * Math.min(3.2, 16 / Math.max(1, list.length)) }; });
+    rank(front, hill.x + 1); rank(back, hill.x - 4);       // a line of squads across the pass, shooters behind the shields
   }
+  // any other turtle holds its ground for 25 s (the sim's own watchdog would otherwise draw a hold-forever army) and then advances like everybody else
+  if (bot === 'turtle' && m.objective.type !== 'hold_hill') {
+    let released = false; const prev = w.onTick;
+    w.onTick = (ww, dt) => { if (prev) prev(ww, dt); if (!released && ww.time >= 25) { released = true; for (const sq of ww.squads) if (sq.team === 0 && sq.order === 'hold' && !sq.units.some((u) => u.vip)) sq.order = 'advance'; } };
+  }
+  if (o.powers) installPowers(w);
   w.start();
   return { w, rt, groups, placements: pl };
 }

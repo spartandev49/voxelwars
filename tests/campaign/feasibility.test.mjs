@@ -33,11 +33,11 @@ await test('bands: counter 60-90%, greedy 25-70%, turtle 10-60% on every mission
   for (const m of MISSIONS) assert.ok(rec.runs[m.id].bots.counter.rate > rec.runs[m.id].bots.greedy.rate - 0.2, m.id + ': the counter-pick should not lose to the naive deployment by a margin');
 });
 
-await test('stars: every mission\'s star 3 was earned by at least one recorded battle (it is reachable), star 2 by at least one on most missions; mission 1\'s thrift star by the thrifty bot', () => {
+await test('stars: every mission\'s star 3 was earned by at least one recorded battle (it is reachable by a scripted player: counter, melee, raid or the god-power 'expert'), star 2 on most missions; mission 1\'s thrift star by the thrifty bot', () => {
   let two = 0;
   for (const m of MISSIONS) {
     const bots = rec.runs[m.id].bots; let s3 = 0, s2 = 0;
-    for (const k of Object.keys(bots)) { s3 += bots[k].starHits[2]; s2 += bots[k].starHits[1]; }
+    for (const k of Object.keys(bots)) { if (bots[k].hash !== rec.runs[m.id].hash) continue; s3 += bots[k].starHits[2]; s2 += bots[k].starHits[1]; }       // only records made on the current data count
     assert.ok(s3 >= 1, m.id + ' star 3 never earned in ' + Object.keys(bots).map((k) => bots[k].n).join('+') + ' battles'); if (s2 >= 1) two++;
   }
   assert.ok(two >= 8, 'star 2 reachable on ' + two + ' of 9 missions');

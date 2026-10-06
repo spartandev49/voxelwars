@@ -114,8 +114,9 @@ export function mount(root, ctx) {
   };
   const starSlots = (n) => h('span', { class: 'bs-pz-stars', 'aria-hidden': 'true' }, [0, 1, 2].map((k) => icon(k < n ? 'star' : 'starO', 'bs-pz-star' + (k < n ? ' is-on' : ''))));
 
+  const bestOf = (p) => (p.ok ? best(p.id) : { stars: 0, spent: 0, time: 0, tried: false });
   function buildCard(p, i) {
-    const b = best(p.id);
+    const b = bestOf(p);
     const pick = h('button', { class: 'bs-pz-pick', type: 'button', 'aria-pressed': 'false', 'aria-label': p.ok ? T.cardAria(i + 1, p.title, b.stars) : (i + 1) + '. ' + p.title + '. ' + T.broken, id: 'pz-pick-' + p.id },
       h('b', { class: 'bs-pz-n', text: String(i + 1) }), h('span', { class: 'bs-pz-title', text: p.title }));
     pick.addEventListener('click', () => select(p.id));
@@ -144,7 +145,7 @@ export function mount(root, ctx) {
   function paintPanel() {
     const c = selected && cards.get(selected);
     if (!c) { panel.setTitle && panel.setTitle(T.title); panelBody.replaceChildren(h('p', { class: 'bs-pz-pick-hint', text: T.pick })); return; }
-    const p = c.p, b = best(p.id);
+    const p = c.p, b = bestOf(p);
     panel.setTitle && panel.setTitle(p.title);
     const hintP = h('p', { class: 'bs-pz-hint', id: 'pz-hint', hidden: !hintOpen, text: p.hint || '' });
     const hintBtn = K.button(hintOpen ? T.hideHint : T.hint, { variant: 'secondary', size: 'sm', icon: 'help', id: 'pz-hint-btn', disabled: !p.hint, onClick: () => { hintOpen = !hintOpen; hintBtn.setLabel(hintOpen ? T.hideHint : T.hint); hintBtn.setAttribute('aria-expanded', String(hintOpen)); hintP.hidden = !hintOpen; } });
@@ -188,7 +189,7 @@ export function mount(root, ctx) {
   function tick() { try { ctx.audio && ctx.audio.play && ctx.audio.play('ui_tick', { vol: 0.5 }); } catch (e) { /* audio optional */ } }
   function refresh() {
     for (const [id, c] of cards) {
-      const b = best(id);
+      const b = bestOf(c.p);
       c.foot.replaceChildren(starSlots(b.stars), (() => { const btn = K.button(b.stars ? T.replay : T.play, { variant: 'primary', size: 'sm', icon: 'play', id: 'pz-play-' + id, disabled: !c.p.ok, onClick: (e) => { if (e && e.stopPropagation) e.stopPropagation(); play(c.p); } }); return btn; })());
       c.el.classList.toggle('is-done', c.p.ok && b.stars >= 3); c.el.classList.toggle('is-open', c.p.ok && b.stars < 3);
       c.pick.setAttribute('aria-label', c.p.ok ? T.cardAria(c.p.index + 1, c.p.title, b.stars) : c.pick.getAttribute('aria-label'));

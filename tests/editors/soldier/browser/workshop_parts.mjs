@@ -3,27 +3,25 @@ import { noAuto, openWorkshop, setSlider, wsState, flush } from './_util.mjs';
 export async function run({ page, shot, step, check, sleep }) {
   await noAuto(page); await openWorkshop(page);
   let s = await wsState(page);
-  // ---- every category switches the compiled model
-  const cats = ['head', 'torso', 'shoulders', 'legs', 'cape', 'back', 'main', 'off'];
-  const seen = new Set(); let switched = 0, total = 0;
-  for (const tab of cats) {
-    await page.click('#ws-cat-' + tab); await sleep(150);
-    const slots = await page.evaluate(() => Array.from(document.querySelectorAll('.ws-slots .ws-slot')).map((b) => b.id));
-    const list = slots.length ? slots : [null];
-    for (const slot of list) {
-      if (slot) { await page.click('#' + slot); await sleep(120); }
-      const tiles = await page.$$('#ws-parts .ws-part:not(.is-locked)');
-      check(tiles.length >= 3, `${tab}${slot ? '/' + slot : ''}: picker lists the registry (${tiles.length} usable tiles)`);
-      const before = await wsState(page);
-      // pick the third usable tile (not 'none' and not the current one when possible)
-      let picked = false;
-      for (const t of tiles.slice(1, 5)) { const sel = await t.getAttribute('aria-selected'); if (sel === 'true') continue; await t.click(); await sleep(250); picked = true; break; }
-      const after = await wsState(page); total++;
-      if (picked && (after.rev !== before.rev)) switched++; else step(`no change in ${tab}/${slot}: picked=${picked}`); seen.add(tab);
-      await page.keyboard.press('Control+z'); await sleep(120);
+  // ---- every category switches the compiled model (real tab / slot / tile clicks, batched inside the page: the machine may be loaded)
+  const sweep = await page.evaluate(async () => {
+    const out = []; const tick = () => new Promise((r) => setTimeout(r, 30));
+    for (const tab of ['head', 'torso', 'shoulders', 'legs', 'cape', 'back', 'main', 'off']) {
+      document.querySelector('#ws-cat-' + tab).click(); await tick();
+      const slotBox = document.querySelector('.ws-slots'); const slots = slotBox.classList.contains('vw-hide') ? [null] : Array.from(slotBox.querySelectorAll('.ws-slot')).map((b) => b.id);
+      for (const slot of slots) {
+        if (slot) { document.getElementById(slot).click(); await tick(); }
+        const tiles = Array.from(document.querySelectorAll('#ws-parts .ws-part:not(.is-locked)')); window.__ws.flush(); const before = window.__ws.info.def.rev;
+        const t = tiles.slice(1, 6).find((x) => x.getAttribute('aria-pressed') !== 'true'); if (!t) { out.push({ tab, slot, tiles: tiles.length, changed: false }); continue; }
+        t.click(); await tick(); window.__ws.flush(); const after = window.__ws.info.def.rev;
+        out.push({ tab, slot, tiles: tiles.length, changed: after !== before, picked: t.id }); window.__ws.doc.doUndo(); window.__ws.flush();
+      }
     }
-  }
-  check(switched === total && total >= 12, `all 12 slots change the model when a part is picked (${switched}/${total})`);
+    return out;
+  });
+  for (const r of sweep) check(r.tiles >= 3, `${r.tab}${r.slot ? '/' + r.slot.replace('ws-slot-', '') : ''}: picker lists the registry (${r.tiles} usable tiles)`);
+  const switched = sweep.filter((r) => r.changed).length;
+  check(switched === sweep.length && sweep.length === 12, `all 12 slots change the model when a part is picked (${switched}/${sweep.length})`);
   await page.click('#ws-cat-head'); await page.click('#ws-slot-head-helm'); await sleep(200); await shot('ws_parts_locked_head');
   // ---- locked silly helm: tile is locked, click shows the hint and changes nothing (E9)
   const locked = await page.evaluate(() => { const b = document.querySelector('#ws-part-helms-colander'); return b ? { locked: b.classList.contains('is-locked'), label: b.getAttribute('aria-label') } : null; });

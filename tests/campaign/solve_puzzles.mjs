@@ -19,7 +19,8 @@ for (const p of list) {
   const seeds = (SEEDS[p.id] || []).map((placements) => { const counts = {}; for (const q of placements) counts[q.defId] = (counts[q.defId] || 0) + 1; return { placements, counts, cost: costOf(counts) }; });
   const { best, result } = solve(p, { iters: +iters, seed: +seed, seeds, log: (m) => console.log(p.id, m) });
   if (!best || !result.win) { console.log(p.id, 'NO WINNING PLACEMENT FOUND'); continue; }
-  const prev = out[p.id];
+  let prev = out[p.id];
+  if (prev) { const re = runPuzzle(p, prev.placements); if (!re.win || re.stars < prev.stars) { console.log(p.id, 'the stored solution no longer wins (stars ' + re.stars + '): replaced'); prev = null; } }
   const better = !prev || result.stars > prev.stars || (result.stars === prev.stars && best.cost < prev.cost);
   console.log(p.id, 'best: stars', result.stars, 'cost', best.cost, 't', result.t.toFixed(1), better ? '(stored)' : '(kept the previous)');
   if (better) out[p.id] = { placements: best.placements, cost: best.cost, stars: result.stars, earned: result.earned, t: +result.t.toFixed(1), lost: result.summary.unitsLost, alive: result.alive[0] };

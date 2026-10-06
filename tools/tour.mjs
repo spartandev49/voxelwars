@@ -41,6 +41,8 @@ for (const id of SCREENS) {
   await page.waitForTimeout(+arg('wait', 900));
   const mounted = await page.evaluate((id) => !!document.querySelector('.vw-screen[data-screen="' + id + '"]'), id);
   await page.screenshot({ path: path.join(out, `${W}x${H}_${id}.png`) });
+  const junk = await page.evaluate(() => { const t = (document.getElementById('vw-ui') || document.body).innerText || ''; const m = t.match(/\[object [A-Za-z]+\]|\bundefined\b|\bNaN\b|\bnull\b|\{\{|%s|\$\{/g); return m ? [...new Set(m)].slice(0, 6) : []; });
+  if (junk.length) problems.push(`[${id}] visible text contains ${junk.join(', ')}`);
   const tag = r.has && mounted ? 'ok' : 'MISSING'; if (tag !== 'ok') bad++;
   console.log(`[tour] ${id.padEnd(14)} ${tag}${r.has ? '' : ' (no screen module; fallback or none)'}`);
 }

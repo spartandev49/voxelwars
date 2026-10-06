@@ -71,7 +71,7 @@ const RAW = [
     fixed: [{ defId: 'battle_goat', marker: 'goat_start', vip: true, heading: PI / 2, name: 'The Goat', def: { melee: null, abilities: [], ai: { style: 'hold' } } }],
     enemy: { faction: 'barbarians', placements: [].concat(block('axe_thrower', 8, 19, 17, { cols: 4, spacing: 1.8, squad: 1, heading: -2.36 }), block('berserker', 4, 23, 21, { cols: 4, spacing: 1.5, squad: 2, heading: -2.36 })) },
     goal: { type: 'protect_vip', params: { time: 120, reachOnly: true }, markerIds: ['goat_start', 'far_bank'], binding: true }, timeLimit: 150, godPowers: false,
-    script: { vipMarch: { to: 'far_bank', delay: 8, clear: 12 } },
+    script: { vipMarch: { to: 'far_bank', delay: 8, clear: 12, patience: 45 } },
     bonus: { id: 'goat_untouched', text: 'The goat takes no damage', test: (s) => s.vipDef === 'battle_goat' && s.vipDamage === 0 },
   },
   {

@@ -42,7 +42,7 @@ export class EditorHost {
     this.visible = false; this.arena = null;
     this.terrain = null; this.props = null; this.rig = null; this.root = null;
     this.insets = { left: 0, right: 0, top: 0, bottom: 0 };
-    this._frameFns = new Set(); this._hidden = []; this._lights = []; this._saved = null; this._origUpdate = null;
+    this._frameFns = new Set(); this._hidden = new Set(); this._lights = new Map(); this._own = null; this._render0 = null; this._ownRender = false; this._saved = null; this._origUpdate = null;
     this._onResize = () => this._applyInsets();
     this._v = null; this._ndc = null;
   }
@@ -69,13 +69,12 @@ export class EditorHost {
       const g = this.game, e = this.engine;
       this._saved = { rig: g.rig, env: Object.assign({}, e.env), paused: g.paused };
       // hide everything the game put in the scene (units, projectiles, FX, its terrain and props); lights keep their place but go dark
-      const own = new Set([e.sky, e.clouds, e.hemi, e.sun, e.sunTarget, this.root, this.terrain.group, this.props.group]);
-      this._hidden.length = 0; this._lights.length = 0;
-      for (const o of this.scene.children) {
-        if (own.has(o)) continue;
-        if (o.isLight) { this._lights.push([o, o.intensity]); o.intensity = 0; continue; }
-        if (o.visible) { o.visible = false; this._hidden.push(o); }
-      }
+      // The game's view re-shows its meshes in game.frame() AFTER the rig update, so the sweep also runs right before every render.
+      this._own = new Set([e.sky, e.clouds, e.hemi, e.sun, e.sunTarget, this.root, this.terrain.group, this.props.group]);
+      this._hidden.clear(); this._lights.clear();
+      this._sweep();
+      this._ownRender = Object.prototype.hasOwnProperty.call(e, 'render'); this._render0 = e.render;
+      const r0 = e.render; e.render = (...a) => { if (this.visible) this._sweep(); return r0.apply(e, a); };
       if (g.state === 'running' || g.state === 'countdown') g.pause(true);
       g.rig = this.rig;
       this.terrain.group.visible = true; this.props.group.visible = true; this.root.visible = true;
@@ -94,15 +93,26 @@ export class EditorHost {
     window.removeEventListener('resize', this._onResize);
     if (g.rig === this.rig && s) g.rig = s.rig;
     if (!g.world) this._clearStale();
+    if (this._render0) { if (this._ownRender) e.render = this._render0; else delete e.render; this._render0 = null; }
     for (const o of this._hidden) o.visible = true;
     for (const [l, i] of this._lights) l.intensity = i;
-    this._hidden.length = 0; this._lights.length = 0;
+    this._hidden.clear(); this._lights.clear(); this._own = null;
     if (e.camera.clearViewOffset) e.camera.clearViewOffset();
     e.camera.updateProjectionMatrix();
     this.terrain.clear(); this.props.clear(); this.terrain.group.visible = false; this.props.group.visible = false; this.root.visible = false;
     if (s) { e.setEnvironment(s.env, null); if (g.terrain && g.terrain.arena) { const ev = e.fogParams; if (ev) g.terrain.setFog(e.fogColor, ev.near, ev.far); } if (s.paused === false && g.paused) g.pause(false); }
     this._frameFns.clear(); this.arena = null; this._saved = null;
     return this;
+  }
+
+  /** Hide whatever the game has (re)shown in the scene and keep its lights dark; remembers the originals for hide(). */
+  _sweep() {
+    const own = this._own; if (!own) return;
+    for (const o of this.scene.children) {
+      if (own.has(o)) continue;
+      if (o.isLight) { if (o.intensity !== 0) { if (!this._lights.has(o)) this._lights.set(o, o.intensity); o.intensity = 0; } continue; }
+      if (o.visible) { o.visible = false; this._hidden.add(o); }
+    }
   }
 
   /** The game's battle view keeps the last drawn instances after its world is gone: empty its skins before they become visible again. */

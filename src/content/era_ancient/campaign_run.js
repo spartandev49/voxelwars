@@ -322,7 +322,7 @@ export class MissionRuntime {
       if (sq.order !== 'hold' || this.t < this.vipAt) return;
       this.vipCheck -= dt; if (this.vipCheck > 0) return;
       this.vipCheck = 0.5;
-      const clear = this.vipMarch.clear || 0;
+      const clear = this.t >= (this.vipMarch.patience || 1e9) ? 0 : (this.vipMarch.clear || 0);       // after `patience` seconds the goat goes whatever is left of the enemy (no dead stalemates)
       if (clear > 0) {
         for (const o of w.units) {
           if (!o.alive || o.team === TEAM_PLAYER) continue;

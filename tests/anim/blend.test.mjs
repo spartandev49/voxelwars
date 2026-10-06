@@ -2,7 +2,7 @@
 // per-joint rotation change a switch adds on top of the previous clip's own motion must stay <= 0.35 rad, for every transition the sim can produce
 // (neutral -> neutral, lying -> lying), for every weapon style and shield kind.
 import assert from 'node:assert';
-import { boot, ClipLib, Animator, ok } from './_common.mjs';
+import { boot, ClipLib, Animator, ok, roster } from './_common.mjs';
 import { makeSoldier } from '../fixtures/rigs.js';
 
 boot();
@@ -32,8 +32,18 @@ let seed = 12345; const rnd = () => ((seed = (seed * 1664525 + 1013904223) >>> 0
 let grandMax = 0, total = 0, grandRamp = 0;
 const failures = [];
 
-for (const fx of FIX) {
-  const m = await makeSoldier(fx);
+// the shipped humanoid roster too (real models: the weapon style comes from the shape heuristic where compileSoldier does not set it)
+const KITS = [];
+for (const fx of FIX) KITS.push({ label: fx.main + '+' + fx.off, m: await makeSoldier(fx), iters: 1500 });
+// compileSoldier does not put the weapon style into model.meta yet (docs/requests/anim.md #7): the test sets it the way the fix will, so the animator runs with the real style
+const { getPart } = await import('../../src/content/era_ancient/blueprints.js');
+for (const r of await roster()) {
+  if (r.model.meta.rig !== 'hum1' || (r.model.meta.subrigs && r.model.meta.subrigs.length > 1)) continue;
+  const e = r.def.model && r.def.model.blueprint && getPart('mains', r.def.model.blueprint.main);
+  if (e) { r.model.meta.weaponStyle = e.meta.style; Animator.invalidate(r.model); }
+  KITS.push({ label: r.id, m: r.model, iters: 450 });
+}
+for (const { label, m, iters } of KITS) {
   const P = m.parts.length, outA = new Float32Array(P * 9), outB = new Float32Array(P * 9), root = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
   // a spear / staff / javelin is rotationally symmetric about its own axis: its roll is invisible, so for those weapons the pop is the change of where the
   // shaft POINTS (the rest axis mapped by the part's pose). Blades, axes, clubs and bows are measured as full rotations.
@@ -51,7 +61,7 @@ for (const fx of FIX) {
     return d;
   };
   let n = 0, maxPop = 0, maxRamp = 0, where = '', rampAt = '';
-  for (let it = 0; it < 1500; it++) {
+  for (let it = 0; it < iters; it++) {
     const a = IDS[(rnd() * IDS.length) | 0], b = IDS[(rnd() * IDS.length) | 0];
     if (a === b || !reachable(a, b)) continue;
     const da = ClipLib.dur(a, 'hum1'), loopA = ClipLib.get(a, 'hum1').loop;
@@ -70,11 +80,11 @@ for (const fx of FIX) {
     // the rest of the ramp (informational): the crossfade moves poses, at most ramp-velocity per frame
     let prev = outB.slice(), cur = new Float32Array(P * 9);
     for (let f = 2; f <= 6; f++) { sw.t = (f - 1) * DT; sw.blend = Math.min(1, f * DT / BR); Animator.pose(m, sw, ex, cur); const d = maxDelta(prev, cur); if (d > maxRamp) { maxRamp = d; rampAt = `${a}->${b} f${f} [${lastPart}]`; } prev = cur.slice(); }
-    if (pop > 0.35) failures.push(`${fx.main}+${fx.off}: ${a}->${b} [${popPart}] ${pop.toFixed(3)} (ta ${ta.toFixed(2)})`);
+    if (pop > 0.35) failures.push(`${label}: ${a}->${b} [${popPart}] ${pop.toFixed(3)} (ta ${ta.toFixed(2)})`);
   }
-  console.log(`  ${(fx.main + '+' + fx.off).padEnd(22)} style ${String(info.style).padEnd(8)} transitions ${n}  max switch-frame change ${maxPop.toFixed(3)} rad (${where})  ramp ${maxRamp.toFixed(2)} (${rampAt})`);
+  console.log(`  ${label.padEnd(22)} style ${String(info.style).padEnd(8)} transitions ${n}  max switch-frame change ${maxPop.toFixed(3)} rad (${where})  ramp ${maxRamp.toFixed(2)} (${rampAt})`);
   total += n; if (maxPop > grandMax) grandMax = maxPop; if (maxRamp > grandRamp) grandRamp = maxRamp;
 }
 if (failures.length) console.log(failures.slice(0, 20).join('\n'));
 assert.ok(grandMax <= 0.35 + 1e-9, `A6: switch-frame change ${grandMax.toFixed(3)} rad > 0.35 (${failures.length} transitions over)`);
-ok(`A6 crossfade: max change at a switch frame ${grandMax.toFixed(3)} rad over ${total} random transitions x ${FIX.length} weapon/shield kits`);
+ok(`A6 crossfade: max change at a switch frame ${grandMax.toFixed(3)} rad over ${total} random transitions x ${KITS.length} weapon/shield kits and shipped humanoids`);

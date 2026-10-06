@@ -42,7 +42,7 @@ export function mount(root, ctx, params) {
   const objIcon = OBJ_ICON[m.objective.type] || 'flag';
   const stat = (ic, label, value) => h('div', { class: 'bs-fact' }, icon(ic), h('span', { class: 'bs-fact-l', text: label }), h('b', { class: 'bs-fact-v', text: value }));
   const forces = [];
-  if (pz && pz.enemyCount) forces.push(stat('skull', 'Enemy army', pz.enemyCount + ' units, already placed'));
+  if (pz && pz.enemyCount) forces.push(stat('skull', 'Enemy army', pz.enemyCount + ' units'));
   if (m.units) forces.push(stat('users', 'Your army', '~' + m.units.A + ' units'), stat('skull', 'Enemy army', '~' + m.units.B + ' units'));
   if (m.budget) forces.push(stat('coin', 'Budget', fmtInt(m.budget) + ' dr'));
   if (m.par) forces.push(stat('target', pz ? 'Par for the 2nd star' : 'Par for the 3rd star', fmtInt(m.par) + ' dr'));

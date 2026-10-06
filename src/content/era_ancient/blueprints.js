@@ -358,7 +358,7 @@ export function compileSoldier(bpIn, opts = {}) {
   applyPaint(bp, grids);
   const mainE = weapon.entry;
   const model = new ModelDef(bp.id, 0.1);
-  model.meta = { rig: 'hum1', kind: 'humanoid', blueprint: bp.id, bodyType: bp.body.type };
+  model.meta = { rig: 'hum1', kind: 'humanoid', blueprint: bp.id, bodyType: bp.body.type, weaponStyle: weapon.style, twoHanded: !!mainE.meta.twoHanded };   // the Animator aims weapon/shield by this (ANIM request #7)
   const has = {};
   let restW = (mainE.meta.rest || [0, 0, 0]).slice();
   for (const id of PART_ORDER) {

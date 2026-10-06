@@ -792,7 +792,7 @@
 /* ---------------------------------------------------------------- puzzles (screens/puzzles.js) */
 .bs-pz-summary { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem .6rem; margin: 0 0 .8rem; }
 .bs-pz-total { display: inline-flex; }
-.bs-pz-note { margin: 0; flex: 1 1 14rem; font: 500 .85rem/1.3 var(--font-body); color: var(--marble-dim); }
+.bs-pz-note { margin: 0; flex: 0 1 auto; padding: .3rem .65rem; background: rgba(20, 22, 58, .62); border-radius: 999px; font: 500 .82rem/1.3 var(--font-body); color: var(--marble); }
 .bs-pz-body { display: block; }
 .bs-pz-side { display: none; }
 .bs-pz-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-flow: row dense; gap: .9rem; align-items: start; padding-bottom: 1.2rem; }

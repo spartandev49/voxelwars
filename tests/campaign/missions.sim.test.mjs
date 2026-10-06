@@ -34,6 +34,16 @@ await test('mission 1 (eliminate + teaching): a counter-pick army fights, beats 
   assert.equal(JSON.stringify(Object.keys(s.startDefs).sort()), JSON.stringify(['hoplite', 'peltast']));
 });
 
+await test('teaching beats (UI18 data side): the four sim moments HUMOR\'s beats trigger on map from real events, once each, in the order they happen; missions without beats record nothing', () => {
+  const m = M('marathon_sort_of'), { w, rt } = world(m, { player: [{ defId: 'hoplite', n: 6 }] });
+  assert.deepEqual(campaignApi.teachingBeats(m.id).map((b) => b.trigger), ['placement_start', 'battle_start', 'first_contact', 'cavalry_brace', 'battle_end']);
+  w.start(); assert.deepEqual(rt.beats.map((b) => b.trigger), ['battle_start']);
+  const e = w.P.unit_brace; e.id = 1; e.dst = 2; w.emit('unit_brace', e); w.emit('unit_brace', e); assert.deepEqual(rt.beats.map((b) => b.trigger), ['battle_start', 'cavalry_brace'], 'brace fires once');
+  const h = w.P.unit_hit; h.src = 1; h.dst = 2; h.dmg = 5; w.emit('unit_hit', h); w.emit('unit_hit', h); assert.deepEqual(rt.beats.map((b) => b.trigger), ['battle_start', 'cavalry_brace', 'first_contact']);
+  w.end(0, 'elimination'); assert.equal(rt.beats[rt.beats.length - 1].trigger, 'battle_end');
+  const other = world(M('thermopylae_snack'), { player: [{ defId: 'hoplite', n: 3 }] }); other.w.start(); const x = other.w.P.unit_hit; x.src = 1; x.dst = 2; other.w.emit('unit_hit', x); assert.deepEqual(other.rt.beats, [], 'only mission 1 teaches');
+});
+
 await test('mission 2 (hold_hill + waves): wave 1 is the placed army, waves 2-4 arrive on schedule with the data compositions, an emptied field does not end the battle between waves (negative control: without the guard it does)', () => {
   const m = M('thermopylae_snack'), cfg = m.script.waves;
   const { w, rt } = world(m, { player: [{ defId: 'spartan', n: 8 }, { defId: 'hoplite', n: 20 }] });

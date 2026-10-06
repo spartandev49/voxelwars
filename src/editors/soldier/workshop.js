@@ -43,9 +43,9 @@ export function mount(root, ctx, params = {}) {
   let initial = null, askedDraft = null;
   const dr = draftCh.load();
   if (params.id) { const it = roster.get(ctx, params.id); initial = it && asDoc(it); }
-  if (!initial && (params.resume || (!params.fresh && !params.id)) && dr && dr.cs) { const d = asDoc(dr.cs); if (d) { if (params.resume) initial = d; else askedDraft = { cs: d, dirty: dr.dirty !== false }; } }
+  if (!initial && (params.resume || (!params.fresh && !params.id)) && dr && dr.cs) { const d = asDoc(dr.cs); if (d) { if (params.resume || dr.dirty === false) initial = d; else askedDraft = { cs: d, dirty: true }; } }
   const doc = new SoldierDoc(initial || C.newSoldier(rng), { unlocked, rng });
-  if (params.resume && dr && initial) { doc.savedRef = dr.dirty === false ? doc.cs : null; }
+  if (initial && dr && dr.cs && !params.id) { doc.savedRef = dr.dirty === false ? doc.cs : null; }
 
   // ---------------------------------------------------------------- derived info (def, compile) shared by every panel
   let info = null, lastRev = '', lastColorSig = '', lastComp = null;
@@ -90,7 +90,8 @@ export function mount(root, ctx, params = {}) {
   const slotSeg = h('div', { class: 'ws-slots', role: 'tablist', 'aria-label': 'Slot' });
   const search = K.searchBox({ id: 'ws-search', label: WS.searchParts, placeholder: WS.searchParts, onInput: (v) => { cur.search = v.trim().toLowerCase(); renderList(); } });
   const sillyChip = K.chip(WS.onlySilly, { pressed: false, id: 'ws-silly', onClick: () => { cur.silly = !cur.silly; sillyChip.setPressed(cur.silly); renderList(); } });
-  const listEl = h('div', { class: 'ws-parts vw-scroll', role: 'listbox', 'aria-label': WS.partsTitle, id: 'ws-parts' });
+  const listEl = h('div', { class: 'ws-parts vw-scroll', role: 'group', 'aria-label': WS.partsTitle, id: 'ws-parts' });
+  cleanups.push(K.roving(listEl, { selector: '.ws-part', orientation: 'both' }));
   const left = K.tablet(WS.partsTitle, h('div', { class: 'ws-left__body' }, catBar, slotSeg, h('div', { class: 'ws-searchrow' }, search, sillyChip), listEl), { id: 'ws-left', class: 'ws-left', variant: 'glass', tight: true, icon: 'hammer' });
 
   function selectTab(id) {
@@ -123,7 +124,7 @@ export function mount(root, ctx, params = {}) {
       const on = p.id === selected;
       const ico = h('span', { class: 'ws-part__ico' }); try { ico.appendChild(partIcon(def.cat, p.id, bp, 48)); } catch (e) { /* an icon must never break the picker */ }
       const style = p.meta && p.meta.style ? C.CLASS_LABEL[p.meta.style] : '';
-      const b = h('button', { type: 'button', class: ['ws-part', on && 'is-on', p.locked && 'is-locked'], role: 'option', 'aria-selected': String(on), id: 'ws-part-' + def.cat + '-' + p.id, dataset: { id: p.id, cat: def.cat }, 'aria-label': p.name + (p.locked ? ', locked. ' + p.hint : '') },
+      const b = h('button', { type: 'button', class: ['ws-part', on && 'is-on', p.locked && 'is-locked'], 'aria-pressed': String(on), id: 'ws-part-' + def.cat + '-' + p.id, dataset: { id: p.id, cat: def.cat }, 'aria-label': p.name + (p.locked ? ', locked. ' + p.hint : '') },
         ico, h('span', { class: 'ws-part__name', text: p.name }), style ? h('span', { class: 'ws-part__meta vw-micro', text: style + (p.meta.twoHanded ? ' · 2H' : '') }) : null, p.locked ? h('span', { class: 'ws-part__lock' }, K.icon('lock')) : null);
       if (p.locked) K.tooltip(b, p.hint);
       b.addEventListener('click', () => { if (p.locked) { K.sfx('ui_error'); K.toast(p.hint, { kind: 'warn', sound: false, ms: 2800 }); return; } K.sfx('ui_select'); doc.setSlot(cur.slot, p.id); if (doc.notes.length) { K.toast(WS.dropped(doc.notes.join(', ')), { kind: 'warn', sound: false }); doc.notes = []; } });
@@ -211,7 +212,7 @@ export function mount(root, ctx, params = {}) {
   }
   function markSelected() {
     const selected = getSlot(doc.cs, cur.slot);
-    for (const b of listEl.querySelectorAll('.ws-part')) { const on = b.dataset.id === selected; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', String(on)); }
+    for (const b of listEl.querySelectorAll('.ws-part')) { const on = b.dataset.id === selected; b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', String(on)); }
   }
   function renderChecks() {
     const issues = checkIssues(doc.cs, info.comp.compiled ? { compiled: info.comp.compiled, def: info.def } : null, unlocked);
@@ -248,7 +249,7 @@ export function mount(root, ctx, params = {}) {
     const isNew = !roster.get(ctx, item.id);
     const put = roster.put(ctx, item);
     if (!put.ok) { K.sfx('ui_error'); await K.modal({ title: WS.libraryTitle, icon: 'warning', body: WS.libraryFull, buttons: [{ label: 'Open the roster', variant: 'primary', value: 'lib' }, { label: 'Close', variant: 'secondary', value: null, cancel: true }] }).then((v) => { if (v === 'lib') showLibrary(); }); return null; }
-    doc.markSaved(); draftCh.clear(); draftDirty = false;
+    doc.markSaved(); draftCh.save({ v: 1, cs: doc.cs, dirty: false, savedAt: Date.now() }); draftDirty = false;     // kept as the soldier to reopen next time
     if (!quiet) { K.toast(isNew ? WS.saved(item.name) : WS.saved(item.name), { kind: 'success' }); K.sfx('ui_confirm'); }
     return item;
   }
@@ -283,7 +284,7 @@ export function mount(root, ctx, params = {}) {
       edit: async (it) => { if (await confirmDiscard(WS.discardAsk)) loadItem(it); },
       duplicate: (it) => { const copy = plain(it); copy.id = C.freshId(rng, new Set(roster.list(ctx).map((x) => x.id))); copy.name = (it.name + ' II').slice(0, C.NAME_MAX); copy.blueprint = Object.assign({}, copy.blueprint, { name: copy.name }); copy.savedAt = Date.now(); const put = roster.put(ctx, copy); if (!put.ok) K.toast(WS.libraryFull, { kind: 'error' }); else K.toast(WS.duplicated(copy.name), { kind: 'success' }); },
       rename: async (it) => { const n = await askName(WS.renameTitle, it.name, WS.renameOk); if (n) { roster.put(ctx, Object.assign({}, it, { name: n, blueprint: Object.assign({}, it.blueprint, { name: n }) })); if (doc.cs.id === it.id) doc.setName(n); } },
-      remove: async (it) => { const a = WS.deleteAsk(it.name); const yes = await K.ask({ title: a.title, text: a.text, yes: a.yes, no: a.no, danger: true }); if (yes) { roster.remove(ctx, it.id); K.toast(WS.deleted(it.name), { kind: 'info' }); } },
+      remove: async (it) => { const a = WS.deleteAsk(it.name); const yes = await K.ask({ title: a.title, text: a.text, yes: a.yes, no: a.no, danger: true }); if (yes) { roster.remove(ctx, it.id); if (doc.cs.id === it.id) { doc.savedRef = null; schedule(); } K.toast(WS.deleted(it.name), { kind: 'info' }); } },
       share: async (it) => { await openShare(ctx, plain(it)); },
       use: async (it) => { if (busy) return; busy = true; try { K.toast(WS.saveFirst, { kind: 'info', sound: false, ms: 1200 }); await testInBattle(ctx, it, C.customDef(it)); } catch (e) { if (alive) K.toast(WS.battleFail, { kind: 'error' }); } finally { busy = false; } },
       createNew: async () => { if (await confirmDiscard(WS.newAsk)) { doc.load(C.newSoldier(rng), { saved: false }); doc.savedRef = null; draftDirty = true; nameInput.value = doc.cs.name; } },
@@ -320,6 +321,7 @@ export function mount(root, ctx, params = {}) {
       K.ask({ title: WS.discardAsk.title, text: WS.discardAsk.text, yes: WS.discardAsk.yes, no: WS.discardAsk.no }).then((yes) => { if (yes && alive) { flushDraft(true); leaving = true; ctx.nav.back(); } });
       return true;
     }
+    if (params.resume) { leaving = true; ctx.nav.goto('title'); return true; }      // came back from the painter: the router history would lead to it, so go to the menu
     return false;
   }
 
@@ -337,7 +339,7 @@ export function mount(root, ctx, params = {}) {
   }
   if (params.part) { /* the painter returns with a part focus only for its own use */ }
   // a test hook for the browser harness (data only)
-  guard(() => { window.__ws = { doc, get info() { return info; }, stage, env }; }, null);
+  guard(() => { window.__ws = { doc, get info() { return info; }, stage, env, flush() { if (raf) { cancelAnimationFrame(raf); raf = 0; } refresh(); } }; }, null);
   return {
     destroy() { alive = false; cancelAnimationFrame(raf); clearTimeout(iconTimer); flushDraft(false); cleanups.forEach((f) => guard(f, null)); guard(() => { delete window.__ws; }, null); },
     onBack,

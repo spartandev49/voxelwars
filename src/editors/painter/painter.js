@@ -236,7 +236,7 @@ export function mount(root, ctx, params = {}) {
       }
       if (tool === 'line' || tool === 'box') { const c = t.add || t.cell; if (c) { S.anchor = c.slice(); } return; }
       if (tool === 'select') { const c = t.hit || t.add || t.cell; if (c) { S.anchor = c.slice(); S.selShift = !!(e && e.shiftKey); } return; }
-      p.beginStroke(PT.tool[tool]); apply(t, e, 'down'); S.stroking = true; return;
+      K.sfx(tool === 'eraser' ? 'ui_erase' : 'ui_place'); p.beginStroke(PT.tool[tool]); apply(t, e, 'down'); S.stroking = true; return;
     }
     if (type === 'move') {
       updateHover(t);
@@ -343,6 +343,7 @@ export function mount(root, ctx, params = {}) {
     const p = part();
     if (code === 'Delete' || code === 'Backspace') { if (p.sel) { eat(); doOp(() => p.deleteSelection()); } return; }
     if (code === 'PageUp' || code === 'PageDown') { if (S.view === 'slice') { eat(); slice.setLayer(slice.layer + (code === 'PageUp' ? 1 : -1)); } return; }
+    if (/^Arrow/.test(code) && S.view === '3d' && !(p.sel && S.tool === 'select')) { eat(); view.orbit(code === 'ArrowLeft' ? 0.14 : code === 'ArrowRight' ? -0.14 : 0, code === 'ArrowUp' ? -0.1 : code === 'ArrowDown' ? 0.1 : 0); return; }
     if (p.sel && /^Arrow/.test(code) && S.tool === 'select') {
       eat(); const n = e.shiftKey ? 5 : 1; const d = code === 'ArrowLeft' ? [-1, 0, 0] : code === 'ArrowRight' ? [1, 0, 0] : code === 'ArrowUp' ? (e.ctrlKey ? [0, 0, -1] : [0, 1, 0]) : [0, -1, 0];
       doOp(() => p.moveSelection(d[0] * n, d[1] * n, d[2] * n)); return;

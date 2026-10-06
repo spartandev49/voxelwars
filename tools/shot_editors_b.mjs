@@ -21,7 +21,7 @@ const MIME = { '.mp3': 'audio/mpeg', '.png': 'image/png', '.json': 'application/
 const exe = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const browser = await chromium.launch({ executablePath: exe, args: ['--use-angle=swiftshader', '--use-gl=angle', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
 const context = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1, hasTouch: !!arg('touch', false), acceptDownloads: true });
-const page = await context.newPage();
+const page = await context.newPage(); page.setDefaultTimeout(Number(arg('timeout', 90000)));
 const problems = [], logs = [];
 page.on('console', (m) => { const t = m.type(), txt = m.text(); logs.push(t + ': ' + txt); if (t === 'error' || t === 'warning') problems.push(`console.${t}: ${txt}`); });
 page.on('pageerror', (e) => problems.push('pageerror: ' + e.message + ' | ' + String(e.stack || '').split('\n').slice(1, 4).map((x) => x.trim()).join(' <- ')));
@@ -47,7 +47,7 @@ let fails = 0;
 const check = (cond, msg) => { if (cond) console.log('  PASS', msg); else { fails++; console.log('  FAIL', msg); } };
 try {
   await page.goto('http://vw.test/index.html');
-  await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 60000 });
+  await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 180000 });
   await page.keyboard.press('Space'); await sleep(600);
   const mod = await import(pathToFileURL(path.join(root, 'tests/editors/soldier/browser', scenario + '.mjs')).href);
   await mod.run({ page, shot, step, check, sleep, problems, W, H, outDir, context });

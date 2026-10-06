@@ -2,7 +2,7 @@
 
 Every clip the sim can publish has a clip for every rig it can appear on, and every clip is either **authored** (`src/anim/clips/*.js`, keyframes through `anim/dsl.js`, IK gaits through `anim/gait.js`) or **retargeted** from the free Universal Animation Library packs (`assets/anim/humanoid_clips.json`, adapter `anim/ual.js`, selection table `anim/ual_adopt.js`). A retargeted clip is adopted only when it passes the A3 review (no limb flips, joint ranges, near-neutral ends, a usable timing) AND the boot-time hinge check (`clampHinges`: a knee or elbow pushed past its stop in more than 6 % of its samples is a bad retarget and the clip is dropped). Rejected clips are replaced by authored ones, so the sim never plays something that failed the review.
 
-`registerAllClips(ClipLib, {humanoid})` (anim/boot.js) registers 146 authored clips and 17 adopted UAL clips (19 candidates in `ual_adopt.js`, 2 rejected at boot; 6 of the adopted ones replace an authored twin). Evidence: `tests/anim/clips.test.mjs` (A1, A2), `ranges.test.mjs` (A3 joint ranges, A7), `gait.test.mjs` (A3/A4 foot slide), `timing.test.mjs` (A5), `blend.test.mjs` (A6), `ride.test.mjs` (A8), `perf.test.mjs` (A9), `dsl.test.mjs`.
+`registerAllClips(ClipLib, {humanoid})` (anim/boot.js) registers 146 authored clips and 17 adopted UAL clips (19 candidates in `ual_adopt.js`, 2 rejected at boot; 6 of the adopted ones replace an authored twin). Evidence: `tests/anim/clips.test.mjs` (A1, A2), `ranges.test.mjs` (A3 joint ranges, A7), `gait.test.mjs` (A3/A4 foot slide), `timing.test.mjs` (A5), `blend.test.mjs` (A6), `ride.test.mjs` (A8), `perf.test.mjs` (A9), `dsl.test.mjs`, `roster.test.mjs` (every shipped unit def with its real model: every clip the sim publishes for it, A4 at its own speed and scale, A7).
 
 ## 1. Humanoid (hum1 / hum_lite) sim slots
 
@@ -43,6 +43,8 @@ Extras registered under their own id (no authored twin; reachable through `model
 | catapult1 / ballista1 | idle, idle_combat, walk (pushed), launch (arm / string / bolt / stone), reload, hit_front, death_back; the crews play `crew_*` |
 | trojan1 | idle, idle_combat, walk, strike_ram, reveal (hatch ramp), death_back |
 | chicken1 | walk, trot, gallop (scurry), idle, idle_combat, strike_peck, flap, tantrum, hit_front, hit_back, stagger, stun, dizzy, cower, death_back |
+
+Rigs that lack a clip the sim may still publish use a documented substitute (`FALLBACK` in animator.js; the animator warns once per missing clip in tests, never in production): machines and the trojan horse do not stagger, stun, cower, get dizzy, cheer, taunt or get up (they stand: `idle` / `idle_combat`, `hit_front` for a hit); `death_front` / `death_spin` fall back to `death_back` on every non-quad rig; `rout` plays the fastest gait; `shoot_bow`, `throw` and `cast` on an animal or machine are the crew's job and the base plays `idle_combat` (the crew sub-rigs play `crew_shoot` / `crew_launch`).
 
 ## 3. Retargeted clips reviewed and rejected (measured reasons)
 

@@ -26,10 +26,15 @@ export class Loop {
   _autoScale(dt, t) {
     if (!this.settings.get('autoScale')) return;
     const s = this.scaler; const ms = dt * 1000;
-    if (ms > 24) { s.lowFor += dt; s.highFor = 0; } else if (ms < 14) { s.highFor += dt; s.lowFor = Math.max(0, s.lowFor - dt); } else { s.lowFor = Math.max(0, s.lowFor - dt * 0.5); }
+    // warm-up: shader compiles and first-battle allocations hitch; ignore the first 6 s of the page, of every battle and after any change, and single huge frames
+    if (!s.t0) s.t0 = t;
+    const g = this.game, key = g.state + ':' + (g.world ? g.world.arena.name : '');
+    if (key !== s.key) { s.key = key; s.warmUntil = t + 5000; }
+    if (t - s.t0 < 6000 || t < (s.warmUntil || 0) || dt > 0.25 || g.canvasMode === 'none' || g.canvasMode === 'preview' || g.paused) return;
+    if (ms > 28) { s.lowFor += dt; s.highFor = 0; } else if (ms < 15) { s.highFor += dt; s.lowFor = Math.max(0, s.lowFor - dt); } else { s.lowFor = Math.max(0, s.lowFor - dt * 0.5); }
     const eng = this.engine;
-    if (s.lowFor > 3 && t - s.lastChange > 4000) { // step down quickly
-      s.lowFor = 0; s.lastChange = t; s.changes.push(t);
+    if (s.lowFor > 4 && t - s.lastChange > 5000) { // step down quickly
+      s.lowFor = 0; s.lastChange = t; s.warmUntil = t + 3000; s.changes.push(t);
       if (eng.autoScale > 0.62) eng.setAutoScale(eng.autoScale - 0.12);
       else { const order = ['olympian', 'marble', 'papyrus', 'potato']; const i = order.indexOf(eng.qualityKey); if (i >= 0 && i < order.length - 1) { eng.setQuality(order[i + 1]); this.game.setTier(order[i + 1]); this.game.emit('toast', { text: 'Auto-quality lowered the graphics to keep things smooth', kind: 'info' }); } }
     } else if (s.highFor > 20 && t - s.lastChange > 60000 && eng.autoScale < 1) { s.highFor = 0; s.lastChange = t; eng.setAutoScale(Math.min(1, eng.autoScale + 0.1)); }

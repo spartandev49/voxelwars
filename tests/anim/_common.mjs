@@ -27,3 +27,14 @@ export function collectWarnings(fn) {
 }
 export const approx = (a, b, tol, msg) => { if (!(Math.abs(a - b) <= tol)) throw new Error(`${msg || 'approx'}: ${a} vs ${b} (tol ${tol})`); };
 export const ok = (name) => console.log('ok  ' + name);
+
+let _roster = null;
+/** the REAL roster: every shipped unit def with the model the renderer would build for it (content.modelFor + compileSoldier): [{id, def, model, scaleVec}] */
+export async function roster() {
+  if (_roster) return _roster;
+  const { buildContent } = await import('../../src/content/era_ancient/content.js');
+  const { compileSoldier } = await import('../../src/content/era_ancient/blueprints.js');
+  const c = buildContent(); c.setCompiler(compileSoldier);
+  _roster = c.unitList().map((def) => { const r = c.modelFor(def); return { id: def.id, def, model: r.model, scaleVec: r.scale || [1, 1, 1] }; });
+  return _roster;
+}

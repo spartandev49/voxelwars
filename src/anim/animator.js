@@ -131,6 +131,8 @@ const FALLBACK = {
   crew_idle: ['idle'], crew_shoot: ['shoot_bow', 'ride_shoot'], crew_crank: ['crew_idle'], crew_push: ['crew_idle'], crew_react: ['crew_idle'],
 };
 
+const NON_HUM_FALLBACK = { shoot_bow: ['idle_combat'], throw: ['idle_combat'], cast: ['idle_combat'], rout: ['run', 'gallop', 'trot', 'walk'] };
+
 // ------------------------------------------------------------------------------------------------------------------ gait sets
 // Locomotion ids the sim may publish; the animator replaces them by a speed-driven mix of the rig's gait clips (ordered by speedRef).
 const MOVE_IDS = { walk: 1, run: 1, jog: 1, trot: 1, gallop: 1, sprint: 1 };
@@ -245,9 +247,12 @@ function resolveClip(info, g, id) {
   };
   found = tryId(id);
   if (!found) {
-    const chain = FALLBACK[id];
+    // beasts, machines and crewed units do not attack with a bow or a spell themselves (the crew does) and flee at their fastest gait: documented, silent
+    const quiet = !g.hum && NON_HUM_FALLBACK[id];
+    const chain = quiet || FALLBACK[id];
     if (chain) for (let i = 0; i < chain.length && !found; i++) found = tryId(chain[i]);
     if (!found) found = tryId('idle');
+    if (quiet && found) { g.cache[id] = found; return found; }
     warnOnce(`missing clip '${id}' for rig ${g.clipRig}${found ? ' (using ' + found.id + ')' : ' (nothing to fall back on)'}`);
   }
   g.cache[id] = found || 0;

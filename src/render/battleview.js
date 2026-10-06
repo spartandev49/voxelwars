@@ -284,8 +284,9 @@ export class BattleView {
     if (this.corpseMode !== 'none' && this.corpseMode !== undefined && this.corpseMode === 'stay') {
       const ex = this.extra; ex.speed = 0; ex.gait = 0; ex.dead = true; ex.team = u.team; ex.t = this.time; ex.id = u.id; ex.hp = 0; ex.state = 0;
       const rt = ex.root; rt.y = rt.x = rt.z = rt.pitch = rt.roll = rt.yaw = 0;
-      this.animator.pose(r.model, u.anim, ex, r.pose);
       const sv = r.scaleVec, s = u.scale;
+      ex.heading = u.heading; ex.scale = s * sv[1]; ex.lod = 0;          // root offsets come back in world units (they must not reuse the previous unit's values)
+      this.animator.pose(r.model, u.anim, ex, r.pose);
       if (this.corpses.length >= this.maxCorpses) this.corpses.shift();
       this.corpses.push({ key: r.key, x: u.x + rt.x, y: u.y + rt.y, z: u.z + rt.z, h: u.heading + rt.yaw, sx: s * sv[0], sy: s * sv[1], sz: s * sv[2], pose: r.pose.slice(), team: u.team, stone: u.stone, pitch: (u.pitch || 0) + rt.pitch, roll: (u.roll || 0) + rt.roll });
     }
