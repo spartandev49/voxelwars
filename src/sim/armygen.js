@@ -68,16 +68,20 @@ export function layoutArmy(groups, zone, enemyZone, defs, opts = {}) {
   const place = (lineGroups, halfWidth, rankMax, gapAfter, formation, latShift, keepDepth) => {
     if (!lineGroups.length) return 0;
     const sp = Math.max(opts.spacing || 1.15, ...lineGroups.map((g) => g.def.radius * 1.77));
-    const maxFiles = Math.max(2, Math.floor((2 * halfWidth) / sp));
+    const groupGap = 0.5, G = lineGroups.length;
     const total = lineGroups.reduce((s, g) => s + g.n, 0);
-    const ranks = Math.max(1, Math.min(rankMax, Math.ceil(total / maxFiles)));
-    const gf = lineGroups.map((g) => Math.max(1, Math.ceil(g.n / ranks)));
-    const totalFiles = gf.reduce((s, a) => s + a, 0);
-    const groupGap = 0.5;
-    let lat = -(totalFiles * sp + (lineGroups.length - 1) * groupGap) / 2 + (latShift || 0);
+    // as wide as needed for rankMax ranks (never wider than the zone), files shared between the groups in proportion to their size
+    const maxFiles = Math.max(G, Math.floor((2 * halfWidth - (G - 1) * groupGap) / sp));
+    const totalFiles = Math.min(maxFiles, Math.max(G, Math.ceil(total / rankMax)));
+    const gf = lineGroups.map((g) => Math.max(1, Math.floor(g.n * totalFiles / total)));
+    let have = gf.reduce((s, a) => s + a, 0);
+    const frac = lineGroups.map((g, i) => [g.n * totalFiles / total - Math.floor(g.n * totalFiles / total), i]).sort((a, b) => b[0] - a[0] || a[1] - b[1]);
+    for (let k = 0; have < totalFiles && k < frac.length * 4; k++, have++) gf[frac[k % frac.length][1]]++;
+    while (have > totalFiles) { let bi = 0; for (let i = 1; i < G; i++) if (gf[i] > gf[bi]) bi = i; if (gf[bi] <= 1) break; gf[bi]--; have--; }
+    let lat = -(have * sp + (G - 1) * groupGap) / 2 + (latShift || 0);
     let maxRanks = 0;
-    for (let gi = 0; gi < lineGroups.length; gi++) {
-      const g = lineGroups[gi], files = gf[gi];
+    for (let gi = 0; gi < G; gi++) {
+      const g = lineGroups[gi], files = gf[gi], ranks = Math.max(1, Math.ceil(g.n / files));
       const chunk = Math.min(files, 10);                // squads are at most 10 files wide (they wheel as separate blocks)
       let remaining = g.n, fileCursor = 0;
       while (remaining > 0) {
@@ -86,7 +90,7 @@ export function layoutArmy(groups, zone, enemyZone, defs, opts = {}) {
         for (let k = 0; k < nSq; k++) {
           const col = k % f, row = (k / f) | 0;
           maxRanks = Math.max(maxRanks, row + 1);
-          out.push(mkPlacement(g.defId, fr, lat + (fileCursor + col + 0.5) * sp, u + row * sp, sid, formation, g.def));
+          out.push(mkPlacement(g.defId, fr, lat + (fileCursor + col + 0.5) * sp, u, row * sp, sid, formation, g.def));
         }
         remaining -= nSq; fileCursor += f; if (fileCursor >= files) fileCursor = 0;
       }
@@ -116,22 +120,25 @@ export function layoutArmy(groups, zone, enemyZone, defs, opts = {}) {
   place(lines.rear, lat0, 1, 0, 'line', 0, false);
   // compress depth if the formation is deeper than the zone
   const avail = Math.max(2, fr.depth - margin * 2);
-  const maxU = out.reduce((m, p) => Math.max(m, p.__u), 0);
-  if (maxU > avail) { const k = avail / maxU; for (const p of out) p.__u *= k; }
-  for (const p of out) finalize(p, fr, margin);
+  const maxU = out.reduce((m, p) => Math.max(m, p.__u + p.__row), 0), maxRow = out.reduce((m, p) => Math.max(m, p.__row), 0), maxStart = out.reduce((m, p) => Math.max(m, p.__u), 0);
+  const k = maxU > avail && maxStart > 0 ? Math.max(0, (avail - maxRow) / maxStart) : 1;
+  let fits = k > 0 || maxU <= avail + 1e-6;
+  for (const p of out) { if (!finalize(p, fr, margin, k)) fits = false; }
+  out.fits = fits && (maxRow + (k > 0 ? k * maxStart : 0)) <= avail + 1e-6;
   return out;
 }
 
-function mkPlacement(defId, fr, lx, lu, sid, formation, def) {
+function mkPlacement(defId, fr, lx, lineStart, row, sid, formation, def) {
   const order = def.ai && def.ai.style === 'flank' && def.role === 'cavalry' ? 'flank' : 'advance';
-  return { defId, x: 0, z: 0, heading: fr.heading, squadId: sid, formation, order, __l: lx, __u: lu };
+  return { defId, x: 0, z: 0, heading: fr.heading, squadId: sid, formation, order, __l: lx, __u: lineStart, __row: row };
 }
-function finalize(p, fr, margin) {
-  const frontDist = fr.depth / 2 - margin - p.__u;     // distance from the zone centre toward the enemy
+function finalize(p, fr, margin, k) {
+  const frontDist = fr.depth / 2 - margin - (p.__u * k + p.__row);     // distance from the zone centre toward the enemy (line starts compress, ranks keep their spacing)
   const hw = fr.width / 2 - 0.4;
-  const l = Math.max(-hw, Math.min(hw, p.__l));
+  const l = Math.max(-hw, Math.min(hw, p.__l)), ok = Math.abs(p.__l) <= hw + 1e-6 && frontDist <= fr.depth / 2 + 1e-6 && frontDist >= -fr.depth / 2 - 1e-6;
   if (fr.fx !== 0) { p.x = fr.cx + fr.fx * frontDist; p.z = fr.cz + l; } else { p.z = fr.cz + fr.fz * frontDist; p.x = fr.cx + l; }
-  delete p.__l; delete p.__u;
+  delete p.__l; delete p.__u; delete p.__row;
+  return ok;
 }
 
 // ---------------------------------------------------------------------------------------------------------------- composition
@@ -192,7 +199,7 @@ export function matchup(a, b) {
 }
 
 let _ct = null, _ctDefs = null;
-/** { defId: {counters:[ids], prey:[ids]} } for every non-boss unit (counters beat it at >= 1.25x equal-cost advantage; prey are the ones it beats that much). */
+/** { defId: {counters:[ids], prey:[ids], strong} } for every non-boss unit: the three best/worst equal-cost matchups (strong = the best counter has >= 1.25x advantage). tools/balance.mjs replaces the heuristic by measured win rates. */
 export function counterTable(defs) {
   defs = defsOr(defs);
   if (_ct && _ctDefs === defs) return _ct;
@@ -203,9 +210,13 @@ export function counterTable(defs) {
     const sc = [];
     for (const o of ids) { if (o === id) continue; sc.push([o, matchup(defs[o], d)]); }
     sc.sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
-    const counters = sc.filter((s) => s[1] >= 1.25 && !defs[s[0]].tags.includes('boss')).slice(0, 4).map((s) => s[0]);
-    const prey = sc.slice().reverse().filter((s) => s[1] <= 0.8 && !defs[s[0]].tags.includes('boss')).slice(0, 4).map((s) => s[0]);
-    out[id] = { counters, prey };
+    // swarm/beast fillers (chickens, goats, hounds) only count as counters of ranged/support units (their cost efficiency is a gag, not a tactic)
+    const eligible = (s) => !defs[s[0]].tags.includes('boss') && !((defs[s[0]].role === 'swarm' || defs[s[0]].role === 'beast') && d.role !== 'ranged' && d.role !== 'support');
+    const counters = sc.filter(eligible).slice(0, 3).map((s) => s[0]);
+    const prey = sc.slice().reverse().filter((s) => !defs[s[0]].tags.includes('boss')).slice(0, 3).map((s) => s[0]);
+    const top = sc.find(eligible);
+    const strong = !!top && top[1] >= 1.25;
+    out[id] = { counters, prey, strong };
   }
   _ct = out; _ctDefs = defs;
   return out;
@@ -249,10 +260,21 @@ function weightedPick(rng, items, wfn) {
  * tier ('potato'..'olympian') or cap, ids (allowed defIds).
  */
 export function generateArmy(opts) {
+  const zoneCap = { cap: Infinity };
+  for (let attempt = 0; attempt < 12; attempt++) {
+    const army = generateOnce(opts, zoneCap.cap);
+    if (!opts.zone && !opts.arena) return army;
+    if (army.placements.fits !== false) return army;
+    zoneCap.cap = Math.floor(army.total * 0.9);                   // the zone is too small for this many units: raise quality, not quantity
+  }
+  return generateOnce(opts, zoneCap.cap);
+}
+
+function generateOnce(opts, capLimit) {
   const defs = defsOr(opts.defs);
   const rng = new RNG(((opts.seed || 1) * 2654435761 + 12345) >>> 0);
   const budget = Math.max(0, opts.budget || BUDGET_PRESETS.battle);
-  const cap = opts.cap || TIER_CAPS[opts.tier || 'marble'] || 300;
+  const cap = Math.min(opts.cap || TIER_CAPS[opts.tier || 'marble'] || 300, capLimit);
   const style0 = STYLES.includes(opts.style) ? opts.style : 'balanced';
   const difficulty = opts.difficulty || 'normal';
   let against = null;

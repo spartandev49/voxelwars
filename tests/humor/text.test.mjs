@@ -158,7 +158,7 @@ M9.forEach((id, i) => {
   ok(m.reward.title === TITLES[i], id + ' reward title ' + m.reward.title);
 });
 ok(campaign.TEACHING_BEATS.length >= 4 && campaign.TEACHING_BEATS.every((b) => b.text && b.hint && words(b.text) <= 24), 'teaching beats');
-ok(Object.keys(campaign.REWARD_PARTS).length === 10, '10 silly reward parts');
+ok(Object.keys(campaign.REWARD_PARTS).length === 13 && ['silly_helms', 'silly_weapons', 'wings'].every((k) => campaign.REWARD_PARTS[k]), '10 silly reward parts plus the 3 unlock packs');
 for (const id of M9) ok(announcer.CATEGORIES.includes('campaign_' + id), 'announcer has campaign category for ' + id);
 
 // ---------- H4: banned-term sweep over EVERY user-visible string in the humor modules ----------

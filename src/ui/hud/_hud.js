@@ -22,6 +22,8 @@ import * as photo from './photo.js';
 import * as teaching from './teaching.js';
 import * as helpoverlay from './helpoverlay.js';
 
+/** Minimum gap between HUD data pulls / module updates. 105 ms keeps every DOM text write under 10 Hz even with clock jitter. */
+export const HUD_INTERVAL = 105;
 export const HUD_PARTS = [armymeter, timer, objective, mutators, speed, cameramodes, killfeed, announcer, selection, powers, orders, typecounts, minimap, bubbles, takecommand, photo, teaching, helpoverlay];
 const SLOTS = ['top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'];
 
@@ -93,7 +95,7 @@ export function mountHud(parent, ctx, opts) {
     hide, isHidden: () => hidden, toggleHide: () => hide(!hidden),
     update(hud, dt, force) {
       const t = performance.now();
-      if (!force && t - last < (o.interval || 100)) return false;
+      if (!force && t - last < (o.interval || HUD_INTERVAL)) return false;
       last = t; lastHud = hud;
       if (!hud) return false;
       for (let i = 0; i < list.length; i++) { const m = list[i]; if (!hidden || m.keep) m.api.update(hud, dt); }

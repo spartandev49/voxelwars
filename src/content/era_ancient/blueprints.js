@@ -10,7 +10,7 @@
 import { VoxelGrid, V, T, shade, hexToRGB, rgbToHex } from '../../voxel/grid.js';
 import { ModelDef } from '../../voxel/model.js';
 import { RNG, hashString, clamp } from '../../core/rng.js';
-import { PART_REGISTRY, CATEGORIES, registerParts, getPart, isPartUnlocked, listParts, UNLOCKS } from './parts/_registry.js';
+import { PART_REGISTRY, CATEGORIES, registerParts, getPart, isPartUnlocked, listParts, UNLOCKS, STYLE_K, ARM_REACH, naturalReach } from './parts/_registry.js';
 import { DIM, PART_ORDER, METALS, METAL_KEYS, EMBLEM_IDS, newGrid } from './parts/_kit.js';
 import { baseGrids } from './parts/_base.js';
 // side-effect imports: every core parts module registers itself
@@ -27,7 +27,7 @@ import './parts/weapons_ranged.js';
 import './parts/weapons_silly.js';
 import './parts/offhands.js';
 
-export { PART_REGISTRY, CATEGORIES, registerParts, getPart, isPartUnlocked, listParts, UNLOCKS, DIM, PART_ORDER, METALS, METAL_KEYS, EMBLEM_IDS };
+export { PART_REGISTRY, CATEGORIES, registerParts, getPart, isPartUnlocked, listParts, UNLOCKS, STYLE_K, ARM_REACH, naturalReach, DIM, PART_ORDER, METALS, METAL_KEYS, EMBLEM_IDS };
 
 // ------------------------------------------------------------------------------------------------ constants
 export const BODY_TYPES = { slim: [0.92, 1.0, 0.92], average: [1, 1, 1], stocky: [1.12, 0.98, 1.12] };
@@ -50,10 +50,6 @@ export const PAINT_CAP = 1500;
 /** Value stored in a paint RLE for "erase this generated voxel" (0 = untouched, any other value with the solid flag = set). */
 export const PAINT_ERASE = 1;
 const MAX_REACH = 3.6;
-/** how much of a weapon's length projects forward at the moment of contact (thrusts line up with the arm, swings arc down) */
-const STYLE_K = { thrust: 1.0, pike: 1.0, slash: 0.78, overhead: 0.72, bash: 0.8, throw: 0.75, cast: 0.75, shoot: 0.8, none: 0.8 };
-const ARM_REACH = 0.95;   // shoulder -> hand centre when the arm is extended (u)
-
 export class BlueprintError extends Error {
   constructor(errors) { super('Invalid blueprint: ' + errors.join(' ')); this.errors = errors; }
 }
@@ -404,7 +400,7 @@ export function compileSoldier(bpIn, opts = {}) {
   const radius = clamp(opts.radius !== undefined ? opts.radius : BODY_RADIUS[bp.body.type], 0.3, 0.7);
   return {
     model, scale: sc.slice(), grip: mainE.meta.grip ? mainE.meta.grip.slice() : [4, 10, 4], reach, height: hh.max[1] * sc[1], radius,
-    weaponStyle: style, twoHanded: !!mainE.meta.twoHanded, weaponLen: weapon.len, warnings: b.warnings, voxels: model.voxelCount(), parts: model.parts.length,
+    weaponStyle: style, weaponReady: mainE.meta.ready ?? null, twoHanded: !!mainE.meta.twoHanded, weaponLen: weapon.len, warnings: b.warnings, voxels: model.voxelCount(), parts: model.parts.length,
   };
 }
 

@@ -7,14 +7,14 @@ const EVENTS = ['pointerdown', 'mousedown', 'touchstart', 'touchend', 'click', '
  * saying whether audio is now running; the gate removes itself once it is.
  * @returns {() => void} uninstall function
  */
-export function installGate(target, onGesture, isRunning) {
+export function installGate(target, onGesture, isRunning, onDone) {
   if (!target || !target.addEventListener) return () => {};
   let done = false;
   const handler = (e) => {
     if (done) return;
     if (e && e.type === 'keydown' && (e.key === 'Escape')) return;      // Escape is not an activating key
     let r; try { r = onGesture(e); } catch (err) { return; }
-    Promise.resolve(r).then(() => { if (isRunning()) { done = true; remove(); } }, () => {});
+    Promise.resolve(r).then(() => { if (isRunning()) { done = true; remove(); if (onDone) onDone(); } }, () => {});
   };
   const remove = () => { for (const t of EVENTS) target.removeEventListener(t, handler, true); };
   for (const t of EVENTS) target.addEventListener(t, handler, { capture: true, passive: true });

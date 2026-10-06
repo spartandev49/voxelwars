@@ -31,9 +31,10 @@ function setSize(w, h, quality) {
 function buildItem(it) {
   const c = compileSoldier(it.bp, it.opts || {});
   const skin = new VoxSkin(eng, c.model, { capacity: 4, shadow: true });
-  const pose = it.pose === 'rest' ? readyPose({ parts: [], byId: {} }) : readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded });
-  const rest = new Float32Array(c.model.parts.length * 9); for (let i = 0; i < c.model.parts.length; i++) rest[i * 9 + 6] = rest[i * 9 + 7] = rest[i * 9 + 8] = 1;
-  return { c, skin, pose: it.pose === 'rest' ? rest : pose };
+  let pose;
+  if (it.pose === 'rest') { pose = new Float32Array(c.model.parts.length * 9); for (let i = 0; i < c.model.parts.length; i++) pose[i * 9 + 6] = pose[i * 9 + 7] = pose[i * 9 + 8] = 1; }
+  else pose = readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded, ready: c.weaponReady });
+  return { c, skin, pose };
 }
 
 export async function run(job) {

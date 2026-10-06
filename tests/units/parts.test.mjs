@@ -80,7 +80,7 @@ for (const id of Object.keys(PART_REGISTRY.mains)) {
   assert.ok(STYLES.includes(m.style), `${id} style ${m.style}`);
   assert.ok(Array.isArray(m.rest) && m.rest.length === 3 && m.rest.every(Number.isFinite), `${id} rest`);
   assert.deepEqual(m.grip, [4, 10, 4], `${id} grip`);
-  if (id !== 'none') { assert.ok(m.len >= 6 && m.len <= 38, `${id} len ${m.len}`); assert.ok((m.back ?? 8) <= 10, `${id} back`); }
+  if (id !== 'none') { assert.ok(m.len >= 6 && m.len <= 38, `${id} len ${m.len}`); assert.ok((m.back ?? 8) <= 10, `${id} back`); assert.ok(Number.isFinite(m.reach) && m.reach <= 3.6 + 1e-9, `${id} natural reach ${m.reach}`); assert.equal(typeof !!m.twoHanded, 'boolean'); }
 }
 
 // unlocks: silly parts are locked until their key is granted (E9)

@@ -118,8 +118,8 @@ function sheetFor(slice, idx0) {
       let x = 0;
       for (const [team, az] of [[0, VIEWS.q34], [1, VIEWS.q34], [0, VIEWS.back]]) { cells.push(cellFull(k, team, az, x, y)); x += sx(CW) + gap; }
       const mx0 = x;
-      [0, 1].forEach((team) => [VIEWS.front, VIEWS.q34, VIEWS.side, VIEWS.back].forEach((az, j) => cells.push(cellMini(k, team, az, mx0 + (team * 4 + j) * 132, y + 20))));
-      maxW = Math.max(maxW, mx0 + 8 * 132); y += sx(CH) + gap + 6;
+      [0, 1].forEach((team) => [VIEWS.front, VIEWS.q34, VIEWS.side, VIEWS.back].forEach((az, j) => cells.push(cellMini(k, team, az, mx0 + j * 132, y + 8 + team * 136))));
+      maxW = Math.max(maxW, mx0 + 4 * 132); y += sx(CH) + gap + 6;
     } else {
       for (const team of [0, 1]) {
         let x = 0;

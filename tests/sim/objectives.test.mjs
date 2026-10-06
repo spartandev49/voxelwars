@@ -78,7 +78,7 @@ await test('destroy: gate_door x2 (+ eliminate) completes only when both gates a
   const g = w.props.filter((p) => p.type === 'gate_door'); w.hurtProp(g[0], 9999); run(w, 0.3); assert.equal(w.state, 'running'); assert.ok(w.objective.progress > 0.2 && w.objective.progress < 0.7);
   w.hurtProp(g[1], 9999); run(w, 0.3); assert.equal(w.state, 'running', 'gates are down but the enemy still lives'); assert.ok(w.objective.propsDone);
   w.units.filter((u) => u.team === 1).forEach((u) => { u.hp = 1; const h = newHit(); h.noBlock = true; applyDamage(w, null, u, 1e9, h); }); run(w, 0.5);
-  assert.equal(w.state, 'ended'); assert.equal(w.winner, 0); assert.equal(log.find((e) => e[0] === 'battle_end')[1].reason, 'elimination');
+  assert.equal(w.state, 'ended'); assert.equal(w.winner, 0); assert.equal(log.find((e) => e[0] === 'battle_end')[1].reason, 'objective');
   // plain destroy (no eliminate) ends as soon as the props fall
   const w2 = world({ arenaObj: a, rules: Object.assign({ objective: { type: 'destroy', params: { props: ['gate_door'] } } }, NM) }); pin(add(w2, 'hoplite', 0, -20, 0)); pin(add(w2, 'hoplite', 1, 20, 20)); sentinels(w2);
   w2.props.filter((p) => p.type === 'gate_door').forEach((p) => w2.hurtProp(p, 9999)); run(w2, 0.3); assert.equal(w2.winner, 0); assert.equal(w2.endReason, 'objective');
@@ -90,7 +90,8 @@ await test('timeout: any objective may carry a time limit (lose | draw | win), r
   }
 });
 await test('timeLimit 0 means no limit; default 360 s decides by remaining cost', () => {
-  const w = world({ rules: { morale: false, timeLimit: 0 } }); pin(add(w, 'hoplite', 0, -20, 0)); pin(add(w, 'hoplite', 1, 20, 20)); run(w, 400); assert.equal(w.state, 'running'); w.rules.timeLimit = 360; run(w, 0.1); assert.equal(w.state, 'ended'); assert.equal(w.endReason, 'time');
+  const w = world({ rules: { morale: false, timeLimit: 0 } }); pin(add(w, 'hoplite', 0, -20, 0)); pin(add(w, 'hoplite', 1, 20, 20));
+  for (let s = 0; s < 400; s++) { w.lastDamageT = w.time; run(w, 1); } assert.equal(w.state, 'running'); w.rules.timeLimit = 360; run(w, 0.1); assert.equal(w.state, 'ended'); assert.equal(w.endReason, 'time');
 });
 
 finish('objectives');

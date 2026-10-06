@@ -63,7 +63,7 @@ export function generateLessons(log, ctx = {}) {
   // ---- enemy composition
   const enemyCost = {}; let ec = 0;
   for (const e of ev) if (e.type === 'unit_spawn' && e.p.team !== team) { const d = defs && defs[e.p.def]; if (!d) continue; const g = d.role === 'beast' ? 'swarm' : d.role; enemyCost[g] = (enemyCost[g] || 0) + d.cost; ec += d.cost; }
-  if (ec > 0) for (const g of Object.keys(enemyCost)) { const share = enemyCost[g] / ec; if (share > 0.35 && !won) add('composition', 32 + share * 30, { pct: Math.round(share * 100), role: g }); }
+  if (ec > 0) for (const g of Object.keys(enemyCost)) { const share = enemyCost[g] / ec; if (share > 0.35 && !won) add('composition', 18 + share * 22, { pct: Math.round(share * 100), role: g }); }
   // ---- pick the best three, distinct ids, deterministic tie-break
   cand.sort((a, b) => b.score - a.score || (a.id < b.id ? -1 : 1));
   const picked = [], seen = new Set();

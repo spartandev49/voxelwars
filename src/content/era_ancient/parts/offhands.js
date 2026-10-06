@@ -156,7 +156,7 @@ O.second_sword = {
   name: 'Second sword', meta: { kind: 'item', rest: [2.44, 0, 0] },
   build(ctx) {
     const g = newGrid('offhand');
-    B(g, 7, 7, 3, 9, 9, 4, V(mixRGB(0x7a5232, ctx.c.trim, 0.25)));                      // grip around the hand (y8)
+    B(g, 7, 7, 3, 9, 9, 4, V(mixRGB(0xa8743e, ctx.c.trim, 0.15)));                      // grip around the hand (y8)
     B(g, 7, 6, 3, 9, 6, 3, V(ctx.m[1])); B(g, 8, 5, 3, 8, 5, 3, V(ctx.m[2]));            // pommel
     B(g, 6, 10, 3, 10, 10, 5, V(ctx.m[2]));                                              // guard
     for (let y = 11; y <= 15; y++) { const hw = y > 14 ? 0 : 1; for (let z = 4 - hw; z <= 4 + hw; z++) B(g, 8, y, z, 8, y, z, V(ctx.m[z === 4 + hw && hw ? 4 : (z === 4 ? 2 : 3)])); }

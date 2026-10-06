@@ -82,17 +82,17 @@ async function start() {
     if (k === 'quality') { engine.setQuality(v); game.setTier(v); }
     else if (k === 'gore') game.view.gore = v; else if (k === 'corpses') game.view.corpseMode = v;
     else if (k === 'palette') game.view.setPalette(v);
-    else if (k === 'reduceMotion') { game.rig.reduceMotion = !!v; document.documentElement.classList.toggle('vw-reduce-motion', !!v); }
+    else if (k === 'reduceMotion') { game.rig.reduceMotion = !!v; game.view.hitStop = v ? 0 : 1; document.documentElement.classList.toggle('vw-reduce-motion', !!v); }
     else if (k === 'shake') game.rig.shakeAmp = v; else if (k === 'uiScale') document.documentElement.style.fontSize = (16 * v) + 'px';
     else if (k.startsWith('vol') && audio.setVolume) { for (const b of Object.keys(settings.get('vol'))) audio.setVolume(b, settings.get('vol.' + b)); } else if (k === 'muted' && audio.setMuted) audio.setMuted(v);
   });
   game.rig.reduceMotion = !!settings.get('reduceMotion'); game.rig.shakeAmp = settings.get('shake') ?? 1;
   document.documentElement.style.fontSize = (16 * (settings.get('uiScale') || 1)) + 'px';
   if (settings.get('reduceMotion')) document.documentElement.classList.add('vw-reduce-motion');
-  window.addEventListener('resize', () => engine.resize());
+  window.addEventListener('resize', () => { engine.resize(); game.onResize(); });
 
-  // title diorama: a small live battle plays behind the menu
-  startDiorama(game, content);
+  // the base screen decides what the 3D canvas does: live diorama behind the title, nothing behind opaque menus, the scene in battle/editors
+  router.onChange((id) => { const mod = router._mod(id); game.setCanvasMode((mod && mod.meta && mod.meta.canvas) || 'scene'); });
 
   // test hook (always installed; data + loop control only)
   installHook(app, input);
@@ -134,15 +134,6 @@ function platformApi() {
     clipboard: async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; } },
     pickFile: (accept) => new Promise((resolve) => { const i = document.createElement('input'); i.type = 'file'; if (accept) i.accept = accept; i.onchange = () => resolve(i.files && i.files[0] || null); i.click(); }),
     isTouch: matchMedia('(pointer: coarse)').matches, viewport: () => ({ w: innerWidth, h: innerHeight }), isPhone: () => Math.min(innerWidth, innerHeight) < 600,
-  };
-}
-
-/** A tiny scripted battle behind the title screen so the menu is alive. */
-function startDiorama(game, content) {
-  game.diorama = async () => {
-    const s = game.newSetup('quick', { arena: { presetId: 'marathon', size: 'small', seed: 11 }, rules: { budget: 3000 } });
-    await game.begin(s); game.autoFill(0, {}); game.autoFill(1, {});
-    game.rig.setMode('orbit'); game.rig.yaw = -0.6; game.rig.pitch = 0.5; game.rig.frame(0, 0, 36);
   };
 }
 

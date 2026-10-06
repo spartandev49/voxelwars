@@ -165,7 +165,7 @@ export class MusicDirector {
     if (this.pending) { const p = this.pending; this.pending = null; this.setMood(p.mood, p.o); }
     this._arm();
   }
-  _now() { return this.ctx ? this.ctx.currentTime : 0; }
+  _now() { return this.d.now ? this.d.now() : (this.ctx ? this.ctx.currentTime : 0); }
   _arm() { if (this.timer || !this.ctx) return; this.timer = this.setT(() => { this.timer = null; this.pump(); this._arm(); }, 1000); if (this.timer && this.timer.unref) this.timer.unref(); }
   /** keep cross-fade loop iterations scheduled (timer in the browser, called explicitly by the offline renderer) */
   pump(until) { if (this.player && this.ctx) this.player.pump(until === undefined ? this._now() : 0, until === undefined ? 4 : until - 0); for (const f of this.fading.slice()) if (f.endAt && this._now() > f.endAt) { f.dispose(); this.fading.splice(this.fading.indexOf(f), 1); } }
@@ -237,7 +237,7 @@ export class MusicDirector {
   }
   _crossTo(spec, token, source, trackId, o) {
     if (token !== this.token) return;
-    const ctx = this.ctx, t = (o && o.at !== undefined) ? o.at : ctx.currentTime, fade = o && o.fade !== undefined ? o.fade : XFADE_MOOD;
+    const ctx = this.ctx, t = (o && o.at !== undefined) ? o.at : this._now(), fade = o && o.fade !== undefined ? o.fade : XFADE_MOOD;
     const old = this.player;
     const p = new LoopPlayer({ ctx, buf: spec.buf, out: this.filter, loop: spec.loop, loopStart: spec.loopStart, loopEnd: spec.loopEnd, baked: spec.baked, gain: spec.gain });
     p.start(t, old ? fade : Math.min(fade, 1.0));

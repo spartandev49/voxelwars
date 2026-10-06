@@ -1,0 +1,621 @@
+// VOXELWARS balance & battle-quality harness (owned by SIM). Headless, deterministic, parallel (worker_threads).
+//
+//   node tools/balance.mjs [section ...] [--quick] [--workers=N] [--seed=N] [--no-report]
+//   sections: pairs duels comp fuzz mirror fun perf metrics soldier   (default: all)
+//
+// RUNTIME BUDGET (4 cores, idle machine; a busy machine is up to 2x slower):
+//   full run   ~ 35-50 min :  pairs 6 min, duels 1 min, comp 4 min, fuzz 10 min (2000 matchups + 100 NC), mirror 15 min (15 arenas x 400),
+//                             fun 10 min (3 setups x 200), metrics 3 min, soldier 4 min (5000 blueprints + 1000 sim runs), perf 1 min
+//   --quick    ~  6-8 min  :  every section at ~1/5 of its sample size (verdicts for sample-size criteria are marked "(quick)")
+// Results are merged into docs/balance_data.json section by section and docs/balance_report.md is regenerated from them, so partial runs
+// (`node tools/balance.mjs pairs`) only refresh their own section. Same code + same seeds => same numbers (perf is the only wall-clock section).
+import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
+import os from 'node:os';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const ROOT = path.resolve(HERE, '..');
+const SELF = fileURLToPath(import.meta.url);
+
+// =====================================================================================================================================
+//                                                       JOBS (run inside workers; pure functions of their input)
+// =====================================================================================================================================
+async function jobsModule() {
+  const H = await import('./lib/harness.mjs');
+  const G = await import('../src/sim/armygen.js');
+  const S = await import('../src/sim/stats.js');
+  const P = await import('../src/sim/power.js');
+  const R = await import('../src/core/rng.js');
+  const GEN = await import('../src/world/gen.js');
+  const ST = await import('../src/sim/consts.js');
+  const ABI = await import('../src/content/era_ancient/stats.js');
+  const D = await import('../src/sim/defs.js');
+  const SC = await import('./lib/scale.mjs');
+  return { H, G, S, P, R, GEN, ST, ABI, D, SC };
+}
+let M = null;
+
+const BOSS = (d) => d.tags.includes('boss') || d.role === 'monster';
+function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/** One battle -> compact record. j: {a:[{defId,n}]|placements, b, arena, size, arenaSeed, seed, rules, maxTime, hold:[team], metrics, tag} */
+function battle(j) {
+  const { H } = M;
+  const rules = Object.assign({ timeLimit: 360 }, j.rules || {});
+  const w = H.buildWorld({
+    arena: j.arena || 'marathon', size: j.size || 'medium', arenaSeed: j.arenaSeed || 5, seed: j.seed || 1, rules, defs: j.defs || undefined,
+    a: j.aP ? { placements: j.aP } : { groups: j.a }, b: j.bP ? { placements: j.bP } : { groups: j.b },
+  });
+  if (j.hold) for (const s of w.squads) if (j.hold.includes(s.team)) s.order = 'hold';
+  const kills = [], leaders = []; let first = -1, lastKill = 0, maxGap = 0, kk = 0;
+  const flavor = { lead: 0, swing: 0, gag: 0, hero: 0, streak: 0, low: 0, stale: 0, intervention: 0, blood: 0 };
+  w.ev.on('unit_kill', () => { const t = w.time; if (t - lastKill > maxGap) maxGap = t - lastKill; lastKill = t; kk++; });
+  w.ev.on('lead_change', (e) => { leaders.push(e.team); flavor.lead++; });
+  w.ev.on('big_swing', () => flavor.swing++);
+  w.ev.on('first_blood', () => flavor.blood++);
+  w.ev.on('hero_down', () => flavor.hero++);
+  w.ev.on('kill_streak', () => flavor.streak++);
+  w.ev.on('army_low', () => flavor.low++);
+  w.ev.on('stalemate_warning', () => flavor.stale++);
+  w.ev.on('intervention', () => flavor.intervention++);
+  for (const n of ['chicken_tantrum', 'philosopher_monologue', 'trojan_reveal', 'stone_gaze', 'throne_sit', 'catapult_misfire', 'cyclops_misaim', 'friendly_fire', 'trample', 'crowd_roar']) w.ev.on(n, () => flavor.gag++);
+  const maxT = j.maxTime || (rules.timeLimit > 0 ? rules.timeLimit + 6 : 900);
+  const met = j.metrics ? new H.Metrics(w) : null;
+  const t0 = performance.now();
+  let hazardBad = 0, hz = 0;
+  while (w.state !== 'ended' && w.time < maxT) {
+    w.tick(); if (met) met.sample();
+    if (j.s9 && (w.tickN % 15) === 0) hazardBad += blockedUnits(w, hz++);
+  }
+  const ms = performance.now() - t0;
+  if (w.time - lastKill > maxGap) maxGap = w.time - lastKill;
+  let changes = 0; for (let i = 1; i < leaders.length; i++) if (leaders[i] !== leaders[i - 1]) changes++;
+  const sc = w.stats, win = w.winner;
+  const keep = win >= 0 ? sc[win].aliveCost / Math.max(1, sc[win].startCost) : 0;
+  return {
+    winner: win, reason: w.endReason, t: +w.time.toFixed(2), ticks: w.tickN, ms: +ms.toFixed(1),
+    alive: [sc[0].alive, sc[1].alive], keep: +keep.toFixed(3), startCost: [sc[0].startCost, sc[1].startCost], startCount: [sc[0].startCount, sc[1].startCount],
+    aliveCost: [sc[0].aliveCost, sc[1].aliveCost], changes, maxGap: +maxGap.toFixed(1), kills: kk, flavor, metrics: met ? met.report() : null, hazardBad,
+  };
+}
+/** S9: grounded units standing inside blocked cells (blocking prop footprint / deep water / lava). */
+function blockedUnits(w, k) {
+  let bad = 0; const nav = w.nav;
+  for (let i = 0; i < w.units.length; i++) {
+    const u = w.units[i]; if (!u.alive || u.y - w.arena.cellHeight(u.x, u.z) > 0.6 || u.state === 12 || u.flying) continue;
+    if (u.knockT > 0 || u.air) continue;
+    if (!nav.walkable(u.x, u.z) && !nav.walkable(u.x + 0.35, u.z) && !nav.walkable(u.x - 0.35, u.z) && !nav.walkable(u.x, u.z + 0.35) && !nav.walkable(u.x, u.z - 0.35)) bad++;
+  }
+  return bad;
+}
+
+function equalCost(defs, id, budget) { return Math.max(1, Math.round(budget / defs[id].cost)); }
+
+const JOBS = {
+  battle,
+  /** pairs: unit i vs unit j at equal cost, both orientations */
+  pair(j) {
+    const defs = M.H.DEFS, n1 = equalCost(defs, j.i, j.budget), n2 = equalCost(defs, j.j, j.budget);
+    const r = battle({ a: [{ defId: j.i, n: n1 }], b: [{ defId: j.j, n: n2 }], seed: j.seed, arena: 'marathon', arenaSeed: 5 });
+    const s = battle({ b: [{ defId: j.i, n: n1 }], a: [{ defId: j.j, n: n2 }], seed: j.seed + 1, arena: 'marathon', arenaSeed: 5 });
+    const score = (rec, side) => (rec.winner < 0 ? 0.5 : rec.winner === side ? 1 : 0);
+    return { i: j.i, j: j.j, n: [n1, n2], score: (score(r, 0) + score(s, 1)) / 2, o: [score(r, 0), score(s, 1)], keep: [r.winner === 0 ? r.keep : -r.keep, s.winner === 1 ? s.keep : -s.keep], t: (r.t + s.t) / 2, reason: [r.reason, s.reason] };
+  },
+  perf(j) {
+    return j;
+  },
+  /** custom soldier: compile, derive, check efficiency, run a tiny sim */
+  soldier(j) {
+    const { S, P, R, H, D } = M;
+    const rng = new R.RNG(j.seed);
+    const out = { bad: 0, over: 0, worst: 0, crash: 0, byRole: {}, n: 0, sim: 0, errors: [] };
+    const weaponIds = Object.keys(S.WEAPON_ID_STYLE), shieldIds = Object.keys(S.SHIELDS), bodies = ['slim', 'average', 'stocky'];
+    const caps = S.STAT_CAPS, keys = Object.keys(caps);
+    const pickAI = ['charge', 'hold', 'skirmish', 'flank', 'guard', 'support'];
+    const effCache = {};
+    for (let k = 0; k < j.count; k++) {
+      // random legal point buy (sum <= 100, each <= cap), biased to extremes so "all-in" builds are covered
+      const st = {}; let left = 100; const order = keys.slice(); for (let i = order.length - 1; i > 0; i--) { const q = Math.floor(rng.next() * (i + 1)); [order[i], order[q]] = [order[q], order[i]]; }
+      const greedy = rng.next() < 0.5;
+      for (const key of order) { const cap = caps[key]; const v = greedy ? Math.min(cap, left, Math.floor(rng.next() * (cap + 1) * 1.6)) : Math.min(cap, left, Math.floor(rng.next() * (left / 2 + 1))); st[key] = v; left -= v; }
+      const wid = weaponIds[Math.floor(rng.next() * weaponIds.length)];
+      const ws = S.WEAPON_ID_STYLE[wid];
+      const legal = S.legalAbilities(ws); const abs = [];
+      for (let q = 0; q < 2; q++) if (legal.length && rng.next() < 0.7) { const a = legal[Math.floor(rng.next() * legal.length)]; if (!abs.includes(a)) abs.push(a); }
+      const off = rng.next() < 0.55 ? shieldIds[Math.floor(rng.next() * shieldIds.length)] : null;
+      const cs = { id: 'fz' + j.seed + '_' + k, name: 'Fuzz ' + k, blueprint: { main: wid, off, body: { type: bodies[Math.floor(rng.next() * 3)] } }, stats: st, abilities: abs, ai: pickAI[Math.floor(rng.next() * pickAI.length)], text: {} };
+      let def;
+      try { def = S.statsToUnitDef(cs, { weaponStyle: ws }); } catch (e) { out.crash++; if (out.errors.length < 5) out.errors.push(String(e && e.message)); continue; }
+      out.n++;
+      const role = def.role, base = S.roleEfficiency(role);
+      const eff = P.power(def) / def.cost / base;
+      const rr = out.byRole[role] || (out.byRole[role] = { n: 0, max: 0, sum: 0 });
+      rr.n++; rr.sum += eff; if (eff > rr.max) rr.max = eff;
+      if (eff > out.worst) out.worst = eff;
+      if (eff > S.EFFICIENCY_CAP + 1e-6) out.over++;
+      if (!(def.cost > 0) || !Number.isFinite(def.hp) || !Number.isFinite(def.speed) || def.radius > 0.7 + 1e-9) out.bad++;
+      // sim run: 3 customs vs 3 hoplites for 6 s (crash / NaN check)
+      if (j.sim && (k % j.sim) === 0) {
+        try {
+          const defs = Object.assign({}, H.DEFS); defs[def.id] = def;
+          const w = H.buildWorld({ defs, seed: k + 1, a: { groups: [{ defId: def.id, n: 3 }] }, b: { groups: [{ defId: 'hoplite', n: 3 }] }, arena: 'marathon', rules: { timeLimit: 30 } });
+          for (let t = 0; t < 180 && w.state !== 'ended'; t++) w.tick();
+          for (const u of w.units) if (!Number.isFinite(u.x) || !Number.isFinite(u.z) || !Number.isFinite(u.hp)) { out.crash++; break; }
+          out.sim++;
+        } catch (e) { out.crash++; if (out.errors.length < 5) out.errors.push('sim: ' + String(e && e.stack || e).split('\n').slice(0, 3).join(' | ')); }
+      }
+    }
+    return out;
+  },
+  /** S11/S22/S23 random matchup from seeds: styles/factions/budgets/arenas */
+  matchup(j) {
+    const { G, GEN, R, H } = M;
+    const rng = new R.RNG((j.seed * 2654435761) >>> 0);
+    const recipes = j.recipes || GEN.RECIPES;
+    const recipe = j.recipe || recipes[Math.floor(rng.next() * recipes.length)];
+    const arenaSeed = j.arenaSeed || 1 + Math.floor(rng.next() * 40);
+    const arena = H.getArena(recipe, j.size || 'medium', arenaSeed);
+    const factions = ['hellenes', 'romans', 'egyptians', 'persians', 'barbarians', 'carthage', 'mythic', 'mixed'];
+    const styles = G.STYLES, diffs = ['easy', 'normal', 'hard'];
+    const budget = j.budget || Math.round((j.bmin || 700) + rng.next() * ((j.bmax || 2600) - (j.bmin || 700)));
+    const pick = (a) => a[Math.floor(rng.next() * a.length)];
+    const opt = (team, seed) => ({ faction: pick(factions), style: pick(styles), budget, seed, team, arena, difficulty: 'normal' });
+    const oa = Object.assign(opt(0, j.seed * 2 + 1), j.oa || {}), ob = Object.assign(opt(1, j.seed * 2 + 2), j.ob || {});
+    const ra = G.generateArmy(oa);
+    const rb = G.generateArmy(Object.assign(ob, ob.style === 'counter' ? { against: ra.counts } : {}));
+    const rules = Object.assign({ timeLimit: 360 }, j.rules || {});
+    rules.difficulty = j.difficulty || pick(diffs);
+    const out = [];
+    const o = battle({ aP: ra.placements, bP: rb.placements, arena: recipe, size: j.size || 'medium', arenaSeed, seed: j.seed, rules, s9: j.s9 });
+    o.recipe = recipe; o.budget = budget; o.styles = [oa.style, ob.style]; o.factions = [oa.faction, ob.faction]; o.types = [ra.types, rb.types]; o.units = [ra.total, rb.total];
+    out.push(o);
+    if (j.swap) {
+      // sides swapped: same groups, mirrored zones. (true mirror when j.mirror: B gets A's groups)
+      const g1 = ra.groups, g2 = j.mirror ? ra.groups : rb.groups;
+      const o2 = battle({ a: g2, b: g1, arena: recipe, size: j.size || 'medium', arenaSeed, seed: j.seed + 7, rules });
+      o2.recipe = recipe; o2.budget = budget; out.push(o2);
+      const o1 = j.mirror ? battle({ a: g1, b: g2, arena: recipe, size: j.size || 'medium', arenaSeed, seed: j.seed + 3, rules }) : null;
+      if (o1) { o1.recipe = recipe; out[0] = o1; }
+    }
+    return out;
+  },
+  /** composition: faction/style matrix cell */
+  comp(j) {
+    const { G, H } = M;
+    const arena = H.getArena('marathon', 'medium', 5);
+    const res = [];
+    for (let s = 0; s < j.seeds; s++) {
+      const ra = G.generateArmy({ faction: j.fa, style: j.sa, budget: j.budget, seed: j.seed + s * 17, team: 0, arena });
+      const rb = G.generateArmy({ faction: j.fb, style: j.sb, budget: j.budget, seed: j.seed + s * 17 + 5, team: 1, arena, against: j.sb === 'counter' ? ra.counts : undefined });
+      const o1 = battle({ aP: ra.placements, bP: rb.placements, seed: j.seed + s, arena: 'marathon' });
+      const o2 = battle({ a: rb.groups, b: ra.groups, seed: j.seed + s + 1, arena: 'marathon' });
+      const sc = (o, side) => (o.winner < 0 ? 0.5 : o.winner === side ? 1 : 0);
+      res.push((sc(o1, 0) + sc(o2, 1)) / 2);
+    }
+    return { fa: j.fa, sa: j.sa, fb: j.fb, sb: j.sb, score: res.reduce((a, b) => a + b, 0) / res.length, n: res.length };
+  },
+  /** duels sanity battle: arbitrary groups + holds */
+  duel(j) { const r = battle(j); r.id = j.id; return r; },
+};
+
+// =====================================================================================================================================
+//                                                       WORKER POOL
+// =====================================================================================================================================
+if (!isMainThread) {
+  (async () => {
+    M = await jobsModule();
+    parentPort.postMessage({ ready: true });
+    parentPort.on('message', (m) => {
+      if (m.stop) { process.exit(0); }
+      try { parentPort.postMessage({ id: m.id, res: JOBS[m.kind](m.job) }); } catch (e) { parentPort.postMessage({ id: m.id, err: String(e && e.stack || e) }); }
+    });
+  })();
+}
+
+class Pool {
+  constructor(n) { this.n = n; this.workers = []; this.queue = []; this.busy = 0; this.pending = new Map(); this.nextId = 1; this.ready = 0; this.done = 0; this.total = 0; this.idle = []; }
+  async start() {
+    await Promise.all(Array.from({ length: this.n }, () => new Promise((resolve) => {
+      const w = new Worker(SELF, { workerData: {} });
+      w.on('message', (m) => {
+        if (m.ready) { this.idle.push(w); resolve(); return; }
+        const p = this.pending.get(m.id); this.pending.delete(m.id); this.done++;
+        this.idle.push(w);
+        if (m.err) p.reject(new Error(m.err)); else p.resolve(m.res);
+        this._pump();
+      });
+      w.on('error', (e) => { console.error('worker error', e); });
+      this.workers.push(w);
+    })));
+  }
+  run(kind, job) { return new Promise((resolve, reject) => { this.total++; this.queue.push({ kind, job, resolve, reject }); this._pump(); }); }
+  _pump() {
+    while (this.idle.length && this.queue.length) {
+      const w = this.idle.pop(), t = this.queue.shift(), id = this.nextId++;
+      this.pending.set(id, t); w.postMessage({ id, kind: t.kind, job: t.job });
+    }
+  }
+  async map(kind, jobs, label) {
+    const t0 = Date.now(); let last = 0;
+    const tick = setInterval(() => { const el = (Date.now() - t0) / 1000; if (el - last >= 15) { last = el; process.stderr.write(`  [${label}] ${this.done}/${this.total} jobs  ${el.toFixed(0)}s\n`); } }, 5000);
+    const before = this.done, tot0 = this.total;
+    const res = await Promise.all(jobs.map((j) => this.run(kind, j)));
+    clearInterval(tick); void before; void tot0;
+    return res;
+  }
+  async stop() { for (const w of this.workers) w.postMessage({ stop: true }); await new Promise((r) => setTimeout(r, 100)); for (const w of this.workers) w.terminate(); }
+}
+
+// =====================================================================================================================================
+//                                                       MAIN
+// =====================================================================================================================================
+const argv = process.argv.slice(2);
+const flag = (n, d) => { const a = argv.find((x) => x.startsWith('--' + n + '=')); return a ? a.split('=')[1] : d; };
+const QUICK = argv.includes('--quick');
+const ALL = ['pairs', 'duels', 'comp', 'fuzz', 'mirror', 'fun', 'metrics', 'soldier', 'perf'];
+const wanted = argv.filter((a) => !a.startsWith('--'));
+const sections = wanted.length ? wanted : ALL;
+const DATA_FILE = path.join(ROOT, 'docs/balance_data.json');
+const REPORT_FILE = path.join(ROOT, 'docs/balance_report.md');
+const pct = (x, d = 1) => (x * 100).toFixed(d) + '%';
+const med = (a) => { if (!a.length) return 0; const s = a.slice().sort((x, y) => x - y); return s[Math.floor(s.length / 2)]; };
+const quant = (a, q) => { if (!a.length) return 0; const s = a.slice().sort((x, y) => x - y); return s[Math.min(s.length - 1, Math.floor(s.length * q))]; };
+const mean = (a) => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0);
+
+async function sectionPairs(pool) {
+  const defs = M.H.DEFS, ids = Object.keys(defs).sort();
+  const budget = 2000, jobs = [];
+  for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) jobs.push({ i: ids[i], j: ids[j], budget, seed: 100 + hashStr(ids[i] + ids[j]) % 9000 });
+  const res = await pool.map('pair', QUICK ? jobs.filter((_, k) => k % 3 === 0) : jobs, 'pairs');
+  const m = {}; for (const id of ids) m[id] = {};
+  for (const r of res) { m[r.i][r.j] = r.score; m[r.j][r.i] = 1 - r.score; }
+  return { budget, ids, matrix: m, quick: QUICK, battles: res.length * 2, rows: res.map((r) => [r.i, r.j, r.score, r.n[0], r.n[1], +r.t.toFixed(0)]) };
+}
+
+async function sectionDuels(pool) {
+  const defs = M.H.DEFS;
+  const D = (id, n) => ({ defId: id, n });
+  const duels = [
+    { id: 'hoplite_vs_peltast_1v1', a: [D('hoplite', 1)], b: [D('peltast', 1)], seed: 11, want: 0, note: 'hoplite beats peltast in melee (1v1, adjacent start)' },
+    { id: 'hoplite_vs_cretan_1v1', a: [D('hoplite', 1)], b: [D('cretan_archer', 1)], seed: 12, want: 0, note: 'hoplite beats archer in melee (1v1)' },
+    { id: 'hoplites_vs_peltasts_eqcost', a: [D('hoplite', 20)], b: [D('peltast', 24)], seed: 13, want: 0, note: 'hoplite line beats equal-cost peltasts' },
+    { id: 'hoplites_vs_archers_eqcost', a: [D('hoplite', 20)], b: [D('cretan_archer', 22)], seed: 14, want: 0, note: 'hoplite line beats equal-cost archers' },
+    { id: 'cavalry_vs_archers', a: [D('companion_cavalry', 9)], b: [D('cretan_archer', 22)], seed: 15, want: 0, note: 'cavalry beats equal-cost archers' },
+    { id: 'spears_vs_cavalry', a: [D('hoplite', 20)], b: [D('companion_cavalry', 9)], seed: 16, want: 0, note: 'spears beat equal-cost cavalry' },
+    { id: 'spears_vs_cataphract', a: [D('hoplite', 20)], b: [D('cataphract', 6)], seed: 17, want: 0, note: 'spears beat equal-cost heavy cavalry' },
+    { id: 'elephant_vs_spears_fire', a: [D('war_elephant', 2)], b: [D('hoplite', 9), D('nubian_archer', 4)], seed: 18, want: 1, note: 'elephants lose to massed spears + fire arrows (~1300 each)' },
+    { id: 'elephant_vs_infantry', a: [D('war_elephant', 2)], b: [D('medjay', 15)], seed: 19, want: 0, note: 'elephants beat an equal-cost light infantry blob in the open' },
+    { id: 'elephant_vs_legionaries', a: [D('war_elephant', 2)], b: [D('legionary', 11)], seed: 20, want: -1, note: '(info) elephants vs legionaries' },
+    { id: 'catapult_vs_cluster', a: [D('catapult', 2)], b: [D('hoplite', 14)], seed: 21, want: 'cluster', hold: [1], rules: { timeLimit: 40 }, note: 'catapults kill a standing cluster (>= 5 kills within 40 s)', maxTime: 40 },
+    { id: 'archers_vs_cavalry', a: [D('cretan_archer', 22)], b: [D('companion_cavalry', 9)], seed: 22, want: 1, note: '(info) archers vs cavalry (cavalry should win)' },
+    { id: 'ballista_vs_heavy', a: [D('ballista', 4)], b: [D('hoplite', 10)], seed: 23, want: -1, note: '(info) ballista vs spearmen' },
+  ];
+  const res = await pool.map('duel', duels, 'duels');
+  return { duels: duels.map((d, i) => ({ id: d.id, note: d.note, want: d.want, winner: res[i].winner, reason: res[i].reason, t: res[i].t, alive: res[i].alive, kills: res[i].kills, keep: res[i].keep, startCount: res[i].startCount })) };
+}
+
+async function sectionComp(pool) {
+  const factions = ['hellenes', 'romans', 'egyptians', 'persians', 'barbarians', 'carthage', 'mythic'];
+  const jobs = [];
+  for (const fa of factions) for (const fb of factions) if (fa < fb) jobs.push({ fa, fb, sa: 'balanced', sb: 'balanced', budget: 3000, seeds: QUICK ? 2 : 4, seed: 500 + hashStr(fa + fb) % 5000 });
+  const styles = ['balanced', 'rush', 'ranged', 'elite', 'chaos', 'counter'];
+  const sjobs = [];
+  for (const sa of styles) for (const sb of styles) if (sa < sb) sjobs.push({ fa: 'mixed', fb: 'mixed', sa, sb, budget: 3000, seeds: QUICK ? 4 : 10, seed: 900 + hashStr(sa + sb) % 5000 });
+  const f = await pool.map('comp', jobs, 'comp/factions'), s = await pool.map('comp', sjobs, 'comp/styles');
+  return { factions: f.map((r) => [r.fa, r.fb, r.score]), styles: s.map((r) => [r.sa, r.sb, r.score]), factionList: factions, styleList: styles };
+}
+
+async function sectionFuzz(pool) {
+  const N = QUICK ? 300 : 2000, jobs = [];
+  for (let k = 0; k < N; k++) jobs.push({ seed: 7000 + k, bmin: 500, bmax: 2400 });
+  const res = (await pool.map('matchup', jobs, 'fuzz')).map((r) => r[0]);
+  const nc = [];
+  for (let k = 0; k < (QUICK ? 40 : 100); k++) nc.push({ seed: 7000 + k, bmin: 500, bmax: 2400, rules: { timeLimit: 20 } });
+  const ncRes = (await pool.map('matchup', nc, 'fuzz/NC')).map((r) => r[0]);
+  const byReason = {}; for (const r of res) byReason[r.reason] = (byReason[r.reason] || 0) + 1;
+  const ended = res.filter((r) => r.reason !== 'time' && r.t <= 360.5).length;
+  const ncEnded = ncRes.filter((r) => r.reason !== 'time').length;
+  const slow = res.filter((r) => r.reason === 'time').slice(0, 12).map((r) => ({ recipe: r.recipe, t: r.t, styles: r.styles, factions: r.factions, units: r.units, alive: r.alive }));
+  return { n: N, ended, frac: ended / N, byReason, ncN: ncRes.length, ncFrac: ncEnded / ncRes.length, ncReasons: ncRes.reduce((m, r) => { m[r.reason] = (m[r.reason] || 0) + 1; return m; }, {}), slow,
+    lenMed: med(res.map((r) => r.t)), lenP90: quant(res.map((r) => r.t), 0.9), recipes: groupBy(res, 'recipe', (a) => ({ n: a.length, time: a.filter((r) => r.reason === 'time').length, med: med(a.map((r) => r.t)) })) };
+}
+function groupBy(a, key, f) { const m = {}; for (const r of a) (m[r[key]] || (m[r[key]] = [])).push(r); const o = {}; for (const k of Object.keys(m).sort()) o[k] = f(m[k]); return o; }
+
+const SYMMETRIC = ['marathon', 'colosseum', 'persepolis', 'arenalab', 'oasis', 'olympus', 'cyclops'];
+const ASYMMETRIC = ['troy', 'thermopylae', 'nile', 'carthage', 'styx', 'alpine', 'giza', 'teutoburg'];
+async function sectionMirror(pool) {
+  const per = QUICK ? 40 : 200;                                   // pairs per arena; x2 orientations = 400 battles per arena (n >= 400)
+  const arenas = SYMMETRIC.concat(ASYMMETRIC), out = {};
+  const jobs = [];
+  for (const recipe of arenas) for (let k = 0; k < per; k++) jobs.push({ seed: 20000 + hashStr(recipe) % 1000 * 10 + k * 3, recipe, arenaSeed: 1 + (k % 8), bmin: 900, bmax: 1700, swap: true, mirror: (k % 2) === 0, difficulty: 'normal' });
+  const res = await pool.map('matchup', jobs, 'mirror');
+  for (const r of res) { for (const o of r) { const a = out[o.recipe] || (out[o.recipe] = { n: 0, a: 0, d: 0, t: [], time: 0 }); a.n++; if (o.winner === 0) a.a++; else if (o.winner < 0) a.d++; a.t.push(o.t); if (o.reason === 'time') a.time++; } }
+  const rows = {};
+  for (const recipe of arenas) { const a = out[recipe]; rows[recipe] = { n: a.n, winA: (a.a + a.d / 2) / a.n, draws: a.d / a.n, lenMed: med(a.t), time: a.time, asym: ASYMMETRIC.includes(recipe) }; }
+  return { per, rows };
+}
+
+async function sectionFun(pool) {
+  const N = QUICK ? 40 : 200;
+  const setups = [
+    { id: 'skirmish', label: 'skirmish 3,000 per side, mixed, balanced vs balanced, marathon', bmin: 3000, bmax: 3000, recipes: ['marathon'] },
+    { id: 'battle', label: 'battle 8,000 per side, mixed, random styles, marathon + 5 arenas', bmin: 8000, bmax: 8000, recipes: ['marathon', 'colosseum', 'persepolis', 'oasis', 'carthage', 'teutoburg'] },
+    { id: 'chaos', label: 'chaos 3,000 per side, chaos style both sides, random arena', bmin: 3000, bmax: 3000, oa: { style: 'chaos' }, ob: { style: 'chaos' } },
+  ];
+  const out = {};
+  for (const s of setups) {
+    const jobs = [];
+    const n = s.id === 'battle' ? Math.max(8, Math.round(N / 2)) : N;
+    for (let k = 0; k < n; k++) jobs.push({ seed: 40000 + hashStr(s.id) % 1000 * 50 + k, bmin: s.bmin, bmax: s.bmax, recipes: s.recipes || undefined, oa: s.oa, ob: s.ob, size: s.id === 'battle' ? 'large' : 'medium', difficulty: 'normal' });
+    const res = (await pool.map('matchup', jobs, 'fun/' + s.id)).map((r) => r[0]);
+    const decided = res.filter((r) => r.winner >= 0);
+    out[s.id] = {
+      label: s.label, n: res.length, leadChange: res.filter((r) => r.changes >= 1).length / res.length, steamroll: decided.filter((r) => r.keep > 0.8).length / res.length,
+      close: decided.filter((r) => r.keep < 0.4).length / res.length, deadAir: res.filter((r) => r.maxGap >= 20).length / res.length, deadAirMedian: med(res.map((r) => r.maxGap)),
+      lenMed: med(res.map((r) => r.t)), lenP10: quant(res.map((r) => r.t), 0.1), lenP90: quant(res.map((r) => r.t), 0.9),
+      announceEvents: mean(res.map((r) => r.flavor.lead + r.flavor.swing + r.flavor.blood + r.flavor.hero + r.flavor.streak + r.flavor.low + r.flavor.stale)),
+      gag: res.filter((r) => r.flavor.gag >= 1).length / res.length, kills: mean(res.map((r) => r.kills)), reasons: res.reduce((m, r) => { m[r.reason] = (m[r.reason] || 0) + 1; return m; }, {}),
+    };
+  }
+  return { setups: out };
+}
+
+async function sectionMetrics(pool) {
+  const jobs = [];
+  const arenas = QUICK ? ['marathon', 'colosseum', 'carthage'] : ['marathon', 'colosseum', 'persepolis', 'oasis', 'carthage', 'teutoburg', 'olympus', 'alpine', 'giza', 'thermopylae', 'nile', 'troy', 'styx', 'cyclops', 'arenalab'];
+  for (const a of arenas) jobs.push({ seed: 60000 + hashStr(a) % 1000, recipe: a, size: 'large', bmin: 20000, bmax: 20000, difficulty: 'normal', s9: true, metrics: true, maxTime: 60, rules: { timeLimit: 0 } });
+  const out = await pool.map('metricsBattle', jobs, 'metrics');
+  return { runs: out };
+}
+JOBS.metricsBattle = function (j) {
+  const { G, H } = M;
+  const arena = H.getArena(j.recipe, j.size, j.arenaSeed || 5);
+  const ra = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed, team: 0, arena });
+  const rb = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed + 1, team: 1, arena });
+  const o = battle({ aP: ra.placements, bP: rb.placements, arena: j.recipe, size: j.size, arenaSeed: j.arenaSeed || 5, seed: j.seed, rules: j.rules, maxTime: j.maxTime, metrics: true, s9: true });
+  o.recipe = j.recipe; o.units = [ra.total, rb.total];
+  return o;
+};
+
+async function sectionSoldier(pool) {
+  const total = QUICK ? 1000 : 5000, chunks = 20, per = Math.ceil(total / chunks);
+  const jobs = Array.from({ length: chunks }, (_, i) => ({ seed: 90000 + i, count: per, sim: QUICK ? 10 : 5 }));
+  const res = await pool.map('soldier', jobs, 'soldier');
+  const out = { n: 0, over: 0, worst: 0, crash: 0, bad: 0, sim: 0, byRole: {}, errors: [] };
+  for (const r of res) {
+    out.n += r.n; out.over += r.over; out.crash += r.crash; out.bad += r.bad; out.sim += r.sim; out.worst = Math.max(out.worst, r.worst); out.errors.push(...r.errors);
+    for (const k of Object.keys(r.byRole)) { const a = out.byRole[k] || (out.byRole[k] = { n: 0, max: 0, sum: 0 }); a.n += r.byRole[k].n; a.sum += r.byRole[k].sum; a.max = Math.max(a.max, r.byRole[k].max); }
+  }
+  for (const k of Object.keys(out.byRole)) { out.byRole[k].mean = out.byRole[k].sum / out.byRole[k].n; delete out.byRole[k].sum; }
+  out.errors = out.errors.slice(0, 5);
+  return out;
+}
+
+async function sectionPerf() {
+  const { measure } = await import('./perf_sim.mjs');
+  const budgets = { 150: 1.2, 300: 2, 500: 3, 1000: 6 }, rows = [];
+  for (const n of [150, 300, 500, 1000]) {
+    let r = null;
+    for (let rep = 0; rep < (QUICK ? 1 : 3); rep++) { const x = measure(n, { seed: 3 + rep, ticks: n > 500 ? 300 : 600 }); if (!r || x.msPerTick < r.msPerTick) r = x; }
+    rows.push({ units: n, alive: Math.round(r.alive), msPerTick: +r.msPerTick.toFixed(2), budget: budgets[n], pass: r.msPerTick <= budgets[n] });
+  }
+  // heap growth: a long fight between very tanky armies (10k ticks), GC forced before/after
+  let heap = null;
+  try {
+    const v8 = await import('node:v8'), vm = await import('node:vm');
+    v8.setFlagsFromString('--expose-gc'); const gc = vm.runInNewContext('gc');
+    const tank = Object.assign({}, M.H.DEFS);
+    for (const id of ['hoplite', 'legionary', 'peltast', 'pilum_thrower']) tank[id] = Object.assign(Object.create(Object.getPrototypeOf(M.H.DEFS[id])), M.H.DEFS[id], { hp: 90000 });
+    const w = M.H.buildWorld({ defs: tank, seed: 4, a: { groups: [{ defId: 'hoplite', n: 50 }, { defId: 'peltast', n: 25 }] }, b: { groups: [{ defId: 'legionary', n: 50 }, { defId: 'pilum_thrower', n: 25 }] }, rules: { timeLimit: 0, morale: false }, arena: 'marathon' });
+    for (let i = 0; i < 600; i++) w.tick();
+    gc(); const h0 = process.memoryUsage().heapUsed;
+    for (let i = 0; i < 10000; i++) w.tick();
+    gc(); const h1 = process.memoryUsage().heapUsed;
+    heap = { ticks: 10000, growthMB: +((h1 - h0) / 1e6).toFixed(3), alive: w.units.length, state: w.state };
+  } catch (e) { heap = { error: String(e && e.message) }; }
+  return { rows, heap };
+}
+
+// =====================================================================================================================================
+//                                                       VERDICTS + REPORT
+// =====================================================================================================================================
+function analysePairs(d) {
+  const { ids, matrix } = d, defs = M.H.DEFS;
+  const rows = ids.map((id) => {
+    const others = ids.filter((o) => o !== id);
+    const dd = defs[id], boss = BOSS(dd);
+    const field = others.filter((o) => !(boss && defs[o].cost < 120 && !BOSS(defs[o])));
+    const fw = mean(field.map((o) => matrix[id][o]));
+    const counters = others.filter((o) => matrix[o][id] >= 0.6).sort((a, b) => matrix[b][id] - matrix[a][id]);
+    const prey = others.filter((o) => matrix[id][o] >= 0.6).sort((a, b) => matrix[id][b] - matrix[id][a]);
+    return { id, role: dd.role, cost: dd.cost, boss, field: fw, counters, prey, quick: d.quick };
+  });
+  return rows;
+}
+
+function table(head, rows) { return ['| ' + head.join(' | ') + ' |', '|' + head.map(() => '---').join('|') + '|'].concat(rows.map((r) => '| ' + r.join(' | ') + ' |')).join('\n'); }
+
+function verdicts(data) {
+  const V = [];
+  const add = (id, pass, text) => V.push({ id, pass, text });
+  if (data.pairs) {
+    const rows = analysePairs(data.pairs); const q = data.pairs.quick ? ' (quick)' : '';
+    const over = rows.filter((r) => r.field > 0.62 && !r.boss);
+    const worst = rows.slice().sort((a, b) => b.field - a.field)[0];
+    add('U5a', over.length === 0, `no non-boss unit above 62% vs the field${q}: highest ${worst.id} ${pct(worst.field)}${over.length ? '; over: ' + over.map((r) => r.id + ' ' + pct(r.field)).join(', ') : ''}`);
+    const nb = rows.filter((r) => !r.boss);
+    const noC = nb.filter((r) => !r.counters.length), noP = nb.filter((r) => !r.prey.length);
+    add('U5b', noC.length === 0 && noP.length === 0, `every non-boss unit has a counter (>=60%) and a prey${q}: without counter [${noC.map((r) => r.id).join(', ')}]; without prey [${noP.map((r) => r.id).join(', ')}]`);
+  }
+  if (data.duels) {
+    const bad = []; let n = 0;
+    for (const d of data.duels.duels) {
+      if (d.want === -1) continue; n++;
+      let ok;
+      if (d.want === 'cluster') ok = d.kills >= 5; else ok = d.winner === d.want;
+      if (!ok) bad.push(d.id + ' (winner ' + d.winner + ', alive ' + d.alive.join('/') + ', kills ' + d.kills + ')');
+    }
+    add('U6', bad.length === 0, bad.length ? 'FAILED: ' + bad.join('; ') : `${n} duel sanity checks hold`);
+  }
+  if (data.fuzz) {
+    const f = data.fuzz;
+    add('S11', f.frac >= 0.99 && f.ncFrac < 0.99, `${pct(f.frac, 2)} of ${f.n} random matchups end with reason != time within 6 sim-min; NC timeLimit=20: ${pct(f.ncFrac)} (must fail the 99% bar)`);
+  }
+  if (data.fun) {
+    const s = data.fun.setups, def = s.battle || s.skirmish;
+    add('S12', s.skirmish.lenMed >= 60 && s.skirmish.lenMed <= 120 && def.lenMed >= 60 && def.lenMed <= 120 && def.lenP90 <= 180 && s.skirmish.lenP90 <= 180,
+      `battle length median/p90 (s): skirmish ${s.skirmish.lenMed.toFixed(0)}/${s.skirmish.lenP90.toFixed(0)}, battle ${s.battle ? s.battle.lenMed.toFixed(0) + '/' + s.battle.lenP90.toFixed(0) : '-'}, chaos ${s.chaos ? s.chaos.lenMed.toFixed(0) + '/' + s.chaos.lenP90.toFixed(0) : '-'}`);
+    const parts = Object.keys(s).map((k) => { const x = s[k]; return `${k}: lead>=1 ${pct(x.leadChange, 0)} (>=40), steamroll ${pct(x.steamroll, 0)} (<=20), close ${pct(x.close, 0)} (>=25), dead-air ${pct(x.deadAir, 0)}${k === 'chaos' ? ', gag ' + pct(x.gag, 0) + ' (>=60)' : ''}`; });
+    const ok = Object.keys(s).every((k) => s[k].leadChange >= 0.4 && s[k].steamroll <= 0.2 && s[k].close >= 0.25 && s[k].deadAir === 0) && (!s.chaos || s.chaos.gag >= 0.6);
+    add('S23', ok, parts.join('; ') + '; announcer line count is HUMOR/UI-owned (sim proxies: ' + Object.keys(s).map((k) => k + ' ' + s[k].announceEvents.toFixed(1)).join(', ') + ' announce-worthy events/battle)');
+  }
+  if (data.mirror) {
+    const rows = data.mirror.rows; const bad = [];
+    for (const k of Object.keys(rows)) { const r = rows[k], lo = r.asym ? 0.35 : 0.45, hi = r.asym ? 0.65 : 0.55; if (r.winA < lo || r.winA > hi) bad.push(`${k} ${pct(r.winA)}`); }
+    add('S22', bad.length === 0, `side-swapped mirror fairness, ${data.mirror.per * 2} battles per arena: ${bad.length ? 'outside band: ' + bad.join(', ') : 'all 15 arenas inside their band'}`);
+  }
+  if (data.soldier) {
+    const s = data.soldier;
+    add('U8', s.over === 0 && s.crash === 0 && s.bad === 0, `${s.n} random blueprints: ${s.over} above 1.35x role efficiency (worst ${s.worst.toFixed(3)}x), ${s.crash} crashes, ${s.bad} invalid defs, ${s.sim} sim runs`);
+  }
+  if (data.metrics) {
+    const r = data.metrics.runs;
+    const ov = mean(r.map((x) => x.metrics.overlap)), idle = mean(r.map((x) => x.metrics.idleInContact)), fl = mean(r.map((x) => x.metrics.flipsPerUnitSec)), st = mean(r.map((x) => x.metrics.stuck));
+    const hz = r.reduce((a, x) => a + x.hazardBad, 0);
+    add('S5', ov < 0.03, `overlap ${pct(ov, 2)} avg over ${r.length} arenas x 60 s ~200v200 (max ${pct(Math.max(...r.map((x) => x.metrics.overlap)), 1)} on ${r.slice().sort((a, b) => b.metrics.overlap - a.metrics.overlap)[0].recipe})`);
+    add('S6', idle < 0.03, `in-contact idle ${pct(idle, 2)}`);
+    add('S7', fl < 0.15, `heading flips ${fl.toFixed(3)} per unit-second`);
+    add('S8', st < 0.01, `stuck ${pct(st, 2)}`);
+    add('S9', hz === 0, `${hz} unit-samples inside blocked cells over ${r.length} battles`);
+  }
+  if (data.perf) {
+    const p = data.perf;
+    add('S3', p.rows.every((r) => r.pass) && p.heap && p.heap.growthMB < 1, p.rows.map((r) => `${r.units}u ${r.msPerTick} ms (<=${r.budget})`).join(', ') + `; heap growth over ${p.heap && p.heap.ticks} ticks ${p.heap && p.heap.growthMB} MB`);
+  }
+  return V;
+}
+
+function renderReport(data) {
+  const L = [];
+  L.push('# VOXELWARS balance report');
+  L.push('');
+  L.push('Generated by `node tools/balance.mjs` (SIM). Numbers are deterministic for a given code revision except the perf section (CPU time, noisy on a shared machine).');
+  L.push('Sections run: ' + Object.keys(data).filter((k) => k !== 'meta').map((k) => k + (data[k] && data[k].quick ? ' (quick)' : '')).join(', ') + '. Last update: ' + (data.meta && data.meta.updated || '') + '.');
+  L.push('');
+  const V = verdicts(data);
+  L.push('## Criteria');
+  L.push('');
+  L.push(table(['Criterion', 'Result', 'Evidence'], V.map((v) => [v.id, v.pass ? 'PASS' : 'FAIL', v.text.replace(/\|/g, '/')])));
+  L.push('');
+  if (data.pairs) {
+    const rows = analysePairs(data.pairs);
+    L.push('## Equal-cost mass battles (U5)');
+    L.push('');
+    L.push(`Every pair of the ${data.pairs.ids.length} shipped units fights at equal cost (~${data.pairs.budget} drachmae each side, marathon medium, both orientations; draw = 0.5). ${data.pairs.battles} battles. "field" is the mean win rate against all other units (bosses/monsters ignore opponents under cost 120, by design). Counter = a unit that beats it >= 60%; prey = beaten >= 60%.`);
+    L.push('');
+    L.push(table(['unit', 'role', 'cost', 'field win%', 'counters', 'prey'], rows.slice().sort((a, b) => b.field - a.field).map((r) => [r.id + (r.boss ? ' (boss)' : ''), r.role, r.cost, pct(r.field, 0), r.counters.slice(0, 4).join(', ') || '-', r.prey.slice(0, 4).join(', ') || '-'])));
+    L.push('');
+  }
+  if (data.duels) {
+    L.push('## Duel sanity (U6)');
+    L.push('');
+    L.push(table(['check', 'expected', 'winner', 'alive A/B', 'kills', 't (s)'], data.duels.duels.map((d) => [d.note, d.want === -1 ? 'info' : d.want === 'cluster' ? '>=5 kills' : d.want === 0 ? 'A' : 'B', d.winner < 0 ? 'draw' : d.winner === 0 ? 'A' : 'B', d.alive.join('/'), d.kills, d.t])));
+    L.push('');
+  }
+  if (data.comp) {
+    L.push('## Composition matrices');
+    L.push('');
+    L.push('Faction vs faction (generated balanced armies, 3,000 each; row beats column at the given score, both orientations):');
+    L.push('');
+    const fl = data.comp.factionList; const cell = (a, b) => { if (a === b) return '-'; const x = data.comp.factions.find((r) => (r[0] === a && r[1] === b) || (r[0] === b && r[1] === a)); if (!x) return '?'; return pct(x[0] === a ? x[2] : 1 - x[2], 0); };
+    L.push(table([''].concat(fl), fl.map((a) => [a].concat(fl.map((b) => cell(a, b))))));
+    L.push('');
+    L.push('Army style vs style (mixed factions, 3,000 each):');
+    L.push('');
+    const sl = data.comp.styleList; const cell2 = (a, b) => { if (a === b) return '-'; const x = data.comp.styles.find((r) => (r[0] === a && r[1] === b) || (r[0] === b && r[1] === a)); if (!x) return '?'; return pct(x[0] === a ? x[2] : 1 - x[2], 0); };
+    L.push(table([''].concat(sl), sl.map((a) => [a].concat(sl.map((b) => cell2(a, b))))));
+    L.push('');
+  }
+  if (data.fuzz) {
+    const f = data.fuzz;
+    L.push('## Termination fuzz (S11)');
+    L.push('');
+    L.push(`${f.n} random matchups (random factions/styles/budgets 500-2400, random arena recipe and seed, random difficulty): reasons ${JSON.stringify(f.byReason)}; median length ${f.lenMed.toFixed(0)} s, p90 ${f.lenP90.toFixed(0)} s. Negative control (timeLimit 20): ${JSON.stringify(f.ncReasons)}.`);
+    if (f.slow.length) { L.push(''); L.push('Slowest/unended examples: ' + f.slow.map((s) => `${s.recipe} ${s.units.join('v')}u ${s.styles.join('/')}`).join('; ')); }
+    L.push('');
+    L.push(table(['arena', 'n', 'time-limit endings', 'median s'], Object.keys(f.recipes).map((k) => [k, f.recipes[k].n, f.recipes[k].time, f.recipes[k].med.toFixed(0)])));
+    L.push('');
+  }
+  if (data.mirror) {
+    L.push('## Mirror fairness (S22)');
+    L.push('');
+    L.push(`Per arena ${data.mirror.per} army pairs (half true mirrors, half different equal-budget armies) x both orientations. "A wins" counts draws as half.`);
+    L.push('');
+    L.push(table(['arena', 'band', 'battles', 'A wins', 'draws', 'median s'], Object.keys(data.mirror.rows).map((k) => { const r = data.mirror.rows[k]; return [k, r.asym ? '35-65' : '45-55', r.n, pct(r.winA), pct(r.draws, 0), r.lenMed.toFixed(0)]; })));
+    L.push('');
+  }
+  if (data.fun) {
+    L.push('## Fun metrics (S12 / S23)');
+    L.push('');
+    L.push(table(['setup', 'n', 'len med/p10/p90 s', 'lead change>=1', 'steamroll>80%', 'close<40%', 'dead air>=20s', 'gag', 'kills', 'endings'], Object.keys(data.fun.setups).map((k) => { const x = data.fun.setups[k]; return [x.label, x.n, `${x.lenMed.toFixed(0)}/${x.lenP10.toFixed(0)}/${x.lenP90.toFixed(0)}`, pct(x.leadChange, 0), pct(x.steamroll, 0), pct(x.close, 0), pct(x.deadAir, 0), pct(x.gag, 0), x.kills.toFixed(0), JSON.stringify(x.reasons)]; })));
+    L.push('');
+  }
+  if (data.metrics) {
+    L.push('## Battle quality metrics (S5-S9)');
+    L.push('');
+    L.push('Generated 20,000-drachma armies (~200 units a side), first 60 sim-seconds, `normal` difficulty.');
+    L.push('');
+    L.push(table(['arena', 'units', 'overlap', 'idle in contact', 'flips/unit-s', 'stuck', 'blocked-cell samples', 'ended'], data.metrics.runs.map((r) => [r.recipe, r.units.join('v'), pct(r.metrics.overlap, 2), pct(r.metrics.idleInContact, 2), r.metrics.flipsPerUnitSec.toFixed(3), pct(r.metrics.stuck, 2), r.hazardBad, r.reason || 'running'])));
+    L.push('');
+  }
+  if (data.soldier) {
+    const s = data.soldier;
+    L.push('## Custom soldier fuzzer (U8)');
+    L.push('');
+    L.push(`${s.n} random legal blueprints (random weapon/shield/body/point-buy/abilities). Worst efficiency ${s.worst.toFixed(3)}x of the best shipped unit in its role (cap 1.35x). Crashes ${s.crash}, invalid defs ${s.bad}, tiny sim runs ${s.sim}.`);
+    L.push('');
+    L.push(table(['role', 'n', 'mean eff.', 'max eff.'], Object.keys(s.byRole).map((k) => [k, s.byRole[k].n, s.byRole[k].mean.toFixed(3), s.byRole[k].max.toFixed(3)])));
+    L.push('');
+  }
+  if (data.perf) {
+    L.push('## Performance (S3)');
+    L.push('');
+    L.push(table(['units', 'avg alive', 'ms/tick (CPU)', 'budget', 'result'], data.perf.rows.map((r) => [r.units, r.alive, r.msPerTick, r.budget, r.pass ? 'PASS' : 'FAIL'])));
+    L.push('');
+    L.push('Heap growth: ' + JSON.stringify(data.perf.heap));
+    L.push('');
+  }
+  return L.join('\n') + '\n';
+}
+
+async function main() {
+  M = await jobsModule();
+  const workers = Math.max(1, Math.min(+flag('workers', Math.min(4, os.cpus().length)), 16));
+  let data = {};
+  try { data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch (e) { data = {}; }
+  const pool = new Pool(workers); await pool.start();
+  const t0 = Date.now();
+  const runners = { pairs: sectionPairs, duels: sectionDuels, comp: sectionComp, fuzz: sectionFuzz, mirror: sectionMirror, fun: sectionFun, metrics: sectionMetrics, soldier: sectionSoldier };
+  for (const s of sections) {
+    if (s === 'perf') continue;
+    if (!runners[s]) { console.error('unknown section ' + s); continue; }
+    const t = Date.now();
+    data[s] = await runners[s](pool); data[s].quick = QUICK; data[s].seconds = +((Date.now() - t) / 1000).toFixed(0);
+    console.log(`section ${s} done in ${data[s].seconds}s`);
+    const vs = verdicts({ [s]: data[s] }); for (const v of vs) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data));
+  }
+  await pool.stop();
+  if (sections.includes('perf')) {                                // CPU-time perf runs alone, after the workers are gone
+    data.perf = await sectionPerf(); data.perf.quick = QUICK;
+    for (const v of verdicts({ perf: data.perf })) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
+  }
+  data.meta = { updated: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC' };
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data));
+  if (!argv.includes('--no-report')) { fs.writeFileSync(REPORT_FILE, renderReport(data)); console.log('wrote docs/balance_report.md'); }
+  console.log(`total ${((Date.now() - t0) / 1000).toFixed(0)}s`);
+  process.exit(0);
+}
+if (isMainThread) main().catch((e) => { console.error(e); process.exit(1); });

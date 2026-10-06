@@ -48,7 +48,7 @@
      K.roving(container, {selector, orientation}) -> off()    arrow-key focus movement for menus/toolbars
      K.focusables(root) -> HTMLElement[]    K.focusFirst(root)
    SETTINGS HOOKS
-     K.applyUiSettings(settings) / K.installUiSettings(ctx) -> unsubscribe
+     K.applyUiSettings(settings) / K.installUiSettings(ctx) -> unsubscribe     (html font-size = 16px x settings.uiScale x window fit; fit is 1 up to 1280x720 and grows to 1.3 at 1920x1080)
    ===================================================================================================== */
 import { icon as makeIcon, ICON_NAMES } from './icons.js';
 import { ROLE_ICON, ROLE_LABEL, ROLE_CHIP, factionColor, counterHints } from './unitinfo.js';
@@ -61,10 +61,15 @@ const root = () => document.documentElement;
 const appRoot = () => document.getElementById('vw-root') || document.body;
 
 /* ---------------------------------------------------------------- core */
+let fitRaf = 0;
 export function init(ctx) {
   if (ctx && ctx !== CTX) {
     CTX = ctx;
     try { installUiSettings(ctx); } catch (e) { /* settings may be partial in tests */ }
+    if (!init.bound) {
+      init.bound = true;
+      window.addEventListener('resize', () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(() => { if (CTX) applyUiSettings(CTX.settings); }); });
+    }
   }
   return CTX;
 }
@@ -165,7 +170,13 @@ export function applyUiSettings(settings) {
   r.classList.toggle('vw-pal-cvd', pal === 'cvd');
   r.classList.toggle('vw-pal-contrast', pal === 'contrast');
   const sc = clamp(+g('uiScale', 1) || 1, 0.8, 1.3);
-  r.style.fontSize = (16 * sc) + 'px';
+  r.style.fontSize = (16 * sc * viewportFit()) + 'px';
+}
+/** Big windows get proportionally bigger UI (1920x1080 -> 1.3x); anything at or below 1280x720 (and every phone) is 1x. "UI size 100%" means "fit to this window". */
+function viewportFit() {
+  const w = window.innerWidth, hh = window.innerHeight;
+  if (w < 1500) return 1;
+  return clamp(Math.min(w / 1280, hh / 720), 1, 1.3);
 }
 export function installUiSettings(ctx) {
   applyUiSettings(ctx.settings);
@@ -235,7 +246,7 @@ export function button(label, o) {
   const sound = o.sound === undefined ? (v === 'primary' ? 'ui_confirm' : 'ui_click') : o.sound;
   el.addEventListener('pointerenter', (e) => { if (!el.disabled) hoverSfx(e); });
   el.addEventListener('click', (e) => {
-    if (el.disabled || el.getAttribute('aria-disabled') === 'true') { e.preventDefault(); return; }
+    if (el.disabled) { e.preventDefault(); return; }       // native disabled = inert; aria-disabled stays clickable so the screen can explain why
     if (sound) sfx(sound);
     if (o.onClick) o.onClick(e);
   });
@@ -737,7 +748,7 @@ export function banner(text, o) {
 }
 export function progress(o) {
   o = o || {};
-  const el = h('div', { class: ['vw-progress', o.tone && 'vw-progress--' + o.tone, o.thin && 'vw-progress--thin', o.tall && 'vw-progress--tall', o.class], role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(o.max != null ? o.max : 1), 'aria-label': o.aria || o.label || 'Progress' },
+  const el = h('div', { class: ['vw-progress', o.tone && 'vw-progress--' + o.tone, o.thin && 'vw-progress--thin', o.tall && 'vw-progress--tall', o.class], id: o.id, role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(o.max != null ? o.max : 1), 'aria-label': o.aria || o.label || 'Progress' },
     h('div', { class: 'vw-progress__fill' }), o.label !== false && o.showLabel !== false ? h('div', { class: 'vw-progress__label' }) : null);
   const lab = el.querySelector('.vw-progress__label');
   let mx = o.max != null ? o.max : 1;

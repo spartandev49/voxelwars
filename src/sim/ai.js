@@ -212,7 +212,8 @@ export function think(w, u, dt) {
   }
   const melee = def.melee, ranged = def.ranged;
   if (u.guard && guardBehaviour(w, u, speedBase)) return;
-  if (u.breach || (u.blockT > 0.7 && (melee || info.siege) && !info.support)) { if (breachBehaviour(w, u, t, dt, speedBase, info)) return; }
+  if (sq && sq.breach && !u.breach && (melee || info.siege) && !info.support) { const pb = sq.breach, dd = hyp(pb.x - u.x, pb.z - u.z) - pb.radius; if (dd < 7) u.breach = pb; }
+  if (u.breach || ((u.blockT > 0.7 || u.blockSoft > 0.5) && (melee || info.siege) && !info.support)) { if (breachBehaviour(w, u, t, dt, speedBase, info)) return; }
   if (t) {
     const dx = t.x - u.x, dz = t.z - u.z, dist = hyp(dx, dz), gap = dist - u.radius - t.radius;
     const want = Math.atan2(dx, dz);
@@ -253,6 +254,7 @@ function breachBehaviour(w, u, t, dt, speedBase, info) {
     if (u.breachT > 0) { u.breachT -= dt; return false; }
     const l = hyp(u.dvx, u.dvz);
     if (l < 0.3) return false;
+    u.blockSoft = 0;
     p = w.nearestSoftProp(u.x + u.dvx / l * 1.4, u.z + u.dvz / l * 1.4, 1.5);
     if (!p) { u.breachT = 1.0; return false; }
     u.breach = p; u.breachT = 0;

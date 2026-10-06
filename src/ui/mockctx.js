@@ -354,7 +354,7 @@ export function buildGame(content, save, settings) {
     camera: { mode: 'orbit', setMode() {}, follow() {}, photo: async () => '' },
     select() {}, selected() { return null; }, hover() { return null; }, command() {}, cast() {}, possess() {}, godPowers() { return []; },
     hud() { G._time += 0.1; return { state: G.state, time: G._time, speed: G.speed, paused: G.paused, fps: 60, cam: 'orbit', teams: [{ team: 0, name: 'Blue', alive: 38, start: 40, cost: 3900, costStart: 4000, byType: [] }, { team: 1, name: 'Red', alive: 31, start: 40, cost: 3300, costStart: 4000, byType: [] }], objective: null, killfeed: [], announcer: null, selection: null, powers: [], orders: {}, countdown: 0, minimap: {} }; },
-    on,
+    on, emit,
     results() { return { winner: 0, reason: 'elimination', time: 94, teams: [{ alive: 12, dead: 28, kills: 33, damage: 3411, lostCost: 2800 }, { alive: 0, dead: 40, kills: 28, damage: 3220, lostCost: 4000 }], mvp: { unit: { name: 'Hoplite #7' }, kills: 6, quote: 'Tell my shield I loved it.' }, funnyStats: [], lessons: [], canRematch: true, canNext: false }; },
   };
   return G;

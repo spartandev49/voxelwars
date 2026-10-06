@@ -13,6 +13,7 @@ import { CameraRig } from '../render/cameras.js';
 import { lin } from '../render/engine.js';
 import { teamColorsLinear } from '../render/style.js';
 import { formationOffsets, placeOffsets } from '../sim/formations.js';
+import { WorldLabels } from '../render/labels.js';
 import { UndoStack } from '../core/undo.js';
 import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
@@ -41,7 +42,7 @@ export class Game {
   constructor(app) {
     this.app = app; this.engine = app.engine; this.content = app.content; this.settings = app.settings; this.audio = app.audio;
     this.bus = app.bus || new EventBus();
-    this.state = 'idle'; this.world = null; this.setup = null;
+    this.state = 'idle'; this.canvasMode = ''; this.world = null; this.setup = null; this.labels = new WorldLabels();
     this.rig = new CameraRig(this.engine);
     this.terrain = new TerrainRenderer(this.engine.scene);
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
@@ -49,6 +50,8 @@ export class Game {
     const A = ANIMATOR && ANIMATOR.Animator; const animator = A ? (typeof A === 'function' ? new A() : A) : new TempAnimator();
     this.animator = animator;
     this.view = new BattleView({ engine: this.engine, fx: this.fx, animator, modelFor: (d, u) => this.content.modelFor(d, u), palette: this.settings.get('palette') || 'classic', gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay' });
+    this.view.onImpact = (p) => { const d = Math.hypot(p.x - this.rig.tx, p.z - this.rig.tz); if (d < 45 && this.state === 'running') this.rig.addTrauma(p.crit ? 0.17 : 0.09); };
+    this.view.hitStop = this.settings.get('reduceMotion') ? 0 : 1;
     this.view.onShake = (a, x, z) => { this.rig.addTrauma(a); this.rig.kickFov(a * 3); };
     this.paused = false; this.speed = 1; this.acc = 0; this.alpha = 1; this.clock = 0;
     this.brushState = { mode: 'single', defId: 'hoplite', team: 0, formation: 'block', count: 9, mirror: false, order: 'advance', custom: null };
@@ -67,8 +70,8 @@ export class Game {
   }
 
   on(ev, fn) { return this.bus.on('game:' + ev, fn); }
-  emit(ev, p) { this.bus.emit('game:' + ev, p || {}); }
-  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; }
+  emit(ev, p) { if (this.isDiorama) return; this.bus.emit('game:' + ev, p || {}); }
+  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 38, marble: 56, olympian: 76 }[this.tier] || 56; }
   setTier(t) { this.tier = t; this._applyTier(); }
 
   // ------------------------------------------------------------------ setup / lifecycle
@@ -94,8 +97,9 @@ export class Game {
   }
 
   /** Build the world + scene and enter PLACEMENT. */
-  async begin(setup, { keepPlacements = false } = {}) {
+  async begin(setup, { keepPlacements = false, diorama = false } = {}) {
     this.dispose(false);
+    this.isDiorama = !!diorama;
     this.setup = setup; this.rules = setup.rules;
     const arena = this._arenaFor(setup);
     const rules = Object.assign({}, setup.rules, { timeLimit: setup.rules.timeLimit === undefined || setup.rules.timeLimit === null ? 360 : +setup.rules.timeLimit });
@@ -113,12 +117,20 @@ export class Game {
     this.rig.frame(0, 0, w.arena.worldSize() * 0.55);
     this.undo.clear(); this.records.length = 0; this.killfeed.length = 0;
     this.acc = 0; this.paused = false; this.speed = 1; this.selectedId = 0; this.hoverId = 0;
+    if (diorama) {
+      // the title diorama: silent (no HUD, no stats, no audio), restarts itself with a new arena when the fight ends
+      w.events.on('battle_end', () => { this._dioramaEnd = this.clock + 3.5; });
+      this.state = 'diorama'; this.audio && this.audio.detach && this.audio.detach();
+      return;
+    }
     w.events.on('unit_kill', (p) => this._feed(p));
     w.events.on('battle_end', (p) => { this.state = 'ended'; this.emit('battle_end', this.results()); this.emit('state', { state: 'ended' }); });
     w.events.on('battle_start', () => { this.state = 'running'; this.emit('state', { state: 'running' }); this.emit('battle_start', {}); });
     w.events.on('battle_countdown', (p) => this.emit('countdown', p));
     w.events.on('explosion', (p) => this.rig.hint(p.x, p.z, 'explosion', 2));
     w.events.on('hero_down', () => { this.rig.addTrauma(0.35); });
+    if (this.audio && this.audio.attach) { try { this.audio.attach(w.events, { arena: w.arena, world: w, defs: this.content.defs, getListener: () => this.rig.listener }); } catch (e) { console.warn('audio attach failed', e); } }
+    this.labels.bind(w);
     this.state = 'placement';
     // restore / generate placements
     if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); }
@@ -428,8 +440,10 @@ export class Game {
   frame(dt) {
     const w = this.world; this.clock += dt;
     const eng = this.engine;
+    if (this.canvasMode === 'none' || this.canvasMode === 'preview') return;      // an opaque menu covers the canvas: do not pay for rendering it
+    if (this.state === 'diorama') this._dioramaFrame(dt);
     if (w) {
-      if ((this.state === 'countdown' || this.state === 'running' || this.state === 'ended') && !this.paused) {
+      if ((this.state === 'countdown' || this.state === 'running' || this.state === 'ended' || this.state === 'diorama') && !this.paused) {
         this.acc += Math.min(dt, 0.1) * this.speed;
         let n = 0;
         while (this.acc >= DT && n < 5) { w.tick(); this.acc -= DT; n++; this.fx.update(0); }
@@ -448,6 +462,50 @@ export class Game {
     if (this.audio && this.audio.setListener) { const l = this.rig.listener; this.audio.setListener(l.x, l.y, l.z, l.yaw); }
   }
 
+  // ------------------------------------------------------------------ title diorama + canvas mode
+  /** which screen layer is on top of the canvas: 'scene' (3D visible), 'diorama' (menu with live backdrop), 'none'/'preview' (opaque menu: the canvas is not rendered) */
+  setCanvasMode(m) {
+    if (m === this.canvasMode) return; this.canvasMode = m;
+    const el = this.engine.renderer.domElement; el.style.visibility = (m === 'none' || m === 'preview') ? 'hidden' : 'visible';
+    if (m === 'diorama') this.startDiorama(); else if (this.state === 'diorama') this.stopDiorama();
+    this._applyViewOffset();
+  }
+  /** Shift the 3D image to the right while the title menu occupies the left column of the screen. */
+  _applyViewOffset() {
+    const cam = this.engine.camera, el = this.engine.renderer.domElement;
+    const W = el.clientWidth || window.innerWidth, H = el.clientHeight || window.innerHeight;
+    if (this.state === 'diorama' && W > 900) { cam.setViewOffset(W, H, -W * 0.17, 0, W, H); } else if (cam.view && cam.view.enabled) cam.clearViewOffset();
+    cam.updateProjectionMatrix();
+  }
+  onResize() { this._applyViewOffset(); }
+  async startDiorama() {
+    if (this.state !== 'idle' && this.state !== 'diorama') return;
+    if (this.state === 'diorama' && this.world) return;
+    const SETS = [['marathon', 'hellenes', 'persians', 11], ['olympus', 'hellenes', 'romans', 21], ['giza', 'egyptians', 'persians', 31], ['troy', 'hellenes', 'hellenes', 41], ['teutoburg', 'romans', 'celts', 51], ['nile', 'egyptians', 'romans', 61], ['alpine', 'carthaginians', 'romans', 71]];
+    const pick = SETS[(this._dioramaIdx = ((this._dioramaIdx === undefined ? Math.floor(Math.random() * SETS.length) : this._dioramaIdx + 1)) % SETS.length)];
+    const factions = Object.keys(this.content.factions || {});
+    const f = (id, fb) => (factions.includes(id) ? id : fb);
+    const setup = this.newSetup('quick', { arena: { presetId: pick[0], size: 'small', seed: pick[3] }, rules: { budget: 2600, timeLimit: 120, gore: 'red' }, armies: { A: { faction: f(pick[1], 'hellenes'), placements: [], budget: null }, B: { faction: f(pick[2], 'persians'), placements: [], budget: null } } });
+    try {
+      await this.begin(setup, { diorama: true });
+    } catch (e) { console.warn('diorama failed', e); this.state = 'idle'; return; }
+    if (this.canvasMode !== 'diorama') { this.dispose(true); this.state = 'idle'; return; }
+    this.state = 'placement'; this.autoFill(0, {}); this.autoFill(1, {}); this.state = 'diorama';
+    const w = this.world; w.start(0); this.speed = 1; this.paused = false; this.acc = 0; this._dioramaEnd = 0;
+    this.rig.setMode('orbit'); this.rig.pitch = 0.46; this.rig.yaw = -0.5; this.frameArmies(true); this.rig.dist = Math.min(this.rig.dist, 46);
+    this._applyViewOffset();
+  }
+  stopDiorama() {
+    if (this.state !== 'diorama') return;
+    this.dispose(true); this.state = 'idle'; this.isDiorama = false; this._applyViewOffset();
+  }
+  _dioramaFrame(dt) {
+    const w = this.world; if (!w) return;
+    this.rig.yaw += dt * 0.045; this._dioramaT = (this._dioramaT || 0) + dt;
+    if (this._dioramaT > 0.8) { this._dioramaT = 0; this.frameArmies(false); this.rig.dist = Math.min(this.rig.dist, 46); }
+    if (this._dioramaEnd && this.clock > this._dioramaEnd) { this._dioramaEnd = 0; this.dispose(true); this.state = 'idle'; this.startDiorama(); }
+  }
+
   // ------------------------------------------------------------------ HUD / results
   hud() {
     const w = this.world; if (!w) return { state: this.state };
@@ -460,6 +518,7 @@ export class Game {
       objective: w.objective && w.objective.hud ? w.objective.hud(w) : null, killfeed: this.killfeed.slice(), announcer: this.announce,
       selection: show ? { id: show.id, defId: show.def.id, name: show.name || show.def.name, hp: show.hp, hpMax: show.hpMax, kills: show.kills, status: [], blurb: (show.def.text && show.def.text.blurb) || '' } : null,
       powers: this.godPowers(), minimap: null,
+      worldLabels: this.labels.snapshot(this.engine.camera, this.engine.renderer.domElement.clientWidth, this.engine.renderer.domElement.clientHeight, w.time),
     };
   }
   _byType(team) {
@@ -476,7 +535,8 @@ export class Game {
   }
 
   dispose(full) {
-    this.view.unbind();
+    if (this.audio && this.audio.detach) { try { this.audio.detach(); } catch (e) { /* ignore */ } }
+    this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
     this.terrain.clear(); this.fx.clear(); this.ghost.visible = false; this.records.length = 0;
   }

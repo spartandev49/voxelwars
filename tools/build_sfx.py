@@ -57,8 +57,10 @@ def layer_mix(layers, sr=A.SR):
         out[s:s + len(a)] += a
     return out
 
+CAT_KBPS = {'jingle': 80, 'horn': 80, 'voice': 72, 'death': 72, 'magic': 72, 'coin': 72, 'crowd': 56, 'destruction': 56, 'fire': 56, 'foley': 56, 'siege': 56, 'ambience': 48}   # others 64 kbps mono
+
 def process(spec):
-    o = dict(max=1.6, kbps=80, start_db=-42, end_db=-46, fout=0.05, gain=0.0)
+    o = dict(max=1.6, kbps=CAT_KBPS.get(spec.get('cat'), 64), start_db=-42, end_db=-46, fout=0.05, gain=0.0)
     o.update(spec.get('opts', {}))
     src = spec['src']
     if src.startswith('synth:'):

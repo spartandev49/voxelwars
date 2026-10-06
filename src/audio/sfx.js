@@ -49,7 +49,10 @@ export class SfxBank {
     let s = this.slots.get(key); if (s) return s;
     const def = CUES[fam]; let picks = def ? def.pick : [];
     if (def && layer >= 0 && def.layers) { const ly = def.layers[layer]; picks = ly.pick || (ly.cue && CUES[ly.cue] ? CUES[ly.cue].pick : []); }
-    const entries = picks.length ? this.catalog.select(picks, 'sfx') : [];
+    // `picks` is a union of selectors, or a list of groups tried in order (preferred family-specific assets, then generic fallbacks)
+    const groups = picks.length && Array.isArray(picks[0]) ? picks : [picks];
+    let entries = [];
+    for (const g of groups) { if (!g.length) continue; entries = this.catalog.select(g, 'sfx'); if (entries.length) break; }
     s = { key, entries, bag: new ShuffleBag([], this.rng), readyKey: '' };
     this.slots.set(key, s);
     return s;

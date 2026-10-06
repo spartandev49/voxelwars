@@ -8,5 +8,5 @@ reg('fire_every', {
     const st = ab.st; st.n++;
     if (st.n % (ab.p.n || 6) === 0 && w.weather.burnMul > 0.6) { p.fire = true; p.type = 'fire'; p.ap = 1; }
   },
-  onHitDealt(u, ab, w, dst, fin, o) { if (o.fire && dst.alive) w.burn(dst, 3 * w.weather.burnMul); },
+  onHitDealt(u, ab, w, dst, fin, o) { if (o.fire && dst.alive) w.burn(dst, 3); },
 });

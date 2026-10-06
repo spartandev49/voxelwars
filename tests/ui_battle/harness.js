@@ -36,7 +36,7 @@ function teardown() {
   cancelAnimationFrame(state.raf);
   if (state.onKey) window.removeEventListener('keydown', state.onKey);
   if (state.hud) { try { state.hud.destroy(); } catch (e) { /* ignore */ } state.hud = null; }
-  if (state.mock && state.mock.router) { try { state.mock.router.closeOverlay(); if (state.mock.router.base) state.mock.router.goto && 0; } catch (e) { /* ignore */ } }
+  if (state.mock && state.mock.router) { try { state.mock.router.destroy(); } catch (e) { /* ignore */ } }
 }
 
 function mountHudOnly(hopts) {

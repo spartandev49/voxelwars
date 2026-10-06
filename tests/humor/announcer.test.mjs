@@ -186,7 +186,7 @@ const ctx = { arena: 'marathon', factions: ['Hellenes', 'Persians'], speed: 1, p
     const ann = mk(seed, stats);
     ann.onEvent('battle_start', {}, ctx); run(ann, 60, 0.1);
     ann.onEvent('battle_end', { winner: 1, reason: 'elimination', t: 90, stats: {}, perDef: { 0: {}, 1: { sacred_chicken: 2, legionary: 4 } } }, ctx);
-    said = run(ann, 120, 0.1).find((l) => l.cat === 'defeat' && /chicken/i.test(l.text) && /3|three/i.test(l.text));
+    said = run(ann, 120, 0.1).find((l) => l.cat === 'defeat' && /chicken/i.test(l.text) && /3|three|third/i.test(l.text));
   }
   ok(said, 'a chicken-defeat callback quotes the lifetime count');
   const stats2 = { chickenDefeats: 0 };
@@ -194,7 +194,7 @@ const ctx = { arena: 'marathon', factions: ['Hellenes', 'Persians'], speed: 1, p
     const ann = mk(seed, stats2);
     ann.onEvent('battle_start', {}, ctx); run(ann, 60, 0.1);
     ann.onEvent('battle_end', { winner: 1, reason: 'elimination', t: 90, stats: {}, perDef: { 0: {}, 1: { sacred_chicken: 2 } } }, ctx);
-    ok(run(ann, 120, 0.1).every((l) => !/Chicken defeat number|times now/.test(l.text)), 'no chicken ledger line without chicken defeats');
+    ok(run(ann, 120, 0.1).every((l) => !/chicken defeat\. I keep a ledger|times now/.test(l.text)), 'no chicken ledger line without chicken defeats');
   }
   // milestone callback: win number 10 only
   const m = [];

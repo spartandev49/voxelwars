@@ -9,10 +9,11 @@ import { MATERIALS, HSTEP } from '../../src/world/arena.js';
 
 const quick = process.argv.includes('--quick');
 const SIZES = quick ? ['medium'] : ['small', 'medium', 'large'];
-const SEEDS = quick ? [3] : [1, 2, 3, 7, 11];
+const full = process.argv.includes('--full');
+const SEEDS = quick ? [3] : full ? [1, 2, 3, 7, 11, 13, 21] : [1, 3];
 const FLOAT_OK = new Set(['ship', 'cloud_island', 'reeds']);          // allowed on/over water
 let fails = 0;
-const fail = (msg) => { fails++; if (fails < 60) console.error('FAIL', msg); };
+const fail = (msg) => { fails++; if (fails < (+process.env.SHOWFAILS || 60)) console.error('FAIL', msg); };
 const hashArena = (a) => { let h = 2166136261 >>> 0; for (const v of a.h) { h ^= v; h = Math.imul(h, 16777619) >>> 0; } for (const v of a.m) { h ^= v + 77; h = Math.imul(h, 16777619) >>> 0; } h ^= a.props.length * 31 + a.hazards.length; const s = JSON.stringify([a.props, a.zones, a.hazards, a.env, a.water, a.lava]); for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; };
 const navOf = (a) => {
   const nav = new NavGrid(a);

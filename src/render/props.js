@@ -520,7 +520,6 @@ export class PropRenderer {
     const fx = this.fx; if (!fx) return;
     const e = cam ? cam.matrixWorld.elements : null, cx = e ? e[12] : 0, cy = e ? e[13] : 0, cz = e ? e[14] : 0;
     const maxD2 = (this.tier.cull * 0.85) ** 2, rate = this.tier.fx;
-    const night = this._night();
     for (let i = 0; i < this.emitters.length; i++) {
       const it = this.emitters[i]; if (!it.em) continue;
       if ((it.x - cx) ** 2 + (it.z - cz) ** 2 + (it.y - cy) ** 2 > maxD2) continue;
@@ -528,7 +527,7 @@ export class PropRenderer {
       if (it.etimer > 0) continue;
       for (let k = 0; k < it.em.length; k++) {
         const em = it.em[k];
-        if (em.kind === 'fire') { fx.fire(em.x, em.y, em.z, (fxRand.next() < 0.5 ? 1 : 2) * (night > 0.5 ? 1 : 1) * (rate < 0.6 ? 1 : 1)); if (fxRand.next() < 0.18 * rate) fx.smoke(em.x, em.y + 0.3, em.z, 1, 0x3a3d46); if (fxRand.next() < 0.1 * rate) fx.sparks(em.x, em.y + 0.1, em.z, 1, 0xffb02a, 1.6); }
+        if (em.kind === 'fire') { fx.fire(em.x, em.y, em.z, fxRand.next() < 0.5 ? 1 : 2); if (fxRand.next() < 0.07 * rate) fx.smoke(em.x, em.y + 0.5, em.z, 1, 0x9096a3); if (fxRand.next() < 0.1 * rate) fx.sparks(em.x, em.y + 0.1, em.z, 1, 0xffb02a, 1.6); }
         else if (em.kind === 'smoke') { if (fxRand.next() < 0.6 * rate) fx.smoke(em.x, em.y, em.z, 1, 0x666a74); }
         else if (em.kind === 'ember') { if (fxRand.next() < 0.5 * rate) fx.sparks(em.x, em.y, em.z, 1, 0xff8a2a, 1.4); }
       }
@@ -540,7 +539,7 @@ export class PropRenderer {
       it.etimer -= dt; if (it.etimer > 0) continue;
       const h = (it.cat ? it.cat.h : 1) * it.s, r = Math.max(0.3, (it.cat ? it.cat.r : 0.5) * it.s);
       fx.fire(it.x + (fxRand.next() - 0.5) * r * 1.4, it.y + h * (0.2 + fxRand.next() * 0.7), it.z + (fxRand.next() - 0.5) * r * 1.4, 2);
-      if (fxRand.next() < 0.5) fx.smoke(it.x, it.y + h, it.z, 1, 0x30323a);
+      if (fxRand.next() < 0.5) fx.smoke(it.x, it.y + h, it.z, 1, 0x666a76);
       it.etimer = 0.09 / Math.max(0.4, rate);
     }
   }

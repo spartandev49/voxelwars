@@ -37,7 +37,7 @@ reg('summon_on_death', {
     const n = collect(w, u.x, u.z, 5, L, u.team, 'enemy');
     if (n > 0) st.contact += dt;
     const trigger = n >= 3 || u.hp < u.hpMax * 0.5 || st.contact >= (ab.p.onContact || 25);
-    if (trigger && canAct(w, u)) { st.spawned = false; beginChannel(w, u, ab, 1.6, 'reveal', 1); }
+    if (trigger && !u.controlled && canAct(w, u)) { st.spawned = false; beginChannel(w, u, ab, 1.6, 'reveal', 1); }
   },
   onKilled(u, ab, w) { reveal(u, ab, w); },
 });

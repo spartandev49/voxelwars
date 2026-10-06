@@ -37,3 +37,4 @@ pr.update(0.016, eng.camera);
 for (let i = 0; i < 3; i++) { pr.update(0.016, eng.camera); eng.render(0.016); }
 const st = pr.stats();
 console.log('props ok', JSON.stringify(st));
+window.__propsDone = true;

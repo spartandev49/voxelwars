@@ -10,10 +10,8 @@ export const BARKS = {
     engage: [
       'Contact! Mostly contact!',
       'I was told there would be lunch.',
-      'Advance! Slowly. With feeling.',
     ],
     hurt: [
-      'Ow. Noted.',
       'That was my good shield arm.',
       'I felt that in my pension.',
     ],
@@ -24,7 +22,6 @@ export const BARKS = {
     ],
     cheer: [
       'We won! Did we win?',
-      'Lunch!',
       'Tell my mother I was brave.',
     ],
   },
@@ -32,7 +29,6 @@ export const BARKS = {
     engage: [
       'Nock. Aim. Hope.',
       'Somebody is standing in front of my target.',
-      'Raining arrows, as requested!',
     ],
     hurt: [
       'Hey! I am the one at the back!',
@@ -43,7 +39,6 @@ export const BARKS = {
       'Running is also ranged!',
     ],
     cheer: [
-      'Hit something! I think.',
       'I counted three. Maybe four.',
       'Who aimed that? Me. I did.',
     ],
@@ -52,7 +47,6 @@ export const BARKS = {
     engage: [
       'Charge! Horse, you are in charge!',
       'Hold on, hold on, hold on!',
-      'Gallop first, think later!',
     ],
     hurt: [
       'Horse! Do not stop!',
@@ -71,7 +65,6 @@ export const BARKS = {
     engage: [
       'Load! Aim! Pray!',
       'Mind the colleagues!',
-      'Boulder away! Probably!',
     ],
     hurt: [
       'Not the wheel! Anything but the wheel!',
@@ -107,7 +100,6 @@ export const BARKS = {
   hero: {
     engage: [
       'Follow me! Closely! Not that closely!',
-      'Behold! Me!',
       'Forward! I will be right behind. In front.',
     ],
     hurt: [
@@ -126,7 +118,6 @@ export const BARKS = {
   monster: {
     engage: [
       'RAWR. (Polite.)',
-      'You will do nicely.',
       'Smash first, introductions later.',
     ],
     hurt: [
@@ -146,7 +137,6 @@ export const BARKS = {
     engage: [
       'BAWK!',
       'Bawk bawk BAWK!',
-      'Peck peck peck peck!',
     ],
     hurt: [
       'BWAAK?!',
@@ -165,7 +155,6 @@ export const BARKS = {
     engage: [
       'WOOF!',
       'Baaah!',
-      'Grrr! (Good boy.)',
     ],
     hurt: [
       'Yip!',
@@ -189,8 +178,6 @@ export const STATUS_BARKS = {
     'Why am I here? Why is here?',
     'If I swing and nobody dodges...',
     'Is the shield defending me, or I it?',
-    'Wait, which side was I on?',
-    'Define enemy.',
     'I forgot what I was angry about.',
     'What if the spear is the real soldier?',
   ],
@@ -199,13 +186,11 @@ export const STATUS_BARKS = {
     'Zzz... I move to adjourn...',
     'Zzz... all in favour... zzz.',
     'Zzz... clause four, subsection...',
-    'Zzz... a very long speech...',
   ],
   tipsy: [
     'Hic! Which army am I?',
     'Hic! Everything is purple!',
     'I love you, enemy! Hic!',
-    'Is the ground supposed to move?',
     'Hic! Wine! In battle! Hic!',
     'Where is shpear? Shpear?',
   ],
@@ -217,16 +202,13 @@ export const STATUS_BARKS = {
     'Money talks. It said: change sides.',
     'Nothing personal. It was a lot of coins.',
     'I was never loyal. Sorry.',
-    'The coin was shiny!',
   ],
   panic: [
     'Everything is on fire!',
-    'RUN! I mean: flee!',
     'Not the fire! Never the fire!',
   ],
   burn: [
     'Hot! Hot! Hot!',
-    'I am a torch!',
     'Roll! No, not like that!',
   ],
 };
@@ -236,11 +218,9 @@ export const MONOLOGUE = [
   'Consider: the sword is also considering you.',
   'What is courage but fear with good posture?',
   'Is a battle won by the strong, or merely the remaining?',
-  'A spear is only a very long finger.',
   'To fight, or to define fighting? Both! Neither!',
   'If you stab me, are you also stabbing a metaphor?',
   'First, what is a hill? Second, why is it ours?',
-  'Let us agree to disagree. Then disagree.',
 ];
 
 // Fallbacks for custom soldiers and any unit with no text of its own.
@@ -250,12 +230,10 @@ export const GENERIC_DEATHS = [
   'I should have specialised in running.',
   'I regret everything except the hat.',
   'Is that the afterlife? It looks like a field.',
-  'Bury me with my snack.',
   'Remember me. Or at least my sandal.',
 ];
 export const GENERIC_TAUNTS = [
   'You will regret this. Probably me.',
-  'I am much braver than I look.',
   'Come on then. Gently.',
 ];
 

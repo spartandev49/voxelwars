@@ -45,6 +45,8 @@ function warnOnce(msg) {
 // ------------------------------------------------------------------------------------------------------------------ small math
 const wrapPi = (a) => { a = a % TAU; return a > PI ? a - TAU : a < -PI ? a + TAU : a; };
 const sstep = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
+/** C3 smoothstep (35x^4 - 84x^5 + 70x^6 - 20x^7): zero slope, curvature and jerk at both ends */
+const sstep7 = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * x * (35 + x * (-84 + x * (70 - 20 * x))));
 
 // scratch (module level: zero allocation)
 const _R1 = new Float64Array(9), _R2 = new Float64Array(9), _R3 = new Float64Array(9), _V = new Float64Array(3), _W = new Float64Array(3);
@@ -196,7 +198,6 @@ function buildInfo(model) {
     if (g.offhand >= 0) {
       const p = parts[g.idx[g.offhand]];
       eulerToMat(p.rest[0], p.rest[1], p.rest[2], _R1);
-      g.oRestNormal = [_R1[2], _R1[5], _R1[8]];  // R_rest * (0,0,1)
     }
   }
   if (!info.style) info.style = meta.weaponStyle || 'none';
@@ -460,7 +461,7 @@ Animator.pose = function pose(model, state, extra, out) {
   state._lt = state.t;
   const blending = blend < 1 && state.prev !== undefined && state.prev !== state.clip;
   if (blending) prevT = (typeof state.pt === 'number' ? state.pt : state._pt) + blend * BLEND_S;
-  const w = blending ? sstep(blend) : 1;
+  const w = blending ? sstep7(blend) : 1;      // C3 ease in/out: with the sim's 0.14 s blend the first frame after a switch moves poses by ~6% of the gap, so a switch never pops
   const t = state.t < 0 ? 0 : state.t;
   const frozen = state.rate === 0;
   const moveReq = MOVE_IDS[state.clip] === 1 && gait === gait;      // locomotion driven by distance
@@ -638,21 +639,25 @@ function humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, pha
   aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT, isBase ? root : null);
 }
 
-/** weapon aim + shield facing (hum1 groups). Directions are expressed in the unit frame (heading-aligned, upright). */
+/**
+ * Weapon aim + shield facing (hum1 groups). Directions are expressed in the unit frame (heading-aligned, upright); R_c is the accumulated rotation of
+ * a part's parent chain (root, body, arm, forearm: already blended).
+ *   weapon: the blade axis is steered toward the target direction t. With weight wt the wanted direction is normalize((1 - wt) * f + wt * t), f being
+ *           where the axis points when the weapon just follows the forearm (R_c * rest axis). The pose swings the rest axis to
+ *           R_c^T * (wanted direction) (a wrist pitch plus a small arc), plus an optional twist about the axis (bow belly). Pure function of the blended arm pose: no solver branches,
+ *           no per-unit state, so it cannot pop when clips switch (the only singularity is a wanted direction exactly opposite the rest axis, where the
+ *           roll of the shaft about its own axis is arbitrary and invisible).
+ *   shield: counter-rotates the arm relative to the torso (softly saturated, see below), engaged as the arm lifts.
+ */
 function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT, root) {
   if (g.weapon < 0 && g.offhand < 0) return;
   if (g.body < 0) return;
   const style = info.style;
   const idx = g.idx;
-  // R_rb = R_root * R_body (the frame every arm chain hangs from)
-  const oB = idx[g.body] * 9;
-  if (root) eulerToMat(root.pitch, root.yaw, root.roll, _R1); else { _R1[0] = 1; _R1[1] = 0; _R1[2] = 0; _R1[3] = 0; _R1[4] = 1; _R1[5] = 0; _R1[6] = 0; _R1[7] = 0; _R1[8] = 1; }
-  eulerToMat(out[oB + 3], out[oB + 4], out[oB + 5], _R2);
-  mulMat(_R1, _R2, _RB);
   if (g.weapon >= 0 && g.armUR >= 0 && g.armLR >= 0 && style !== 'none') {
     const tab = AIM[style];
     const hasTrack = clipA.aim !== undefined;
-    if (tab || hasTrack) {
+    if (tab || hasTrack || (w < 1 && clipP && clipP.aim !== undefined)) {      // (a crossfade out of an aimed clip keeps the aim until the weight has faded)
       // current + previous aim parameters, blended by w
       let e = 0, a = 0, wt = 0, tw = 0;
       if (hasTrack && sampleAim(clipA, t, phase)) { e = _aimE; a = _aimA; wt = _aimW; tw = _aimT; }
@@ -664,46 +669,60 @@ function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prev
         e = e2 + (e - e2) * w; a = a2 + (a - a2) * w; wt = w2 + (wt - w2) * w; tw = t2 + (tw - t2) * w;
       }
       if (wt > 0.001) {
-        const oUR = idx[g.armUR] * 9, oLR = idx[g.armLR] * 9, oW = idx[g.weapon] * 9;
+        // R_c = R_root * R_body * R_arm * R_forearm
+        const oB = idx[g.body] * 9, oUR = idx[g.armUR] * 9, oLR = idx[g.armLR] * 9, oW = idx[g.weapon] * 9;
+        if (root) eulerToMat(root.pitch, root.yaw, root.roll, _R1); else { _R1[0] = 1; _R1[1] = 0; _R1[2] = 0; _R1[3] = 0; _R1[4] = 1; _R1[5] = 0; _R1[6] = 0; _R1[7] = 0; _R1[8] = 1; }
+        eulerToMat(out[oB + 3], out[oB + 4], out[oB + 5], _R2);
+        mulMat(_R1, _R2, _RB);
         eulerToMat(out[oUR + 3], out[oUR + 4], out[oUR + 5], _R1);
         eulerToMat(out[oLR + 3], out[oLR + 4], out[oLR + 5], _R2);
         mulMat(_R1, _R2, _R3);
-        mulMat(_RB, _R3, _RC);                      // R_c: unit frame <- weapon parent frame
+        mulMat(_RB, _R3, _RC);
         const a0 = g.wRestAxis;
+        const ce = Math.cos(e), tx = Math.sin(a) * ce, ty = Math.sin(e), tz = Math.cos(a) * ce;
         const fx = _RC[0] * a0[0] + _RC[1] * a0[1] + _RC[2] * a0[2], fy = _RC[3] * a0[0] + _RC[4] * a0[1] + _RC[5] * a0[2], fz = _RC[6] * a0[0] + _RC[7] * a0[1] + _RC[8] * a0[2];
-        const ce = Math.cos(e), dx = Math.sin(a) * ce, dy = Math.sin(e), dz = Math.cos(a) * ce;
-        let tx = fx + (dx - fx) * wt, ty = fy + (dy - fy) * wt, tz = fz + (dz - fz) * wt;
-        const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
-        const vx = _RC[0] * tx + _RC[3] * ty + _RC[6] * tz, vy = _RC[1] * tx + _RC[4] * ty + _RC[7] * tz, vz = _RC[2] * tx + _RC[5] * ty + _RC[8] * tz;
-        arcMat(a0[0], a0[1], a0[2], vx, vy, vz, _R1);
-        if (tw !== 0) { axisMat(a0[0], a0[1], a0[2], tw * wt, _R2); mulMat(_R1, _R2, _R3); matToEuler(_R3, _V); }   // twist about the weapon axis (bow belly, blade edge)
-        else matToEuler(_R1, _V);
+        let dx = fx + (tx - fx) * wt, dy = fy + (ty - fy) * wt, dz = fz + (tz - fz) * wt;
+        const dl = Math.hypot(dx, dy, dz);
+        if (dl > 1e-3) { dx /= dl; dy /= dl; dz /= dl; } else { dx = tx; dy = ty; dz = tz; }
+        // wanted direction into the forearm frame: R_c^T * d
+        const vx = _RC[0] * dx + _RC[3] * dy + _RC[6] * dz, vy = _RC[1] * dx + _RC[4] * dy + _RC[7] * dz, vz = _RC[2] * dx + _RC[5] * dy + _RC[8] * dz;
+        // swing = pitch about the wrist hinge (X) until the axis lies in the vertical plane of the wanted direction, then the small remaining arc out of
+        // that plane: the flip through half a turn (blade carried forward, wanted backward) is a plain wrist pitch, so there is no antipodal singularity
+        const th = (vy * vy + vz * vz > 1e-8) ? Math.atan2(vz, vy) - Math.atan2(a0[2], a0[1]) : 0;
+        axisMat(1, 0, 0, th, _R1);
+        const bx = _R1[0] * a0[0] + _R1[1] * a0[1] + _R1[2] * a0[2], by = _R1[3] * a0[0] + _R1[4] * a0[1] + _R1[5] * a0[2], bz = _R1[6] * a0[0] + _R1[7] * a0[1] + _R1[8] * a0[2];
+        arcMat(bx, by, bz, vx, vy, vz, _R3);
+        mulMat(_R3, _R1, _R2);
+        if (tw !== 0) { axisMat(a0[0], a0[1], a0[2], tw * wt, _R1); mulMat(_R2, _R1, _R3); matToEuler(_R3, _V); }   // twist about the weapon's own axis first, then the swing
+        else matToEuler(_R2, _V);
         out[oW + 3] = _V[0]; out[oW + 4] = _V[1]; out[oW + 5] = _V[2];
       }
     }
   }
-  // shield: keep its face toward the front when the arm lifts. Blend weight by class.
+  // shield: keeps its face toward the front when the arm lifts. The counter-rotation undoes the arm's own Euler channels (pitch sum of arm + forearm,
+  // yaw, roll), scaled by the weight and soft-saturated per channel (SHIELD_L * tanh(angle / SHIELD_L)): its gain against the arm's motion never
+  // exceeds 1 and it works on the unwrapped channels (an arm raised past vertical has no half-turn ambiguity), so it cannot pop at clip switches
   if (g.offhand >= 0 && g.armUL >= 0 && g.armLL >= 0) {
     const oUL = idx[g.armUL] * 9, oLL = idx[g.armLL] * 9, oO = idx[g.offhand] * 9;
     const up = out[oUL + 3] + out[oLL + 3];       // total forward raise (negative = raised)
-    if (up < -0.25 || up > 0.5) {
-      const wt = (cls === CL_READY || cls === CL_STRIKE || cls === CL_SHOOT) ? 0.95 : 0.7;
-      eulerToMat(out[oUL + 3], out[oUL + 4], out[oUL + 5], _R1);
-      eulerToMat(out[oLL + 3], out[oLL + 4], out[oLL + 5], _R2);
+    const pe = up < 0 ? up : (up > 0.4 ? up - 0.4 : 0);
+    const lift = pe < 0 ? -pe : pe;
+    const en = sstep((lift - 0.15) / 1.1) * (1 - 0.6 * sstep((lift - 1.8) / 1.2));     // engaged for a raised guard, relaxed when the arm goes right up (cower, cheer)
+    if (en > 0) {
+      const wC = (cls === CL_READY || cls === CL_STRIKE || cls === CL_SHOOT) ? 0.95 : 0.7, wP = (clsP === CL_READY || clsP === CL_STRIKE || clsP === CL_SHOOT) ? 0.95 : 0.7;
+      const k = (wP + (wC - wP) * w) * en;        // the class weight crossfades with the clips
+      const yw = out[oUL + 4] + out[oLL + 4], rl = out[oUL + 5] + out[oLL + 5];
+      axisMat(0, 0, 1, -0.5 * k * SHIELD_L * Math.tanh(rl / SHIELD_L), _R1);
+      axisMat(1, 0, 0, -k * SHIELD_L * Math.tanh(pe / SHIELD_L), _R2);
       mulMat(_R1, _R2, _R3);
-      mulMat(_RB, _R3, _RC);
-      const n0 = g.oRestNormal;
-      const fx = _RC[0] * n0[0] + _RC[1] * n0[1] + _RC[2] * n0[2], fy = _RC[3] * n0[0] + _RC[4] * n0[1] + _RC[5] * n0[2], fz = _RC[6] * n0[0] + _RC[7] * n0[1] + _RC[8] * n0[2];
-      let tx = fx + (0 - fx) * wt, ty = fy + (0 - fy) * wt, tz = fz + (1 - fz) * wt;
-      const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
-      const vx = _RC[0] * tx + _RC[3] * ty + _RC[6] * tz, vy = _RC[1] * tx + _RC[4] * ty + _RC[7] * tz, vz = _RC[2] * tx + _RC[5] * ty + _RC[8] * tz;
-      arcMat(n0[0], n0[1], n0[2], vx, vy, vz, _R1);
-      matToEuler(_R1, _V);
-      out[oO + 3] = _V[0]; out[oO + 4] = _V[1]; out[oO + 5] = _V[2];
+      axisMat(0, 1, 0, -0.5 * k * SHIELD_L * Math.tanh(yw / SHIELD_L), _R1);
+      mulMat(_R3, _R1, _R2);                        // S = Rz(-roll) * Rx(-pitch) * Ry(-yaw): the inverse of the arm chain Ry * Rx * Rz
+      matToEuler(_R2, _V); out[oO + 3] = _V[0]; out[oO + 4] = _V[1]; out[oO + 5] = _V[2];
     }
   }
 }
-const _RB = new Float64Array(9), _RC = new Float64Array(9);
+const SHIELD_L = 1.4;
+const _RB = new Float64Array(9), _RC = new Float64Array(9), _RW = new Float64Array(9), _RV = new Float64Array(3);
 
 // ------------------------------------------------------------------------------------------------------------------ root finishing (flinch lean, fall direction, hip-pivot compensation)
 function rootFinish(info, state, root, clip, heading, t, scale) {

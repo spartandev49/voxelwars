@@ -20,7 +20,13 @@ export function inline(text) {
     if ((m = /^\*\*([^*]+)\*\*/.exec(rest))) { flush(); out.push(h('strong', {}, m[1])); i += m[0].length; continue; }
     if ((m = /^`([^`]+)`/.exec(rest))) { flush(); out.push(h('code', {}, m[1])); i += m[0].length; continue; }
     if ((m = /^\*([^*\s][^*]*)\*/.exec(rest))) { flush(); out.push(h('em', {}, m[1])); i += m[0].length; continue; }
-    if ((m = /^(https?:\/\/[^\s<>"')\]]+)/.exec(rest))) { flush(); out.push(h('a', { href: m[1], target: '_blank', rel: 'noopener noreferrer' }, m[1])); i += m[0].length; continue; }
+    if ((m = /^(https?:\/\/[^\s<>"')\]]+)/.exec(rest))) {
+      flush();
+      const url = m[1].replace(/[.,;:!?]+$/, ''), tail = m[1].slice(url.length);
+      out.push(h('a', { href: url, target: '_blank', rel: 'noopener noreferrer' }, url));
+      if (tail) out.push(document.createTextNode(tail));
+      i += m[0].length; continue;
+    }
     buf += text[i]; i++;
   }
   flush();

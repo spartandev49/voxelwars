@@ -130,7 +130,7 @@ export function emblem(g, name, x0, yTop, z, v) {
 export const W = { cx: 4, cz: 4, grip: 10, top: 47, bottom: 0 };
 /** Leather-wrapped grip block that also hides the hand overlap (3x3, y a..b). */
 export function gripWrap(g, ctx, a = 8, b = 11) {
-  const c = mixRGB(0x7a5232, ctx.c.trim, 0.25);
+  const c = mixRGB(0xa8743e, ctx.c.trim, 0.15);
   B(g, 3, a, 3, 5, b, 5, (x, y) => V(shade(c, y % 2 ? 0.88 : 1.04)));
   return g;
 }

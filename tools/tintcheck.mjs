@@ -69,7 +69,7 @@ function summarize(pr) {
 export function tintReport(bp, opts = {}) {
   const c = BP.compileSoldier(bp, opts);
   const rest = summarize(projectModel(c.model, null));
-  const ready = summarize(projectModel(c.model, readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded })));
+  const ready = summarize(projectModel(c.model, readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded, ready: c.weaponReady })));
   const views = [rest.front, rest.back, rest.side, ready.front, ready.back, ready.side];
   const pass = rest.pooled >= MIN_POOLED && ready.pooled >= MIN_POOLED && views.every((v) => v >= MIN_VIEW);
   return { id: bp.id, voxels: c.voxels, parts: c.parts, height: c.height, reach: c.reach, radius: c.radius, weaponLen: c.weaponLen, tint: ready, tintRest: rest, pass };
@@ -92,7 +92,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const units = await loadUnits();
   if (opt('explain', null)) {      // per-part breakdown of the ready-pose projections: part: visible px (tinted px)
     const id = opt('explain'), spec = units[id]; const c = BP.compileSoldier(spec.blueprint || spec, optsFor(id));
-    const pr = projectModel(c.model, readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded }), true);
+    const pr = projectModel(c.model, readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded, ready: c.weaponReady }), true);
     for (const v of ['front', 'back', 'left', 'right']) console.log(v.padEnd(6), `${pr[v].tinted}/${pr[v].covered}`, Object.entries(pr[v].byPart).sort((a, b) => b[1][0] - a[1][0]).map(([k, [n, t]]) => `${k} ${n}(${t})`).join('  '));
     process.exit(0);
   }

@@ -86,8 +86,6 @@ export const TITLE_MENU = {
   workshop: { label: 'Soldier Workshop', sub: 'Make a friend, give him a spear' },
   codex: { label: 'Codex', sub: 'Know thy enemy, and thy goat' },
   achievements: { label: 'Achievements', sub: 'Proof of questionable decisions' },
-  settings: { label: 'Settings', sub: 'Make it prettier, or faster' },
-  credits: { label: 'Credits', sub: 'Everybody who helped, and some goats' },
 };
 
 export const BUTTONS = {
@@ -135,23 +133,19 @@ export const LOADING_LINES = [
   'Asking Plato to define loading...',
   'Hiding the grapes...',
   'Laminating the Terms of Conquest...',
-  'Polishing helmets that nobody will see...',
-  'Counting drachmae twice...',
   'Rehearsing the Spartan kick...',
   'Convincing the elephants it is only a drill...',
   'Waking up Zeus. He is not a morning god...',
   'Persuading chickens to be sacred...',
-  'Bribing the weather...',
-  'Writing a plan Hannibal can improvise from...',
-  'Finding the other sandal...',
   'Unwrapping the mummies carefully...',
-  'Reading Cassandra\'s warnings. Again...',
   'Counting Immortals. Ten thousand, give or take...',
-  'Painting the pyramids a little more triangular...',
-  'Filing the paperwork for the battle...',
   'Sorting soldiers by team colour and personal grudge...',
   'Feeding the warhounds sausages in advance...',
   'Placing the grape seller in a safe spot...',
+  'Stuffing the Trojan horse. Tightly...',
+  'Checking that the grapes are still there...',
+  'Training the chickens to look sacred...',
+  'Explaining the torch situation to the elephants...',
 ];
 
 // ---------- empty states ----------

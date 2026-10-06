@@ -253,7 +253,11 @@ class Gen {
     const rng = this.rng, s = o.s ?? rng.range(0.9, 1.25), r = o.r ?? rng.range(0, TAU), v = o.v ?? this.pickVariant(t);
     const copies = o.noSym ? [[x, z, r]] : this._copies(x, z, r);
     for (const c of copies) if (!this.ok(t, c[0], c[1], s, o)) return false;
-    // symmetric copies must also not collide with each other (props near an axis)
+    // a symmetric copy must not overlap its own original (props close to an axis)
+    if (copies.length > 1 && !o.noSpacing && !o.force) {
+      const need = this.fp(t, s) * 2 * 0.95 + (this.blocking(t) ? (o.gap ?? 0.8) : 0.15);
+      for (let i = 1; i < copies.length; i++) if ((copies[i][0] - x) ** 2 + (copies[i][1] - z) ** 2 < need * need) return false;
+    }
     for (const c of copies) this._commitProp(t, c[0], c[1], c[2], s, v, o);
     return true;
   }
@@ -388,7 +392,7 @@ R.thermopylae = (g) => {
 R.colosseum = (g) => {
   const a = g.a, W = g.W; g.sym = 'mxz';
   a.biome = 'sand'; a.env = { time: 14.5, weather: 'clear', fog: 0.08, theme: 'roman', wind: 0.12, mood: 'auto' };
-  const rx = W * 0.325, rz = W * 0.25, ROWS = 7, ER = 0.052, E0 = 1.075;
+  const rx = W * 0.325, rz = W * 0.25, ER = Math.max(0.052, 1.35 / rz), E0 = 1 + Math.max(0.075, 2.1 / rz), ROWS = Math.max(4, Math.min(7, Math.floor((1.48 - E0 - 0.03) / ER)));
   const ell = (x, z) => Math.sqrt((x / rx) ** 2 + (z / rz) ** 2);
   const niche = (x, z) => Math.abs(z) < 4.6 && Math.abs(x) > rx * 0.9 && Math.abs(x) < rx * 1.12;
   const rowH = (k) => 19 + k * 2;
@@ -418,12 +422,12 @@ R.colosseum = (g) => {
   const F = { force: true, noSpacing: true };
   // everything below is built for one quadrant (x >= 0, z >= 0); the symmetry mirrors it into all four
   for (let i = 0; i < 8; i++) {                                                       // podium colonnade
-    const th = (i + 0.5) / 32 * TAU, x = Math.cos(th) * rx * 1.0375, z = Math.sin(th) * rz * 1.0375;
+    const eC = 1 + (E0 - 1) / 2, th = (i + 0.5) / 32 * TAU, x = Math.cos(th) * rx * eC, z = Math.sin(th) * rz * eC;
     if (z < 6.4) continue;
-    g.put('column_marble', x, z, Object.assign({ s: 1.1, v: i & 1, r: 0 }, F));
+    g.put('column_marble', x, z, Object.assign({ s: Math.min(1.1, (E0 - 1) * rz * 0.78), v: i & 1, r: 0 }, F));
   }
   g.put('arch_gate', rx * 0.985, 0, Object.assign({ r: Math.PI / 2, s: 1.15, v: 0 }, F));
-  g.put('statue_lion', rx * 0.875, 6.8, Object.assign({ r: -Math.PI / 2, s: 1.05, v: 1 }, F));
+  g.put('statue_lion', rx * 0.8, 6.8, Object.assign({ r: -Math.PI / 2, s: 1.05, v: 1 }, F));
   g.put('torch', rx * 0.905, 3.6, Object.assign({ s: 1.4, v: 1 }, F));
   for (let i = 0; i < 5; i++) {                                                       // torches and banners along the top rim
     const th = (i + 0.5) / 20 * TAU, e = E0 + (ROWS - 0.5) * ER + 0.02, x = Math.cos(th) * rx * e, z = Math.sin(th) * rz * e;
@@ -434,8 +438,9 @@ R.colosseum = (g) => {
   const seat = (k, th) => { const e = E0 + (k + 0.5) * ER; return [Math.cos(th) * rx * e, Math.sin(th) * rz * e]; };
   const face = (x, z) => Math.atan2(-x, -z);
   let ci = 0;
-  for (let r = 0; r < 3; r++) for (let j = 5; j < 10; j++) { const [x, z] = seat(1 + r * 2, Math.PI / 2 - (j - 4.5) * 0.085); g.put('crowd', x, z, Object.assign({ r: face(x, z), s: 1, v: (ci++ * 3 + r) & 3 }, F)); }
-  for (const [k, cnt] of [[2, 8], [4, 7]]) for (let j = Math.ceil((cnt - 1) / 2); j < cnt; j++) { const [x, z] = seat(k, (j - (cnt - 1) / 2) * 0.1); g.put('crowd', x, z, Object.assign({ r: face(x, z), s: 1, v: (ci++ * 3 + k) & 3 }, F)); }
+  const topRows = ROWS >= 6 ? [1, 3, 5] : [1, 2, 3], endRows = ROWS >= 6 ? [2, 4] : [1, 2];
+  for (let r = 0; r < 3; r++) for (let j = 5; j < 10; j++) { const [x, z] = seat(topRows[r], Math.PI / 2 - (j - 4.5) * 0.085); g.put('crowd', x, z, Object.assign({ r: face(x, z), s: 1, v: (ci++ * 3 + r) & 3 }, F)); }
+  for (const [k, cnt] of [[endRows[0], 8], [endRows[1], 7]]) for (let j = Math.ceil((cnt - 1) / 2); j < cnt; j++) { const [x, z] = seat(k, (j - (cnt - 1) / 2) * 0.1); g.put('crowd', x, z, Object.assign({ r: face(x, z), s: 1, v: (ci++ * 3 + k) & 3 }, F)); }
   g.scatter({ palm: 1, bush: 2 }, 12, { region: (x, z) => ell(x, z) > 1.5, margin: 2, force: false });
 };
 
@@ -484,9 +489,9 @@ R.giza = (g) => {
   const px = [[0, -W * 0.3, 1.6], [W * 0.1, W * 0.31, 1.05]];
   g.fill((x, z) => 14 + dune(x, z) * 6 + g.fbm(x, z, 11, 2) * 0.7, (x, z, h) => (g.fbm(x, z, 11, 2) > 0.34 ? MAT.sandstone : MAT.sand));
   g.smooth(1);
-  g.flatZones(9, 2);
   for (const [x, z, s] of px) g.flatRect(x, z, 7.4 * s, 7.4 * s, 14, 4);
   g.flatRect(-W * 0.02, W * 0.2, 8, 6, 14, 3);
+  g.flatZones(9, 2, { A: 14, B: 14 });
   g.terrace(2, 0.3); g.commit();
   g.slopeMat(MAT.sandstone, 2, [MAT.sand]);
   for (const [x, z, s] of px) g.paint((xx, zz) => (Math.abs(xx - x) < 7.8 * s && Math.abs(zz - z) < 7.8 * s ? MAT.sandstone : -1));
@@ -530,7 +535,7 @@ R.persepolis = (g) => {
   for (let i = 0; i < 9; i++) g.put('column_marble', px * 0.93, -W * 0.34 + i * (W * 0.7 / 8), Object.assign({ s: 1.25, v: i & 1 ? 1 : 3, r: 0 }, F));
   for (let i = 1; i <= 3; i++) g.put('column_marble', i * 5.8, -W * 0.4, Object.assign({ s: 1.15, v: 1, r: 0 }, F));
   g.scatter({ palm: 3, bush: 4, rock_small: 1 }, 26, { region: (x, z) => sd(x, z) > 1.5, scale: [0.95, 1.35] });
-  g.scatter({ torch: 1, banner_post: 1 }, 10, { region: (x, z) => sd(x, z) < -2 && sd(x, z) > -5, scale: [1.2, 1.5], inZones: true });
+  g.scatter({ torch: 1, banner_post: 1 }, 10, { region: (x, z) => sd(x, z) < -2 && sd(x, z) > -5, scale: [1.2, 1.5] });
 };
 
 // ------------------------------------------------------------------ carthage
@@ -559,7 +564,7 @@ R.carthage = (g) => {
   // harbour clutter: crate/barrel piles at the pier heads, torches along the piers, a market camp
   const F = { force: true, noSpacing: true, noSym: true };
   for (const pz of piers) {
-    for (let i = 0; i < 4; i++) g.put('torch', xs(pz) + 1 + i * 4.2, pz + (i & 1 ? 1.15 : -1.15), Object.assign({ s: 1.4, v: i & 1 ? 1 : 0 }, F));
+    for (let i = 0; i < 4; i++) g.put('torch', xs(pz) + 1 + i * 4.2, pz + (i & 1 ? 0.85 : -0.85), Object.assign({ s: 1.4, v: i & 1 ? 1 : 0 }, F));
     [[-5.5, 2.4, 'crate'], [-5.5, 3.6, 'barrel'], [-4.2, 2.8, 'crate'], [-6.4, -2.6, 'barrel'], [-5.1, -3.1, 'barrel'], [15.5, 0.8, 'crate'], [15.8, -0.9, 'barrel']].forEach(([dx, dz, t], i) => g.put(t, xs(pz) + dx, pz + dz, Object.assign({ s: 1.1, v: i & 3 }, F)));
   }
   g.put('tent', -W * 0.3, -W * 0.06, Object.assign({ r: 0.4, s: 1.2, v: 0 }, F)); g.put('tent', -W * 0.27, W * 0.06, Object.assign({ r: -0.5, s: 1.2, v: 2 }, F)); g.put('tent', -W * 0.34, 0.8, Object.assign({ r: 1.5, s: 1.2, v: 1 }, F)); g.put('campfire', -W * 0.28, 0, Object.assign({ s: 1.2, v: 0 }, F));
@@ -592,9 +597,9 @@ R.alpine = (g) => {
   g.setZones(0.31, 0.3, 0.2);
   const zc = (x) => Math.sin(x / 23) * 7 + Math.sin(x / 9) * 1.2;
   g.fill((x, z) => {
-    const d = Math.abs(z - zc(x)) - W * 0.12;                                           // distance beyond the pass floor
+    const dz = z - zc(x), d = Math.abs(dz) - W * 0.12;                                  // distance beyond the pass floor
     let h = 17 + g.fbm(x, z, 14, 2) * 1.6;
-    if (d > 0) { const m = g.ridged(x, z, 24, 4); h += (smoothstep(0, 22, d) * (13 + m * 15) + smoothstep(0, 5, d) * 6) * g.hs; }
+    if (d > 0) { const m = g.ridged(x, z, 24, 4), tall = dz < 0 ? 1 : 0.55; h += (smoothstep(0, 22, d) * (13 + m * 15) + smoothstep(0, 5, d) * 6) * g.hs * tall; }
     return h;
   }, (x, z, h) => (h > 44 ? MAT.stone : h > 38 && g.fbm(x, z, 4, 2) > 0.2 ? MAT.stone : MAT.snow));
   g.smooth(1);
@@ -614,7 +619,7 @@ R.olympus = (g) => {
   const a = g.a, W = g.W; g.sym = 'mx';
   a.biome = 'marble'; a.env = { time: 16.8, weather: 'cloudy', fog: 0.1, theme: 'mythic', wind: 0.2, mood: 'auto' };
   const rad = W * 0.43;
-  g.setZones(0.2, 0.46, 0.16);
+  g.setZones(0.2, 0.4, 0.15);
   const puff = g.S((x, z) => Math.max(0, g.fbm(x, z, 7, 2)) * 5.2 + g.fbm(x + 10, z, 17, 2) * 1.3), moss = g.S((x, z) => g.fbm(x, z, 6, 2));
   g.fill((x, z) => {
     const d = Math.hypot(x, z);
@@ -635,7 +640,7 @@ R.olympus = (g) => {
   const F = { force: true, noSpacing: true };
   g.raw('temple', 0, -W * 0.3, { r: 0, s: 1.15, v: 0 }); g.raw('statue_zeus', 0, W * 0.27, { r: Math.PI, s: 1.1, v: 0 });
   for (let i = 0; i < 7; i++) {                                                       // 14 columns on a ring, built for the x >= 0 half; zones leave gaps
-    const th = (i + 0.5) / 14 * TAU - Math.PI / 2, x = Math.cos(th) * W * 0.3, z = Math.sin(th) * W * 0.3;
+    const th = (i + 0.5) / 14 * TAU - Math.PI / 2, x = Math.cos(th) * W * 0.335, z = Math.sin(th) * W * 0.335;
     if (Math.hypot(x, z + W * 0.3) < 9 || Math.hypot(x, z - W * 0.27) < 5.5) continue;
     g.put('column_marble', x, z, Object.assign({ s: 1.45, v: i & 3, r: 0 }, F));
   }
@@ -654,7 +659,7 @@ R.troy = (g) => {
   const edge = W * 0.075, top = 21, low = 14, gate = 4.4;                              // plateau edge x, heights in steps, half gate width
   const ramp = (x, z) => 1 - smoothstep(gate + 1.5, gate + 5, Math.abs(z));          // 1 inside the gate lane
   g.fill((x, z) => {
-    const rise = smoothstep(edge - 0.6, edge + 0.6, x), lane = ramp(x, z), up = rise * (1 - lane) + smoothstep(-W * 0.04, edge + 4, x) * lane;
+    const rise = smoothstep(edge - 0.6, edge + 0.6, x), lane = ramp(x, z), up = rise * (1 - lane) + smoothstep(-W * 0.04, edge - 0.4, x) * lane;
     return low + g.fbm(x, z, 24, 3) * 1.1 + up * (top - low) + (x > edge ? g.fbm(x, z, 10, 2) * 0.5 : 0);
   }, (x, z, h) => (x > edge - 0.2 || (h > low + 1 && Math.abs(z) < gate + 4)) ? MAT.cobble : (g.fbm(x, z, 6, 2) > 0.3 ? MAT.dirt : MAT.sand));
   a.zones = { A: { x: -W * 0.3, z: 0, w: W * 0.2, d: W * 0.58 }, B: { x: W * 0.32, z: 0, w: W * 0.14, d: W * 0.5 } };
@@ -746,7 +751,7 @@ R.cyclops = (g) => {
   const cave = [0, hc[1] + W * 0.145];
   g.levelDisc(cave[0], cave[1], 4.4, a.getH(a.cx(cave[0]), a.cz(cave[1])));
   g.raw('cave_mouth', cave[0], cave[1], { r: 0, s: 1.55, v: 1 }); g.keepClear(cave[0], cave[1], 6.5);
-  g.raw('skull_pile', -4.6, cave[1] + 6.5, { s: 1.2, v: 1 }); g.raw('bones', 4.8, cave[1] + 6.2, { s: 1.3, v: 0, r: 0.5 });
+  g.put('skull_pile', 4.6, cave[1] + 6.5, { s: 1.2, v: 1, force: true, noSpacing: true }); g.put('bones', 6.2, cave[1] + 5.2, { s: 1.3, v: 0, r: 0.5, force: true, noSpacing: true });
   g.put('goat_pen', -W * 0.17, W * 0.2, { s: 1.4, v: 0, flatten: true, r: 0.2 }); g.put('goat_pen', -W * 0.2, -W * 0.2, { s: 1.3, v: 1, flatten: true, r: -0.3 });
   g.groves({ tree_olive: 6, bush: 3, rock_small: 1 }, 6, 6, 4, { scale: [1, 1.3] });
   g.groves({ palm: 4, bush: 1, rock_small: 1 }, 5, 4, 3, { region: (x, z) => a.getH(a.cx(x), a.cz(z)) < 13, shore: 1, scale: [1, 1.3] });

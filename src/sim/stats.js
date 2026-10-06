@@ -52,14 +52,15 @@ const ABILITY_COST_FACTOR = { kick: 1, rage: 1, net: 1, execute: 1, heal_pulse: 
 export const legalAbilities = (weaponStyle) => Object.keys(ABILITY_PRESETS).filter((k) => ABILITY_PRESETS[k].classes.includes(weaponStyle));
 
 // ---------------------------------------------------------------------------------------------------------------- cost formula
-// cost = K * P^0.572 * (speed/2.6)^0.3 * exp(role + 0.147 * activeAbilities); coefficients are a least-squares fit of log(cost) on the 43 shipped units
-// (docs/balance_report.md lists the residuals); K is calibrated so a shipped hoplite costs exactly 100. Monotonic in every stat that feeds power or speed.
-const COST_ROLE = { melee: 0, ranged: 0.197, cavalry: 0.394, support: 0.781, hero: 0.531, monster: 0.799, siege: 1.085, beast: -0.717, swarm: -1.343 };
+// cost = K * P^0.519 * (speed/2.6)^0.3 * exp(role + 0.143 * activeAbilities + 0.281 * mounted + 0.278 * fearless); coefficients are a least-squares fit of log(cost) on the
+// 43 shipped units (docs/balance_report.md lists the residuals); K is calibrated so a shipped hoplite costs exactly 100. Monotonic in every stat that feeds power or speed.
+const COST_ROLE = { melee: 0, ranged: 0.21, cavalry: 0.195, support: 0.798, hero: 0.554, monster: 0.924, siege: 1.176, beast: -0.67, swarm: -1.311 };
 const PASSIVE_MODS = new Set(['stance', 'hook', 'breaks_shield', 'fire_every', 'poison', 'misfire', 'misaim', 'fire_panic', 'bribe']);
 function rawCost(def) {
   const sp = def.speed * ((def.runMul || 1.5) > 1.5 ? Math.sqrt((def.runMul || 1.5) / 1.5) : 1);
   const nab = (def.abilities || []).filter((a) => !PASSIVE_MODS.has(a.id)).length;
-  return Math.pow(power(def), 0.572) * Math.pow(sp / 2.6, 0.3) * Math.exp((COST_ROLE[def.role] || 0) + 0.147 * nab);
+  const tags = def.tags || [];
+  return Math.pow(power(def), 0.519) * Math.pow(sp / 2.6, 0.3) * Math.exp((COST_ROLE[def.role] || 0) + 0.143 * nab + (tags.includes('cavalry') ? 0.281 : 0) + (tags.includes('fearless') ? 0.278 : 0));
 }
 let _K = 0;
 function K() { if (!_K) _K = 100 / rawCost(normalizeDef('hoplite', STAT_TABLE.hoplite)); return _K; }

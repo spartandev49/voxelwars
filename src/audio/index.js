@@ -6,7 +6,7 @@
 import { AudioEngine, listenerFromCamera, BUSES, MIX } from './engine.js';
 import { CUES, CUE_IDS, UI_CUES } from './cues.js';
 
-const METHODS = ['play', 'ui', 'duck', 'setVolume', 'getVolume', 'setMuted', 'isMuted', 'state', 'diagnostics', 'unlock', 'attach', 'detach', 'setListener',
+const METHODS = ['play', 'ui', 'footstep', 'duck', 'setVolume', 'getVolume', 'setMuted', 'isMuted', 'state', 'diagnostics', 'unlock', 'attach', 'detach', 'setListener',
   'installTestHook', 'applySettings', 'setQuality', 'setPlayerTeam', 'stopAll', 'stopVoice', 'startLoop', 'stopLoop', 'stopLoops', 'preload', 'boot', 'on',
   'suspend', 'resume', 'masterRMS', 'busRMS', 'destroy'];
 

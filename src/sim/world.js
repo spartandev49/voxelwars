@@ -197,12 +197,14 @@ export class World {
     if (mul <= 0.01) return;
     for (let i = 0; i < this.props.length; i++) { const p = this.props[i]; if (!p.dead && p.flam && (p.x - x) ** 2 + (p.z - z) ** 2 < (r + p.radius) ** 2) p.burning = 6 * mul; }
     const n = this.hash.query(x, z, r, this.qbuf2);
-    for (let k = 0; k < n; k++) { const u = this.units[this.qbuf2[k]]; if (u && u.alive && (u.x - x) ** 2 + (u.z - z) ** 2 < r * r) this.burn(u, 3 * mul); }
+    for (let k = 0; k < n; k++) { const u = this.units[this.qbuf2[k]]; if (u && u.alive && (u.x - x) ** 2 + (u.z - z) ** 2 < r * r) this.burn(u, 3); }
     const mat = this.arena.materialAt(x, z);
     if (mat.flammable && this.rng.next() < 0.35) this.addEffect('fire', x, z, Math.max(1, r * 0.6), 5 * mul, 4, -1, null);
     const e = this.P.fire_started; e.x = x; e.z = z; e.r = r; this.emit('fire_started', e);
   }
+  /** Set a unit on fire for `secs` (weather scales it: rain halves the burn). */
   burn(u, secs) {
+    secs *= this.weather.burnMul;
     const was = u.se[SE.BURN] > 0;
     if (secs > u.se[SE.BURN]) u.se[SE.BURN] = secs;
     if (!was && u.se[SE.BURN] > 0) { const e = this.P.status_apply; e.id = u.id; e.status = 'burn'; this.emit('status_apply', e); }
@@ -630,7 +632,9 @@ export class World {
     if (sp2 < 0.01) return;
     const nav = this.nav, ocx = nav.cx(u.x), ocz = nav.cz(u.z), sp = Math.sqrt(sp2), look = 0.9;
     const nx = u.dvx / sp, nz = u.dvz / sp;
-    if (this._canMove(nav, ocx, ocz, u.x + nx * look, u.z + nz * look)) return;
+    const ax = u.x + nx * look, az = u.z + nz * look;
+    if (this._canMove(nav, ocx, ocz, ax, az)) { if (u.blockSoft > 0) u.blockSoft = Math.max(0, u.blockSoft - 0.07); return; }
+    if (nav.inside(ax, az) && nav.soft[nav.cx(ax) + nav.cz(az) * nav.n] > 0) u.blockSoft += 1 / 30;       // pressing on a destructible prop: breach candidate
     const sg = u.sideSign;
     for (let k = 0; k < DEFLECT.length; k++) {
       const a = DEFLECT[k] * sg, c = Math.cos(a), s = Math.sin(a);

@@ -11,7 +11,7 @@ const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith('--' + n
 const arenas = arg('arenas', 'marathon').split(',');
 const ticks = +arg('ticks', 240);
 const out = path.resolve(root, arg('out', '.cache/look')); fs.mkdirSync(out, { recursive: true });
-const quality = arg('q', 'marble'), size = arg('size', 'medium'), cam = arg('cam', 'battle');
+const lodArg = arg('lod', ''), quality = arg('q', 'marble'), size = arg('size', 'medium'), cam = arg('cam', 'battle');
 const pageFile = path.join(root, arg('page', 'dist/voxelwars.html'));
 const CSP = "default-src 'none'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://cdn.tailwindcss.com https://code.jquery.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src blob: 'self'; base-uri 'none'; form-action 'none'";
 const CDN = { 'three.min.js': '.cache/cdn/three.min.js', 'gsap.min.js': '.cache/cdn/gsap.min.js' };
@@ -21,6 +21,7 @@ const browser = await chromium.launch({ executablePath: exe, args: ['--use-angle
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
 const errs = [];
 page.on('console', (m) => { if (process.env.LOOK_LOG) console.log('  [page]', m.type(), m.text()); if (m.type() === 'error' || m.type() === 'warning') errs.push(m.type() + ': ' + m.text()); });
+page.on('response', (r) => { if (r.status() >= 400) errs.push('HTTP ' + r.status() + ' ' + r.url()); });
 page.on('pageerror', (e) => errs.push('pageerror: ' + e.message));
 await page.route('**/*', (route) => {
   const u = new URL(route.request().url());
@@ -36,7 +37,7 @@ await page.route('**/*', (route) => {
 });
 await page.goto('http://vw.test/index.html');
 await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 60000 });
-await page.evaluate((q) => { const v = window.__vw; v.engine.setQuality(q); v.game.setTier(q); v.app.settings.data.autoScale = false; }, quality);
+await page.evaluate(({ q, lod }) => { const v = window.__vw; v.engine.setQuality(q); v.game.setTier(q); v.app.settings.data.autoScale = false; window.__lodForce = lod === '' ? null : +lod; }, { q: quality, lod: lodArg });
 for (const a of arenas) {
   const info = await page.evaluate(async ({ a, size, ticks, cam }) => {
     const vw = window.__vw; const g = vw.game;
@@ -44,7 +45,7 @@ for (const a of arenas) {
     console.log('begin'); await g.begin(s); console.log('begun'); g.autoFill(0, {}); g.autoFill(1, {}); console.log('filled ' + g.world.units.length); vw.app.router.goto('placement'); console.log('placement');
     g.fight(); console.log('fight ' + g.state); g.world.countdown = 0; vw.step(1); console.log('stepped');
     vw.step(Math.max(0, ticks));
-    g.frameArmies(true);
+    g.frameArmies(true); if (window.__lodForce !== null && window.__lodForce !== undefined) g.view.lodDist = window.__lodForce; g.setTier = () => {};
     const r = g.rig; if (cam === 'wide') { r.dist *= 1.35; r.snap(); } else if (cam === 'close') { r.dist *= 0.45; r.pitch = 0.42; r.snap(); }
     vw.app.router.goto('battle');
     for (let i = 0; i < 4; i++) vw.step(1);

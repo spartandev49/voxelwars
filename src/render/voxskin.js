@@ -4,13 +4,16 @@
 //  * Per-instance part transforms (3x4 affine, rows) live in a RGBA32F DataTexture: texel (3*part + k, instance) = row k.
 //    The vertex shader fetches them with texelFetch (WebGL2) and skins the vertex, then three's normal
 //    instancing applies the unit's world matrix (instanceMatrix).
-//  * Per-instance attributes: instanceColor (team tint rgb, linear), aFx (flash, stone, glow, reserved).
+//  * Per-instance attributes: instanceColor (team tint rgb, linear), aFx (flash, stone, glow, texture row).
+//  * Optional far LOD ({lod:true}): a second InstancedMesh with half-resolution part geometry (~1/4 of the triangles, no shadow) sharing the same
+//    material and texture; add(..., lod=1) puts a unit there. Rows are handed out by one counter, so both meshes address the same texture.
 //  * Shadows use a matching customDepthMaterial so shadows follow the posed model.
 //
 // CPU work per instance: compose the part chain from a pose array (POSE_STRIDE floats per part) straight into the
 // texture's Float32Array, no allocations.
 
 import { meshGrid } from '../voxel/mesher.js';
+import { downsample2, lodPivot } from '../voxel/lod.js';
 
 const T = () => window.THREE;
 export const POSE_STRIDE = 9; // tx,ty,tz, rx,ry,rz, sx,sy,sz
@@ -28,7 +31,7 @@ export function resetPose(p) {
 // ---------- shader patch ----------
 const FETCH = `
   int vsPart = int(aPart + 0.5);
-  ivec2 vsBase = ivec2(vsPart * 3, gl_InstanceID);
+  ivec2 vsBase = ivec2(vsPart * 3, int(aFx.w + 0.5));     // aFx.w = this instance's row in the part texture (near and far meshes share one texture)
   vec4 vsR0 = texelFetch(uPartTex, vsBase, 0);
   vec4 vsR1 = texelFetch(uPartTex, vsBase + ivec2(1, 0), 0);
   vec4 vsR2 = texelFetch(uPartTex, vsBase + ivec2(2, 0), 0);
@@ -106,24 +109,25 @@ export class VoxSkin {
    * @param {{scene:any}} host  object with a THREE.Scene at .scene
    * @param {import('../voxel/model.js').ModelDef} model
    */
-  constructor(host, model, { capacity = 32, shadow = true } = {}) {
+  constructor(host, model, { capacity = 32, shadow = true, lod = false } = {}) {
     const THREE = T();
     this.host = host; this.model = model;
     this.parts = model.parts;
     this.P = this.parts.length;
     if (this.P > MAX_PARTS) throw new Error(`model ${model.id} has ${this.P} parts (max ${MAX_PARTS})`);
-    this.shadow = shadow;
-    this.count = 0;
+    this.shadow = shadow; this.lod = !!lod;
+    this.count = 0; this.nNear = 0; this.nFar = 0;
     this.capacity = 0;
     this.restM = this.parts.map((p) => (p.rest[0] || p.rest[1] || p.rest[2]) ? restMatrix(p.rest[0], p.rest[1], p.rest[2]) : null);
     this.W = new Float32Array(this.P * 12);   // scratch: part world (root-relative) 3x4 per part
-    this.geometry = this._buildGeometry();
-    this.mesh = null;
+    this.geometry = this._buildGeometry(false);
+    this.geometryFar = this.lod ? this._buildGeometry(true) : null;
+    this.mesh = null; this.far = null;
     this._alloc(capacity);
   }
-  _buildGeometry() {
+  _buildGeometry(far) {
     const THREE = T(), m = this.model;
-    const metas = this.parts.map((p) => meshGrid(p.grid, { size: m.voxelSize, pivot: p.pivot }));
+    const metas = this.parts.map((p) => (far ? meshGrid(downsample2(p.grid), { size: m.voxelSize * 2, pivot: lodPivot(p.pivot) }) : meshGrid(p.grid, { size: m.voxelSize, pivot: p.pivot })));
     let nv = 0, ni = 0;
     for (const x of metas) { nv += x.vertexCount; ni += x.indices.length; }
     const pos = new Float32Array(nv * 3), nor = new Float32Array(nv * 3), col = new Float32Array(nv * 3), flag = new Float32Array(nv), part = new Float32Array(nv), idx = new Uint32Array(ni);
@@ -142,55 +146,69 @@ export class VoxSkin {
     g.setAttribute('aPart', new THREE.BufferAttribute(part, 1));
     g.setIndex(new THREE.BufferAttribute(idx, 1));
     g.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 1.2, 0), 6);
-    this.triangles = ni / 3;
+    if (far) this.trianglesFar = ni / 3; else this.triangles = ni / 3;
     return g;
   }
-  _alloc(cap) {
+  _makeMesh(geometry, cap, shadow) {
     const THREE = T();
-    cap = Math.max(4, cap);
-    const old = this.mesh;
-    const oldTex = this.tex;
-    this.capacity = cap;
-    // texture: width = 3 texels per part, height = instances
-    this.texData = new Float32Array(this.P * 3 * cap * 4);
-    this.tex = new THREE.DataTexture(this.texData, this.P * 3, cap, THREE.RGBAFormat, THREE.FloatType);
-    this.tex.minFilter = THREE.NearestFilter; this.tex.magFilter = THREE.NearestFilter;
-    this.tex.generateMipmaps = false; this.tex.flipY = false; this.tex.needsUpdate = true;
-    const geo = this.geometry.clone();
-    geo.boundingSphere = this.geometry.boundingSphere.clone();
-    this.fxArr = new Float32Array(cap * 4);
-    this.fxAttr = new THREE.InstancedBufferAttribute(this.fxArr, 4); this.fxAttr.setUsage(THREE.DynamicDrawUsage);
-    geo.setAttribute('aFx', this.fxAttr);
-    this.material = makeSkinMaterial(this.tex);
+    const geo = geometry.clone();
+    geo.boundingSphere = geometry.boundingSphere.clone();
+    const fxArr = new Float32Array(cap * 4);
+    const fxAttr = new THREE.InstancedBufferAttribute(fxArr, 4); fxAttr.setUsage(THREE.DynamicDrawUsage);
+    geo.setAttribute('aFx', fxAttr);
     const mesh = new THREE.InstancedMesh(geo, this.material, cap);
     mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     mesh.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(cap * 3).fill(1), 3);
     mesh.instanceColor.setUsage(THREE.DynamicDrawUsage);
     mesh.frustumCulled = false;
-    mesh.castShadow = this.shadow; mesh.receiveShadow = false;
-    if (this.shadow) mesh.customDepthMaterial = makeSkinDepthMaterial(this.tex);
+    mesh.castShadow = shadow; mesh.receiveShadow = false;
+    if (shadow) mesh.customDepthMaterial = this.depthMaterial;
     mesh.count = 0;
     mesh.userData.model = this.model.id;
+    return { mesh, fxArr, fxAttr };
+  }
+  _alloc(cap) {
+    const THREE = T();
+    cap = Math.max(4, cap);
+    const old = this.mesh, oldFar = this.far;
+    const oldTex = this.tex;
+    this.capacity = cap;
+    // texture: width = 3 texels per part, height = rows (one row per instance of either mesh)
+    this.texData = new Float32Array(this.P * 3 * cap * 4);
+    this.tex = new THREE.DataTexture(this.texData, this.P * 3, cap, THREE.RGBAFormat, THREE.FloatType);
+    this.tex.minFilter = THREE.NearestFilter; this.tex.magFilter = THREE.NearestFilter;
+    this.tex.generateMipmaps = false; this.tex.flipY = false; this.tex.needsUpdate = true;
+    if (this.material) { this.material.dispose(); if (this.depthMaterial) this.depthMaterial.dispose(); }
+    this.material = makeSkinMaterial(this.tex);
+    this.depthMaterial = this.shadow ? makeSkinDepthMaterial(this.tex) : null;
+    const near = this._makeMesh(this.geometry, cap, this.shadow);
+    this.mesh = near.mesh; this.fxArr = near.fxArr; this.fxAttr = near.fxAttr;
+    const oldLoc = this.loc; this.loc = new Int32Array(cap);
+    if (oldLoc) this.loc.set(oldLoc.subarray(0, Math.min(oldLoc.length, cap)));
+    if (this.geometryFar) { const f = this._makeMesh(this.geometryFar, cap, false); this.far = f.mesh; this.fxArrF = f.fxArr; this.fxAttrF = f.fxAttr; }
     if (old) { // carry existing data across a growth
-      mesh.instanceMatrix.array.set(old.instanceMatrix.array.subarray(0, Math.min(old.instanceMatrix.array.length, mesh.instanceMatrix.array.length)));
+      this.mesh.instanceMatrix.array.set(old.instanceMatrix.array.subarray(0, Math.min(old.instanceMatrix.array.length, this.mesh.instanceMatrix.array.length)));
       this.host.scene.remove(old); old.geometry.dispose(); if (oldTex) oldTex.dispose();
     }
-    this.mesh = mesh;
-    this.host.scene.add(mesh);
+    if (oldFar) { this.far.instanceMatrix.array.set(oldFar.instanceMatrix.array.subarray(0, Math.min(oldFar.instanceMatrix.array.length, this.far.instanceMatrix.array.length))); this.host.scene.remove(oldFar); oldFar.geometry.dispose(); }
+    this.host.scene.add(this.mesh); if (this.far) this.host.scene.add(this.far);
   }
-  begin() { this.count = 0; }
+  begin() { this.count = 0; this.nNear = 0; this.nFar = 0; }
 
   /**
    * Add a unit. Root transform = translation (x,y,z), yaw `h`, optional pitch/roll tilt (for flying corpses), non-uniform scale.
    * @param {Float32Array} pose POSE_STRIDE floats per part, model part order
    * @param {number[]} team [r,g,b] linear 0..1
    */
-  add(x, y, z, h, sx, sy, sz, pose, team, flash = 0, stone = 0, glow = 0, pitch = 0, roll = 0) {
+  add(x, y, z, h, sx, sy, sz, pose, team, flash = 0, stone = 0, glow = 0, pitch = 0, roll = 0, lod = 0) {
     if (this.count >= this.capacity) this._grow();
-    const i = this.count++, P = this.P, parts = this.parts, W = this.W, td = this.texData;
+    const far = lod && this.far ? 1 : 0;
+    const i = this.count++, j = far ? this.nFar++ : this.nNear++, P = this.P, parts = this.parts, W = this.W, td = this.texData;
+    this.loc[i] = far ? ~j : j;
+    const M = far ? this.far : this.mesh;
     // ----- root matrix into instanceMatrix (column-major 4x4) -----
     const ch = Math.cos(h), sh = Math.sin(h);
-    const im = this.mesh.instanceMatrix.array, o = i * 16;
+    const im = M.instanceMatrix.array, o = j * 16;
     if (pitch === 0 && roll === 0) {
       im[o] = ch * sx; im[o + 1] = 0; im[o + 2] = -sh * sx; im[o + 3] = 0;
       im[o + 4] = 0; im[o + 5] = sy; im[o + 6] = 0; im[o + 7] = 0;
@@ -243,9 +261,9 @@ export class VoxSkin {
       td[t + 4] = W[w + 4]; td[t + 5] = W[w + 5]; td[t + 6] = W[w + 6]; td[t + 7] = W[w + 7];
       td[t + 8] = W[w + 8]; td[t + 9] = W[w + 9]; td[t + 10] = W[w + 10]; td[t + 11] = W[w + 11];
     }
-    const ca = this.mesh.instanceColor.array;
-    ca[i * 3] = team[0]; ca[i * 3 + 1] = team[1]; ca[i * 3 + 2] = team[2];
-    const f = i * 4; this.fxArr[f] = flash; this.fxArr[f + 1] = stone; this.fxArr[f + 2] = glow; this.fxArr[f + 3] = 0;
+    const ca = M.instanceColor.array;
+    ca[j * 3] = team[0]; ca[j * 3 + 1] = team[1]; ca[j * 3 + 2] = team[2];
+    const fa = far ? this.fxArrF : this.fxArr, f = j * 4; fa[f] = flash; fa[f + 1] = stone; fa[f + 2] = glow; fa[f + 3] = i;
     return i;
   }
   /** World-space position of a model-space point attached to a part of the most recently added instance i (for attach points, muzzle, saddle). */
@@ -255,33 +273,37 @@ export class VoxSkin {
     const mx = td[t] * lx + td[t + 1] * ly + td[t + 2] * lz + td[t + 3];
     const my = td[t + 4] * lx + td[t + 5] * ly + td[t + 6] * lz + td[t + 7];
     const mz = td[t + 8] * lx + td[t + 9] * ly + td[t + 10] * lz + td[t + 11];
-    const im = this.mesh.instanceMatrix.array, o = i * 16;
+    const l = this.loc[i], im = (l < 0 ? this.far : this.mesh).instanceMatrix.array, o = (l < 0 ? ~l : l) * 16;
     out[0] = im[o] * mx + im[o + 4] * my + im[o + 8] * mz + im[o + 12];
     out[1] = im[o + 1] * mx + im[o + 5] * my + im[o + 9] * mz + im[o + 13];
     out[2] = im[o + 2] * mx + im[o + 6] * my + im[o + 10] * mz + im[o + 14];
     return out;
   }
   _grow() {
-    const keep = this.count, oldFx = this.fxArr, oldCol = this.mesh.instanceColor.array, oldTex = this.texData;
+    const keep = this.count, nN = this.nNear, nF = this.nFar;
+    const oldFx = this.fxArr, oldFxF = this.fxArrF, oldCol = this.mesh.instanceColor.array, oldColF = this.far ? this.far.instanceColor.array : null, oldTex = this.texData;
     this._alloc(this.capacity * 2);
     this.texData.set(oldTex.subarray(0, keep * this.P * 12));
-    this.fxArr.set(oldFx.subarray(0, keep * 4));
-    this.mesh.instanceColor.array.set(oldCol.subarray(0, keep * 3));
-    this.count = keep;
+    this.fxArr.set(oldFx.subarray(0, nN * 4)); this.mesh.instanceColor.array.set(oldCol.subarray(0, nN * 3));
+    if (this.far && oldFxF) { this.fxArrF.set(oldFxF.subarray(0, nF * 4)); this.far.instanceColor.array.set(oldColF.subarray(0, nF * 3)); }
+    this.count = keep; this.nNear = nN; this.nFar = nF;
   }
   end() {
-    const m = this.mesh, n = this.count;
+    this._flush(this.mesh, this.nNear, this.fxAttr);
+    if (this.far) this._flush(this.far, this.nFar, this.fxAttrF);
+    if (this.count) this.tex.needsUpdate = true;
+  }
+  _flush(m, n, fxAttr) {
     m.count = n; m.visible = n > 0;
     if (!n) return;
     m.instanceMatrix.updateRange.offset = 0; m.instanceMatrix.updateRange.count = n * 16; m.instanceMatrix.needsUpdate = true;
     m.instanceColor.updateRange.offset = 0; m.instanceColor.updateRange.count = n * 3; m.instanceColor.needsUpdate = true;
-    this.fxAttr.updateRange.offset = 0; this.fxAttr.updateRange.count = n * 4; this.fxAttr.needsUpdate = true;
-    this.tex.needsUpdate = true;
+    fxAttr.updateRange.offset = 0; fxAttr.updateRange.count = n * 4; fxAttr.needsUpdate = true;
   }
   dispose() {
-    this.host.scene.remove(this.mesh);
-    this.mesh.geometry.dispose(); this.geometry.dispose();
-    this.material.dispose(); if (this.mesh.customDepthMaterial) this.mesh.customDepthMaterial.dispose();
+    this.host.scene.remove(this.mesh); this.mesh.geometry.dispose(); this.geometry.dispose();
+    if (this.far) { this.host.scene.remove(this.far); this.far.geometry.dispose(); this.geometryFar.dispose(); }
+    this.material.dispose(); if (this.depthMaterial) this.depthMaterial.dispose();
     this.tex.dispose();
   }
 }

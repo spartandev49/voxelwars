@@ -26,7 +26,7 @@ export class Squad {
     this.moveTo = null; this.focus = 0;
     this.flankStage = 0; this.flankT = 0; this.flankX = 0; this.flankZ = 0; this.flankSide = 0; this.holdX = 0; this.holdZ = 0; this.holdSet = false;
     this.mode = 'form';                        // kept for render/debug compatibility
-    this.watch = false; this.minSpeed = 2.5; this.press = 0; this.lineT = 0; this.lineOk = true;
+    this.breach = null; this.blockT = 0; this.watch = false; this.minSpeed = 2.5; this.press = 0; this.lineT = 0; this.lineOk = true;
   }
 }
 
@@ -148,7 +148,12 @@ export function updateSquads(w, dt) {
       else if (nav.walkable(nx, sq.az)) { sq.ax = nx; dz = 0; }
       else if (nav.walkable(sq.ax, nz)) { sq.az = nz; dx = 0; }
       else ok = false;
-      if (ok) { sq.speed = sp; sq.vx = dx * sp; sq.vz = dz * sp; } else { sq.speed = 0; sq.vx = 0; sq.vz = 0; }
+      if (ok) { sq.speed = sp; sq.vx = dx * sp; sq.vz = dz * sp; sq.blockT = 0; } else {
+        sq.speed = 0; sq.vx = 0; sq.vz = 0;
+        // the way is shut: a destructible prop (wall, gate) right ahead becomes the squad's breach target
+        sq.blockT += dt;
+        if (sq.blockT > 0.8 && !(sq.breach && !sq.breach.dead)) sq.breach = w.nearestSoftProp(sq.ax + dx * 1.6, sq.az + dz * 1.6, 1.6);
+      }
       if (turnW) {
         const rate = clamp(2.8 / sq.halfW, 0.3, 1.6) * dt, d = angleDiff(sq.facing, want);
         sq.facing += d > rate ? rate : d < -rate ? -rate : d;
@@ -160,6 +165,7 @@ export function updateSquads(w, dt) {
       sq.ax += (sq.cx - sq.ax) * k * 0.5; sq.az += (sq.cz - sq.az) * k * 0.5;
       if (!nav.walkable(sq.ax, sq.az)) { sq.ax = sq.cx; sq.az = sq.cz; }
     }
+    if (sq.breach && sq.breach.dead) sq.breach = null;
     sq.mode = sq.engF > 0 ? 'free' : 'form';
   }
 }

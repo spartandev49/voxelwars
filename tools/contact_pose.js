@@ -25,7 +25,7 @@ export function readyPose(model, info = {}) {
   else { set('armUL', aUL, 0, -0.06); set('armLL', aLL); }
   const w = model.byId.weapon;
   if (w) {
-    const e = (READY_ELEVATION[info.weaponStyle] ?? 30) * Math.PI / 180;
+    const e = (info.ready ?? READY_ELEVATION[info.weaponStyle] ?? 30) * Math.PI / 180;
     const phi = Math.PI / 2 - e;                      // weapon +Y direction angle in the (y,z) plane
     const pose = phi - (aUR + aLR) - (w.rest[0] || 0);
     set('weapon', pose);

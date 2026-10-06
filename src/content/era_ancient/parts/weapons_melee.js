@@ -67,10 +67,10 @@ function spear(name, o) {
 M.dory = spear('Dory (hoplite spear)', { len: 21, headLen: 7, head: [1, 2, 2, 2, 1, 1, 0], tassel: false });
 M.spear = spear('Spear', { len: 22, headLen: 7, head: [1, 1, 2, 2, 1, 0, 0] });
 M.short_spear = spear('Short spear', { len: 15, headLen: 6, head: [1, 2, 2, 1, 1, 0] });
-M.sarissa = spear('Sarissa (pike)', { len: 30, headLen: 5, head: [1, 1, 1, 0, 0], two: true, style: 'pike', thick: true });
+M.sarissa = spear('Sarissa (pike)', { len: 26, headLen: 5, head: [1, 1, 1, 0, 0], two: true, style: 'pike', thick: true });
 M.spear_pomegranate = spear('Spear with pomegranate butt', { len: 22, headLen: 7, head: [1, 2, 2, 2, 1, 1, 0], pomegranate: true });
-M.xyston = spear('Xyston (cavalry lance)', { len: 28, headLen: 6, head: [1, 2, 2, 1, 1, 0], guard: true, back: 8 });
-M.kontos = spear('Kontos (great lance)', { len: 32, headLen: 6, head: [1, 1, 1, 1, 0, 0], guard: true, two: true, style: 'pike', thick: true });
+M.xyston = spear('Xyston (cavalry lance)', { len: 26, headLen: 6, head: [1, 2, 2, 1, 1, 0], guard: true, back: 8 });
+M.kontos = spear('Kontos (great lance)', { len: 26, headLen: 6, head: [1, 1, 1, 1, 0, 0], guard: true, two: true, style: 'pike', thick: true });
 M.javelin = {
   name: 'Javelin', meta: { style: 'throw', len: 17, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 10, kind: 'melee' },
   build(ctx) {
@@ -255,7 +255,7 @@ M.trident = {
 
 // ------------------------------------------------------------------------------------------------ staffs and scepters
 M.staff = {
-  name: 'Staff', meta: { style: 'bash', len: 22, back: 7, rest: [R_UPRIGHT, 0, 0], twoHanded: false, grip: [4, 10, 4], minLen: 12, kind: 'melee' },
+  name: 'Staff', meta: { style: 'bash', ready: 66, len: 22, back: 7, rest: [R_UPRIGHT, 0, 0], twoHanded: false, grip: [4, 10, 4], minLen: 12, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), yt = top(ctx), y0 = 10 - ctx.back;
     haft(g, ctx, y0 + 1, yt, 1, 0x8a6a40);
@@ -307,7 +307,7 @@ M.mistletoe_staff = {
   },
 };
 M.crook_flail = {
-  name: 'Crook and flail', meta: { style: 'bash', len: 17, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 11, kind: 'melee' },
+  name: 'Crook and flail', meta: { style: 'bash', ready: 60, len: 17, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 11, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), yt = top(ctx), y0 = 10 - ctx.back;
     for (let y = y0 + 1; y <= yt - 4; y++) B(g, 4, y, 4, 4, y, 4, V(y % 3 === 0 ? 0x2d4fb0 : ctx.m[2]));
@@ -332,7 +332,7 @@ M.vine_staff = {
   },
 };
 M.torch = {
-  name: 'Torch', meta: { style: 'bash', len: 13, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
+  name: 'Torch', meta: { style: 'bash', ready: 66, len: 13, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), yt = top(ctx), y0 = 10 - ctx.back;
     haft(g, ctx, y0, yt - 6, 1, 0x7a5a38);
@@ -358,7 +358,7 @@ M.sickle = {
 };
 // The strategos' standard: tall pole, crossbar and a team-tinted cloth banner (spec decision D2: a MAIN-HAND weapon, not a back pole)
 M.standard = {
-  name: 'Standard (banner)', meta: { style: 'bash', len: 30, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 22, kind: 'melee', noClamp: true },
+  name: 'Standard (banner)', meta: { style: 'bash', ready: 84, len: 30, back: 6, rest: [R_UPRIGHT, 0, 0], grip: [4, 10, 4], minLen: 22, kind: 'melee', noClamp: true },
   build(ctx) {
     const g = newGrid('weapon'), yt = top(ctx), y0 = 10 - ctx.back;
     haft(g, ctx, y0 + 1, yt - 2, 1, 0x7a5030);

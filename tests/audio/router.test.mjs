@@ -23,15 +23,17 @@ const hit = (o = {}) => Object.assign({ src: 1, dst: 2, srcDef: 'hoplite', dstDe
   assert.ok(c.includes('hit_blade') && !c.includes('hit_pierce'), 'slash -> hit_blade');
   assert.ok(c.includes('hit_flesh_light') && !c.includes('hit_armor'), 'unarmored target -> flesh');
   const first = R.log.find((l) => l.cue === 'hit_blade'); assert.deepEqual([first.x, first.y, first.z], [5, 1.5, 3]);
-  R.clear(); R.r.handle('unit_hit', hit({ type: 'pierce', dstDef: 'cataphract' })); c = R.cues();
-  assert.ok(c.includes('hit_pierce') && c.includes('hit_armor') && !c.includes('hit_flesh_light'), 'armored target -> hit_armor: ' + c);
+  R.clear(); for (let i = 0; i < 100; i++) R.r.handle('unit_hit', hit({ type: 'pierce', dstDef: 'cataphract' })); c = R.cues();
+  const nArm = c.filter((x) => x === 'hit_armor').length, nFl = c.filter((x) => x === 'hit_flesh_light').length;
+  assert.ok(c.includes('hit_pierce') && nArm > 60 && nArm < 100 && nFl > 0, `heavily armored target mostly clanks (${nArm} armor / ${nFl} flesh of 100)`);
+  R.clear(); for (let i = 0; i < 100; i++) R.r.handle('unit_hit', hit({ type: 'pierce', dstDef: 'cretan_archer' })); assert.ok(!R.cues().includes('hit_armor'), 'unarmored target never clanks');
   R.clear(); R.r.handle('unit_hit', hit({ type: 'blunt', dmg: 30 })); c = R.cues(); assert.ok(c.includes('hit_blunt') && c.includes('hit_flesh_heavy'), 'heavy blunt -> flesh_heavy');
   R.clear(); R.r.handle('unit_hit', hit({ crit: true })); assert.ok(R.cues().includes('crit'));
   R.clear(); R.r.handle('unit_hit', hit({ dstDef: 'hoplite' })); for (let i = 0; i < 30; i++) R.r.handle('unit_hit', hit({ dstDef: 'hoplite' })); assert.ok(R.cues().includes('block_shield'), 'shielded targets sometimes add a tiny rattle');
   assert.ok(R.log.filter((l) => l.cue === 'block_shield').every((l) => l.o.vol <= 0.3), 'rattle is tiny');
   // projectile hits get their sound from projectile_hit: no duplicate impact here
   R.clear(); R.r.handle('unit_hit', hit({ proj: true, type: 'pierce' })); assert.deepEqual(R.cues(), [], 'proj hit on flesh adds nothing');
-  R.r.handle('unit_hit', hit({ proj: true, dstDef: 'cataphract' })); assert.deepEqual(R.cues(), ['hit_armor']);
+  for (let i = 0; i < 40; i++) R.r.handle('unit_hit', hit({ proj: true, dstDef: 'cataphract' })); assert.ok(R.cues().length > 10 && R.cues().every((c) => c === 'hit_armor'), 'projectiles ping off heavy armour');
   // distance cull 90 u
   R.clear(); R.r.handle('unit_hit', hit({ x: 200, z: 0 })); assert.deepEqual(R.cues(), [], 'culled beyond 90 u'); assert.ok(R.r.stats.culled >= 1);
   // heroes raise priority

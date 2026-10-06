@@ -14,7 +14,7 @@ export async function open(viewport, opts) {
   const { fonts, html } = await build();
   const L = await launch(html, fonts, viewport || [1280, 720]);
   if (opts && opts.reducedMotion) await L.p.emulateMedia({ reducedMotion: 'reduce' });
-  await L.p.goto('http://t/');
+  await L.p.goto('https://t/');
   await L.p.waitForFunction(() => !!window.__ui);
   await L.p.evaluate(() => document.fonts && document.fonts.ready);
   const api = {

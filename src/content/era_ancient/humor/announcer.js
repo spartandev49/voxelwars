@@ -6,11 +6,11 @@
 // SLOTS        {unit} {unit2} {killer} {team} {team2} {faction} {faction2} {arena} {mission} {n} {streak} {ratio} {flank} {pct} {prop}
 //              {lifetime:<stat>} reads the live lifetime-stats object passed to createAnnouncer.
 //              Filters: {unit|pl} plural  {unit|a} indefinite article  {unit|up} UPPERCASE  {n|ord} third  {n|words} three  {n|num} 1,234
-// COND KEYS    sub, def, def2, faction, team ('player'|'enemy'), minN, maxN, arena, mission, flank, ratioMin, ratioMax,
+// COND KEYS    sub, def, def2, faction, team ('player'|'enemy'), minN, maxN, arena, mission, flank, cluster (big_swing payload has a cluster), ratioMin, ratioMax,
 //              stat {name,min?,max?} (or an array of these), milestone {name, at:[...]}
 // A line is eligible only when every slot in its text can be resolved, so a line that names {unit2} never runs without one.
 
-import { STAT_TABLE, FACTIONS } from '../stats.js';
+import { STAT_TABLE } from '../stats.js';
 import { unitName } from './units_text.js';
 
 const mk = (who) => (cat, key, text, o) => Object.assign({ id: cat + '_' + key, cat, who, text }, o);
@@ -30,10 +30,8 @@ export const TEMPLATES = [
   c('battle_start', 'grapes', 'The man selling grapes will survive. Everyone else is a rumour.'),
   c('battle_start', 'ledger', 'You have killed {lifetime:friendlyKills} of your own so far. I am not betting on improvement.', { once: true, cd: 480, cond: { stat: { name: 'friendlyKills', min: 5 } } }),
 
-  b('battle_start', 'sky', 'WELCOME to {arena}! {faction} on one side, {faction2} on the other, and a great deal of sky in between!'),
   p('battle_start', 'field', 'Two armies walk into a field. Does anyone remember who suggested the field?'),
   c('battle_start', 'surprise', 'Today will go as it goes. Some of you will be surprised. I will not.'),
-  b('battle_start', 'poured', 'The crowd is seated! The wine is poured! The ARMIES are, regrettably, armed!'),
   b('battle_start', 'mission', 'Today\'s event is {mission}! A very serious title for a very silly afternoon!'),
   p('battle_start', 'mission_p', '{mission}. Is a name chosen before the battle, or after the survivors have had their say?'),
   // ================= first_blood =================
@@ -42,20 +40,18 @@ export const TEMPLATES = [
   p('first_blood', 'inevitable', 'The first death. Statistically unavoidable. Spiritually inconvenient.'),
   c('first_blood', 'invite', 'First blood. Nobody asked who sent the invitations.'),
 
-  b('first_blood', 'ceremony', 'FIRST blood! A {unit} has removed a {unit2} from the opening ceremony!'),
   p('first_blood', 'cook', 'Strictly, the first blood was spilt at breakfast, by the cook. This is merely the first from a soldier.'),
-  p('first_blood', 'teaches', 'The first to fall teaches the rest how. Thank you, {unit2}.'),
   c('first_blood', 'survive', 'First blood goes to the {unit}. He will not survive it. Most do not.'),
+  p('first_blood', 'spilt', 'Someone had to go first. The rest are now deciding how they feel about it.'),
+  b('first_blood', 'off', 'And we are OFF! A {unit} draws first blood from a {unit2}, and the crowd is, frankly, relieved!'),
+  c('first_blood', 'sooner', 'First blood, sooner than expected. Everything is sooner than expected.'),
   // ================= kill_streak =================
-  b('kill_streak', 'pension', '{streak} KILLS for the {unit}! Somebody get this warrior a pension, or a nap!'),
   b('kill_streak', 'fire', '{streak} kills! He is ON FIRE! Not literally! The fire marshal has asked me to clarify!'),
   b('kill_streak', 'review', '{streak}!!! This is no longer a battle, this is a PERFORMANCE REVIEW!', { cond: { minN: 8 } }),
   b('kill_streak', 'name', 'That is {streak} for {killer}! Remember the NAME! (I will not.)'),
   p('kill_streak', 'pattern', '{killer}: {streak} kills. At what point does a pattern become a personality?'),
   p('kill_streak', 'brave', '{streak} kills. Is the {unit} brave, or merely uninterrupted?'),
-  p('kill_streak', 'cruel', 'At {streak}, the counting itself begins to feel cruel.', { cond: { minN: 10 } }),
   c('kill_streak', 'forgotten', 'The {unit} reaches {streak} and is forgotten by supper. As foretold.'),
-  c('kill_streak', 'tally', 'The records will say {streak}. They will not say who held his shield.'),
 
   // ================= hero_down =================
   b('hero_down', 'parade', 'The {unit} is DOWN! Cancel the parade! Not the sponsors! Never the sponsors!', { chain: ['hero_down_parade_c'] }),
@@ -118,7 +114,6 @@ export const TEMPLATES = [
   p('chicken', 'rage', 'Hurt a hen and discover the oldest weapon: the grudge.', { cond: { sub: 'tantrum' } }),
   c('chicken', 'act', 'A chicken will kill the {unit}. I said this in the first act.', { cond: { sub: 'kill' } }),
   b('chicken', 'kill', 'The CHICKEN just killed a {unit}! Somewhere a farmer is saying: told you!', { cond: { sub: 'kill' } }),
-  p('chicken', 'hero', 'A hen has felled a {unit}. Which of them was truly sacred?', { cond: { sub: 'kill' } }),
   c('chicken', 'ledger', 'Chicken kills, lifetime: {lifetime:chickenKills}. They keep a ledger too.', { cd: 480, cond: { stat: { name: 'chickenKills', min: 25 } } }),
   p('chicken', 'general', '{lifetime:chickenKills} kills. At what number does a chicken become a general?', { cd: 480, cond: { stat: { name: 'chickenKills', min: 50 } } }),
 
@@ -162,12 +157,10 @@ export const TEMPLATES = [
   b('elephant', 'trample', 'The ELEPHANT is running over {n}! Roadkill, but ancient!', { cond: { sub: 'trample' } }),
   b('elephant', 'stampede', 'The elephant is stampeding through his OWN lines! That is not a tactic, that is a lawsuit!', { cond: { sub: 'panic' } }),
   p('elephant', 'fire', 'Eleven tons of animal, undone by a torch. Perspective is a gift.', { cond: { sub: 'panic' } }),
-  p('elephant', 'size', 'Fire frightens the elephant. Is size merely a larger surface for fear?', { cond: { sub: 'panic' } }),
   c('elephant', 'said', 'The elephant will panic and flatten its friends. I said fire. They brought fire.', { cond: { sub: 'panic' } }),
   c('elephant', 'weight', 'The elephant stepped on {n} and did not notice. That is the whole problem with elephants.', { cond: { sub: 'trample' } }),
 
   // ================= kick =================
-  b('kick', 'boot', 'KICKED! The {unit2} has left the building! Also the zip code!'),
   b('kick', 'cus', 'SPARTA-cus has punted a {unit2} into the next district!'),
   p('kick', 'sentence', 'He says almost nothing, and kicks the rest. Is that not economy?'),
   c('kick', 'eight', 'Eight units. He always kicks eight. I counted.'),
@@ -194,7 +187,6 @@ export const TEMPLATES = [
 
   b('hazard', 'ground', 'The ground is trying to kill people! The ground is WINNING!'),
   // ================= lead_change =================
-  b('lead_change', 'hands', 'The LEAD changes hands! {team} takes it! Place your bets again, you fickle creatures!'),
   p('lead_change', 'momentum', 'The balance tips. We call it momentum. The soldiers call it oh no.'),
   c('lead_change', 'keep', '{team} leads now. They will not keep it. They never do.'),
   c('lead_change', 'ratio', '{ratio} to one. It was bound to swing. I said the {flank} flank.'),
@@ -208,6 +200,7 @@ export const TEMPLATES = [
 
   // ================= big_swing =================
   c('big_swing', 'fold', 'I said the {flank} flank would fold. Twice.'),
+  c('big_swing', 'cluster', 'They are clustered. I said do not cluster. Now it is {ratio} to one.', { cond: { cluster: true } }),
   c('big_swing', 'foretold', '{team} took the {flank}. As foretold.'),
   b('big_swing', 'flank', 'The {flank} flank is DONE! Somebody tell them it is rude to turn up like that!'),
   p('big_swing', 'arith', 'The ratio is {ratio} to one. Arithmetic, I find, is never on anybody\'s side.'),
@@ -250,18 +243,16 @@ export const TEMPLATES = [
   p('victory', 'milestone', '{lifetime:wins} wins. Is a record an achievement, or only a long habit?', { once: true, cd: 480, cond: { milestone: { name: 'wins', at: [10, 25, 50, 100] } } }),
 
   c('victory', 'notes', 'It went as I wrote. Slightly worse for the other side.'),
-  b('victory', 'inform', 'THAT is how you do it! Somebody tell the other side, in writing!'),
   c('victory', 'mission', 'You won {mission}. They will put it on a plaque. A small one.'),
   // ================= defeat =================
   b('defeat', 'fall', 'DEFEAT! {team} falls! Their spirit lives on! Their lunch, regrettably, does not!'),
   p('defeat', 'teaching', 'A defeat is only a battle that has finished teaching.'),
   c('defeat', 'left', 'I said left flank. I said left flank. I said left flank.'),
   c('defeat', 'unit', 'You lost to {unit|pl}. It was in my notes. In the margin. Underlined.'),
-  c('defeat', 'chicken', 'Chicken defeat number {lifetime:chickenDefeats}. I keep a ledger. The chickens keep another.', { cd: 480, cond: { sub: 'chicken', stat: { name: 'chickenDefeats', min: 1 } } }),
+  c('defeat', 'chicken', 'The {lifetime:chickenDefeats|ord} chicken defeat. I keep a ledger. The chickens keep another.', { cd: 480, cond: { sub: 'chicken', stat: { name: 'chickenDefeats', min: 1 } } }),
   b('defeat', 'chicken_b', 'Beaten by CHICKENS! Again! That is {lifetime:chickenDefeats|words} times now! The league has noticed!', { cd: 480, cond: { sub: 'chicken', stat: { name: 'chickenDefeats', min: 2 } } }),
   p('defeat', 'chicken_p', 'Defeated by poultry. Is it shame if the poultry are sacred?', { cond: { sub: 'chicken' } }),
 
-  b('defeat', 'educational', 'DEFEAT! Not a disaster! A very detailed, educational disaster!'),
   p('defeat', 'flattery', 'Defeat has the singular advantage of teaching without flattery.'),
   c('defeat', 'tomorrow', 'You will try again tomorrow. Differently. Then I will say I said.'),
   c('defeat', 'mission', '{mission} beat you. It is in my notes. I wrote it down twice.'),
@@ -314,7 +305,6 @@ export const TEMPLATES = [
   b('idle_filler', 'essence_b', 'FIGHT! It is a fight!', { follow: true }),
   p('idle_filler', 'essence_p', 'I was going to say: disagreement. But yes.', { follow: true }),
   p('idle_filler', 'define', 'I spent the morning defining battle. The battle interrupted me.'),
-  p('idle_filler', 'necessary', 'No one has asked whether this war is necessary. Perhaps that is the answer.'),
   c('idle_filler', 'goat', 'The goat knows. Ask the goat.'),
   b('idle_filler', 'zeus', 'Zeus is watching! He gets bored in about thirty seconds, so work on your ENTERTAINMENT!'),
   c('idle_filler', 'ledger', 'Total lifetime kills: {lifetime:kills}. I keep the number. Somebody has to.', { cd: 480, cond: { stat: { name: 'kills', min: 100 } } }),
@@ -393,7 +383,9 @@ export const DEFAULT_CONFIG = {
   recencyN: 14,         // last N line ids are never repeated
   repeatWindow: 300,    // soft memory: a line heard in the last 300 s is strongly avoided
   fillerQuiet: 14,      // s of silence before an idle filler may fire
-  fastSpeed: 2,         // above this speed only priority >= 4 speaks
+  fastSpeed: 2,         // above this speed only priority >= 4 speaks, and the booth talks less (slower token refill, priority 5 must also have a little budget)
+  fastRefill: 0.6,
+  fastP5Need: -0.8,
   ttl: { 1: 4, 2: 9, 3: 9, 4: 8, 5: 10 },
   aging: 2,             // a waiting candidate gains up to this much effective priority as it ages, so gags are not starved by bigger moments
   hungryAfter: 120,     // a category silent this long may speak even when the token bucket is nearly empty (rare gags get heard)
@@ -577,6 +569,7 @@ export function createAnnouncer(opts) {
     if (cond.arena !== undefined) { if (!inList(cond.arena, cand.arenaId)) return -1; score++; }
     if (cond.mission !== undefined) { if (!inList(cond.mission, cand.mission)) return -1; score++; }
     if (cond.flank !== undefined) { if (!inList(cond.flank, s.flank)) return -1; score++; }
+    if (cond.cluster !== undefined) { if (!!s.hasCluster !== cond.cluster) return -1; score++; }
     if (cond.ratioMin !== undefined) { if (!(s.ratioVal >= cond.ratioMin)) return -1; score++; }
     if (cond.ratioMax !== undefined) { if (!(s.ratioVal <= cond.ratioMax)) return -1; score++; }
     if (cond.stat !== undefined) { if (!statOK(cond.stat)) return -1; score += 1; }
@@ -684,7 +677,8 @@ export function createAnnouncer(opts) {
       if (st.now - st.lastEmit < (cand.pri >= 5 ? cfg.minGapP5 : cfg.minGap)) continue;
       if (st.now < (st.catReady[ckey(cand)] || 0)) continue;
       const silent = st.now - (st.catLast[ckey(cand)] === undefined ? -1e9 : st.catLast[ckey(cand)]);
-      const needTok = cand.pri >= 3 && silent >= cfg.hungryAfter ? Math.min(cfg.need[cand.pri], cfg.hungryNeed) : cfg.need[cand.pri];
+      let needTok = cand.pri >= 3 && silent >= cfg.hungryAfter ? Math.min(cfg.need[cand.pri], cfg.hungryNeed) : cfg.need[cand.pri];
+      if (st.speed > cfg.fastSpeed && cand.pri >= 5) needTok = Math.max(needTok, cfg.fastP5Need);
       if (st.tokens < needTok) continue;
       st.cands.splice(i, 1);
       const line = choose(cand);
@@ -770,6 +764,7 @@ export function createAnnouncer(opts) {
         case 'battle_end': battleEnd(pl); break;
         case 'first_blood': {
           if (bs.firstBlood) break; bs.firstBlood = true;
+          if (st.speed > cfg.fastSpeed && rand() < 0.5) break; // when the game is fast-forwarded first blood is only announced half the time
           const s = baseSlots();
           if (bs.lastKill && st.now - bs.lastKill.t < 1) { setUnit(s, 'unit', bs.lastKill.srcDef); setUnit(s, 'unit2', bs.lastKill.dstDef); }
           bs.fbCand = offer('first_blood', null, s, { delay: 0.25 });
@@ -801,6 +796,7 @@ export function createAnnouncer(opts) {
           const r = pl.ratio > 0 ? pl.ratio : 1;
           const s = baseSlots(); s.team = teamName(pl.team); s.teamIdx = pl.team; s.ratio = fmtRatio(r); s.ratioVal = r >= 1 ? r : 1 / r;
           if (pl.flank) s.flank = pl.flank;
+          s.hasCluster = !!pl.cluster;
           if (r >= 1) bs.deficit[pl.team ? 0 : 1] = Math.max(bs.deficit[pl.team ? 0 : 1], r); else bs.deficit[pl.team ? 1 : 0] = Math.max(bs.deficit[pl.team ? 1 : 0], 1 / r);
           offer('big_swing', r >= 1 ? 'gain' : 'loss', s);
           break;
@@ -848,7 +844,7 @@ export function createAnnouncer(opts) {
     tick(dt) {
       if (dt > 0) {
         st.now += dt; st.sim += dt * st.speed;
-        st.tokens = Math.min(cfg.tokenCap, st.tokens + dt / cfg.avgGap);
+        st.tokens = Math.min(cfg.tokenCap, st.tokens + (dt / cfg.avgGap) * (st.speed > cfg.fastSpeed ? cfg.fastRefill : 1));
       }
       for (let i = st.cands.length - 1; i >= 0; i--) if (st.now > st.cands[i].expire) { const ec = st.cands[i].cat; st.expired[ec] = (st.expired[ec] || 0) + 1; st.cands.splice(i, 1); }
       if (st.inBattle && st.speed <= cfg.fastSpeed && st.now - st.lastActivity >= cfg.fillerQuiet && st.chainEnd <= st.now && !st.cands.length && st.now >= (st.catReady.idle_filler || 0)) {

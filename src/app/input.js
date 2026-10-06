@@ -116,6 +116,7 @@ export class Input {
     }
     if (ctx === 'menu') return;
     let r = 0, f = 0; if (k('pan_right')) r += 1; if (k('pan_left')) r -= 1; if (k('pan_up')) f += 1; if (k('pan_down')) f -= 1;
+    if (this.down.has('ArrowRight')) r += 1; if (this.down.has('ArrowLeft')) r -= 1; if (this.down.has('ArrowUp')) f += 1; if (this.down.has('ArrowDown')) f -= 1;   // arrows always pan too
     if (r || f) rig.pan(r * fast, f * fast, dt);
     if (k('rot_left')) rig.rotate(1.6 * dt, 0); if (k('rot_right')) rig.rotate(-1.6 * dt, 0);
     if (k('tilt_up')) rig.rotate(0, 1.0 * dt); if (k('tilt_down')) rig.rotate(0, -1.0 * dt);

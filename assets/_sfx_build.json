@@ -2,7 +2,7 @@
  "sword_slash_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Sabre Swing.wav",
   "duration": 0.836,
-  "size": 8620,
+  "size": 6895,
   "desc": {
    "dur": 0.8,
    "peak_db": -3.0,
@@ -18,7 +18,7 @@
  "sword_slash_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Katana Swing.wav",
   "duration": 0.836,
-  "size": 8620,
+  "size": 6895,
   "desc": {
    "dur": 0.8,
    "peak_db": -3.0,
@@ -34,7 +34,7 @@
  "sword_slash_3": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Seax Swing.wav",
   "duration": 0.836,
-  "size": 8620,
+  "size": 6895,
   "desc": {
    "dur": 0.8,
    "peak_db": -3.0,
@@ -50,7 +50,7 @@
  "sword_slash_4": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Dagger Swing.wav",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.7,
    "peak_db": -3.0,
@@ -66,7 +66,7 @@
  "axe_swing_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Axe Swing.wav",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.9,
    "peak_db": -3.0,
@@ -82,11 +82,11 @@
  "sword_hit_1": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.1.ogg",
   "duration": 0.862,
-  "size": 8882,
+  "size": 7104,
   "desc": {
    "dur": 0.83,
-   "peak_db": -4.5,
-   "rms_db": -20.0,
+   "peak_db": -5.9,
+   "rms_db": -21.3,
    "crest": 5.9,
    "centroid": 9010,
    "low": 0.0,
@@ -98,11 +98,11 @@
  "sword_hit_2": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.3.ogg",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.59,
-   "peak_db": -6.6,
-   "rms_db": -23.1,
+   "peak_db": -7.0,
+   "rms_db": -23.4,
    "crest": 6.7,
    "centroid": 10530,
    "low": 0.0,
@@ -114,11 +114,11 @@
  "sword_hit_3": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.6.ogg",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.44,
-   "peak_db": -5.8,
-   "rms_db": -21.5,
+   "peak_db": -6.3,
+   "rms_db": -21.9,
    "crest": 6.0,
    "centroid": 8476,
    "low": 0.0,
@@ -130,7 +130,7 @@
  "sword_hit_4": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.9.ogg",
   "duration": 0.862,
-  "size": 8882,
+  "size": 7104,
   "desc": {
    "dur": 0.83,
    "peak_db": -3.0,
@@ -146,11 +146,11 @@
  "blade_clash_1": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_clash_-_starninjas_0/sword_clash.1.ogg",
   "duration": 0.862,
-  "size": 8882,
+  "size": 7104,
   "desc": {
    "dur": 0.82,
-   "peak_db": -8.4,
-   "rms_db": -22.0,
+   "peak_db": -10.3,
+   "rms_db": -23.9,
    "crest": 4.8,
    "centroid": 6497,
    "low": 0.0,
@@ -162,11 +162,11 @@
  "blade_clash_2": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_clash_-_starninjas_0/sword_clash.4.ogg",
   "duration": 0.575,
-  "size": 6008,
+  "size": 4805,
   "desc": {
    "dur": 0.53,
-   "peak_db": -5.6,
-   "rms_db": -21.6,
+   "peak_db": -7.0,
+   "rms_db": -23.0,
    "crest": 6.3,
    "centroid": 6170,
    "low": 0.0,
@@ -178,11 +178,11 @@
  "blade_clash_3": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_clash_-_starninjas_0/sword_clash.6.ogg",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.45,
-   "peak_db": -8.2,
-   "rms_db": -22.7,
+   "peak_db": -8.3,
+   "rms_db": -22.8,
    "crest": 5.3,
    "centroid": 8292,
    "low": 0.0,
@@ -194,10 +194,10 @@
  "blade_clash_4": {
   "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_clash_-_starninjas_0/sword_clash.9.ogg",
   "duration": 0.758,
-  "size": 7837,
+  "size": 6268,
   "desc": {
    "dur": 0.72,
-   "peak_db": -5.4,
+   "peak_db": -5.5,
    "rms_db": -25.2,
    "crest": 9.8,
    "centroid": 9068,
@@ -210,7 +210,7 @@
  "blade_clash_5": {
   "srcfile": "oga-fantasy-weapons-and-apparel-sfx-library/files/weapons-apparel/sfx/sword-knife-clash-14.wav",
   "duration": 0.313,
-  "size": 3396,
+  "size": 2715,
   "desc": {
    "dur": 0.28,
    "peak_db": -3.0,
@@ -226,11 +226,11 @@
  "blade_parry_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_1_of_2/Sabre Katana Blade on Blade.wav",
   "duration": 1.541,
-  "size": 15674,
+  "size": 12537,
   "desc": {
    "dur": 1.5,
-   "peak_db": -3.0,
-   "rms_db": -27.9,
+   "peak_db": -4.8,
+   "rms_db": -29.7,
    "crest": 17.6,
    "centroid": 4917,
    "low": 0.0,
@@ -242,11 +242,11 @@
  "blade_parry_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_2_of_2/Spear Sabre Blade on Blade.wav",
   "duration": 1.541,
-  "size": 15674,
+  "size": 12537,
   "desc": {
    "dur": 1.5,
-   "peak_db": -4.0,
-   "rms_db": -27.8,
+   "peak_db": -4.9,
+   "rms_db": -28.6,
    "crest": 15.4,
    "centroid": 4529,
    "low": 0.0,
@@ -258,7 +258,7 @@
  "sword_draw_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Sabre Draw Fast.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.0,
    "peak_db": -3.0,
@@ -274,7 +274,7 @@
  "sword_draw_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Seax Draw Fast.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.0,
    "peak_db": -3.0,
@@ -290,7 +290,7 @@
  "sword_sheath_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Katana Sheath Fast.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.0,
    "peak_db": -3.0,
@@ -306,7 +306,7 @@
  "axe_chop_1": {
   "srcfile": "kenney-rpg-audio/files/Audio/chop.ogg",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.23,
    "peak_db": -3.0,
@@ -322,7 +322,7 @@
  "axe_chop_2": {
   "srcfile": "oga-tree-chop-fall-thud/files/chop-tree-fall/chop-tree-fall.ogg",
   "duration": 1.228,
-  "size": 12539,
+  "size": 10030,
   "desc": {
    "dur": 1.2,
    "peak_db": -3.0,
@@ -338,7 +338,7 @@
  "blade_swish_1": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-05.flac",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.41,
    "peak_db": -3.0,
@@ -354,7 +354,7 @@
  "blade_swish_2": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-12.flac",
   "duration": 0.418,
-  "size": 4441,
+  "size": 3551,
   "desc": {
    "dur": 0.37,
    "peak_db": -3.0,
@@ -370,7 +370,7 @@
  "knife_slice_1": {
   "srcfile": "kenney-rpg-audio/files/Audio/knifeSlice.ogg",
   "duration": 0.392,
-  "size": 4180,
+  "size": 3342,
   "desc": {
    "dur": 0.37,
    "peak_db": -3.0,
@@ -386,7 +386,7 @@
  "shield_block_1": {
   "srcfile": "oga-10-impactshield-blocks/files/impact_-_starninjas/impact.1.ogg",
   "duration": 0.601,
-  "size": 6269,
+  "size": 5014,
   "desc": {
    "dur": 0.56,
    "peak_db": -3.0,
@@ -402,11 +402,11 @@
  "shield_block_2": {
   "srcfile": "oga-10-impactshield-blocks/files/impact_-_starninjas/impact.3.ogg",
   "duration": 0.522,
-  "size": 5486,
+  "size": 4387,
   "desc": {
    "dur": 0.48,
-   "peak_db": -4.5,
-   "rms_db": -19.8,
+   "peak_db": -5.4,
+   "rms_db": -20.7,
    "crest": 5.8,
    "centroid": 1480,
    "low": 0.26,
@@ -418,11 +418,11 @@
  "shield_block_3": {
   "srcfile": "oga-10-impactshield-blocks/files/impact_-_starninjas/impact.5.ogg",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.23,
-   "peak_db": -3.0,
-   "rms_db": -16.0,
+   "peak_db": -4.3,
+   "rms_db": -17.3,
    "crest": 4.5,
    "centroid": 1196,
    "low": 0.04,
@@ -434,7 +434,7 @@
  "shield_block_4": {
   "srcfile": "oga-10-impactshield-blocks/files/impact_-_starninjas/impact.8.ogg",
   "duration": 0.287,
-  "size": 3135,
+  "size": 2506,
   "desc": {
    "dur": 0.26,
    "peak_db": -3.0,
@@ -450,7 +450,7 @@
  "shield_bash_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPlate_heavy_000.ogg",
   "duration": 0.47,
-  "size": 4963,
+  "size": 3969,
   "desc": {
    "dur": 0.43,
    "peak_db": -3.0,
@@ -466,7 +466,7 @@
  "shield_bash_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPlate_heavy_003.ogg",
   "duration": 0.366,
-  "size": 3918,
+  "size": 3133,
   "desc": {
    "dur": 0.32,
    "peak_db": -3.0,
@@ -482,7 +482,7 @@
  "wood_thud_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_000.ogg",
   "duration": 0.209,
-  "size": 2351,
+  "size": 1879,
   "desc": {
    "dur": 0.17,
    "peak_db": -3.0,
@@ -498,7 +498,7 @@
  "wood_thud_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_002.ogg",
   "duration": 0.235,
-  "size": 2612,
+  "size": 2088,
   "desc": {
    "dur": 0.2,
    "peak_db": -3.0,
@@ -514,7 +514,7 @@
  "wood_thud_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_medium_001.ogg",
   "duration": 0.209,
-  "size": 2351,
+  "size": 1879,
   "desc": {
    "dur": 0.18,
    "peak_db": -3.0,
@@ -530,7 +530,7 @@
  "spear_swing_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_2_of_2/Spear Swing.wav",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.7,
    "peak_db": -3.0,
@@ -546,7 +546,7 @@
  "spear_stab_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactSoft_heavy_001.ogg",
   "duration": 0.47,
-  "size": 4963,
+  "size": 3969,
   "desc": {
    "dur": 0.42,
    "peak_db": -3.0,
@@ -562,7 +562,7 @@
  "javelin_throw_1": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac",
   "duration": 0.836,
-  "size": 8620,
+  "size": 6895,
   "desc": {
    "dur": 0.8,
    "peak_db": -3.0,
@@ -578,7 +578,7 @@
  "javelin_throw_2": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-35.flac",
   "duration": 1.097,
-  "size": 11233,
+  "size": 8985,
   "desc": {
    "dur": 1.05,
    "peak_db": -3.0,
@@ -594,11 +594,11 @@
  "bow_shot_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Scythian Recurve Shoot.wav",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.6,
-   "peak_db": -5.6,
-   "rms_db": -31.5,
+   "peak_db": -4.7,
+   "rms_db": -30.6,
    "crest": 19.7,
    "centroid": 805,
    "low": 0.48,
@@ -610,7 +610,7 @@
  "bow_shot_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/English Longbow Shoot.wav",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.3,
    "peak_db": -3.0,
@@ -626,7 +626,7 @@
  "crossbow_shot_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Crossbow Shoot.wav",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.6,
    "peak_db": -3.0,
@@ -642,7 +642,7 @@
  "bow_draw_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Scythian Recurve Draw.wav",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.6,
    "peak_db": -3.0,
@@ -658,7 +658,7 @@
  "bow_nock_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/English Longbow Nock Arrow.wav",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.9,
    "peak_db": -3.0,
@@ -674,7 +674,7 @@
  "arrow_whoosh_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Scythian Recurve Arrow Pass.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.0,
    "peak_db": -3.0,
@@ -690,11 +690,11 @@
  "arrow_whoosh_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Crossbow Bolt Pass.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.0,
-   "peak_db": -3.0,
-   "rms_db": -25.9,
+   "peak_db": -4.6,
+   "rms_db": -27.6,
    "crest": 14.0,
    "centroid": 3367,
    "low": 0.09,
@@ -706,7 +706,7 @@
  "arrow_whoosh_3": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Scythian Recurve Heavy Arrow Pass.wav",
   "duration": 0.967,
-  "size": 9927,
+  "size": 7940,
   "desc": {
    "dur": 0.93,
    "peak_db": -3.0,
@@ -722,7 +722,7 @@
  "arrow_hit_flesh_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactSoft_medium_001.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.14,
    "peak_db": -3.0,
@@ -738,7 +738,7 @@
  "arrow_hit_flesh_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactSoft_medium_003.ogg",
   "duration": 0.157,
-  "size": 1829,
+  "size": 1461,
   "desc": {
    "dur": 0.11,
    "peak_db": -3.0,
@@ -754,7 +754,7 @@
  "arrow_hit_wood_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_light_001.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.1,
    "peak_db": -3.0,
@@ -770,7 +770,7 @@
  "arrow_hit_wood_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_light_003.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.1,
    "peak_db": -3.0,
@@ -786,7 +786,7 @@
  "flesh_hit_light_1": {
   "srcfile": "oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit05.mp3.flac",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.59,
    "peak_db": -3.0,
@@ -802,11 +802,11 @@
  "flesh_hit_light_2": {
   "srcfile": "oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit12.mp3.flac",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.42,
-   "peak_db": -3.0,
-   "rms_db": -18.3,
+   "peak_db": -5.3,
+   "rms_db": -20.6,
    "crest": 5.8,
    "centroid": 1862,
    "low": 0.48,
@@ -818,7 +818,7 @@
  "flesh_hit_light_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPunch_medium_001.ogg",
   "duration": 0.313,
-  "size": 3396,
+  "size": 2715,
   "desc": {
    "dur": 0.27,
    "peak_db": -3.0,
@@ -834,7 +834,7 @@
  "flesh_hit_light_4": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPunch_medium_003.ogg",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.3,
    "peak_db": -3.0,
@@ -850,7 +850,7 @@
  "flesh_hit_heavy_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPunch_heavy_000.ogg",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.47,
    "peak_db": -3.0,
@@ -866,7 +866,7 @@
  "flesh_hit_heavy_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPunch_heavy_002.ogg",
   "duration": 0.392,
-  "size": 4180,
+  "size": 3342,
   "desc": {
    "dur": 0.35,
    "peak_db": -3.0,
@@ -882,7 +882,7 @@
  "flesh_hit_heavy_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPunch_heavy_004.ogg",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.41,
    "peak_db": -3.0,
@@ -898,7 +898,7 @@
  "mace_bonk_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactMetal_heavy_001.ogg",
   "duration": 0.209,
-  "size": 2351,
+  "size": 1879,
   "desc": {
    "dur": 0.16,
    "peak_db": -3.0,
@@ -914,7 +914,7 @@
  "mace_bonk_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactMetal_medium_003.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.15,
    "peak_db": -3.0,
@@ -930,7 +930,7 @@
  "club_bonk_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_004.ogg",
   "duration": 0.235,
-  "size": 2612,
+  "size": 2088,
   "desc": {
    "dur": 0.18,
    "peak_db": -3.0,
@@ -946,7 +946,7 @@
  "club_bonk_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_medium_003.ogg",
   "duration": 0.235,
-  "size": 2612,
+  "size": 2088,
   "desc": {
    "dur": 0.18,
    "peak_db": -3.0,
@@ -962,7 +962,7 @@
  "helmet_ping_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactTin_medium_001.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.09,
    "peak_db": -3.0,
@@ -978,11 +978,11 @@
  "flesh_slap_1": {
   "srcfile": "oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit33.mp3.flac",
   "duration": 0.679,
-  "size": 7053,
+  "size": 5641,
   "desc": {
    "dur": 0.63,
-   "peak_db": -3.0,
-   "rms_db": -13.9,
+   "peak_db": -5.4,
+   "rms_db": -16.3,
    "crest": 3.5,
    "centroid": 193,
    "low": 0.91,
@@ -994,7 +994,7 @@
  "death_grunt_1": {
   "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_00.wav",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.59,
    "peak_db": -3.0,
@@ -1010,7 +1010,7 @@
  "death_grunt_2": {
   "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_05.wav",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.68,
    "peak_db": -3.0,
@@ -1026,7 +1026,7 @@
  "death_grunt_3": {
   "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_11.wav",
   "duration": 0.705,
-  "size": 7314,
+  "size": 5850,
   "desc": {
    "dur": 0.67,
    "peak_db": -3.0,
@@ -1042,7 +1042,7 @@
  "death_grunt_4": {
   "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_06.wav",
   "duration": 0.549,
-  "size": 5747,
+  "size": 4596,
   "desc": {
    "dur": 0.5,
    "peak_db": -3.0,
@@ -1058,7 +1058,7 @@
  "death_grunt_5": {
   "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_09.wav",
   "duration": 0.522,
-  "size": 5486,
+  "size": 4387,
   "desc": {
    "dur": 0.49,
    "peak_db": -3.0,
@@ -1074,7 +1074,7 @@
  "death_oof_1": {
   "srcfile": "oga-15-vocal-male-strainhurtpainjump-sounds/files/slightscreams/slightscream-03.flac",
   "duration": 0.549,
-  "size": 5747,
+  "size": 4596,
   "desc": {
    "dur": 0.52,
    "peak_db": -3.0,
@@ -1090,7 +1090,7 @@
  "death_oof_2": {
   "srcfile": "oga-15-vocal-male-strainhurtpainjump-sounds/files/slightscreams/slightscream-10.flac",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.69,
    "peak_db": -3.0,
@@ -1106,7 +1106,7 @@
  "death_scream_1": {
   "srcfile": "oga-aargh-male-screams/files/aargh/aargh5.ogg",
   "duration": 1.097,
-  "size": 11233,
+  "size": 8985,
   "desc": {
    "dur": 1.05,
    "peak_db": -3.0,
@@ -1122,7 +1122,7 @@
  "death_scream_2": {
   "srcfile": "oga-aargh-male-screams/files/aargh/aargh6.ogg",
   "duration": 1.358,
-  "size": 13845,
+  "size": 11074,
   "desc": {
    "dur": 1.33,
    "peak_db": -3.0,
@@ -1138,7 +1138,7 @@
  "death_dying_1": {
   "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/die1.wav",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.89,
    "peak_db": -3.0,
@@ -1154,7 +1154,7 @@
  "death_dying_2": {
   "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/die2.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.02,
    "peak_db": -3.0,
@@ -1170,7 +1170,7 @@
  "death_hurt_1": {
   "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain3.wav",
   "duration": 0.549,
-  "size": 5747,
+  "size": 4596,
   "desc": {
    "dur": 0.5,
    "peak_db": -3.0,
@@ -1186,7 +1186,7 @@
  "battle_cry_1": {
   "srcfile": "oga-proto-germanic-voices/files/attack_01/attack_01.wav",
   "duration": 0.705,
-  "size": 7314,
+  "size": 5850,
   "desc": {
    "dur": 0.67,
    "peak_db": -3.0,
@@ -1202,7 +1202,7 @@
  "battle_cry_2": {
   "srcfile": "oga-proto-germanic-voices/files/attack_02/attack_02.wav",
   "duration": 0.705,
-  "size": 7314,
+  "size": 5850,
   "desc": {
    "dur": 0.66,
    "peak_db": -3.0,
@@ -1218,7 +1218,7 @@
  "battle_cry_3": {
   "srcfile": "oga-proto-germanic-voices/files/attack_03/attack_03.wav",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.69,
    "peak_db": -3.0,
@@ -1234,7 +1234,7 @@
  "battle_cry_4": {
   "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3yell6.wav",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.6,
    "peak_db": -3.0,
@@ -1250,7 +1250,7 @@
  "battle_cry_5": {
   "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/2yell6.wav",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -1266,7 +1266,7 @@
  "orc_roar_2": {
   "srcfile": "oga-orc-voice/files/all_orc_commander_audio_files_0/ORC GROWL 2.wav",
   "duration": 1.75,
-  "size": 17763,
+  "size": 14209,
   "desc": {
    "dur": 1.72,
    "peak_db": -3.0,
@@ -1282,7 +1282,7 @@
  "grunt_effort_1": {
   "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt1.wav",
   "duration": 0.392,
-  "size": 4180,
+  "size": 3342,
   "desc": {
    "dur": 0.37,
    "peak_db": -3.0,
@@ -1298,7 +1298,7 @@
  "grunt_effort_2": {
   "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt4.wav",
   "duration": 0.287,
-  "size": 3135,
+  "size": 2506,
   "desc": {
    "dur": 0.24,
    "peak_db": -3.0,
@@ -1314,7 +1314,7 @@
  "announcer_fight": {
   "srcfile": "kenney-voiceover-pack-fighter/files/Audio/fight.ogg",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.68,
    "peak_db": -3.0,
@@ -1330,7 +1330,7 @@
  "announcer_ready": {
   "srcfile": "kenney-voiceover-pack-fighter/files/Audio/ready.ogg",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.91,
    "peak_db": -3.0,
@@ -1346,7 +1346,7 @@
  "announcer_winner": {
   "srcfile": "kenney-voiceover-pack-fighter/files/Audio/winner.ogg",
   "duration": 1.306,
-  "size": 13322,
+  "size": 10656,
   "desc": {
    "dur": 1.27,
    "peak_db": -3.0,
@@ -1359,42 +1359,10 @@
   },
   "cut": false
  },
- "announcer_game_over": {
-  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/game_over.ogg",
-  "duration": 1.646,
-  "size": 16718,
-  "desc": {
-   "dur": 1.6,
-   "peak_db": -3.0,
-   "rms_db": -15.4,
-   "crest": 4.2,
-   "centroid": 675,
-   "low": 0.86,
-   "flat": 0.008,
-   "n_on": 2
-  },
-  "cut": true
- },
- "announcer_final_round": {
-  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/final_round.ogg",
-  "duration": 1.567,
-  "size": 15935,
-  "desc": {
-   "dur": 1.52,
-   "peak_db": -3.0,
-   "rms_db": -14.6,
-   "crest": 3.8,
-   "centroid": 344,
-   "low": 0.9,
-   "flat": 0.017,
-   "n_on": 1
-  },
-  "cut": false
- },
  "crowd_cheer_1": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 04 - Strong cheering - II - Short.mp3",
   "duration": 2.847,
-  "size": 28735,
+  "size": 22986,
   "desc": {
    "dur": 2.8,
    "peak_db": -3.0,
@@ -1410,7 +1378,7 @@
  "crowd_cheer_2": {
   "srcfile": "oga-cheers-0/files/cheers_1/cheers_1.ogg",
   "duration": 1.698,
-  "size": 17241,
+  "size": 13791,
   "desc": {
    "dur": 1.67,
    "peak_db": -3.0,
@@ -1426,7 +1394,7 @@
  "crowd_cheer_3": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 06 - Soft cheering - II.mp3",
   "duration": 2.847,
-  "size": 28735,
+  "size": 22986,
   "desc": {
    "dur": 2.8,
    "peak_db": -3.0,
@@ -1442,7 +1410,7 @@
  "crowd_roar_1": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 01 - Strong cheering and strong rhythmic cheering.mp3",
   "duration": 4.049,
-  "size": 40751,
+  "size": 32599,
   "desc": {
    "dur": 4.0,
    "peak_db": -3.0,
@@ -1458,7 +1426,7 @@
  "crowd_roar_2": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 03 - Strong cheering - I.mp3",
   "duration": 4.049,
-  "size": 40751,
+  "size": 32599,
   "desc": {
    "dur": 4.0,
    "peak_db": -3.0,
@@ -1474,7 +1442,7 @@
  "crowd_chant_1": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 08 - Rhythmic cheering.mp3",
   "duration": 3.527,
-  "size": 35527,
+  "size": 28420,
   "desc": {
    "dur": 3.5,
    "peak_db": -3.0,
@@ -1490,7 +1458,7 @@
  "applause_1": {
   "srcfile": "oga-applause-in-a-large-hall-or-church/files/applause-clapping-church-crowd-immersive/applause-clapping-church-crowd-immersive.wav",
   "duration": 3.03,
-  "size": 30563,
+  "size": 24449,
   "desc": {
    "dur": 3.0,
    "peak_db": -3.0,
@@ -1554,7 +1522,7 @@
  "drum_boom_1": {
   "srcfile": "oga-taiko-drums-seamless-loop/files/taiko-drums_0/taiko-drums_0.ogg",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.4,
    "peak_db": -3.0,
@@ -1570,7 +1538,7 @@
  "drum_boom_2": {
   "srcfile": "oga-taiko-drums-seamless-loop/files/taiko-drums_0/taiko-drums_0.ogg",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.4,
    "peak_db": -3.0,
@@ -1586,7 +1554,7 @@
  "drum_boom_3": {
   "srcfile": "oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.3,
    "peak_db": -3.0,
@@ -1602,7 +1570,7 @@
  "drum_boom_4": {
   "srcfile": "oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.3,
    "peak_db": -3.0,
@@ -1618,11 +1586,11 @@
  "gong_1": {
   "srcfile": "oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_01.ogg",
   "duration": 1.411,
-  "size": 14367,
+  "size": 11492,
   "desc": {
    "dur": 1.37,
-   "peak_db": -3.0,
-   "rms_db": -20.3,
+   "peak_db": -4.4,
+   "rms_db": -21.6,
    "crest": 7.3,
    "centroid": 1079,
    "low": 0.0,
@@ -1634,7 +1602,7 @@
  "gong_2": {
   "srcfile": "oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_02.ogg",
   "duration": 0.967,
-  "size": 9927,
+  "size": 7940,
   "desc": {
    "dur": 0.92,
    "peak_db": -3.0,
@@ -1650,7 +1618,7 @@
  "gong_3": {
   "srcfile": "oga-gonk-gong/files/gong/gong.wav",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.46,
    "peak_db": -3.0,
@@ -1666,7 +1634,7 @@
  "horse_gallop_1": {
   "srcfile": "oga-horse-gallop-loop/files/gallop/gallop_01.ogg",
   "duration": 2.534,
-  "size": 25600,
+  "size": 20479,
   "desc": {
    "dur": 2.5,
    "peak_db": -3.0,
@@ -1682,7 +1650,7 @@
  "hoof_step_1": {
   "srcfile": "oga-horse-gallop-on-different-surfaces/files/archive_2/ground.mp3",
   "duration": 0.418,
-  "size": 4441,
+  "size": 3551,
   "desc": {
    "dur": 0.39,
    "peak_db": -3.0,
@@ -1698,7 +1666,7 @@
  "hoof_step_2": {
   "srcfile": "oga-horse-gallop-on-different-surfaces/files/archive_2/grass.mp3",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.46,
    "peak_db": -3.0,
@@ -1714,7 +1682,7 @@
  "chicken_cluck_1": {
   "srcfile": "oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg",
   "duration": 0.575,
-  "size": 6008,
+  "size": 4805,
   "desc": {
    "dur": 0.53,
    "peak_db": -3.0,
@@ -1730,7 +1698,7 @@
  "chicken_cluck_2": {
   "srcfile": "oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg",
   "duration": 1.541,
-  "size": 15674,
+  "size": 12537,
   "desc": {
    "dur": 1.5,
    "peak_db": -3.0,
@@ -1746,7 +1714,7 @@
  "goat_bleat_1": {
   "srcfile": "oga-goat-bleat/files/snom-ringtone/snom-ringtone.wav",
   "duration": 1.541,
-  "size": 15674,
+  "size": 12537,
   "desc": {
    "dur": 1.5,
    "peak_db": -3.0,
@@ -1762,7 +1730,7 @@
  "donkey_bray_1": {
   "srcfile": "oga-donkey-bray/files/donkey_bray_-_starninjas_0/donkey_bray_-_starninjas_0.ogg",
   "duration": 1.724,
-  "size": 17502,
+  "size": 14000,
   "desc": {
    "dur": 1.68,
    "peak_db": -3.0,
@@ -1778,7 +1746,7 @@
  "dog_bark_1": {
   "srcfile": "oga-dog-sounds/files/dog/Dog/Dog Bark 1.wav",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.21,
    "peak_db": -3.0,
@@ -1794,7 +1762,7 @@
  "dog_bark_2": {
   "srcfile": "oga-dog-sounds/files/dog/Dog/Dog Bark 2.wav",
   "duration": 0.366,
-  "size": 3918,
+  "size": 3133,
   "desc": {
    "dur": 0.33,
    "peak_db": -3.0,
@@ -1810,7 +1778,7 @@
  "wolf_howl_1": {
   "srcfile": "oga-wolf-monster-sound/files/wolf_monster_6/wolf_monster_6.mp3",
   "duration": 1.541,
-  "size": 15674,
+  "size": 12537,
   "desc": {
    "dur": 1.49,
    "peak_db": -3.0,
@@ -1826,7 +1794,7 @@
  "monster_roar_1": {
   "srcfile": "oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/roar_02.ogg",
   "duration": 0.784,
-  "size": 8098,
+  "size": 6477,
   "desc": {
    "dur": 0.73,
    "peak_db": -3.0,
@@ -1842,7 +1810,7 @@
  "monster_roar_2": {
   "srcfile": "oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/roar_05.ogg",
   "duration": 0.967,
-  "size": 9927,
+  "size": 7940,
   "desc": {
    "dur": 0.92,
    "peak_db": -3.0,
@@ -1858,7 +1826,7 @@
  "monster_roar_4": {
   "srcfile": "oga-cc0-deep-monster-roar/files/monster_roar/monster_roar.wav",
   "duration": 2.534,
-  "size": 25600,
+  "size": 20479,
   "desc": {
    "dur": 2.5,
    "peak_db": -3.0,
@@ -1874,7 +1842,7 @@
  "minotaur_grunt_1": {
   "srcfile": "oga-osare-minotaur-sounds/files/mino1/mino1.wav",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -1890,7 +1858,7 @@
  "catapult_creak_2": {
   "srcfile": "kenney-rpg-audio/files/Audio/creak2.ogg",
   "duration": 0.784,
-  "size": 8098,
+  "size": 6477,
   "desc": {
    "dur": 0.74,
    "peak_db": -3.0,
@@ -1906,7 +1874,7 @@
  "catapult_launch_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_001.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-33.flac + kenney-impact-sounds/files/Audio/impactWood_medium_002.ogg",
   "duration": 0.784,
-  "size": 8098,
+  "size": 6477,
   "desc": {
    "dur": 0.74,
    "peak_db": -3.0,
@@ -1922,7 +1890,7 @@
  "catapult_launch_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_003.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac + kenney-impact-sounds/files/Audio/impactPlate_heavy_002.ogg",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.89,
    "peak_db": -3.0,
@@ -1938,7 +1906,7 @@
  "ballista_twang_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Crossbow Shoot.wav + kenney-impact-sounds/files/Audio/impactWood_heavy_000.ogg",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.4,
    "peak_db": -3.0,
@@ -1954,7 +1922,7 @@
  "boulder_whoosh_1": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-41.flac",
   "duration": 1.332,
-  "size": 13584,
+  "size": 10865,
   "desc": {
    "dur": 1.3,
    "peak_db": -3.0,
@@ -1970,7 +1938,7 @@
  "boulder_impact_1": {
   "srcfile": "oga-moving-boulder/files/boulder_drop_0/boulder_drop_0.ogg",
   "duration": 0.679,
-  "size": 7053,
+  "size": 5641,
   "desc": {
    "dur": 0.63,
    "peak_db": -3.0,
@@ -1986,7 +1954,7 @@
  "boulder_impact_2": {
   "srcfile": "oga-battle-at-sea/files/cannon_hit_wall_no_splash/cannon_hit_wall_no_splash.ogg",
   "duration": 1.672,
-  "size": 16980,
+  "size": 13582,
   "desc": {
    "dur": 1.64,
    "peak_db": -3.0,
@@ -2002,7 +1970,7 @@
  "boulder_impact_3": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_hit_01.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.08,
    "peak_db": -3.0,
@@ -2018,7 +1986,7 @@
  "boulder_impact_4": {
   "srcfile": "oga-cave-in/files/cave_in_-_starninjas_0/cave_in_-_starninjas_0.ogg",
   "duration": 2.038,
-  "size": 20637,
+  "size": 16508,
   "desc": {
    "dur": 2.0,
    "peak_db": -3.0,
@@ -2034,7 +2002,7 @@
  "explosion_rumble_1": {
   "srcfile": "oga-chunky-explosion/files/Chunky Explosion/Chunky Explosion.mp3",
   "duration": 2.429,
-  "size": 24555,
+  "size": 19643,
   "desc": {
    "dur": 2.4,
    "peak_db": -3.0,
@@ -2050,7 +2018,7 @@
  "explosion_rumble_2": {
   "srcfile": "oga-muffled-distant-explosion/files/NenadSimic - Muffled Distant Explosion/NenadSimic - Muffled Distant Explosion.wav",
   "duration": 2.038,
-  "size": 20637,
+  "size": 16508,
   "desc": {
    "dur": 1.99,
    "peak_db": -3.0,
@@ -2066,7 +2034,7 @@
  "rock_crumble_1": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_breaking_01.ogg",
   "duration": 0.549,
-  "size": 5747,
+  "size": 4596,
   "desc": {
    "dur": 0.5,
    "peak_db": -3.0,
@@ -2082,7 +2050,7 @@
  "rock_crumble_2": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_breaking_03.ogg",
   "duration": 0.47,
-  "size": 4963,
+  "size": 3969,
   "desc": {
    "dur": 0.44,
    "peak_db": -3.0,
@@ -2098,7 +2066,7 @@
  "rock_crumble_3": {
   "srcfile": "oga-breaking-rock/files/rock_break_0/rock_break_0.ogg",
   "duration": 0.47,
-  "size": 4963,
+  "size": 3969,
   "desc": {
    "dur": 0.43,
    "peak_db": -3.0,
@@ -2114,7 +2082,7 @@
  "rock_fall_1": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_04.ogg",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.22,
    "peak_db": -3.0,
@@ -2130,7 +2098,7 @@
  "wood_crack_1": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_breaking_01.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.15,
    "peak_db": -3.0,
@@ -2146,11 +2114,11 @@
  "wood_crack_2": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_breaking_03.ogg",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.29,
-   "peak_db": -3.0,
-   "rms_db": -21.7,
+   "peak_db": -4.1,
+   "rms_db": -22.8,
    "crest": 8.6,
    "centroid": 4608,
    "low": 0.01,
@@ -2162,11 +2130,11 @@
  "wood_crack_3": {
   "srcfile": "oga-35-wooden-crackshitsdestructions/files/independent_nu_ljudbank-wood_crack_hit_destruction/wood_impact/crack03.mp3.flac",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.6,
-   "peak_db": -4.3,
-   "rms_db": -21.8,
+   "peak_db": -5.0,
+   "rms_db": -22.5,
    "crest": 7.5,
    "centroid": 2776,
    "low": 0.08,
@@ -2178,7 +2146,7 @@
  "wood_splinter_1": {
   "srcfile": "oga-35-wooden-crackshitsdestructions/files/independent_nu_ljudbank-wood_crack_hit_destruction/wood_impact/crack08.mp3.flac",
   "duration": 1.567,
-  "size": 15935,
+  "size": 12746,
   "desc": {
    "dur": 1.53,
    "peak_db": -3.0,
@@ -2194,7 +2162,7 @@
  "wall_collapse_1": {
   "srcfile": "oga-cave-in/files/cave_in_-_starninjas_0/cave_in_-_starninjas_0.ogg",
   "duration": 2.847,
-  "size": 28735,
+  "size": 22986,
   "desc": {
    "dur": 2.8,
    "peak_db": -3.0,
@@ -2210,7 +2178,7 @@
  "debris_big_1": {
   "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_falling_05.ogg",
   "duration": 0.705,
-  "size": 7314,
+  "size": 5850,
   "desc": {
    "dur": 0.67,
    "peak_db": -3.0,
@@ -2226,7 +2194,7 @@
  "voxel_break_1": {
   "srcfile": "oga-5-break-crunch-impacts/files/independent_nu_ljudbank-break_crunch_impact/impcrunch/impactcrunch01.mp3.flac",
   "duration": 0.601,
-  "size": 6269,
+  "size": 5014,
   "desc": {
    "dur": 0.55,
    "peak_db": -3.0,
@@ -2242,11 +2210,11 @@
  "voxel_break_2": {
   "srcfile": "oga-5-break-crunch-impacts/files/independent_nu_ljudbank-break_crunch_impact/impcrunch/impactcrunch03.mp3.flac",
   "duration": 0.705,
-  "size": 7314,
+  "size": 5850,
   "desc": {
    "dur": 0.66,
-   "peak_db": -3.0,
-   "rms_db": -17.2,
+   "peak_db": -5.1,
+   "rms_db": -19.3,
    "crest": 5.1,
    "centroid": 2752,
    "low": 0.02,
@@ -2258,7 +2226,7 @@
  "voxel_break_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactMining_001.ogg",
   "duration": 0.601,
-  "size": 6269,
+  "size": 5014,
   "desc": {
    "dur": 0.57,
    "peak_db": -3.0,
@@ -2274,7 +2242,7 @@
  "fire_whoosh_1": {
   "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/spell_fire_03.ogg",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.6,
    "peak_db": -3.0,
@@ -2290,7 +2258,7 @@
  "fire_whoosh_2": {
   "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/spell_fire_05.ogg",
   "duration": 1.176,
-  "size": 12016,
+  "size": 9612,
   "desc": {
    "dur": 1.15,
    "peak_db": -3.0,
@@ -2306,7 +2274,7 @@
  "fire_ignite_1": {
   "srcfile": "oga-catching-fire/files/flame_0/flame_0.ogg",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.45,
    "peak_db": -3.0,
@@ -2322,7 +2290,7 @@
  "heal_chime_1": {
   "srcfile": "oga-cure-magic/files/curemagic/Cure2.wav",
   "duration": 0.993,
-  "size": 10188,
+  "size": 8149,
   "desc": {
    "dur": 0.94,
    "peak_db": -3.0,
@@ -2338,7 +2306,7 @@
  "heal_chime_2": {
   "srcfile": "oga-cure-magic/files/curemagic/Cure5.wav",
   "duration": 1.123,
-  "size": 11494,
+  "size": 9194,
   "desc": {
    "dur": 1.09,
    "peak_db": -3.0,
@@ -2354,7 +2322,7 @@
  "buff_powerup_1": {
   "srcfile": "oga-power-up-sound-effects/files/power_up_sound_v1_0/power_up_sound_v1_0.ogg",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.4,
    "peak_db": -3.0,
@@ -2370,7 +2338,7 @@
  "buff_powerup_2": {
   "srcfile": "oga-power-up-sound-effects/files/power_up_sound_v3_0/power_up_sound_v3_0.ogg",
   "duration": 1.071,
-  "size": 10971,
+  "size": 8776,
   "desc": {
    "dur": 1.03,
    "peak_db": -3.0,
@@ -2386,7 +2354,7 @@
  "buff_powerup_3": {
   "srcfile": "oga-8-heals-and-buffs-sfx/files/8_rpg_heals_buffs_sfx_samples/16_Atk_buff_04.wav",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.6,
    "peak_db": -3.0,
@@ -2402,7 +2370,7 @@
  "curse_dark_1": {
   "srcfile": "oga-8-heals-and-buffs-sfx/files/8_rpg_heals_buffs_sfx_samples/21_Debuff_01.wav",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -2418,7 +2386,7 @@
  "curse_dark_2": {
   "srcfile": "oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/46_Poison_01.wav",
   "duration": 1.698,
-  "size": 17241,
+  "size": 13791,
   "desc": {
    "dur": 1.65,
    "peak_db": -3.0,
@@ -2434,7 +2402,7 @@
  "magic_cast_1": {
   "srcfile": "oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/45_Charge_05.wav",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -2450,7 +2418,7 @@
  "thunder_crack_1": {
   "srcfile": "oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/18_Thunder_02.wav",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -2466,7 +2434,7 @@
  "thunder_crack_2": {
   "srcfile": "oga-100-cc0-sfx-2/files/sfx_100_v2/sfx100v2_thunder_01.ogg",
   "duration": 2.429,
-  "size": 24555,
+  "size": 19643,
   "desc": {
    "dur": 2.4,
    "peak_db": -3.0,
@@ -2482,7 +2450,7 @@
  "coin_pickup_1": {
   "srcfile": "oga-plingy-coin/files/coin/coin.wav",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.23,
    "peak_db": -3.0,
@@ -2498,7 +2466,7 @@
  "coin_pickup_2": {
   "srcfile": "oga-gold-coin-6/files/coin/coin.flac",
   "duration": 0.836,
-  "size": 8620,
+  "size": 6895,
   "desc": {
    "dur": 0.8,
    "peak_db": -3.0,
@@ -2514,11 +2482,11 @@
  "coin_clink_1": {
   "srcfile": "kenney-rpg-audio/files/Audio/handleCoins.ogg",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.7,
-   "peak_db": -3.0,
-   "rms_db": -27.6,
+   "peak_db": -4.5,
+   "rms_db": -29.1,
    "crest": 17.0,
    "centroid": 7550,
    "low": 0.0,
@@ -2530,7 +2498,7 @@
  "coin_clink_2": {
   "srcfile": "kenney-rpg-audio/files/Audio/handleCoins2.ogg",
   "duration": 0.366,
-  "size": 3918,
+  "size": 3133,
   "desc": {
    "dur": 0.33,
    "peak_db": -3.0,
@@ -2546,10 +2514,10 @@
  "coin_sack_1": {
   "srcfile": "oga-sack-of-gold/files/gold_sack/gold_sack.wav",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.4,
-   "peak_db": -4.8,
+   "peak_db": -4.9,
    "rms_db": -23.5,
    "crest": 8.5,
    "centroid": 9892,
@@ -2562,7 +2530,7 @@
  "bell_ding_1": {
   "srcfile": "oga-bell-dingschimes/files/bell_ding1/bell_ding1.wav",
   "duration": 1.019,
-  "size": 10449,
+  "size": 8358,
   "desc": {
    "dur": 0.98,
    "peak_db": -3.0,
@@ -2578,7 +2546,7 @@
  "bell_heavy_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactBell_heavy_001.ogg",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.39,
    "peak_db": -3.0,
@@ -2594,7 +2562,7 @@
  "footstep_dirt_1": {
   "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/mud02.ogg",
   "duration": 0.287,
-  "size": 3135,
+  "size": 2506,
   "desc": {
    "dur": 0.26,
    "peak_db": -3.0,
@@ -2610,7 +2578,7 @@
  "footstep_gravel_1": {
   "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/gravel.ogg",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.6,
    "peak_db": -3.0,
@@ -2626,7 +2594,7 @@
  "footstep_gravel_2": {
   "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/stone01.ogg",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.29,
    "peak_db": -3.0,
@@ -2642,7 +2610,7 @@
  "footstep_grass_1": {
   "srcfile": "kenney-impact-sounds/files/Audio/footstep_grass_000.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.13,
    "peak_db": -3.0,
@@ -2658,7 +2626,7 @@
  "footstep_grass_2": {
   "srcfile": "kenney-impact-sounds/files/Audio/footstep_grass_002.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.15,
    "peak_db": -3.0,
@@ -2674,7 +2642,7 @@
  "footstep_grass_3": {
   "srcfile": "kenney-impact-sounds/files/Audio/footstep_grass_004.ogg",
   "duration": 0.157,
-  "size": 1829,
+  "size": 1461,
   "desc": {
    "dur": 0.11,
    "peak_db": -3.0,
@@ -2690,11 +2658,11 @@
  "armor_rustle_1": {
   "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_01.ogg",
   "duration": 0.444,
-  "size": 4702,
+  "size": 3760,
   "desc": {
    "dur": 0.4,
-   "peak_db": -3.0,
-   "rms_db": -17.2,
+   "peak_db": -4.1,
+   "rms_db": -18.3,
    "crest": 5.2,
    "centroid": 9972,
    "low": 0.0,
@@ -2706,7 +2674,7 @@
  "armor_rustle_2": {
   "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_02.ogg",
   "duration": 0.418,
-  "size": 4441,
+  "size": 3551,
   "desc": {
    "dur": 0.37,
    "peak_db": -3.0,
@@ -2722,7 +2690,7 @@
  "cloth_flap_1": {
   "srcfile": "kenney-rpg-audio/files/Audio/cloth1.ogg",
   "duration": 0.601,
-  "size": 6269,
+  "size": 5014,
   "desc": {
    "dur": 0.57,
    "peak_db": -3.0,
@@ -2738,7 +2706,7 @@
  "cloth_flap_2": {
   "srcfile": "kenney-rpg-audio/files/Audio/cloth3.ogg",
   "duration": 0.496,
-  "size": 5225,
+  "size": 4178,
   "desc": {
    "dur": 0.47,
    "peak_db": -3.0,
@@ -2754,7 +2722,7 @@
  "whoosh_camera_1": {
   "srcfile": "oga-air-whoosh/files/whoosh2_0/whoosh2_0.wav",
   "duration": 0.94,
-  "size": 9665,
+  "size": 7731,
   "desc": {
    "dur": 0.9,
    "peak_db": -3.0,
@@ -2770,7 +2738,7 @@
  "pop_place_1": {
   "srcfile": "oga-pop-sounds/files/pop1/pop1.ogg",
   "duration": 0.235,
-  "size": 2612,
+  "size": 2088,
   "desc": {
    "dur": 0.19,
    "peak_db": -3.0,
@@ -2786,7 +2754,7 @@
  "pop_place_2": {
   "srcfile": "oga-pop-sounds/files/pop4/pop4.ogg",
   "duration": 0.104,
-  "size": 1306,
+  "size": 1043,
   "desc": {
    "dur": 0.07,
    "peak_db": -3.0,
@@ -2802,7 +2770,7 @@
  "splat_1": {
   "srcfile": "oga-squish-sounds-effects/files/squish_02/squish_02.mp3",
   "duration": 0.313,
-  "size": 3396,
+  "size": 2715,
   "desc": {
    "dur": 0.28,
    "peak_db": -3.0,
@@ -2818,7 +2786,7 @@
  "death_comic_1": {
   "srcfile": "oga-steampunk-fantasy-voices/files/Hero_Die_001_0/Hero_Die_001_0.wav",
   "duration": 1.62,
-  "size": 16457,
+  "size": 13164,
   "desc": {
    "dur": 1.57,
    "peak_db": -3.0,
@@ -2834,7 +2802,7 @@
  "death_comic_2": {
   "srcfile": "oga-steampunk-fantasy-voices/files/Minion_DieImpact_001_0/Minion_DieImpact_001_0.wav",
   "duration": 1.045,
-  "size": 10710,
+  "size": 8567,
   "desc": {
    "dur": 1.01,
    "peak_db": -3.0,
@@ -2850,7 +2818,7 @@
  "death_comic_3": {
   "srcfile": "oga-steampunk-fantasy-voices/files/Guard_Die_001_0/Guard_Die_001_0.wav",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.39,
    "peak_db": -3.0,
@@ -2866,7 +2834,7 @@
  "war_cry_1": {
   "srcfile": "oga-steampunk-fantasy-voices/files/Knight_Attack_001_0/Knight_Attack_001_0.wav",
   "duration": 0.888,
-  "size": 9143,
+  "size": 7313,
   "desc": {
    "dur": 0.85,
    "peak_db": -3.0,
@@ -2882,7 +2850,7 @@
  "war_cry_2": {
   "srcfile": "oga-steampunk-fantasy-voices/files/Hero_Attack_001_0/Hero_Attack_001_0.wav",
   "duration": 1.202,
-  "size": 12278,
+  "size": 9821,
   "desc": {
    "dur": 1.16,
    "peak_db": -3.0,
@@ -2898,7 +2866,7 @@
  "camel_groan_1": {
   "srcfile": "oga-camel-groan/files/camel/flac/camel_01.flac",
   "duration": 2.429,
-  "size": 24555,
+  "size": 19643,
   "desc": {
    "dur": 2.4,
    "peak_db": -3.0,
@@ -2914,7 +2882,7 @@
  "sheep_baa_1": {
   "srcfile": "oga-sheep-baa/files/sheep_baa/sheep_baa.flac",
   "duration": 0.888,
-  "size": 9143,
+  "size": 7313,
   "desc": {
    "dur": 0.85,
    "peak_db": -3.0,
@@ -2930,7 +2898,7 @@
  "catapult_creak_1": {
   "srcfile": "oga-tree-creaking/files/tree_creak/tree_creak.flac",
   "duration": 2.038,
-  "size": 20637,
+  "size": 16508,
   "desc": {
    "dur": 2.0,
    "peak_db": -3.0,
@@ -2946,7 +2914,7 @@
  "torch_crackle_1": {
   "srcfile": "oga-fire-crackling/files/fire-1/fire-1.wav",
   "duration": 1.907,
-  "size": 19331,
+  "size": 15463,
   "desc": {
    "dur": 1.87,
    "peak_db": -3.0,
@@ -2962,7 +2930,7 @@
  "footstep_dirt_2": {
   "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL2.flac",
   "duration": 0.366,
-  "size": 3918,
+  "size": 3133,
   "desc": {
    "dur": 0.32,
    "peak_db": -3.0,
@@ -2978,7 +2946,7 @@
  "confetti_pop_1": {
   "srcfile": "oga-balloon-sounds/files/balloon_pop/balloon_pop.flac",
   "duration": 0.575,
-  "size": 6008,
+  "size": 4805,
   "desc": {
    "dur": 0.54,
    "peak_db": -3.0,
@@ -2994,10 +2962,10 @@
  "lightning_zap_1": {
   "srcfile": "oga-electricity-sound-effects-0/files/spark/spark.wav",
   "duration": 0.313,
-  "size": 3396,
+  "size": 2715,
   "desc": {
    "dur": 0.29,
-   "peak_db": -4.5,
+   "peak_db": -4.4,
    "rms_db": -29.0,
    "crest": 16.9,
    "centroid": 6881,
@@ -3010,7 +2978,7 @@
  "ui_hover_1": {
   "srcfile": "kenney-ui-audio/files/Audio/rollover1.ogg",
   "duration": 0.235,
-  "size": 2612,
+  "size": 2088,
   "desc": {
    "dur": 0.19,
    "peak_db": -3.0,
@@ -3026,7 +2994,7 @@
  "ui_hover_2": {
   "srcfile": "kenney-ui-audio/files/Audio/rollover3.ogg",
   "duration": 0.104,
-  "size": 1306,
+  "size": 1043,
   "desc": {
    "dur": 0.07,
    "peak_db": -3.0,
@@ -3042,7 +3010,7 @@
  "ui_click_1": {
   "srcfile": "kenney-ui-audio/files/Audio/click2.ogg",
   "duration": 0.104,
-  "size": 1306,
+  "size": 1043,
   "desc": {
    "dur": 0.05,
    "peak_db": -3.0,
@@ -3058,7 +3026,7 @@
  "ui_click_2": {
   "srcfile": "kenney-interface-sounds/files/Audio/click_003.ogg",
   "duration": 0.052,
-  "size": 784,
+  "size": 625,
   "desc": {
    "dur": 0.01,
    "peak_db": -3.0,
@@ -3074,7 +3042,7 @@
  "ui_confirm_1": {
   "srcfile": "kenney-interface-sounds/files/Audio/confirmation_001.ogg",
   "duration": 0.34,
-  "size": 3657,
+  "size": 2924,
   "desc": {
    "dur": 0.29,
    "peak_db": -3.0,
@@ -3090,7 +3058,7 @@
  "ui_confirm_2": {
   "srcfile": "kenney-interface-sounds/files/Audio/confirmation_003.ogg",
   "duration": 0.366,
-  "size": 3918,
+  "size": 3133,
   "desc": {
    "dur": 0.32,
    "peak_db": -3.0,
@@ -3106,7 +3074,7 @@
  "ui_back_1": {
   "srcfile": "kenney-interface-sounds/files/Audio/back_001.ogg",
   "duration": 0.104,
-  "size": 1306,
+  "size": 1043,
   "desc": {
    "dur": 0.06,
    "peak_db": -3.0,
@@ -3122,7 +3090,7 @@
  "ui_back_2": {
   "srcfile": "kenney-interface-sounds/files/Audio/back_003.ogg",
   "duration": 0.104,
-  "size": 1306,
+  "size": 1043,
   "desc": {
    "dur": 0.06,
    "peak_db": -3.0,
@@ -3138,7 +3106,7 @@
  "ui_error_1": {
   "srcfile": "kenney-interface-sounds/files/Audio/error_001.ogg",
   "duration": 0.209,
-  "size": 2351,
+  "size": 1879,
   "desc": {
    "dur": 0.16,
    "peak_db": -3.0,
@@ -3154,7 +3122,7 @@
  "ui_error_2": {
   "srcfile": "kenney-interface-sounds/files/Audio/error_005.ogg",
   "duration": 0.209,
-  "size": 2351,
+  "size": 1879,
   "desc": {
    "dur": 0.17,
    "peak_db": -3.0,
@@ -3170,7 +3138,7 @@
  "ui_toggle_on": {
   "srcfile": "kenney-interface-sounds/files/Audio/toggle_001.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.1,
    "peak_db": -3.0,
@@ -3186,7 +3154,7 @@
  "ui_slider_tick": {
   "srcfile": "kenney-interface-sounds/files/Audio/tick_002.ogg",
   "duration": 0.052,
-  "size": 784,
+  "size": 625,
   "desc": {
    "dur": 0.02,
    "peak_db": -3.0,
@@ -3202,7 +3170,7 @@
  "ui_select_1": {
   "srcfile": "kenney-interface-sounds/files/Audio/select_003.ogg",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.22,
    "peak_db": -3.0,
@@ -3218,11 +3186,11 @@
  "ui_panel_open": {
   "srcfile": "kenney-interface-sounds/files/Audio/open_001.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.15,
-   "peak_db": -5.0,
-   "rms_db": -17.1,
+   "peak_db": -3.0,
+   "rms_db": -15.1,
    "crest": 4.0,
    "centroid": 11387,
    "low": 0.0,
@@ -3234,11 +3202,11 @@
  "ui_panel_close": {
   "srcfile": "kenney-interface-sounds/files/Audio/close_001.ogg",
   "duration": 0.183,
-  "size": 2090,
+  "size": 1670,
   "desc": {
    "dur": 0.15,
-   "peak_db": -6.1,
-   "rms_db": -18.9,
+   "peak_db": -3.0,
+   "rms_db": -15.8,
    "crest": 4.4,
    "centroid": 12847,
    "low": 0.0,
@@ -3250,7 +3218,7 @@
  "ui_drop_1": {
   "srcfile": "kenney-interface-sounds/files/Audio/drop_002.ogg",
   "duration": 0.131,
-  "size": 1567,
+  "size": 1252,
   "desc": {
    "dur": 0.09,
    "peak_db": -3.0,
@@ -3266,7 +3234,7 @@
  "ui_achievement_1": {
   "srcfile": "oga-achievement/files/achievement/achievement.wav",
   "duration": 1.176,
-  "size": 12016,
+  "size": 9612,
   "desc": {
    "dur": 1.15,
    "peak_db": -3.0,
@@ -3282,7 +3250,7 @@
  "ui_achievement_2": {
   "srcfile": "oga-chimey-ui-sounds/files/mousebyte_chimeyui/Chime_LevelUp.mp3",
   "duration": 1.646,
-  "size": 16718,
+  "size": 13373,
   "desc": {
    "dur": 1.62,
    "peak_db": -3.0,
@@ -3298,7 +3266,7 @@
  "ui_achievement_3": {
   "srcfile": "oga-7-assorted-sound-effects-menu-level-up/files/UISoundEffects/Level Up.mp3",
   "duration": 2.038,
-  "size": 20637,
+  "size": 16508,
   "desc": {
    "dur": 2.0,
    "peak_db": -3.0,
@@ -3314,7 +3282,7 @@
  "countdown_go": {
   "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
   "duration": 0.731,
-  "size": 7576,
+  "size": 6059,
   "desc": {
    "dur": 0.7,
    "peak_db": -3.0,
@@ -3330,7 +3298,7 @@
  "countdown_voice_3": {
   "srcfile": "kenney-voiceover-pack/files/Male/3.ogg",
   "duration": 0.784,
-  "size": 8098,
+  "size": 6477,
   "desc": {
    "dur": 0.75,
    "peak_db": -3.0,
@@ -3346,7 +3314,7 @@
  "countdown_voice_2": {
   "srcfile": "kenney-voiceover-pack/files/Male/2.ogg",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.58,
    "peak_db": -3.0,
@@ -3362,7 +3330,7 @@
  "countdown_voice_1": {
   "srcfile": "kenney-voiceover-pack/files/Male/1.ogg",
   "duration": 0.653,
-  "size": 6792,
+  "size": 5432,
   "desc": {
    "dur": 0.6,
    "peak_db": -3.0,
@@ -3378,7 +3346,7 @@
  "countdown_voice_go": {
   "srcfile": "kenney-voiceover-pack/files/Male/go.ogg",
   "duration": 0.627,
-  "size": 6531,
+  "size": 5223,
   "desc": {
    "dur": 0.6,
    "peak_db": -3.0,
@@ -3554,7 +3522,7 @@
  "ambience_wind_loop": {
   "srcfile": "oga-wind1/files/wind2/wind2.wav",
   "duration": 7.027,
-  "size": 56423,
+  "size": 49370,
   "desc": {
    "dur": 7.0,
    "peak_db": -3.0,
@@ -3570,7 +3538,7 @@
  "ambience_crowd_loop": {
   "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 10 - Ambience.mp3",
   "duration": 7.027,
-  "size": 56423,
+  "size": 49370,
   "desc": {
    "dur": 7.0,
    "peak_db": -3.0,
@@ -3586,7 +3554,7 @@
  "ambience_fire_loop": {
   "srcfile": "oga-fireplace-sound-loop/files/fire/fire.wav",
   "duration": 5.251,
-  "size": 42212,
+  "size": 36936,
   "desc": {
    "dur": 5.2,
    "peak_db": -3.0,
@@ -3602,7 +3570,7 @@
  "horse_neigh_1": {
   "srcfile": "commons-wiehern/Wiehern.ogg",
   "duration": 2.194,
-  "size": 22204,
+  "size": 17762,
   "desc": {
    "dur": 2.17,
    "peak_db": -3.0,
@@ -3618,7 +3586,7 @@
  "elephant_trumpet_1": {
   "srcfile": "commons-elephant-voice-trumpeting/Elephant_voice_-_trumpeting.ogg",
   "duration": 1.332,
-  "size": 13584,
+  "size": 10865,
   "desc": {
    "dur": 1.3,
    "peak_db": -3.0,
@@ -3634,7 +3602,7 @@
  "lion_roar_1": {
   "srcfile": "commons-lion-raring-sound1tamilnadu178/Lion_raring-sound1TamilNadu178.ogg",
   "duration": 2.247,
-  "size": 22727,
+  "size": 18180,
   "desc": {
    "dur": 2.2,
    "peak_db": -3.0,
@@ -3650,7 +3618,7 @@
  "bear_roar_1": {
   "srcfile": "commons-yellowstone-sound-library-grizzly-bears-roar-001/Yellowstone_sound_library_-_Grizzly_Bears_Roar_-_001.mp3",
   "duration": 2.429,
-  "size": 24555,
+  "size": 19643,
   "desc": {
    "dur": 2.4,
    "peak_db": -3.0,
@@ -3666,7 +3634,7 @@
  "snake_hiss_1": {
   "srcfile": "commons-rattlesnake/Rattlesnake.ogg",
   "duration": 1.829,
-  "size": 18547,
+  "size": 14836,
   "desc": {
    "dur": 1.8,
    "peak_db": -3.0,
@@ -3682,7 +3650,7 @@
  "explosion_rumble_4": {
   "srcfile": "commons-explosion-10/Explosion_10.ogg",
   "duration": 2.247,
-  "size": 22727,
+  "size": 18180,
   "desc": {
    "dur": 2.2,
    "peak_db": -3.0,
@@ -3698,7 +3666,7 @@
  "explosion_rumble_5": {
   "srcfile": "commons-explosion-ls100155/Explosion-LS100155.ogg",
   "duration": 1.411,
-  "size": 14367,
+  "size": 11492,
   "desc": {
    "dur": 1.38,
    "peak_db": -3.0,
@@ -3714,7 +3682,7 @@
  "horse_neigh_2": {
   "srcfile": "commons-mares-prefer-the-voices-of-highly-fertile-stallions-pone-0118468-s001/Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s001.oga",
   "duration": 1.855,
-  "size": 18808,
+  "size": 15045,
   "desc": {
    "dur": 1.83,
    "peak_db": -3.0,
@@ -3730,7 +3698,7 @@
  "horse_neigh_3": {
   "srcfile": "commons-mares-prefer-the-voices-of-highly-fertile-stallions-pone-0118468-s003/Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s003.oga",
   "duration": 2.638,
-  "size": 26645,
+  "size": 21314,
   "desc": {
    "dur": 2.6,
    "peak_db": -3.0,
@@ -3746,7 +3714,7 @@
  "drum_roll_1": {
   "srcfile": "commons-drum-roll-intro/Drum_Roll_Intro.ogg",
   "duration": 2.847,
-  "size": 28735,
+  "size": 22986,
   "desc": {
    "dur": 2.8,
    "peak_db": -3.0,
@@ -3762,7 +3730,7 @@
  "drum_boom_5": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_000.ogg",
   "duration": 0.313,
-  "size": 3396,
+  "size": 2715,
   "desc": {
    "dur": 0.27,
    "peak_db": -3.0,
@@ -3778,7 +3746,7 @@
  "drum_boom_6": {
   "srcfile": "kenney-impact-sounds/files/Audio/impactPlate_heavy_001.ogg",
   "duration": 0.679,
-  "size": 7053,
+  "size": 5641,
   "desc": {
    "dur": 0.64,
    "peak_db": -3.0,
@@ -3791,42 +3759,10 @@
   },
   "cut": false
  },
- "fire_burst_1": {
-  "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Short - Swoosh Burst Sizzling 01.mp3",
-  "duration": 2.011,
-  "size": 20376,
-  "desc": {
-   "dur": 1.97,
-   "peak_db": -3.0,
-   "rms_db": -19.5,
-   "crest": 6.7,
-   "centroid": 1109,
-   "low": 0.67,
-   "flat": 0.058,
-   "n_on": 3
-  },
-  "cut": false
- },
- "fire_impact_1": {
-  "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Impacts - Complex 04.mp3",
-  "duration": 2.429,
-  "size": 24555,
-  "desc": {
-   "dur": 2.4,
-   "peak_db": -3.0,
-   "rms_db": -15.3,
-   "crest": 4.1,
-   "centroid": 410,
-   "low": 0.86,
-   "flat": 0.057,
-   "n_on": 4
-  },
-  "cut": true
- },
  "rock_crumble_4": {
   "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Rocks - Free Sounds/Gregor Quendel - Designed Rocks - Elements 09.mp3",
   "duration": 2.247,
-  "size": 22727,
+  "size": 18180,
   "desc": {
    "dur": 2.2,
    "peak_db": -3.0,
@@ -3842,7 +3778,7 @@
  "countdown_beep": {
   "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
   "duration": 0.261,
-  "size": 2874,
+  "size": 2297,
   "desc": {
    "dur": 0.22,
    "peak_db": -3.0,
@@ -3858,7 +3794,7 @@
  "crowd_ooh_1": {
   "srcfile": "oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3",
   "duration": 1.437,
-  "size": 14629,
+  "size": 11701,
   "desc": {
    "dur": 1.4,
    "peak_db": -3.0,
@@ -3874,7 +3810,7 @@
  "crowd_gasp_1": {
   "srcfile": "oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3",
   "duration": 1.228,
-  "size": 12539,
+  "size": 10030,
   "desc": {
    "dur": 1.2,
    "peak_db": -3.0,
@@ -3884,6 +3820,2342 @@
    "low": 0.0,
    "flat": 0.005,
    "n_on": 1
+  },
+  "cut": true
+ },
+ "sword_hit_5": {
+  "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.4.ogg",
+  "duration": 0.575,
+  "size": 4805,
+  "desc": {
+   "dur": 0.54,
+   "peak_db": -5.3,
+   "rms_db": -18.8,
+   "crest": 4.7,
+   "centroid": 7679,
+   "low": 0.0,
+   "flat": 0.058,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "blade_clash_6": {
+  "srcfile": "oga-fantasy-weapons-and-apparel-sfx-library/files/weapons-apparel/sfx/sword-knife-clash-22.wav",
+  "duration": 0.601,
+  "size": 5014,
+  "desc": {
+   "dur": 0.55,
+   "peak_db": -5.2,
+   "rms_db": -19.6,
+   "crest": 5.2,
+   "centroid": 6983,
+   "low": 0.0,
+   "flat": 0.044,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "blade_parry_3": {
+  "srcfile": "oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_1_of_2/Dagger Katana Blade on Blade.wav",
+  "duration": 1.437,
+  "size": 11701,
+  "desc": {
+   "dur": 1.4,
+   "peak_db": -4.6,
+   "rms_db": -31.1,
+   "crest": 21.3,
+   "centroid": 4958,
+   "low": 0.0,
+   "flat": 0.051,
+   "n_on": 3
+  },
+  "cut": true
+ },
+ "blade_swish_3": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-20.flac",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.37,
+   "peak_db": -3.0,
+   "rms_db": -19.8,
+   "crest": 7.0,
+   "centroid": 428,
+   "low": 0.08,
+   "flat": 0.001,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "knife_slice_2": {
+  "srcfile": "kenney-rpg-audio/files/Audio/knifeSlice2.ogg",
+  "duration": 0.47,
+  "size": 3969,
+  "desc": {
+   "dur": 0.44,
+   "peak_db": -5.4,
+   "rms_db": -20.8,
+   "crest": 5.9,
+   "centroid": 6150,
+   "low": 0.0,
+   "flat": 0.106,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "shield_bash_3": {
+  "srcfile": "kenney-impact-sounds/files/Audio/impactPlate_medium_001.ogg",
+  "duration": 0.653,
+  "size": 5432,
+  "desc": {
+   "dur": 0.6,
+   "peak_db": -3.0,
+   "rms_db": -24.4,
+   "crest": 11.8,
+   "centroid": 177,
+   "low": 0.9,
+   "flat": 0.004,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "wood_thud_4": {
+  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_02.ogg",
+  "duration": 0.261,
+  "size": 2297,
+  "desc": {
+   "dur": 0.21,
+   "peak_db": -3.0,
+   "rms_db": -16.7,
+   "crest": 4.8,
+   "centroid": 217,
+   "low": 0.73,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "bow_shot_3": {
+  "srcfile": "oga-battle-sound-effects/files/battle_sound_effects_0/battle_sound_effects/Bow.wav",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.31,
+   "peak_db": -3.0,
+   "rms_db": -23.9,
+   "crest": 11.1,
+   "centroid": 1797,
+   "low": 0.1,
+   "flat": 0.009,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "arrow_hit_wood_3": {
+  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_01.ogg",
+  "duration": 0.183,
+  "size": 1670,
+  "desc": {
+   "dur": 0.14,
+   "peak_db": -3.0,
+   "rms_db": -18.9,
+   "crest": 6.3,
+   "centroid": 348,
+   "low": 0.28,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "arrow_hit_flesh_3": {
+  "srcfile": "kenney-impact-sounds/files/Audio/impactSoft_heavy_003.ogg",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.38,
+   "peak_db": -3.0,
+   "rms_db": -16.0,
+   "crest": 4.5,
+   "centroid": 73,
+   "low": 1.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "arrow_hit_flesh_4": {
+  "srcfile": "kenney-impact-sounds/files/Audio/impactSoft_medium_000.ogg",
+  "duration": 0.131,
+  "size": 1252,
+  "desc": {
+   "dur": 0.1,
+   "peak_db": -3.0,
+   "rms_db": -14.5,
+   "crest": 3.8,
+   "centroid": 106,
+   "low": 1.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "flesh_hit_light_5": {
+  "srcfile": "oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit25.mp3.flac",
+  "duration": 0.47,
+  "size": 3969,
+  "desc": {
+   "dur": 0.44,
+   "peak_db": -5.3,
+   "rms_db": -14.5,
+   "crest": 2.9,
+   "centroid": 505,
+   "low": 0.87,
+   "flat": 0.02,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "death_grunt_6": {
+  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_10.wav",
+  "duration": 0.444,
+  "size": 3760,
+  "desc": {
+   "dur": 0.39,
+   "peak_db": -3.0,
+   "rms_db": -12.9,
+   "crest": 3.1,
+   "centroid": 703,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "death_scream_3": {
+  "srcfile": "oga-aargh-male-screams/files/aargh/aargh1.ogg",
+  "duration": 0.679,
+  "size": 5641,
+  "desc": {
+   "dur": 0.63,
+   "peak_db": -3.0,
+   "rms_db": -11.5,
+   "crest": 2.7,
+   "centroid": 1134,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "death_scream_4": {
+  "srcfile": "oga-aargh-male-screams/files/aargh/aargh7.ogg",
+  "duration": 0.888,
+  "size": 7313,
+  "desc": {
+   "dur": 0.84,
+   "peak_db": -3.0,
+   "rms_db": -12.9,
+   "crest": 3.1,
+   "centroid": 1264,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "death_dying_3": {
+  "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/deathh.wav",
+  "duration": 0.601,
+  "size": 5014,
+  "desc": {
+   "dur": 0.57,
+   "peak_db": -3.0,
+   "rms_db": -18.4,
+   "crest": 5.9,
+   "centroid": 1294,
+   "low": 0.03,
+   "flat": 0.005,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "death_hurt_2": {
+  "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain5.wav",
+  "duration": 0.627,
+  "size": 5223,
+  "desc": {
+   "dur": 0.58,
+   "peak_db": -3.0,
+   "rms_db": -19.3,
+   "crest": 6.5,
+   "centroid": 997,
+   "low": 0.02,
+   "flat": 0.002,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "battle_cry_6": {
+  "srcfile": "oga-tiny-creatures-sounds/files/battlecry1/battlecry1.ogg",
+  "duration": 0.653,
+  "size": 5432,
+  "desc": {
+   "dur": 0.61,
+   "peak_db": -3.0,
+   "rms_db": -21.4,
+   "crest": 8.4,
+   "centroid": 3189,
+   "low": 0.0,
+   "flat": 0.005,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "war_cry_3": {
+  "srcfile": "oga-steampunk-fantasy-voices/files/Pikeman_Attack_001/Pikeman_Attack_001.wav",
+  "duration": 0.836,
+  "size": 6895,
+  "desc": {
+   "dur": 0.8,
+   "peak_db": -3.0,
+   "rms_db": -16.5,
+   "crest": 4.8,
+   "centroid": 974,
+   "low": 0.04,
+   "flat": 0.001,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "war_cry_4": {
+  "srcfile": "oga-steampunk-fantasy-voices/files/Guard_Attack_001_0/Guard_Attack_001_0.wav",
+  "duration": 0.784,
+  "size": 6477,
+  "desc": {
+   "dur": 0.74,
+   "peak_db": -3.0,
+   "rms_db": -19.4,
+   "crest": 6.6,
+   "centroid": 1472,
+   "low": 0.02,
+   "flat": 0.002,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "war_cry_5": {
+  "srcfile": "oga-steampunk-fantasy-voices/files/Knight_Attack_002_0/Knight_Attack_002_0.wav",
+  "duration": 0.679,
+  "size": 5641,
+  "desc": {
+   "dur": 0.64,
+   "peak_db": -3.0,
+   "rms_db": -17.8,
+   "crest": 5.5,
+   "centroid": 772,
+   "low": 0.01,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "orc_roar_1": {
+  "srcfile": "oga-orc-voice/files/all_orc_commander_audio_files_0/ORC FIGHT.wav",
+  "duration": 0.47,
+  "size": 3969,
+  "desc": {
+   "dur": 0.43,
+   "peak_db": -3.0,
+   "rms_db": -12.5,
+   "crest": 3.0,
+   "centroid": 634,
+   "low": 0.01,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "grunt_effort_3": {
+  "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt6.wav",
+  "duration": 1.045,
+  "size": 8567,
+  "desc": {
+   "dur": 1.0,
+   "peak_db": -3.0,
+   "rms_db": -21.1,
+   "crest": 8.0,
+   "centroid": 768,
+   "low": 0.08,
+   "flat": 0.002,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "announcer_flawless": {
+  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/flawless_victory.ogg",
+  "duration": 1.724,
+  "size": 14000,
+  "desc": {
+   "dur": 1.67,
+   "peak_db": -3.0,
+   "rms_db": -15.6,
+   "crest": 4.3,
+   "centroid": 2688,
+   "low": 0.66,
+   "flat": 0.056,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "announcer_winner_2": {
+  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/you_win.ogg",
+  "duration": 1.123,
+  "size": 9194,
+  "desc": {
+   "dur": 1.07,
+   "peak_db": -3.0,
+   "rms_db": -14.6,
+   "crest": 3.8,
+   "centroid": 1742,
+   "low": 0.72,
+   "flat": 0.016,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "announcer_winner_3": {
+  "srcfile": "kenney-voiceover-pack/files/Male/you_win.ogg",
+  "duration": 0.993,
+  "size": 8149,
+  "desc": {
+   "dur": 0.95,
+   "peak_db": -3.0,
+   "rms_db": -15.9,
+   "crest": 4.4,
+   "centroid": 615,
+   "low": 0.01,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "announcer_ready_2": {
+  "srcfile": "kenney-voiceover-pack/files/Male/ready.ogg",
+  "duration": 0.705,
+  "size": 5850,
+  "desc": {
+   "dur": 0.66,
+   "peak_db": -3.0,
+   "rms_db": -17.3,
+   "crest": 5.2,
+   "centroid": 1065,
+   "low": 0.03,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "announcer_ready_3": {
+  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/prepare_yourself.ogg",
+  "duration": 1.62,
+  "size": 13164,
+  "desc": {
+   "dur": 1.59,
+   "peak_db": -3.0,
+   "rms_db": -15.0,
+   "crest": 4.0,
+   "centroid": 1759,
+   "low": 0.75,
+   "flat": 0.067,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "announcer_fight_2": {
+  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/begin.ogg",
+  "duration": 1.123,
+  "size": 9194,
+  "desc": {
+   "dur": 1.08,
+   "peak_db": -3.0,
+   "rms_db": -14.6,
+   "crest": 3.8,
+   "centroid": 871,
+   "low": 0.84,
+   "flat": 0.031,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "announcer_fight_3": {
+  "srcfile": "kenney-voiceover-pack/files/Male/set.ogg",
+  "duration": 0.549,
+  "size": 4596,
+  "desc": {
+   "dur": 0.51,
+   "peak_db": -3.0,
+   "rms_db": -16.9,
+   "crest": 5.0,
+   "centroid": 3112,
+   "low": 0.0,
+   "flat": 0.003,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "footstep_gravel_3": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneL1.flac",
+  "duration": 0.392,
+  "size": 3342,
+  "desc": {
+   "dur": 0.36,
+   "peak_db": -3.0,
+   "rms_db": -20.1,
+   "crest": 7.2,
+   "centroid": 2785,
+   "low": 0.01,
+   "flat": 0.006,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "footstep_gravel_5": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneR2.flac",
+  "duration": 0.366,
+  "size": 3133,
+  "desc": {
+   "dur": 0.32,
+   "peak_db": -3.0,
+   "rms_db": -19.0,
+   "crest": 6.3,
+   "centroid": 2417,
+   "low": 0.01,
+   "flat": 0.004,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_dirt_3": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandR3.flac",
+  "duration": 0.366,
+  "size": 3133,
+  "desc": {
+   "dur": 0.33,
+   "peak_db": -3.0,
+   "rms_db": -22.1,
+   "crest": 9.0,
+   "centroid": 3350,
+   "low": 0.02,
+   "flat": 0.016,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_dirt_4": {
+  "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/leaves01.ogg",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.39,
+   "peak_db": -3.0,
+   "rms_db": -26.6,
+   "crest": 15.1,
+   "centroid": 4967,
+   "low": 0.03,
+   "flat": 0.071,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_sand_1": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL1.flac",
+  "duration": 0.47,
+  "size": 3969,
+  "desc": {
+   "dur": 0.43,
+   "peak_db": -3.0,
+   "rms_db": -25.0,
+   "crest": 12.5,
+   "centroid": 3435,
+   "low": 0.02,
+   "flat": 0.012,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_sand_2": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandR1.flac",
+  "duration": 0.444,
+  "size": 3760,
+  "desc": {
+   "dur": 0.41,
+   "peak_db": -3.0,
+   "rms_db": -24.7,
+   "crest": 12.2,
+   "centroid": 3461,
+   "low": 0.01,
+   "flat": 0.019,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_sand_3": {
+  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL3.flac",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.3,
+   "peak_db": -3.0,
+   "rms_db": -25.0,
+   "crest": 12.6,
+   "centroid": 3393,
+   "low": 0.02,
+   "flat": 0.011,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_mud_1": {
+  "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/mud02.ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.26,
+   "peak_db": -3.0,
+   "rms_db": -26.9,
+   "crest": 15.7,
+   "centroid": 2716,
+   "low": 0.13,
+   "flat": 0.001,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_mud_2": {
+  "srcfile": "oga-fantasy-sound-effects-tinysized-sfx/files/tinysized/sfx-cc0/mud-steps-03.wav",
+  "duration": 0.627,
+  "size": 5223,
+  "desc": {
+   "dur": 0.6,
+   "peak_db": -5.0,
+   "rms_db": -29.3,
+   "crest": 16.3,
+   "centroid": 2997,
+   "low": 0.03,
+   "flat": 0.102,
+   "n_on": 3
+  },
+  "cut": true
+ },
+ "footstep_mud_3": {
+  "srcfile": "oga-fantasy-sound-effects-tinysized-sfx/files/tinysized/sfx-cc0/mud-steps-05.wav",
+  "duration": 0.627,
+  "size": 5223,
+  "desc": {
+   "dur": 0.6,
+   "peak_db": -3.0,
+   "rms_db": -26.9,
+   "crest": 15.7,
+   "centroid": 368,
+   "low": 0.9,
+   "flat": 0.112,
+   "n_on": 2
+  },
+  "cut": true
+ },
+ "footstep_wood_1": {
+  "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/wood01.ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.24,
+   "peak_db": -3.0,
+   "rms_db": -20.1,
+   "crest": 7.2,
+   "centroid": 107,
+   "low": 0.95,
+   "flat": 0.001,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_wood_2": {
+  "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/wood02.ogg",
+  "duration": 0.261,
+  "size": 2297,
+  "desc": {
+   "dur": 0.23,
+   "peak_db": -3.0,
+   "rms_db": -18.0,
+   "crest": 5.6,
+   "centroid": 152,
+   "low": 0.9,
+   "flat": 0.001,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_wood_3": {
+  "srcfile": "oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/wood03.ogg",
+  "duration": 0.366,
+  "size": 3133,
+  "desc": {
+   "dur": 0.32,
+   "peak_db": -3.0,
+   "rms_db": -21.5,
+   "crest": 8.5,
+   "centroid": 121,
+   "low": 0.94,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_snow_1": {
+  "srcfile": "kenney-impact-sounds/files/Audio/footstep_snow_000.ogg",
+  "duration": 0.209,
+  "size": 1879,
+  "desc": {
+   "dur": 0.18,
+   "peak_db": -3.0,
+   "rms_db": -19.0,
+   "crest": 6.3,
+   "centroid": 528,
+   "low": 0.36,
+   "flat": 0.009,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "footstep_snow_2": {
+  "srcfile": "kenney-impact-sounds/files/Audio/footstep_snow_002.ogg",
+  "duration": 0.209,
+  "size": 1879,
+  "desc": {
+   "dur": 0.18,
+   "peak_db": -3.0,
+   "rms_db": -15.9,
+   "crest": 4.4,
+   "centroid": 306,
+   "low": 0.55,
+   "flat": 0.003,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_snow_3": {
+  "srcfile": "kenney-impact-sounds/files/Audio/footstep_snow_004.ogg",
+  "duration": 0.235,
+  "size": 2088,
+  "desc": {
+   "dur": 0.18,
+   "peak_db": -3.0,
+   "rms_db": -18.3,
+   "crest": 5.8,
+   "centroid": 249,
+   "low": 0.75,
+   "flat": 0.002,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_water_1": {
+  "srcfile": "oga-100-cc0-sfx-2/files/sfx_100_v2/sfx100v2_footstep_wet_01.ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.24,
+   "peak_db": -3.0,
+   "rms_db": -23.3,
+   "crest": 10.3,
+   "centroid": 3646,
+   "low": 0.01,
+   "flat": 0.008,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_water_2": {
+  "srcfile": "oga-100-cc0-sfx-2/files/sfx_100_v2/sfx100v2_footstep_wet_02.ogg",
+  "duration": 0.392,
+  "size": 3342,
+  "desc": {
+   "dur": 0.35,
+   "peak_db": -3.0,
+   "rms_db": -22.0,
+   "crest": 9.0,
+   "centroid": 2911,
+   "low": 0.02,
+   "flat": 0.002,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "footstep_water_3": {
+  "srcfile": "oga-100-cc0-sfx-2/files/sfx_100_v2/sfx100v2_footstep_wet_03.ogg",
+  "duration": 0.392,
+  "size": 3342,
+  "desc": {
+   "dur": 0.35,
+   "peak_db": -3.0,
+   "rms_db": -23.8,
+   "crest": 11.0,
+   "centroid": 4107,
+   "low": 0.02,
+   "flat": 0.023,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "armor_rustle_3": {
+  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_03.ogg",
+  "duration": 0.784,
+  "size": 6477,
+  "desc": {
+   "dur": 0.75,
+   "peak_db": -4.3,
+   "rms_db": -22.5,
+   "crest": 8.1,
+   "centroid": 9544,
+   "low": 0.0,
+   "flat": 0.003,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "armor_step_1": {
+  "srcfile": "oga-footsteps-leather-cloth-armor/files/footsteps/footsteps/step_metal.ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.25,
+   "peak_db": -3.0,
+   "rms_db": -18.1,
+   "crest": 5.7,
+   "centroid": 3558,
+   "low": 0.46,
+   "flat": 0.009,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "armor_step_2": {
+  "srcfile": "oga-footsteps-leather-cloth-armor/files/footsteps/footsteps/step_metal (2).ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.25,
+   "peak_db": -3.0,
+   "rms_db": -18.2,
+   "crest": 5.8,
+   "centroid": 1492,
+   "low": 0.61,
+   "flat": 0.002,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "armor_step_3": {
+  "srcfile": "oga-footsteps-leather-cloth-armor/files/footsteps/footsteps/step_metal (3).ogg",
+  "duration": 0.287,
+  "size": 2506,
+  "desc": {
+   "dur": 0.26,
+   "peak_db": -3.0,
+   "rms_db": -21.9,
+   "crest": 8.8,
+   "centroid": 1334,
+   "low": 0.56,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "cloth_flap_3": {
+  "srcfile": "kenney-rpg-audio/files/Audio/clothBelt.ogg",
+  "duration": 0.731,
+  "size": 6059,
+  "desc": {
+   "dur": 0.7,
+   "peak_db": -3.0,
+   "rms_db": -26.7,
+   "crest": 15.2,
+   "centroid": 6345,
+   "low": 0.03,
+   "flat": 0.123,
+   "n_on": 5
+  },
+  "cut": false
+ },
+ "whoosh_camera_2": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-03.flac",
+  "duration": 0.601,
+  "size": 5014,
+  "desc": {
+   "dur": 0.57,
+   "peak_db": -3.0,
+   "rms_db": -20.8,
+   "crest": 7.8,
+   "centroid": 127,
+   "low": 0.81,
+   "flat": 0.001,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "whoosh_camera_3": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-12.flac",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.37,
+   "peak_db": -3.0,
+   "rms_db": -20.0,
+   "crest": 7.0,
+   "centroid": 400,
+   "low": 0.14,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "pop_place_3": {
+  "srcfile": "oga-pop-sounds/files/pop7/pop7.ogg",
+  "duration": 0.131,
+  "size": 1252,
+  "desc": {
+   "dur": 0.09,
+   "peak_db": -3.0,
+   "rms_db": -13.7,
+   "crest": 3.4,
+   "centroid": 904,
+   "low": 0.01,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "pop_place_4": {
+  "srcfile": "oga-pop-sounds/files/pop2/pop2.ogg",
+  "duration": 0.104,
+  "size": 1043,
+  "desc": {
+   "dur": 0.06,
+   "peak_db": -3.0,
+   "rms_db": -15.3,
+   "crest": 4.1,
+   "centroid": 782,
+   "low": 0.03,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "confetti_pop_2": {
+  "srcfile": "oga-25-cc0-bang-firework-sfx/files/25-CC0-bang-sfx/bang_03.ogg",
+  "duration": 0.94,
+  "size": 7731,
+  "desc": {
+   "dur": 0.89,
+   "peak_db": -3.0,
+   "rms_db": -20.2,
+   "crest": 7.2,
+   "centroid": 224,
+   "low": 0.67,
+   "flat": 0.0,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "confetti_pop_3": {
+  "srcfile": "oga-25-cc0-bang-firework-sfx/files/25-CC0-bang-sfx/fw_02.ogg",
+  "duration": 1.071,
+  "size": 8776,
+  "desc": {
+   "dur": 1.02,
+   "peak_db": -3.0,
+   "rms_db": -24.8,
+   "crest": 12.3,
+   "centroid": 3265,
+   "low": 0.0,
+   "flat": 0.006,
+   "n_on": 8
+  },
+  "cut": false
+ },
+ "explosion_rumble_3": {
+  "srcfile": "oga-explosion-0/files/explosion/explosion.wav",
+  "duration": 1.019,
+  "size": 8358,
+  "desc": {
+   "dur": 0.98,
+   "peak_db": -3.0,
+   "rms_db": -14.9,
+   "crest": 3.9,
+   "centroid": 1146,
+   "low": 0.2,
+   "flat": 0.031,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "rock_fall_2": {
+  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_08.ogg",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.29,
+   "peak_db": -3.0,
+   "rms_db": -28.0,
+   "crest": 17.7,
+   "centroid": 2893,
+   "low": 0.07,
+   "flat": 0.005,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "debris_big_2": {
+  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_misc_03.ogg",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.38,
+   "peak_db": -3.0,
+   "rms_db": -24.7,
+   "crest": 12.1,
+   "centroid": 1471,
+   "low": 0.39,
+   "flat": 0.004,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "voxel_break_4": {
+  "srcfile": "kenney-impact-sounds/files/Audio/impactMining_003.ogg",
+  "duration": 0.653,
+  "size": 5432,
+  "desc": {
+   "dur": 0.61,
+   "peak_db": -3.0,
+   "rms_db": -21.4,
+   "crest": 8.3,
+   "centroid": 124,
+   "low": 0.99,
+   "flat": 0.0,
+   "n_on": 4
+  },
+  "cut": false
+ },
+ "fire_ignite_2": {
+  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/spell_fire_01.ogg",
+  "duration": 0.888,
+  "size": 7313,
+  "desc": {
+   "dur": 0.85,
+   "peak_db": -3.0,
+   "rms_db": -24.9,
+   "crest": 12.4,
+   "centroid": 4394,
+   "low": 0.04,
+   "flat": 0.002,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "heal_chime_3": {
+  "srcfile": "oga-3-heal-spells/files/3 heal spells/healspell2.aif",
+  "duration": 1.829,
+  "size": 14836,
+  "desc": {
+   "dur": 1.8,
+   "peak_db": -3.0,
+   "rms_db": -16.7,
+   "crest": 4.9,
+   "centroid": 142,
+   "low": 0.99,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "heal_chime_4": {
+  "srcfile": "oga-cure-magic/files/curemagic/Cure7.wav",
+  "duration": 1.411,
+  "size": 11492,
+  "desc": {
+   "dur": 1.37,
+   "peak_db": -3.0,
+   "rms_db": -17.1,
+   "crest": 5.1,
+   "centroid": 2164,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "curse_dark_3": {
+  "srcfile": "oga-8-heals-and-buffs-sfx/files/8_rpg_heals_buffs_sfx_samples/44_Sleep_01.wav",
+  "duration": 1.829,
+  "size": 14836,
+  "desc": {
+   "dur": 1.8,
+   "peak_db": -3.0,
+   "rms_db": -19.1,
+   "crest": 6.4,
+   "centroid": 2590,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "curse_dark_4": {
+  "srcfile": "oga-8-heals-and-buffs-sfx/files/8_rpg_heals_buffs_sfx_samples/39_Absorb_04.wav",
+  "duration": 1.829,
+  "size": 14836,
+  "desc": {
+   "dur": 1.8,
+   "peak_db": -3.0,
+   "rms_db": -17.8,
+   "crest": 5.5,
+   "centroid": 1509,
+   "low": 0.03,
+   "flat": 0.007,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "thunder_crack_3": {
+  "srcfile": "oga-thunder/files/thunderclap_0/thunderclap_0.ogg",
+  "duration": 2.429,
+  "size": 19643,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -17.6,
+   "crest": 5.4,
+   "centroid": 110,
+   "low": 0.98,
+   "flat": 0.002,
+   "n_on": 10
+  },
+  "cut": true
+ },
+ "lightning_zap_2": {
+  "srcfile": "oga-electricity-sound-effects-0/files/continuousspark/continuousspark.wav",
+  "duration": 0.313,
+  "size": 2715,
+  "desc": {
+   "dur": 0.27,
+   "peak_db": -3.0,
+   "rms_db": -27.2,
+   "crest": 16.2,
+   "centroid": 5724,
+   "low": 0.0,
+   "flat": 0.064,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "coin_pickup_3": {
+  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/item_coins_02.ogg",
+  "duration": 0.601,
+  "size": 5014,
+  "desc": {
+   "dur": 0.55,
+   "peak_db": -3.0,
+   "rms_db": -26.2,
+   "crest": 14.4,
+   "centroid": 2849,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 5
+  },
+  "cut": false
+ },
+ "bell_ding_2": {
+  "srcfile": "oga-bell-dingschimes/files/bell_ding3/bell_ding3.wav",
+  "duration": 1.411,
+  "size": 11492,
+  "desc": {
+   "dur": 1.36,
+   "peak_db": -3.0,
+   "rms_db": -20.5,
+   "crest": 7.5,
+   "centroid": 434,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "ui_click_3": {
+  "srcfile": "kenney-ui-audio/files/Audio/mouseclick1.ogg",
+  "duration": 0.104,
+  "size": 1043,
+  "desc": {
+   "dur": 0.06,
+   "peak_db": -3.0,
+   "rms_db": -24.4,
+   "crest": 11.7,
+   "centroid": 8777,
+   "low": 0.0,
+   "flat": 0.004,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_click_4": {
+  "srcfile": "kenney-ui-audio/files/Audio/click4.ogg",
+  "duration": 0.078,
+  "size": 834,
+  "desc": {
+   "dur": 0.04,
+   "peak_db": -3.0,
+   "rms_db": -19.7,
+   "crest": 6.8,
+   "centroid": 4569,
+   "low": 0.0,
+   "flat": 0.035,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_hover_3": {
+  "srcfile": "kenney-ui-audio/files/Audio/rollover5.ogg",
+  "duration": 0.157,
+  "size": 1461,
+  "desc": {
+   "dur": 0.11,
+   "peak_db": -3.0,
+   "rms_db": -22.3,
+   "crest": 9.3,
+   "centroid": 808,
+   "low": 0.17,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "ui_confirm_3": {
+  "srcfile": "kenney-interface-sounds/files/Audio/confirmation_002.ogg",
+  "duration": 0.575,
+  "size": 4805,
+  "desc": {
+   "dur": 0.53,
+   "peak_db": -3.0,
+   "rms_db": -16.3,
+   "crest": 4.6,
+   "centroid": 2719,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_back_3": {
+  "srcfile": "kenney-interface-sounds/files/Audio/back_004.ogg",
+  "duration": 0.104,
+  "size": 1043,
+  "desc": {
+   "dur": 0.06,
+   "peak_db": -3.0,
+   "rms_db": -19.1,
+   "crest": 6.4,
+   "centroid": 683,
+   "low": 0.1,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_error_3": {
+  "srcfile": "kenney-interface-sounds/files/Audio/error_003.ogg",
+  "duration": 0.392,
+  "size": 3342,
+  "desc": {
+   "dur": 0.35,
+   "peak_db": -4.7,
+   "rms_db": -19.7,
+   "crest": 5.7,
+   "centroid": 2560,
+   "low": 0.0,
+   "flat": 0.082,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "ui_toggle_off": {
+  "srcfile": "kenney-interface-sounds/files/Audio/toggle_003.ogg",
+  "duration": 0.131,
+  "size": 1252,
+  "desc": {
+   "dur": 0.1,
+   "peak_db": -3.0,
+   "rms_db": -14.7,
+   "crest": 3.8,
+   "centroid": 7528,
+   "low": 0.0,
+   "flat": 0.228,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_toggle_on_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/toggle_002.ogg",
+  "duration": 0.131,
+  "size": 1252,
+  "desc": {
+   "dur": 0.1,
+   "peak_db": -3.0,
+   "rms_db": -12.6,
+   "crest": 3.0,
+   "centroid": 2814,
+   "low": 0.0,
+   "flat": 0.002,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_toggle_off_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/toggle_004.ogg",
+  "duration": 0.104,
+  "size": 1043,
+  "desc": {
+   "dur": 0.06,
+   "peak_db": -3.0,
+   "rms_db": -14.5,
+   "crest": 3.8,
+   "centroid": 3200,
+   "low": 0.0,
+   "flat": 0.007,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_slider_tick_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/tick_001.ogg",
+  "duration": 0.052,
+  "size": 625,
+  "desc": {
+   "dur": 0.02,
+   "peak_db": -3.0,
+   "rms_db": -19.9,
+   "crest": 7.0,
+   "centroid": 5312,
+   "low": 0.0,
+   "flat": 0.108,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_select_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/select_005.ogg",
+  "duration": 0.261,
+  "size": 2297,
+  "desc": {
+   "dur": 0.22,
+   "peak_db": -3.0,
+   "rms_db": -17.5,
+   "crest": 5.3,
+   "centroid": 1824,
+   "low": 0.04,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "ui_maximize": {
+  "srcfile": "kenney-interface-sounds/files/Audio/maximize_004.ogg",
+  "duration": 0.444,
+  "size": 3760,
+  "desc": {
+   "dur": 0.4,
+   "peak_db": -3.0,
+   "rms_db": -17.1,
+   "crest": 5.1,
+   "centroid": 5806,
+   "low": 0.0,
+   "flat": 0.022,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "ui_minimize": {
+  "srcfile": "kenney-interface-sounds/files/Audio/minimize_004.ogg",
+  "duration": 0.444,
+  "size": 3760,
+  "desc": {
+   "dur": 0.4,
+   "peak_db": -4.8,
+   "rms_db": -18.3,
+   "crest": 4.7,
+   "centroid": 6119,
+   "low": 0.0,
+   "flat": 0.053,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_panel_open_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/open_003.ogg",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.31,
+   "peak_db": -3.0,
+   "rms_db": -14.4,
+   "crest": 3.7,
+   "centroid": 5469,
+   "low": 0.0,
+   "flat": 0.278,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_panel_close_2": {
+  "srcfile": "kenney-interface-sounds/files/Audio/close_003.ogg",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.31,
+   "peak_db": -5.0,
+   "rms_db": -18.2,
+   "crest": 4.6,
+   "centroid": 11502,
+   "low": 0.0,
+   "flat": 0.437,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "ui_notify_1": {
+  "srcfile": "oga-chimey-ui-sounds/files/mousebyte_chimeyui/Chime_Confirm.mp3",
+  "duration": 1.202,
+  "size": 9821,
+  "desc": {
+   "dur": 1.16,
+   "peak_db": -3.0,
+   "rms_db": -17.5,
+   "crest": 5.3,
+   "centroid": 1175,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "countdown_beep_2": {
+  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
+  "duration": 0.261,
+  "size": 2297,
+  "desc": {
+   "dur": 0.22,
+   "peak_db": -3.0,
+   "rms_db": -12.1,
+   "crest": 2.8,
+   "centroid": 820,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "countdown_beep_3": {
+  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
+  "duration": 0.261,
+  "size": 2297,
+  "desc": {
+   "dur": 0.22,
+   "peak_db": -3.0,
+   "rms_db": -12.0,
+   "crest": 2.8,
+   "centroid": 919,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "countdown_go_2": {
+  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
+  "duration": 0.731,
+  "size": 6059,
+  "desc": {
+   "dur": 0.7,
+   "peak_db": -3.0,
+   "rms_db": -11.0,
+   "crest": 2.5,
+   "centroid": 1639,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "countdown_go_3": {
+  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
+  "duration": 0.731,
+  "size": 6059,
+  "desc": {
+   "dur": 0.7,
+   "peak_db": -3.0,
+   "rms_db": -11.0,
+   "crest": 2.5,
+   "centroid": 1301,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "spear_stab_4": {
+  "srcfile": "kenney-rpg-audio/files/Audio/drawKnife2.ogg",
+  "duration": 0.418,
+  "size": 3551,
+  "desc": {
+   "dur": 0.37,
+   "peak_db": -3.0,
+   "rms_db": -19.8,
+   "crest": 6.9,
+   "centroid": 4587,
+   "low": 0.0,
+   "flat": 0.034,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "spear_stab_5": {
+  "srcfile": "kenney-rpg-audio/files/Audio/drawKnife3.ogg",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.3,
+   "peak_db": -3.0,
+   "rms_db": -26.4,
+   "crest": 14.8,
+   "centroid": 1398,
+   "low": 0.28,
+   "flat": 0.007,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "spear_swing_2": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-30.flac",
+  "duration": 0.784,
+  "size": 6477,
+  "desc": {
+   "dur": 0.75,
+   "peak_db": -3.0,
+   "rms_db": -22.9,
+   "crest": 9.8,
+   "centroid": 293,
+   "low": 0.11,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "spear_swing_3": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-33.flac",
+  "duration": 0.784,
+  "size": 6477,
+  "desc": {
+   "dur": 0.73,
+   "peak_db": -3.0,
+   "rms_db": -20.3,
+   "crest": 7.4,
+   "centroid": 343,
+   "low": 0.34,
+   "flat": 0.001,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "javelin_throw_3": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-29.flac",
+  "duration": 0.758,
+  "size": 6268,
+  "desc": {
+   "dur": 0.72,
+   "peak_db": -3.0,
+   "rms_db": -19.8,
+   "crest": 6.9,
+   "centroid": 300,
+   "low": 0.23,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "axe_chop_3": {
+  "srcfile": "oga-chopping-tree/files/choppingtree/choppingtree.ogg",
+  "duration": 0.836,
+  "size": 6895,
+  "desc": {
+   "dur": 0.8,
+   "peak_db": -3.0,
+   "rms_db": -27.3,
+   "crest": 16.5,
+   "centroid": 1175,
+   "low": 0.11,
+   "flat": 0.032,
+   "n_on": 2
+  },
+  "cut": true
+ },
+ "axe_chop_4": {
+  "srcfile": "oga-chopping-tree/files/choppingtree/choppingtree.ogg",
+  "duration": 0.836,
+  "size": 6895,
+  "desc": {
+   "dur": 0.8,
+   "peak_db": -3.0,
+   "rms_db": -22.0,
+   "crest": 8.9,
+   "centroid": 1404,
+   "low": 0.37,
+   "flat": 0.058,
+   "n_on": 3
+  },
+  "cut": true
+ },
+ "camel_groan_2": {
+  "srcfile": "oga-fantasy-desert-ride-able-camel/files/fantasy_desert_camel/fantasy_desert_camel.mp3",
+  "duration": 1.672,
+  "size": 13582,
+  "desc": {
+   "dur": 1.64,
+   "peak_db": -3.0,
+   "rms_db": -17.8,
+   "crest": 5.5,
+   "centroid": 888,
+   "low": 0.01,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "camel_groan_3": {
+  "srcfile": "oga-camel-groan/files/camel/flac/camel_02.flac",
+  "duration": 2.429,
+  "size": 19643,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -11.4,
+   "crest": 2.6,
+   "centroid": 368,
+   "low": 0.1,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "monster_roar_3": {
+  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/creature_roar_03.ogg",
+  "duration": 0.888,
+  "size": 7313,
+  "desc": {
+   "dur": 0.86,
+   "peak_db": -3.0,
+   "rms_db": -14.5,
+   "crest": 3.7,
+   "centroid": 228,
+   "low": 0.93,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "catapult_creak_3": {
+  "srcfile": "kenney-rpg-audio/files/Audio/creak3.ogg",
+  "duration": 0.313,
+  "size": 2715,
+  "desc": {
+   "dur": 0.28,
+   "peak_db": -3.0,
+   "rms_db": -16.2,
+   "crest": 4.5,
+   "centroid": 1118,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "catapult_creak_4": {
+  "srcfile": "oga-wood-wobbling-rattling/files/qubodup-wobble/qubodup-wobble/qubodup-wobble1.wav",
+  "duration": 0.47,
+  "size": 3969,
+  "desc": {
+   "dur": 0.44,
+   "peak_db": -5.9,
+   "rms_db": -21.3,
+   "crest": 5.9,
+   "centroid": 2178,
+   "low": 0.55,
+   "flat": 0.102,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "catapult_launch_3": {
+  "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_004.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-30.flac + kenney-impact-sounds/files/Audio/impactWood_light_002.ogg",
+  "duration": 0.862,
+  "size": 7104,
+  "desc": {
+   "dur": 0.82,
+   "peak_db": -3.0,
+   "rms_db": -23.2,
+   "crest": 10.2,
+   "centroid": 279,
+   "low": 0.15,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "boulder_whoosh_2": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac",
+  "duration": 1.228,
+  "size": 10030,
+  "desc": {
+   "dur": 1.2,
+   "peak_db": -3.0,
+   "rms_db": -21.9,
+   "crest": 8.8,
+   "centroid": 205,
+   "low": 0.95,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "boulder_whoosh_3": {
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-35.flac",
+  "duration": 1.332,
+  "size": 10865,
+  "desc": {
+   "dur": 1.3,
+   "peak_db": -3.0,
+   "rms_db": -21.3,
+   "crest": 8.3,
+   "centroid": 195,
+   "low": 0.97,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": true
+ },
+ "elephant_trumpet_2": {
+  "srcfile": "commons-elephant-voice-trumpeting/Elephant_voice_-_trumpeting.ogg",
+  "duration": 1.541,
+  "size": 12537,
+  "desc": {
+   "dur": 1.51,
+   "peak_db": -3.0,
+   "rms_db": -18.9,
+   "crest": 6.2,
+   "centroid": 1643,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "elephant_trumpet_3": {
+  "srcfile": "commons-elephant-voice-trumpeting/Elephant_voice_-_trumpeting.ogg",
+  "duration": 1.176,
+  "size": 9612,
+  "desc": {
+   "dur": 1.14,
+   "peak_db": -3.0,
+   "rms_db": -18.8,
+   "crest": 6.2,
+   "centroid": 2513,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "snake_hiss_2": {
+  "srcfile": "commons-rattlesnake/Rattlesnake.ogg",
+  "duration": 1.646,
+  "size": 13373,
+  "desc": {
+   "dur": 1.6,
+   "peak_db": -3.0,
+   "rms_db": -15.7,
+   "crest": 4.3,
+   "centroid": 5080,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 9
+  },
+  "cut": true
+ },
+ "snake_hiss_3": {
+  "srcfile": "commons-rattlesnake/Rattlesnake.ogg",
+  "duration": 1.437,
+  "size": 11701,
+  "desc": {
+   "dur": 1.4,
+   "peak_db": -4.0,
+   "rms_db": -17.0,
+   "crest": 4.5,
+   "centroid": 5428,
+   "low": 0.0,
+   "flat": 0.013,
+   "n_on": 12
+  },
+  "cut": true
+ },
+ "dog_bark_3": {
+  "srcfile": "oga-dog-sounds/files/dog/Dog/Dog Bark 3.wav",
+  "duration": 0.34,
+  "size": 2924,
+  "desc": {
+   "dur": 0.3,
+   "peak_db": -3.0,
+   "rms_db": -18.2,
+   "crest": 5.7,
+   "centroid": 1036,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "dog_bark_4": {
+  "srcfile": "oga-dog-sounds/files/dog/Dog/Dog Bark.wav",
+  "duration": 0.366,
+  "size": 3133,
+  "desc": {
+   "dur": 0.33,
+   "peak_db": -3.0,
+   "rms_db": -15.6,
+   "crest": 4.3,
+   "centroid": 1951,
+   "low": 0.03,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "chicken_cluck_4": {
+  "srcfile": "oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg",
+  "duration": 0.522,
+  "size": 4387,
+  "desc": {
+   "dur": 0.47,
+   "peak_db": -3.0,
+   "rms_db": -21.4,
+   "crest": 8.3,
+   "centroid": 1145,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "goat_bleat_2": {
+  "srcfile": "oga-goat-bleat/files/snom-ringtone/snom-ringtone.wav",
+  "duration": 1.802,
+  "size": 14627,
+  "desc": {
+   "dur": 1.76,
+   "peak_db": -3.0,
+   "rms_db": -18.5,
+   "crest": 5.9,
+   "centroid": 845,
+   "low": 0.16,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "goat_bleat_3": {
+  "srcfile": "oga-goat-bleat/files/snom-ringtone/snom-ringtone.wav",
+  "duration": 1.332,
+  "size": 10865,
+  "desc": {
+   "dur": 1.3,
+   "peak_db": -3.0,
+   "rms_db": -18.5,
+   "crest": 5.9,
+   "centroid": 843,
+   "low": 0.32,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": false
+ },
+ "sheep_baa_2": {
+  "srcfile": "oga-sheep-baa/files/sheep_baa/sheep_baa.flac",
+  "duration": 1.019,
+  "size": 8358,
+  "desc": {
+   "dur": 0.97,
+   "peak_db": -3.0,
+   "rms_db": -21.8,
+   "crest": 8.7,
+   "centroid": 1578,
+   "low": 0.03,
+   "flat": 0.001,
+   "n_on": 6
+  },
+  "cut": false
+ },
+ "donkey_bray_2": {
+  "srcfile": "oga-donkey-bray/files/donkey_bray_-_starninjas_0/donkey_bray_-_starninjas_0.ogg",
+  "duration": 1.567,
+  "size": 12746,
+  "desc": {
+   "dur": 1.52,
+   "peak_db": -3.0,
+   "rms_db": -22.9,
+   "crest": 9.9,
+   "centroid": 1289,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 4
+  },
+  "cut": false
+ },
+ "horse_gallop_2": {
+  "srcfile": "oga-horse-gallop-loop/files/gallop/gallop_02.ogg",
+  "duration": 2.534,
+  "size": 20479,
+  "desc": {
+   "dur": 2.5,
+   "peak_db": -3.0,
+   "rms_db": -24.1,
+   "crest": 11.4,
+   "centroid": 477,
+   "low": 0.49,
+   "flat": 0.0,
+   "n_on": 18
+  },
+  "cut": true
+ },
+ "drum_roll_2": {
+  "srcfile": "commons-drum-roll-intro/Drum_Roll_Intro.ogg",
+  "duration": 2.847,
+  "size": 22986,
+  "desc": {
+   "dur": 2.8,
+   "peak_db": -3.0,
+   "rms_db": -20.2,
+   "crest": 7.3,
+   "centroid": 2646,
+   "low": 0.1,
+   "flat": 0.013,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "drum_roll_3": {
+  "srcfile": "commons-drum-roll-intro/Drum_Roll_Intro.ogg",
+  "duration": 2.429,
+  "size": 19643,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -20.2,
+   "crest": 7.2,
+   "centroid": 2869,
+   "low": 0.02,
+   "flat": 0.021,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "crowd_chant_2": {
+  "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 08 - Rhythmic cheering.mp3",
+  "duration": 3.527,
+  "size": 28420,
+  "desc": {
+   "dur": 3.5,
+   "peak_db": -3.0,
+   "rms_db": -14.6,
+   "crest": 3.8,
+   "centroid": 939,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "crowd_cheer_5": {
+  "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 05 - Soft cheering - I.mp3",
+  "duration": 2.847,
+  "size": 22986,
+  "desc": {
+   "dur": 2.8,
+   "peak_db": -3.0,
+   "rms_db": -17.5,
+   "crest": 5.3,
+   "centroid": 988,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "jingle_defeat_3": {
+  "srcfile": "oga-level-up-power-up-coin-get-13-sounds/files/SoundPack01/Downer01.aif",
+  "duration": 0.679,
+  "size": 7053,
+  "desc": {
+   "dur": 0.63,
+   "peak_db": -3.0,
+   "rms_db": -17.2,
+   "crest": 5.1,
+   "centroid": 320,
+   "low": 0.19,
+   "flat": 0.001,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "jingle_battle_start_3": {
+  "srcfile": "oga-their-coming-generic-horn-sound/files/theircoming_0/theircoming_0.ogg + oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav + oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_02.ogg",
+  "duration": 3.03,
+  "size": 30563,
+  "desc": {
+   "dur": 3.0,
+   "peak_db": -3.0,
+   "rms_db": -14.7,
+   "crest": 3.9,
+   "centroid": 423,
+   "low": 0.6,
+   "flat": 0.001,
+   "n_on": 6
+  },
+  "cut": false
+ },
+ "stinger_epic_1": {
+  "srcfile": "oga-orchestral-stinger-dramatic-entrance/files/orchestral_stinger_dramatic_entrance/orchestral_stinger_dramatic_entrance.wav",
+  "duration": 2.247,
+  "size": 22727,
+  "desc": {
+   "dur": 2.2,
+   "peak_db": -3.0,
+   "rms_db": -15.4,
+   "crest": 4.2,
+   "centroid": 268,
+   "low": 0.68,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "stinger_funny_1": {
+  "srcfile": "oga-boing/files/boing/boing.flac",
+  "duration": 1.228,
+  "size": 12539,
+  "desc": {
+   "dur": 1.2,
+   "peak_db": -3.0,
+   "rms_db": -12.7,
+   "crest": 3.0,
+   "centroid": 336,
+   "low": 0.9,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "stinger_funny_2": {
+  "srcfile": "oga-silly-sound-effects/files/bloop/bloop.mp3",
+  "duration": 0.287,
+  "size": 3135,
+  "desc": {
+   "dur": 0.26,
+   "peak_db": -3.0,
+   "rms_db": -17.4,
+   "crest": 5.2,
+   "centroid": 392,
+   "low": 0.03,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "stinger_funny_3": {
+  "srcfile": "oga-slide-whistle-down/files/79671__joedeshon__slide-whistle-down-01/79671__joedeshon__slide-whistle-down-01.wav",
+  "duration": 1.176,
+  "size": 12016,
+  "desc": {
+   "dur": 1.15,
+   "peak_db": -3.0,
+   "rms_db": -10.3,
+   "crest": 2.3,
+   "centroid": 621,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "stinger_hero_down_1": {
+  "srcfile": "oga-kl-peach-game-over-iii/files/KL Peach Game Over III/KL Peach Game Over III.wav",
+  "duration": 2.429,
+  "size": 24555,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -15.2,
+   "crest": 4.1,
+   "centroid": 963,
+   "low": 0.22,
+   "flat": 0.006,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "stinger_hero_down_2": {
+  "srcfile": "oga-game-over-trumpet-sfx/files/losetrumpet/losetrumpet.wav",
+  "duration": 1.149,
+  "size": 11755,
+  "desc": {
+   "dur": 1.11,
+   "peak_db": -3.0,
+   "rms_db": -11.0,
+   "crest": 2.5,
+   "centroid": 638,
+   "low": 0.16,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": false
+ },
+ "stinger_hero_down_3": {
+  "srcfile": "oga-level-up-power-up-coin-get-13-sounds/files/SoundPack01/Downer01.aif",
+  "duration": 0.784,
+  "size": 8098,
+  "desc": {
+   "dur": 0.73,
+   "peak_db": -3.0,
+   "rms_db": -18.0,
+   "crest": 5.6,
+   "centroid": 279,
+   "low": 0.59,
+   "flat": 0.0,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "torch_crackle_2": {
+  "srcfile": "oga-fire-crackling/files/fire-1/fire-1.wav",
+  "duration": 2.247,
+  "size": 18180,
+  "desc": {
+   "dur": 2.2,
+   "peak_db": -3.0,
+   "rms_db": -23.5,
+   "crest": 10.6,
+   "centroid": 252,
+   "low": 0.89,
+   "flat": 0.001,
+   "n_on": 9
+  },
+  "cut": true
+ },
+ "torch_crackle_3": {
+  "srcfile": "oga-fire-crackling/files/fire-1/fire-1.wav",
+  "duration": 1.959,
+  "size": 15881,
+  "desc": {
+   "dur": 1.92,
+   "peak_db": -3.0,
+   "rms_db": -23.6,
+   "crest": 10.7,
+   "centroid": 295,
+   "low": 0.9,
+   "flat": 0.001,
+   "n_on": 10
+  },
+  "cut": false
+ },
+ "lightning_zap_3": {
+  "srcfile": "oga-electricity-sound-effects-0/files/continuousspark/continuousspark.wav",
+  "duration": 0.392,
+  "size": 3342,
+  "desc": {
+   "dur": 0.36,
+   "peak_db": -3.0,
+   "rms_db": -26.3,
+   "crest": 14.6,
+   "centroid": 4315,
+   "low": 0.0,
+   "flat": 0.032,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "chicken_cluck_3": {
+  "srcfile": "oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg",
+  "duration": 1.541,
+  "size": 12537,
+  "desc": {
+   "dur": 1.5,
+   "peak_db": -3.0,
+   "rms_db": -20.9,
+   "crest": 7.9,
+   "centroid": 1106,
+   "low": 0.0,
+   "flat": 0.001,
+   "n_on": 5
+  },
+  "cut": true
+ },
+ "magic_cast_2": {
+  "srcfile": "oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/30_Earth_02.wav",
+  "duration": 1.829,
+  "size": 14836,
+  "desc": {
+   "dur": 1.8,
+   "peak_db": -3.0,
+   "rms_db": -18.3,
+   "crest": 5.8,
+   "centroid": 1098,
+   "low": 0.41,
+   "flat": 0.0,
+   "n_on": 5
+  },
+  "cut": true
+ },
+ "magic_cast_3": {
+  "srcfile": "oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/13_Ice_explosion_01.wav",
+  "duration": 1.358,
+  "size": 11074,
+  "desc": {
+   "dur": 1.33,
+   "peak_db": -3.0,
+   "rms_db": -22.1,
+   "crest": 9.1,
+   "centroid": 4711,
+   "low": 0.38,
+   "flat": 0.044,
+   "n_on": 0
+  },
+  "cut": false
+ },
+ "magic_cast_4": {
+  "srcfile": "oga-freeze-spell-0/files/freeze/freeze.wav",
+  "duration": 1.829,
+  "size": 14836,
+  "desc": {
+   "dur": 1.8,
+   "peak_db": -3.0,
+   "rms_db": -19.5,
+   "crest": 6.6,
+   "centroid": 2514,
+   "low": 0.07,
+   "flat": 0.1,
+   "n_on": 6
+  },
+  "cut": true
+ },
+ "ambience_wind_loop_2": {
+  "srcfile": "oga-wind1/files/wind4/wind4.wav",
+  "duration": 6.034,
+  "size": 42422,
+  "desc": {
+   "dur": 6.0,
+   "peak_db": -3.0,
+   "rms_db": -17.4,
+   "crest": 5.3,
+   "centroid": 794,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "ambience_wind_loop_3": {
+  "srcfile": "oga-wind1/files/wind5/wind5.wav",
+  "duration": 6.034,
+  "size": 42422,
+  "desc": {
+   "dur": 6.0,
+   "peak_db": -3.0,
+   "rms_db": -18.2,
+   "crest": 5.7,
+   "centroid": 737,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 2
+  },
+  "cut": true
+ },
+ "ambience_crowd_loop_2": {
+  "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 09 - Ambience and cheering.mp3",
+  "duration": 6.034,
+  "size": 42422,
+  "desc": {
+   "dur": 6.0,
+   "peak_db": -3.0,
+   "rms_db": -19.9,
+   "crest": 7.0,
+   "centroid": 931,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "ambience_crowd_loop_3": {
+  "srcfile": "oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3",
+  "duration": 6.034,
+  "size": 42422,
+  "desc": {
+   "dur": 6.0,
+   "peak_db": -3.0,
+   "rms_db": -16.7,
+   "crest": 4.9,
+   "centroid": 923,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
+  },
+  "cut": true
+ },
+ "ambience_fire_loop_2": {
+  "srcfile": "oga-fire-crackling/files/fire-1_0/fire-1_0.ogg",
+  "duration": 2.429,
+  "size": 17187,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -25.5,
+   "crest": 13.4,
+   "centroid": 452,
+   "low": 0.75,
+   "flat": 0.0,
+   "n_on": 10
+  },
+  "cut": true
+ },
+ "ambience_fire_loop_3": {
+  "srcfile": "oga-fireplace-sound-loop/files/fire/fire.wav",
+  "duration": 4.232,
+  "size": 29804,
+  "desc": {
+   "dur": 4.2,
+   "peak_db": -3.0,
+   "rms_db": -18.2,
+   "crest": 5.7,
+   "centroid": 193,
+   "low": 0.96,
+   "flat": 0.005,
+   "n_on": 23
   },
   "cut": true
  }

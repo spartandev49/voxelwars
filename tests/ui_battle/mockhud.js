@@ -281,6 +281,7 @@ export function makeRouter(ui, getCtx, registry) {
   R.back = () => { if (R.overlays.length) { const top = R.overlays[R.overlays.length - 1]; if (top.inst.onBack && top.inst.onBack()) return true; R.closeOverlay(top.id); return true; } if (R.base && R.base.inst.onBack && R.base.inst.onBack()) return true; return false; };
   R.key = (e) => { const top = R.overlays[R.overlays.length - 1] || R.base; return !!(top && top.inst && top.inst.onKey && top.inst.onKey(e)); };
   R.current = () => (R.base ? R.base.id : '');
+  R.destroy = () => { for (const o of R.overlays.splice(0)) kill(o); kill(R.base); R.base = null; };
   return R;
 }
 

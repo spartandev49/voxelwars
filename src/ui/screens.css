@@ -128,7 +128,8 @@
   .vw-qb__action-btns .vw-btn__sub { display: none; }
   .vw-qb__action-btns { gap: .6rem; }
   .vw-qb__summary { font-size: .8rem; }
-  #qb .vw-page__bar { flex-wrap: wrap; }
+  .vw-page__bar { flex-wrap: wrap; }
+  .vw-page__bar > .vw-grow { flex: 1 1 8rem; }
   #qb .vw-page__bar > .vw-seg { order: 5; flex: 1 1 100%; }
 }
 
@@ -209,7 +210,9 @@
   .vw-pl { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "top" "mid" "bot"; padding: 0 var(--gutter); column-gap: 0; }
   .vw-pl__mid { margin-bottom: .5rem; z-index: 1; }
   .vw-pl__scout-h span { display: none; }
-  .vw-pl__bottom { display: grid; grid-template-columns: 1fr 1fr 1.5fr; grid-template-areas: "counts counts counts" "t1 t2 fight"; align-items: stretch; margin: 0 calc(var(--gutter) * -1); padding: .55rem var(--gutter) .8rem; gap: .5rem .6rem; position: relative; z-index: 6; }
+  .vw-pl__bottom > * { min-width: 0; }
+  .vw-pl__count { min-width: 0 !important; }
+  .vw-pl__bottom { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.5fr); grid-template-areas: "counts counts counts" "t1 t2 fight"; align-items: stretch; margin: 0 calc(var(--gutter) * -1); padding: .55rem var(--gutter) .8rem; gap: .5rem .6rem; position: relative; z-index: 6; }
   .vw-pl__counts { grid-area: counts; gap: .8rem; }
   .vw-pl__count { flex-direction: row; align-items: center; gap: .4rem; min-width: 0; }
   .vw-pl__count .vw-label { flex: 0 0 auto; font-size: .62rem; }

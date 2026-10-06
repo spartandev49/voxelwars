@@ -9,7 +9,7 @@ import { startMelee, startRanged, setAnim, angleDiff } from './combat.js';
 const CONE = Math.PI / 3;
 
 export class Possession {
-  constructor(w) { this.w = w; this.unit = null; this.mx = 0; this.mz = 0; this.attack = false; this.pendingAbility = 0; }
+  constructor(w) { this.w = w; this.unit = null; this.mx = 0; this.mz = 0; this.attack = false; this.pendingAbility = 0; this.pendingT = 0; }
   /** Currently controlled unit or null. */
   get current() { return this.unit && this.unit.alive ? this.unit : null; }
 
@@ -25,21 +25,22 @@ export class Possession {
     }
     if (cmd.move) { this.mx = +cmd.move.x || 0; this.mz = +cmd.move.z || 0; const l = Math.hypot(this.mx, this.mz); if (l > 1) { this.mx /= l; this.mz /= l; } }
     if (cmd.attack !== undefined) this.attack = !!cmd.attack;
-    if (cmd.ability) this.pendingAbility = cmd.ability | 0;
+    if (cmd.ability) { this.pendingAbility = cmd.ability | 0; this.pendingT = 0.5; }       // buffered for 0.5 s so a press during a swing is not lost
   }
 
   _release() {
     const u = this.unit;
     if (u) { u.controlled = false; u.dvx = 0; u.dvz = 0; const e = this.w.P.possess; e.id = u.id; e.on = 0; this.w.emit('possess', e); }
-    this.unit = null; this.mx = this.mz = 0; this.attack = false; this.pendingAbility = 0;
+    this.unit = null; this.mx = this.mz = 0; this.attack = false; this.pendingAbility = 0; this.pendingT = 0;
   }
 
   tick() {
     const w = this.w, u = this.unit;
     if (!u) return;
     if (!u.alive) { this._release(); return; }
+    if (this.pendingAbility > 0) { this.pendingT -= 1 / 30; if (this.pendingT <= 0) this.pendingAbility = 0; }
     const st = u.state;
-    if (st === ST.WINDUP || st === ST.STAGGER || st === ST.STUN || st === ST.CAST || st === ST.GETUP || st === ST.SIT || st === ST.COWER || st === ST.DOWN || st === ST.FLY || u.se[SE.SLEEP] > 0 || u.se[SE.STONE] > 0 || u.se[SE.STUN] > 0) { this.pendingAbility = 0; return; }
+    if (st === ST.WINDUP || st === ST.STAGGER || st === ST.STUN || st === ST.CAST || st === ST.GETUP || st === ST.SIT || st === ST.COWER || st === ST.DOWN || st === ST.FLY || u.se[SE.SLEEP] > 0 || u.se[SE.STONE] > 0 || u.se[SE.STUN] > 0) return;
     const def = u.def, sp = u.speedBase * u.mSpeed;
     const mlen = Math.hypot(this.mx, this.mz);
     // facing: movement direction, or the aimed enemy while attacking

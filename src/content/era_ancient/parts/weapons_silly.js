@@ -82,7 +82,7 @@ M.scroll_of_doom = {
   },
 };
 M.olive_branch = {
-  name: 'Olive branch', unlock: U, meta: { style: 'cast', len: 20, back: 6, rest: [R_UP, 0, 0], grip: [4, 10, 4], minLen: 12, kind: 'silly' },
+  name: 'Olive branch', unlock: U, meta: { style: 'cast', ready: 76, len: 20, back: 6, rest: [R_UP, 0, 0], grip: [4, 10, 4], minLen: 12, kind: 'silly' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len;
     for (let y = 4; y <= yt; y++) B(g, 4, y, 4 + (y > 15 ? Math.round(0.7 * Math.sin(y * 0.8)) : 0), 4, y, 4 + (y > 15 ? Math.round(0.7 * Math.sin(y * 0.8)) : 0), wood(y, 4, 0x8a7a58));
@@ -98,7 +98,7 @@ M.olive_branch = {
   },
 };
 M.foam_finger = {
-  name: 'Foam finger', unlock: U, meta: { style: 'bash', len: 18, back: 3, rest: [R_UP, 0, 0], grip: [4, 10, 4], minLen: 14, kind: 'silly' },
+  name: 'Foam finger', unlock: U, meta: { style: 'bash', ready: 84, len: 18, back: 3, rest: [R_UP, 0, 0], grip: [4, 10, 4], minLen: 14, kind: 'silly' },
   build(ctx) {
     const g = newGrid('weapon');
     const foam = (x, y, z, f = 1) => ctx.t(f * (0.92 + 0.14 * hash3(x, y, z, 2)));

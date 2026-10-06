@@ -2,7 +2,7 @@
 // hotkeys (onKey) and the gear button to the pause overlay, shows the FIGHT! beat when the countdown ends, and the "click the arena for keyboard focus" chip.
 // Pointer events on the canvas stay with app/input.js: this screen and every container in it are pointer-events:none except real controls.
 import { h, disposer, sfx } from '../hud/_dom.js';
-import { mountHud } from '../hud/_hud.js';
+import { mountHud, HUD_INTERVAL } from '../hud/_hud.js';
 import { mountCountdown } from './countdown.js';
 
 export const meta = { id: 'battle', layer: 'battle', music: 'battle', canvas: 'scene' };
@@ -42,9 +42,10 @@ export function mount(root, ctx, params) {
 
   // poll HudData at 10 Hz; the HUD manager also throttles, this keeps game.hud() itself at that rate
   let raf = 0, last = 0;
-  const tick = (t) => {
+  const tick = () => {
     raf = requestAnimationFrame(tick);
-    if (t - last < 100) return;
+    const t = performance.now();
+    if (t - last < HUD_INTERVAL) return;
     const dt = Math.min(0.5, (t - last) / 1000); last = t;
     let data = null;
     try { data = ctx.game.hud(); } catch (e) { data = null; }

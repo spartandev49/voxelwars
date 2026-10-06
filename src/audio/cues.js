@@ -1,7 +1,8 @@
 // Cue families (113) and the sim-event -> cue router. Everything here is pure data / pure logic (no AudioContext): the
 // engine supplies play/duck/now/listener callbacks, so Node tests drive it with fakes.
 //
-// Family record: { id, pick:[selectors], layers?:[{pick?|cue?, vol, pitch:[lo,hi]|n, delay, prob}], vol, pitch:[lo,hi], cooldownMs,
+// `pick` is a union of selectors, or an array of GROUPS (arrays) tried in order: the first group that matches any ledger row wins
+// (preferred family-specific assets, then generic fallbacks). Family record: { id, pick:[selectors], layers?:[{pick?|cue?, vol, pitch:[lo,hi]|n, delay, prob}], vol, pitch:[lo,hi], cooldownMs,
 //   maxVoices, priority, bus, spatial, ref, maxDist, duck?:{bus,db,ms}, dur?, send?, loop?, group }
 import { clamp, db2lin } from './util.js';
 
@@ -59,29 +60,29 @@ F('net_throw', 'swing', ['cloth_flap', 'whoosh_camera'], { vol: 0.6, priority: 5
 F('death_male', 'voice', ['death_grunt', 'death_dying', 'death_hurt'], { vol: 0.8 });
 F('death_scream', 'voice', ['death_scream'], { vol: 0.8, priority: 58 });
 F('death_oof', 'voice', ['death_oof', 'death_comic'], { vol: 0.85, pitch: [0.92, 1.12] });
-F('death_big', 'voice', ['monster_roar', 'death_dying'], { vol: 0.95, ref: 24, maxDist: 130, priority: 70, cooldownMs: 120, maxVoices: 3, send: 0.1, pitch: [0.55, 0.7], layers: [L(['monster_roar'], 1, [0.55, 0.7]), L(['wood_thud', 'boulder_impact'], 0.6, [0.6, 0.8], 0.4)] });
-F('death_animal', 'voice', ['dog_bark', 'sheep_baa', 'donkey_bray'], { vol: 0.8, pitch: [1.0, 1.3] });
+F('death_big', 'voice', [['death_big'], ['monster_roar', 'death_dying']], { vol: 0.95, ref: 24, maxDist: 130, priority: 70, cooldownMs: 120, maxVoices: 3, send: 0.1, pitch: [0.85, 1.0], layers: [L([['death_big'], ['monster_roar', 'death_dying']], 1), L(['wood_thud', 'boulder_impact'], 0.6, [0.6, 0.8], 0.4)] });
+F('death_animal', 'voice', [['death_animal'], ['dog_bark', 'sheep_baa', 'donkey_bray']], { vol: 0.8, pitch: [0.95, 1.15] });
 F('battle_cry', 'voice', ['battle_cry', 'war_cry'], { vol: 0.6, cooldownMs: 120, maxVoices: 4, priority: 45 });
 F('taunt', 'voice', ['war_cry', 'grunt_effort'], { vol: 0.55, cooldownMs: 400, maxVoices: 3, priority: 42, pitch: [0.95, 1.2] });
 F('cheer_small', 'voice', ['war_cry'], { vol: 0.5, cooldownMs: 300, maxVoices: 3, priority: 40, pitch: [1.15, 1.4] });
 F('philosopher_mumble', 'voice', [], { vol: 0.7, cooldownMs: 600, maxVoices: 2, priority: 50 });
 F('senator_blah', 'voice', [], { vol: 0.7, cooldownMs: 600, maxVoices: 2, priority: 50 });
 F('chicken_cluck', 'beast', ['chicken_cluck'], { vol: 0.8, ref: 14, cooldownMs: 90, maxVoices: 5, priority: 48, pitch: [0.9, 1.25] });
-F('chicken_rage', 'beast', ['chicken_cluck'], { vol: 0.95, ref: 18, cooldownMs: 600, maxVoices: 2, priority: 66, layers: [L(['chicken_cluck'], 1, [1.35, 1.55]), L(['chicken_cluck'], 0.7, [1.6, 1.9], 0.07), L(['chicken_cluck'], 0.5, [1.2, 1.4], 0.15)] });
+F('chicken_rage', 'beast', [['chicken_rage'], ['chicken_cluck']], { vol: 0.95, ref: 18, cooldownMs: 600, maxVoices: 2, priority: 66, pitch: [0.97, 1.05], layers: [L(['chicken_rage'], 1), L(['chicken_cluck'], 0.7, [1.35, 1.55], 0.05), L(['chicken_cluck'], 0.5, [1.6, 1.9], 0.12)] });
 F('goat_bleat', 'beast', ['goat_bleat', 'sheep_baa'], { vol: 0.85, ref: 16, cooldownMs: 300 });
 F('hound_bark', 'beast', ['dog_bark'], { vol: 0.8, ref: 16, cooldownMs: 120, maxVoices: 4, priority: 48 });
 F('horse_neigh', 'beast', ['horse_neigh'], { vol: 0.8 });
 F('horse_gallop', 'beast', ['horse_gallop', 'hoof_step'], { vol: 0.6, ref: 20, cooldownMs: 120, maxVoices: 4, priority: 40 });
 F('camel_groan', 'beast', ['camel_groan', 'donkey_bray'], { vol: 0.85 });
 F('elephant_trumpet', 'beast', ['elephant_trumpet'], { vol: 1.0, ref: 30, maxDist: 150, priority: 75, cooldownMs: 600, maxVoices: 2, send: 0.18 });
-F('elephant_step', 'beast', ['wood_thud', 'hoof_step'], { vol: 0.8, ref: 24, cooldownMs: 160, maxVoices: 3, priority: 52, pitch: [0.45, 0.6] });
+F('elephant_step', 'beast', [['elephant_step'], ['wood_thud', 'hoof_step']], { vol: 0.8, ref: 24, cooldownMs: 160, maxVoices: 3, priority: 52, pitch: [0.85, 1.05] });
 F('minotaur_roar', 'beast', ['minotaur_grunt', 'monster_roar', 'bear_roar'], { vol: 1.0, ref: 28, maxDist: 150, priority: 75, cooldownMs: 800, maxVoices: 2, send: 0.15, pitch: [0.8, 0.95] });
 F('cyclops_roar', 'beast', ['monster_roar', 'orc_roar'], { vol: 1.0, ref: 32, maxDist: 160, priority: 78, cooldownMs: 1000, maxVoices: 2, send: 0.2, pitch: [0.55, 0.7] });
 F('medusa_hiss', 'beast', ['snake_hiss'], { vol: 0.85, ref: 18, priority: 60 });
 // ---- crowd
 F('crowd_cheer_small', 'crowd', ['crowd_cheer', 'applause'], { vol: 0.55 });
 F('crowd_cheer_big', 'crowd', ['crowd_roar', 'crowd_cheer'], { vol: 0.75, priority: 55, cooldownMs: 4000 });
-F('crowd_gasp', 'crowd', [], { vol: 0.65, cooldownMs: 3000 });
+F('crowd_gasp', 'crowd', ['crowd_gasp', 'crowd_ooh'], { vol: 0.65, cooldownMs: 3000 });
 F('crowd_boo', 'crowd', [], { vol: 0.6, cooldownMs: 4000 });
 F('crowd_loop', 'amb', ['ambience_crowd_loop', 'crowd_chant'], { vol: 0.38 });
 // ---- instruments
@@ -97,9 +98,9 @@ F('catapult_launch', 'siege', ['catapult_launch'], { vol: 0.95 });
 F('ballista_twang', 'siege', ['ballista_twang', 'bow_shot'], { vol: 0.85 });
 F('boulder_whoosh', 'siege', ['boulder_whoosh', 'whoosh_camera'], { vol: 0.6, priority: 50 });
 F('boulder_impact', 'destr', ['boulder_impact'], { vol: 1.0, priority: 72, cooldownMs: 80, layers: [L(['boulder_impact'], 1), L(['explosion_rumble', 'debris_big'], 0.5, null, 0.03)] });
-F('wall_crumble', 'destr', ['wall_collapse', 'rock_crumble'], { vol: 0.9, priority: 66, send: 0.15 });
+F('wall_crumble', 'destr', [['wall_crumble'], ['wall_collapse', 'rock_crumble']], { vol: 0.9, priority: 66, send: 0.15 });
 F('wood_crack', 'destr', ['wood_crack', 'wood_splinter'], { vol: 0.85, dur: 1.2 });
-F('rubble', 'destr', ['rock_crumble', 'rock_fall', 'debris_big'], { vol: 0.65, priority: 50 });
+F('rubble', 'destr', [['rubble'], ['rock_crumble', 'rock_fall', 'debris_big']], { vol: 0.65, priority: 50 });
 F('voxel_break', 'destr', ['voxel_break'], { vol: 0.7, priority: 48, cooldownMs: 60, maxVoices: 5, dur: 0.9 });
 // ---- fx
 F('fire_ignite', 'fx', ['fire_ignite', 'fire_whoosh'], { vol: 0.75, send: 0.1 });
@@ -110,12 +111,12 @@ F('heal_chime', 'fx', ['heal_chime'], { vol: 0.5, cooldownMs: 250, maxVoices: 3,
 F('buff_power', 'fx', ['buff_powerup'], { vol: 0.55, cooldownMs: 250, maxVoices: 3, priority: 60 });
 F('curse_whoosh', 'fx', ['curse_dark'], { vol: 0.6, priority: 60 });
 F('coin_clink', 'fx', ['coin_clink', 'coin_pickup'], { vol: 0.55, ref: 14, cooldownMs: 100, maxVoices: 4, priority: 45 });
-F('stone_freeze', 'fx', ['magic_cast'], { vol: 0.8, priority: 62, layers: [L(['magic_cast'], 1, [0.85, 0.95]), L(['rock_crumble'], 0.5, null, 0.15)] });
+F('stone_freeze', 'fx', [['stone_freeze'], ['magic_cast']], { vol: 0.8, priority: 62, pitch: [0.95, 1.05], layers: [L([['stone_freeze'], ['magic_cast']], 1), L(['rock_crumble'], 0.5, null, 0.15)] });
 F('wine_pour', 'fx', [], { vol: 0.7, spatial: false, priority: 55 });
 F('confetti_pop', 'fx', ['confetti_pop'], { vol: 0.7, priority: 45, cooldownMs: 150 });
 F('voxel_pop', 'fx', ['pop_place'], { vol: 0.55, priority: 30, cooldownMs: 50, maxVoices: 4 });
 F('debris_clatter', 'destr', ['debris_big', 'rock_fall'], { vol: 0.5, priority: 35, cooldownMs: 90, maxVoices: 3, pitch: [1.1, 1.4], dur: 0.9 });
-F('revive_chime', 'fx', ['heal_chime', 'buff_powerup'], { vol: 0.65, priority: 66, send: 0.2, pitch: [1.1, 1.25] });
+F('revive_chime', 'fx', [['revive_chime'], ['heal_chime', 'buff_powerup']], { vol: 0.65, priority: 66, send: 0.2, pitch: [0.97, 1.05] });
 // ---- ui
 F('ui_hover', 'ui', ['ui_hover'], { vol: 0.45, cooldownMs: 60, maxVoices: 2, priority: 70 });
 F('ui_click', 'ui', ['ui_click']);
@@ -129,15 +130,15 @@ F('ui_panel_close', 'ui', ['ui_panel_close', 'ui_minimize'], { vol: 0.55 });
 F('ui_achievement', 'ui', ['ui_achievement', 'jingle_achievement'], { vol: 0.75, cooldownMs: 600, send: 0.15 });
 F('ui_countdown_beep', 'ui', ['countdown_beep'], { vol: 0.7, cooldownMs: 100, pitch: [1, 1] });
 F('ui_go', 'ui', ['countdown_go'], { vol: 0.8, cooldownMs: 300, pitch: [1, 1] });
-F('ui_place', 'ui', ['pop_place', 'ui_drop'], { vol: 0.6, cooldownMs: 35, maxVoices: 5, pitch: [0.97, 1.03] });
-F('ui_erase', 'ui', ['ui_drop', 'cloth_flap'], { vol: 0.55, cooldownMs: 50, pitch: [0.7, 0.85] });
+F('ui_place', 'ui', [['ui_place'], ['pop_place', 'ui_drop']], { vol: 0.6, cooldownMs: 35, maxVoices: 5, pitch: [0.97, 1.03] });
+F('ui_erase', 'ui', [['ui_erase'], ['ui_drop', 'cloth_flap']], { vol: 0.55, cooldownMs: 50, pitch: [0.95, 1.05] });
 // ---- jingles / stingers
 F('jingle_victory', 'jingle', ['jingle_victory'], { vol: 0.85 });
 F('jingle_defeat', 'jingle', ['jingle_defeat'], { vol: 0.8 });
 F('jingle_start', 'jingle', ['jingle_battle_start'], { vol: 0.75 });
-F('stinger_hero_down', 'jingle', ['bell_heavy', 'gong'], { vol: 0.8, cooldownMs: 1000, maxVoices: 2, priority: 95, duck: { bus: 'music', db: -5, ms: 600 }, layers: [L(['bell_heavy', 'gong'], 1), L('drum_boom', 0.7, null, 0.02)] });
-F('stinger_epic', 'jingle', ['jingle_fanfare', 'jingle_battle_start'], { vol: 0.7, cooldownMs: 1000, maxVoices: 2, priority: 94, duck: { bus: 'music', db: -6, ms: 500 } });
-F('stinger_funny', 'jingle', ['death_comic'], { vol: 0.85, cooldownMs: 1000, maxVoices: 2, priority: 92, duck: { bus: 'music', db: -5, ms: 500 }, layers: [L(['death_comic'], 1), L(['bell_ding'], 0.5, null, 0.45)] });
+F('stinger_hero_down', 'jingle', [['stinger_hero_down'], ['bell_heavy', 'gong']], { vol: 0.8, cooldownMs: 1000, maxVoices: 2, priority: 95, duck: { bus: 'music', db: -5, ms: 600 }, layers: [L([['stinger_hero_down'], ['bell_heavy', 'gong']], 1), L('drum_boom', 0.7, null, 0.02)] });
+F('stinger_epic', 'jingle', [['stinger_epic'], ['jingle_fanfare', 'jingle_battle_start']], { vol: 0.7, cooldownMs: 1000, maxVoices: 2, priority: 94, duck: { bus: 'music', db: -6, ms: 500 } });
+F('stinger_funny', 'jingle', [['stinger_funny'], ['death_comic']], { vol: 0.85, cooldownMs: 1000, maxVoices: 2, priority: 92, duck: { bus: 'music', db: -5, ms: 500 } });
 // ---- announcer voice clips (opt-in via settings 'announcerVoice'; they use the Announcer bus + its slider)
 F('announce_ready', 'announce', ['announcer_ready']);
 F('announce_go', 'announce', ['countdown_voice_go', 'announcer_fight']);
@@ -146,11 +147,11 @@ F('announce_winner', 'announce', ['announcer_winner', 'announcer_flawless']);
 F('step_dirt', 'foley', ['footstep_dirt_1', 'footstep_dirt']);
 F('step_grass', 'foley', ['footstep_grass']);
 F('step_stone', 'foley', ['footstep_gravel_2', 'footstep_gravel_3', 'footstep_gravel']);
-F('step_sand', 'foley', ['footstep_dirt_2', 'footstep_dirt_3']);
-F('step_snow', 'foley', []);
-F('step_mud', 'foley', ['footstep_dirt_1'], { pitch: [0.7, 0.9] });
-F('step_wood', 'foley', ['wood_thud_3', 'wood_thud_4'], { vol: 0.3, pitch: [1.2, 1.5] });
-F('step_water', 'foley', []);
+F('step_sand', 'foley', [['footstep_sand'], ['footstep_dirt_2', 'footstep_dirt_3']]);
+F('step_snow', 'foley', ['footstep_snow']);
+F('step_mud', 'foley', [['footstep_mud'], ['footstep_dirt_1']], { pitch: [0.85, 1.0] });
+F('step_wood', 'foley', [['footstep_wood'], ['wood_thud_3', 'wood_thud_4']], { vol: 0.35, pitch: [0.9, 1.15] });
+F('step_water', 'foley', ['footstep_water']);
 F('armor_rustle', 'foley', ['armor_rustle', 'armor_step'], { vol: 0.45, cooldownMs: 90, maxVoices: 4 });
 // ---- ambience (looped beds on the ambience bus)
 F('amb_wind', 'amb', ['ambience_wind_loop'], { vol: 0.35 });
@@ -193,6 +194,7 @@ export function unitProfile(def, id) {
     hero: role === 'hero' || tags.includes('general'),
     mounted: role === 'cavalry' || tags.includes('cavalry') || species === 'centaur' || species === 'camel',
     animal: role === 'beast' || role === 'swarm' || tags.includes('animal') || species === 'chicken' || species === 'goat' || species === 'hound',
+    armor: (def && def.armor) || 0,
     armored: !!def && (def.armor || 0) >= 0.3,
     shield: !!(def && def.shield),
     siege: role === 'siege',
@@ -295,7 +297,7 @@ export function createRouter(deps) {
     if (cull(p.x, p.z, 90)) { stats.culled++; return; }
     const dst = P(p.dstDef), src = P(p.srcDef);
     const hero = dst.hero || src.hero, prio = hero ? 85 : p.crit ? 70 : 50;
-    if (p.proj) { if (dst.armored) play('hit_armor', p.x, p.y, p.z, { vol: 0.55, priority: prio }); return; }
+    if (p.proj) { if (dst.armor >= 0.3 && rng() < 0.6) play('hit_armor', p.x, p.y, p.z, { vol: 0.5, priority: prio }); return; }
     const heavy = p.dmg >= 22 || dst.big || p.charge > 0.5;
     const s = clamp(0.7 + p.dmg / 60, 0.7, 1.35);
     const over = D(p.srcDef, 'hit');
@@ -303,7 +305,8 @@ export function createRouter(deps) {
     if (!fam) fam = p.type === 'slash' ? 'hit_blade' : p.type === 'pierce' ? 'hit_pierce' : p.type === 'blunt' ? 'hit_blunt' : null;
     const pitch = dst.big ? 0.8 : heavy ? 0.92 : 1;
     if (fam) play(fam, p.x, p.y, p.z, { vol: s, priority: prio, pitch });
-    if (dst.armored) play('hit_armor', p.x, p.y, p.z, { vol: 0.8, priority: prio, pitch });
+    // heavier armour clanks more often; the rest of the hits land as flesh thumps, so a shield wall is not one endless metallic ring
+    if (dst.armor >= 0.1 && rng() < clamp(dst.armor * 1.1 + 0.15, 0, 0.9)) play('hit_armor', p.x, p.y, p.z, { vol: 0.75, priority: prio, pitch });
     else if (heavy || p.type === 'blunt') play('hit_flesh_heavy', p.x, p.y, p.z, { vol: s, priority: prio, pitch });
     else play('hit_flesh_light', p.x, p.y, p.z, { vol: s, priority: prio, pitch });
     if (dst.shield && rng() < 0.3) play('block_shield', p.x, p.y, p.z, { vol: 0.25, priority: prio - 10, pitch: 1.25 });
@@ -416,6 +419,7 @@ export function createRouter(deps) {
     else if (PROP_WOOD.test(ty)) play('wood_crack', p.x, p.y, p.z, {});
     else play('voxel_break', p.x, p.y, p.z, {});
   };
+  H.prop_spawned = (p) => { if (Number.isFinite(p.x) && !cull(p.x, p.z, 80)) play('voxel_pop', p.x, undefined, p.z, { vol: 0.8 }); };
   H.prop_damaged = (p) => { if (!cull(p.x, p.z, 70)) play('debris_clatter', p.x, p.y, p.z, { vol: 0.6 }); };
   H.god_power = (p) => {
     duck('music', -4, 800);
@@ -456,7 +460,7 @@ export function createRouter(deps) {
     else crowdReact(t, p.count >= 10);
   };
   H.big_swing = () => { const t = now(); if (crowdOn() && t - lastCrowd >= 3) { lastCrowd = t; play('crowd_gasp', undefined, undefined, undefined, {}); } else play('drum_boom', undefined, undefined, undefined, { vol: 0.5 }); };
-  H.army_low = () => { play('drum_boom', undefined, undefined, undefined, { vol: 0.7 }); const t = now(); if (crowdOn() && t - lastCrowd >= 3) { lastCrowd = t; play('crowd_gasp', undefined, undefined, undefined, {}); } };
+  H.army_low = () => { play('gong', undefined, undefined, undefined, { vol: 0.8 }); const t = now(); if (crowdOn() && t - lastCrowd >= 3) { lastCrowd = t; play('crowd_gasp', undefined, undefined, undefined, {}); } };
   H.chicken_tantrum = (p) => { play('chicken_rage', Number.isFinite(p && p.x) ? p.x : undefined, undefined, Number.isFinite(p && p.z) ? p.z : undefined, {}); if (stingerOk(now(), 15)) play('stinger_funny', undefined, undefined, undefined, { vol: 0.6 }); };
   H.trojan_reveal = () => { play('horn_charge', undefined, undefined, undefined, {}); play('wood_crack', undefined, undefined, undefined, { delay: 0.12 }); if (stingerOk(now(), 15)) play('stinger_funny', undefined, undefined, undefined, { delay: 0.6, vol: 0.7 }); };
   H.throne_sit = () => { if (stingerOk(now(), 15)) play('stinger_funny', undefined, undefined, undefined, {}); else play('death_oof', undefined, undefined, undefined, { vol: 0.5 }); };
@@ -466,7 +470,7 @@ export function createRouter(deps) {
     duck('music', -6, 900);
     if (p.kind === 'zeus') { play('thunder_crack', undefined, undefined, undefined, { vol: 1 }); play('lightning_zap', undefined, undefined, undefined, {}); }
     else if (p.kind === 'goat') { play('goat_bleat', undefined, undefined, undefined, { vol: 1 }); if (stingerOk(now(), 15)) play('stinger_funny', undefined, undefined, undefined, { delay: 0.3 }); }
-    else { play('thunder_crack', undefined, undefined, undefined, {}); play('crowd_boo', undefined, undefined, undefined, { delay: 0.5 }); if (stingerOk(now(), 15)) play('stinger_epic', undefined, undefined, undefined, { delay: 0.2, vol: 0.7 }); }
+    else { play('thunder_crack', undefined, undefined, undefined, {}); play('gong', undefined, undefined, undefined, { delay: 0.4, vol: 0.7 }); play('crowd_boo', undefined, undefined, undefined, { delay: 0.5 }); if (stingerOk(now(), 15)) play('stinger_epic', undefined, undefined, undefined, { delay: 0.2, vol: 0.7 }); }
   };
   H.stalemate_warning = () => { play('drum_roll', undefined, undefined, undefined, {}); };
   H.wave_spawn = () => { play('horn_war', undefined, undefined, undefined, { vol: 0.8 }); };
@@ -486,7 +490,13 @@ export function createRouter(deps) {
     else if (p.status === 'wine') play('wine_pour', u.x, u.y, u.z, { vol: 0.5 });
   };
   H.trample = (p) => { const u = unitAt(p.id); if (u && !cull(u.x, u.z, 90)) play('elephant_step', u.x, u.y, u.z, {}); };
-  H.charge_hit = (p) => { if (p.mul < 0.6) return; const t = now(); if (t - lastCharge < 0.08) return; lastCharge = t; const u = unitAt(p.dst); if (u && !cull(u.x, u.z, 90)) { play('hit_blunt', u.x, u.y, u.z, { vol: 1.1, pitch: 0.85, priority: 70 }); play('kick_whoomp', u.x, u.y, u.z, { vol: 0.5, delay: 0.02 }); } };
+  H.charge_hit = (p) => {
+    if (p.mul < 0.6) return;
+    const t = now(); if (t - lastCharge < 0.08) return; lastCharge = t;
+    const u = unitAt(p.dst); if (!u || cull(u.x, u.z, 90)) return;
+    play('hit_blunt', u.x, u.y, u.z, { vol: 1.1, pitch: 0.85, priority: 70 }); play('kick_whoomp', u.x, u.y, u.z, { vol: 0.5, delay: 0.02 });
+    const a = unitAt(p.id); if (a && a.def && a.def.id === 'war_elephant' && rng() < 0.35) play('elephant_trumpet', u.x, u.y, u.z, { priority: 75 });
+  };
   H.unit_brace = (p) => { const u = unitAt(p.id); if (u && !cull(u.x, u.z, 80)) play('block_shield', u.x, u.y, u.z, { pitch: 0.75, vol: 1.0, priority: 65 }); };
   H.bark = (p) => {
     const t = now(); if (t - lastBark < 1.2) return; lastBark = t;
@@ -526,8 +536,8 @@ export function createRouter(deps) {
       }
       const bed = clamp(moving / 40, 0, 1);
       footAcc += dt * (0.6 + 7 * bed); rustleAcc += dt * (0.2 + 1.6 * bed); heavyAcc += dt * 1.4 * clamp(hn / 5, 0, 1);
-      const stepCue = STEP_BY_BIOME[arena.biome] || 'step_dirt';
-      while (footAcc >= 1) { footAcc -= 1; const a = rng() * 6.283, r = R(6, 40); play(stepCue, l.x + Math.cos(a) * r, 0, l.z + Math.sin(a) * r, { vol: R(0.5, 0.9), delay: R(0, dt), priority: 24 }); }
+      const stepBase = STEP_BY_BIOME[arena.biome] || 'step_dirt';
+      while (footAcc >= 1) { footAcc -= 1; const a = rng() * 6.283, r = R(6, 40); const stepCue = arena.water && rng() < 0.25 ? 'step_water' : stepBase; play(stepCue, l.x + Math.cos(a) * r, 0, l.z + Math.sin(a) * r, { vol: R(0.5, 0.9), delay: R(0, dt), priority: 24 }); }
       while (rustleAcc >= 1) { rustleAcc -= 1; const a = rng() * 6.283, r = R(6, 35); play('armor_rustle', l.x + Math.cos(a) * r, 0, l.z + Math.sin(a) * r, { vol: R(0.5, 1), delay: R(0, dt), priority: 24 }); }
       if (heavyAcc >= 1 && hp) { heavyAcc = 0; play(hp.species === 'elephant' || hp.big ? 'elephant_step' : 'horse_gallop', hx, 0, hz, { priority: 36, vol: 0.8 }); }
       else if (heavyAcc >= 1) heavyAcc = 0;

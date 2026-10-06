@@ -35,7 +35,7 @@ export function ensureFonts() {
   }
   if (!fs.existsSync(css)) return null;
   let txt = fs.readFileSync(css, 'utf8');
-  txt = txt.replace(/https:\/\/fonts\.gstatic\.com\/([^)]*)/g, (m, p) => 'http://t/fonts/' + p.replace(/\//g, '_'));
+  txt = txt.replace(/https:\/\/fonts\.gstatic\.com\/([^)]*)/g, (m, p) => 'https://t/fonts/' + p.replace(/\//g, '_'));
   return txt;
 }
 
@@ -80,11 +80,11 @@ export async function launch(html, fontsCss, viewport) {
   p.on('pageerror', (e) => logs.push('PAGEERROR: ' + e.message + '\n' + (e.stack || '').split('\n').slice(0, 4).join('\n')));
   await p.route('**/*', (r) => {
     const u = r.request().url();
-    if (u.startsWith('http://t/fonts/')) {
-      const f = path.join(root, '.cache/fonts', decodeURIComponent(u.slice('http://t/fonts/'.length)));
+    if (u.startsWith('https://t/fonts/')) {
+      const f = path.join(root, '.cache/fonts', decodeURIComponent(u.slice('https://t/fonts/'.length)));
       if (fs.existsSync(f)) return r.fulfill({ path: f, contentType: 'font/woff2' });
     }
-    if (u.startsWith('http://t/')) return r.fulfill({ contentType: 'text/html', body: html });
+    if (u.startsWith('https://t/')) return r.fulfill({ contentType: 'text/html', body: html });
     return r.abort();
   });
   return { b, p, logs };
@@ -109,7 +109,7 @@ async function main() {
   let first = true;
   for (const sz of sizes) {
     const { b, p, logs } = await launch(html, fonts, sz);
-    await p.goto('http://t/');
+    await p.goto('https://t/');
     await p.waitForTimeout(400);
     await p.evaluate(() => document.fonts && document.fonts.ready);
     if (entryArg) {

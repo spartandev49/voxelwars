@@ -26,7 +26,8 @@ export class BattleView {
     this.teamColors = teamColorsLinear(o.palette || 'classic');
     this.gore = o.gore || 'red'; this.corpseMode = o.corpses || 'stay'; this.fxScale = 1;
     this.skins = new Map(); this.corpses = []; this.maxCorpses = 60;
-    this.world = null; this.off = [];
+    this.world = null; this.off = []; this.animLod = true;
+    this.lodDist = 56; this.hitStop = 1; this.onImpact = null; this._hs = new Map(); this._hsAnim = { clip: 'idle', t: 0, rate: 1, flinch: 0, dir: 0, prev: 'idle', blend: 1 };
     this.extra = { speed: 0, gait: 0, dead: false, t: 0, root: { y: 0, x: 0, z: 0, pitch: 0, roll: 0, yaw: 0 }, team: 0 };
     this.frustum = new (T().Frustum)(); this._pm = new (T().Matrix4)(); this._sph = new (T().Sphere)();
     this.selected = 0; this.hover = 0; this.hpBars = true; this.projectilesOn = true;
@@ -54,7 +55,7 @@ export class BattleView {
     on('unit_heal', (p) => { const u = this._unitById(p.id); if (u) for (let i = 0; i < 4; i++) this.fx.spawn(u.x + (fxRand.next() - 0.5), u.y + 1 + fxRand.next() * 1.5, u.z + (fxRand.next() - 0.5), 0, 1.5, 0, 0x6aff9a, 0.1, 0.6, { g: -1, flags: 2 | 4 }); });
     on('stone_gaze', () => {});
   }
-  unbind() { for (const f of this.off) f(); this.off.length = 0; this.world = null; }
+  unbind() { for (const f of this.off) f(); this.off.length = 0; this.world = null; this._hs.clear(); }
   _unitById(id) { const w = this.world; if (!w) return null; for (const u of w.units) if (u.id === id) return u; for (const u of w.dying) if (u.id === id) return u; return null; }
 
   // ------------------------------------------------------------------ skins
@@ -64,7 +65,7 @@ export class BattleView {
     if (!r) {
       const mm = this.modelFor(u.def, u);
       const model = mm.model;
-      const skin = new VoxSkin(this.engine, model, { capacity: 32, shadow: true });
+      const skin = new VoxSkin(this.engine, model, { capacity: 32, shadow: true, lod: true });
       r = { key, model, skin, pose: newPose(model.parts.length), scaleVec: mm.scale || [1, 1, 1], palette: this._palette(model), glow: mm.glow || 0 };
       this.skins.set(key, r);
     }
@@ -94,16 +95,20 @@ export class BattleView {
     const draw = (u, dead) => {
       const r = this._rec(u);
       const x = u.px + (u.x - u.px) * alpha, y = u.py + (u.y - u.py) * alpha, z = u.pz + (u.z - u.pz) * alpha;
-      const dx = x - cx, dz = z - cz;
-      if (dx * dx + dz * dz + (y - cy) * (y - cy) > far * far) return;
+      const dx = x - cx, dz = z - cz, d2 = dx * dx + dz * dz + (y - cy) * (y - cy);
+      if (d2 > far * far) return;
       this._sph.center.set(x, y + 1.4 * u.scale, z); this._sph.radius = 3.4 * u.scale + 1;
       if (!this.frustum.intersectsSphere(this._sph)) return;
       const ex = this.extra; ex.speed = u.speedNow; ex.gait = u.gait; ex.dead = dead; ex.team = u.team; ex.t = this.time; ex.id = u.id; ex.hp = u.hp / u.hpMax; ex.state = u.state;
       const rt = ex.root; rt.y = 0; rt.x = 0; rt.z = 0; rt.pitch = 0; rt.roll = 0; rt.yaw = 0;
-      this.animator.pose(r.model, u.anim, ex, r.pose);
       const h = lerpAngle(u.pheading, u.heading, alpha);
       const s = u.scale, sv = r.scaleVec;
-      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow, (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll);
+      // heading + scale make the Animator return the root offsets in WORLD units (spec §9); lod 0..2 trims animation work with distance
+      ex.heading = h; ex.scale = s * sv[1]; ex.lod = this.animLod ? (d2 < 1444 ? 0 : d2 < 3760 ? 1 : 2) : 0;
+      let st = u.anim;
+      if (this._hs.size) { const hs = this._hs.get(u.id); if (hs) { if (this.time >= hs.until) this._hs.delete(u.id); else { const a = this._hsAnim; a.clip = st.clip; a.t = hs.t; a.rate = st.rate; a.flinch = st.flinch; a.dir = st.dir; a.prev = st.prev; a.blend = st.blend; st = a; } } }
+      this.animator.pose(r.model, st, ex, r.pose);
+      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow, (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll, d2 > this.lodDist * this.lodDist ? 1 : 0);
       this.drawn++;
     };
     const U = w.units;
@@ -113,8 +118,8 @@ export class BattleView {
     // static corpses
     for (let i = 0; i < this.corpses.length; i++) {
       const c = this.corpses[i], r = this.skins.get(c.key); if (!r) continue;
-      const dx = c.x - cx, dz = c.z - cz; if (dx * dx + dz * dz > far * far * 0.6) continue;
-      r.skin.add(c.x, c.y, c.z, c.h, c.sx, c.sy, c.sz, c.pose, this._team(c.team), 0, c.stone, 0, c.pitch, c.roll);
+      const dx = c.x - cx, dz = c.z - cz, cd2 = dx * dx + dz * dz; if (cd2 > far * far * 0.6) continue;
+      r.skin.add(c.x, c.y, c.z, c.h, c.sx, c.sy, c.sz, c.pose, this._team(c.team), 0, c.stone, 0, c.pitch, c.roll, cd2 > this.lodDist * this.lodDist ? 1 : 0);
     }
     for (const r of this.skins.values()) r.skin.end();
     this._updateProjectiles(alpha, camera);
@@ -238,6 +243,17 @@ export class BattleView {
     if (armored && metal) fx.sparks(p.x, p.y, p.z, 4, 0xffd24a, 4);
     if (this.gore !== 'off') fx.splat(p.x, p.y, p.z, this.gore, p.crit ? 10 : 4, 0, 0, 0.6);
     if (p.charge > 0.5) fx.dust(p.x, p.y - 0.8, p.z, 5, 0xcdbb94, 2.4);
+    // hit-stop (render only, spec §9): the two fighters hold their pose for a few frames on a heavy blow while the sim keeps running
+    const heavy = p.crit || p.charge > 0.5 || (d && (p.dmg >= d.hp * 0.25 || d.role === 'hero'));
+    if (heavy) {
+      if (this.hitStop > 0) { const dur = (p.crit ? 0.085 : 0.06) * this.hitStop; this._freeze(p.src, dur); this._freeze(p.dst, dur); }
+      if (this.onImpact) this.onImpact(p);
+    }
+  }
+  _freeze(id, dur) {
+    if (!id) return; const u = this._unitById(id); if (!u || !u.anim) return;
+    const until = this.time + dur, e = this._hs.get(id);
+    if (!e) this._hs.set(id, { until, t: u.anim.t }); else if (until > e.until) e.until = until;
   }
   _onBlock(p) { this.fx.sparks(p.x, p.y, p.z, 7, 0xfff0b0, 5); }
   _onKill(p) {

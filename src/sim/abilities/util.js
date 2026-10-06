@@ -4,16 +4,16 @@ import { setAnim, applyDamage, newHit } from '../combat.js';
 
 export const abName = (ab) => ab.p.effect || ab.p.kind || ab.p.id;
 
-/** A unit may start an ability: alive, free to act (idle/moving), not controlled by the player, not disabled. */
+/** A unit may start an ability: alive, free to act (idle/moving), not disabled. (Player-controlled units may cast through possession; the AI gate is aiAllowed.) */
 export function canAct(w, u) {
-  if (!u.alive || u.controlled) return false;
+  if (!u.alive) return false;
   const s = u.state;
   if (s !== ST.IDLE && s !== ST.MOVE) return false;
   const se = u.se;
   return !(se[SE.STUN] > 0 || se[SE.SLEEP] > 0 || se[SE.STONE] > 0 || se[SE.SCARE] > 0);
 }
 /** Difficulty gate (spec §8.1): easy AI does not use abilities except heroes. */
-export function aiAllowed(w, u) { return !(w.diff[u.team] === 0 && u.def.role !== 'hero'); }
+export function aiAllowed(w, u) { return !u.controlled && !(w.diff[u.team] === 0 && u.def.role !== 'hero'); }
 
 export function emitTelegraph(w, kind, x, z, r, t, h, a, team) {
   const e = w.P.telegraph; e.kind = kind; e.x = x; e.z = z; e.r = r; e.t = t; e.h = h || 0; e.a = a || 0; e.team = team === undefined ? -1 : team;

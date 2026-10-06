@@ -7,7 +7,7 @@ import { icon } from './_icons.js';
 import { avatar, announcerInfo } from './_portraits.js';
 
 export const meta = { id: 'announcer', slot: 'bottom-left', order: 1 };
-const STEP = 100, CHARS = 4, BEAT_CHAIN = 1100, BEAT = 400, QUEUE_MAX = 3;
+const STEP = 105, CHARS = 4, BEAT_CHAIN = 1100, BEAT = 400, QUEUE_MAX = 3;
 const WHO = ['brutus', 'plato', 'cassandra'];
 const IDLE_LINE = { brutus: 'Brutus is warming up his voice. It is already too loud.', plato: 'Plato wonders what a battle is. Later.', cassandra: 'Cassandra has seen how this ends.' };
 
@@ -68,7 +68,7 @@ export function mount(parent, ctx) {
   function begin() {
     cur = queue.shift();
     paintWho(cur.who);
-    pos = 0; phase = 'typing'; quiet = 0; step = 0;
+    pos = 0; phase = 'typing'; quiet = 0; step = 0; acc = STEP;
     setCls(el, 'is-quiet', false); setCls(el, 'is-talking', true);
     if (subs) { setText(shown, ''); setText(ghost, cur.text); }
   }
@@ -79,23 +79,29 @@ export function mount(parent, ctx) {
     setText(sr, announcerInfo(cur.who).name + ': ' + cur.text);
     wait = queue.length ? 1300 : Math.max(2400, cur.text.length * 60);
   }
+  // real-time loop: the typewriter writes at most once every STEP ms (10 Hz budget, whatever the timer jitter does); hold / beat timers use elapsed time
+  let lastT = performance.now(), acc = 0;
   function tick() {
+    const now = performance.now(), dt = Math.min(500, now - lastT); lastT = now;
     if (phase === 'typing') {
+      acc += dt;
+      if (acc < STEP) return;
+      acc = 0;
       pos = Math.min(cur.text.length, pos + CHARS); step++;
       if (subs) { setText(shown, cur.text.slice(0, pos)); setText(ghost, cur.text.slice(pos)); }
       if (step % 2 === 1) sfx(ctx, 'ui_tick', { vol: 0.22, pitch: announcerInfo(cur.who).pitch * (0.94 + Math.random() * 0.12) });
       if (pos >= cur.text.length) finish();
     } else if (phase === 'hold') {
-      wait -= STEP;
+      wait -= dt;
       if (wait <= 0) { if (queue.length) { phase = 'beat'; wait = queue[0].chain ? BEAT_CHAIN : BEAT; } else { phase = 'idle'; quiet = 0; } }
     } else if (phase === 'beat') {
-      wait -= STEP; if (wait <= 0) begin();
+      wait -= dt; if (wait <= 0) begin();
     } else {
       if (queue.length) begin();
-      else { quiet += STEP; if (quiet === 14000) setCls(el, 'is-quiet', true); }
+      else { const q0 = quiet; quiet += dt; if (q0 < 14000 && quiet >= 14000) setCls(el, 'is-quiet', true); }
     }
   }
-  d.interval(tick, STEP);
+  d.interval(tick, 40);
 
   cc.addEventListener('click', () => { try { ctx.settings.set('subtitles', !readSubs()); } catch (e) { /* settings optional */ } paintSubs(); sfx(ctx, 'ui_toggle', { vol: 0.5 }); });
   // click the text to skip: finish typing, or move on early

@@ -31,7 +31,7 @@ export const ACHIEVEMENTS = [
   },
   {
     id: 'goat_herder', icon: 'goat', name: 'Goat Herder',
-    desc: 'Win a Protect-the-Goat mission with the goat unharmed. It will not thank you. It is a goat.',
+    desc: 'Win Protect the Goat without a scratch on the goat. It will not thank you. It is a goat.',
     test: (stats = {}, ev = null) => isBattle(ev) && !!ev.win && ev.objective === 'protect_vip' && ev.vipDef === 'battle_goat' && n(ev.vipDamage) === 0,
   },
   {
@@ -51,7 +51,7 @@ export const ACHIEVEMENTS = [
   },
   {
     id: 'trunk_show', icon: 'elephant', name: 'Trunk Show',
-    desc: 'Let an elephant trample 20 soldiers in one battle. The elephant calls it a stroll.',
+    desc: 'An elephant tramples 20 soldiers in one battle. It calls this a stroll.',
     test: (stats = {}, ev = null) => isBattle(ev) && n(ev.elephantTrampleKills) >= 20,
   },
   {
@@ -61,7 +61,7 @@ export const ACHIEVEMENTS = [
   },
   {
     id: 'cogito', icon: 'scroll', name: 'Cogito, Ergo Won',
-    desc: 'Win with only philosophers left standing. They would like to discuss what that means.',
+    desc: 'Win with only philosophers standing. They are already writing it up.',
     test: (stats = {}, ev = null) => {
       if (!isBattle(ev) || !ev.win) return false;
       const alive = map(ev.aliveDefs);
@@ -96,7 +96,7 @@ export const ACHIEVEMENTS = [
   },
   {
     id: 'perfect_phalanx', icon: 'phalanx', name: 'Perfect Phalanx',
-    desc: 'Win with 20 or more units and lose none. The shields are insufferable about it.',
+    desc: 'Win with 20 or more units and lose none. The shields will not stop mentioning it.',
     test: (stats = {}, ev = null) => isBattle(ev) && !!ev.win && n(ev.unitsStart) >= 20 && n(ev.unitsLost) === 0,
   },
   {
@@ -136,7 +136,7 @@ export const ACHIEVEMENTS = [
   },
   {
     id: 'overachiever', icon: 'star', name: 'Overachiever',
-    desc: 'Earn all 27 campaign stars. Please see a doctor, or a hobby.',
+    desc: 'Earn every campaign star. All 27. Please go outside.',
     test: (stats = {}) => totalStars(stats) >= 27,
   },
   {

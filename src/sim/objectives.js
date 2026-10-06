@@ -50,14 +50,18 @@ class Eliminate extends Objective {
 
 /** Kill the enemy general(s); the general avoids contact (ai guard). The player loses if all of its own flagged generals die (when it has any). */
 class KillGeneral extends Objective {
-  start(w) {
-    this.gens = [];
-    for (const u of w.units) if (u.alive && u.team === this.enemy && u.general) { u.guard = true; if (u.squad && u.squad.units.length === 1) u.squad.order = 'hold'; this.gens.push(u); }
-    this.mine = []; for (const u of w.units) if (u.alive && u.team === this.playerTeam && u.general && this.params.loseOnGeneral) this.mine.push(u);
-    this.total = this.gens.length || 1;
-    super.start(w);
+  start(w) { this.gens = []; this.mine = []; this.total = 1; this._scan(w); super.start(w); }
+  /** (Re)collect generals: also picks up reinforcements / wave spawns that arrive later. */
+  _scan(w) {
+    for (const u of w.units) {
+      if (!u.alive || !u.general) continue;
+      if (u.team === this.enemy && !this.gens.includes(u)) { u.guard = true; if (u.squad && u.squad.units.length === 1) u.squad.order = 'hold'; this.gens.push(u); }
+      else if (u.team === this.playerTeam && this.params.loseOnGeneral && !this.mine.includes(u)) this.mine.push(u);
+    }
+    this.total = Math.max(this.total, this.gens.length, 1);
   }
   step(w) {
+    if (!this.gens.length || (w.tickN % 30) === 0) this._scan(w);
     let alive = 0; for (const g of this.gens) if (g.alive) alive++;
     this.progress = 1 - alive / this.total;
     if (this.gens.length && alive === 0) this.win();
@@ -90,8 +94,9 @@ class ProtectVip extends Objective {
     this.exit = this.marker('exit'); this.need = this.params.time || 100; super.start(w);
   }
   step(w) {
+    if (!this.vip) this.start(w);
     const v = this.vip;
-    if (!v) { this.lose(); return; }
+    if (!v) { if (w.tickN > 3) this.lose(); return; }
     if (!v.alive) { this.lose(); return; }
     let p = w.time / this.need;
     if (this.exit) {

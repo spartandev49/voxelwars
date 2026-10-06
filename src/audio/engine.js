@@ -17,7 +17,7 @@ import { STAT_TABLE } from '../content/era_ancient/stats.js';
 export const BUSES = ['music', 'sfx', 'ui', 'announcer', 'ambience'];
 const BUS_TRIM = { music: 0.5, sfx: 1.0, ui: 1.0, announcer: 1.0, ambience: 0.8 };
 const VOL_DEFAULT = { master: 0.85, music: 0.7, sfx: 0.9, ui: 0.8, announcer: 0.9, ambience: 1 };
-export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 1.0 };
+export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 1.0, outTrim: 1.0 };   // preGain: before the compressor; outTrim: linear gain after the soft clip (calibrated by tools/mixtest.mjs)
 
 function softClipCurve(n, knee, ceil) {
   const c = new Float32Array(n);
@@ -65,7 +65,7 @@ export class AudioEngine {
       decode: (ab) => this._decode(ab), makeBuffer: (d, sr) => this._makeBuffer(d, sr),
     });
     this.music = new MusicDirector({
-      catalog: this.catalog, fetch: this.fetchFn, core: this.core, rng: this.rng, quality: () => this.tier, now: () => (this.ctx ? this.ctx.currentTime : 0),
+      catalog: this.catalog, fetch: this.fetchFn, core: this.core, rng: this.rng, quality: () => this.tier, now: () => this.now(),
       decode: (ab) => this._decode(ab), makeStereo: (L, R, sr) => this._makeStereo(L, R, sr), makeMono: (d, sr) => this._makeBuffer(d, sr),
       setTimeout: this.setTmo, clearTimeout: this.clrTmo, yieldFn: env.yieldFn, bridgeMs: env.bridgeMs, retryMs: env.retryMs, onChange: () => this._emit('music'),
     });
@@ -113,7 +113,7 @@ export class AudioEngine {
   isMuted() { return this.muted; }
   _applyVolumes() {
     if (!this.ctx || !this.buses) return;
-    const t = this.ctx.currentTime;
+    const t = this.now();
     this.masterGain.gain.setTargetAtTime(this.muted ? 0 : this.vol.master, t, 0.015);
     for (const b of BUSES) {
       const u = b === 'ambience' ? this.vol.ambience * this.vol.sfx : this.vol[b];
@@ -122,6 +122,10 @@ export class AudioEngine {
   }
   setQuality(tier) { if (!tier || tier === this.tier && this.vm.max === (tier === 'potato' ? 24 : 32)) return; this.tier = tier; this.vm.max = tier === 'potato' ? 24 : 32; this.bank.enforce(); if (this.reverb) this.reverb.ret.gain.value = tier === 'potato' ? 0 : 0.45; }
   setPlayerTeam(t) { this.playerTeam = t; }
+
+  /** audio clock in seconds: the context clock, or a scripted clock (offline renders drive time themselves) */
+  now() { return this._clock ? this._clock() : (this.ctx ? this.ctx.currentTime : 0); }
+  setClock(fn) { this._clock = fn || null; }
 
   // ---------------------------------------------------------------- events
   on(evt, fn) { (this.ev[evt] || (this.ev[evt] = [])).push(fn); return () => { const a = this.ev[evt]; const i = a ? a.indexOf(fn) : -1; if (i >= 0) a.splice(i, 1); }; }
@@ -209,7 +213,7 @@ export class AudioEngine {
   }
   _armGate() {
     if (this.gateOff || !this.win) return;
-    this.gateOff = installGate(this.win, () => this.unlock(), () => this.running);
+    this.gateOff = installGate(this.win, () => this.unlock(), () => this.running, () => { this.gateOff = null; });   // re-armed if Safari later reports 'interrupted'
   }
   _installVisibility() {
     if (this.visHandlers || this.offline || !this.win) return;
@@ -265,7 +269,8 @@ export class AudioEngine {
     const lim = ctx.createDynamicsCompressor(); lim.threshold.value = M.limThreshold; lim.knee.value = M.limKnee; lim.ratio.value = M.limRatio; lim.attack.value = M.limAttack; lim.release.value = M.limRelease;
     const clip = ctx.createWaveShaper(); clip.curve = softClipCurve(2049, M.clipKnee, M.clipCeil); try { clip.oversample = '4x'; } catch (e) { /* optional */ }
     const mg = ctx.createGain(); mg.gain.value = this.muted ? 0 : this.vol.master;
-    masterIn.connect(comp); comp.connect(lim); lim.connect(clip); clip.connect(mg); mg.connect(ctx.destination);
+    const trim = ctx.createGain(); trim.gain.value = M.outTrim;
+    masterIn.connect(comp); comp.connect(lim); lim.connect(clip); clip.connect(trim); trim.connect(mg); mg.connect(ctx.destination);
     const an = ctx.createAnalyser(); an.fftSize = 1024; mg.connect(an);
     this.masterIn = masterIn; this.masterGain = mg; this.masterAn = an; this.comp = comp; this.limiter = lim;
     this.buses = {};
@@ -296,7 +301,7 @@ export class AudioEngine {
   duck(bus, db = -6, ms = 400) {
     if (!this.ctx || !this.buses) return;
     const b = this.buses[bus]; if (!b) return;
-    const t = this.ctx.currentTime, until = t + ms / 1000;
+    const t = this.now(), until = t + ms / 1000;
     const target = Math.min(db, b.duckUntil > t ? b.duckDb : 0);
     b.duckDb = target; b.duckUntil = Math.max(b.duckUntil, until);
     const g = b.duck.gain; g.cancelScheduledValues(t); g.setTargetAtTime(db2lin(target), t, 0.02); g.setTargetAtTime(1, b.duckUntil, 0.12);
@@ -322,7 +327,7 @@ export class AudioEngine {
     if (!ctx) { this.dropped.locked++; return null; }
     if (this.muted || this.hidden) { this.dropped.muted++; return null; }
     if (!this.offline && ctx.state !== 'running' && !(this.unlocking && def.bus === 'ui')) { this.dropped.locked++; return null; }
-    const t0 = o && o.at !== undefined ? o.at : ctx.currentTime;
+    const t0 = o && o.at !== undefined ? o.at : this.now();
     const cdSec = def.cooldownMs * 0.001;
     if (cdSec > 0 && this.vm.inCooldown(cue, t0, cdSec)) { this.vm.drops.cooldown++; return null; }
     const t = t0 + (o && o.delay ? o.delay : 0);
@@ -362,7 +367,7 @@ export class AudioEngine {
     return v;
   }
   _startVoice(def, cue, li, ly, pk, t, prio, sp, o, main) {
-    const ctx = this.ctx, buf = pk.buf, t0 = o && o.at !== undefined ? o.at : ctx.currentTime;
+    const ctx = this.ctx, buf = pk.buf, t0 = o && o.at !== undefined ? o.at : this.now();
     // pitch: layer override, else family range, times caller multiplier
     let lo = def.pitch[0], hi = def.pitch[1];
     if (ly && ly.pitch) { if (typeof ly.pitch === 'number') lo = hi = ly.pitch; else { lo = ly.pitch[0]; hi = ly.pitch[1]; } }
@@ -397,13 +402,13 @@ export class AudioEngine {
   _stopVoice(h) {
     const n = h.node; if (!n || !this.ctx) return;
     // a stolen voice is released in ~10 ms (3 ms time constant): short enough to be inaudible next to the voice that replaces it
-    try { const t = Math.max(this.ctx.currentTime, h.stolenAt || 0); n.g.gain.cancelScheduledValues(t); n.g.gain.setTargetAtTime(0, t, 0.003); n.src.stop(t + 0.012); } catch (e) { /* already stopped */ }
+    try { const t = h.stolenAt !== undefined ? h.stolenAt : this.now(); n.g.gain.cancelScheduledValues(t); n.g.gain.setTargetAtTime(0, t, 0.003); n.src.stop(t + 0.012); } catch (e) { /* already stopped */ }
   }
   stopVoice(h) { if (h) { this._stopVoice(h); const i = this.vm.v.indexOf(h); if (i >= 0) { this.vm.v[i] = this.vm.v[this.vm.v.length - 1]; this.vm.v.pop(); } } }
   /** stop every one-shot voice (tab hidden, scene change) */
   stopAll(fade = 0.05) {
     if (!this.ctx) return;
-    const t = this.ctx.currentTime;
+    const t = this.now();
     for (const h of this.vm.v) { const n = h.node; if (n) { try { n.g.gain.cancelScheduledValues(t); n.g.gain.setTargetAtTime(0, t, Math.max(0.005, fade / 4)); n.src.stop(t + fade + 0.05); } catch (e) { /* ok */ } } }
     this.vm.clear();
   }
@@ -416,6 +421,12 @@ export class AudioEngine {
     return this.play(cue, opts);
   }
 
+  /** foley helper: audio.footstep('grass'|'dirt'|'stone'|'sand'|'snow'|'mud'|'wood'|'water', x, y, z) */
+  footstep(material, x, y, z, o) {
+    const cue = 'step_' + material; if (!CUES[cue]) return null;
+    return this.play(cue, Object.assign({ x, y, z }, o || {}));
+  }
+
   // ---------------------------------------------------------------- loops (ambience beds)
   /** start a looping bed (ambience_*, crowd_loop, fire_loop). Returns true if started. */
   startLoop(cue, o = {}) {
@@ -426,7 +437,7 @@ export class AudioEngine {
     const native = pk.loop || (pk.entry && (pk.entry.loop || /_loop$/.test(pk.entry.id)));
     const gain = def.vol * (o.vol === undefined ? 1 : o.vol);
     const p = new LoopPlayer({ ctx: this.ctx, buf: pk.buf, out: bus.in, loop: !!native, loopStart: pk.entry && pk.entry.loopStart, loopEnd: pk.entry && pk.entry.loopEnd, xf: 2, gain });
-    const t = o.at !== undefined ? o.at : this.ctx.currentTime;
+    const t = o.at !== undefined ? o.at : this.now();
     p.start(t, o.fadeIn === undefined ? 2.5 : o.fadeIn);
     this.loops.set(cue, { p, def, src: pk.src });
     this.vm.reserved = Math.min(8, this.loops.size);
@@ -435,11 +446,11 @@ export class AudioEngine {
   }
   stopLoop(cue, fade = 2) {
     const l = this.loops.get(cue); if (!l) return;
-    l.p.stop(this.ctx.currentTime, fade); this.loops.delete(cue); this.vm.reserved = Math.min(8, this.loops.size);
+    l.p.stop(this.now(), fade); this.loops.delete(cue); this.vm.reserved = Math.min(8, this.loops.size);
     this.setTmo(() => l.p.dispose(), (fade + 0.5) * 1000);
   }
   stopLoops(fade = 2) { for (const k of [...this.loops.keys()]) this.stopLoop(k, fade); }
-  setLoopLevel(cue, v, tau = 0.5) { const l = this.loops.get(cue); if (l) l.p.setGain(l.def.vol * v, this.ctx.currentTime, tau); }
+  setLoopLevel(cue, v, tau = 0.5) { const l = this.loops.get(cue); if (l) l.p.setGain(l.def.vol * v, this.now(), tau); }
 
   // ---------------------------------------------------------------- sim integration
   /**
@@ -453,15 +464,15 @@ export class AudioEngine {
     if (typeof a === 'function') { opt.getCamera = a; if (typeof b === 'function') opt.getArena = b; else if (b) opt.arena = b; } else if (a && typeof a === 'object') opt = a;
     this.world = opt.world || null;
     this.arenaFn = opt.getArena || null; this.arena = opt.arena || (this.arenaFn ? this.arenaFn() : null) || (this.world && this.world.arena) || null;
-    this.arenaInfo = arenaInfo(this.arena);
+    this.arenaInfo = arenaInfo(this.arena); this.music.theme = this.arenaInfo.theme;   // a later setMood('battle') picks the track for this arena
     if (opt.getListener) this.getListener = opt.getListener;
     else if (opt.getCamera && !this.getListener) this.getListener = () => listenerFromCamera(opt.getCamera());
     const defs = opt.defs || (this.world && this.world.defs) || STAT_TABLE;
     const self = this;
     this.router = createRouter({
       play: (cue, x, y, z, po) => { if (po === undefined) po = {}; if (x !== undefined) { po.x = x; po.y = y; po.z = z; } return this.play(cue, po); },
-      duck: (bus2, db, ms) => this.duck(bus2, db, ms), now: () => (this.ctx ? this.ctx.currentTime : 0), rng: this.rng,
-      listener: () => { if (this.getListener) this._refreshListener(this.ctx ? this.ctx.currentTime : 0); return this.listener; },
+      duck: (bus2, db, ms) => this.duck(bus2, db, ms), now: () => this.now(), rng: this.rng,
+      listener: () => { if (this.getListener) this._refreshListener(this.now()); return this.listener; },
       defs, world: this.world, arena: this.arenaInfo, get playerTeam() { return self.playerTeam; }, announcerVoice: () => this._announcerVoice(),
       groundY: this.arena && this.arena.cellHeight ? (x, z) => this.arena.cellHeight(x, z) : null,
       hooks: { battleStart: () => this._onBattleStart(), battleEnd: (w, lost) => this._onBattleEnd(w, lost), note: (ty, p, t) => this.music.note(ty, p, t) },
@@ -469,7 +480,7 @@ export class AudioEngine {
     const r = this.router;
     if (typeof bus.onAny === 'function') this.unsub = bus.onAny((type, p) => r.handle(type, p));
     else if (typeof bus.on === 'function') {
-      const offs = []; for (const t of ['unit_hit', 'unit_block', 'unit_kill', 'projectile_launch', 'projectile_hit', 'battle_start', 'battle_end', 'battle_countdown', 'explosion', 'crater', 'prop_destroyed', 'prop_damaged', 'god_power', 'ability_cast', 'first_blood', 'hero_down', 'lead_change', 'kill_streak', 'big_swing', 'army_low', 'chicken_tantrum', 'trojan_reveal', 'throne_sit', 'philosopher_monologue', 'stone_gaze', 'intervention', 'stalemate_warning', 'wave_spawn', 'lightning_arc', 'catapult_misfire', 'cyclops_misaim', 'friendly_fire', 'unit_convert', 'unit_revive', 'unit_heal', 'unit_rally', 'status_apply', 'trample', 'charge_hit', 'unit_brace', 'bark', 'unit_spawn']) offs.push(bus.on(t, (p) => r.handle(t, p)));
+      const offs = []; for (const t of ['prop_spawned', 'unit_hit', 'unit_block', 'unit_kill', 'projectile_launch', 'projectile_hit', 'battle_start', 'battle_end', 'battle_countdown', 'explosion', 'crater', 'prop_destroyed', 'prop_damaged', 'god_power', 'ability_cast', 'first_blood', 'hero_down', 'lead_change', 'kill_streak', 'big_swing', 'army_low', 'chicken_tantrum', 'trojan_reveal', 'throne_sit', 'philosopher_monologue', 'stone_gaze', 'intervention', 'stalemate_warning', 'wave_spawn', 'lightning_arc', 'catapult_misfire', 'cyclops_misaim', 'friendly_fire', 'unit_convert', 'unit_revive', 'unit_heal', 'unit_rally', 'status_apply', 'trample', 'charge_hit', 'unit_brace', 'bark', 'unit_spawn']) offs.push(bus.on(t, (p) => r.handle(t, p)));
       this.unsub = () => { for (const f of offs) if (typeof f === 'function') f(); };
     }
     this._startTimer();
@@ -489,9 +500,10 @@ export class AudioEngine {
   _onBattleStart() {
     const info = this.arenaInfo || arenaInfo(null);
     this.music.tracker.reset();
-    this.music.setMood(this._comedyBattle() ? 'comedy' : 'battle', { theme: info.theme, force: true });
+    // one track per battle: if the placement screen already runs this battle's mood/theme the track simply keeps playing
+    this.music.setMood(this._comedyBattle() ? 'comedy' : 'battle', { theme: info.theme });
     this._startAmbience();
-    this.nextThunder = (this.ctx ? this.ctx.currentTime : 0) + 6 + this.rng() * 10;
+    this.nextThunder = this.now() + 6 + this.rng() * 10;
   }
   _onBattleEnd(winner, lost) {
     this.music.setMood(winner === -1 ? 'comedy' : lost ? 'defeat' : 'victory', { force: true });
@@ -516,11 +528,11 @@ export class AudioEngine {
     if (r && this.world) {
       r.tick(0.25);
       if (this.music.mood === 'battle' || this.music.mood === 'comedy') this.music.setIntensity(this.music.intensityFromWorld(this.world));
-      const info = this.arenaInfo, t = this.ctx.currentTime;
+      const info = this.arenaInfo, t = this.now();
       if (info && info.storm && t > this.nextThunder && this.world.state === 'running') { this.nextThunder = t + 9 + this.rng() * 16; this.play('thunder_crack', { vol: 0.45, pitch: 0.8 + this.rng() * 0.3 }); }
       if (this.loops.has('crowd_loop')) this.setLoopLevel('crowd_loop', 0.6 + 0.8 * this.music.intensity, 1.0);
     }
-    if ((this._n & 3) === 0) { this.music.pump(); for (const l of this.loops.values()) l.p.pump(this.ctx.currentTime, 4); }
+    if ((this._n & 3) === 0) { this.music.pump(); for (const l of this.loops.values()) l.p.pump(this.now(), 4); }
   }
 
   // ---------------------------------------------------------------- diagnostics
@@ -534,7 +546,7 @@ export class AudioEngine {
   busRMS() { const o = {}; if (!this.buses) { for (const b of BUSES) o[b] = 0; return o; } for (const b of BUSES) o[b] = this._rms(this.buses[b].an, this.buses[b].buf); return o; }
   loaded() { const s = this.bank.stats(); const ms = this.music.source; return { embedded: s.embedded + (ms === 'embedded' ? 1 : 0), fetched: s.fetched + (ms === 'fetched' ? 1 : 0), synth: s.synth + (ms === 'synth' ? 1 : 0), failed: s.failed + this.music.loadErrors }; }
   diagnostics() {
-    const ctx = this.ctx, s = this.bank.stats(), t = ctx ? ctx.currentTime : 0;
+    const ctx = this.ctx, s = this.bank.stats(), t = this.now();
     let mp3 = null; try { mp3 = this.doc && this.doc.createElement ? !!this.doc.createElement('audio').canPlayType('audio/mpeg') : null; } catch (e) { mp3 = null; }
     return {
       state: this.state(), ctxState: ctx ? ctx.state : 'none', available: this.available, sampleRate: ctx ? ctx.sampleRate : 0, baseLatency: ctx ? ctx.baseLatency : 0, outputLatency: ctx ? ctx.outputLatency || 0 : 0,
@@ -557,7 +569,7 @@ export class AudioEngine {
       ctxState: { get: () => (self.ctx ? self.ctx.state : 'none'), enumerable: true },
       masterRMS: { get: () => self.masterRMS(), enumerable: true },
       busRMS: { get: () => self.busRMS(), enumerable: true },
-      voices: { get: () => self.vm.active(self.ctx ? self.ctx.currentTime : 0) + self.loops.size, enumerable: true },
+      voices: { get: () => self.vm.active(self.now()) + self.loops.size, enumerable: true },
       voicePeak: { get: () => self.vm.peak, enumerable: true },
       voiceDrops: { get: () => self.vm.totalDrops(), enumerable: true },
       loaded: { get: () => self.loaded(), enumerable: true },

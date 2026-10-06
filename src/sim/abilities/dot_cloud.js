@@ -18,7 +18,7 @@ reg('dot_cloud', {
       if (tickChannel(w, u, ab, dt) === 1) { w.addEffect('cloud', st.tx, st.tz, ab.p.radius || 7, ab.p.duration || 6, ab.p.dps || 8, u.team, u); emitCast(w, u, ab, st.tx, st.tz); }
       return;
     }
-    if (ab.cd > 0 || !canAct(w, u)) return;
+    if (ab.cd > 0 || !aiAllowed(w, u) || !canAct(w, u)) return;
     const t = u.target; if (!t || !t.alive || dist(u, t) > 16) return;
     if (collect(w, t.x, t.z, ab.p.radius || 7, L, u.team, 'enemy') >= 4) begin(u, ab, w, t.x, t.z);
   },

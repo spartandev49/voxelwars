@@ -27,28 +27,116 @@ export const SUBLINES = {
 
 // Each stat has three wordings; the screen picks one with a seeded ui rng. `always` stats are shown even at zero.
 export const RESULT_LABELS = {
-  kills: { always: true, labels: ['Soldiers inconvenienced', 'Enemies sent home early', 'Opponents who will not be at dinner'] },
-  losses: { always: true, labels: ['Your soldiers who will not be at dinner', 'Friends lost to enthusiasm', 'Drachmae spent on funerals'] },
-  damage: { labels: ['Damage dealt, in bruises', 'Imaginary bruises delivered', 'Hit points redistributed'] },
-  friendlyKills: { labels: ['Friends accidentally stabbed', 'Allies reclassified as enemies', 'Own goals, spear edition'] },
-  chickenKills: { labels: ['Kills by chicken', 'Chicken casualties inflicted', 'Poultry-related fatalities'] },
-  goatKills: { labels: ['Goat kills', 'Credit stolen from the goat', 'The goat did this'] },
-  kicks: { labels: ['Dignity punted', 'Enemies given flying lessons', 'Soldiers sent to the horizon'] },
-  trampleKills: { labels: ['Soldiers used as doormats', 'Trampled, politely', 'Stepped on by something large'] },
-  stoned: { labels: ['New garden statues', 'Soldiers turned to art', 'Medusa\'s gallery additions'] },
-  misfires: { labels: ['Crew members launched', 'Colleagues catapulted', 'Workers promoted to projectiles'] },
-  cyclopsMisses: { labels: ['Boulders thrown at nothing', 'Depth perception failures', 'Excellent throws at the wrong place'] },
-  longestStreak: { labels: ['Longest kill streak', 'Best run of one soldier being busy', 'Longest streak of competence'] },
-  shieldBlocks: { labels: ['Blocks that justified the shield', 'Hits stopped by bronze', 'Times a shield earned its pay'] },
-  arrowsFired: { labels: ['Arrows donated to the soil', 'Arrows launched at the general area', 'Arrows that found someone'] },
-  boulders: { labels: ['Boulders delivered', 'Rocks with opinions', 'Landscaping by catapult'] },
-  routs: { labels: ['Soldiers who left the building', 'Tactical walks', 'Retreats called "repositioning"'] },
-  revives: { labels: ['Immortals who were not', 'Second chances, once', 'Asterisks honoured'] },
-  heroKills: { labels: ['Heroes retired early', 'Commanders sent to the back', 'Statues that needed a sculptor'] },
-  bribes: { labels: ['Soldiers bought', 'Loyalty purchased', 'Coins well spent'] },
-  duration: { always: true, labels: ['Duration of regret', 'Time the sponsors were nervous', 'Length of the argument'] },
-  survivorsCost: { labels: ['Drachmae still standing', 'Money left on the field', 'Surviving army value'] },
-  wasted: { labels: ['Budget never spent', 'Drachmae that sat out the battle', 'Unspent savings'] },
+  kills: { always: true, labels: [
+    'Soldiers inconvenienced',
+    'Enemies sent home early',
+    'Opponents who will not be at dinner',
+  ] },
+  losses: { always: true, labels: [
+    'Friends lost to enthusiasm',
+    'Drachmae spent on funerals',
+    'Soldiers retired from the rota',
+  ] },
+  damage: { labels: [
+    'Damage dealt, in bruises',
+    'Imaginary bruises delivered',
+    'Hit points redistributed',
+  ] },
+  friendlyKills: { labels: [
+    'Friends accidentally stabbed',
+    'Allies reclassified as enemies',
+    'Own goals, spear edition',
+  ] },
+  chickenKills: { labels: [
+    'Kills by chicken',
+    'Poultry-related fatalities',
+    'Kills credited to a hen',
+  ] },
+  goatKills: { labels: [
+    'Goat kills',
+    'Credit stolen from the goat',
+    'The goat did this',
+  ] },
+  kicks: { labels: [
+    'Dignity punted',
+    'Enemies given flying lessons',
+    'Soldiers sent to the horizon',
+  ] },
+  trampleKills: { labels: [
+    'Soldiers used as doormats',
+    'Stepped on by something large',
+    'Footprints with consequences',
+  ] },
+  stoned: { labels: [
+    'New garden statues',
+    'Soldiers turned to art',
+    'Medusa\'s gallery additions',
+  ] },
+  misfires: { labels: [
+    'Crew members launched',
+    'Colleagues catapulted',
+    'Workers promoted to projectiles',
+  ] },
+  cyclopsMisses: { labels: [
+    'Boulders thrown at nothing',
+    'Depth perception failures',
+    'Excellent throws at the wrong place',
+  ] },
+  longestStreak: { labels: [
+    'Longest kill streak',
+    'Best run of one soldier being busy',
+    'Longest streak of competence',
+  ] },
+  shieldBlocks: { labels: [
+    'Blocks that justified the shield',
+    'Hits stopped by bronze',
+    'Times a shield earned its pay',
+  ] },
+  arrowsFired: { labels: [
+    'Arrows donated to the soil',
+    'Arrows launched at the general area',
+    'Arrows that found someone',
+  ] },
+  boulders: { labels: [
+    'Boulders delivered',
+    'Rocks with opinions',
+    'Landscaping by catapult',
+  ] },
+  routs: { labels: [
+    'Soldiers who left the building',
+    'Retreats called "repositioning"',
+    'Soldiers who remembered an appointment elsewhere',
+  ] },
+  revives: { labels: [
+    'Immortals who were not',
+    'Second chances, once',
+    'Asterisks honoured',
+  ] },
+  heroKills: { labels: [
+    'Heroes retired early',
+    'Statues that needed a sculptor',
+    'Statues postponed',
+  ] },
+  bribes: { labels: [
+    'Soldiers bought',
+    'Loyalty purchased',
+    'Coins well spent',
+  ] },
+  duration: { always: true, labels: [
+    'Duration of regret',
+    'Time the sponsors were nervous',
+    'Length of the argument',
+  ] },
+  survivorsCost: { labels: [
+    'Drachmae still standing',
+    'Money left on the field',
+    'Drachmae still on their feet',
+  ] },
+  wasted: { labels: [
+    'Budget never spent',
+    'Drachmae that sat out the battle',
+    'Unspent drachmae, looking sheepish',
+  ] },
 };
 
 export const MVP = {

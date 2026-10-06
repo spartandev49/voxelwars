@@ -23,6 +23,16 @@ export const CATEGORIES = {
   offs:      { label: 'Off hand',  target: 'offhand', order: 81 },
 };
 
+/** how much of a weapon's length projects forward at the moment of contact (thrusts line up with the arm, swings arc down) and shoulder-to-hand reach (u) */
+export const STYLE_K = { thrust: 1.0, pike: 1.0, slash: 0.78, overhead: 0.72, bash: 0.8, throw: 0.75, cast: 0.75, shoot: 0.8, none: 0.8 };
+export const ARM_REACH = 0.95;
+/** natural tip distance from the body axis in a thrust (u) for a weapon meta */
+export function naturalReach(meta) {
+  if (!meta || !meta.len) return 0.6;
+  if (meta.style === 'shoot') return 1.2;
+  return Math.round((ARM_REACH + meta.len * 0.1 * (STYLE_K[meta.style] ?? 0.8)) * 100) / 100;
+}
+
 export const PART_REGISTRY = {};
 for (const k of Object.keys(CATEGORIES)) PART_REGISTRY[k] = Object.create(null);
 
@@ -39,6 +49,7 @@ export function registerParts(set) {
       e.id = id; e.category = cat;
       if (!e.name) e.name = id.split('_').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
       if (!e.meta) e.meta = {};
+      if (cat === 'mains' && e.meta.reach === undefined) e.meta.reach = naturalReach(e.meta);
       const prev = PART_REGISTRY[cat][id];
       if (prev && prev !== e) throw new Error(`registerParts: duplicate ${cat}.${id}`);
       PART_REGISTRY[cat][id] = e;

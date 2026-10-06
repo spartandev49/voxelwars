@@ -26,7 +26,7 @@ export function mount(root, ctx, params) {
     : K.h('p', { class: 'vw-note', text: T.emptySoldiers });
 
   const notice = K.tablet(T.title, K.h('div', { class: 'vw-col' },
-    K.h('div', { class: 'vw-ph__icon', 'aria-hidden': 'true' }, K.icon('tent')),
+    K.h('div', { class: 'vw-ph__icon', 'aria-hidden': 'true' }, K.icon('monitor')),
     K.h('p', { class: 'vw-ph__lead', text: `${which}: ${T.text}` }),
     K.h('div', { class: 'vw-row vw-wrapflex' },
       K.button(T.back, { icon: 'back', id: 'ph-back', sound: 'ui_back', onClick: () => ctx.nav.goto('title') }),

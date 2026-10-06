@@ -21,6 +21,25 @@ export class Store {
       return o.data;
     } catch (e) { return fallback; }
   }
+  /** The stored envelope {v, data} (version-aware reads for migrations), or null when absent/corrupt. */
+  getVersioned(key) {
+    const raw = this.getRaw(key);
+    if (raw === null) return null;
+    try { const o = JSON.parse(raw); if (!o || typeof o !== 'object' || !('data' in o)) return null; const v = Number(o.v); return { v: Number.isFinite(v) && v >= 1 ? Math.floor(v) : 1, data: o.data }; } catch (e) { return null; }
+  }
+  /** The exact stored string (for backups and rollback), or null. */
+  getRaw(key) {
+    const k = PREFIX + key;
+    try { if (this.backend) { const r = this.backend.getItem(k); return r === undefined ? null : r; } return this.mem.has(k) ? this.mem.get(k) : null; } catch (e) { return null; }
+  }
+  /** Write an exact string back (rollback); null removes the key. Returns false when storage refused it. */
+  setRaw(key, raw) {
+    if (raw === null || raw === undefined) { this.remove(key); return true; }
+    const k = PREFIX + key; this.mem.set(k, raw);
+    if (!this.backend) { this._set('memory'); return false; }
+    try { this.backend.setItem(k, raw); if (this._status === 'full') this._set('ok'); return true; }
+    catch (e) { this._set(/quota/i.test(String(e && (e.name || e.message))) ? 'full' : 'memory'); return false; }
+  }
   set(key, data, version = 1) {
     const k = PREFIX + key; const raw = JSON.stringify({ v: version, data });
     this.mem.set(k, raw);

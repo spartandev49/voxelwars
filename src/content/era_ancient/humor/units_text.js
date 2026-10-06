@@ -45,7 +45,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Catch me! (Please do not.)',
-      'Javelin delivery! No signature required.',
       'Over here! No, over here! No, now I am gone!',
     ],
     codexJoke: 'Kites at 85% of range. Courage at 85% of that.',
@@ -60,7 +59,6 @@ export const UNIT_TEXT = {
       'At least one of mine hit someone.',
     ],
     taunts: [
-      'Look up. No, higher.',
       'Every arrow finds someone. Statistically.',
       'I am not missing. I am exploring.',
     ],
@@ -168,7 +166,6 @@ export const UNIT_TEXT = {
       'I need a better agent.',
     ],
     taunts: [
-      'Louder! I cannot hear you losing!',
       'Are we entertained? Please nod, it is in my contract.',
       'Bring friends! Bring five! It is for the damage bonus!',
     ],
@@ -308,7 +305,6 @@ export const UNIT_TEXT = {
     taunts: [
       'Hold still. This is only a formality.',
       'Sign here. Or do not. It is finished anyway.',
-      'You look tired. Allow me to help.',
     ],
     codexJoke: 'Execute threshold: 20% hp. Mercy threshold: 0%.',
   },
@@ -337,7 +333,6 @@ export const UNIT_TEXT = {
       'Replace me with a statue. A larger one.',
     ],
     taunts: [
-      'Kneel. Or be kneeled upon.',
       'Locusts! Dinner is served. For them.',
       'I do not dismount. I do not queue. I do not lose.',
     ],
@@ -356,7 +351,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Kill me. Go on. I will wait. Once.',
-      'We never die! (Asterisk.)',
       'We are ten thousand. This week.',
     ],
     codexJoke: 'Revives once, at 40% health. The word once is doing a lot of work.',
@@ -387,7 +381,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'I am a very expensive problem.',
-      'Step aside or become a footnote.',
       'We are slow, large and inevitable. Like taxes.',
     ],
     codexJoke: 'Armour 60%. Dismounting: a committee decision.',
@@ -417,7 +410,6 @@ export const UNIT_TEXT = {
       'Bring me another throne. This one is on fire.',
     ],
     taunts: [
-      'Kneel before the King of Kings. Mind the cushion.',
       'Bring the throne forward. No, back. Forward.',
       'Lash the sea! It looked at me funny!',
     ],
@@ -465,7 +457,6 @@ export const UNIT_TEXT = {
       'It is the four percent. It is always the four percent.',
     ],
     taunts: [
-      'Mind your heads. And your cousins\' heads.',
       'Firing! Probably at them!',
       'Safety first! Not ours, yours.',
     ],
@@ -482,7 +473,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Your flanks are showing.',
-      'Look left. Now right. Now everywhere.',
       'Rome built roads. I brought elephants.',
     ],
     codexJoke: 'Pincer aura 14 u. Looks like a hug. Is not a hug.',
@@ -545,7 +535,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'WOOF! (Translation: you have a nice face.)',
-      'GRRR! (Also: can I have that stick?)',
       'Bark bark bark! (I forgot why. Bark.)',
     ],
     codexJoke: 'Pack bonus: +8% damage per nearby hound, max +40%. Good boy: 100%.',
@@ -593,7 +582,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Stand still! I am not sure where you are!',
-      'That one was on purpose.',
       'Come out! I cannot see you! I mean: here I am!',
     ],
     codexJoke: '25% of throws land 4-9 u off. 100% of excuses: sun in eye.',
@@ -609,7 +597,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Look at me. No, really. I insist.',
-      'It is rude not to make eye contact.',
       'Mirrors? I have heard of them. I fear them.',
     ],
     codexJoke: 'Stone cone 40 degrees, 4 s. Stoned units take double damage from blunt. Mirror: sold separately.',
@@ -655,7 +642,6 @@ export const UNIT_TEXT = {
     ],
     taunts: [
       'Bawk! (Hello. I am going to peck you nine times.)',
-      'BAWK BAWK. (Do you have corn?)',
       'PECK. (I am sacred. You are lunch.)',
     ],
     codexJoke: 'Tantrum when hurt: five seconds of triple damage. Dignity: also triple.',

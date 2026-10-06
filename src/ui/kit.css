@@ -384,7 +384,7 @@ textarea.vw-input { min-height: 7rem; resize: vertical; font-family: ui-monospac
    Boot loader + fatal-error panel (ids/classes referenced by tools/build.mjs: #vw-boot .boot-logo .boot-bar .boot-msg)
    ===================================================================================================== */
 #vw-boot { position: absolute; inset: 0; z-index: var(--z-boot); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.6rem; padding: 1rem;
-  background: radial-gradient(55% 40% at 50% 38%, rgba(255, 201, 60, .22), rgba(255, 201, 60, 0) 70%), linear-gradient(180deg, #2347c4 0%, #1d2150 62%, #14163a 100%); color: var(--marble); text-align: center; transition: opacity .45s ease; }
+  background: radial-gradient(55% 40% at 50% 38%, rgba(110, 198, 255, .3), rgba(110, 198, 255, 0) 70%), linear-gradient(180deg, #2347c4 0%, #1d2150 62%, #14163a 100%); color: var(--marble); text-align: center; transition: opacity .45s ease; }
 #vw-boot.is-done, #vw-boot.vw-done { opacity: 0; pointer-events: none; }
 #vw-boot .boot-logo { --rot: -2deg; font: 400 clamp(2.2rem, 9vw, 5rem)/1 var(--font-display); letter-spacing: .04em; color: var(--gold); transform: rotate(var(--rot)); animation: vw-bob 3.2s ease-in-out infinite;
   text-shadow: 0 1px 0 #d9951a, 0 2px 0 #d9951a, 0 3px 0 #c98512, 0 4px 0 #c98512, 0 5px 0 #14163a, 0 6px 0 #14163a, 0 7px 0 #14163a, 0 8px 0 #14163a, 2px 0 0 #14163a, -2px 0 0 #14163a, 0 -2px 0 #14163a, 3px 3px 0 #14163a, -3px 3px 0 #14163a; -webkit-text-stroke: 2px #14163a; paint-order: stroke fill; }
@@ -413,6 +413,7 @@ textarea.vw-input { min-height: 7rem; resize: vertical; font-family: ui-monospac
 @media (max-width: 640px) {
   :root { --gutter: 16px; --fs-d1: 2rem; --fs-d2: 1.35rem; }
   .vw-page__bar { padding-top: .5rem; padding-bottom: .65rem; gap: .5rem; }
+  .vw-page__sub { display: none; }
   .vw-tablet { border-radius: 14px; }
   .vw-tablet__body { padding: .8rem; }
   .vw-modal-wrap { align-items: flex-end; padding: 0; }

@@ -13,13 +13,10 @@ export const STUDIO_CREDITS = [
   { role: 'Quality Assurance', name: 'Several chickens' },
   { role: 'Chief Elephant Wrangler', name: 'Nobody has applied' },
   { role: 'Voice of the Immortals', name: 'Ten thousand, give or take' },
-  { role: 'Wine Consultant', name: 'Everyone, briefly' },
   { role: 'Head of Thunder', name: 'Zeus (on leave)' },
   { role: 'Pottery Liaison', name: 'The barbarians, very politely' },
-  { role: 'Throne Maintenance', name: 'Xerxes, from a seat' },
   { role: 'Spartan Subtlety Coach', name: 'Position unfilled' },
   { role: 'Chief of Dignity', name: 'Position unfilled' },
-  { role: 'Stirrup Research', name: 'Pending' },
   { role: 'Official Sponsor of Everything', name: 'Delphi Insurance: we saw this coming' },
 ];
 

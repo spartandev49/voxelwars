@@ -46,8 +46,8 @@ export class HazardSystem {
 
   _spikes(h, dt) {
     const w = this.w, c = h.tm % CYCLE.spikes;
-    // 0..1.8 retracted, 1.8 telegraph (0.6 s), 2.4..3.0 up (0.6 s)... then 0..: spikes are up for 1.2 s per cycle: telegraph at 1.8, up 2.4 -> 3.0 + 0 -> 0.6
-    const up = c >= 2.4 || c < 0.6, tele = c >= 1.8 && c < 2.4;
+    // 3 s cycle: 0..1.2 retracted, 1.2..1.8 telegraph (0.6 s), 1.8..3.0 up (1.2 s)
+    const up = c >= 1.8, tele = c >= 1.2 && c < 1.8;
     if (tele && !h.tele) { h.tele = true; const e = w.P.telegraph; e.kind = 'spikes'; e.x = h.x; e.z = h.z; e.r = h.r; e.t = 0.6; e.h = 0; e.a = 0; e.team = -1; w.emit('telegraph', e); }
     if (!tele) h.tele = false;
     if (up && !h.active) { h.active = true; const e = w.P.hazard_trigger; e.kind = 'spikes'; e.x = h.x; e.z = h.z; e.r = h.r; w.emit('hazard_trigger', e); }

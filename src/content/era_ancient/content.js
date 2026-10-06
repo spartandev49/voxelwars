@@ -40,7 +40,7 @@ export function buildContent() {
     let r = cache.get(key); if (r) return r;
     const spec = unit && unit.custom ? { kind: 'humanoid', blueprint: unit.custom.blueprint } : def.model;
     try {
-      if (spec && spec.kind === 'humanoid' && compile) { const c = compile(spec.blueprint || spec.bp, { teamTint: true }); r = { model: c.model, scale: c.scale }; }
+      if (spec && spec.kind === 'humanoid' && compile) { const c = compile(spec.blueprint || spec.bp, { teamTint: true, range: def.melee ? def.melee.range : def.range, radius: def.radius, scale: def.scale }); r = { model: c.model, scale: c.scale }; }
       else if (spec && (spec.kind === 'mounted' || spec.kind === 'beast' || spec.kind === 'bespoke') && BUILDERS[spec.builder || spec.mount || def.id]) { const b = BUILDERS[spec.builder || def.id](spec, compile); r = { model: b.model || b, scale: b.scale }; }
       else if (BUILDERS[def.id]) { const b = BUILDERS[def.id](spec || {}, compile); r = { model: b.model || b, scale: b.scale }; }
     } catch (e) { console.warn('model build failed for', def.id, e); }
@@ -49,7 +49,7 @@ export function buildContent() {
   }
   // ---- the data the UI screens read (app_contract §2) ----
   const mutators = MUTATORS.map((m) => { const t = MUTATORS_TEXT.find((x) => x.id === m.id) || {}; return { id: m.id, name: t.name || m.name, desc: t.desc || m.desc, blurb: t.desc || m.desc, short: t.short || '', locked: t.locked || '', stars: MUTATOR_STARS[m.id] || 0, mods: m.mods }; });
-  const humor = { tips: TIPS, achievements: ACHIEVEMENTS, killVerbs: KILL_VERBS, names: { first: FIRST_NAMES, titles: TITLES, epithets: EPITHETS, random: randomName }, settingsTips: SETTINGS_TIPS, rulesTips: RULES_TIPS, mutatorsHeading: MUTATORS_HEADING, scout: collect(HUMOR_MODULES, 'SCOUT_TEXT') };
+  const humor = { tips: TIPS.map((t) => t.text), achievements: ACHIEVEMENTS, killVerbs: KILL_VERBS, names: { first: FIRST_NAMES, titles: TITLES, epithets: EPITHETS, random: randomName }, settingsTips: SETTINGS_TIPS, rulesTips: RULES_TIPS, mutatorsHeading: MUTATORS_HEADING, scout: collect(HUMOR_MODULES, 'SCOUT_TEXT') };
   let counters = null;
   const arenaThumb = (id) => null;   // replaced by main.js once the preview service exists
   return {

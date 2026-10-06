@@ -27,7 +27,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('Marathon is lost. Persians in Athens by dinner. I said so in the original, too.'),
     stars: [
       { id: 'win', text: 'Win the battle. Running is optional.' },
-      { id: 'half', text: 'Win with at least half your army still standing. Plato will count.' },
+            { id: 'half', text: 'Win with at least half your army (by cost) still standing.' },
       { id: 'thrift', text: 'Win while spending under 2,250 drachmae. Frugal is the new fearless.' },
     ],
     reward: { title: 'Marathoner', blurb: 'Ran a little. Fought a lot. Sat down afterwards.' },
@@ -63,7 +63,7 @@ export const CAMPAIGN_TEXT = {
     defeat: P('The Pharaoh lives. He will build something larger, probably from your mistakes.'),
     stars: [
       { id: 'win', text: 'Kill the Pharaoh.' },
-      { id: 'half', text: 'Win with at least half your army alive. The rest were doing their best.' },
+            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'quick', text: 'Kill the Pharaoh in under 90 seconds. He keeps a schedule.' },
     ],
     reward: { title: 'Pyramid Schemer', blurb: 'Toppled the top of the pyramid. Technically a promotion.' },
@@ -117,7 +117,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('They saw you. The trees were not that thick. I said hide behind the thick ones.'),
     stars: [
       { id: 'win', text: 'Defeat the centurion.' },
-      { id: 'half', text: 'Win with at least half your army alive. Hide better, next time.' },
+            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'fast', text: 'Win in 75 seconds. Politeness does not mean slowness.' },
     ],
     reward: { title: 'Forest Phantom', blurb: 'Was somewhere. Was suddenly everywhere. Vanished. Had tea.' },
@@ -153,7 +153,7 @@ export const CAMPAIGN_TEXT = {
     defeat: P('The Cyclops won. He missed a dozen times and still won. Was that skill, or volume?'),
     stars: [
       { id: 'win', text: 'Defeat the Cyclops.' },
-      { id: 'half', text: 'Win with at least half your army alive. The goats stay out of the count.' },
+            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'no_ff', text: 'Cause no friendly fire. Aim at the giant, not the friend.' },
     ],
     reward: { title: 'Cyclops Whisperer', blurb: 'Talked a ten-ton monster into a nap. Mostly with a club.' },
@@ -171,7 +171,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('Zeus had a bad day, and you were in it. I said you would be.'),
     stars: [
       { id: 'win', text: 'Survive four waves of monsters.' },
-      { id: 'half', text: 'Win with at least half your army alive. Zeus took the rest in the settlement.' },
+            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'heroes_alive', text: 'Survive without losing a hero. Statues are expensive.' },
     ],
     reward: { title: 'Zeus\' Therapist', blurb: 'Listened to a god complain about his week. Billed him for the hour.' },
@@ -203,6 +203,10 @@ export const REWARD_PARTS = {
   olive_branch: { name: 'Olive Branch', blurb: 'The weapon of peace, used for hitting.' },
   giant_moustache: { name: 'Giant Moustache', blurb: 'Adds nothing but authority.' },
   golden_toga: { name: 'Golden Toga', blurb: 'For senators who have already been bribed.' },
+  // unlock packs as the campaign names them
+  silly_helms: { name: 'Silly Helms', blurb: 'The colander, the traffic cone and other regrettable headwear.' },
+  silly_weapons: { name: 'Silly Weapons', blurb: 'A fish, a rubber chicken, a frying pan and a baguette. Strike with confidence.' },
+  wings: { name: 'Wings', blurb: 'Feathers for the shoulders. Flight not included, but encouraged.' },
 };
 
 export function missionText(id) { return CAMPAIGN_TEXT[id] || null; }
