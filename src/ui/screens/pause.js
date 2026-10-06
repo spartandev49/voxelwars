@@ -7,7 +7,13 @@ import { h, disposer, sfx } from '../hud/_dom.js';
 export const meta = { id: 'pause', layer: 'battle', music: 'none', canvas: 'scene' };
 
 const TIERS = [['potato', 'Potato', 'Toaster mode'], ['papyrus', 'Papyrus', 'Kind to laptops'], ['marble', 'Marble', 'The sensible default'], ['olympian', 'Olympian', 'Show-off']];
-const SUBS = ['Philosophers are using this time to argue.', 'The war will wait. Probably.', 'Somewhere, a chicken is catching its breath.', 'Pause: the only time anyone has a good idea.'];
+const SUBS = ['Philosophers are using this time to argue.', 'The war will wait. Probably.', 'Somewhere, a chicken is catching its breath.', 'Pause: the only time anyone has a good idea.',
+  'Brutus is explaining the pause to nobody in particular.', 'Cassandra says the pause will not help. Cassandra says that about everything.', 'The goat used the time to rejoin the army. Nobody asked it to.',
+  'Archers are retying their sandals, which is also how they lost the last battle.', 'A hoplite is checking which arm the shield goes on. It is the other one.', 'Plato is defining "pause". It will take a while.',
+  'Both armies are pretending they did not see you do that.', 'The elephant has found a snack. Do not ask where.', 'The Spartans are not tired. They would like that on the record.',
+  'Time stands still. The chickens do not.', 'This is the part where you decide you were right all along.', 'A war council has been called to discuss the pause. It has been tabled.'];
+let lastSub = -1;                                                  // never the same quip twice in a row
+const pickSub = () => { let i; do { i = (Math.random() * SUBS.length) | 0; } while (i === lastSub && SUBS.length > 1); lastSub = i; return SUBS[i]; };
 
 export function mount(root, ctx) {
   try { K.init(ctx); } catch (e) { /* kit optional in tools */ }
@@ -51,7 +57,7 @@ export function mount(root, ctx) {
   d.add(S && S.on ? S.on(() => { tier.set(get('quality', 'marble'), true); auto.set(!!get('autoScale', true), true); subs.set(!!get('subtitles', true), true); rm.set(!!get('reduceMotion', false), true); }) : null);
 
   const body = h('div', { class: 'bs-pause-body' }, menu, quick);
-  const card = K.tablet('Paused', body, { variant: 'glass', icon: 'pause', sub: SUBS[(Math.random() * SUBS.length) | 0], id: 'bs-pause-card', class: 'bs-pause-card' });
+  const card = K.tablet('Paused', body, { variant: 'glass', icon: 'pause', sub: pickSub(), id: 'bs-pause-card', class: 'bs-pause-card' });
   const scrim = h('div', { class: 'bs-scrim' });
   root.append(scrim, h('div', { class: 'bs-center' }, card));
   K.enter(card, 'pop');

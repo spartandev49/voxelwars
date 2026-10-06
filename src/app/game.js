@@ -30,6 +30,7 @@ const T = () => window.THREE;
 export const BUDGET_PRESETS = { skirmish: 3000, battle: 8000, war: 20000, epic: 40000 };
 export const TIER_CAP = { potato: 100, papyrus: 200, marble: 300, olympian: 400 };
 const TYPE_CAP = 16;
+const DIORAMA_FIT = { fitX: 0.4, fitY: 0.7, minDist: 30 };          // the title menu hides the left half: both armies are framed inside the right half of the screen
 
 const DEFAULT_SCOUT = {
   no_anti_cav: 'Enemy cavalry is coming and you have no spears. Hoplites like horses (at a distance).',
@@ -469,7 +470,7 @@ export class Game {
     if (snap) rig.snap();
   }
   /** The middle of the fight: both armies inside the screen. Soldiers further out than the 3% outliers (a runner, a straggler) do not decide the zoom. */
-  frameArmies(snap) {
+  frameArmies(snap, o) {
     const w = this.world; if (!w || !w.units.length) return;
     const pts = []; for (const u of w.units) if (u.alive !== false) pts.push([u.x, u.y + 1.2, u.z]);
     if (pts.length > 40) {                                        // trim the outer 3% along both ground axes
@@ -477,7 +478,7 @@ export class Game {
       const lx = xs[k], hx = xs[xs.length - 1 - k], lz = zs[k], hz = zs[zs.length - 1 - k];
       for (let i = pts.length - 1; i >= 0; i--) { const p = pts[i]; if (p[0] < lx || p[0] > hx || p[2] < lz || p[2] > hz) pts.splice(i, 1); }
     }
-    this._fit(pts, snap);
+    this._fit(pts, snap, o);
   }
   /** Placement: the deployment zones (and the soldiers already standing) fill the screen, so the player sees where soldiers may go. */
   frameZones(snap) {
@@ -620,7 +621,7 @@ export class Game {
   _applyViewOffset() {
     const cam = this.engine.camera, el = this.engine.renderer.domElement;
     const W = el.clientWidth || window.innerWidth, H = el.clientHeight || window.innerHeight;
-    if (this.state === 'diorama' && W > 900) { cam.setViewOffset(W, H, -W * 0.17, 0, W, H); }
+    if (this.state === 'diorama' && W > 900) { cam.setViewOffset(W, H, -W * 0.23, 0, W, H); }
     else if (this.state === 'placement' && !this._inter && W > 900) { cam.setViewOffset(W, H, 0, H * 0.08, W, H); }          // the tools bar and scout strip take the bottom of the placement screen: lift the table
     else if (cam.view && cam.view.enabled) cam.clearViewOffset();
     cam.updateProjectionMatrix();
@@ -650,7 +651,7 @@ export class Game {
     if (this.canvasMode !== 'diorama') { this.dispose(true); this.state = 'idle'; return; }
     this.state = 'placement'; this.autoFill(0, {}); this.autoFill(1, {}); this.state = 'diorama';
     const w = this.world; w.start(0); this.speed = 1; this.paused = false; this.acc = 0; this._dioramaEnd = 0;
-    this.rig.setMode('orbit'); this.rig.pitch = 0.46; this.rig.yaw = -0.5; this.frameArmies(true); this.rig.dist = Math.min(this.rig.dist, 46);
+    this.rig.setMode('orbit'); this.rig.pitch = 0.46; this.rig.yaw = -0.5; this.frameArmies(true, DIORAMA_FIT);
     this._applyViewOffset();
   }
   stopDiorama() {
@@ -660,7 +661,7 @@ export class Game {
   _dioramaFrame(dt) {
     const w = this.world; if (!w) return;
     this.rig.yaw += dt * 0.045; this._dioramaT = (this._dioramaT || 0) + dt;
-    if (this._dioramaT > 0.8) { this._dioramaT = 0; this.frameArmies(false); this.rig.dist = Math.min(this.rig.dist, 46); }
+    if (this._dioramaT > 0.8) { this._dioramaT = 0; this.frameArmies(false, DIORAMA_FIT); }
     if (this._dioramaEnd && this.clock > this._dioramaEnd) { this._dioramaEnd = 0; this.dispose(true); this.state = 'idle'; this.startDiorama(); }
   }
 
@@ -680,6 +681,9 @@ export class Game {
       powers: this.godPowers(), minimap: this.mini.update(w, this.engine.camera, this.selectedId, this.rig.ty, this.state === 'placement'),
       worldLabels: this.labels.snapshot(this.engine.camera, this.engine.renderer.domElement.clientWidth, this.engine.renderer.domElement.clientHeight, w.time),
     };
+    // a mission words its own goal ("Get the goat across the river"), the sim only knows the objective type ("Protect the VIP")
+    const goal = this.mode && this.mode.puzzle ? this.mode.puzzle.goalText : this.mode && this.mode.m && this.mode.m.objective ? this.mode.m.objective.text : null;
+    if (goal && d.objective) d.objective = Object.assign({}, d.objective, { text: goal });
     return this.meta ? this.meta.decorateHud(d) : d;                              // + possess, teaching, aim (app/meta.js)
   }
   _byType(team) {

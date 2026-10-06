@@ -83,7 +83,7 @@ varying float vGlow;`)
     float vsK = vsMode < 1.5 ? 0.42 : 0.34;
     gl_FragColor.rgb = mix(gl_FragColor.rgb, vsT * (vsLum * 0.75 + (vsMode < 1.5 ? 0.55 : 0.3)), vsK * (1.0 - vFx.y));
   }
-  gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0, 0.93, 0.78), vFx.x * 0.8);                // hit flash
+  gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0, 0.62, 0.36), vFx.x * 0.62) + vec3(0.18, 0.08, 0.02) * vFx.x;   // hit flash: a warm orange pulse (a near-white flash turned white horses and elephants into ghosts)
 #include <tonemapping_fragment>`);
   };
   mat.customProgramCacheKey = () => 'voxskin-lambert-v1';

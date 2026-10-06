@@ -30,7 +30,7 @@ export function mountCountdown(parent, ctx, opts) {
     setText(num, String(n)); setText(sub, SUB[n] || '');
     setText(live, String(n));
     anim(ctx, num, [{ transform: 'scale(2.1)' }, { transform: 'scale(1)', offset: 0.35 }, { transform: 'scale(.9)', offset: 0.85 }, { transform: 'scale(.8)' }], { duration: 900, easing: 'cubic-bezier(.34,1.56,.64,1)', fill: 'forwards' });
-    anim(ctx, num, [{ opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 1, offset: 0.8 }, { opacity: 0.15 }], { duration: 900, easing: 'linear', fill: 'forwards' }, [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0.2 }]);
+    anim(ctx, num, [{ opacity: 0 }, { opacity: 1, offset: 0.12 }, { opacity: 1, offset: 0.85 }, { opacity: 0.6 }], { duration: 900, easing: 'linear', fill: 'forwards' }, [{ opacity: 0 }, { opacity: 1, offset: 0.2 }, { opacity: 1, offset: 0.8 }, { opacity: 0.2 }]);
     sfx(ctx, 'ui_countdown_beep', { vol: 0.7, pitch: 0.9 + (3 - n) * 0.12 });
   }
   function showFight() {

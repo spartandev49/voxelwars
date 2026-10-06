@@ -315,7 +315,7 @@ const LOG_MAX = 6000;
 export function createMeta(o) {
   const game = o.game, content = o.content || {}, settings = o.settings || { get: () => undefined, set() {} }, audio = o.audio || null;
   const now = o.now || (() => Date.now());
-  const rng = o.rng || new RNG((now() ^ 0x5bd1e995) >>> 0);
+  const rng = o.rng || new RNG(((now() ^ 0x5bd1e995) ^ ((Math.random() * 4294967296) >>> 0)) >>> 0);       // wall-clock + entropy: two sessions never open with the same line
   const docs = o.docs || (o.store ? createDocs(o.store) : createDocs({ get: () => null, getVersioned: () => null, getRaw: () => null, setRaw: () => true, set: () => true, remove() {}, status: () => 'memory' }));
   if (docs.loadAll) docs.loadAll();
   const stats = o.stats || new LifetimeStats({ adapter: o.store ? storeAdapter(o.store) : null });
@@ -580,7 +580,7 @@ export function createMeta(o) {
       board = board.concat([entry]).sort((a, b) => b.score - a.score).slice(0, 5); rank = board.indexOf(entry) + 1;
       sv.set('board', board); if (score > prevBest) sv.set('best', score); if (cleared > sv.get('bestWave', 0)) sv.set('bestWave', cleared);
     }
-    return { wave: n, waveName: waveName(n), score, kills: ws[pt] ? ws[pt].kills : 0, remainingCost: Math.round(ws[pt] ? ws[pt].aliveCost : 0), best: prevBest, rank, board };
+    return { wave: n, cleared, waveName: waveName(n), score, kills: ws[pt] ? ws[pt].kills : 0, remainingCost: Math.round(ws[pt] ? ws[pt].aliveCost : 0), best: prevBest, rank, board };
   }
 
   /** Game.results(): merges funnyStats, lessons, the MVP's last words and the mode blocks into the base results (cached per battle). */

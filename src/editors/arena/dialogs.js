@@ -115,7 +115,7 @@ export async function exportDialog(app, arena, meta) {
   if (tooLong) copy.setDisabled(true);
   const select = K.button(D.exportSelect, { id: 'ed-export-select', size: 'sm', variant: 'ghost', onClick: () => { ta.focus(); ta.select(); } });
   if (tooLong) select.setDisabled(true);
-  const dl = K.button(D.exportDownload, { id: 'ed-export-download', icon: 'download', variant: tooLong ? 'primary' : 'secondary', onClick: async () => { try { const r = hasDownload ? ctx.platform.downloads.save(filename, res.code) : null; if (r && typeof r.then === 'function') await r; app.toast(D.exportDownloaded(filename), 'success'); } catch (e) { app.toast(String(e && e.message || e), 'error'); } } });
+  const dl = K.button(D.exportDownload, { id: 'ed-export-download', icon: 'download', variant: tooLong ? 'primary' : 'secondary', onClick: async () => { try { const r = hasDownload ? await ctx.platform.downloads.save(filename, res.code) : null; if (r === false) { app.toast('Not saved. The code is still in the box above: copy it from there.', 'info'); return; } app.toast(D.exportDownloaded(filename), 'success'); } catch (e) { app.toast('This page could not save a file. Copy the code from the box above instead.', 'error'); } } });
   if (!hasDownload) dl.setDisabled(true);
   return K.modal({ title: D.exportTitle, icon: 'upload', wide: true, id: 'ed-export', body: K.h('div', { class: 'vw-col' }, info, note, ta, K.h('div', { class: 'vw-row vw-wrapflex' }, copy, dl, select)), buttons: [{ label: S.common.close, variant: 'secondary', value: true, cancel: true, id: 'ed-export-close' }] });
 }

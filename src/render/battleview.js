@@ -200,8 +200,8 @@ export class BattleView {
     const geo = new THREE.PlaneGeometry(1, 1);
     const mk = () => { const m = new THREE.InstancedMesh(geo, new THREE.MeshBasicMaterial({ color: 0xffffff, depthTest: true, depthWrite: false, transparent: true, fog: false }), cap); m.instanceMatrix.setUsage(THREE.DynamicDrawUsage); m.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(cap * 3).fill(1), 3); m.instanceColor.setUsage(THREE.DynamicDrawUsage); m.frustumCulled = false; m.count = 0; m.renderOrder = 20; this.scene.add(m); return m; };
     this.barBack = mk(); this.barFill = mk(); this.barCap = cap;
-    const ring = new THREE.InstancedMesh(new THREE.RingGeometry(0.78, 1, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, side: THREE.DoubleSide, fog: false }), 8);
-    ring.instanceMatrix.setUsage(THREE.DynamicDrawUsage); ring.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(8 * 3).fill(1), 3); ring.frustumCulled = false; ring.count = 0; ring.renderOrder = 19; this.scene.add(ring); this.rings = ring;
+    const ring = new THREE.InstancedMesh(new THREE.RingGeometry(0.78, 1, 28), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false, side: THREE.DoubleSide, fog: false }), 12);
+    ring.instanceMatrix.setUsage(THREE.DynamicDrawUsage); ring.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array(12 * 3).fill(1), 3); ring.frustumCulled = false; ring.count = 0; ring.renderOrder = 19; this.scene.add(ring); this.rings = ring;
     this._cr = new THREE.Vector3(); this._cu = new THREE.Vector3();
   }
   _updateBars(camera) {
@@ -239,6 +239,14 @@ export class BattleView {
       const s = Math.max(0.9, u.radius * 1.9 * (u.scale > 1.3 ? 1.3 : 1)); const o = rn * 16;
       rm[o] = s; rm[o + 1] = 0; rm[o + 2] = 0; rm[o + 3] = 0; rm[o + 4] = 0; rm[o + 5] = 0; rm[o + 6] = -s; rm[o + 7] = 0; rm[o + 8] = 0; rm[o + 9] = 1; rm[o + 10] = 0; rm[o + 11] = 0; rm[o + 12] = u.x; rm[o + 13] = u.y + 0.08; rm[o + 14] = u.z; rm[o + 15] = 1;
       const tc = id === this.selected ? [1.6, 1.4, 0.4] : [1.2, 1.2, 1.2]; rc[rn * 3] = tc[0]; rc[rn * 3 + 1] = tc[1]; rc[rn * 3 + 2] = tc[2]; rn++;
+    }
+    // the unit a mission asks you to protect (the goat) wears a pulsing green ring, so it can be found inside its escort
+    let vn = 0; const pulse = 1 + 0.14 * Math.sin(this.time * 5);
+    for (let i = 0; i < U.length && vn < 4; i++) {
+      const u = U[i]; if (!u.vip || !u.alive) continue;
+      const s = Math.max(2.3, u.radius * 4.4) * pulse, o = rn * 16;
+      rm[o] = s; rm[o + 1] = 0; rm[o + 2] = 0; rm[o + 3] = 0; rm[o + 4] = 0; rm[o + 5] = 0; rm[o + 6] = -s; rm[o + 7] = 0; rm[o + 8] = 0; rm[o + 9] = 1; rm[o + 10] = 0; rm[o + 11] = 0; rm[o + 12] = u.x; rm[o + 13] = u.y + 0.1; rm[o + 14] = u.z; rm[o + 15] = 1;
+      rc[rn * 3] = 0.2; rc[rn * 3 + 1] = 2.4; rc[rn * 3 + 2] = 0.5; rn++; vn++;
     }
     this.rings.count = rn; this.rings.visible = rn > 0; this.rings.instanceMatrix.needsUpdate = true; this.rings.instanceColor.needsUpdate = true;
   }

@@ -13,8 +13,11 @@ const SIZE_BUDGET = { small: 3000, medium: 8000, large: 12000 };
 const OBJECTIVES = ['eliminate', 'kill_general', 'hold_hill', 'protect_vip', 'destroy'];
 const OBJ_PARAMS = { kill_general: {}, hold_hill: { time: 60 }, protect_vip: { time: 100 }, destroy: { props: ['gate_door'], eliminate: false } };
 /** A saved arena (ctx.save.arenas item {id,name,author,desc,tags,size,objective,thumb,code|data}) as a carousel entry after the presets. */
+/** A saved arena stores its size in cells (128 / 192 / 256 or a custom size); the setup screen speaks small / medium / large. */
+const sizeName = (cells) => (typeof cells === 'string' && SIZE_BUDGET[cells] ? cells : cells <= 160 ? 'small' : cells <= 224 ? 'medium' : 'large');
 function arenaFromItem(it) {
-  return { id: 'my:' + it.id, name: it.name || 'Untitled Arena', mine: true, item: it, size: it.size || 'medium', blurb: it.desc || '', tactics: (it.tags || []).slice(0, 4), recommendedBudget: SIZE_BUDGET[it.size] || 8000, seed: 0, objective: it.objective || 'eliminate' };
+  const size = sizeName(it.size);
+  return { id: 'my:' + it.id, name: it.name || 'Untitled Arena', mine: true, item: it, size, blurb: it.desc || '', tactics: (it.tags || []).slice(0, 4), recommendedBudget: SIZE_BUDGET[size] || 8000, seed: 0, objective: it.objective || 'eliminate' };
 }
 const typeOf = (p) => (Array.isArray(p) ? p[0] : p && p.t);
 /** Which objectives an Arena supports (world.md section 4/5 markers): eliminate always; the rest need their markers or gate doors. */

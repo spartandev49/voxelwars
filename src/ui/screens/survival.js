@@ -36,7 +36,7 @@ export function survivalPanel(ctx, r) {
   const stat = (label, v, ic) => h('div', { class: 'bs-surv-stat' }, icon(ic), h('b', { text: v }), h('span', { text: label }));
   const top = h('div', { class: 'bs-surv-score' },
     h('div', { class: 'bs-surv-big' }, h('span', { class: 'bs-surv-label', text: 'Score' }), h('b', { text: fmtInt(s.score) }), newBest ? K.chip('New personal best', { icon: 'trophy', variant: 'gold' }) : (s.best ? K.chip('Best: ' + fmtInt(s.best), { variant: 'ink' }) : null)),
-    h('div', { class: 'bs-surv-stats' }, stat('Waves survived', String(s.wave != null ? Math.max(0, s.wave - 1) : 0), 'flag'), stat('Kills', fmtInt(s.kills), 'skull'), stat('Value standing', fmtInt(s.remainingCost) + ' dr', 'coin')));
+    h('div', { class: 'bs-surv-stats' }, stat('Waves survived', String(s.cleared != null ? s.cleared : s.wave != null ? Math.max(0, s.wave - 1) : 0), 'flag'), stat('Kills', fmtInt(s.kills), 'skull'), stat('Value standing', fmtInt(s.remainingCost) + ' dr', 'coin')));
   const board = s.board && s.board.length ? s.board : survivalBoard(ctx).board;
   const body = h('div', { class: 'bs-surv-res' }, s.waveName ? h('p', { class: 'bs-surv-wave', text: 'Fell at ' + s.waveName }) : null, top, boardTable(ctx, board, s.rank ? s.rank - 1 : -1));
   return K.tablet('Survival', body, { variant: 'glass', icon: 'trophy', tight: true, class: 'bs-res-tab bs-surv-panel' });

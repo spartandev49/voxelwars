@@ -32,7 +32,7 @@ await page.route('**/*', (route) => {
 const shot = (n) => page.screenshot({ path: path.join(out, n + '.png') });
 const state = () => page.evaluate(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current(), tick: window.__vw.game.world ? window.__vw.game.world.tickN : -1, alive: window.__vw.game.world ? [window.__vw.game.world.stats[0].alive, window.__vw.game.world.stats[1].alive] : null }));
 let fail = '';
-const ONLY = arg('only', 'campaign,suggest,missions,puzzle,survival,daily,nav,camera').split(',');
+const ONLY = arg('only', 'campaign,suggest,missions,puzzle,survival,daily,nav,camera,myarena').split(',');
 const ev = (fn, a) => page.evaluate(fn, a);
 // run the sim in small chunks until the predicate holds (the headless browser is slow: world.step is the same code the frame loop runs)
 const verbose = process.argv.includes('--verbose');
@@ -177,6 +177,13 @@ try {
       const cur2 = await ev(() => window.__vw.app.router.current()); log('BACK on ' + scr + ' -> ' + cur2);
       if (cur2 === scr) throw new Error('BACK did nothing on ' + scr);
     }
+    for (const scr of ['quick', 'settings', 'codex']) {      // the first Tab press must land on a control, not on <body>
+      await ev((id) => window.__vw.goto(id), scr); await page.waitForTimeout(1200);
+      await ev(() => { const a = document.activeElement; if (a && a !== document.body && a.blur) a.blur(); });
+      await page.keyboard.press('Tab'); await page.waitForTimeout(150);
+      const onBody = await ev(() => { const a = document.activeElement; return !a || a === document.body; });
+      log('first Tab on ' + scr + ' -> ' + (onBody ? 'BODY' : 'a control')); if (onBody) throw new Error('the first Tab on ' + scr + ' lands on <body>');
+    }
     // Tweak army, then Back: lands on the screen the battle was started from, and the title behind it has a live diorama, not the leftover placement world
     await ev(async () => { const v = window.__vw; v.goto('quick'); await v.quick({ rules: { budget: 1500 } }); v.fight(); v.step(30); await v.game.tweak(); });
     await page.waitForTimeout(800);
@@ -201,6 +208,23 @@ try {
     await ev(() => { const g = window.__vw.game; g.rig.zoom(1.5); });
     const d0 = await ev(() => window.__vw.game.rig.dist); await page.waitForTimeout(6000); const d1 = await ev(() => window.__vw.game.rig.dist);
     log('after the player zoomed out: ' + d0 + ' -> ' + d1); if (Math.abs(d1 - d0) > 0.5) throw new Error('auto-frame fought the player: ' + d0 + ' -> ' + d1);
+  }
+
+  if (ONLY.includes('myarena')) {
+    log('--- a saved arena can be picked in Quick Battle (regression: TypeError on the disabled size buttons)');
+    await ev(async () => { const v = window.__vw; await v.quick({ arena: { presetId: 'thermopylae', size: 'small', seed: 3 } }); const a = v.game.world.arena, c = v.app.router.getCtx(); c.save.arenas.put({ id: 'qa_arena_1', name: 'QA Arena', author: 'qa', desc: '', tags: ['test'], size: a.size, objective: 'eliminate', updated: Date.now(), data: a.toJSON() }); v.game.exitToMenu(); v.goto('quick'); });
+    await page.waitForTimeout(1500);
+    const errsBefore = problems.length;
+    await page.locator('[data-arena="my:qa_arena_1"], [id^="qb-arena-"][data-arena^="my:"]').first().click({ timeout: 8000 });
+    await page.waitForTimeout(700);
+    const q = await ev(() => ({ footer: document.querySelector('.vw-qb__summary, [id*=summary]') ? document.querySelector('.vw-qb__summary, [id*=summary]').textContent : '', name: (document.querySelector('.vw-qb__arena-info h3, .vw-qb__arena-name') || {}).textContent || '' }));
+    log('after picking: ' + JSON.stringify(q));
+    if (problems.length > errsBefore) throw new Error('picking a saved arena logged problems: ' + problems.slice(errsBefore).join(' | '));
+    await page.locator('#qb-place').click({ timeout: 8000 }).catch(async () => { await page.getByText('PLACE ARMIES', { exact: false }).first().click(); });
+    await page.waitForTimeout(1500);
+    const g = await ev(() => ({ state: window.__vw.game.state, objective: window.__vw.game.rules.objective && window.__vw.game.rules.objective.type, arena: window.__vw.game.setup.arena.data ? 'data' : window.__vw.game.setup.arena.presetId }));
+    log('placement: ' + JSON.stringify(g)); if (g.state !== 'placement' || g.arena !== 'data') throw new Error('the saved arena did not reach placement: ' + JSON.stringify(g));
+    await ev(() => window.__vw.game.exitToMenu());
   }
 
   if (ONLY.includes('daily')) {

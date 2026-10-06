@@ -483,7 +483,7 @@ export function segmented(o) {
   function paint() {
     let any = false;
     btns.forEach(({ b, v }) => { const on = v === cur; if (on) any = true; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; });
-    if (!any && btns[0]) btns.find((x) => !x.b.disabled).b.tabIndex = 0;
+    if (!any) { const first = btns.find((x) => !x.b.disabled) || btns[0]; if (first) first.b.tabIndex = 0; }          // every segment may be disabled (a saved arena fixes the size)
   }
   function set(v, silent) { cur = v; paint(); if (!silent && o.onChange) o.onChange(v); }
   el.addEventListener('keydown', (e) => {

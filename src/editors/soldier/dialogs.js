@@ -20,7 +20,7 @@ export async function openShare(ctx, cs) {
   const warn = enc.tooLong ? K.note(WS.shareTooLong(enc.length), 'bad') : null;
   const doDownload = async () => {
     const name = fileName(cs.name, '.vwsoldier');
-    if (dl && typeof dl.save === 'function') { try { await dl.save(name, enc.code); K.toast(WS.downloaded(name), { kind: 'success' }); return; } catch (e) { /* fall through to the text fallback */ } }
+    if (dl && typeof dl.save === 'function') { try { const saved = await dl.save(name, enc.code); if (saved === false) { K.toast('Not saved. The code is still in the box: copy it from there.', { kind: 'info' }); return; } K.toast(WS.downloaded(name), { kind: 'success' }); return; } catch (e) { /* fall through to the text fallback */ } }
     K.toast(WS.downloadFallback, { kind: 'info', ms: 5200 }); ta.value = enc.code; ta.focus(); ta.select();
   };
   await K.modal({
