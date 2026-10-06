@@ -43,6 +43,16 @@ export function validateMission(m, o = {}) {
   if (!(m.budget >= 500 && m.budget <= 40000)) bad('budget out of range');
   const ros = m.roster; if (ros !== null && ros !== undefined) { if (!Array.isArray(ros) || !ros.length) bad('roster must be null (everything) or a non-empty list'); else for (const id of ros) if (!STAT_TABLE[id]) bad('roster unit ' + id + ' does not exist'); }
   for (const c of m.core || []) { if (!STAT_TABLE[c.defId]) bad('core unit ' + c.defId + ' does not exist'); else if (Array.isArray(ros) && !ros.includes(c.defId)) bad('core unit ' + c.defId + ' is not in the roster'); if (!(c.n >= 1)) bad('core count must be >= 1'); }
+  if (m.reference !== null && m.reference !== undefined) {         // the authored reference deployment (what the 'counter' reference player of the feasibility run fields): a complete, legal army
+    const ref = m.reference; if (!Array.isArray(ref) || !ref.length) bad('reference must be null or a non-empty list of {defId, n, order?}');
+    else {
+      let rc = 0; const have = {};
+      for (const g of ref) { if (!STAT_TABLE[g.defId]) { bad('reference unit ' + g.defId + ' does not exist'); continue; } if (!(g.n >= 1)) bad('reference group ' + g.defId + ' has n < 1'); if (Array.isArray(ros) && !ros.includes(g.defId)) bad('reference unit ' + g.defId + ' is not in the roster'); if (g.order !== undefined && !['advance', 'hold'].includes(g.order)) bad('reference order of ' + g.defId + ' must be advance or hold'); rc += (g.n | 0) * STAT_TABLE[g.defId].cost; have[g.defId] = (have[g.defId] || 0) + (g.n | 0); }
+      for (const c of m.core || []) if ((have[c.defId] || 0) < c.n) bad('reference must include the core unit ' + c.defId + ' x' + c.n);
+      if (rc > m.budget) bad('reference costs ' + rc + ' dr, more than the budget ' + m.budget); else if (rc < 0.85 * m.budget) bad('reference spends only ' + rc + ' of ' + m.budget + ' dr (a reference army uses the budget)');
+      if (new Set(ref.map((g) => g.defId)).size > 16) bad('reference has more than 16 unit types');
+    }
+  }
   for (const f of m.fixed || []) { if (!STAT_TABLE[f.defId]) bad('fixed unit ' + f.defId + ' does not exist'); if (f.marker && !ids.has(f.marker)) bad('fixed unit marker ' + f.marker + ' does not exist'); }
   const e = m.enemy || {};
   const gs = groupsOf(m); if (!gs.length && !(e.placements && e.placements.length) && ob.type !== 'survive_waves') bad('the enemy has no units');

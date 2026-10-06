@@ -29,6 +29,7 @@ export function enemyAll(m) {
  * `core` units the mission asks for (the Trojan horse, elephants, Spartans) are always bought first.
  */
 export function botGroups(m, kind, seed) {
+  if (kind === 'counter' && m.reference) return m.reference.map((g) => ({ defId: g.defId, n: g.n }));          // authored reference deployment (mission.reference): see docs/campaign_report.md
   const core = (m.core || []).map((c) => ({ defId: c.defId, n: c.n }));
   const spent = groupsCost(core, defs);
   const rest = Math.max(0, m.budget - spent);
@@ -72,8 +73,9 @@ export function buildMissionWorld(m, bot, seed, o = {}) {
   const w = new World({ arena, seed, rules: Object.assign(missionRules(m), o.rules || {}), defs });
   const rt = setupMission(w, m, { seed });
   const groups = o.groups || botGroups(m, bot, seed);
+  const orders = o.orders || (bot === 'counter' && m.reference ? Object.fromEntries(m.reference.filter((g) => g.order).map((g) => [g.defId, g.order])) : null);
   let pl = o.placements || layoutArmy(groups, arena.zones.A, arena.zones.B, defs, { seed });
-  if (o.orders) pl = pl.map((p) => (o.orders[p.defId] ? Object.assign({}, p, { order: o.orders[p.defId] }) : p));       // e.g. elephants on 'hold': the sim's own watchdog releases them after 18 s
+  if (orders) pl = pl.map((p) => (orders[p.defId] ? Object.assign({}, p, { order: orders[p.defId] }) : p));       // e.g. elephants on 'hold': the sim's own watchdog releases them after 18 s
   if (bot === 'turtle') pl = pl.map((p) => Object.assign({}, p, { order: 'hold' }));
   const squads = w.addPlacements(0, pl, { defs });
   // a turtle on a hold_hill mission forms up ON the hill (placement is only allowed in the zone, so it marches there once) and holds it

@@ -1,7 +1,7 @@
 # UNITS-A -> COORD / ANIM / UNITS-LIB / EDITORS-B : integration notes and requests
 
 Models: `src/content/era_ancient/units/units_a.js` (`MODELS`, `BLUEPRINTS`): peltast, philosopher, strategos, pilum_thrower, centurion, gladiator, senator, khopesh_warrior, mummy,
-anubis_guard, priest_of_ra, pharaoh + the compact chariot crew (`crew_chariot_driver`, `crew_chariot_archer`, not UnitDefs). 42 new parts in `parts/units_a_{helms,faces,garb,gear}.js`
+anubis_guard, priest_of_ra, pharaoh + the compact chariot crew (`crew_chariot_driver`, `crew_chariot_archer`, not UnitDefs). 43 new parts in `parts/units_a_{helms,faces,garb,gear}.js`
 (self-registering, every one carries `meta.faction`, none is locked). Tests: `tests/units/units_a.test.mjs`. Tools: `tools/contact_ua.mjs` (+ `contact_ua_entry.js`), `tools/look_ua.mjs`.
 
 ## COORD (content.js / registry)

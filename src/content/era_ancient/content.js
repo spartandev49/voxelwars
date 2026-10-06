@@ -34,6 +34,23 @@ export function buildContent() {
   // compileSoldier is optional until UNITS-LIB lands
   const bp = Object.values(PART_MODULES).length ? null : null;
   function setCompiler(fn) { compile = fn; }
+  // Riders and crews are humanoid blueprints (units/*.js BLUEPRINTS: rider_<unit>, crew_*) compiled with the same compiler and handed to the beast builders.
+  const BPS = collect(UNIT_MODEL_MODULES, 'BLUEPRINTS');
+  const CREWS = { chariot_archer: { driver: 'crew_chariot_driver', archer: 'crew_chariot_archer' }, war_elephant: { crew: ['crew_elephant_a', 'crew_elephant_b'] }, catapult: { crew: ['crew_catapult_a', 'crew_catapult_b', 'crew_catapult_c'] }, ballista: { crew: ['crew_ballista_a', 'crew_ballista_b'] } };
+  const crewCache = new Map();
+  function crewOptions(def) {
+    if (!compile) return {};
+    let o = crewCache.get(def.id); if (o) return o; o = {};
+    const comp = (name) => { try { return BPS[name] ? compile(BPS[name], { teamTint: true }).model : null; } catch (e) { console.warn('crew blueprint failed', name, e); return null; } };
+    const c = CREWS[def.id];
+    if (c) {
+      for (const k of Object.keys(c)) { if (Array.isArray(c[k])) { const list = c[k].map(comp).filter(Boolean); if (list.length) o[k] = list; } else { const m = comp(c[k]); if (m) o[k] = m; } }
+    } else {
+      const rn = ['rider_' + def.id, 'rider_' + def.id.split('_')[0]].find((n) => BPS[n]);
+      if (rn) { const m = comp(rn); if (m) o.rider = m; }
+    }
+    crewCache.set(def.id, o); return o;
+  }
   /** @returns {{model:import('../../voxel/model.js').ModelDef, scale?:number[], glow?:number}} */
   function modelFor(def, unit) {
     const key = unit && unit.custom ? 'c:' + (unit.custom.id || def.id) : def.id;
@@ -41,8 +58,8 @@ export function buildContent() {
     const spec = unit && unit.custom ? { kind: 'humanoid', blueprint: unit.custom.blueprint } : def.model;
     try {
       if (spec && spec.kind === 'humanoid' && compile) { const c = compile(spec.blueprint || spec.bp, { teamTint: true, range: def.melee ? def.melee.range : def.range, radius: def.radius, scale: def.scale }); r = { model: c.model, scale: c.scale }; }
-      else if (spec && (spec.kind === 'mounted' || spec.kind === 'beast' || spec.kind === 'bespoke') && BUILDERS[spec.builder || spec.mount || def.id]) { const b = BUILDERS[spec.builder || def.id](spec, compile); r = { model: b.model || b, scale: b.scale }; }
-      else if (BUILDERS[def.id]) { const b = BUILDERS[def.id](spec || {}, compile); r = { model: b.model || b, scale: b.scale }; }
+      else if (spec && (spec.kind === 'mounted' || spec.kind === 'beast' || spec.kind === 'bespoke') && BUILDERS[spec.builder || spec.mount || def.id]) { const b = BUILDERS[spec.builder || def.id](Object.assign({}, spec, crewOptions(def)), compile); r = { model: b.model || b, scale: b.scale }; }
+      else if (BUILDERS[def.id]) { const b = BUILDERS[def.id](Object.assign({}, spec || {}, crewOptions(def)), compile); r = { model: b.model || b, scale: b.scale }; }
     } catch (e) { console.warn('model build failed for', def.id, e); }
     if (!r) { const isBeast = def.role === 'cavalry' || def.role === 'beast' || def.role === 'siege' || (def.tags && def.tags.indexOf('animal') >= 0); r = { model: isBeast ? fallbackBeast(def) : fallbackHumanoid(def) }; }
     cache.set(key, r); return r;

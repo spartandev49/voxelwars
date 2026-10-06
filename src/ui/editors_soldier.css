@@ -226,7 +226,7 @@ body .ws-short { display: none; }
 .pt-toolbar { display: flex; align-items: center; gap: .5rem .8rem; flex-wrap: wrap; }
 .pt-slicebar { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; padding: .3rem .5rem; background: var(--night-2); border: 3px solid var(--ink); border-radius: var(--r-md); }
 .pt-slicebar__layer { flex: 1 1 10rem; min-width: 9rem; }
-.pt-seltools { gap: .4rem; }
+.pt-seltools { position: absolute; left: .5rem; top: .5rem; z-index: 4; gap: .4rem; flex-wrap: nowrap; }
 .pt-viewwrap { position: relative; flex: 1 1 auto; min-height: 220px; border: var(--outline); border-radius: var(--r-lg); box-shadow: var(--shadow-hard); overflow: hidden; background: radial-gradient(80% 70% at 50% 40%, #3b448f 0%, #272c68 60%, #1a1e4a 100%); }
 .pt-view, .pt-view__3d, .pt-view__slice { position: absolute; inset: 0; }
 .pt-canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; }

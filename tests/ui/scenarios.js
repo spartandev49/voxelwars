@@ -9,7 +9,7 @@ export const SCENARIOS = [
   { name: 'quick_advanced', screen: 'quick', setup: async (ui) => { const b = ui.q('[data-adv="advanced"]'); if (b) b.click(); await ui.sleep(250); } },
   { name: 'placement', screen: 'placement', reset: (app) => { app.game.begin(app.game.newSetup('quick')); }, setup: async (ui) => { await ui.game.begin(ui.game.newSetup('quick')); ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes', budget: 3800 }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians', budget: 2600 }); await ui.sleep(40); } },
   { name: 'placement_puzzle', screen: 'placement', reset: (app) => { app.game.begin(app.game.newSetup('puzzle', { puzzle: 'spear_wall', mission: 'spear_wall', arena: { presetId: 'marathon', size: 'medium', seed: 11, env: {} }, rules: { budget: 1400, par: 1000 }, armies: { A: { faction: 'hellenes', placements: [], budget: 1400, roster: ['hoplite', 'peltast'] }, B: { faction: 'hellenes', placements: [], budget: null } } })); },
-    setup: async (ui) => { ui.game.tools.place(0, 'hoplite', 8); ui.game.tools.place(0, 'peltast', 3); await ui.sleep(300); const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); } },
+    setup: async (ui) => { ui.game.tools.place(0, 'hoplite', 8); ui.game.tools.place(0, 'peltast', 3); await ui.sleep(750); const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); await ui.sleep(250); } },
   { name: 'settings_graphics', screen: 'settings', params: { tab: 'graphics' } },
   { name: 'settings_gameplay', screen: 'settings', params: { tab: 'gameplay' } },
   { name: 'settings_audio', screen: 'settings', params: { tab: 'audio' } },

@@ -43,7 +43,12 @@ export class PartView {
     this.group.position.set(this.off[0], this.off[1], this.off[2]);
     this._buildFrame(); this.rebuild(); this.frame();
   }
-  frame() { this.view.zoom = 1; this.dist = Math.max(this.size[0], this.size[1] * 0.9, this.size[2]) * 1.9 + 7; this.dirty = true; }
+  frame() { this.view.zoom = 1; this.dirty = true; }
+  /** Camera distance that keeps the whole grid in view for the current canvas shape (tall parts, wide canvases). */
+  fitDist() {
+    const [sx, sy, sz] = this.size, r = 0.5 * Math.hypot(sx, sy, sz), vh = this.camera.fov * Math.PI / 360, hh = Math.atan(Math.tan(vh) * Math.max(0.2, this.camera.aspect));
+    return r * 1.05 / Math.sin(Math.min(vh, hh));
+  }
   _buildFrame() {
     const THREE = T(), [sx, sy, sz] = this.size;
     for (const o of this.walls) { this.wallGroup.remove(o.mesh); o.mesh.geometry.dispose(); o.mesh.material.dispose(); }
@@ -191,7 +196,7 @@ export class PartView {
   }
   render() {
     if (!this.ok || !this.part) return;
-    const v = this.view, d = (this.dist || 30) * v.zoom, cy = Math.cos(v.pitch), c = this.camera;
+    const v = this.view, d = this.fitDist() * v.zoom, cy = Math.cos(v.pitch), c = this.camera;
     c.position.set(Math.sin(v.yaw) * d * cy, Math.sin(v.pitch) * d, Math.cos(v.yaw) * d * cy); c.lookAt(0, 0, 0); c.updateMatrixWorld();
     this.sun.position.set(c.position.x * 0.6 + 6, c.position.y * 0.6 + 12, c.position.z * 0.6 + 4);
     // the three walls behind the grid (as seen from the camera) show their grid lines

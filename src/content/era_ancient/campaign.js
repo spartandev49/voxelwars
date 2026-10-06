@@ -19,7 +19,7 @@ const MUTATOR_ORDER = Object.keys(MUTATOR_STARS);
 
 /** Stable hash of everything that decides how a mission plays (not its copy): feasibility records are only valid for the data they were run on. */
 export function missionHash(m) {
-  const js = JSON.stringify({ a: m.arena, f: m.playerFaction, r: m.roster, b: m.budget, c: m.core, x: m.fixed, e: m.enemy, o: m.objective, t: m.timeLimit, ff: m.friendlyFire, g: m.godPowers, s: m.script, p: m.par }, (k, v) => (typeof v === 'function' ? undefined : v));
+  const js = JSON.stringify({ a: m.arena, f: m.playerFaction, r: m.roster, b: m.budget, c: m.core, x: m.fixed, e: m.enemy, o: m.objective, t: m.timeLimit, ff: m.friendlyFire, g: m.godPowers, s: m.script, p: m.par, rf: m.reference || undefined }, (k, v) => (typeof v === 'function' ? undefined : v));
   let h = 2166136261 >>> 0; for (let i = 0; i < js.length; i++) { h ^= js.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
   return h.toString(16).padStart(8, '0');
 }
@@ -180,7 +180,7 @@ function build(raw, i) {
     id: raw.id, index: i, act: raw.act, title: tx.title, blurb: tx.blurb, briefing: tx.briefing, victory: tx.victory, defeat: tx.defeat, mood: raw.mood,
     arena: raw.arena, playerFaction: raw.playerFaction, roster: raw.roster, budget: raw.budget, par: raw.par, core: raw.core || [], fixed: raw.fixed || [],
     enemy: raw.enemy, objective: Object.assign({ text: objectiveText(raw) }, raw.objective), timeLimit: raw.timeLimit, friendlyFire: !!raw.friendlyFire, godPowers: raw.godPowers !== false,
-    script: raw.script || null, teaching: !!raw.teaching, rules: raw.rules, stars,
+    script: raw.script || null, teaching: !!raw.teaching, rules: raw.rules, stars, reference: raw.reference || null,
     rewards: { title: tx.reward.title, blurb: tx.reward.blurb, unlockParts: raw.rewards.unlockParts, partNames: raw.rewards.unlockParts.map((k) => (REWARD_PARTS[k] ? REWARD_PARTS[k].name : k)), unlockMutators: raw.rewards.unlockMutators, codex: raw.rewards.codex },
     bots: { greedy: [0.25, 0.7], counter: [0.6, 0.9], turtle: [0.1, 0.6] },
     units: { A: raw.unitsA, B: enemyCount },
@@ -264,6 +264,8 @@ export const campaignApi = {
     return { stars: ev.stars, best: now, improved: now > had, totalBefore: tb, totalAfter: ta, mutators: campaignApi.newlyUnlocked(tb, ta), parts: ev.stars >= 1 && had < 1 ? m.rewards.unlockParts.slice() : [], title: ev.stars >= 1 ? m.rewards.title : null, firstClear: ev.stars >= 1 && had < 1 };
   },
   arena: missionArena, rules: missionRules, setup: setupMission, forces: enemyForces, objective: objectiveSpec, marker: markerOf, summaryOf: battleSummary,
+  /** The suggested army of a mission (a complete legal deployment, core units included, [{defId, n, order?}]) or null: what the 'counter' reference player of docs/campaign_report.md fields. */
+  reference: (mission) => { const m = asMission(mission); return m && m.reference ? m.reference.map((g) => Object.assign({}, g)) : null; },
   teachingBeats: (id) => (BY_ID[id] && BY_ID[id].teaching ? TEACHING_BEATS : []),
   teachingSkip: TEACHING_SKIP,
 };

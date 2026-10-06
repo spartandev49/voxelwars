@@ -117,7 +117,7 @@ export function mount(root, ctx, params = {}) {
   const left = K.tablet(null, h('div', { class: 'pt-left__body' }, h('div', { class: 'vw-label', text: PT.parts }), partList, options, actions), { id: 'pt-left', class: 'pt-left', variant: 'glass', tight: true, headless: true });
   const toolbar = h('div', { class: 'pt-toolbar' }, toolGrid, viewSeg, orbitBtn);
   const status = h('div', { class: 'pt-status vw-small', id: 'pt-status', role: 'status', 'aria-live': 'off' }), hint = h('div', { class: 'pt-hint vw-micro', id: 'pt-hint' });
-  const centre = h('div', { class: 'pt-centre' }, toolbar, sliceBar, selTools, h('div', { class: 'pt-viewwrap' }, viewHost), h('div', { class: 'pt-statusrow' }, status, hint));
+  const centre = h('div', { class: 'pt-centre' }, toolbar, sliceBar, h('div', { class: 'pt-viewwrap' }, viewHost, selTools), h('div', { class: 'pt-statusrow' }, status, hint));
 
   // ---------------------------------------------------------------- right: colour, palette, mini preview
   const swatchBox = h('div', { class: 'ws-swatches pt-swatches', role: 'radiogroup', 'aria-label': PT.swatches, id: 'pt-swatches' }), swatchBtns = [];
@@ -156,7 +156,7 @@ export function mount(root, ctx, params = {}) {
     S.tool = id; S.anchor = null; clearPreview();
     for (const [k, b] of Object.entries(toolBtns)) { b.setAttribute('aria-checked', String(k === id)); b.classList.toggle('is-on', k === id); b.tabIndex = k === id ? 0 : -1; }
     hollowChip.classList.toggle('vw-hide', id !== 'box'); fillSeg.classList.toggle('vw-hide', id !== 'fill');
-    sizeSeg.classList.toggle('vw-hide', ['fill', 'box', 'picker', 'select'].indexOf(id) >= 0);
+    sizeBox.classList.toggle('vw-hide', ['fill', 'box', 'picker', 'select'].indexOf(id) >= 0);
     selTools.classList.toggle('vw-hide', id !== 'select' || !part().sel);
     hint.textContent = PT.toolTip[id]; refreshHover();
   }

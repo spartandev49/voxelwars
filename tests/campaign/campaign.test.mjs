@@ -183,6 +183,13 @@ await test('validateMission (the Mission contract of the gate): every shipped mi
   NC('stars', (c) => { c.stars = c.stars.slice(0, 2); }, /three stars/); NC('star test', (c) => { c.stars = c.stars.map((s, i) => (i === 2 ? { id: s.id, text: s.text } : s)); }, /star 3 needs a test/);
   NC('unlock key', (c) => { c.rewards.unlockParts = ['golden_toga_pack']; }, /unknown unlock key/); NC('mutator', (c) => { c.rewards.unlockMutators = ['chaos_goat']; }, /unknown mutator/); NC('bands', (c) => { c.bots.counter = [0.9, 0.5]; }, /band/);
   NC('time limit', (c) => { c.timeLimit = 0; }, /timeLimit/); NC('budget', (c) => { c.budget = 5; }, /budget/); NC('id', (c) => { c.id = 'Bad Id'; }, /lower_snake_case/); NC('act', (c) => { c.act = 7; }, /act/);
+  // the authored reference deployment (mission.reference): a complete legal army; each rule has a negative control
+  const okRef = (c) => { c.reference = [{ defId: 'spartan', n: 8 }, { defId: 'hoplite', n: 18 }, { defId: 'cretan_archer', n: 20 }, { defId: 'peltast', n: 6 }]; };      // 1,520 + 1,800 + 1,800 + 510 = 5,630 of 6,000
+  { const c = JSON.parse(JSON.stringify(M('thermopylae_snack'))); c.stars = M('thermopylae_snack').stars; okRef(c); assert.deepEqual(validateMission(c, { mutatorStars: MUTATOR_STARS }), [], 'a legal reference validates'); }
+  NC('reference unit', (c) => { okRef(c); c.reference[1].defId = 'laser_cow'; }, /reference unit laser_cow/); NC('reference roster', (c) => { okRef(c); c.reference.push({ defId: 'xerxes', n: 1 }); }, /reference unit xerxes is not in the roster/);
+  NC('reference core', (c) => { okRef(c); c.reference[0].n = 3; }, /must include the core unit spartan/); NC('reference over budget', (c) => { okRef(c); c.reference[1].n = 60; }, /more than the budget/);
+  NC('reference too small', (c) => { okRef(c); c.reference = [{ defId: 'spartan', n: 8 }, { defId: 'hoplite', n: 2 }]; }, /spends only/); NC('reference order', (c) => { okRef(c); c.reference[1].order = 'dance'; }, /order of hoplite/);
+  NC('reference empty', (c) => { c.reference = []; }, /non-empty list/); NC('reference count', (c) => { okRef(c); c.reference[1].n = 0; }, /n < 1/);
   assert.deepEqual(validateMission(null), ['mission is not an object']);
 });
 
