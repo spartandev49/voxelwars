@@ -44,14 +44,23 @@ try {
   if (st.s === 'placement') { await page.getByText('FIGHT', { exact: true }).first().click(); await page.waitForTimeout(1500); st = await state(); log('after FIGHT: ' + JSON.stringify(st)); }
   await page.evaluate(() => window.__vw.game.setSpeed(4));
   const t0 = Date.now(); let ended = false, n = 0;
-  while ((Date.now() - t0) / 1000 < maxWait) { await page.waitForTimeout(3000); st = await state(); n++; if (n === 3) await shot('03_battle'); if (n % 5 === 0) log('t+' + Math.round((Date.now() - t0) / 1000) + 's ' + JSON.stringify(st)); if (st.s === 'ended') { ended = true; break; } }
+  // the UI path is real (clicks); only the sim is fast-forwarded in slices so the check does not depend on how many frames software GL manages per second
+  while ((Date.now() - t0) / 1000 < maxWait) {
+    await page.evaluate(() => { const g = window.__vw.game; if (g.state === 'running' || g.state === 'countdown') g.world.step(g.state === 'countdown' ? 1 : 90); });
+    await page.waitForTimeout(400); st = await state(); n++;
+    if (n === 3) await shot('03_battle'); if (n % 10 === 0) log('t+' + Math.round((Date.now() - t0) / 1000) + 's ' + JSON.stringify(st));
+    if (st.s === 'ended') { ended = true; break; }
+  }
   if (!ended) fail = 'battle did not end within ' + maxWait + 's (' + JSON.stringify(st) + ')';
   else {
     await page.waitForTimeout(4500); await shot('04_results'); log('results screen: ' + (await state()).scr);
     const hasResults = await page.evaluate(() => !!document.querySelector('.vw-screen[data-screen="results"]'));
     if (!hasResults) fail = 'results overlay did not appear';
     else {
-      await page.locator('#res-rematch').click({ timeout: 20000 }).catch(() => { fail = 'no rematch button'; });          // by id: a text match found jokes that contain "again" await page.waitForTimeout(2500); st = await state(); log('after rematch: ' + JSON.stringify(st));
+      // by id: a text match found jokes that contain "again"
+      await page.locator('#res-rematch').click({ timeout: 20000 }).catch(() => { fail = 'no rematch button'; });
+      for (let i = 0; i < 20; i++) { await page.waitForTimeout(500); st = await state(); if (st.s !== 'ended') break; }
+      log('after rematch: ' + JSON.stringify(st));
       if (!fail && !['countdown', 'running', 'placement'].includes(st.s)) fail = 'rematch did not restart the battle: ' + st.s;
       await shot('05_rematch');
     }

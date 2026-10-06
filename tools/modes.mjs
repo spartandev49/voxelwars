@@ -227,6 +227,12 @@ try {
     await ev(() => window.__vw.game.exitToMenu());
   }
 
+  if (ONLY.includes('timing')) {
+    log('--- how long a battle takes to (re)start');
+    const t = await ev(async () => { const v = window.__vw, g = v.game, out = []; for (let i = 0; i < 4; i++) { const s = g.newSetup('quick', { rules: { budget: 3000 } }); const t0 = performance.now(); await g.begin(s); const t1 = performance.now(); g.autoFill(0, {}); g.autoFill(1, {}); const t2 = performance.now(); out.push({ begin: Math.round(t1 - t0), fill: Math.round(t2 - t1) }); } return out; });
+    log('begin / autofill ms: ' + JSON.stringify(t));
+  }
+
   if (ONLY.includes('daily')) {
     log('--- daily: the army of the day is the same twice');
     await ev(() => window.__vw.goto('daily')); await page.waitForTimeout(800);
