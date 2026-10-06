@@ -361,7 +361,7 @@ export function mount(root, ctx, params) {
   // Game emits 'ghost' {valid, reason, code?} whenever the placement ghost moves over the ground: show WHY it cannot be placed next to the cursor
   // (HUMOR's PLACEMENT_REASONS by `code` when the game supplies one, else the game's own reason text).
   let ghostMsg = null, ghostShown = false; const ptr = { x: 0, y: 0, ui: true };
-  const UI_SEL = '.vw-pl__top, .vw-pl__pal, .vw-pl__tools, .vw-pl__bottom, .vw-pl__hint, .vw-pl__prev, .vw-modal, .vw-toasts';
+  const UI_SEL = '.vw-pl__top, .vw-pl__pal, .vw-pl__tools, .vw-pl__bottom, .vw-pl__scout-strip, .vw-pl__hint, .vw-pl__prev, .vw-modal, .vw-toasts';
   const reasonText = (p) => (p && p.code && T.reasons && T.reasons[p.code]) || (p && p.reason) || T.invalid;
   function paintGhostTip() {
     if (ghostMsg && !ptr.ui) { K.showTip({ x: ptr.x, y: ptr.y, text: ghostMsg, kind: 'bad' }); ghostShown = true; }

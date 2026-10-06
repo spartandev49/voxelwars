@@ -232,7 +232,7 @@ export function mount(root, ctx, params = {}) {
   function toastDropped() { if (doc.notes.length) { K.toast(WS.dropped(doc.notes.join(', ')), { kind: 'warn', sound: false }); doc.notes = []; } }
 
   // ---------------------------------------------------------------- save / roster / battle / share
-  let thumbs = null;
+  let thumbs = null; const thumbMemo = new Map();     // thumbnails of roster items saved without one (imports from older builds): rendered on demand, kept in memory only
   const thumbFor = (item) => { if (!thumbs) thumbs = new ThumbMaker({ animator: guard(() => ctx.game.animator, undefined), palette: () => guard(() => ctx.settings.get('palette'), 'classic') }); const c = C.compileCustom(item); return thumbs.render(c.compiled.model, c.eff, 0); };
   cleanups.push(() => { if (thumbs) thumbs.destroy(); });
   async function showProblems(errors) {
@@ -278,7 +278,7 @@ export function mount(root, ctx, params = {}) {
   async function confirmDiscard(ask) { if (!doc.dirty) return true; return K.ask({ title: ask.title, text: ask.text, yes: ask.yes, no: ask.no, danger: false }); }
   async function showLibrary() {
     await openLibrary({
-      ctx, list: () => roster.list(ctx), thumbFor: (it) => { const u = guard(() => thumbFor(it), ''); if (u) roster.put(ctx, Object.assign({}, it, { thumb: u })); return u; },
+      ctx, list: () => roster.list(ctx), thumbFor: (it) => { const key = it.id + ':' + (it.savedAt || 0); if (!thumbMemo.has(key)) thumbMemo.set(key, guard(() => thumbFor(it), '')); return thumbMemo.get(key); },
       edit: async (it) => { if (await confirmDiscard(WS.discardAsk)) loadItem(it); },
       duplicate: (it) => { const copy = plain(it); copy.id = C.freshId(rng, new Set(roster.list(ctx).map((x) => x.id))); copy.name = (it.name + ' II').slice(0, C.NAME_MAX); copy.blueprint = Object.assign({}, copy.blueprint, { name: copy.name }); copy.savedAt = Date.now(); const put = roster.put(ctx, copy); if (!put.ok) K.toast(WS.libraryFull, { kind: 'error' }); else K.toast(WS.duplicated(copy.name), { kind: 'success' }); },
       rename: async (it) => { const n = await askName(WS.renameTitle, it.name, WS.renameOk); if (n) { roster.put(ctx, Object.assign({}, it, { name: n, blueprint: Object.assign({}, it.blueprint, { name: n }) })); if (doc.cs.id === it.id) doc.setName(n); } },
@@ -335,7 +335,6 @@ export function mount(root, ctx, params = {}) {
       if (yes) { doc.load(askedDraft.cs, { saved: false }); doc.savedRef = askedDraft.dirty ? null : doc.cs; nameInput.value = doc.cs.name; lastRev = ''; schedule(); } else draftCh.clear();
     }, 250);
   }
-  if (params.part) { /* the painter returns with a part focus only for its own use */ }
   // a test hook for the browser harness (data only)
   guard(() => { window.__ws = { doc, get info() { return info; }, stage, env, flush() { if (raf) { cancelAnimationFrame(raf); raf = 0; } refresh(); } }; }, null);
   return {

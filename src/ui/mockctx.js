@@ -102,7 +102,7 @@ const DEFAULT_KEYS = { pan_up: 'KeyW', pan_down: 'KeyS', pan_left: 'KeyA', pan_r
 export const DEFAULT_SETTINGS = {
   quality: 'marble', autoScale: true, resScale: 1, shadows: true, bloom: true, clouds: true, fpsCounter: false, gore: 'red', corpses: 'fade', camSens: 1, edgeScroll: true, autoPauseBlur: true,
   'vol.master': 0.8, 'vol.music': 0.6, 'vol.sfx': 0.8, 'vol.ui': 0.7, 'vol.announcer': 0.9, muted: false, tts: false, subtitles: true, reduceMotion: false, shake: 1, flashLimiter: true, uiScale: 1, palette: 'classic', highContrastUI: false,
-  keys: {}, beacon: false, seenHints: {},
+  keys: {}, beacon: false, seenHints: {}, cinematicStart: false, choreoIntro: true, choreoFinish: true, choreoOrbit: true,
 };
 
 /* ------------------------------------------------------------------ small helpers */

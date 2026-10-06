@@ -79,3 +79,9 @@ Content assembly names (`MODELS`, `BUILDERS`, `UNIT_TEXT`, `setCompiler`) docume
 1. `ctx.save.importAll(fileOrText)` RESOLVES `{ok:true, ...}` on success and REJECTS with `Error(message)` on failure (settings.js and every UI caller treat resolve as success). The pure `save/transfer.importAll` returns `{ok, errors[]}` and never throws. app_contract is to say so.
 2. The diagnostics `db` beacon is CUT: declaring `db`/`user` capabilities would make the artifact less shareable and the in-game Diagnostics screen (Copy button) already carries the same data. Spec §14 / verification B13 / Q9 manual read-back stand as "copy and paste".
 3. Kill-cam is a 4 s slow-motion dolly (not a replay). `Take Command` sprint maps to full stick magnitude until SIM adds a flag.
+
+## R4. Release decisions (COORD)
+1. B12 (claude.hot snapshot) is CUT; B13 (beacon) is CUT (R3.2); B10 budget raised to 5 MB for the packed fragment.
+2. The artifact fragment ships its code packed (deflate + base64 in `<script type="text/plain" id="vw-pack">`, inflated at load with DecompressionStream). Reason found by bisecting the publisher: its page scanner flagged the plain script as a PR-review page. The standalone `dist/voxelwars.html` stays unpacked.
+3. VFX sprites (Kenney particles) are not shipped (the renderer uses voxel particles); their entries are removed from the shipped credits.
+4. R10 (context loss/restore) is handled in main.js (pause + toast + resume) and verified with WEBGL_lose_context in Chromium.

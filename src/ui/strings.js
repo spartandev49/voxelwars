@@ -134,6 +134,11 @@ export const T = {
       gore: 'Gore style', goreHint: 'Cartoon either way.', corpses: 'Corpses', corpsesHint: 'What happens to fallen soldiers.',
       camSens: 'Camera sensitivity', camSensHint: 'Orbit, pan and zoom speed.', edgeScroll: 'Edge scrolling', edgeScrollHint: 'Move the mouse to a screen edge to pan the camera.',
       autoPause: 'Pause when the tab loses focus', autoPauseHint: 'So a phone call never costs you a battle.',
+      cinematics: 'Cinematics', cinematicsNote: 'Camera staging around the fight. Reduce Motion (Accessibility) always switches these to calm, static versions.',
+      choreoIntro: 'Battle intro', choreoIntroHint: 'A stand-off before the fight: an establishing shot of both lines, waving banners and Brutus clearing his throat. Space or a tap skips it.',
+      choreoFinish: 'Victory staging', choreoFinishHint: 'Winners cheer, losers rout or sit down, and the last kill plays in slow motion.',
+      choreoOrbit: 'Results camera orbit', choreoOrbitHint: 'A slow orbit around the field behind the results panel.',
+      cinematicStart: 'Start battles in the Cinematic camera', cinematicStartHint: 'Begin each fight in the roaming cinematic view instead of the usual orbit. Press C to switch any time.',
     },
     audio: {
       master: 'Master', music: 'Music', sfx: 'Effects', ui: 'Interface', announcer: 'Announcer', test: 'Test', playing: 'Playing...',

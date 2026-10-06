@@ -53,6 +53,7 @@
    ===================================================================================================== */
 import { icon as makeIcon, ICON_NAMES } from './icons.js';
 import { ROLE_ICON, ROLE_LABEL, ROLE_CHIP, factionColor, counterHints, bindContent } from './unitinfo.js';
+import { T as KT } from './strings.js';
 
 export const icon = makeIcon;
 export { ICON_NAMES };
@@ -899,6 +900,7 @@ export async function copyText(text, o) {
     else if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(text); ok = true; }
   } catch (e) { ok = false; }
   if (ok) { toast(o.done || 'Copied to clipboard.', { kind: 'success' }); return true; }
-  await textModal({ title: o.title || 'Copy this text', text, readOnly: true, note: 'Your browser blocked automatic copying. Select the text below and press Ctrl/Cmd+C.' });
+  const f = (KT.common && KT.common.clipboardFail) || null;   // HUMOR ERRORS.clipboard
+  await textModal({ title: o.title || (f && f.title) || 'Copy this text', text, readOnly: true, note: (f && f.body) || 'Your browser blocked automatic copying. Select the text below and press Ctrl/Cmd+C.' });
   return false;
 }

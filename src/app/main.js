@@ -134,6 +134,10 @@ async function start() {
   document.documentElement.style.fontSize = (16 * (settings.get('uiScale') || 1)) + 'px';
   if (settings.get('reduceMotion')) document.documentElement.classList.add('vw-reduce-motion');
   window.addEventListener('resize', () => { engine.resize(); game.onResize(); });
+  // WebGL context loss (driver reset, tab memory pressure): pause, tell the player, and resume when the browser restores the context (three re-uploads its resources)
+  const glc = engine.renderer.domElement;
+  glc.addEventListener('webglcontextlost', (e) => { e.preventDefault(); loop.stop(); diag.error('webgl', 'context lost'); router.toast('The graphics card hiccuped. Waiting for it to come back...', { kind: 'error' }); });
+  glc.addEventListener('webglcontextrestored', () => { engine.resize(); game.onResize(); loop.start(); router.toast('Graphics are back. Carry on.', { kind: 'success' }); });
 
   // the base screen decides what the 3D canvas does: live diorama behind the title, nothing behind opaque menus, the scene in battle/editors
   router.onChange((id) => { const mod = router._mod(id); game.setCanvasMode((mod && mod.meta && mod.meta.canvas) || 'scene'); });

@@ -58,16 +58,80 @@ check('placement: FIGHT with an empty side warns instead of starting', await ev(
 await ev(() => { window.__ui.game.log.length = 0; window.__ui.game.tools.autoFill(0, { budget: 2000 }); window.__ui.game.tools.autoFill(1, { budget: 2000 }); }); await wait(150);
 await p.click('#pl-fight'); await wait(150);
 check('placement: FIGHT starts the battle when both sides have soldiers', await ev(() => window.__ui.game.log.includes('fight')));
-// invalid-position tooltip via the Game event (placement_hover) and the My Soldiers group
+// invalid-position tooltip via the real Game event: 'ghost' {valid, reason, code?}; shown at the cursor only while it is over the battlefield
 await L.run('placement'); await wait(300);
-await ev(() => { const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); window.__ui.game.emit('placement_hover', { reason: "In the enemy's zone", sx: 500, sy: 300 }); }); await wait(120);
-check('placement: invalid positions show a red cursor tooltip with the reason', await ev(() => { const t = document.querySelector('.vw-tip.is-on.vw-tip--bad'); return !!t && t.textContent === "In the enemy's zone"; }));
-await ev(() => window.__ui.game.emit('placement_hover', { reason: null })); await wait(120);
+await ev(() => { const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); }); await wait(100);
+await p.mouse.move(640, 140); await wait(60);
+await ev(() => window.__ui.game.emit('ghost', { valid: false, reason: "In the enemy's zone" })); await wait(120);
+check('placement: invalid positions show a red cursor tooltip with the reason (ghost event)', await ev(() => { const t = document.querySelector('.vw-tip.is-on.vw-tip--bad'); return !!t && t.textContent === "In the enemy's zone"; }));
+await p.mouse.move(150, 300); await wait(100);
+check('placement: the tooltip hides while the pointer is over a panel', await ev(() => !document.querySelector('.vw-tip.is-on')));
+await p.mouse.move(660, 140); await wait(100);
+check('placement: and returns over the battlefield', await ev(() => !!document.querySelector('.vw-tip.is-on.vw-tip--bad')));
+await ev(() => window.__ui.game.emit('ghost', { valid: false, reason: 'Not walkable', code: 'lava' })); await wait(100);
+check('placement: HUMOR placement reasons are used when the game sends a reason code', await ev(() => { const t = document.querySelector('.vw-tip.is-on'); return !!t && /lava/i.test(t.textContent) && t.textContent !== 'Not walkable'; }));
+await ev(() => window.__ui.game.emit('ghost', { valid: true, reason: null })); await wait(120);
 check('placement: the tooltip goes away when the position is valid again', await ev(() => !document.querySelector('.vw-tip.is-on')));
 await ev(() => document.getElementById('pl-faction-custom').click()); await wait(150);
 check('placement: "My Soldiers" lists the custom soldiers with their cost', await ev(() => document.querySelectorAll('#pl-cards .vw-card').length === 3 && /Chadius/.test(document.getElementById('pl-cards').textContent)));
 await ev(() => document.querySelector('#pl-cards .vw-card').click()); await wait(100);
 check('placement: picking a custom soldier sets the brush to its id', await ev(() => window.__ui.game.tools.brush().defId === 'cs_chad'));
+
+/* ---------------- army presets against the REAL Game/save API: save (team filtered), load (budget/cap checked, mirrored to the other team), share codes ---------------- */
+await L.run('placement'); await wait(300);
+await ev(() => { const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); const G = window.__ui.game; G.tools.clear(); G.tools.place(0, 'hoplite', 10); G.tools.place(0, 'cretan_archer', 6); G.tools.place(1, 'immortal', 4); }); await wait(150);
+const saved = await ev(async () => { const G = window.__ui.game; const d = G.tools.saveArmy('x'); return { teams: d.records.map((r) => r.team).join(''), persisted: window.__ui.app.save.armies.list().some((a) => a.name === 'x') }; });
+check('army: Game.tools.saveArmy returns both teams and persists nothing (the screen persists)', /0/.test(saved.teams) && /1/.test(saved.teams) && !saved.persisted, JSON.stringify(saved));
+await p.click('#pl-save-army'); await wait(350);
+await p.fill('#pl-preset-name', 'Mixed Bag'); await p.click('#pl-preset-ok'); await wait(350);
+const item = await ev(() => window.__ui.app.save.armies.list().find((a) => a.name === 'Mixed Bag'));
+check('army: the saved preset holds ONLY the selected team (A) with n, cost, team, records', !!item && item.team === 0 && item.n === 16 && item.cost > 0 && item.records.every((r) => r.team === 0) && item.records.length === 2, JSON.stringify(item && { team: item.team, n: item.n, recs: item.records.length }));
+check('army: saving shows the HUMOR confirmation', await ev(() => /Army saved/.test(Array.from(document.querySelectorAll('.vw-toast')).map((t) => t.textContent).join(' '))));
+// same name again asks before replacing
+await p.click('#pl-save-army'); await wait(350);
+await p.fill('#pl-preset-name', 'mixed bag'); await p.click('#pl-preset-ok'); await wait(350);
+check('army: saving under an existing name asks to replace (in-page modal)', await ev(() => /Replace/.test(document.querySelector('.vw-modal') ? document.querySelector('.vw-modal').textContent : '')));
+await p.keyboard.press('Escape'); await wait(450);
+check('army: cancelling the replace keeps a single "Mixed Bag"', (await ev(() => window.__ui.app.save.armies.list().filter((a) => /mixed bag/i.test(a.name)).length)) === 1);
+// load onto team A replaces A's army
+await ev(() => { window.__ui.game.tools.clear(0); }); await wait(80);
+await p.click('#pl-load-army'); await wait(350);
+await p.click('#pl-load-' + item.id); await wait(450);
+check('army: Load army restores the saved soldiers on team A and leaves team B alone', await ev(() => window.__ui.game.info.counts(0).total === 16 && window.__ui.game.info.counts(1).total === 4));
+// load onto team B: positions are mirrored through the arena centre
+await p.click('#pl-team [data-value="1"]'); await wait(150);
+await p.click('#pl-load-army'); await wait(350);
+await p.click('#pl-load-' + item.id); await wait(450);
+const mir = await ev(() => { const G = window.__ui.game; return { b: G.info.counts(1).total, a: G.info.counts(0).total, bx: G._p[1].map((u) => u.x).reduce((s, x) => s + x, 0) / Math.max(1, G._p[1].length), ax: G._p[0].map((u) => u.x).reduce((s, x) => s + x, 0) / Math.max(1, G._p[0].length) }; });
+check('army: loading an A army onto B replaces B and mirrors it to the other side of the arena', mir.b === 16 && mir.a === 16 && mir.bx > 0 && mir.ax < 0, JSON.stringify(mir));
+await p.click('#pl-team [data-value="0"]'); await wait(100);
+// over budget refused with the numbers
+await ev(() => window.__ui.app.save.armies.put({ id: 'army_huge', name: 'Too Big', v: 1, team: 0, records: [{ team: 0, defId: 'hoplite', positions: Array.from({ length: 120 }, (_, i) => [-30 + (i % 10), i / 10]), heading: 0, order: 'advance' }], n: 120, cost: 12000, saved: 1 }));
+await ev(() => { window.__ui.game.tools.clear(0); window.__ui.game.tools.place(0, 'hoplite', 3); }); await wait(100);
+await p.click('#pl-load-army'); await wait(350);
+check('army: an army over the budget is marked in the list', await ev(() => !!document.querySelector('#pl-preset-army_huge .vw-chip--danger')));
+await p.click('#pl-load-army_huge'); await wait(450);
+check('army: loading an over-budget army is refused with a plain-English reason and changes nothing', await ev(() => window.__ui.game.info.counts(0).total === 3 && /costs 12,000 drachmae/.test(Array.from(document.querySelectorAll('.vw-toast')).map((t) => t.textContent).join(' '))));
+// delete from the list asks first
+await p.click('#pl-load-army'); await wait(350);
+await p.click('#pl-del-army_huge'); await wait(350);
+check('army: deleting a preset asks first (in-page modal)', await ev(() => !!document.querySelector('.vw-modal + .vw-modal, .vw-modal-stack .vw-modal') || document.querySelectorAll('.vw-modal').length >= 1));
+await ev(() => Array.from(document.querySelectorAll('.vw-modal')).pop().querySelector('.vw-btn--danger, .vw-modal__foot .vw-btn:last-child').click()); await wait(450);
+check('army: confirming removes it from ctx.save.armies', await ev(() => !window.__ui.app.save.armies.get('army_huge')));
+await p.keyboard.press('Escape'); await wait(450);
+// share code round trip with the real encodeShare / importShare
+await ev(() => { window.__ui.app.calls.clipboard.length = 0; document.getElementById('pl-export-army').click(); }); await wait(900);
+const code = await ev(() => window.__ui.app.calls.clipboard[window.__ui.app.calls.clipboard.length - 1] || '');
+check('army: Export army code copies a real VW1.army.<data>.<check> code', /^VW1\.army\.[A-Za-z0-9_-]+\.[0-9a-f]{8}$/.test(code), code.slice(0, 40));
+await ev(() => { window.__ui.game.tools.clear(0); }); await wait(80);
+await p.click('#pl-import-army'); await wait(350);
+await p.fill('.vw-modal textarea', 'VW1.army.AAAA.00000000'); await p.click('#vw-textmodal-ok'); await wait(350);
+check('army: a damaged code shows a plain-English error and keeps the dialog open', await ev(() => !!document.querySelector('.vw-modal [role=alert]:not(.vw-hide)') && /damaged|does not look|VW1/.test(document.querySelector('.vw-modal [role=alert]').textContent)));
+await p.fill('.vw-modal textarea', 'VW1.soldier.AAAA.00000000'); await p.click('#vw-textmodal-ok'); await wait(350);
+check('army: a code for another type is named as such', await ev(() => /army|soldier|damaged/.test(document.querySelector('.vw-modal [role=alert]').textContent)));
+await p.fill('.vw-modal textarea', code); await p.click('#vw-textmodal-ok'); await wait(700);
+check('army: importing the exported code loads the army onto the current team and keeps it in the saved list', await ev(() => window.__ui.game.info.counts(0).total === 16 && window.__ui.app.save.armies.list().length >= 3), JSON.stringify(await ev(() => window.__ui.game.info.counts(0).total)));
+
 
 /* ---------------- quick: copy seed, rules reach the Setup ---------------- */
 await L.run('quick'); await wait(300);
@@ -116,7 +180,7 @@ check('UI7: confirming wipes progress but keeps arenas/soldiers/armies', await e
 await ev(() => { window.__ui.app.calls.downloads.length = 0; document.getElementById('set-export').click(); }); await wait(300);
 check('P4: Export all downloads a file via ctx.platform.downloads', (await ev(() => window.__ui.app.calls.downloads.length)) === 1 && /voxelwars-save-\d{4}-\d{2}-\d{2}\.json/.test(await ev(() => window.__ui.app.calls.downloads[0].filename)));
 await ev(() => { window.__ui.app.ctx.platform.downloads = null; document.getElementById('set-export').click(); }); await wait(350);
-check('P4: with downloads missing, Export all falls back to a copyable text box', await ev(() => { const ta = document.querySelector('.vw-modal textarea'); return !!ta && ta.readOnly && ta.value.includes('"v":1'); }));
+check('P4: with downloads missing, Export all falls back to a copyable text box', await ev(() => { const ta = document.querySelector('.vw-modal textarea'); return !!ta && ta.readOnly && /^VW1\.save\./.test(ta.value); }));
 await p.keyboard.press('Escape'); await wait(450);
 await p.click('#set-import-paste'); await wait(350);
 await p.fill('.vw-modal textarea', 'not json at all'); await p.click('#vw-textmodal-ok'); await wait(200);
@@ -133,6 +197,7 @@ check('P1: "Not saving" indicator when storage is blocked', await ev(() => /Not 
 await ev(() => window.__ui.app.save.setStatus('full'));
 await L.run('settings_data'); await wait(150);
 check('P2: storage full is flagged with advice', await ev(() => /full/i.test(document.getElementById('set-storage').textContent)));
+check('P2: storage full offers "Try saving again", which clears the warning when space is back', await ev(async () => { const b = document.getElementById('set-retry-save'); if (!b) return false; b.click(); await new Promise((r) => setTimeout(r, 1300)); return /Saving to this device/i.test(document.getElementById('set-storage').textContent); }));
 
 /* ---------------- UI11 codex ---------------- */
 await L.run('codex_units'); await wait(250);
@@ -172,10 +237,13 @@ await p.fill('#cr-filter', 'Kevin MacLeod'); await wait(150);
 check('credits: the filter narrows the ledger', await ev(() => document.querySelectorAll('#cr-ledger li:not([hidden])').length > 0 && document.querySelectorAll('#cr-ledger li[hidden]').length > 20));
 
 /* ---------------- UI15 diagnostics ---------------- */
-await ev(() => { const d = window.__ui.ctx.diag; const real = d.snapshot; d.snapshot = () => Object.assign(real(), { csp: ["Refused to load the script 'https://evil.example/x.js' because it violates the Content Security Policy"] }); });
+await ev(() => { const d = window.__ui.ctx.diag; const real = d.snapshot; d.snapshot = () => Object.assign(real(), { csp: [{ blocked: 'https://evil.example/x.js', directive: 'script-src', t: 5210 }], errors: [{ kind: 'error', msg: 'boom @main.js:3', t: 4100 }] }); });
 await L.run('diagnostics'); await wait(250);
 const dg = await ev(() => document.getElementById('vw-root').textContent);
-for (const [name, re] of [['WebGL2', /WebGL 2/], ['quality tier', /Quality tier/], ['FPS', /FPS/], ['draw calls', /Draw calls/], ['audio load path embedded', /embedded/i], ['audio load path synth', /synth/i], ['storage', /Storage/], ['CSP violation text', /Refused to load the script/], ['CSP count', /1 policy violation/]]) check('UI15: diagnostics reports ' + name, re.test(dg), dg.slice(0, 200));
+for (const [name, re] of [['WebGL2', /WebGL 2/], ['quality tier', /Quality tier/], ['FPS', /FPS/], ['draw calls', /Draw calls/], ['audio load path embedded', /embedded/i], ['audio load path synth', /synth/i], ['storage', /Storage/], ['CSP violation text', /script-src blocked https:\/\/evil\.example\/x\.js/], ['CSP count', /1 policy violation/], ['an error line', /boom @main\.js:3/], ['the sound path tally', /Where sounds came from/], ['a failed asset with its reason', /pickup_coin: HTTP 404/]]) check('UI15: diagnostics reports ' + name, re.test(dg), dg.slice(0, 200));
+check('UI15: the flat real snapshot becomes sections (Overview, Graphics, Performance, Audio, Storage) and the 70 per-asset paths are NOT flattened into rows', await ev(() => ['dg-overview', 'dg-webgl', 'dg-perf', 'dg-audio', 'dg-storage', 'dg-errors', 'dg-log'].every((id) => !!document.getElementById(id)) && document.querySelectorAll('#vw-root dt').length < 70));
+check('UI15: the per-asset list is a collapsed <details> that opens on demand', await ev(() => { const d = document.getElementById('dg-assets'); if (!d || d.open) return false; d.open = true; return /hit_blade_1: embedded/.test(d.textContent) && /synth:fanfare: synth/.test(d.textContent); }));
+check('UI15: an error count chip appears in the summary', await ev(() => /1 error/.test(document.querySelector('.vw-diag__sum').textContent)));
 await ev(() => { window.__ui.app.calls.clipboard.length = 0; document.getElementById('dg-copy').click(); }); await wait(250);
 check('UI15: Copy report puts the full JSON snapshot on the clipboard', await ev(() => { const c = window.__ui.app.calls.clipboard[0] || ''; return /VOXELWARS diagnostics/.test(c) && /"drawCalls": 126/.test(c) && /evil\.example/.test(c); }));
 await ev(() => { document.getElementById('dg-live').click(); }); await wait(1300);

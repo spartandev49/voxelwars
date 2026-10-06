@@ -50,7 +50,7 @@ export async function run({ page, shot, step, check, sleep }) {
   await page.click('#ws-cat-main'); await page.click('#ws-part-mains-gladius'); await sleep(200);
   await page.click('#ws-rtabs-abilities'); await sleep(150);
   await page.click('#ws-ab-kick'); await page.click('#ws-ab-rage'); await sleep(200); s = await wsState(page); check(JSON.stringify(s.abilities) === '["kick","rage"]', 'two abilities chosen: ' + JSON.stringify(s.abilities));
-  await page.click('#ws-ab-net'); await sleep(150); s = await wsState(page); check(s.abilities.length === 2, 'a third ability is refused');
+  await page.click('#ws-ab-net', { force: true }); await sleep(150); s = await wsState(page); check(s.abilities.length === 2, 'a third ability is refused');
   const hp = await page.getAttribute('#ws-ab-heal_pulse', 'aria-disabled'); check(hp === 'true', 'heal_pulse is greyed out with a gladius');
   await page.click('#ws-ab-kick'); await sleep(100); await page.click('#ws-cat-main'); await page.click('#ws-part-mains-longbow'); await sleep(250);
   s = await wsState(page); check(s.abilities.length === 1 && s.abilities[0] === 'rage' || s.abilities.length === 0, 'a bow cannot rage: abilities dropped ' + JSON.stringify(s.abilities));

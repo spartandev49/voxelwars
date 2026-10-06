@@ -17,7 +17,7 @@ import { STAT_TABLE } from '../content/era_ancient/stats.js';
 export const BUSES = ['music', 'sfx', 'ui', 'announcer', 'ambience'];
 const BUS_TRIM = { music: 0.85, sfx: 0.85, ui: 0.9, announcer: 1.0, ambience: 0.8 };   // balance from tools/mixtest.mjs --stems: music alone was -28.7 LUFS vs sfx -18.0 (too far under)
 const VOL_DEFAULT = { master: 0.85, music: 0.7, sfx: 0.9, ui: 0.8, announcer: 0.9, ambience: 1 };
-export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 0.631, outTrim: 0.708 };   // preGain: before the compressor; outTrim: linear gain after the soft clip (calibrated by tools/mixtest.mjs)
+export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 0.631, outTrim: 0.794 };   // preGain: before the compressor; outTrim: linear gain after the soft clip (calibrated by tools/mixtest.mjs)
 
 function softClipCurve(n, knee, ceil) {
   const c = new Float32Array(n);

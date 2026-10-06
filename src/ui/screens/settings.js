@@ -20,7 +20,7 @@ export function mount(root, ctx, params) {
   const set = (k, v) => S.set(k, v);
   const idOf = (k) => 'set-' + k.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
 
-  const tgl = (key, label, hint, o) => { const t = K.toggle({ id: idOf(key), value: !!get(key, false), label, onChange: (v) => { set(key, v); if (o && o.after) o.after(v); } }); syncs.push(() => t.set(!!get(key, false), true)); return K.field(label, t, { hint, id: idOf(key) + '-row' }); };
+  const tgl = (key, label, hint, o) => { const dflt = !!(o && o.def); const t = K.toggle({ id: idOf(key), value: !!get(key, dflt), label, onChange: (v) => { set(key, v); if (o && o.after) o.after(v); } }); syncs.push(() => t.set(!!get(key, dflt), true)); return K.field(label, t, { hint, id: idOf(key) + '-row' }); };
   const seg = (key, label, options, hint, o) => { const s = K.segmented({ id: idOf(key), label, value: get(key), options, onChange: (v) => { set(key, v); if (o && o.after) o.after(v); } }); syncs.push(() => s.set(get(key), true)); return K.field(label, s, { hint, stack: !(o && o.inline), id: idOf(key) + '-row' }); };
   const sld = (key, label, o) => { const s = K.slider(Object.assign({ id: idOf(key), value: +get(key, o.min), label, onInput: (v) => set(key, v) }, o)); syncs.push(() => s.set(get(key, o.min), true)); return s; };
   const pct = (v) => Math.round(v * 100) + '%';
@@ -46,7 +46,12 @@ export function mount(root, ctx, params) {
       seg('gore', T.gameplay.gore, Object.keys(T0.quick.gores).map((k) => ({ value: k, label: T0.quick.gores[k], title: (T0.quick.goreTips || {})[k] })), T.gameplay.goreHint),
       seg('corpses', T.gameplay.corpses, Object.keys(T0.quick.corpsesOpts).map((k) => ({ value: k, label: T0.quick.corpsesOpts[k], title: (T0.quick.corpseTips || {})[k] })), T.gameplay.corpsesHint),
       K.field(T.gameplay.camSens, sld('camSens', T.gameplay.camSens, { min: 0.25, max: 2, step: 0.05, format: (v) => v.toFixed(2) + '×', valueWidth: '4rem', ticks: [{ v: 0.25, label: '0.25' }, { v: 1, label: '1.0' }, { v: 2, label: '2.0' }] }), { hint: T.gameplay.camSensHint, stack: true }),
-      tgl('edgeScroll', T.gameplay.edgeScroll, T.gameplay.edgeScrollHint), tgl('autoPauseBlur', T.gameplay.autoPause, T.gameplay.autoPauseHint));
+      tgl('edgeScroll', T.gameplay.edgeScroll, T.gameplay.edgeScrollHint), tgl('autoPauseBlur', T.gameplay.autoPause, T.gameplay.autoPauseHint),
+      // Cinematics (spec/ui.md section 6 / UI17): the three choreography toggles default ON; cinematicStart defaults off. Reduce Motion overrides all of them.
+      K.h('h3', { class: 'vw-keys-title vw-display', text: T.gameplay.cinematics }),
+      K.h('p', { class: 'vw-note', text: T.gameplay.cinematicsNote }),
+      tgl('choreoIntro', T.gameplay.choreoIntro, T.gameplay.choreoIntroHint, { def: true }), tgl('choreoFinish', T.gameplay.choreoFinish, T.gameplay.choreoFinishHint, { def: true }),
+      tgl('choreoOrbit', T.gameplay.choreoOrbit, T.gameplay.choreoOrbitHint, { def: true }), tgl('cinematicStart', T.gameplay.cinematicStart, T.gameplay.cinematicStartHint));
   }
 
   /* ---------------------------------------------------------------- Audio */
