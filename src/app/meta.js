@@ -125,7 +125,7 @@ export class AimController {
     const g = this.game, w = g.world;
     if (!w) return false;
     const p = this.info(id); if (!p) return false;
-    if (w.state !== 'running') { this._toast('The gods wait for the fight to begin.'); return false; }
+    if (w.state !== 'running' && w.state !== 'countdown') { this._toast('The gods wait for the fight to begin.'); return false; }        // arming during the countdown is fine: the cast itself waits for 'running'
     if (!w.godpowers) { this._toast('God powers are off in this battle.'); return false; }
     const team = this.team();
     if (!w.godpowers.ready(id, team)) { const l = w.godpowers.list(team).find((x) => x.id === id); this._toast(p.name + ' needs ' + Math.ceil(l ? l.cd : 0) + ' more seconds. Even gods have cooldowns.'); return false; }
@@ -140,6 +140,8 @@ export class AimController {
   /** A click on the terrain at (x, z): casts when armed. Returns true when the click was consumed. */
   click(x, z) {
     if (!this.id) return false;
+    const w = this.game.world;
+    if (!w || w.state !== 'running') { this._toast('Hold on: the fight has not started yet.'); return true; }          // stay armed, swallow the click
     const id = this.id; this.cancel(true);
     try { this.game.cast(id, x, z, this.team()); } catch (e) { return true; }
     return true;
@@ -320,7 +322,7 @@ export function createMeta(o) {
   const announcer = createAnnouncer({ rng, stats: stats.get() });
   const achDefs = (content.humor && content.humor.achievements) || ACHIEVEMENTS;
 
-  const M = { game, stats, announcer, docs, active: false, world: null, setup: null, pt: 0, finished: false, summary: null, res: null, battleUnlocked: [], toastQ: [], toastT: 0, clock: 0, lastKill: null, heroKill: null, log: [], agg: [0, 0, 0, 0], off: null, firstContact: false };
+  const M = { game, stats, announcer, docs, active: false, world: null, setup: null, pt: 0, finished: false, summary: null, res: null, battleUnlocked: [], toastQ: [], toastT: 0, clock: 0, lastKill: null, qualKill: null, log: [], agg: [0, 0, 0, 0], off: null, firstContact: false, lineSeq: 0 };
 
   // ------------------------------------------------------------------ achievements
   const unlockedMap = () => docs.progress.get('achievements') || {};
@@ -361,7 +363,7 @@ export function createMeta(o) {
   // ------------------------------------------------------------------ attach / detach
   M.attach = function attach(world, setup) {
     M.detach();
-    M.world = world; M.setup = setup || null; M.active = true; M.finished = false; M.summary = null; M.res = null; M.battleUnlocked = []; M.lastKill = null; M.heroKill = null; M.firstContact = false;
+    M.world = world; M.setup = setup || null; M.active = true; M.finished = false; M.summary = null; M.res = null; M.battleUnlocked = []; M.lastKill = null; M.qualKill = null; M.firstContact = false;
     M.log = []; M.agg = [0, 0, 0, 0];
     const s = setup || {}, a = s.arena || {}, rules = s.rules || {};
     M.pt = s.playerTeam === 1 ? 1 : 0;
@@ -403,7 +405,8 @@ export function createMeta(o) {
     // side effects that are not part of the contract order
     switch (type) {
       case 'unit_kill': feed(p, t); trackKill(p, t); break;
-      case 'hero_down': if (M.lastKill && M.lastKill.id === p.id) { M.lastKill.hero = true; M.heroKill = M.lastKill; } break;          // the sim emits hero_down right after the unit_kill
+      case 'hero_down': if (M.lastKill && M.lastKill.id === p.id) { M.lastKill.why = 'hero'; M.qualKill = M.lastKill; } break;          // the sim emits hero_down and kill_streak right after the unit_kill
+      case 'kill_streak': if (M.lastKill) { M.lastKill.why = M.lastKill.why || 'streak'; M.qualKill = M.lastKill; } break;
       case 'battle_start': M.teaching.trigger('battle_start'); break;
       case 'unit_brace': M.teaching.trigger('cavalry_brace'); break;
       case 'god_power': if (p.team === M.pt) M.teaching.action('power_cast'); break;
@@ -437,6 +440,7 @@ export function createMeta(o) {
     syncDailyStreak();
     docs.flush();
   }
+  docs.daily.onChange(() => syncDailyStreak());                                  // the Daily screen writes the history through progress.set('daily', ...): keep the stat in step
   M.finish = () => { if (M.active && !M.finished && M.world && M.world.state === 'ended') _finish(null); return M.finished; };
 
   function syncDailyStreak() { const st = docs.daily.get('streak', 0); if ((stats.get().dailyStreak || 0) !== st) stats.setValue('dailyStreak', st); }
@@ -452,15 +456,18 @@ export function createMeta(o) {
     list.push({ t, team: p.srcTeam, verb, text, cause: p.cause, killer, victim: victim, srcDef: p.srcDef, dstDef: p.dstDef, key: 'k' + p.dst });
     if (list.length > 5) list.shift();
   }
-  function trackKill(p, t) { M.lastKill = { x: p.x, y: p.y, z: p.z, id: p.dst, t, def: p.dstDef, hero: false, team: p.dstTeam }; }
-  /** Where the kill-cam looks: a hero/boss kill from the last 8 s, else the final kill, else the middle of the survivors. */
+  function trackKill(p, t) {
+    const d = M.world.defs[p.dstDef];
+    const k = { x: p.x, y: p.y, z: p.z, id: p.dst, t, def: p.dstDef, team: p.dstTeam, why: d && (d.role === 'monster' || d.role === 'hero') ? (d.role === 'hero' ? 'hero' : 'boss') : null };
+    M.lastKill = k; if (k.why) M.qualKill = k;
+  }
+  /** Where the kill-cam looks: the last hero / boss / streak kill (spec §14), else the final kill, else the middle of the survivors. */
   function finalKillTarget() {
     const w = M.world; if (!w) return null;
-    const hk = M.heroKill && w.time - M.heroKill.t <= 8 ? M.heroKill : null;
-    const k = hk || M.lastKill;
-    if (k) return { x: k.x, y: k.y, z: k.z, id: k.id };
+    const k = M.qualKill || M.lastKill;
+    if (k) return { x: k.x, y: k.y, z: k.z, id: k.id, why: k.why || 'final' };
     let sx = 0, sz = 0, n = 0; for (const u of w.units) { if (u.alive) { sx += u.x; sz += u.z; n++; } }
-    return n ? { x: sx / n, y: 0, z: sz / n, id: 0 } : null;
+    return n ? { x: sx / n, y: 0, z: sz / n, id: 0, why: 'final' } : null;
   }
 
   // ------------------------------------------------------------------ announcer output
@@ -474,7 +481,8 @@ export function createMeta(o) {
     } catch (e) { return false; }
   };
   function publish(line) {
-    const out = { id: line.id, cat: line.cat, sub: line.sub, who: line.who, text: line.text, pri: line.pri, dur: line.dur, t: M.world ? M.world.time : 0, beat: line.chain || null };
+    // the id is unique per spoken line: the HUD de-duplicates by id|who|text over its last 14 lines, which must never swallow a legitimate repeat of the same template in a later battle
+    const out = { id: line.id + '@' + (++M.lineSeq), tpl: line.id, cat: line.cat, sub: line.sub, who: line.who, text: line.text, pri: line.pri, dur: line.dur, t: M.world ? M.world.time : 0, beat: line.chain || null };
     game.announce = out;
     try { game.emit('announce', out); } catch (e) { /* no UI */ }
     M.speak(line);
@@ -492,7 +500,10 @@ export function createMeta(o) {
     M.killcam.update(dt);
     M.possess.tick(dt);
     // Take Command: the possessed soldier fell
-    if (game.possessId && M.world && M.world.state === 'running' && !M.world.possession.current) { try { game.possess(null); game.emit('toast', { text: 'Your soldier has fallen. Back to godhood.', kind: 'info' }); } catch (e) { /* no UI */ } }
+    if (game.possessId && M.world && M.world.state === 'running') {         // (not `possession.current`: that is only set once the queued possess command has been applied by a tick)
+      const u = M.world.unitById(game.possessId);
+      if (!u || !u.alive) { try { game.possess(null); game.emit('toast', { text: 'Your soldier has fallen. Back to godhood.', kind: 'info' }); } catch (e) { /* no UI */ } }
+    }
     if (!game.isPaused || !game.isPaused()) {
       if (game.getSpeed) announcer.setSpeed(game.getSpeed());
       announcer.tick(dt);
@@ -539,7 +550,7 @@ export function createMeta(o) {
     M.finish();
     if (!M.res) return base;
     base.funnyStats = M.res.funnyStats.map((r) => Object.assign({}, r)); base.lessons = M.res.lessons.map((l) => Object.assign({}, l));
-    base.summary = M.res.summary; base.achievements = M.res.achievements;
+    base.summary = M.res.summary; base.achievements = M.res.achievements; base.canKillcam = !!M.qualKill;          // the Results button is hidden when no hero / boss / streak kill happened (spec ui.md §4)
     if (base.mvp && !base.mvp.quote) { const q = pickDeath(base.mvp.defId, new RNG(((M.world.seed | 0) ^ 0x3c6ef372) >>> 0)); if (q) base.mvp.quote = q; }
     if (M.res.survival) base.survival = M.res.survival; if (M.res.daily) base.daily = M.res.daily;
     return base;

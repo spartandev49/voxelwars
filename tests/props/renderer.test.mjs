@@ -30,6 +30,7 @@ await p.waitForFunction(() => window.__result, null, { timeout: 120000 });
 const res = await p.evaluate(() => window.__result);
 await b.close();
 let bad = 0;
+if (process.argv.includes('--verbose')) for (const r of res) console.log((r.ok ? 'ok   ' : 'FAIL ') + r.name + (r.detail ? '  [' + r.detail + ']' : ''));
 for (const r of res) { if (!r.ok) { bad++; console.error('FAIL', r.name, r.detail); } }
 for (const l of logs) { bad++; console.error('CONSOLE', l); }
 if (bad) { console.error(bad + ' renderer check(s) failed of ' + res.length); process.exit(1); }

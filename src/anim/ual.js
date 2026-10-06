@@ -38,6 +38,24 @@ export function validateUalClip(clip) {
   return '';
 }
 
+/** hinge limits of the hum1 rig (rad): knee flexes forward only (rx 0..2.75), elbow flexes the other way (rx -2.85..0.1); both hinges carry no ry / rz */
+export const HINGE = { legLL: [-0.05, 2.75], legLR: [-0.05, 2.75], armLL: [-2.85, 0.1], armLR: [-2.85, 0.1] };
+
+/** clamp the knee / elbow hinges of a converted clip into their anatomical range; returns the number of clamped (frame, joint) samples */
+export function clampHinges(clip) {
+  let n = 0;
+  for (const part of Object.keys(HINGE)) {
+    const q = clip.q[part]; if (!q) continue;
+    const [lo, hi] = HINGE[part];
+    for (let f = 0; f < clip.frames; f++) {
+      const v = q[f * 3];
+      if (v < lo) { q[f * 3] = lo; n++; } else if (v > hi) { q[f * 3] = hi; n++; }
+      q[f * 3 + 1] = 0; q[f * 3 + 2] = 0;
+    }
+  }
+  return n;
+}
+
 /** Build the adopted UAL clips from the JSON container: returns [{clip, entry}] (entries failing validation are reported through onSkip) */
 export function buildAdopted(json, onSkip) {
   const out = [];
@@ -48,6 +66,9 @@ export function buildAdopted(json, onSkip) {
     let c = convertUAL(e.src, src, { id: e.id });
     const bad = validateUalClip(c);
     if (bad) { if (onSkip) onSkip(e.id, bad); continue; }
+    const clamped = clampHinges(c);                                  // a hinge pushed past its stop in more than 6% of its samples is a bad retarget, not a pose
+    if (clamped > 0.06 * c.frames * 4) { if (onSkip) onSkip(e.id, `hinge limits exceeded in ${clamped} samples`); continue; }
+    if (clamped) c.meta.clampedSamples = clamped;
     if (e.yaw !== undefined && c.root && c.root.yaw) for (let i = 0; i < c.root.yaw.length; i++) c.root.yaw[i] *= e.yaw;
     if (e.warp) {
       const fps = c.fps;

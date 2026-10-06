@@ -272,6 +272,21 @@ export class EditSession {
     t.commit();
     return h;
   }
+  /** Place a hazard and its symmetric copies as ONE undo step. Returns the hazards added ([] when the limit is reached). */
+  placeHazard(d) {
+    const kind = HAZARD_BY_ID[d.t]; if (!kind) return [];
+    const lim = this.arena.half(), r = round3(clamp(d.r || kind.r, 1, 30)), out = [];
+    const t = this.tx('Place ' + d.t), log = t.log('hazards');
+    const spots = [{ x: d.x, z: d.z }];
+    for (const c of symWorld(this.symmetry, d.x, d.z, 0)) if (Math.hypot(c.x - d.x, c.z - d.z) > 0.5) spots.push({ x: c.x, z: c.z });
+    for (const sp of spots) {
+      if (this.arena.hazards.length >= LIMITS.hazards) break;
+      const h = { t: d.t, x: round3(clamp(sp.x, -lim, lim)), z: round3(clamp(sp.z, -lim, lim)), r };
+      log.add(h); out.push(h); if (d.t === 'lava') this._paintDisc(t.rec, h, MAT.lava);
+    }
+    t.commit();
+    return out;
+  }
   _paintDisc(rec, h, mat) {
     const a = this.arena, n = a.size, rc = h.r / CELL, u = (h.x + a.half()) / CELL, v = (h.z + a.half()) / CELL;
     for (let z = Math.max(0, Math.floor(v - rc - 1)); z <= Math.min(n - 1, Math.ceil(v + rc + 1)); z++) for (let x = Math.max(0, Math.floor(u - rc - 1)); x <= Math.min(n - 1, Math.ceil(u + rc + 1)); x++) {

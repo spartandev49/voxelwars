@@ -274,7 +274,7 @@ S('jingle_victory_1', 'jingle', 'oga-win-jingle:WinBrass\\.ogg', 'jingle,victory
 S('jingle_victory_2', 'jingle', 'oga-win-jingle:WinStrings\\.ogg', 'jingle,victory,strings', max=4.0, fout=0.5)
 S('jingle_victory_3', 'jingle', 'oga-won-orchestral-winning-jingle:Won', 'jingle,victory,orchestral', max=4.6, fout=0.6)
 S('jingle_victory_4', 'jingle', 'oga-classic-fanfare-lick:fanfare_3', 'jingle,victory,fanfare', max=3.0, fout=0.4)
-S('jingle_fanfare_1', 'jingle', 'oga-hyper-ultra-fanfare:sboe', 'jingle,fanfare,battle start', max=4.0, fout=0.6)
+S('jingle_fanfare_1', 'jingle', 'oga-hyper-ultra-fanfare:sboe', 'jingle,fanfare,battle start', max=3.4, fout=0.6)
 S('jingle_battle_start_1', 'jingle', 'oga-orchestral-stinger-dramatic-entrance:orchestral_stinger_dramatic_entrance\\.wav', 'jingle,stinger,battle start,drama', max=3.6, fout=0.7)
 S('jingle_battle_start_2', 'jingle', '', 'jingle,fanfare,battle start,horn,drum', notes='composite: war horn + taiko boom + gong',
   layers=[('oga-their-coming-generic-horn-sound:theircoming3_0', 0.0, -2.0, dict(dur=3.0)), ('oga-horde-war-drums-loop:horde', 0.0, -3.0, dict(dur=0.5)), ('oga-100-cc0-sfx:gong_01', 0.02, -8.0, dict())], max=3.2, fout=0.6)
@@ -474,6 +474,9 @@ S('stinger_funny_3', 'jingle', 'oga-slide-whistle-down:slide', 'stinger,funny,co
 S('ambience_wind_loop_2', 'ambience', 'oga-wind1:wind4', 'ambience,wind,loop', t0=14, read=7, max=5.5, xfade=0.8, nolimit=True)
 S('ambience_crowd_loop_2', 'ambience', 'oga-free-crowd-cheering-sounds:09 - Ambience and cheering', 'ambience,crowd,loop,murmur', t0=8, read=7, max=5.5, xfade=0.8, nolimit=True)
 S('ambience_fire_loop_2', 'ambience', 'oga-fire-crackling:fire-1_0', 'ambience,fire,loop,crackle', t0=0.2, read=3.4, max=3.0, xfade=0.5, nolimit=True)
+
+S('jingle_battle_start_3', 'jingle', '', 'jingle,fanfare,battle start,horn,drum', notes='composite: war horn + drum + gong',
+  layers=[('oga-their-coming-generic-horn-sound:/theircoming_0', 0.0, -2.0, dict(t0=0.3, dur=2.6)), ('oga-horde-war-drums-loop:horde', 0.0, -3.0, dict(dur=2.6)), ('oga-100-cc0-sfx:gong_02', 0.02, -8.0, dict())], max=2.6, fout=0.5)
 
 
 # ---------------------------------------------------------------- availability filter

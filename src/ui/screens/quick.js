@@ -239,7 +239,7 @@ export function mount(root, ctx, params) {
   }
 
   /* ---------------------------------------------------------------- frame */
-  const advSeg = K.segmented({ id: 'qb-mode', label: 'Setup detail', value: S.adv ? 'advanced' : 'simple', options: [{ value: 'simple', label: T.advanced.simple }, { value: 'advanced', label: T.advanced.advanced }], onChange: (v) => { S.adv = v === 'advanced'; setSeenHint(ctx, 'quickAdvanced', S.adv); paintMode(); } });
+  const advSeg = K.segmented({ id: 'qb-mode', label: 'Setup detail', class: 'vw-seg--nowrap', value: S.adv ? 'advanced' : 'simple', options: [{ value: 'simple', label: T.advanced.simple }, { value: 'advanced', label: T.advanced.advanced }], onChange: (v) => { S.adv = v === 'advanced'; setSeenHint(ctx, 'quickAdvanced', S.adv); paintMode(); } });
   advSeg.querySelectorAll('.vw-seg__opt').forEach((b) => { b.dataset.adv = b.dataset.value; });
   const frame = K.pageFrame({ id: 'qb', title: T.title, sub: T.sub, onBack: () => ctx.nav.back(), actions: [advSeg] });
   const grid = K.h('div', { class: 'vw-qb' },
@@ -258,8 +258,8 @@ export function mount(root, ctx, params) {
   cleanups.push(frame.destroy, () => { if (typeof offSet === 'function') offSet(); });
   setTimeout(() => { if (!safe(() => ctx.platform.isTouch, false)) { try { quickBtn.focus({ preventScroll: true }); } catch (e) { /* ignore */ } } }, 80);
 
-  return {
+  return K.withExit(root, {
     destroy() { cleanups.forEach((f) => f()); },
-    onBack() { if (K.hasModal()) return false; ctx.nav.back(); return true; },
-  };
+    onBack() { return K.hasModal(); },   // false = let the router navigate back
+  });
 }

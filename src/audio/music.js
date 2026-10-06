@@ -152,7 +152,7 @@ export class MusicDirector {
     this.world = null; this.startCount = 0; this.synthFlag = false; this.loadErrors = 0; this.history = [];
     this.setT = deps.setTimeout || ((f, ms) => setTimeout(f, ms)); this.clrT = deps.clearTimeout || ((h) => clearTimeout(h));
     this.yieldFn = deps.yieldFn || makeYield(); this.sliceMs = deps.sliceMs === undefined ? 10 : deps.sliceMs;
-    this.decodedBytes = 0;
+    this.decodedBytes = 0; this.inflight = new Map(); this.planned = new Map();
   }
   // ---------------------------------------------------------------- wiring
   /** bind to a live context once it exists (after the first gesture): builds filter -> gain -> out */
@@ -212,12 +212,20 @@ export class MusicDirector {
   }
   /** pick the track that WOULD play for (mood, theme) without side effects other than the bag advancing */
   choose(mood, theme) { return pickTrack(this.d.catalog, normMood(mood), theme, this.bags, this.rng); }
+  /** the track that WILL play next for (mood, theme): stable until a player consumes it, so prefetching decodes the right file */
+  plan(mood, theme) {
+    const k = normMood(mood) + ':' + (theme || ''); let e = this.planned.get(k);
+    if (!e) { e = this.choose(mood, theme); if (e) this.planned.set(k, e); }
+    return e;
+  }
   async _enter(token, mood, theme, o) {
-    let entry = o.entry || this.choose(mood, theme);
+    const pk = mood + ':' + (theme || ''); const planned = this.planned.get(pk); this.planned.delete(pk);
+    let entry = o.entry || planned || this.choose(mood, theme);
     let bridged = false, bridgeT = null;
     const startSynth = async () => {
       const res = await this._synthBed(mood, theme);
       if (!res || token !== this.token) return false;
+      if (this.player && this.player.token === token && this.source !== 'synth') return false;   // the real track of THIS request won the race while the bed was rendering
       this._crossTo({ buf: res, loop: true, baked: false, gain: 1 }, token, 'synth', 'synth:' + mood, o);
       bridged = true; return true;
     };
@@ -241,7 +249,7 @@ export class MusicDirector {
     const old = this.player;
     const p = new LoopPlayer({ ctx, buf: spec.buf, out: this.filter, loop: spec.loop, loopStart: spec.loopStart, loopEnd: spec.loopEnd, baked: spec.baked, gain: spec.gain });
     p.start(t, old ? fade : Math.min(fade, 1.0));
-    this.player = p; this.track = trackId; this.source = source; this.synthFlag = source === 'synth'; this.lastTrackId = trackId;
+    p.token = token; this.player = p; this.track = trackId; this.source = source; this.synthFlag = source === 'synth'; this.lastTrackId = trackId;
     this.history.push(trackId); if (this.history.length > 20) this.history.shift();
     if (old) this._retire(fade, t, old);
     this.pump();
@@ -252,8 +260,14 @@ export class MusicDirector {
     w.stop(t === undefined ? ctx.currentTime : t, fade); this.fading.push(w);
   }
   // ---------------------------------------------------------------- loading
-  async _load(entry) {
-    const hit = this.cache.get(entry.id); if (hit) { hit.last = ++this.cacheTick || (this.cacheTick = 1); return hit.buf; }
+  /** fetch + decode one track (memoised: a prefetch that is still in flight is shared, never fetched twice) */
+  _load(entry) {
+    const hit = this.cache.get(entry.id); if (hit) { hit.last = ++this.cacheTick || (this.cacheTick = 1); return Promise.resolve(hit.buf); }
+    let p = this.inflight.get(entry.id);
+    if (!p) { p = this._loadUncached(entry); this.inflight.set(entry.id, p); const done = () => { this.inflight.delete(entry.id); }; p.then(done, done); }
+    return p;
+  }
+  async _loadUncached(entry) {
     let ab = null, via = 'fetched';
     const emb = this.d.core && this.d.core[entry.id];
     if (emb) { try { const bin = (typeof atob === 'function' ? atob : (x) => Buffer.from(x, 'base64').toString('binary'))(String(emb).replace(/^data:[^,]*,/, '')); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); ab = u.buffer; via = 'embedded'; } catch (e) { ab = null; } }
@@ -285,7 +299,7 @@ export class MusicDirector {
   }
   /** decode the track that would play for (mood, theme) ahead of time (pre-gesture menu track, next battle track) */
   async prefetch(mood, theme) {
-    const e = this.choose(mood, theme); if (!e) return null;
+    const e = this.plan(mood, theme); if (!e) return null;
     try { await this._load(e); this._evictCache(e.id); } catch (err) { this.loadErrors++; }
     return e;
   }

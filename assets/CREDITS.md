@@ -247,7 +247,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Wood Wobbling & Rattling - CC0 1.0 - https://opengameart.org/content/wood-wobbling-rattling (1 file(s))
 
 ### rubberduck
-- 100 CC0 SFX - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx (3 file(s))
+- 100 CC0 SFX - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx (4 file(s))
 - 100 CC0 SFX #2 - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx-2 (4 file(s))
 - 25 CC0 bang / firework SFX - CC0 1.0 - https://opengameart.org/content/25-cc0-bang-firework-sfx (2 file(s))
 - 75 CC0 breaking / falling / hit sfx - CC0 1.0 - https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx (11 file(s))
@@ -271,7 +271,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Donkey Bray - CC0 1.0 - https://opengameart.org/content/donkey-bray (2 file(s))
 
 ### StumpyStrust
-- Their Coming (generic horn sound) - CC0 1.0 - https://opengameart.org/content/their-coming-generic-horn-sound (3 file(s))
+- Their Coming (generic horn sound) - CC0 1.0 - https://opengameart.org/content/their-coming-generic-horn-sound (4 file(s))
 
 ### tcpp
 - Explosion 10.ogg - Public Domain - https://commons.wikimedia.org/wiki/File:Explosion_10.ogg (1 file(s))
@@ -305,7 +305,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Synthesized UI beep - CC0 1.0 - tools/build_sfx.py (6 file(s))
 
 ### William Hector
-- Horde War Drums loop - CC0 1.0 - https://opengameart.org/content/horde-war-drums-loop (3 file(s))
+- Horde War Drums loop - CC0 1.0 - https://opengameart.org/content/horde-war-drums-loop (4 file(s))
 
 ### wobbleboxx
 - Level up, power up, Coin get (13 Sounds) - CC0 1.0 - https://opengameart.org/content/level-up-power-up-coin-get-13-sounds (1 file(s))

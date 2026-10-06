@@ -147,5 +147,5 @@ export function mount(root, ctx, params) {
 
   showTab();
   K.enter(Array.from(frame.content.querySelectorAll('.vw-cx__top')), 'fade', 0);
-  return { destroy() { cleanups.forEach((f) => f()); }, onBack() { if (K.hasModal()) return false; if (S.mobileDetail) { closeDetail(); return true; } ctx.nav.back(); return true; } };
+  return K.withExit(root, { destroy() { cleanups.forEach((f) => f()); }, onBack() { if (K.hasModal()) return true; if (S.mobileDetail) { closeDetail(); return true; } return false; } });
 }

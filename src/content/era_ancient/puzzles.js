@@ -9,6 +9,7 @@
 //   puzzleAsMission(p)               -> a mission-shaped def the campaign runtime (campaign_run.js setupMission/missionRules/battleSummary) can run
 //   puzzleApi = {puzzleById, evaluate, asMission, text}
 import { STAT_TABLE } from './stats.js';
+import { SOLUTIONS } from './puzzle_solutions.js';
 
 const PI = Math.PI;
 const cost = (id) => (STAT_TABLE[id] ? STAT_TABLE[id].cost : 0);
@@ -23,42 +24,42 @@ function block(defId, n, cx, cz, o = {}) {
 const RAW = [
   {
     id: 'spear_wall', title: 'Please Hold Still',
-    blurb: 'Ten cavalry charge the line. Spears stop horses, but only spears that stand still.', hint: 'Put the hoplites in one tight line facing the charge and keep them on Hold. Peltasts go behind the line.',
-    goalText: 'Defeat all ten cavalry',
+    blurb: 'Eight cavalry charge the line. Spears stop horses, but only a spear line that is ready for them.', hint: 'Put the hoplites in one tight line facing the charge and keep them on Hold. Peltasts go behind the line.',
+    goalText: 'Defeat all eight cavalry',
     arena: { recipe: 'marathon', size: 'medium', seed: 11, env: {}, markers: [] },
     player: { faction: 'hellenes', roster: ['hoplite', 'peltast'], budget: 1400 }, par: 1000,
-    enemy: { faction: 'hellenes', placements: block('companion_cavalry', 10, 30, 0, { cols: 5, spacing: 2.2, order: 'advance' }) },
+    enemy: { faction: 'hellenes', placements: block('companion_cavalry', 8, 30, 0, { cols: 4, spacing: 2.2, order: 'advance' }) },
     goal: { type: 'eliminate', params: {}, markerIds: [] }, timeLimit: 180, godPowers: false,
     bonus: { id: 'few_losses', text: 'Lose at most 2 units', test: (s) => (s.unitsLost | 0) <= 2 },
   },
   {
     id: 'kiting_101', title: 'Kiting for Beginners',
-    blurb: 'Eight mummies walk slower than any archer. Shoot, step back, repeat.', hint: 'Spread the archers along your back edge and stay out of reach: the mummies are slower than every archer, so the archers can keep backing away while they shoot.',
-    goalText: 'Defeat all eight mummies',
+    blurb: 'Fourteen mummies walk slower than any archer. Shoot, step back, repeat.', hint: 'Spread the archers along your back edge and stay out of reach: the mummies are slower than every archer, so the archers can keep backing away while they shoot.',
+    goalText: 'Defeat all fourteen mummies',
     arena: { recipe: 'oasis', size: 'small', seed: 15, env: {}, markers: [] },
     player: { faction: 'hellenes', roster: ['cretan_archer', 'peltast'], budget: 1200 }, par: 900,
-    enemy: { faction: 'egyptians', placements: block('mummy', 8, 22, 0, { cols: 4, spacing: 1.7, order: 'advance' }) },
+    enemy: { faction: 'egyptians', placements: block('mummy', 14, 17, 0, { cols: 4, spacing: 1.7, order: 'advance' }) },
     goal: { type: 'eliminate', params: {}, markerIds: [] }, timeLimit: 150, godPowers: false,
     bonus: { id: 'no_losses', text: 'Lose no unit', test: (s) => (s.unitsLost | 0) === 0 },
   },
   {
     id: 'elephant_room', title: 'The Elephant in the Room',
-    blurb: 'One war elephant and six hoplites. Elephants are afraid of fire.', hint: 'Fire arrows from the Nubian archers make an elephant panic and trample its own side. Keep spears in front of the archers.',
+    blurb: 'One war elephant and ten hoplites. Elephants are afraid of fire.', hint: 'Fire arrows from the Nubian archers make an elephant panic and trample its own side. Keep spears in front of the archers.',
     goalText: 'Defeat the elephant and its escort',
     arena: { recipe: 'marathon', size: 'medium', seed: 11, env: {}, markers: [] },
     player: { faction: 'mixed', roster: ['hoplite', 'peltast', 'nubian_archer'], budget: 2000 }, par: 1600,
-    enemy: { faction: 'carthage', placements: [].concat(block('war_elephant', 1, 30, 0, { cols: 1, squad: 1 }), block('hoplite', 6, 27, 0, { cols: 6, spacing: 1.5, squad: 2 })) },
+    enemy: { faction: 'carthage', placements: [].concat(block('war_elephant', 1, 30, 0, { cols: 1, squad: 1 }), block('hoplite', 10, 27, 0, { cols: 7, spacing: 1.5, squad: 2 })) },
     goal: { type: 'eliminate', params: {}, markerIds: [] }, timeLimit: 180, godPowers: false,
     bonus: { id: 'elephant_fast', text: 'Elephant down within 45 seconds', test: (s) => { const e = s.enemyDownT && s.enemyDownT.war_elephant; return !!e && e.length > 0 && e[0] <= 45; } },
   },
   {
     id: 'knock_knock', title: 'Knock Knock',
-    blurb: 'Eight defenders wait behind the gate. The gate is made of wood.', hint: 'Catapults outrange everything on the wall. Park them back, guard them with hoplites, and shell both gate doors.',
+    blurb: 'Eight defenders and two ballistas wait behind the gate. The gate is made of wood.', hint: 'Catapults outrange everything on the wall, ballistas included. Park them at the back of your zone and let the boulders do the knocking.',
     goalText: 'Destroy both gate doors in 120 seconds',
     arena: { recipe: 'troy', size: 'large', seed: 12, env: {}, markers: [] },
     player: { faction: 'mixed', roster: ['catapult', 'hoplite', 'peltast'], budget: 1500 }, par: 1200,
-    enemy: { faction: 'hellenes', placements: block('hoplite', 8, 17, 0, { cols: 2, spacing: 1.5, order: 'hold' }).map((p, i) => Object.assign(p, { squadId: 1 + (i >> 2) })) },
-    goal: { type: 'destroy', params: { props: [{ type: 'gate_door', count: 2 }] }, markerIds: [] }, timeLimit: 120, godPowers: false,
+    enemy: { faction: 'hellenes', placements: block('hoplite', 8, 17, 0, { cols: 2, spacing: 1.5, order: 'hold' }).map((p, i) => Object.assign(p, { squadId: 1 + (i >> 2) })).concat([{ defId: 'ballista', x: 22, z: -3, heading: -PI / 2, order: 'hold', squadId: 5, formation: 'block' }, { defId: 'ballista', x: 22, z: 3, heading: -PI / 2, order: 'hold', squadId: 6, formation: 'block' }]) },
+    goal: { type: 'destroy', params: { props: [{ type: 'gate_door', count: 2 }] }, markerIds: [], binding: true }, timeLimit: 120, godPowers: false,
     bonus: { id: 'gate_fast', text: 'First gate door down within 70 seconds', test: (s) => { const g = s.propDownT && s.propDownT.gate_door; return !!g && g.length > 0 && Math.min.apply(null, g) <= 70; } },
   },
   {
@@ -80,7 +81,7 @@ const RAW = [
     arena: { recipe: 'oasis', size: 'small', seed: 15, env: {}, markers: [{ id: 'medusa_start', type: 'general_spawn', x: 23, z: 0, r: 3 }] },
     player: { faction: 'hellenes', roster: ['cretan_archer', 'peltast', 'companion_cavalry'], budget: 1100 }, par: 800,
     enemy: { faction: 'mythic', generals: ['medusa'], placements: [{ defId: 'medusa', x: 23, z: 0, heading: -PI / 2, order: 'hold', squadId: 1 }].concat(block('immortal', 5, 20, 0, { cols: 5, spacing: 1.6, order: 'advance', squad: 2 })) },
-    goal: { type: 'kill_general', params: {}, markerIds: ['medusa_start'] }, timeLimit: 150, godPowers: false,
+    goal: { type: 'kill_general', params: {}, markerIds: ['medusa_start'], binding: true }, timeLimit: 150, godPowers: false,
     bonus: { id: 'no_stone', text: 'Nobody turned to stone', test: (s) => (s.stonedUnits | 0) === 0 },
   },
 ];
@@ -91,7 +92,7 @@ function build(raw, i) {
     id: raw.id, kind: 'puzzle', index: i, title: raw.title, blurb: raw.blurb, hint: raw.hint, goalText: raw.goalText, arena: raw.arena, player: raw.player, par: raw.par,
     enemy: raw.enemy, goal: raw.goal, timeLimit: raw.timeLimit, godPowers: raw.godPowers, fixed: raw.fixed || [], script: raw.script || null,
     stars: [{ id: 'win', text: 'Win' }, { id: 'par', text: 'Spend ' + raw.par.toLocaleString('en-US') + ' drachmae or less', test: (s, pz) => (s.spent !== undefined ? s.spent : s.playerCostStart) <= pz.par }, { id: raw.bonus.id, text: raw.bonus.text, test: raw.bonus.test }],
-    budget: raw.player.budget, solution: null,
+    budget: raw.player.budget, solution: SOLUTIONS[raw.id] || null,
   };
   return p;
 }

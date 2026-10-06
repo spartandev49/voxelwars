@@ -6,6 +6,8 @@ import { LoopPlayer, intensityParams } from '../../src/audio/music.js';
 import { makeFetch } from './mockctx.mjs';
 
 const settle = async (ms = 40) => { await sleep(ms); };
+// robust on a loaded box: wait (up to 5 s) until the director has started a player for the requested mood
+const started = async (m, prevTrack) => { for (let i = 0; i < 250 && !(m.player && m.track !== prevTrack); i++) await sleep(20); await sleep(10); };
 const playing = (ctx) => ctx.sources.filter((s) => s.buffer && s.startT !== null);
 
 // ---- before the context exists the request is remembered and applied after unlock
@@ -24,7 +26,7 @@ const playing = (ctx) => ctx.sources.filter((s) => s.buffer && s.startT !== null
   const tracks = []; for (let i = 0; i < 6; i++) { m.setMood('battle', { theme: 'greek', force: true }); await settle(20); tracks.push(m.track); }
   for (let i = 1; i < tracks.length; i++) assert.notEqual(tracks[i], tracks[i - 1], 'no immediate repeat: ' + tracks.join(','));
   const before = m.track; m.setMood('battle', { theme: 'greek' }); await settle(20); assert.equal(m.track, before, 'same mood + theme does not restart');
-  for (const [mood, re] of [['victory', /victory/], ['defeat', /defeat/], ['comedy', /comedy/], ['editor', /editor|menu/], ['menu', /menu/]]) { m.setMood(mood); await settle(); assert.ok(re.test(m.track) || m.source === 'synth', mood + ' -> ' + m.track); }
+  for (const [mood, re] of [['victory', /victory/], ['defeat', /defeat/], ['comedy', /comedy/], ['editor', /editor|menu/], ['menu', /menu/]]) { const prev = m.track; m.setMood(mood); await started(m, prev); assert.ok(re.test(m.track) || m.source === 'synth', mood + ' -> ' + m.track); }
   m.setMood('title'); await settle(); assert.equal(m.mood, 'menu'); m.setMood('nonsense'); assert.equal(m.mood, 'menu', 'unknown moods are ignored');
 }
 
@@ -113,5 +115,18 @@ const playing = (ctx) => ctx.sources.filter((s) => s.buffer && s.startT !== null
   const { writeWav, sine } = await import('./wav.mjs'); const b64 = writeWav([sine(200, 2), sine(300, 2)], 22050).toString('base64');
   const T = makeEngine({ gated: false, manifest: man, core: { battle_mid_epic: b64 }, fetchOpts: { block: true } }); await T.eng.unlock(); T.eng.music.setMood('battle', { theme: 'greek', entry: T.eng.catalog.get('battle_mid_epic', 'music') }); await settle(80);
   assert.equal(T.eng.music.source, 'embedded'); assert.equal(T.fetch.calls.length === 0 || !T.fetch.calls.some((u) => /battle_mid_epic/.test(u)), true, 'no fetch for the embedded track'); assert.equal(T.eng.diagnostics().loaded.embedded >= 1, true);
+}
+// ---- in-flight sharing: the pre-gesture prefetch, preload() and the mood request after unlock fetch the track ONCE
+{
+  const T = makeEngine({ gated: false, fetchOpts: { durOf: () => 8 } }); const { eng, fetch } = T;
+  eng.music.setMood('menu'); eng.music.prefetch('menu', ''); eng.music.prefetch('menu', ''); await eng.preload();
+  await eng.unlock(); await settle(80);
+  const n = fetch.calls.filter((u) => /music\/menu_/.test(u)).length; assert.equal(n, 1, 'menu track fetched once, not once per request: ' + n);
+  assert.equal(eng.music.source, 'fetched');
+  // the synth bridge never replaces a real track that arrived while the bed was rendering
+  const T2 = makeEngine({ gated: false, bridgeMs: 1, fetchOpts: { durOf: () => 8 } }); let rel; const slow = new Promise((r) => { rel = r; }); const orig = T2.eng.music.d.fetch;
+  T2.eng.music.d.fetch = async (u) => { if (/menu_/.test(u)) await slow; return orig(u); };
+  await T2.eng.unlock(); T2.eng.music.yieldFn = () => new Promise((r) => setTimeout(r, 15)); T2.eng.music.setMood('menu'); await settle(10); rel(); await settle(400);
+  assert.ok(['fetched', 'synth'].includes(T2.eng.music.source)); await settle(600); assert.equal(T2.eng.music.source, 'fetched', 'the real track ends up playing, not the bridge: ' + T2.eng.music.source);
 }
 console.log('music.test OK');

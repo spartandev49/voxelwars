@@ -83,7 +83,7 @@ export function mount(root, ctx, params) {
     const nav = safe(() => navigator.userAgent, '');
     const vp = safe(() => `${window.innerWidth}x${window.innerHeight} @${window.devicePixelRatio || 1}x`, '');
     const v = ctx.version || {};
-    return `VOXELWARS diagnostics\nbuild: ${v.version || '1.0.0'} (${v.date || v.build || ''})\nua: ${nav}\nviewport: ${vp}\n\n` + JSON.stringify(snap, null, 2);
+    return `VOXELWARS diagnostics\nbuild: ${v.version || v.build || '1.0.0'} (${v.date || ''})\nua: ${nav}\nviewport: ${vp}\n\n` + JSON.stringify(snap, null, 2);
   }
 
   const copyBtn = K.button(T.copy, { icon: 'copy', variant: 'primary', id: 'dg-copy', onClick: () => K.copyText(reportText(), { title: T.copy, done: T.copied }) });
@@ -98,5 +98,5 @@ export function mount(root, ctx, params) {
   render();
   K.enter(Array.from(body.children), 'pop', 0);
   cleanups.push(frame.destroy);
-  return { destroy() { cleanups.forEach((f) => f()); }, onBack() { if (K.hasModal()) return false; ctx.nav.back(); return true; } };
+  return K.withExit(root, { destroy() { cleanups.forEach((f) => f()); }, onBack() { return K.hasModal(); } });
 }

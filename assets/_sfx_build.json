@@ -3425,17 +3425,17 @@
  },
  "jingle_fanfare_1": {
   "srcfile": "oga-hyper-ultra-fanfare/files/sboe/sboe.wav",
-  "duration": 4.049,
-  "size": 40751,
+  "duration": 3.448,
+  "size": 34743,
   "desc": {
-   "dur": 4.0,
+   "dur": 3.4,
    "peak_db": -3.0,
-   "rms_db": -14.3,
-   "crest": 3.7,
+   "rms_db": -14.8,
+   "crest": 3.9,
    "centroid": 802,
    "low": 0.34,
    "flat": 0.007,
-   "n_on": 9
+   "n_on": 8
   },
   "cut": true
  },
@@ -5966,5 +5966,21 @@
    "n_on": 9
   },
   "cut": true
+ },
+ "jingle_battle_start_3": {
+  "srcfile": "oga-their-coming-generic-horn-sound/files/theircoming_0/theircoming_0.ogg + oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav + oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_02.ogg",
+  "duration": 2.638,
+  "size": 26645,
+  "desc": {
+   "dur": 2.6,
+   "peak_db": -3.0,
+   "rms_db": -14.3,
+   "crest": 3.7,
+   "centroid": 423,
+   "low": 0.6,
+   "flat": 0.001,
+   "n_on": 5
+  },
+  "cut": false
  }
 }

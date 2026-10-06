@@ -11,30 +11,50 @@ const tr = new TerrainRenderer(eng.scene);
 let pr = null, fx = null, arena = null, info = null;
 const T = window.THREE;
 
-// per-recipe hero shots: [camera offset from the focus, focus point] in world units (y = metres above ground at the focus)
+// per-recipe hero shots: preferred camera spot (fx,fz as fractions of the arena width), target (tx,tz) and heights above ground.
+// The page then searches around the preferred spot for a position that is clear of props with a clear line of sight.
 const HERO = {
-  thermopylae: (a, W) => ({ pos: [-W * 0.16, 4.2, W * 0.1], look: [-W * 0.05, 3.5, 0] }),
-  colosseum: (a, W) => ({ pos: [-W * 0.2, 4.5, W * 0.08], look: [W * 0.1, 5, 0] }),
-  nile: (a, W) => ({ pos: [-W * 0.18, 4, -W * 0.28], look: [0, 1.5, 0] }),
-  giza: (a, W) => ({ pos: [-W * 0.24, 4, W * 0.05], look: [0, 6, -W * 0.3] }),
-  persepolis: (a, W) => ({ pos: [-W * 0.2, 4.2, W * 0.25], look: [0, 3, -W * 0.1] }),
-  carthage: (a, W) => ({ pos: [-W * 0.1, 4.5, -W * 0.3], look: [W * 0.35, 2, -W * 0.1] }),
-  teutoburg: (a, W) => ({ pos: [-W * 0.3, 3.4, W * 0.1], look: [0, 3, 0] }),
-  alpine: (a, W) => ({ pos: [-W * 0.3, 4, W * 0.06], look: [W * 0.1, 8, 0] }),
-  olympus: (a, W) => ({ pos: [-W * 0.18, 5.5, -W * 0.1], look: [0, 8, W * 0.26] }),
-  troy: (a, W) => ({ pos: [-W * 0.18, 4.5, W * 0.02], look: [W * 0.1, 7, 0] }),
-  styx: (a, W) => ({ pos: [-W * 0.34, 4, -W * 0.12], look: [0, 2.5, 0] }),
-  cyclops: (a, W) => ({ pos: [-W * 0.16, 3.6, W * 0.2], look: [0, 4.5, -W * 0.08] }),
-  oasis: (a, W) => ({ pos: [-W * 0.3, 3.4, W * 0.12], look: [0, 2, 0] }),
+  marathon: { f: [-0.3, 0.2], t: [-0.06, 0.02], h: 4.2, ty: 3 },
+  thermopylae: { f: [-0.3, 0.12], t: [-0.05, 0], h: 4.6, ty: 4 },
+  colosseum: { f: [-0.22, 0.04], t: [0.12, 0], h: 4.0, ty: 5 },
+  nile: { f: [-0.2, -0.14], t: [0, 0], h: 4.2, ty: 1.5 },
+  giza: { f: [-0.3, 0.0], t: [0, -0.3], h: 4.4, ty: 6 },
+  persepolis: { f: [0, 0.39], t: [0, -0.34], h: 4.4, ty: 3.5 },
+  carthage: { f: [-0.08, -0.36], t: [0.3, -0.1], h: 4.6, ty: 1.5 },
+  teutoburg: { f: [-0.34, 0.1], t: [0, 0], h: 3.6, ty: 3 },
+  alpine: { f: [-0.34, 0.1], t: [0.1, 0], h: 4.6, ty: 8 },
+  olympus: { f: [-0.1, 0.12], t: [0, -0.3], h: 5.0, ty: 6 },
+  troy: { f: [-0.3, 0.03], t: [0.1, 0], h: 4.4, ty: 8 },
+  styx: { f: [-0.3, 0.0], t: [0, -0.1], h: 5.0, ty: 2 },
+  cyclops: { f: [-0.3, 0.3], t: [0, 0.05], h: 4.4, ty: 4.5 },
+  oasis: { f: [-0.3, 0.12], t: [0, 0], h: 3.8, ty: 2 },
 };
 function groundAt(x, z) { return arena.heightAt(x, z); }
 function maxGround(x, z, r) { let m = 0; for (let dz = -r; dz <= r; dz += 1) for (let dx = -r; dx <= r; dx += 1) m = Math.max(m, arena.cellHeight(x + dx, z + dz)); return m; }
-/** Nudge a camera position off props (a hero shot must not sit inside a tree) by spiralling out to the nearest clear spot. */
-function clearSpot(x, z) {
-  const free = (px, pz) => !arena.props.some((p) => p.t !== 'bush' && p.t !== 'wheat' && p.t !== 'reeds' && p.t !== 'bones' && (p.x - px) ** 2 + (p.z - pz) ** 2 < (2.2 + (p.s || 1) * 1.6) ** 2);
-  if (free(x, z)) return [x, z];
-  for (let r = 1.5; r < 14; r += 1.5) for (let a = 0; a < 6.28; a += 0.5) { const px = x + Math.cos(a) * r, pz = z + Math.sin(a) * r; if (free(px, pz)) return [px, pz]; }
-  return [x, z];
+const SMALL = new Set(['bush', 'wheat', 'reeds', 'bones', 'skull_pile', 'rock_small', 'fire_pit', 'campfire', 'goat_pen', 'log', 'crowd', 'cloud_island']);
+function camOk(x, z, tx, tz) {
+  const half = arena.half();
+  if (Math.abs(x) > half - 3 || Math.abs(z) > half - 3) return false;
+  if (arena.water > 0 && arena.getH(arena.cx(x), arena.cz(z)) < arena.water + 1) return false;
+  const dx = tx - x, dz = tz - z, L2 = dx * dx + dz * dz || 1;
+  for (const p of arena.props) {
+    if (SMALL.has(p.t)) continue;
+    const r = Math.max(0.8, (p.s || 1) * (p.t === 'tower' || p.t === 'temple' || p.t === 'pyramid' ? 2.6 : 1.9));
+    if ((p.x - x) ** 2 + (p.z - z) ** 2 < (r + 2.4) ** 2) return false;                 // camera inside / hugging a prop
+    const u = Math.max(0, Math.min(1, ((p.x - x) * dx + (p.z - z) * dz) / L2)), cx = x + dx * u, cz = z + dz * u;
+    if (u < 0.88 && (p.x - cx) ** 2 + (p.z - cz) ** 2 < (r * 0.55 + 0.7) ** 2 && (p.t.startsWith('tree') || p.t === 'palm' || p.t === 'column_marble' || p.t === 'rock_big')) return false;   // trees in the way
+  }
+  return true;
+}
+function heroSpot(spec, W) {
+  const tx = spec.t[0] * W, tz = spec.t[1] * W, fx = spec.f[0] * W, fz = spec.f[1] * W;
+  const ang0 = Math.atan2(fz - tz, fx - tx), r0 = Math.hypot(fx - tx, fz - tz);
+  for (let k = 0; k < 60; k++) {
+    const da = (k % 2 ? 1 : -1) * Math.ceil(k / 2) * 0.12, dr = 1 + (k % 5 - 2) * 0.12, a = ang0 + da, r = r0 * dr;
+    const x = tx + Math.cos(a) * r, z = tz + Math.sin(a) * r;
+    if (camOk(x, z, tx, tz)) return [x, z, tx, tz];
+  }
+  return [fx, fz, tx, tz];
 }
 
 window.__sheet = {
@@ -69,10 +89,10 @@ window.__sheet = {
     } else if (name === 'oblique') {
       c.position.set(-W * 0.52, W * 0.4, W * 0.5); c.lookAt(W * 0.02, groundAt(0, 0) * 0.6, 0); eng.focus.set(0, groundAt(0, 0), 0);
     } else {
-      const spec = (HERO[info.recipe] || ((a, WW) => ({ pos: [-WW * 0.24, 3.8, WW * 0.1], look: [0, 3, 0] })))(arena, W);
-      const [cx0, cz0] = clearSpot(spec.pos[0], spec.pos[2]), gy = maxGround(cx0, cz0, 2);
-      c.position.set(cx0, gy + spec.pos[1], cz0); c.lookAt(spec.look[0], spec.look[1] + 0 * gy, spec.look[2]);
-      eng.focus.set(spec.look[0], groundAt(spec.look[0], spec.look[2]), spec.look[2]);
+      const spec = HERO[info.recipe] || { f: [-0.28, 0.1], t: [0, 0], h: 4, ty: 3 };
+      const [cx0, cz0, tx, tz] = heroSpot(spec, W), gy = maxGround(cx0, cz0, 1);
+      c.position.set(cx0, gy + spec.h, cz0); c.lookAt(tx, groundAt(tx, tz) + spec.ty, tz);
+      eng.focus.set(tx, groundAt(tx, tz), tz);
     }
     c.updateMatrixWorld();
     return true;

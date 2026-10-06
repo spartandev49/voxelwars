@@ -29,7 +29,7 @@ function buildOutput(cat, id, bp) {
 export function partIcon(cat, id, bp, size = 48) {
   const sig = [bp.colors.primary, bp.colors.secondary, bp.colors.trim, bp.colors.cloth, bp.colors.metal, bp.body.skin, bp.body.hair, bp.emblem, bp.id].join('|');
   const key = cat + ':' + id + ':' + size + ':' + sig;
-  const hit = CACHE.get(key); if (hit) { const c = document.createElement('canvas'); c.width = hit.width; c.height = hit.height; c.getContext('2d').drawImage(hit, 0, 0); return c; }
+  const hit = CACHE.get(key); if (hit) { const c = document.createElement('canvas'); c.width = hit.width; c.height = hit.height; c.className = 'ws-icon'; c.getContext('2d').drawImage(hit, 0, 0); return c; }
   const px = size * 2, cv = document.createElement('canvas'); cv.width = cv.height = px; cv.className = 'ws-icon';
   const g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
   let out = null; try { out = buildOutput(cat, id, bp); } catch (e) { out = null; }

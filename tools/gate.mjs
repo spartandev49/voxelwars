@@ -25,6 +25,11 @@ console.log(`${syntaxBad ? 'FAIL' : 'PASS'}  syntax (${files.length} files)`); i
 // tests
 const tests = []; (function walk(d) { if (!fs.existsSync(d)) return; for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (/\.test\.mjs$/.test(e.name)) tests.push(p); } })(path.join(root, 'tests'));
 for (const t of tests.sort()) { const rel = path.relative(root, t); if (only && !rel.includes(only)) continue; if (fast && /slow|fuzz|balance/.test(rel)) continue; step('test ' + rel, 'node', [rel], { timeout: 600000 }); }
-if (fs.existsSync(path.join(root, 'src/app/main.js')) && !only) step('build', 'node', ['tools/build.mjs']);
+if (!only) step('contracts', 'node', ['tools/contracts.mjs']);
+if (fs.existsSync(path.join(root, 'src/app/main.js')) && !only) {
+  step('build', 'node', ['tools/build.mjs']);
+  // full gate: boot the REAL build (and the packed artifact fragment) in Chromium under the artifact CSP; any console error/warning/CSP violation fails
+  if (!fast) { step('smoke (standalone)', 'node', ['tools/smoke.mjs', '--battle=6'], { timeout: 600000 }); step('smoke (artifact fragment)', 'node', ['tools/smoke.mjs', '--page=dist/artifact/index.html', '--battle=6'], { timeout: 600000 }); }
+}
 console.log(fail ? `GATE FAILED (${fail})` : 'GATE PASSED');
 process.exit(fail ? 1 : 0);

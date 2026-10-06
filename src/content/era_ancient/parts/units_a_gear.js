@@ -11,24 +11,24 @@ const R_UP = 0.3, R_CARRY = 2.44;
 // ------------------------------------------------------------------------------------------------ mains
 /** The philosopher's scroll: a fat rolled papyrus with wooden knobs, a team-colour ribbon, and a sheet that has unrolled down the front (with scribbles). It is a blunt argument. */
 M.scroll = {
-  name: 'Scroll', meta: { style: 'bash', ready: 60, len: 14, back: 6, rest: [0.7, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
+  name: 'Scroll', meta: { style: 'bash', ready: 14, len: 12, back: 6, rest: [0.7, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len, y0 = 10 - ctx.back;
     const pap = (x, y, z, f = 1) => V(shade(0xeadcae, f * (0.9 + 0.14 * hash3(x, y, z, 7))));
     // the roll: radius 2 cylinder from y0 to yt, ring lines every 3rd row, wooden knobs on both ends
     for (let y = y0 + 1; y <= yt - 1; y++) for (let z = 2; z <= 6; z++) for (let x = 2; x <= 6; x++) {
-      const d = Math.hypot(x - 4, z - 4); if (d > 2.3) continue;
+      const d = Math.hypot(x - 4, z - 4); if (d > 2.0) continue;
       g.set(x, y, z, (y % 4 === 0) ? pap(x, y, z, 0.78) : pap(x, y, z, z > 4 ? 1.06 : 0.94));
     }
     for (const [y, f] of [[y0, 0.9], [yt, 1.0]]) { B(g, 3, y, 3, 5, y, 5, wood(y, 3, 0x7a4e26)); P(g, 4, y + (y === yt ? 1 : -1), 4, V(shade(ctx.m[3], f))); }
     B(g, 3, y0 + 1, 3, 5, y0 + 1, 5, wood(y0, 4, 0x6a4020)); B(g, 3, yt - 1, 3, 5, yt - 1, 5, wood(yt, 5, 0x6a4020));
     // ribbon (tinted) round the roll above the hand, tails hanging
-    for (let y = yt - 5; y <= yt - 4; y++) for (let z = 1; z <= 7; z++) for (let x = 1; x <= 7; x++) { const d = Math.hypot(x - 4, z - 4); if (d >= 2.1 && d <= 3.1) g.set(x, y, z, ctx.t(0.98)); }
-    B(g, 4, yt - 9, 7, 4, yt - 4, 7, ctx.t(1.02)); P(g, 5, yt - 8, 7, ctx.t(0.9)); P(g, 4, yt - 10, 7, ctx.t(0.85));
+    for (let y = yt - 5; y <= yt - 4; y++) for (let z = 1; z <= 7; z++) for (let x = 1; x <= 7; x++) { const d = Math.hypot(x - 4, z - 4); if (d >= 1.9 && d <= 2.7) g.set(x, y, z, ctx.t(0.98)); }
+    B(g, 5, yt - 9, 6, 5, yt - 4, 6, ctx.t(1.02)); P(g, 6, yt - 8, 6, ctx.t(0.9)); P(g, 5, yt - 10, 6, ctx.t(0.85));
     // the unrolled sheet hanging down the front with lines of writing
-    for (let y = yt - 3; y >= yt - 11 && y > y0 + 2; y--) for (let x = 2; x <= 6; x++) {
-      const ragged = y === yt - 11 && (x + 1) % 2 === 0; if (ragged) continue;
-      g.set(x, y, 7, (y % 2 === 0 && x >= 3 && x <= 6 && hash3(x, y, 3, 9) > 0.25) ? V(0x4a3a24) : pap(x, y, 7, 1.04));
+    for (let y = yt - 3; y >= yt - 10 && y > y0 + 2; y--) for (let x = 2; x <= 4; x++) {
+      const ragged = y === yt - 10 && x === 3; if (ragged) continue;
+      g.set(x, y, 6, (y % 2 === 0 && hash3(x, y, 3, 9) > 0.25) ? V(0x4a3a24) : pap(x, y, 6, 1.04));
     }
     gripWrap(g, ctx, 8, 11);
     return g;
@@ -37,7 +37,7 @@ M.scroll = {
 
 /** The senator's bag of coins: a fat leather purse tied with a team ribbon, gold coins spilling out of the top, one stamped coin on the front. */
 M.coin_bag = {
-  name: 'Bag of coins', meta: { style: 'throw', ready: 70, len: 13, back: 4, rest: [R_UP, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
+  name: 'Bag of coins', meta: { style: 'throw', ready: 8, len: 13, back: 4, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), cy = 16 + Math.max(0, ctx.len - 13) * 0;
     const bag = (x, y, z, f = 1) => V(shade(0x8a5a30, f * (0.82 + 0.28 * hash3(x, y, z, 17))));
@@ -91,7 +91,7 @@ O.pelte_wicker = {
     for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
       if (!inEll(x, y, cx, cy, 5.5, 4.9) || inEll(x, y, cx, cy + 5.6, 2.5, 2.3)) continue;
       const d = Math.sqrt(((x - cx) / 5.5) ** 2 + ((y - cy) / 4.9) ** 2);
-      const rim = d > 0.72;
+      const rim = d > 0.6;
       const weave = (x + y) % 2 ? V(shade(0xb89452, 0.92)) : V(shade(0xd8b866, 1.0 + 0.06 * hash3(x, y, 3, 2)));
       g.set(x, y, 4, rim ? ctx.t(0.95 + 0.1 * (y > 7 ? 1 : 0)) : weave);
       if (d > 0.84) g.set(x, y, 5, V(shade(0x6a4224, 0.9 + 0.2 * hash3(x, y, 5, 3))));          // leather piping
@@ -109,7 +109,7 @@ O.parma_small = {
     const g = newGrid('offhand'), cx = 7.5, cy = 7.5, r = 5.1;
     for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) {
       const d = Math.hypot(x - cx, y - cy); if (d > r) continue;
-      const rim = d > r - 1.9;
+      const rim = d > r - 2.8;
       g.set(x, y, 4, rim ? ctx.t(0.84 + 0.12 * (y > 7 ? 1 : 0)) : V(shade(ctx.c.primary, 0.78 + 0.2 * hash3(x, y, 1, 5))));
       if (d > r - 0.9) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 3 : 2]));
       if (d > r - 2.3) g.set(x, y, 3, ctx.t(0.62 + 0.1 * hash3(x, y, 3, 2)));
@@ -129,13 +129,13 @@ function egyptShield(name, o) {
       const hw = (y) => [0, 4.6, 4.9, 5, 5, 5, 5, 5, 5, 5, 4.9, 4.7, 4.1, 3.3, 2.1, 0][y] || 0;
       for (let y = 1; y <= 14; y++) for (let x = 0; x < 16; x++) {
         const w = hw(y), dx = Math.abs(x - cx); if (dx > w) continue;
-        const rim = dx > w - 1.6 || y <= 2 || (y >= 13 && true);
+        const rim = dx > w - 2.6 || y <= 3 || y >= 13;
         let face;
         if (o.face === 'hide') face = (hash3(x >> 1, y >> 1, 0, 13) > 0.7) ? V(0xf2ead6) : V(shade(0xa8703c, 0.85 + 0.2 * hash3(x, y, 1, 4)));
         else if (o.face === 'black') face = V(shade(0x1a1a20, 0.8 + 0.4 * hash3(x, y, 1, 4)));
         else face = V(shade(ctx.m[3], 0.88 + 0.16 * hash3(x, y, 1, 4)));
         g.set(x, y, 4, rim ? ctx.t(0.82 + 0.14 * (y > 7 ? 1 : 0) + 0.05 * hash3(x, y, 2, 3)) : face);
-        if (dx > w - 0.9 || y === 1) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 3 : 2]));
+        if (dx > w - 0.8 || y === 1 || y === 14) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 3 : 2]));
         if (dx > w - 2.2 || y <= 3) g.set(x, y, 3, ctx.t(0.62 + 0.1 * hash3(x, y, 3, 2)));
       }
       for (let y = 7; y <= 10; y++) for (let x = 6; x <= 9; x++) if (Math.hypot(x - 7.5, y - 8.5) <= 2.0) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 4 : 3]));

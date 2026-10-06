@@ -40,5 +40,5 @@ export function mount(root, ctx, params) {
   K.enter([notice, yours], 'pop', 0);
   cleanups.push(frame.destroy);
   setTimeout(() => { const b = root.querySelector('#ph-quick'); if (b && !safe(() => ctx.platform.isTouch, false)) b.focus(); }, 80);
-  return { destroy() { cleanups.forEach((f) => f()); }, onBack() { if (K.hasModal()) return false; ctx.nav.back(); return true; } };
+  return K.withExit(root, { destroy() { cleanups.forEach((f) => f()); }, onBack() { return K.hasModal(); } });
 }

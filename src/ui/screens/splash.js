@@ -16,7 +16,7 @@ export function mount(root, ctx, params) {
     K.h('div', { class: 'vw-splash__top' }, logo({ size: 'xl' }), K.h('p', { class: 'vw-splash__tag vw-epigraph', text: T.tag })),
     K.h('div', { class: 'vw-splash__bottom' }, prompt,
       K.h('p', { class: 'vw-splash__note', text: T.sound }),
-      K.h('p', { class: 'vw-splash__ver vw-micro', text: ctx.version ? `v${ctx.version.version || '1.0.0'} · ${ctx.version.date || ctx.version.build || ''}` : '' })));
+      K.h('p', { class: 'vw-splash__ver vw-micro', text: ctx.version ? `v${ctx.version.version || ctx.version.build || '1.0.0'} · ${ctx.version.date || ''}` : '' })));
   root.append(K.h('div', { class: 'vw-scrim-bottom' }), el);
   K.enter(el.querySelector('.vw-logo'), 'pop', 0);
   K.enter(el.querySelector('.vw-splash__tag'), 'fade', 4);
@@ -39,9 +39,9 @@ export function mount(root, ctx, params) {
   prompt.addEventListener('click', enter);
   setTimeout(() => { try { prompt.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }, 50);
 
-  return {
+  return K.withExit(root, {
     destroy() { window.removeEventListener('keydown', onKey); root.removeEventListener('pointerdown', enter); },
     onKey(e) { if (!done) onKey(e); return true; },
     onBack() { return true; },
-  };
+  });
 }

@@ -3,6 +3,7 @@
 // forward swing = negative rx; the leg's vertical translation tracks its swing arc so a planted foot stays on the ground.
 // Species variants are registered as '<species>_<clip>' (camel, hound, goat); the animator tries them first (model.meta.species).
 import { define, seq, mergeKeys, wave, waveC, bump, clamp, lerp, smoothstep, EASE } from '../dsl.js';
+import { plantRigidLeg } from '../gait.js';
 
 const PI = Math.PI, TAU = Math.PI * 2;
 
@@ -15,26 +16,25 @@ export const QUAD_SPECIES = {
 };
 // BEASTS recipe (beasts/quad1.js makeGait) + cycle durations chosen so speedRef = stride / D matches the roster speeds
 const GAITS = {
-  walk:   { amp: 0.42, duty: 0.66, D: 1.15, bob: 0.012, pitch: 0.0, neckAmp: 0.10, lift: 0.07, off: [0.25, 0.75, 0.0, 0.5] },       // FL FR BL BR (lateral sequence)
-  trot:   { amp: 0.55, duty: 0.50, D: 0.72, bob: 0.03, pitch: 0.02, neckAmp: 0.05, lift: 0.1, off: [0.0, 0.5, 0.5, 0.0] },          // diagonal pairs
-  gallop: { amp: 0.85, duty: 0.34, D: 0.52, bob: 0.1, pitch: 0.14, neckAmp: 0.16, lift: 0.16, off: [0.62, 0.52, 0.0, 0.1] },       // BL BR FR FL (transverse)
+  walk:   { amp: 0.42, duty: 0.66, D: 1.15, bob: 0.012, pitch: 0.0, neckAmp: 0.10, liftK: 0.108, off: [0.25, 0.75, 0.0, 0.5] },       // FL FR BL BR (lateral sequence)
+  trot:   { amp: 0.55, duty: 0.50, D: 0.72, bob: 0.03, pitch: 0.02, neckAmp: 0.05, liftK: 0.142, off: [0.0, 0.5, 0.5, 0.0] },          // diagonal pairs
+  gallop: { amp: 0.85, duty: 0.34, D: 0.52, bob: 0.1, pitch: 0.14, neckAmp: 0.16, liftK: 0.2, off: [0.62, 0.52, 0.0, 0.1] },       // BL BR FR FL (transverse)
 };
 const PACE_OFF = { walk: [0.0, 0.5, 0.0, 0.5], trot: [0.0, 0.5, 0.0, 0.5] };
 export const LEGS = ['legFL', 'legFR', 'legBL', 'legBR'];
 export const stride = (sp, g) => (2 * sp.L * Math.sin(g.amp)) / g.duty;
 const eo = (x) => (x < 0.5 ? 0.5 * Math.pow(2 * x, 1.7) : 1 - 0.5 * Math.pow(2 * (1 - x), 1.7));
 
-/** leg state at gait phase ph: returns [rx, lift] and the stance flag via the 3rd slot */
-function legAt(ph, sp, g, out) {
+/** foot target of one leg at gait phase ph, relative to the leg's own rest position: [z (forward), y (lift above the ground)] */
+function footAt(ph, sp, g, out) {
   const zmax = sp.L * Math.sin(g.amp);
-  let z, f = 0;
-  if (ph < g.duty) { const k = ph / g.duty; z = zmax * (1 - 2 * k); }
-  else { const x = (ph - g.duty) / (1 - g.duty); z = -zmax + 2 * zmax * eo(x); f = g.lift * Math.sin(PI * Math.pow(x, 0.9)); }
-  const th = Math.asin(clamp(z / sp.L, -1, 1));
-  out[0] = -th; out[1] = f - sp.L * (1 - Math.cos(th)); out[2] = th;
+  if (ph < g.duty) { out[0] = zmax * (1 - 2 * (ph / g.duty)); out[1] = 0; }
+  else { const x = (ph - g.duty) / (1 - g.duty); out[0] = -zmax + 2 * zmax * eo(x); out[1] = (g.liftK * sp.L) * Math.sin(PI * Math.pow(x, 0.9)); }
   return out;
 }
-const _lg = [0, 0, 0];
+const _ft = [0, 0], _lg = [0, 0, 0];
+const HIP_Y = 0.2;      // the leg pivot sits 2 voxels above the belly line (beasts/quad1.js)
+const plantLeg = (sp, zLeg, by, p, ft, out) => plantRigidLeg(sp.bodyY, sp.hipY === undefined ? HIP_Y : sp.hipY, sp.L, zLeg, by, p, ft, out);   // see gait.js
 
 export function gaitBuild(sp, gname, gOverride) {
   const g = gOverride || GAITS[gname];
@@ -46,8 +46,9 @@ export function gaitBuild(sp, gname, gOverride) {
     const pitch = gallop ? g.pitch * Math.sin(TAU * (u + 0.05)) : g.pitch * Math.sin(TAU * 2 * u + 1.0);
     c.pos('body', 0, by, 0).rot('body', pitch, 0, 0);
     for (let i = 0; i < 4; i++) {
-      legAt((((u + off[i]) % 1) + 1) % 1, sp, g, _lg);
-      c.rot(LEGS[i], _lg[0] - pitch * (i < 2 ? 0.0 : 1.0) * 0.0, 0, 0).pos(LEGS[i], 0, _lg[1] - by, 0);
+      footAt((((u + off[i]) % 1) + 1) % 1, sp, g, _ft);
+      plantLeg(sp, i < 2 ? sp.zF : sp.zB, by, pitch, _ft, _lg);
+      c.rot(LEGS[i], _lg[0], 0, 0).pos(LEGS[i], 0, _lg[1], _lg[2]);
     }
     // neck + head: counter the body pitch, nod once per cycle (walk) / twice (trot) / stretch out (gallop)
     const nb = gallop ? -0.28 : sp.neck[0], n = wave(u, gallop ? 1 : (gname === 'trot' ? 2 : 1), 0.1);

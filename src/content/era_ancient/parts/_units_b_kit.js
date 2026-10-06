@@ -15,32 +15,35 @@ export function brush(set, x, y, z, w, h, d, v) {
 
 /**
  * Draw a thick polyline through `pts` ([x,y,z] voxel indices, any space with a set(x,y,z,v) method) with a cube brush of `thick`
- * voxels, then a snake head at the last point. colorAt(i, x, y, z) gives the body voxel; the head faces along the last segment.
- * Eyes are GLOW voxels, the tongue is a red pair. Used by Medusa's hair.
+ * voxels, then a snake head at the last point. colorAt(i, x, y, z) gives the body voxel; the head faces along the last segment's dominant axis
+ * and is 2 long x (thick+2) wide x `o.headH` (default thick) high; eyes are GLOW voxels on the outer top corners of the front row, the tongue a red fork.
+ * `o.ok(x,y,z)` (default: everything) lets the caller clip cells that would fall outside its grid. Used by Medusa's hair.
  */
 export function snake(S, pts, thick, colorAt, o = {}) {
-  const rnd = Math.round;
+  const rnd = Math.round, ok = o.ok || (() => true);
+  const put0 = (x, y, z, v) => { if (ok(x, y, z)) S.set(x, y, z, v); };
   let n = 0;
   for (let s = 0; s < pts.length - 1; s++) {
     const a = pts[s], b = pts[s + 1];
     const len = Math.max(Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1]), Math.abs(b[2] - a[2]), 1);
     for (let i = 0; i <= len; i++) {
       const t = i / len, x = rnd(a[0] + (b[0] - a[0]) * t), y = rnd(a[1] + (b[1] - a[1]) * t), z = rnd(a[2] + (b[2] - a[2]) * t);
-      brush((xx, yy, zz, v) => S.set(xx, yy, zz, v), x, y, z, thick, thick, thick, (xx, yy, zz) => colorAt(n, xx, yy, zz));
+      brush((xx, yy, zz, v) => put0(xx, yy, zz, v), x, y, z, thick, thick, thick, (xx, yy, zz) => colorAt(n, xx, yy, zz));
       n++;
     }
   }
-  // head: along the dominant axis of the last segment
   const p = pts[pts.length - 1], q = pts[pts.length - 2];
   const dv = [p[0] - q[0], p[1] - q[1], p[2] - q[2]];
   const ax = Math.abs(dv[0]) >= Math.abs(dv[1]) && Math.abs(dv[0]) >= Math.abs(dv[2]) ? 0 : (Math.abs(dv[1]) >= Math.abs(dv[2]) ? 1 : 2);
   const sg = dv[ax] >= 0 ? 1 : -1;
   const up = ax === 1 ? 2 : 1, side = 3 - ax - up;
   const head = o.head || V(0x4f9a3a), eye = o.eye || G(0xd8ff50), tongue = o.tongue || V(0xd8281c);
-  const put = (f, s2, u, v) => { const c = [0, 0, 0]; c[ax] = p[ax] + f * sg; c[side] = p[side] + s2; c[up] = p[up] + u; S.set(c[0], c[1], c[2], v); };
-  for (let f = 1; f <= 2; f++) for (let s2 = -1; s2 <= thick; s2++) for (let u = 0; u < thick; u++) put(f, s2, u, head);
-  put(2, -1, thick - 1, eye); put(2, thick, thick - 1, eye);               // glowing eyes on the outer top corners of the front row
-  put(3, 0, 0, tongue); put(4, 0, 0, tongue); if (thick > 1) put(3, 1, 0, tongue);
+  const put = (f, s2, u, v) => { const c = [0, 0, 0]; c[ax] = sg > 0 ? p[ax] + thick - 1 + f : p[ax] - f; c[side] = p[side] + s2; c[up] = p[up] + u; put0(c[0], c[1], c[2], v); };
+  const hH = o.headH || thick;
+  const hL = o.headL || 2;
+  for (let f = 1; f <= hL; f++) for (let s2 = -1; s2 <= thick; s2++) for (let u = 0; u < hH; u++) put(f, s2, u, head);
+  put(hL, -1, hH - 1, eye); put(hL, thick, hH - 1, eye);
+  put(hL + 1, 0, 0, tongue); put(hL + 2, 0, 0, tongue); put(hL + 2, -1, 0, tongue); put(hL + 2, 1, 0, tongue);
 }
 
 /** alternating purple/gold fringe voxel for hems (x or z index decides) */

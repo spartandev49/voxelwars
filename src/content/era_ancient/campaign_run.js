@@ -120,7 +120,7 @@ export function playerFixed(m, arena, defs) {
   for (const f of m.fixed || []) {
     const mk = f.marker ? markerOf(m, f.marker) : null;
     const base = defs[f.defId];
-    out.push({ defId: f.defId, x: mk ? mk.x : f.x, z: mk ? mk.z : f.z, heading: f.heading !== undefined ? f.heading : PI / 2, vip: !!f.vip, def: f.def ? Object.assign({}, base, f.def) : undefined, name: f.name });
+    out.push({ defId: f.defId, x: mk ? mk.x : f.x, z: mk ? mk.z : f.z, heading: f.heading !== undefined ? f.heading : PI / 2, vip: !!f.vip, def: f.def ? (() => { const d = Object.assign({}, base, f.def); delete d._ai; return d; })() : undefined, name: f.name });
   }
   return out;
 }

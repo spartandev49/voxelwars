@@ -77,9 +77,9 @@ TU.subligaculum = {
     B(g, 0, 3, 0, 9, 3, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? lea(x, y, z, 0x6a4224, 0.9) : 0));       // belt (balteus)
     B(g, 3, 3, 4, 6, 3, 4, (x, y, z) => V(shade(ctx.m[3], 0.9 + 0.15 * (x % 2)))); Ps(g, 1, 3, 4, V(ctx.m[4])); Ps(g, 8, 3, 4, V(ctx.m[4]));  // buckle plate + studs
     B(g, 0, 0, 0, 9, 0, 4, (x, y, z) => ((z === 4 && x % 2 === 0) ? V(shade(ctx.c.secondary, 0.9)) : 0));                      // gold hem dashes
-    B(o.legUL, 0, 3, 0, 3, 4, 3, (x, y, z) => ctx.t(noise(x, y, z, 5, 0.09) * 0.95)); B(o.legUR, 0, 3, 0, 3, 4, 3, (x, y, z) => ctx.t(noise(x, y, z, 5, 0.09) * 0.95));
-    B(o.legUL, 0, 1, 3, 1, 2, 3, (x, y, z) => ctx.t(0.9)); B(o.legUR, 2, 1, 3, 3, 2, 3, (x, y, z) => ctx.t(0.9));                // the front flap hangs between the thighs
-    B(o.legUL, 0, 1, 3, 1, 1, 3, V(shade(ctx.c.secondary, 0.85))); B(o.legUR, 2, 1, 3, 3, 1, 3, V(shade(ctx.c.secondary, 0.85)));
+    B(o.legUL, 0, 1, 0, 3, 4, 3, (x, y, z) => ctx.t(noise(x, y, z, 5, 0.09) * (y === 1 ? 0.86 : 0.95))); B(o.legUR, 0, 1, 0, 3, 4, 3, (x, y, z) => ctx.t(noise(x, y, z, 5, 0.09) * (y === 1 ? 0.86 : 0.95)));
+    B(o.legUL, 0, 1, 3, 1, 1, 3, V(shade(ctx.c.secondary, 0.85))); B(o.legUR, 2, 1, 3, 3, 1, 3, V(shade(ctx.c.secondary, 0.85)));   // gold hem on the front flap
+    B(o.legUL, 0, 1, 0, 3, 1, 3, (x, y, z) => ((x + z) % 2 ? V(shade(ctx.c.secondary, 0.8)) : 0)); B(o.legUR, 0, 1, 0, 3, 1, 3, (x, y, z) => ((x + z) % 2 ? V(shade(ctx.c.secondary, 0.8)) : 0));
     return o;
   },
 };
@@ -89,19 +89,20 @@ TU.mummy_wraps = {
   name: 'Mummy wrappings (ragged)', meta: { faction: 'egyptians' },
   build(ctx) {
     const o = G9();
-    const wrap = (x, y, z, s = 0) => {
-      const d = (y + (x >> 1) + (z >> 1) + s) % 4, n = hash3(x, y, z, 12 + s);
-      if (n > 0.9) return 0;                                                          // ragged hole: the skin below shows
-      if (n > 0.8) return V(shade(0xe2d8bc, 0.86 + 0.2 * n));                          // a loose strip of plain linen
-      if (d === 3) return V(shade(0xcfc4a2, 0.8 + 0.2 * n));                           // dusty band
-      return ctx.t((d === 0 ? 1.0 : d === 1 ? 0.88 : 0.95) * (0.92 + 0.14 * n));
+    // strips run diagonally over the torso (mode 0) and in bands round the limbs (mode 1); mostly tinted, some plain linen, gaps of dry skin
+    const wrap = (x, y, z, s = 0, mode = 0) => {
+      const d = mode === 0 ? (x + y * 2 + (z === 0 ? 3 : 0) + s) % 6 : (y + s + (x >> 1)) % 4, n = hash3(x, y, z, 12 + s);
+      if (n > 0.93) return 0;                                                          // a hole: the skin below shows
+      if (mode === 0 ? d === 5 : d === 3) return V(shade(0xe6dcc0, 0.86 + 0.2 * n));    // a strip of plain linen
+      if (n > 0.84) return V(shade(0xdcd0b0, 0.84 + 0.2 * n));                          // a loose strip
+      return ctx.t(((mode === 0 ? d % 3 === 0 : d === 0) ? 0.88 : 1.0) * (0.95 + 0.1 * n));
     };
     B(o.body, 0, 0, 0, 9, 8, 4, (x, y, z) => wrap(x, y, z));
-    B(o.armUL, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 1)); B(o.armUR, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 2));
-    B(o.armLL, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y + 1, z, 3)); B(o.armLR, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y + 2, z, 4));
-    B(o.legUL, 0, 0, 0, 3, 4, 3, (x, y, z) => wrap(x, y, z, 5)); B(o.legUR, 0, 0, 0, 3, 4, 3, (x, y, z) => wrap(x, y, z, 6));
-    B(o.legLL, 0, 2, 0, 3, 4, 3, (x, y, z) => wrap(x, y + 3, z, 7)); B(o.legLR, 0, 2, 0, 3, 4, 3, (x, y, z) => wrap(x, y + 1, z, 8));
-    B(o.legLL, 0, 0, 0, 3, 1, 5, (x, y, z) => wrap(x, y, z, 2)); B(o.legLR, 0, 0, 0, 3, 1, 5, (x, y, z) => wrap(x, y, z, 5));
+    B(o.armUL, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 1, 1)); B(o.armUR, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 2, 1));
+    B(o.armLL, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y + 1, z, 3, 1)); B(o.armLR, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y + 2, z, 4, 1));
+    B(o.legUL, 0, 0, 0, 3, 4, 3, (x, y, z) => wrap(x, y, z, 5, 1)); B(o.legUR, 0, 0, 0, 3, 4, 3, (x, y, z) => wrap(x, y, z, 6, 1));
+    B(o.legLL, 0, 2, 0, 3, 4, 3, (x, y, z) => wrap(x, y + 3, z, 7, 1)); B(o.legLR, 0, 2, 0, 3, 4, 3, (x, y, z) => wrap(x, y + 1, z, 8, 1));
+    B(o.legLL, 0, 0, 0, 3, 1, 5, (x, y, z) => wrap(x, y, z, 2, 1)); B(o.legLR, 0, 0, 0, 3, 1, 5, (x, y, z) => wrap(x, y, z, 5, 1));
     // the wrapping is torn open on the chest (dry ribs), strands trail off the belt and the forearms
     B(o.body, 2, 4, 4, 4, 6, 4, (x, y, z) => ((y === 5) ? V(0xd8cdb0) : V(0x2e281e))); P(o.body, 3, 6, 4, V(0xd8cdb0));
     for (const [g, x, y0, y1, z] of [[o.legUL, 1, 0, 4, 3], [o.legUR, 2, 1, 4, 3], [o.armLL, 1, 0, 2, 2], [o.armLR, 1, 0, 3, 2]]) for (let y = y0; y <= y1; y++) P(g, x, y, z, V(shade(0xe8dec2, 0.92 + 0.12 * (y % 2))));
@@ -109,6 +110,36 @@ TU.mummy_wraps = {
     return o;
   },
 };
+
+/** Royal shendyt: a pleated linen kilt down to the knees (team colour, vertical pleats), a gold belt with a big buckle plate, a stiff front apron with a gold hem,
+ *  and arm decoration: `sleeved` = pleated short sleeves to the elbow (the pharaoh), else broad armbands and bracers on bare arms (Anubis). */
+function shendyt(name, sleeved) {
+  return {
+    name, meta: { faction: 'egyptians' },
+    build(ctx) {
+      const o = G9(), g = o.body;
+      const pleat = (x, y, z, f = 1) => ctx.t(f * noise(x, y, z, 4, 0.06) * (((x + (z === 4 ? 0 : 1)) % 2) ? 0.9 : 1.04));
+      const gold = (x, y, z, f = 1) => V(shade(ctx.m[3], f * (0.9 + 0.16 * hash3(x, y, z, 6))));
+      B(g, 0, 0, 0, 9, 3, 4, (x, y, z) => pleat(x, y, z, y === 0 ? 0.9 : 1.0));
+      B(g, 0, 4, 0, 9, 4, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? gold(x, y, z, 0.96) : 0));         // gold belt
+      B(g, 3, 4, 4, 6, 4, 4, (x, y, z) => V(shade(ctx.m[4], 0.94 + 0.08 * (x % 2)))); P(g, 4, 3, 4, V(shade(ctx.c.primary, 0.9))); P(g, 5, 3, 4, V(shade(ctx.c.primary, 0.9)));   // buckle plate with a turquoise gem
+      B(g, 3, 0, 4, 6, 3, 4, (x, y, z) => ctx.t((y === 0 ? 0.96 : 1.1) - 0.04 * (x % 2)));                                      // stiff apron
+      B(g, 3, 0, 4, 6, 0, 4, (x, y, z) => gold(x, y, z, 0.9));
+      both(o, 'legUL', 'legUR', (l) => { B(l, 0, 0, 0, 3, 4, 3, (x, y, z) => pleat(x, y, z, 0.96)); });
+      both(o, 'legLL', 'legLR', (l) => { B(l, 0, 3, 0, 3, 4, 3, (x, y, z) => pleat(x, y, z, 0.92)); B(l, 0, 3, 0, 3, 3, 3, (x, y, z) => ((x + z) % 2 ? gold(x, y, z, 0.9) : 0)); });
+      if (sleeved) {
+        both(o, 'armUL', 'armUR', (a) => { B(a, 0, 1, 0, 2, 4, 2, (x, y, z) => pleat(x, y, z, 1.0)); B(a, 0, 1, 0, 2, 1, 2, (x, y, z) => gold(x, y, z, 0.9)); });
+        both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 3, 2, (x, y, z) => ctx.t(0.92 + 0.1 * (y % 2))); B(a, 0, 2, 0, 2, 2, 2, (x, y, z) => gold(x, y, z, 0.9)); });
+      } else {
+        both(o, 'armUL', 'armUR', (a) => { B(a, 0, 2, 0, 2, 3, 2, (x, y, z) => ctx.t(0.92 + 0.1 * (y % 2))); B(a, 0, 1, 0, 2, 1, 2, (x, y, z) => gold(x, y, z, 0.9)); B(a, 0, 4, 0, 2, 4, 2, (x, y, z) => gold(x, y, z, 1.0)); });
+        both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => ctx.t(0.9 + 0.1 * (y % 2))); B(a, 0, 2, 0, 2, 2, 2, (x, y, z) => gold(x, y, z, 0.9)); });
+      }
+      return o;
+    },
+  };
+}
+TU.shendyt_royal = shendyt('Royal pleated kilt (armbands)', false);
+TU.shendyt_royal_sleeved = shendyt('Royal pleated kilt and sleeves', true);
 
 // ------------------------------------------------------------------------------------------------ armours
 /** Strategos: the bronze muscle cuirass under a knotted general's sash (team colour) with the baton tucked in. */
@@ -223,6 +254,29 @@ CP.striped_cloak = {
   },
 };
 
+/** Thracian zeira worn as a mantle: the striped wool cloak pinned over both shoulders (so the stripes show from the front, the javelins ride on the back), fringed at the lower edge. */
+SH.thracian_mantle = {
+  name: 'Striped Thracian mantle', meta: { faction: 'hellenes' },
+  build(ctx) {
+    const body = newGrid('body'), L = newGrid('armUL'), R = newGrid('armUR');
+    const band = (x, y, z) => {
+      const k = x % 5;
+      if (k <= 1) return ctx.t((0.98 + 0.1 * hash3(x, y, z, 82)) * ((y + x) % 4 === 0 ? 0.92 : 1.0));
+      if (k === 2) return V(shade(0xefe4c8, 0.9 + 0.14 * hash3(x, y, z, 83)));
+      return V(shade(0x4a2c1c, 0.85 + 0.2 * hash3(x, y, z, 84)));
+    };
+    for (let y = 8; y >= 4; y--) for (let z = 0; z <= 4; z++) for (let x = 0; x <= 9; x++) {
+      if (y === 8 && z >= 1 && z <= 3 && x >= 3 && x <= 6) continue;
+      if (y === 4 && (x + z) % 2 === 0) continue;                                   // fringed lower edge
+      if (y >= 7 || z === 4 || z === 0 || x === 0 || x === 9) body.set(x, y, z, band(x, y, z));
+    }
+    X(body, 3, 8, 3, 6, 8, 4); X(body, 4, 7, 4, 5, 7, 4);
+    for (const a of [L, R]) { B(a, 0, 3, 0, 2, 4, 2, (x, y, z) => ((y === 3 && (x + z) % 2 === 0) ? 0 : band(x + (a === L ? 0 : 3), y, z))); }
+    P(body, 4, 7, 4, V(ctx.m[3])); P(body, 5, 7, 4, V(ctx.m[4]));                  // the pin at the throat
+    return { body, armUL: L, armUR: R };
+  },
+};
+
 /** Mummy's trailing bandage: long loose strips of linen hanging off the shoulders at different lengths, ragged tips, a wrapped shawl at the top (team colour). */
 CP.bandage_trail = {
   name: 'Trailing bandages', meta: { faction: 'egyptians' },
@@ -253,13 +307,13 @@ CP.royal_cape = {
     const cape = newGrid('cape'), c2 = newGrid('cape2');
     const cloth = (x, y, z, f = 1) => ctx.t(f * (0.94 + 0.12 * hash3(x, y, z, 81)) * (x % 3 === 0 ? 0.95 : 1.0));
     const gold = (x, y, z) => V(shade(ctx.m[3], 0.86 + 0.2 * hash3(x, y, z, 6)));
-    B(cape, 0, 0, 0, 9, 13, 1, (x, y, z) => ((x === 0 || x === 9) ? gold(x, y, z) : cloth(x, y, z, vgrad(y, 0, 13, 0.92, 1.06))));
-    B(cape, 0, 13, 0, 9, 13, 1, (x, y, z) => gold(x, y, z));                                                       // upright gold collar
-    B(c2, 0, 7, 0, 9, 9, 1, (x, y, z) => ((x === 0 || x === 9) ? gold(x, y, z) : cloth(x, y + 14, z, 0.96)));
-    B(c2, 1, 7, 0, 8, 7, 1, (x, y, z) => ((x % 2) ? V(shade(ctx.c.primary, 0.9)) : gold(x, y, z)));                // hem: turquoise and gold beads
+    const edge = (x) => x === 0 || x === 9;                                          // outermost columns stay tinted (seen from the side)
+    B(cape, 0, 0, 0, 9, 13, 1, (x, y, z) => ((z === 0 && (x === 1 || x === 8)) ? gold(x, y, z) : cloth(x, y, z, vgrad(y, 0, 13, 0.92, 1.06))));
+    B(cape, 1, 13, 0, 8, 13, 0, (x, y, z) => gold(x, y, z));                          // upright gold collar
+    B(c2, 0, 7, 0, 9, 9, 1, (x, y, z) => ((z === 0 && (x === 1 || x === 8)) ? gold(x, y, z) : cloth(x, y + 14, z, 0.96)));
+    B(c2, 1, 7, 0, 8, 7, 0, (x, y, z) => ((x % 2) ? V(shade(ctx.c.primary, 0.9)) : gold(x, y, z)));                // hem: turquoise and gold beads
     const ankh = ['.####.', '##..##', '##..##', '.####.', '..##..', '######', '..##..', '..##..', '..##..'];
     sprite(cape, ankh, 2, 11, 0, { '#': (x, y) => V(shade(ctx.m[4], 0.94 + 0.08 * (y % 2))) });
-    P(cape, 4, 13, 1, V(ctx.m[4])); P(cape, 5, 13, 1, V(ctx.m[4]));
     return { cape, cape2: c2 };
   },
 };
@@ -298,12 +352,9 @@ BK.net_coil = {
       if (d >= 1.5 && d <= 3.1) for (let z = 4; z <= 6; z++) g.set(x, y, z, rope(x, y, z, (x + y + z) % 2 ? 0.88 : 1.04));
     }
     for (const [x, y] of [[8, 0], [11, 3], [6, 3], [9, 7]]) P(g, x, y, 5, V(0x4a4a54));
-    // mesh draped over the lower back: diamond lattice with weights at the lower edge
-    for (let y = 0; y <= 6; y++) for (let x = 0; x <= 7; x++) {
-      if (hash3(x, y, 0, 95) > 0.93) continue;
-      if ((x + y) % 2 === 0 && !(x === 7 && y > 4)) g.set(x, y, 7, rope(x, y, 7, 0.96)); else if ((x + y) % 4 === 1) g.set(x, y, 6, rope(x, y, 6, 0.8));
-    }
-    for (const x of [0, 2, 4, 6]) P(g, x, 0, 7, V(0x4a4a54));
+    // a little mesh trailing over the lower back (a few diamonds) with weights at the lower edge
+    for (let y = 0; y <= 3; y++) for (let x = 6; x <= 9; x++) { if ((x + y) % 2 === 0) g.set(x, y, 7, rope(x, y, 7, 0.96)); }
+    for (const x of [6, 8]) P(g, x, 0, 7, V(0x4a4a54));
     B(g, 4, 6, 7, 11, 6, 7, (x, y, z) => ((x % 2) ? V(0x7a5a38) : V(0x5a4028)));                                       // cord looped on the belt
     P(g, 10, 7, 6, ctx.t(1.0)); P(g, 9, 7, 6, ctx.t(0.9));
     return g;
@@ -311,17 +362,35 @@ BK.net_coil = {
 };
 
 // ------------------------------------------------------------------------------------------------ legs
+/** Legionary footwear for the light troops: hobnailed caligae with fasciae (leg wraps) in the team colour from the ankle to the knee. */
+LG.caligae_fasciae = {
+  name: 'Caligae with leg wraps', meta: { faction: 'romans' },
+  build(ctx) {
+    const o = LEGS.legs.caligae.build(ctx);
+    for (const id of ['legLL', 'legLR']) {
+      const g = o[id];
+      for (let y = 2; y <= 4; y++) B(g, 0, y, 0, 3, y, 3, (x, yy, z) => (((x + z + y) % 3 === 0 && y < 4) ? V(shade(0x6a4224, 0.85)) : ctx.t((0.9 + 0.12 * (y % 2)) * (0.96 + 0.08 * hash3(x, y, z, 4)))));
+      B(g, 0, 4, 0, 3, 4, 3, ctx.t(1.06));
+    }
+    return o;
+  },
+};
+
 /** Gladiator legs: a bronze greave with a knee guard on the left shin (the net-arm side), tinted leather fasciae wound round the right leg. */
 LG.gladiator_legs = {
   name: 'Greave and fasciae (gladiator)', meta: { faction: 'romans' },
   build(ctx) {
-    const gv = LEGS.legs.greaves.build(ctx);
-    const o = { legUL: newGrid('legUL'), legUR: newGrid('legUR'), legLL: gv.legLL, legLR: newGrid('legLR') };
-    B(o.legUL, 0, 3, 0, 3, 4, 3, (x, y, z) => ((y === 4 && z >= 2) ? V(ctx.m[3]) : 0));
-    for (let y = 0; y <= 4; y++) B(o.legLR, 0, 1 + y, 0, 3, 1 + y, 3, (x, yy, z) => ((y + x) % 3 === 0 ? V(shade(0x6a4224, 0.9)) : ctx.t(0.88 + 0.14 * (y % 2))));
-    B(o.legLR, 0, 4, 0, 3, 4, 3, ctx.t(1.04));
-    B(o.legLR, 0, 1, 0, 3, 1, 3, V(shade(0x4a3020, 0.9)));
-    B(o.legUR, 0, 3, 0, 3, 4, 3, (x, y, z) => ((y === 4) ? ctx.t(0.9) : 0));
+    const gv = LEGS.legs.greaves.build(ctx), m = ctx.m;
+    const o = { legUL: newGrid('legUL'), legUR: newGrid('legUR'), legLL: newGrid('legLL'), legLR: newGrid('legLR') };
+    const wraps = (g, s) => {
+      for (let y = 1; y <= 4; y++) B(g, 0, y, 0, 3, y, 3, (x, yy, z) => (((y + x + s) % 3 === 0 && y < 4) ? V(shade(0x6a4224, 0.9)) : ctx.t((0.9 + 0.12 * ((y + s) % 2)) * (0.96 + 0.08 * hash3(x, y, z, 4)))));
+      B(g, 0, 1, 0, 3, 1, 3, V(shade(0x4a3020, 0.9)));
+    };
+    wraps(o.legLR, 0); wraps(o.legLL, 1);
+    // the left shin also carries a bronze greave plate on its front and a knee guard
+    B(o.legLL, 1, 2, 3, 2, 4, 3, (x, y, z) => V(m[(y + x) % 2 ? 4 : 3])); B(o.legLL, 0, 4, 3, 3, 4, 3, V(m[3])); P(o.legLL, 1, 4, 3, V(m[4]));
+    B(o.legUL, 0, 4, 0, 3, 4, 3, (x, y, z) => ((z >= 2) ? V(m[3]) : 0));
+    B(o.legUR, 0, 4, 0, 3, 4, 3, (x, y, z) => ctx.t(0.9));
     return o;
   },
 };

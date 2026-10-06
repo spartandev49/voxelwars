@@ -148,9 +148,11 @@ export class SoldierStage {
   setTeam(t) { this.team = t === 1 ? 1 : 0; }
   setTintMode(m) { if (m === this.tintMode) return; this.tintMode = m; this._rebuild(); }
   setSpin(on) { this.spinOn = !!on; }
-  setClip(id) {
-    const st = this.state; if (!id || id === st.clip) { st.t = 0; return; }
-    st.prev = st.clip; st.clip = id; st.t = 0; st.blend = 0; this.hold = 0; this.gstate.clip = id === 'attack' ? 'idle' : 'idle';
+  /** Play a clip (restarts it); `keepTime` leaves a clip that is already playing alone (used when only the weapon changed). */
+  setClip(id, keepTime) {
+    const st = this.state; if (!id) return;
+    if (id === st.clip) { if (!keepTime) st.t = 0; return; }
+    st.prev = st.clip; st.clip = id; st.t = 0; st.blend = 0; this.hold = 0;
   }
   get clip() { return this.state.clip; }
 
@@ -185,7 +187,7 @@ export class SoldierStage {
       const gsv = this.ghost.scale;
       this.ghost.skin.begin(); this.ghost.skin.add(1.35, gr.y, -0.1, -0.5, gsv[0], gsv[1], gsv[2], this.ghost.pose, teamColorsLinear('classic')[1], 0, 1, 0, 0, 0); this.ghost.skin.end();   // stone = 1: the ghost is grey
     }
-    const c = this.camera, d = Math.max(5.6, this.height * 2.15) * v.zoom, cy = Math.cos(v.pitch);
+    const c = this.camera, d = Math.max(8.6, this.height * 3.05) * v.zoom, cy = Math.cos(v.pitch);
     const ty = this.height * 0.5;
     c.position.set(Math.sin(v.yaw) * d * cy, ty + Math.sin(v.pitch) * d, Math.cos(v.yaw) * d * cy);
     c.lookAt(0, ty, 0); c.updateMatrixWorld();
@@ -226,7 +228,7 @@ export class ThumbMaker {
       this.state._pc = undefined; this.animator.pose(model, this.state, ex, pose);
       const tc = teamColorsLinear(this.o.palette ? this.o.palette() : 'classic')[team];
       skin.begin(); skin.add(0, r.y, 0, 0, scale[0], scale[1], scale[2], pose, tc); skin.end();
-      const h = Math.max(1.6, model.height() * scale[1]), d = Math.max(6.2, h * 2.5);
+      const h = Math.max(1.6, model.height() * scale[1]), d = Math.max(7.4, h * 3.0);
       this.camera.position.set(Math.sin(0.65) * d, h * 0.62, Math.cos(0.65) * d); this.camera.lookAt(0, h * 0.48, 0); this.camera.updateMatrixWorld();
       this.r.render(this.scene, this.camera);
       let q = 0.72, url = this.canvas.toDataURL('image/jpeg', q); while (url.length > 8200 && q > 0.3) { q -= 0.08; url = this.canvas.toDataURL('image/jpeg', q); }

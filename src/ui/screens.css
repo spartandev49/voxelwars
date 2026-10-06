@@ -115,7 +115,7 @@
 .vw-qb__action-btns .vw-btn__sub { max-width: 15rem; }
 
 @media (min-width: 1500px) { .vw-qb { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "a b c"; } }
-@media (max-width: 1100px) { .vw-qb__hero { grid-template-columns: 1fr; } }
+@media (max-width: 1100px) { .vw-qb__hero { grid-template-columns: 1fr; } .vw-qb__thumb { max-width: 34rem; } }
 @media (max-width: 900px) {
   .vw-qb { grid-template-columns: 1fr; grid-template-areas: "a" "b" "c"; }
   .vw-qb__actions { flex-direction: column; align-items: stretch; gap: .6rem; }

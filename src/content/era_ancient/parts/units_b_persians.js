@@ -290,7 +290,7 @@ O.gerron = {
     B(g, 3, 7, 5, 12, 7, 5, V(shade(0x6a4a2a, 0.95)));                                // lashing
     B(g, 7, 3, 5, 8, 11, 5, V(shade(0x6a4a2a, 0.95)));
     B(g, 6, 6, 5, 9, 8, 5, (x, y) => V(ctx.m[(x + y) % 2 ? 3 : 4]));                  // boss
-    P(g, 7, 7, 6 - 0, V(ctx.m[4]));
+    P(g, 7, 7, 5, V(ctx.m[4]));
     return g;
   },
 };

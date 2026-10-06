@@ -67,7 +67,8 @@ for (const [label, fix, , legsOverride] of MODELS) {
   const clip = legsOverride ? 'run' : 'walk';
   for (const g of gaits) {
     const v = ClipLib.meta(g, mountRig).speedRef;
-    const r = footSlideLive(m, v, { legs, clip, seconds: 4 });
+    const hipH = (m.meta.gait && m.meta.gait.hipH) || (m.meta.subrigs && 1.2) || 1;       // the plant tolerance scales with leg length (3.5 cm on a 1 u hum1 leg)
+    const r = footSlideLive(m, v, { legs, clip, seconds: 4, plantTol: 0.035 * hipH });
     nb.push(`${label} ${g}@${v}: ${fmt(r.ratio)}`);
     assert.ok(r.ratio <= MAXR, `A4 ${label} ${g} at ${v} u/s: slide ${fmt(r.ratio)} > 15%`);
   }

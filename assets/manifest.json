@@ -433,7 +433,8 @@
    "jingle_defeat_3",
    "stinger_funny_1",
    "stinger_funny_2",
-   "stinger_funny_3"
+   "stinger_funny_3",
+   "jingle_battle_start_3"
   ],
   "ambience": [
    "ambience_wind_loop",
@@ -4823,7 +4824,7 @@
     "fanfare",
     "battle start"
    ],
-   "duration": 4.05,
+   "duration": 3.45,
    "author": "Zane Little Music",
    "title": "Hyper-Ultra-Fanfare",
    "source": "https://opengameart.org/content/hyper-ultra-fanfare",
@@ -7601,6 +7602,27 @@
    "notes": "source file: oga-fire-crackling/files/fire-1_0/fire-1_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
+   "id": "jingle_battle_start_3",
+   "file": "jingle_battle_start_3.mp3",
+   "path": "audio/sfx/jingle_battle_start_3.mp3",
+   "category": "jingle",
+   "tags": [
+    "jingle",
+    "fanfare",
+    "battle start",
+    "horn",
+    "drum"
+   ],
+   "duration": 2.64,
+   "author": "StumpyStrust + William Hector + rubberduck",
+   "title": "Their Coming (generic horn sound) + Horde War Drums loop + 100 CC0 SFX",
+   "source": "https://opengameart.org/content/their-coming-generic-horn-sound ; https://opengameart.org/content/horde-war-drums-loop ; https://opengameart.org/content/100-cc0-sfx",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "attributionRequired": false,
+   "notes": "composite: war horn + drum + gong; source file: oga-their-coming-generic-horn-sound/files/theircoming_0/theircoming_0.ogg + oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav + oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
    "id": "crowd_ooh_1",
    "file": "crowd_ooh_1.mp3",
    "path": "audio/sfx/crowd_ooh_1.mp3",
@@ -7670,6 +7692,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-heroic-age/Heroic Age.mp3; leading silence trimmed 0.94s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -38.56, zero-crossing ratio 0.72, seam jump 0.01, beat fraction 0.381); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 2.0,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": -38.56,
+    "zc_ratio": 0.72,
+    "seam_jump": 0.01,
+    "tail_vs_body_db": -39.4,
+    "beat_frac": 0.381
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7699,6 +7730,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-grim-league/Grim League.mp3; leading silence trimmed 0.02s; all-percussion ensemble; cut to 25 bars (78.95 s) at the original tempo and faded; loop seam metrics (end-vs-start RMS dB 1.71, zero-crossing ratio 0.33, seam jump 0.43, beat fraction 0.003); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 2.5,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": 1.71,
+    "zc_ratio": 0.33,
+    "seam_jump": 0.43,
+    "tail_vs_body_db": 3.6,
+    "beat_frac": 0.003
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7729,6 +7769,15 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-boss-battle-music/files/Juhani Junkala - Epic Boss Battle [Seamlessly Looping]/Juhani Junkala - Epic Boss Battle [Seamlessly Looping].wav; leading silence trimmed 0.00s; author states it loops seamlessly (verified: end/start RMS and zero-crossing continuity); shipped at 80 kbps joint stereo as the embedded core track; loop seam metrics (end-vs-start RMS dB -0.6, zero-crossing ratio 0.68, seam jump 1.31, beat fraction 0.082)",
+   "fade_out": 0,
+   "loop_check": {
+    "loop": true,
+    "rms_end_vs_start_db": -0.6,
+    "zc_ratio": 0.68,
+    "seam_jump": 1.31,
+    "tail_vs_body_db": 1.6,
+    "beat_frac": 0.082
+   },
    "core": true
   },
   {
@@ -7759,6 +7808,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-clenched-teeth/Clenched Teeth.mp3; leading silence trimmed 1.13s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -9.4, zero-crossing ratio 0.62, seam jump 1.17, beat fraction 0.485); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 2.0,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": -9.4,
+    "zc_ratio": 0.62,
+    "seam_jump": 1.17,
+    "tail_vs_body_db": -51.4,
+    "beat_frac": 0.485
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7788,6 +7846,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-dark-star/Dark Star.mp3; leading silence trimmed 0.73s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -6.6, zero-crossing ratio 0.06, seam jump 0.76, beat fraction 0.382); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 1.0,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": -6.6,
+    "zc_ratio": 0.06,
+    "seam_jump": 0.76,
+    "tail_vs_body_db": -38.4,
+    "beat_frac": 0.382
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7817,6 +7884,15 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-gladiators-lament-epic-tragic-music/files/gladiator_lament/gladiator_lament.mp3; leading silence trimmed 0.63s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB 9.53, zero-crossing ratio 1.26, seam jump 0.37, beat fraction 0.415); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 2.0,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": 9.53,
+    "zc_ratio": 1.26,
+    "seam_jump": 0.37,
+    "tail_vs_body_db": 1.1,
+    "beat_frac": 0.415
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7847,6 +7923,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-desert-city/Desert City.mp3; leading silence trimmed 0.02s; composer describes it as easy to loop; end is a decay so treat as cross-fade loop; loop seam metrics (end-vs-start RMS dB -10.15, zero-crossing ratio 0.71, seam jump 0.0, beat fraction 0.011); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 1.0,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": -10.15,
+    "zc_ratio": 0.71,
+    "seam_jump": 0.0,
+    "tail_vs_body_db": -6.9,
+    "beat_frac": 0.011
+   },
    "crossfadeSeconds": 2.5
   },
   {
@@ -7876,6 +7961,15 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: incompetech-bumbly-march/Bumbly March.mp3; leading silence trimmed 0.06s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -29.7, zero-crossing ratio 0.86, seam jump 0.03, beat fraction 0.38); not seamless -> cross-fade 2-3 s when looping",
+   "fade_out": 1.5,
+   "loop_check": {
+    "loop": false,
+    "rms_end_vs_start_db": -29.7,
+    "zc_ratio": 0.86,
+    "seam_jump": 0.03,
+    "tail_vs_body_db": -33.3,
+    "beat_frac": 0.38
+   },
    "crossfadeSeconds": 2.5
   }
  ],

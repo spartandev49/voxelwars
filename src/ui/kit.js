@@ -13,6 +13,7 @@
      K.reduced() -> bool                                OS reduce-motion OR :root.vw-reduce-motion
      K.anim(el, frames, opts) -> Promise                WAAPI helper; no-op under Reduce Motion
      K.enter(el|els, 'pop'|'left'|'right'|'fade', i?)   entrance animation classes (transform/opacity only)
+     K.leave(el) -> Promise  /  K.withExit(root, api) -> api   optional screen exit tween: api.exit() (the shell may await it before removing the root)
      K.keyLabel(code) -> 'W' | 'Space' | '[' ...        pretty names for KeyboardEvent.code
      K.fmtNum(n) K.fmtTime(sec) K.fmtClock(hours) K.clamp(v,a,b)
 
@@ -149,6 +150,12 @@ export function anim(el, frames, opts) {
     return a.finished.catch(() => {});
   } catch (e) { return Promise.resolve(); }
 }
+/** Exit tween for a screen root (fade + slight sink; transform/opacity only). Resolves when done, immediately under Reduce Motion. */
+export function leave(el) {
+  return anim(el, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(10px) scale(.985)' }], { duration: 180, fill: 'forwards', easing: 'cubic-bezier(.4,0,1,1)' });
+}
+/** Adds the optional `exit(): Promise` hook to a screen api: `return K.withExit(root, { destroy, onBack })`. The shell may await it before removing the root. */
+export function withExit(root, api) { api.exit = () => leave(root); return api; }
 /** Entrance by CSS class (stagger with `i`). */
 export function enter(els, kind, i) {
   const list = Array.isArray(els) ? els : [els];

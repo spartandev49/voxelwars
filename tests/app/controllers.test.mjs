@@ -59,7 +59,8 @@ const run = (w, n) => { for (let i = 0; i < n; i++) w.tick(); };
   const X = makeMeta({ world: w }); const g = X.game, A = X.meta.aim;
   const ring = { calls: [], show(x, z, r, id) { this.calls.push(['show', x, z, r, id]); }, hide() { this.calls.push(['hide']); }, dispose() {} }; A.makeRing = () => ring;
   assert.equal(A.set('meteor'), false, 'placement: the gods wait'); assert.match(g.eventsOf('toast').pop().text, /gods wait/);
-  g.state = 'running'; w.start(0); run(w, 3);
+  w.start(3); g.state = 'countdown'; assert.equal(A.set('meteor'), true, 'arming during the countdown is allowed'); assert.equal(A.click(1, 1), true, 'but the click is swallowed with a toast until the fight starts'); assert.equal(A.active, true); assert.match(g.eventsOf('toast').pop().text, /not started/); assert.equal(g.casts.length, 0); A.cancel(true);
+  run(w, 100); g.state = 'running'; assert.equal(w.state, 'running');
   assert.equal(A.set('not_a_power'), false); assert.equal(A.active, false);
   A.hover(5, 6); assert.equal(A.set('meteor'), true); assert.equal(A.active, true); assert.equal(A.id, 'meteor'); assert.deepEqual(ring.calls.pop(), ['show', 5, 6, 5, 'meteor'], 'the ring appears at the last cursor position with the power radius');
   A.hover(8, -2); assert.deepEqual(ring.calls.pop(), ['show', 8, -2, 5, 'meteor']); assert.equal(g.eventsOf('aim').pop().id, 'meteor');
@@ -137,6 +138,22 @@ const run = (w, n) => { for (let i = 0; i < n; i++) w.tick(); };
   const p3 = X.meta.killcam.start(); X.meta.detach(); assert.equal(await p3, false); assert.equal(X.meta.killcam.active, false);
   // safe without a world
   assert.equal(await makeMeta({}).meta.killcam.start(), false); assert.equal(await new KillCam({ game: new FakeGame() }).start(), false);
+}
+
+// ---------------------------------------------------------------- kill-cam target: the last hero / boss / streak kill; the button is hidden without one (spec ui.md §4)
+{
+  const run2 = (spec) => { const w = makeWorld(spec); const X = makeMeta({ world: w }); X.game.state = 'running'; w.start(0); let n = 0; while (w.state !== 'ended' && n++ < 30 * 240) w.tick(); X.game.state = 'ended'; return { w, X }; };
+  const hero = run2({ a: [['hoplite', 16]], b: [['strategos', 1]], seed: 5 });
+  const R1 = hero.X.meta.decorateResults({ mvp: null, funnyStats: [], lessons: [] });
+  assert.equal(R1.canKillcam, true, 'a hero died: the kill-cam button is offered'); const tg = hero.X.meta.killcam.target(); assert.equal(tg.why, 'hero');
+  const hk = hero.w.units.concat(hero.w.dying).find((u) => u.def.id === 'strategos'); assert.ok(Math.hypot(tg.x - hk.x, tg.z - hk.z) < 1.5, "the camera looks where the hero fell");
+  const boss = run2({ a: [['hoplite', 30]], b: [['minotaur', 1]], seed: 5 }); assert.equal(boss.X.meta.decorateResults({}).canKillcam, true); assert.equal(boss.X.meta.killcam.target().why, 'boss');
+  const plain = run2({ a: [['hoplite', 12]], b: [['hoplite', 2]], seed: 9 }); const R3 = plain.X.meta.decorateResults({});
+  assert.equal(R3.canKillcam, plain.X.meta.qualKill !== null, 'only hero / boss / streak kills qualify'); if (!plain.X.meta.qualKill) assert.equal(plain.X.meta.killcam.target().why, 'final', 'programmatic killcam() still has the final kill');
+  // a kill streak qualifies
+  const streak = makeWorld({ a: [['hoplite', 1]], b: [['hoplite', 1]] }); const S = makeMeta({ world: streak }); const bus = streak.events;
+  bus.emit('unit_kill', { src: 1, dst: 2, srcDef: 'hoplite', dstDef: 'hoplite', srcTeam: 0, dstTeam: 1, friendly: false, byPlayer: false, revived: false, cause: 'melee', x: 3, y: 0, z: 4 }); assert.equal(S.meta.qualKill, null);
+  bus.emit('kill_streak', { id: 1, count: 5, def: 'hoplite' }); assert.equal(S.meta.qualKill.why, 'streak'); assert.deepEqual([S.meta.qualKill.x, S.meta.qualKill.z], [3, 4]);
 }
 
 // ---------------------------------------------------------------- funny stats ordering (the Results screen shows the first four)

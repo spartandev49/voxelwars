@@ -83,6 +83,10 @@ check('card: disabled card stays focusable, does not select, and explains why', 
 check('card: count badge shows', await L.ev(() => document.querySelector('#kt-card .vw-card__count').textContent === '3'));
 check('card: role chip and counter chips from unit data', await L.ev(() => document.querySelector('#kt-card .vw-chip--crimson') !== null && /Beats/.test(document.getElementById('kt-card').textContent)));
 
+// optional screen exit tween (transform/opacity only)
+const ex = await L.ev(async () => { const d = document.createElement('div'); d.textContent = 'x'; document.getElementById('vw-root').appendChild(d); const api = window.__ui.K.withExit(d, { destroy() {} }); const p = api.exit(); const isP = typeof p.then === 'function'; await p; const o = getComputedStyle(d).opacity; d.remove(); return { isP, o }; });
+check('withExit: api.exit() returns a promise and fades the root out', ex.isP && ex.o === '0', JSON.stringify(ex));
+
 // emptyState + field + copyText fallback
 await L.ev(() => { window.__host.append(window.__ui.K.emptyState({ icon: 'folder', title: 'Nothing here', text: 'Because.', action: { label: 'Do something', id: 'kt-empty-act' } })); });
 check('emptyState: icon, title, text, action', await L.ev(() => !!document.querySelector('.vw-empty .vw-empty__icon svg') && document.querySelector('.vw-empty__title').textContent === 'Nothing here' && !!document.getElementById('kt-empty-act')));

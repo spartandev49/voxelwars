@@ -20,16 +20,17 @@ H.thracian_fox = {
     const dark = V(0x24140e), nose = V(0x120a08);
     lathe(hs, [null, null, null, null, [3.9, 3.9], [3.9, 3.9], [3.7, 3.7], [3.2, 3.2], [2.3, 2.3]], { color: (x, y, z) => fur(x, y, z, y > 6 ? 1.08 : 0.96), n: 2.6 });
     cutFaceCube(hs);
-    // the fox's face lies over the brow: cream cheeks and muzzle, a black nose, two tired eyes
-    B(hs, 2, 5, 8, 7, 6, 8, (x, y, z) => fur(x, y, z, 1.06));
-    B(hs, 3, 4, 8, 6, 4, 8, (x, y, z) => cream(x, y, z, 0.96));                       // cheeks
-    B(hs, 4, 4, 9, 5, 5, 9, (x, y, z) => cream(x, y, z, 1.04));                       // muzzle
-    B(hs, 4, 4, 9, 5, 4, 9, nose);                                                    // nose
-    Ps(hs, 3, 6, 8, dark); Ps(hs, 2, 6, 8, cream(2, 6, 8));                           // eyes: dark pupil, pale corner
-    Ps(hs, 3, 7, 8, fur(3, 7, 8, 0.8)); Ps(hs, 2, 7, 8, fur(2, 7, 8, 0.8));          // heavy lids (the fox has seen things)
-    // ears (inner ear dark) and the pelt's own tufts
-    Bs(hs, 2, 8, 3, 3, 9, 4, (x, y, z) => fur(x, y, z, 1.1)); Bs(hs, 2, 10, 3, 2, 11, 4, (x, y, z) => fur(x, y, z, 1.15)); Ps(hs, 2, 12, 3, dark);
-    Bs(hs, 3, 8, 5, 3, 10, 5, V(0x6a3a2a));
+    // brow band of fur keeps the wearer's face clear; the fox's own face lies above it (eyes half shut, muzzle pointing forward, black nose)
+    B(hs, 2, 4, 8, 7, 4, 8, (x, y, z) => fur(x, y, z, 0.9));
+    B(hs, 2, 5, 8, 7, 7, 8, (x, y, z) => fur(x, y, z, 1.06));
+    B(hs, 3, 5, 8, 6, 5, 8, (x, y, z) => cream(x, y, z, 0.96));                        // cheeks
+    B(hs, 4, 5, 9, 5, 6, 9, (x, y, z) => cream(x, y, z, 1.04));                        // muzzle
+    B(hs, 4, 5, 9, 5, 5, 9, nose);                                                     // nose
+    Ps(hs, 3, 7, 8, dark); Ps(hs, 2, 7, 8, cream(2, 7, 8));                            // eyes: dark pupil, pale corner
+    B(hs, 2, 8, 8, 7, 8, 8, (x, y, z) => fur(x, y, z, 0.78));                          // heavy lids (the fox has seen things)
+    // ears: broad triangles (inner ear dark), pointing a little outward
+    Bs(hs, 2, 8, 3, 3, 8, 5, (x, y, z) => fur(x, y, z, 1.1)); Bs(hs, 2, 9, 3, 3, 9, 4, (x, y, z) => fur(x, y, z, 1.12)); Bs(hs, 2, 10, 3, 2, 10, 4, (x, y, z) => fur(x, y, z, 1.18));
+    Ps(hs, 2, 11, 3, dark); Bs(hs, 3, 8, 5, 3, 9, 5, V(0x6a3a2a));
     // ear flaps, back flap
     Bs(hs, 1, 0, 3, 1, 4, 6, (x, y, z) => fur(x, y, z, 0.92)); Bs(hs, 1, 0, 3, 1, 0, 6, (x, y, z) => cream(x, y, z, 0.95));
     B(hs, 2, 0, 1, 7, 4, 1, (x, y, z) => fur(x, y, z, 0.88)); B(hs, 3, 1, 0, 6, 5, 0, (x, y, z) => fur(x, y, z, 0.8));
@@ -55,15 +56,17 @@ H.attic_fan = {
     Bs(hs, 3, 5, 9, 4, 5, 9, mcol(ctx, 6, 7, 0.15));                                  // brow peak
     B(hs, 1, 5, 2, 8, 5, 8, (x, y, z) => (x === 1 || x === 8 || z === 2 || z === 8 ? V(ctx.m[3]) : 0));   // gold rim band
     B(hs, 4, 0, 0, 5, 3, 0, mcol(ctx, 3, 7, 0.0)); B(hs, 3, 0, 1, 6, 1, 1, mcol(ctx, 2, 7, 0));
-    // crest holder and the fan: columns of different height, 3 voxels deep, a serrated top edge, lighter toward the tips
-    B(hs, 2, 7, 3, 7, 7, 6, V(ctx.m[3])); B(hs, 3, 8, 3, 6, 8, 6, V(ctx.m[2]));
-    const top = [0, 9, 11, 12, 13, 13, 12, 11, 9, 0];
-    for (let x = 1; x <= 8; x++) for (let y = 8; y <= top[x] - (((x + y) & 1) && y === top[x] ? 1 : 0); y++) {
-      const t = (y - 8) / 5, c = ctx.t(0.82 + 0.3 * t + 0.06 * hash3(x, y, 4, 8));
-      for (let z = 4; z <= 5; z++) P(hs, x, y, z, c);
-      if (y < top[x] - 1 && x > 1 && x < 8) P(hs, x, y, 6, ctx.t(0.78 + 0.2 * t));
+    // crest holder (gold bar with an upright post at each end) and the fan itself: ten columns forming a half disc that is wider than the helm, serrated at the top,
+    // ribs between the columns, a gold border on the rim; tinted
+    B(hs, 1, 7, 3, 8, 7, 6, V(ctx.m[3])); Bs(hs, 0, 7, 4, 0, 8, 5, V(ctx.m[3]));
+    const top = [9, 10, 12, 13, 13, 13, 13, 12, 10, 9];
+    for (let x = 0; x <= 9; x++) for (let y = 8; y <= top[x]; y++) {
+      if (y === top[x] && x % 2 === 1 && x > 1 && x < 8) continue;                       // serrated top edge
+      const rim = y === top[x] || x === 0 || x === 9, t = (y - 8) / 5;
+      const c = rim ? V(shade(ctx.m[3], 0.95 + 0.1 * hash3(x, y, 4, 2))) : ctx.t((x === 2 || x === 4 || x === 5 || x === 7 ? 0.8 : 0.96) + 0.28 * t + 0.05 * hash3(x, y, 4, 8));
+      P(hs, x, y, 4, c); P(hs, x, y, 5, c);
+      if (y < top[x] - 1 && x > 0 && x < 9) P(hs, x, y, 6, ctx.t(0.74 + 0.2 * t));
     }
-    for (let x = 1; x <= 8; x++) P(hs, x, 8, 4, V(ctx.m[4]));                         // gold line along the base of the fan
     return { head, crest };
   },
 };
@@ -75,7 +78,7 @@ H.murmillo = {
   build(ctx) {
     const { head, crest, hs } = headSpace();
     lathe(hs, [[3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [4.9, 4.9], [3.9, 3.9], [3.5, 3.5], [2.6, 2.6]], {
-      color: (x, y, z, ax, az) => (y === 4 ? metalAt(ctx, 0.28 + 0.1 * (x > 4.5 ? 1 : 0) + ((ax > 0.9 || az > 0.9) ? -0.1 : 0)) : bowl(ctx)(x, y, z, ax, az)), n: 2.8 });
+      color: (x, y, z, ax, az) => (y === 4 ? ctx.t((ax > 0.9 || az > 0.9) ? 0.8 : 0.96) : bowl(ctx)(x, y, z, ax, az)), n: 2.8 });          // the brim is painted in the team colour
     cutFaceCube(hs);
     // visor: a plate over the face with an eye band and a mesh of breathing holes
     B(hs, 2, 0, 8, 7, 5, 8, (x, y, z) => {
@@ -86,19 +89,19 @@ H.murmillo = {
     B(hs, 3, 0, 9, 6, 0, 9, mcol(ctx, 1, 7, -0.1));                                   // chin ridge
     Bs(hs, 1, 0, 3, 1, 3, 8, mcol(ctx, 2, 7, -0.08));                                 // cheek plates
     B(hs, 2, 0, 0, 7, 3, 0, mcol(ctx, 3, 7, 0)); B(hs, 1, 0, 1, 8, 1, 1, mcol(ctx, 1, 7, -0.1));   // neck guard
-    // fish crest: nose forward (+z), tail fin forked at the back. rows by z: [y from, y to]
-    const fish = { 9: [8, 8], 8: [8, 9], 7: [8, 11], 6: [8, 12], 5: [8, 13], 4: [8, 13], 3: [8, 12], 2: [8, 9], 1: [8, 11] };
+    // fish crest: nose forward (+z), tail fin forked at the back; rows by z: [y from, y to, half width]
+    const fish = { 9: [8, 8, 1], 8: [8, 10, 1], 7: [8, 12, 2], 6: [8, 13, 3], 5: [8, 13, 3], 4: [8, 12, 2], 3: [8, 11, 1], 2: [8, 9, 1], 1: [8, 12, 1] };
     for (const z of Object.keys(fish).map(Number)) {
-      const [y0, y1] = fish[z];
+      const [y0, y1, hw] = fish[z];
       for (let y = y0; y <= y1; y++) {
-        const scale = ((y + z) & 1) ? 0.9 : 1.06, belly = y <= 9 ? 0.82 : 1.0, dorsal = y >= y1 - 0 && y1 >= 11 ? 1.2 : 1.0;
-        Bs(hs, 4, y, z, 4, y, z, ctx.t(0.92 * scale * belly * dorsal * (0.97 + 0.06 * hash3(4, y, z, 5))));
+        const scale = ((y + z) & 1) ? 0.9 : 1.06, belly = y <= 9 ? 0.82 : 1.0, dorsal = y === y1 && y1 >= 11 ? 1.2 : 1.0;
+        B(hs, 5 - hw, y, z, 4 + hw, y, z, ctx.t(0.92 * scale * belly * dorsal * (0.97 + 0.06 * hash3(4, y, z, 5))));
       }
     }
     for (const [y0, y1] of [[8, 9], [12, 13]]) for (let y = y0; y <= y1; y++) Bs(hs, 4, y, 0, 4, y, 0, ctx.t(y < 10 ? 0.84 : 1.14));   // forked tail fin
-    Bs(hs, 3, 10, 7, 3, 10, 7, V(0xf4f4ee)); Bs(hs, 3, 10, 8, 3, 10, 8, V(0x14141a));  // eyes (white with a pupil looking forward)
-    Bs(hs, 3, 9, 5, 3, 10, 6, ctx.t(0.78));                                            // pectoral fins
-    Bs(hs, 3, 12, 3, 3, 12, 3, ctx.t(1.0));
+    Bs(hs, 2, 10, 7, 2, 11, 7, V(0xf4f4ee)); Bs(hs, 2, 10, 8, 2, 10, 8, V(0x14141a));  // bulging eyes (white, pupil looking forward)
+    Bs(hs, 1, 9, 4, 1, 10, 5, ctx.t(0.76));                                            // pectoral fins
+    Bs(hs, 3, 13, 3, 3, 13, 3, ctx.t(1.1));                                            // dorsal fin spike
     P(hs, 4, 8, 9, V(ctx.m[3])); P(hs, 5, 8, 9, V(ctx.m[3]));                         // a gold lip on the snout
     return { head, crest };
   },
@@ -129,9 +132,9 @@ H.mummy_head = {
     const { head, crest, hs } = headSpace();
     const wrap = (x, y, z) => {
       const d = (x + y * 2 + (z > 4 ? z : -z) + 20) % 5, n = hash3(x, y, z, 12);
-      if (d === 0 && n > 0.25) return V(0x3a3226);                                    // gap: dark dry skin
-      if (n > 0.8) return V(shade(0xe2d8bc, 0.9 + 0.15 * n));                           // a loose off-white strip
-      return ctx.t((d === 1 ? 0.84 : d === 3 ? 0.9 : 1.02) * (0.94 + 0.1 * n));
+      if (d === 0 && n > 0.3) return V(0x4a4032);                                     // gap: dark dry skin
+      if (d === 1 || n > 0.86) return V(shade(0xe6dcc0, 0.86 + 0.2 * n));              // a strip of plain linen
+      return ctx.t((d === 2 ? 0.86 : d === 3 ? 0.96 : 1.04) * (0.94 + 0.1 * n));
     };
     // a wrapped shell over the whole head (the face cube stays underneath)
     B(hs, 2, 6, 2, 7, 6, 7, wrap); B(hs, 3, 7, 3, 6, 7, 6, wrap);
@@ -145,8 +148,8 @@ H.mummy_head = {
     P(hs, 4, 3, 8, V(0x1a1610)); P(hs, 5, 3, 8, V(0x1a1610));
     // loose strands: one down the left side of the head, a wisp on the crown
     const strand = V(0xe8dec2);
-    for (const [x, y, z] of [[8, 7, 5], [9, 6, 5], [9, 5, 5], [9, 4, 6], [9, 3, 6], [9, 2, 6], [9, 1, 7], [9, 0, 7]]) P(hs, x, y, z, strand);
-    for (const [x, y, z] of [[3, 8, 4], [3, 9, 3], [2, 10, 3], [2, 11, 2]]) P(hs, x, y, z, strand);
+    for (const [x, y, z] of [[8, 7, 5], [9, 6, 5], [9, 5, 5], [9, 4, 6], [9, 3, 6], [9, 2, 7]]) P(hs, x, y, z, strand);
+    for (const [x, y, z] of [[3, 8, 4], [3, 9, 3], [4, 9, 3], [5, 8, 2]]) P(hs, x, y, z, strand);
     return { head, crest };
   },
 };
@@ -156,7 +159,7 @@ H.jackal_anubis = {
   name: 'Anubis jackal head', meta: { hair: 'none', noEyes: true, faction: 'egyptians' },
   build(ctx) {
     const { head, crest, hs } = headSpace();
-    const fur = (x, y, z, f = 1) => V(shade(0x1e1e26, f * (0.72 + 0.5 * hash3(x, y, z, 5)) * (y > 5 ? 1.12 : 1)));
+    const fur = (x, y, z, f = 1) => V(shade(0x2a2a34, f * (0.72 + 0.5 * hash3(x, y, z, 5)) * (y > 5 ? 1.12 : 1)));
     const gold = (f = 1) => V(shade(ctx.m[3], f));
     lathe(hs, [[3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.6, 3.6], [2.5, 2.5]], { color: (x, y, z) => fur(x, y, z), n: 2.8 });
     cutFaceCube(hs);
@@ -169,10 +172,12 @@ H.jackal_anubis = {
     Ps(hs, 3, 4, 8, V(0xf0c24a)); Ps(hs, 2, 4, 8, V(0x08080a)); Ps(hs, 3, 5, 8, V(0x08080a)); Ps(hs, 1, 4, 5, V(0x08080a));
     B(hs, 1, 5, 1, 8, 5, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? gold(0.9) : 0));   // gold headband
     P(hs, 4, 6, 9, gold(1.1)); P(hs, 5, 6, 9, gold(1.1));                              // a little gold uraeus bead
-    // tall upright ears (flat, leaning slightly outward), pinkish inner
-    for (const [y, x0, x1] of [[8, 2, 3], [9, 2, 3], [10, 1, 3], [11, 1, 2], [12, 1, 2], [13, 0, 1]]) { Bs(hs, x0, y, 3, x1, y, 4, fur(x0, y, 3, 1.1)); }
-    Bs(hs, 3, 8, 5, 3, 11, 5, V(0x7a4a50)); Bs(hs, 2, 9, 5, 2, 12, 5, V(0x6a3a42));
-    Bs(hs, 0, 13, 3, 0, 13, 4, V(0x08080a));
+    // tall pointed ears: triangles 3 wide at the base, 1 at the tip, leaning a little outward; pinkish inner
+    for (const [y, x0, x1] of [[8, 1, 3], [9, 1, 3], [10, 1, 2], [11, 1, 2], [12, 0, 1], [13, 0, 0]]) { Bs(hs, x0, y, 3, x1, y, 4, fur(x0, y, 3, 1.12)); }
+    Bs(hs, 2, 8, 5, 2, 11, 5, V(0x5a2e36));
+    Bs(hs, 0, 13, 3, 0, 13, 4, V(0x0a0a0e));
+    // a lighter ridge along the snout and brow so the long muzzle reads
+    B(hs, 4, 3, 9, 5, 3, 9, V(0x08080a)); B(hs, 3, 2, 9, 6, 2, 9, (x, y, z) => fur(x, y, z, 1.3)); B(hs, 3, 5, 8, 6, 5, 8, (x, y, z) => fur(x, y, z, 1.28));
     // wig: black locks behind, down the back with gold ends
     B(hs, 2, 0, 0, 7, 4, 0, (x, y, z) => fur(x, y, z, 0.9)); B(hs, 1, 0, 1, 8, 3, 1, (x, y, z) => fur(x, y, z, 0.85));
     const body = newGrid('body');

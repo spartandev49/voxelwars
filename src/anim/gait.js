@@ -132,4 +132,20 @@ export function quadLeg(u, po, A, duty, lift, out) {
   }
   return out;
 }
+/**
+ * Rigid-leg planting (quadrupeds, birds, elephants). A leg is ONE rigid part (length L from its pivot to the sole), so the sole can only be put on a
+ * target by turning the leg AND sliding its pivot along the leg (the pivot is buried inside the body, so the slide never shows). The body bobs by `by`
+ * and pitches by `p` about its belly pivot (bodyY above the ground), the leg pivot sits hipY above that pivot and zLeg along the body; the target
+ * `ft` = [z, y] is where the sole should be in the unit frame relative to the leg's rest position (ground contact in stance, lifted in swing):
+ *   leg direction phi (forward angle) = atan2(dz, -dy) to the target, rx = -phi - p (relative to the body), pivot slide delta = d - L along it,
+ *   in the body frame: ty = -delta * cos(phi + p), tz = delta * sin(phi + p). A planted sole therefore stays exactly where it landed: no foot slide.
+ * Writes out = [rx, ty, tz].
+ */
+export function plantRigidLeg(bodyY, hipY, L, zLeg, by, p, ft, out) {
+  const sn = Math.sin(p), cs = Math.cos(p);
+  const hy = bodyY + by + hipY * cs - zLeg * sn, hz = hipY * sn + zLeg * cs;          // hip in the unit frame
+  const dz = zLeg + ft[0] - hz, dy = ft[1] - hy, d = Math.hypot(dz, dy), phi = Math.atan2(dz, -dy), delta = d - L;
+  out[0] = -phi - p; out[1] = -delta * Math.cos(phi + p); out[2] = delta * Math.sin(phi + p);
+  return out;
+}
 export { TAU as _TAU, PI as _PI };

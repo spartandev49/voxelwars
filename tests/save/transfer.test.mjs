@@ -149,5 +149,8 @@ console.log('rejected', rejects.length, 'invalid inputs, each leaving storage un
   const w = []; const s = validateSettingsData({ quality: 'marble', vol: { master: 5, music: -1 }, keys: { pause: 'Space' }, resScale: 9, zzz: { nested: 1 }, seenHints: { teaching: true, 'bad id': true } }, (m) => w.push(m));
   assert.equal(s.vol.master, 1); assert.equal(s.vol.music, 0); assert.equal(s.resScale, 1); assert.equal(s.zzz, undefined); assert.equal(w.length, 1); assert.deepEqual(s.seenHints, { teaching: true });
   assert.ok(Object.keys(DEFAULT_SETTINGS).length > 10);
+  // beacon: only with the consent flag
+  const w2 = []; assert.equal(validateSettingsData({ beacon: true }, (m) => w2.push(m)).beacon, false); assert.equal(w2.length, 1);
+  assert.equal(validateSettingsData({ beacon: true, seenHints: { beacon: true } }).beacon, true); assert.equal(validateSettingsData({ beacon: false }).beacon, false);
 }
 console.log('transfer OK');

@@ -58,5 +58,5 @@ export function renderFatal(host, info, ctx) {
 export function mount(root, ctx, params) {
   K.init(ctx);
   const el = renderFatal(root, params || {}, ctx);
-  return { destroy() { el.remove(); }, onBack() { return true; } };
+  return K.withExit(root, { destroy() { el.remove(); }, onBack() { return true; } });
 }

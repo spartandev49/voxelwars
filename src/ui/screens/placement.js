@@ -37,7 +37,7 @@ export function mount(root, ctx, params) {
   const factionColorOf = (f) => (f === 'custom' ? '#ff7eb6' : factionColor(ctx.content.factions, f));
 
   /* ------------------------------------------------------------ top bar */
-  const backBtn = K.button(T0.common.back, { icon: 'back', variant: 'secondary', sound: 'ui_back', id: 'pl-back', onClick: () => ctx.nav.back() });
+  const backBtn = K.button(T0.common.back, { icon: 'back', variant: 'secondary', sound: 'ui_back', id: 'pl-back', onClick: () => { setSheet(null); hideHints(); ctx.nav.back(); } });
   K.tooltip(backBtn, T.backTip);
   const helpBtn = K.iconButton('help', T.help, { id: 'pl-help', variant: 'ghost', onClick: () => showHints(0) });
   const mute = K.muteButton(); cleanups.push(() => mute.destroy && mute.destroy());
@@ -329,7 +329,7 @@ export function mount(root, ctx, params) {
   K.enter(palette, 'left', 0); K.enter(tools, 'right', 1); K.enter(bottom, 'fade', 3);
   if (!seenHint(ctx, 'placementTutorial')) setTimeout(() => showHints(0), 500);
 
-  return {
+  return K.withExit(root, {
     destroy() { cleanups.forEach((f) => f()); },
     onKey(e) {
       if (K.hasModal()) return false;
@@ -345,6 +345,6 @@ export function mount(root, ctx, params) {
       if (e.key === '?' || e.code === 'KeyH') { showHints(0); return true; }
       return false;
     },
-    onBack() { if (K.hasModal()) return false; if (S.sheet) { setSheet(null); return true; } if (hintEl) { hideHints(); return true; } ctx.nav.back(); return true; },
-  };
+    onBack() { if (K.hasModal()) return true; if (S.sheet) { setSheet(null); return true; } if (hintEl) { hideHints(); return true; } return false; },   // false = let the router navigate back
+  });
 }

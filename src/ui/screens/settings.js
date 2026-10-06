@@ -215,7 +215,7 @@ export function mount(root, ctx, params) {
     const v = ctx.version || {};
     return K.h('div', { class: 'vw-col' },
       K.h('p', { class: 'vw-epigraph vw-set-about-line', text: T.about.line }),
-      K.h('div', { class: 'vw-row vw-wrapflex' }, K.chip(`${T.about.version} ${v.version || '1.0.0'}`, { variant: 'gold' }), K.chip(`${T.about.build} ${v.date || v.build || ''}`, { variant: 'ink' })),
+      K.h('div', { class: 'vw-row vw-wrapflex' }, K.chip(`${T.about.version} ${v.version || v.build || '1.0.0'}`, { variant: 'gold' }), K.chip(`${T.about.build} ${v.date || ''}`, { variant: 'ink' })),
       K.h('h3', { class: 'vw-keys-title vw-display', text: T.about.honest }),
       K.h('ul', { class: 'vw-list vw-set-honest' }, ...T.about.honestList.map((t) => K.h('li', { class: 'vw-note', text: t }))),
       K.h('div', { class: 'vw-row vw-wrapflex' },
@@ -247,7 +247,7 @@ export function mount(root, ctx, params) {
     K.enter(tab, 'pop', 0);
     panelHost.scrollTop = 0;
   }
-  const frame = K.pageFrame({ id: 'set', title: T.title, sub: T.sub, onBack: () => ctx.nav.back() });
+  const frame = K.pageFrame({ id: 'set', title: T.title, sub: T.sub, onBack: () => { stopListening(); ctx.nav.back(); } });
   frame.content.appendChild(K.h('div', { class: 'vw-set' }, K.h('nav', { class: 'vw-set__nav', 'aria-label': T.title }, tabsEl), panelHost));
   frame.mount(root);
   showTab(initial);
@@ -255,8 +255,8 @@ export function mount(root, ctx, params) {
   cleanups.push(frame.destroy, () => { if (typeof offSet === 'function') offSet(); });
   K.enter(tabsEl, 'left', 0);
 
-  return {
+  return K.withExit(root, {
     destroy() { cleanups.forEach((f) => f()); },
-    onBack() { if (K.hasModal()) return false; if (listening) { stopListening(); return true; } ctx.nav.back(); return true; },
-  };
+    onBack() { if (K.hasModal()) return true; if (listening) { stopListening(); return true; } return false; },   // false = let the router navigate back
+  });
 }

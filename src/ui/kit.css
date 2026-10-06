@@ -201,6 +201,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .vw-seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: var(--outline); border-radius: var(--r-md); background: var(--ink); overflow: hidden; box-shadow: 0 4px 0 var(--ink); max-width: 100%; }
 .vw-seg--fill { display: flex; width: 100%; }
+.vw-seg--nowrap { flex-wrap: nowrap; flex-shrink: 0; }
 .vw-seg__opt { flex: 1 1 auto; position: relative; min-height: var(--tap); min-width: var(--tap); padding: .45rem .85rem; background: var(--night-3); color: var(--marble); border: 0; border-right: 3px solid var(--ink); cursor: pointer;
   font: 400 .78rem/1.1 var(--font-display); text-transform: uppercase; letter-spacing: .05em; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; text-align: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .vw-seg__opt:last-child { border-right: 0; }

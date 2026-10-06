@@ -1,8 +1,11 @@
 // chicken1 clips: the sacred chicken (body, head, wingL/R, legL/R, tail). Squash and stretch through scale tracks. Small (0.4 u hip height).
 import { define, seq, mergeKeys, wave, waveC, bump, clamp } from '../dsl.js';
+import { plantRigidLeg } from '../gait.js';
 
 const PI = Math.PI, TAU = Math.PI * 2;
 const LEG_L = 0.43;       // hip pivot to ground (u)
+const BODY_Y = 0.3, HIP_Y = 0.13;      // belly line above the ground, leg pivot above the belly line (beasts/chicken.js)
+const _ft = [0, 0], _lg = [0, 0, 0];
 
 /** biped scurry: alternating legs, the head stays steady while the body bobs (the classic chicken head-bob) */
 function scurry(D, amp, duty, o) {
@@ -10,14 +13,15 @@ function scurry(D, amp, duty, o) {
   return {
     dur: D, speedRef: +(st / D).toFixed(3), stride: st,
     build(c, t, u) {
+      const b = Math.abs(Math.sin(PI * 2 * u)), s = Math.sin(TAU * u);
+      const by = -o.drop + b * o.bob, pitch = o.lean + s * 0.05;
       for (const [id, off] of [['legL', 0.0], ['legR', 0.5]]) {
         const ph = (u + off) % 1;
-        let z, f = 0;
-        if (ph < duty) z = zmax * (1 - 2 * ph / duty); else { const x = (ph - duty) / (1 - duty); z = -zmax + 2 * zmax * (x < 0.5 ? 2 * x * x : 1 - 2 * (1 - x) * (1 - x)); f = o.lift * Math.sin(PI * x); }
-        const th = Math.asin(clamp(z / LEG_L, -1, 1));
-        c.rot(id, -th, 0, 0).pos(id, 0, f - LEG_L * (1 - Math.cos(th)) - o.drop, 0);
+        if (ph < duty) { _ft[0] = zmax * (1 - 2 * ph / duty); _ft[1] = 0; }
+        else { const x = (ph - duty) / (1 - duty); _ft[0] = -zmax + 2 * zmax * (x < 0.5 ? 2 * x * x : 1 - 2 * (1 - x) * (1 - x)); _ft[1] = o.lift * Math.sin(PI * x); }
+        plantRigidLeg(BODY_Y, HIP_Y, LEG_L, 0.02, by, pitch, _ft, _lg);
+        c.rot(id, _lg[0], 0, 0).pos(id, 0, _lg[1], _lg[2]);
       }
-      const b = Math.abs(Math.sin(PI * 2 * u)), s = Math.sin(TAU * u);
       c.pos('body', 0, -o.drop + b * o.bob, 0).rot('body', o.lean + s * 0.05, 0, s * o.roll).scl('body', 1, 1 - b * 0.04, 1 + b * 0.03);
       // head stays put in space: counter-translate against the body surge, pecking forward at each plant
       c.pos('head', 0, 0, -Math.cos(TAU * 2 * u) * o.headBob).rot('head', -o.lean * 0.6 - s * 0.05 + Math.max(0, Math.cos(TAU * 2 * u)) * 0.1, 0, 0);
@@ -26,9 +30,9 @@ function scurry(D, amp, duty, o) {
   };
 }
 for (const [name, D, amp, duty, o] of [
-  ['walk', 0.5, 0.6, 0.6, { lift: 0.05, bob: 0.015, drop: 0.03, lean: 0.05, roll: 0.05, headBob: 0.025, wings: 0.05, tail: 0.1 }],
-  ['trot', 0.38, 0.75, 0.55, { lift: 0.07, bob: 0.02, drop: 0.05, lean: 0.12, roll: 0.07, headBob: 0.03, wings: 0.25, tail: 0.15 }],
-  ['gallop', 0.3, 0.9, 0.5, { lift: 0.1, bob: 0.04, drop: 0.07, lean: 0.3, roll: 0.09, headBob: 0.04, wings: 0.7, tail: 0.3 }],
+  ['walk', 0.5, 0.6, 0.6, { lift: 0.09, bob: 0.015, drop: 0.03, lean: 0.05, roll: 0.05, headBob: 0.025, wings: 0.05, tail: 0.1 }],
+  ['trot', 0.38, 0.75, 0.55, { lift: 0.12, bob: 0.02, drop: 0.05, lean: 0.12, roll: 0.07, headBob: 0.03, wings: 0.25, tail: 0.15 }],
+  ['gallop', 0.3, 0.9, 0.5, { lift: 0.15, bob: 0.04, drop: 0.07, lean: 0.3, roll: 0.09, headBob: 0.04, wings: 0.7, tail: 0.3 }],
 ]) { const g = scurry(D, amp, duty, o); define(name, { rig: 'chicken1', dur: g.dur, loop: true, speedRef: g.speedRef, meta: { cls: 'move', stride: +g.stride.toFixed(3) }, build: g.build }); }
 
 // idle: peck, peck, look around, ruffle

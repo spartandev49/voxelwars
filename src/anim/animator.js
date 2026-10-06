@@ -23,6 +23,7 @@
 // switched). If the sim provides `state.pt` (previous clip time at the switch) it is used instead.
 
 import { ClipLib } from './clips.js';
+import { describeModel, fk, lowestPoint } from './kin.js';
 
 export const POSE_STRIDE = 9;
 const PI = Math.PI, TAU = Math.PI * 2, HALF_PI = Math.PI / 2;
@@ -146,7 +147,7 @@ function buildInfo(model) {
   const parts = model.parts, P = parts.length;
   const subs = (meta.subrigs && meta.subrigs.length) ? meta.subrigs : [{ prefix: '', rig: meta.rig || 'hum1', parts: parts.map((p) => p.id), kind: '' }];
   const baseRig = subs[0].rig || meta.rig || 'hum1';
-  const info = { P, ver: -1, rig: baseRig, groups: [], clipMap: meta.clipMap || null, species: meta.species || '', style: '', composed: subs.length > 1, pivot: [0, 0, 0] };
+  const info = { P, ver: -1, rig: baseRig, groups: [], clipMap: meta.clipMap || null, species: meta.species || '', style: '', composed: subs.length > 1, pivot: [0, 0, 0], floor: new Map() };
   for (let gi = 0; gi < subs.length; gi++) {
     const sr = subs[gi], prefix = sr.prefix || '', rig = sr.rig || 'hum1';
     const idx = [], ids = [];
@@ -223,6 +224,7 @@ function infoOf(model) {
   if (info.ver !== ClipLib.version) {
     info.ver = ClipLib.version;
     for (const g of info.groups) { g.cache = Object.create(null); g.binds.clear(); }
+    info.floor = new Map();
   }
   return info;
 }
@@ -435,6 +437,38 @@ function lerpRoot(a, b, w) { // a = lerp(b, a, w)
   a.pitch = b.pitch + wrapPi(a.pitch - b.pitch) * w; a.roll = b.roll + wrapPi(a.roll - b.roll) * w; a.yaw = b.yaw + wrapPi(a.yaw - b.yaw) * w;
 }
 
+// ------------------------------------------------------------------------------------------------------------------ ground contact (floor fit)
+// Corpses and sitters rest ON the ground whatever the model looks like (a shield, a plume, a barded horse, a rider all stick out differently): for the
+// ground-contact clips the animator measures, once per model and clip, the lowest point of every frame (forward kinematics over the real parts) and adds the
+// difference to the root height: a body is raised when a limb would sink into the floor; once the fall has settled (last quarter) the body is also lowered
+// onto the floor; sitting / sleeping / getting up keep contact both ways.
+const GROUND_CLIP = /^(death|getup|knockdown|tumble|sleep|sit)/;
+const BOTH_WAYS = /^(sit|sleep|getup)/;
+let _inFloor = false;
+const _fRoot = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+function floorTable(model, info, id) {
+  const rig = info.rig, dur = ClipLib.meta(id, rig).dur, N = Math.max(2, Math.round(dur * 30) + 1), tab = new Float32Array(N);
+  const desc = describeModel(model), pose = new Float32Array(info.P * 9), W = new Float64Array(info.P * 12), st = { clip: id, t: 0, rate: 1, flinch: 0, dir: 0, prev: id, blend: 1 }, ex = { root: _fRoot, scale: 1, phase: 0 };
+  const both = BOTH_WAYS.test(id);
+  _inFloor = true;
+  try {
+    for (let f = 0; f < N; f++) {
+      st.t = f / 30; Animator.pose(model, st, ex, pose); fk(desc, pose, W);
+      const y = lowestPoint(desc, W, _fRoot), k = f / (N - 1);
+      tab[f] = y < 0 ? -y : (both ? -y : (k > 0.75 ? -y * sstep((k - 0.75) / 0.25) : 0));
+    }
+  } finally { _inFloor = false; }
+  return tab;
+}
+function floorAt(model, info, id, t) {
+  let tab = info.floor.get(id);
+  if (tab === undefined) { tab = floorTable(model, info, id); info.floor.set(id, tab); }
+  const N = tab.length;
+  let f = t * 30; if (f < 0) f = 0; else if (f > N - 1) f = N - 1;
+  const i0 = f | 0, i1 = i0 + 1 < N ? i0 + 1 : i0;
+  return tab[i0] + (tab[i1] - tab[i0]) * (f - i0);
+}
+
 /**
  * Pose `model` into `out`. Returns the (shared) root track object when extra.root was not supplied.
  */
@@ -543,7 +577,14 @@ Animator.pose = function pose(model, state, extra, out) {
     // humanoid overlays
     if (g.hum && lod < 2) humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, speed, heading, frozen, lod, isBase, root, prevT);
   }
-  if (lod < 2) rootFinish(info, state, root, curClip0, heading, t, hasExtra && extra.scale ? extra.scale : 1);
+  if (lod < 2) {
+    if (!_inFloor && (GROUND_CLIP.test(state.clip) || (blending && GROUND_CLIP.test(state.prev)))) {
+      // ground contact: whatever the clip does to the root, the lowest point of the posed model rests on the ground (see floorTable)
+      const fB = GROUND_CLIP.test(state.clip) ? floorAt(model, info, state.clip, t) : 0, fP = blending && GROUND_CLIP.test(state.prev) ? floorAt(model, info, state.prev, prevT) : 0;
+      root.y += blending ? fP + (fB - fP) * w : fB;
+    }
+    rootFinish(info, state, root, curClip0, heading, t, hasExtra && extra.scale ? extra.scale : 1);
+  }
   return root;
 };
 const _rootC = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };

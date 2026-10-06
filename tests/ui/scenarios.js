@@ -29,6 +29,7 @@ export const SCENARIOS = [
   { name: 'title_contrast', screen: 'title', settings: { highContrastUI: true, palette: 'contrast' } },
   { name: 'quick_cvd', screen: 'quick', settings: { palette: 'cvd' }, setup: async (ui) => { const b = ui.q('[data-adv="advanced"]'); if (b) b.click(); await ui.sleep(200); } },
   { name: 'placement_cvd', screen: 'placement', settings: { palette: 'cvd' }, reset: (app) => { app.game.begin(app.game.newSetup('quick')); }, setup: async (ui) => { ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes', budget: 3800 }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians', budget: 2600 }); await ui.sleep(40); } },
+  { name: 'placement_contrast', screen: 'placement', settings: { palette: 'contrast', highContrastUI: true }, reset: (app) => { app.game.begin(app.game.newSetup('quick')); }, setup: async (ui) => { ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes', budget: 3800 }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians', budget: 2600 }); await ui.sleep(40); } },
   { name: 'settings_access_hc', screen: 'settings', params: { tab: 'access' }, settings: { highContrastUI: true } },
   { name: 'toast_kit', screen: 'title', setup: async (ui) => { ui.K.toast('Hoplite placed. It looks smug.', { kind: 'success', ms: 600000 }); ui.K.toast('That square is underwater. Soldiers are not.', { kind: 'error', ms: 600000 }); await ui.sleep(450); } },
 ];

@@ -15,7 +15,7 @@ const noise = (x, y, z, s = 1, a = 0.14) => 1 + (hash3(x, y, z, s) - 0.5) * 2 * 
 const R_CARRY = 2.44;
 
 // ================================================================================================================ MINOTAUR
-const COAT = 0x6b4a30;
+const COAT = 0x946a46;
 H.minotaur_head = {
   name: 'Minotaur head', meta: { hair: 'none', noEyes: true },
   build(ctx) {
@@ -55,17 +55,17 @@ TU.minotaur_fur = {
   build(ctx) {
     const o = G9(), g = o.body;
     const fur = (x, y, z, f = 1) => furV(COAT, x, y, z, 7, 0.7 * f, 1.12 * f);
-    B(g, 0, 0, 0, 9, 8, 4, (x, y, z) => fur(x, y, z, z === 0 ? 0.82 : (z === 4 && y > 3 && x > 1 && x < 8 ? 1.12 : 1) * vgrad(y, 0, 8, 0.92, 1.08)));
+    B(g, 0, 0, 0, 9, 8, 4, (x, y, z) => fur(x, y, z, (z === 4 && y > 3 && x > 1 && x < 8 ? 1.12 : 1) * vgrad(y, 0, 8, 0.94, 1.08)));
     X(g, 3, 8, 3, 6, 8, 4); X(g, 4, 7, 4, 5, 7, 4);
-    B(g, 3, 3, 4, 6, 6, 4, (x, y, z) => furV(0x9a7450, x, y, z, 9, 0.8, 1.1));                  // lighter chest
-    B(g, 0, 8, 0, 9, 8, 4, (x, y, z) => fur(x, y, z, 0.78)); X(g, 3, 8, 3, 6, 8, 4);          // dark hump of mane at the nape
+    B(g, 3, 3, 4, 6, 6, 4, (x, y, z) => furV(0xb08a60, x, y, z, 9, 0.8, 1.1));                  // lighter chest
+    B(g, 0, 8, 0, 9, 8, 4, (x, y, z) => fur(x, y, z, 0.9)); X(g, 3, 8, 3, 6, 8, 4);          // darker hump of mane at the nape
     both(o, 'armUL', 'armUR', (a) => B(a, 0, 0, 0, 2, 4, 2, (x, y, z) => fur(x, y, z)));
-    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => fur(x, y, z, 0.96)); B(a, 0, 0, 0, 2, 1, 2, (x, y, z) => furV(0x4a3220, x, y, z, 3, 0.8, 1.0)); });
+    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => fur(x, y, z, 0.96)); B(a, 0, 0, 0, 2, 1, 2, (x, y, z) => furV(0x5a4230, x, y, z, 3, 0.8, 1.0)); });
     both(o, 'legUL', 'legUR', (l) => B(l, 0, 0, 0, 3, 4, 3, (x, y, z) => fur(x, y, z, 0.95)));
     both(o, 'legLL', 'legLR', (l) => {
       B(l, 0, 2, 0, 3, 4, 3, (x, y, z) => fur(x, y, z, 0.9));
-      B(l, 0, 0, 0, 3, 1, 5, (x, y, z) => V(shade(0x241a18, 0.8 + 0.4 * hash3(x, y, z, 2) + ((x === 1 || x === 2) && z >= 4 ? 0.12 : 0))));    // hooves
-      B(l, 0, 0, 4, 3, 0, 5, V(0x120c0a));
+      B(l, 0, 0, 0, 3, 1, 5, (x, y, z) => V(shade(0x3a2c28, 0.8 + 0.4 * hash3(x, y, z, 2) + ((x === 1 || x === 2) && z >= 4 ? 0.12 : 0))));    // hooves
+      B(l, 0, 0, 4, 3, 0, 5, V(0x1e1614));
     });
     return o;
   },
@@ -88,8 +88,7 @@ AR.minotaur_harness = {
     B(g, 0, 0, 0, 9, 1, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? strap(x, y, z, 0.9) : 0));
     // loincloth: front and back flaps on the thighs, fringed
     both(o, 'legUL', 'legUR', (l) => {
-      B(l, 0, 1, 3, 3, 4, 3, (x, y, z) => strap(x, y, z, 0.98));                                  // front flap
-      B(l, 0, 1, 0, 3, 4, 0, (x, y, z) => strap(x, y, z, 0.85));                                  // back flap
+      B(l, 0, 1, 0, 3, 4, 3, (x, y, z) => strap(x, y, z, 0.9 + 0.1 * (z / 3)));                    // the loincloth wraps the whole thigh
       B(l, 0, 1, 3, 3, 1, 3, (x, y, z) => fringeV(ctx, x + 1)); B(l, 0, 1, 0, 3, 1, 0, (x, y, z) => fringeV(ctx, x));
       B(l, 0, 0, 3, 3, 0, 3, (x, y, z) => ((x % 2) ? V(shade(ctx.c.secondary, 0.9)) : 0));
     });
@@ -137,7 +136,9 @@ TU.cyclops_tunic = {
     for (const [x, y] of [[1, 6], [2, 5], [3, 5], [4, 6]]) P(g, x, y, 4, V(0xefe6cc));
     P(g, 2, 4, 4, V(0xf8f2e0)); P(g, 2, 3, 4, V(0x2a2020));
     both(o, 'armUL', 'armUR', (a, i) => { if (i === 0) B(a, 0, 1, 0, 2, 4, 2, (x, y, z) => cloth(x, y, z, 0.96)); });
-    both(o, 'legUL', 'legUR', (l) => B(l, 0, 2, 0, 3, 4, 3, (x, y, z) => ((y === 2 && hash3(x, y, z, 5) > 0.55) ? 0 : cloth(x, y, z, 0.94))));
+    both(o, 'legUL', 'legUR', (l) => B(l, 0, 0, 0, 3, 4, 3, (x, y, z) => cloth(x, y, z, 0.94)));
+    both(o, 'legLL', 'legLR', (l) => B(l, 0, 2, 0, 3, 4, 3, (x, y, z) => ((y === 2 && hash3(x, y, z, 5) > 0.5) ? 0 : cloth(x, y, z, 0.9 + 0.2 * ((x + y) % 2)))));    // ragged shin wraps
+    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => ctx.t(((y + x) % 2 ? 1.25 : 0.9))); });                                  // wrist wraps
     return o;
   },
 };
@@ -162,7 +163,7 @@ M.tree_club = {
   },
 };
 
-// the boulder in the off hand: a 14 x 14 x 6 lump of grey rock, moss on top, cracks, and a team-colour rope net so it carries tint
+// the boulder in the off hand: a 14 x 14 x 6 lump of grey rock with moss on top and cracks (natural: the tint is in the tunic and rope belt)
 O.boulder = {
   name: 'Boulder', meta: { kind: 'item', w: 14, h: 14 },
   build(ctx) {
@@ -173,42 +174,45 @@ O.boulder = {
       return V(shade(0x8a8c90, (0.72 + 0.42 * n) * (1.08 - 0.3 * d + (z > 3 ? 0.08 : -0.06))));
     });
     for (const [x, y] of [[5, 9], [6, 8], [6, 7], [7, 6], [7, 5], [8, 5], [9, 4]]) if (g.get(x, y, 5)) g.set(x, y, 5, V(0x4a4c52));    // crack
-    // rope net (team cloth): a band around the middle and one crossing it
-    for (let x = 0; x < 16; x++) for (let y = 0; y < 16; y++) for (let z = 5; z >= 0; z--) {
-      if (!g.get(x, y, z)) continue;
-      if ((y === 7 || y === 8 || x === 7 || x === 8) && z >= 3) g.set(x, y, z, ctx.t(((x + y) % 2) ? 1.25 : 0.95));
-      break;
-    }
-    B(g, 6, 6, 5, 9, 9, 5, (x, y, z) => ((x === 6 || x === 9 || y === 6 || y === 9) ? ctx.t(1.1) : V(shade(0x8a8c90, 0.9))));   // knot where the ropes cross
     return g;
   },
 };
 
 // ================================================================================================================ MEDUSA
-const SK_G = 0x3f8a34;
+const SK_G = 0x2c6e4c;
 H.gorgon_hair = {
   name: 'Gorgon snake hair', meta: { hair: 'none', noEyes: true },
   build(ctx) {
     const { head, crest, hs } = headSpace();
-    const sc = (n, x, y, z) => (n % 6 < 2 ? V(shade(0x2a6a2a, 0.85 + 0.3 * hash3(x, y, z, 1))) : (n % 6 === 4 ? V(shade(0xb8c84a, 0.85 + 0.2 * hash3(x, y, z, 2))) : V(shade(SK_G, 0.85 + 0.35 * hash3(x, y, z, 3)))));
-    // scalp mass under the snakes: dark green cap with a hairline
-    B(hs, 2, 6, 2, 7, 6, (x, y, z) => V(shade(0x255a28, 0.8 + 0.4 * hash3(x, y, z, 4))));
-    Bs(hs, 1, 3, 2, 1, 5, 7, (x, y, z) => V(shade(0x255a28, 0.8 + 0.4 * hash3(x, y, z, 5)))); B(hs, 2, 2, 1, 7, 5, 1, (x, y, z) => V(shade(0x255a28, 0.8 + 0.4 * hash3(x, y, z, 6))));
-    B(hs, 2, 5, 7, 7, 5, 7, (x, y, z) => V(shade(0x255a28, 0.8 + 0.4 * hash3(x, y, z, 7))));
-    const paths = [
-      [[2, 6, 3], [1, 8, 2], [0, 10, 3], [1, 11, 5]],                     // front right
-      [[6, 6, 3], [7, 8, 2], [8, 10, 3], [7, 11, 5]],                     // front left
-      [[3, 6, 4], [3, 8, 3], [2, 10, 3], [2, 12, 4], [2, 12, 5]],         // tall right
-      [[5, 6, 4], [5, 8, 3], [6, 10, 3], [6, 12, 4], [6, 12, 5]],         // tall left
-      [[4, 6, 2], [4, 7, 1], [5, 8, 0], [5, 9, 0]],                       // rear rearing
-      [[1, 6, 4], [0, 5, 5], [0, 4, 6], [0, 3, 6]],                       // right hanger
-      [[7, 6, 4], [8, 5, 5], [8, 4, 6], [8, 3, 6]],                       // left hanger
-    ];
-    paths.forEach((pts, i) => snake(hs, pts, 2, (n, x, y, z) => sc(n + i, x, y, z), { head: V(shade(SK_G, 1.0)), eye: G(0xe8ff5a), tongue: V(0xd8281c) }));
+    const body = newGrid('body');
+    // dark teal snakes with pale diamond markings: they must not melt into the bright green skin
+    const sc = (n, x, y, z) => ((n % 5) === 2 ? V(shade(0xd8d86a, 0.85 + 0.2 * hash3(x, y, z, 2))) : V(shade(SK_G, 0.8 + 0.4 * hash3(x, y, z, 3) + ((n % 5) === 0 ? 0.25 : 0))));
+    const okH = (x, y, z) => x >= 0 && x <= 9 && y >= 0 && y <= 13 && z >= (y < 8 ? 0 : -1) && z <= (y < 8 ? 9 : 10);
+    const okB = (x, y, z) => x >= 0 && x <= 9 && y >= 0 && y <= 8 && z >= 0 && z <= 4;
+    const opt = (ok, extra) => Object.assign({ head: V(shade(SK_G, 1.2)), eye: G(0xfff060), tongue: V(0xe8281c), ok, headH: 2, headL: 3 }, extra);
+    const scalp = (x, y, z) => V(shade(0x2f7a50, 0.8 + 0.4 * hash3(x, y, z, 4)));
+    B(hs, 2, 6, 2, 7, 6, 7, scalp); B(hs, 2, 4, 1, 7, 5, 1, scalp); B(hs, 2, 5, 7, 7, 5, 7, scalp); Bs(hs, 1, 5, 2, 1, 5, 7, scalp);
+    // nine thin snakes rise from the crown on a swaying path and finish with a fat head looking outward; staggered heights keep the stalks apart
+    const tops = [9, 12, 10, 13, 11, 13, 10, 12, 11];
+    for (let i = 0; i < 9; i++) {
+      const th = (i * 40 + 15) * Math.PI / 180, sx = Math.sin(th), sz = Math.cos(th), yt = tops[i];
+      const bx = 4.5 + 2.4 * sx, bz = 4.5 + 2.2 * sz, pts = [];
+      for (let k = 0; k <= 4; k++) {
+        const t = k / 4, sway = 1.1 * Math.sin(t * 6 + i * 1.7) * t;
+        pts.push([Math.round(bx + 0.9 * sx * t * t * 2 - sz * sway), Math.round(6 + (yt - 6) * t), Math.round(bz + 0.9 * sz * t * t * 2 + sx * sway)]);
+      }
+      const l = pts[pts.length - 1], dxo = Math.abs(sx) >= Math.abs(sz) ? [Math.sign(sx), 0] : [0, Math.sign(sz)];
+      pts.push([l[0] + 2 * dxo[0], l[1], l[2] + 2 * dxo[1]]);
+      for (const q of pts) { q[0] = Math.max(0, Math.min(9, q[0])); q[2] = Math.max(0, Math.min(9, q[2])); }
+      snake(hs, pts, 1, (n, x, y, z) => sc(n + i, x, y, z), opt(okH));
+    }
+    // two more slung over the shoulders, heads on the chest
+    snake(body, [[1, 8, 1], [0, 7, 2], [0, 6, 3], [1, 5, 3]], 2, (n, x, y, z) => sc(n + 3, x, y, z), opt(okB, { headH: 2 }));
+    snake(body, [[7, 8, 1], [8, 7, 2], [8, 6, 3], [7, 5, 3]], 2, (n, x, y, z) => sc(n + 1, x, y, z), opt(okB));
     // the gaze: glowing stone-green eyes
     X(hs, 2, 3, 7, 7, 3, 7);
     Ps(hs, 2, 3, 8, G(0xc0ffdc)); Ps(hs, 3, 3, 8, G(0x30f080)); Ps(hs, 2, 4, 8, V(0x143a1c)); Ps(hs, 3, 4, 8, V(0x143a1c)); Ps(hs, 3, 2, 8, V(0x2f6a30));
-    return { head, crest };
+    return { head, crest, body };
   },
 };
 

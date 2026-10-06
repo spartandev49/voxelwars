@@ -14,6 +14,7 @@ import { lin } from '../render/engine.js';
 import { teamColorsLinear } from '../render/style.js';
 import { formationOffsets, placeOffsets } from '../sim/formations.js';
 import { WorldLabels } from '../render/labels.js';
+import { MinimapFeed } from '../render/minimap.js';
 import { UndoStack } from '../core/undo.js';
 import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
@@ -42,7 +43,7 @@ export class Game {
   constructor(app) {
     this.app = app; this.engine = app.engine; this.content = app.content; this.settings = app.settings; this.audio = app.audio;
     this.bus = app.bus || new EventBus();
-    this.state = 'idle'; this.canvasMode = ''; this.world = null; this.setup = null; this.labels = new WorldLabels();
+    this.state = 'idle'; this.canvasMode = ''; this.world = null; this.setup = null; this.labels = new WorldLabels(); this.mini = new MinimapFeed();
     this.rig = new CameraRig(this.engine);
     this.terrain = new TerrainRenderer(this.engine.scene);
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
@@ -132,7 +133,8 @@ export class Game {
     w.events.on('explosion', (p) => this.rig.hint(p.x, p.z, 'explosion', 2));
     w.events.on('hero_down', () => { this.rig.addTrauma(0.35); });
     if (this.audio && this.audio.attach) { try { this.audio.attach(w.events, { arena: w.arena, world: w, defs: this.content.defs, getListener: () => this.rig.listener }); } catch (e) { console.warn('audio attach failed', e); } }
-    this.labels.bind(w);
+    this.labels.bind(w); this.mini.setArena(w.arena); this._miniDirty = 0;
+    w.events.on('crater', () => { this._miniDirty = this.clock; });
     this.state = 'placement';
     // restore / generate placements
     if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); }
@@ -531,6 +533,7 @@ export class Game {
   // ------------------------------------------------------------------ HUD / results
   hud() {
     const w = this.world; if (!w) return { state: this.state };
+    if (this._miniDirty && this.clock - this._miniDirty > 1.2) { this._miniDirty = 0; this.mini.invalidate(); }
     const teams = [0, 1].map((t) => { const s = w.stats[t]; return { team: t, name: t === 0 ? 'Blue' : 'Red', alive: s.alive, start: s.startCount, cost: s.aliveCost, costStart: s.startCost, byType: this._byType(t) }; });
     const sel = this.selectedId ? (w.units.find((u) => u.id === this.selectedId) || null) : null;
     const hv = this.hoverId ? (w.units.find((u) => u.id === this.hoverId) || null) : null;
@@ -539,7 +542,7 @@ export class Game {
       state: this.state, time: w.time, speed: this.speed, paused: this.paused, fps: this.fps || 0, cam: this.rig.mode, teams, countdown: this.state === 'countdown' ? Math.ceil(w.countdown) : 0,
       objective: w.objective && w.objective.hud ? w.objective.hud(w) : null, killfeed: this.killfeed.slice(), announcer: this.announce,
       selection: show ? { id: show.id, defId: show.def.id, name: show.name || show.def.name, hp: show.hp, hpMax: show.hpMax, kills: show.kills, status: [], blurb: (show.def.text && show.def.text.blurb) || '' } : null,
-      powers: this.godPowers(), minimap: null,
+      powers: this.godPowers(), minimap: this.mini.update(w, this.engine.camera, this.selectedId, this.rig.ty, this.state === 'placement'),
       worldLabels: this.labels.snapshot(this.engine.camera, this.engine.renderer.domElement.clientWidth, this.engine.renderer.domElement.clientHeight, w.time),
     };
     return this.meta ? this.meta.decorateHud(d) : d;                              // + possess, teaching, aim (app/meta.js)

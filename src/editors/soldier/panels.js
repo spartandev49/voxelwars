@@ -196,7 +196,7 @@ export function personalityPanel(env) {
   const pitch = K.slider({ min: C.PITCH_MIN, max: C.PITCH_MAX, step: 0.01, value: doc.cs.text.pitch, label: WS.pitch, id: 'ws-pitch', valueWidth: '3.6rem', format: (v) => v.toFixed(2), onInput: (v) => doc.setPitch(v), ticks: [{ v: 1, label: '1' }] });
   const hear = K.button(WS.hearIt, { icon: 'volume', size: 'sm', variant: 'secondary', id: 'ws-hear', sound: false, onClick: () => K.sfx('ui_confirm', { pitch: doc.cs.text.pitch }) });
   const surprise = K.button(WS.surprise, { icon: 'dice', size: 'sm', variant: 'secondary', id: 'ws-quotes-dice', onClick: () => doc.surpriseQuotes() });
-  const el = h('div', { class: 'vw-col ws-panel', id: 'ws-panel-personality' }, h('div', { class: 'vw-row vw-between' }, h('span', { class: 'vw-label', text: WS.personality }), surprise), catchF.row, h('div', { class: 'vw-label', text: WS.lastWords }), ...deathF.map((d) => d.row), K.divider(), pitch, hear);
+  const el = h('div', { class: 'vw-col ws-panel', id: 'ws-panel-personality' }, h('div', { class: 'vw-row vw-between' }, h('span', { class: 'vw-label', text: WS.personality }), surprise), catchF.row, ...deathF.map((d) => d.row), K.divider(), pitch, hear);
   return { el, refresh() { catchF.sync(); deathF.forEach((d) => d.sync()); if (Math.abs(+pitch.get() - doc.cs.text.pitch) > 1e-6) pitch.set(doc.cs.text.pitch, true); } };
 }
 

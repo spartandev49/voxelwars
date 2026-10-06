@@ -66,6 +66,8 @@ export function validateSettingsData(d, warn = () => {}) {
     if (typeof def === 'string') { const s = str(v, 40, 'setting ' + k); if (ENUMS[k] && !ENUMS[k].includes(s)) throw new ValidationError(`Setting '${k}' has an unknown value '${s.slice(0, 16)}'`); out[k] = s; continue; }
     if (def && typeof def === 'object') { plain(v, 'setting ' + k); checkTree(v, 'setting ' + k); out[k] = JSON.parse(JSON.stringify(v)); continue; }
   }
+  // the diagnostics beacon is opt-in per player (decisions R2.5): a file may only carry `beacon: true` together with the consent flag it was given under
+  if (out.beacon === true && !(out.seenHints && out.seenHints.beacon)) { out.beacon = false; warn('The diagnostics beacon stays off until you accept its consent card'); }
   return out;
 }
 

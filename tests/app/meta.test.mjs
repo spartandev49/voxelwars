@@ -9,6 +9,7 @@ import { getAchievement, ACHIEVEMENTS } from '../../src/content/era_ancient/humo
 import { RESULT_LABELS } from '../../src/content/era_ancient/humor/results_text.js';
 import { KILL_VERBS } from '../../src/content/era_ancient/humor/killverbs.js';
 
+const run = (w, n) => { for (let i = 0; i < n; i++) w.tick(); };
 // ---------------------------------------------------------------- a full battle through the meta layer
 const world = makeWorld({ a: [['hoplite', 14], ['cretan_archer', 6]], b: [['hoplite', 6], ['sacred_chicken', 2]], seed: 11 });
 const order = [];                                              // the order the three battle_end consumers run in
@@ -121,6 +122,43 @@ meta.onFrame(0.1); meta.decorateResults({}); meta.decorateHud({}); meta.aim.set(
   X.settings.set('muted', true); assert.equal(X.meta.speak(line), false, 'muted: silent'); X.settings.set('muted', false); X.settings.set('vol.announcer', 0); assert.equal(X.meta.speak(line), false);
   const X2 = makeMeta({ audio: { speech: { isEnabled: () => { throw new Error('boom'); } } } }); X2.settings.set('tts', true); assert.equal(X2.meta.speak(line), false, 'a broken audio facade never throws'); assert.equal(makeMeta({}).meta.speak(line), false, 'no audio: fine');
 }
+// ---------------------------------------------------------------- survival: the run is scored, ranked and written to vw.survival; Daily gets its date
+{
+  const w = makeWorld({ a: [['hoplite', 12]], b: [], rules: { waves: true, timeLimit: 0 }, seed: 4 });
+  const X = makeMeta({ world: w, setup: { kind: 'survival', arena: { presetId: 'nile', size: 'small' }, rules: { waves: true }, armies: {} } });
+  X.docs.survival.set('board', [{ score: 500, waves: 1, date: '2026-01-01', arena: 'troy' }]); X.docs.survival.set('best', 500);
+  X.game.state = 'running'; w.start(0); let n = 0; while (w.waves.n < 2 && n++ < 30 * 120) w.tick(); assert.ok(w.waves.n >= 1, 'wave 1 spawned'); run(w, 60);
+  w.end(1, 'elimination'); X.game.state = 'ended';
+  const R = X.meta.decorateResults({ mvp: null, funnyStats: [], lessons: [] }); const sv = R.survival;
+  assert.ok(sv && sv.score > 0 && sv.wave >= 1 && sv.waveName.length > 3 && sv.rank >= 1 && sv.best === 500, JSON.stringify(sv));
+  assert.equal(sv.board.length, 2); assert.ok(sv.board[0].score >= sv.board[1].score); assert.equal(X.docs.survival.get('board').length, 2, 'persisted to vw.survival'); assert.equal(X.docs.survival.get('best'), Math.max(500, sv.score));
+  assert.equal(X.docs.progress.get('survivalBest'), X.docs.survival.get('bestWave'), 'the title tile reads the best wave'); assert.ok(X.stats.get().bestWave >= 1);
+  assert.equal(X.meta.decorateResults({}).survival.board.length, 2, 'recorded once per battle (a second results() call does not add another row)'); assert.equal(R.daily, undefined);
+  const D = makeMeta({ world: makeWorld({}), setup: { kind: 'daily', arena: { presetId: 'marathon' }, rules: { daily: '2026-03-04' }, armies: {} } }); D.game.state = 'running'; D.meta.world.start(0); D.meta.world.end(0, 'elimination'); D.game.state = 'ended';
+  assert.deepEqual(D.meta.decorateResults({}).daily, { date: '2026-03-04' }); D.docs.progress.set('daily', { last: '2026-03-04', streak: 1, history: [{ date: '2026-03-04', result: 'win', time: 5, left: 50 }] }); assert.equal(D.stats.get().dailyStreak, 1, 'the Daily screen writing its history updates the dailyStreak stat');
+}
+
+// ---------------------------------------------------------------- announcer callbacks read the ALREADY-UPDATED lifetime stats (lifetime_stats.md §1)
+{
+  const heard = (preload, winnerTeam, enemy, seeds = 40) => {
+    const out = [];
+    for (let seed = 1; seed <= seeds; seed++) {
+      const w = makeWorld({ a: [['hoplite', 2]], b: enemy, seed }); const X = makeMeta({ world: w, rng: new (w.rng.constructor)(seed * 7919) });
+      X.stats.load(preload); X.game.state = 'running'; w.start(0); w.tick();
+      w.end(winnerTeam, 'elimination'); X.game.state = 'ended';                       // perDef is built by the sim from the units alive
+      for (let i = 0; i < 120; i++) X.meta.onFrame(1 / 20);
+      for (const l of X.game.eventsOf('announce')) out.push(l.text);
+    }
+    return out;
+  };
+  const wins9 = heard({ wins: 9, battles: 9 }, 0, [['hoplite', 1]]);
+  assert.ok(wins9.some((t) => /Win number 10|10 wins/.test(t)), 'the 10th win callback is spoken: stats were updated BEFORE the announcer ran (' + wins9.length + ' lines heard)');
+  const wins5 = heard({ wins: 5, battles: 5 }, 0, [['hoplite', 1]]); assert.ok(!wins5.some((t) => /Win number|\d+ wins\./.test(t)), 'negative control: no milestone at win 6');
+  const chick = heard({ chickenDefeats: 2, losses: 2, battles: 2 }, 1, [['hoplite', 1], ['sacred_chicken', 2]]);
+  assert.ok(chick.some((t) => /3rd|third|three times/.test(t)), 'the third chicken defeat is counted before the line is written: ' + chick.filter((t) => /chicken/i.test(t)).slice(0, 2).join(' | '));
+  const nochick = heard({ chickenDefeats: 2, losses: 2, battles: 2 }, 1, [['hoplite', 1]]); assert.ok(!nochick.some((t) => /chicken defeat|CHICKENS/.test(t)), 'negative control: no live chicken on the winning side, no chicken defeat');
+}
+
 // ---------------------------------------------------------------- storage quota guard (P2): one modal, export or delete-oldest, nothing lost
 {
   const { watchQuota } = await import('../../src/app/meta.js'); const { Collection } = await import('../../src/save/store.js'); const { createTransfer } = await import('../../src/save/transfer.js');

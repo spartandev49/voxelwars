@@ -57,7 +57,7 @@ export function mount(root, ctx, params) {
   const diag = K.button(T.diagnostics, { icon: 'bug', variant: 'ghost', size: 'sm', id: 'menu-diagnostics', sound: 'ui_click', onClick: () => go('diagnostics') });
   const ver = ctx.version || {};
   const footer = K.h('footer', { class: 'vw-title__footer' },
-    K.h('span', { class: 'vw-title__ver vw-micro vw-nums', text: T.version(ver.version || '1.0.0', ver.date || ver.build || '') }),
+    K.h('span', { class: 'vw-title__ver vw-micro vw-nums', text: T.version(ver.version || ver.build || '1.0.0', ver.date || '') }),
     diag, mute,
     K.h('span', { class: 'vw-chip vw-chip--dash vw-title__roadmap', role: 'note', 'aria-label': T.roadmapNote }, K.icon('flag', { class: 'vw-chip__icon' }), K.h('span', { text: T.roadmap })));
 
@@ -74,8 +74,8 @@ export function mount(root, ctx, params) {
   if (tip) K.enter(tip, 'right', 6);
   if (!safe(() => ctx.platform.isTouch, false)) setTimeout(() => { try { quick.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }, 80);
 
-  return {
+  return K.withExit(root, {
     destroy() { cleanups.forEach((f) => f()); },
-    onBack() { return false; },
-  };
+    onBack() { return true; },   // the title is the root: Esc does nothing
+  });
 }

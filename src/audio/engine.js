@@ -17,7 +17,7 @@ import { STAT_TABLE } from '../content/era_ancient/stats.js';
 export const BUSES = ['music', 'sfx', 'ui', 'announcer', 'ambience'];
 const BUS_TRIM = { music: 0.5, sfx: 1.0, ui: 1.0, announcer: 1.0, ambience: 0.8 };
 const VOL_DEFAULT = { master: 0.85, music: 0.7, sfx: 0.9, ui: 0.8, announcer: 0.9, ambience: 1 };
-export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 1.0, outTrim: 1.0 };   // preGain: before the compressor; outTrim: linear gain after the soft clip (calibrated by tools/mixtest.mjs)
+export const MIX = { compThreshold: -16, compKnee: 10, compRatio: 5, compAttack: 0.003, compRelease: 0.2, limThreshold: -3, limKnee: 0, limRatio: 20, limAttack: 0.001, limRelease: 0.08, clipCeil: 0.84, clipKnee: 0.6, preGain: 0.631, outTrim: 0.708 };   // preGain: before the compressor; outTrim: linear gain after the soft clip (calibrated by tools/mixtest.mjs)
 
 function softClipCurve(n, knee, ceil) {
   const c = new Float32Array(n);
@@ -201,7 +201,8 @@ export class AudioEngine {
     this._preloaded = (async () => {
       try { await this.bank.loadCore(); } catch (e) { this._err('core: ' + (e && e.message)); }
       try { this.bank.warm(['ui']); } catch (e) { this._err('warm: ' + (e && e.message)); }
-      try { if (this.music.mood !== 'none') await this.music.prefetch(this.music.mood, this.music.theme); } catch (e) { /* music prefetch is optional */ }
+      // the first music of the game is the menu bed: have it decoded before the first gesture so the title screen is never silent
+      try { await this.music.prefetch(this.music.mood !== 'none' ? this.music.mood : 'menu', this.music.theme); } catch (e) { /* music prefetch is optional */ }
     })();
     return this._preloaded;
   }
@@ -300,14 +301,14 @@ export class AudioEngine {
   }
 
   // ---------------------------------------------------------------- ducking
-  /** duck `bus` by `db` for `ms` (attack 20 ms, release restores within ~360 ms): audio.duck('music', -6, 400) */
+  /** duck `bus` by `db` for `ms` (attack 20 ms; after the hold the gain is back above 97 % within ~250 ms, so a 400 ms duck is over within 800 ms): audio.duck('music', -6, 400) */
   duck(bus, db = -6, ms = 400) {
     if (!this.ctx || !this.buses) return;
     const b = this.buses[bus]; if (!b) return;
     const t = this.now(), until = t + ms / 1000;
     const target = Math.min(db, b.duckUntil > t ? b.duckDb : 0);
     b.duckDb = target; b.duckUntil = Math.max(b.duckUntil, until);
-    const g = b.duck.gain; g.cancelScheduledValues(t); g.setTargetAtTime(db2lin(target), t, 0.02); g.setTargetAtTime(1, b.duckUntil, 0.12);
+    const g = b.duck.gain; g.cancelScheduledValues(t); g.setTargetAtTime(db2lin(target), t, 0.02); g.setTargetAtTime(1, b.duckUntil, 0.07);
   }
 
   // ---------------------------------------------------------------- listener

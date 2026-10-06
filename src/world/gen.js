@@ -697,7 +697,7 @@ R.troy = (g) => {
 // ------------------------------------------------------------------ styx
 R.styx = (g) => {
   const a = g.a, W = g.W;
-  a.biome = 'ash'; a.env = { time: 21.5, weather: 'fog', fog: 0.5, theme: 'mythic', wind: 0.1, mood: 'auto' };
+  a.biome = 'ash'; a.env = { time: 19.4, weather: 'fog', fog: 0.34, theme: 'mythic', wind: 0.1, mood: 'auto' };   // late dusk: dark enough for the lava glow, light enough to read units
   a.water = 9; a.lava = true;
   g.setZones(0.31, 0.6, 0.2);
   const xr = (z) => Math.sin(z / 13) * 6 + Math.sin(z / 5.2) * 1.2, rw = (z) => 4.0 + Math.sin(z / 9) * 0.9;
@@ -707,7 +707,7 @@ R.styx = (g) => {
     let h = 15 + g.ridged(x, z, 16, 3) * 5.5 + g.fbm(x, z, 8, 2) * 0.8;
     h = lerp(5.5, h, smoothstep(w - 0.2, w + 3.4, d));
     return h;
-  }, (x, z, h) => { const d = Math.abs(x - xr(z)); if (d < rw(z) + 0.2) return MAT.lava; if (d < rw(z) + 2.4) return MAT.blood; return g.fbm(x, z, 6, 2) > 0.3 ? MAT.stone : MAT.ash; });
+  }, (x, z, h) => { const d = Math.abs(x - xr(z)); if (d < rw(z) + 0.2) return MAT.lava; if (d < rw(z) + 2.4) return MAT.blood; return g.fbm(x, z, 6, 2) > -0.15 ? MAT.stone : g.fbm(x + 7, z, 5, 2) > 0.2 ? MAT.cobble : MAT.ash; });
   g.smooth(1); g.flatZones(8, 2, { A: 16, B: 16 });
   // bone bridges: a 3.2 u marble deck at 16 steps (8 u) across the river; both banks are levelled to 16 around the approach so units walk straight on
   const BH = 16;

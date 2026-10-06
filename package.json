@@ -8,6 +8,9 @@
     "build": "node tools/build.mjs",
     "balance": "node tools/balance.mjs",
     "smoke": "node tools/smoke.mjs",
+    "contracts": "node tools/contracts.mjs",
+    "look": "node tools/look.mjs",
+    "perf": "node tools/perf.mjs",
     "lint": "node tools/lint.mjs",
     "gate": "node tools/gate.mjs",
     "test": "node tools/gate.mjs --fast"

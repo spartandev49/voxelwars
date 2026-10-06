@@ -58,6 +58,8 @@ for s in music_spec.SPEC:
              attributionRequired=a['attributionRequired'],
              notes='source file: %s; leading silence trimmed %.2fs; %s; loop seam metrics (end-vs-start RMS dB %s, zero-crossing ratio %s, seam jump %s, beat fraction %s)' % (
                  b['srcfile'], b['trimmed_lead'], s.get('notes', 'normalised to -16 LUFS'), lc.get('rms_end_vs_start_db'), lc.get('zc_ratio'), lc.get('seam_jump'), lc.get('beat_frac')))
+    e['fade_out'] = 0 if s.get('nofade') else s.get('fade_out', 0.05)
+    e['loop_check'] = lc
     if s.get('core'): e['core'] = True
     if not e['loop']: e['notes'] += '; not seamless -> cross-fade 2-3 s when looping'; e['crossfadeSeconds'] = 2.5
     music.append(e)

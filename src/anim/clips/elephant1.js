@@ -4,9 +4,9 @@ import { define, seq, mergeKeys, wave, waveC, bump, clamp } from '../dsl.js';
 import { gaitBuild, stride, LEGS } from './quad1.js';
 
 const PI = Math.PI, TAU = Math.PI * 2;
-const EL = { id: 'elephant', L: 2.2, zF: 1.5, zB: -1.55, hw: 1.3, bodyY: 1.6, pace: false, tail: 1.0, neck: [0, 0] };
-const WALK = { amp: 0.55, duty: 0.72, D: 1.0, bob: 0.03, pitch: 0.012, neckAmp: 0.05, lift: 0.14, off: [0.25, 0.75, 0.0, 0.5] };
-const RUN = { amp: 0.68, duty: 0.6, D: 0.72, bob: 0.08, pitch: 0.035, neckAmp: 0.06, lift: 0.22, off: [0.25, 0.75, 0.0, 0.5] };
+const EL = { id: 'elephant', L: 2.2, zF: 1.5, zB: -1.55, hw: 1.3, bodyY: 1.6, hipY: 0.6, pace: false, tail: 1.0, neck: [0, 0] };
+const WALK = { amp: 0.55, duty: 0.72, D: 1.0, bob: 0.03, pitch: 0.012, neckAmp: 0.05, liftK: 0.11, off: [0.25, 0.75, 0.0, 0.5] };
+const RUN = { amp: 0.68, duty: 0.6, D: 0.72, bob: 0.08, pitch: 0.035, neckAmp: 0.06, liftK: 0.2, off: [0.25, 0.75, 0.0, 0.5] };
 
 /** trunk wave: each segment lags the one before it (follow-through down the trunk) */
 function trunk(c, u, o) {

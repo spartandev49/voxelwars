@@ -57,10 +57,11 @@ try {
 
   // ---- battle 1: stats, kill feed, announcer, results (4x speed)
   await ev(async () => { await window.__vw.quick({ rules: { budget: 3000 } }); }); await page.waitForTimeout(800);
-  await ev(() => window.__vw.fight()); await page.waitForTimeout(400);
-  await ev(() => window.__vw.game.setSpeed(4));
+  await ev(() => window.__vw.fight()); await page.waitForTimeout(300);
+  // SwiftShader renders ~3 fps: fast-forward the sim with the test hook (it steps the real world and its real event bus) and let a few real frames run in between
   let feedSeen = 0, annSeen = 0; const t0 = Date.now();
-  while ((Date.now() - t0) / 1000 < 150) { await page.waitForTimeout(1500); const m = await ev(() => { const g = window.__vw.game; const h = g.hud(); return { st: g.state, feed: h.killfeed.length, ann: !!h.announcer, teach: h.teaching, possess: h.possess }; }); feedSeen = Math.max(feedSeen, m.feed); if (m.ann) annSeen++; if (m.st === 'ended') break; }
+  await ev(() => window.__vw.step(100));                                     // through the 3 s countdown
+  while ((Date.now() - t0) / 1000 < 170) { await ev(() => window.__vw.step(45)); await page.waitForTimeout(250); const m = await ev(() => { const g = window.__vw.game; const h = g.hud(); return { st: g.state, feed: h.killfeed.length, ann: !!h.announcer, teach: h.teaching, possess: h.possess }; }); feedSeen = Math.max(feedSeen, m.feed); if (m.ann) annSeen++; if (m.st === 'ended') break; }
   check(await waitState('ended', 5), 'the battle ended');
   check(feedSeen > 0, 'kill feed filled during the battle (max rows ' + feedSeen + ')');
   const r = await ev(() => { const g = window.__vw.game; const res = g.results(); const s = window.__vw.app.stats.get(); return { funny: res.funnyStats, lessons: res.lessons, mvp: res.mvp, battles: s.battles, kills: s.kills || 0, winner: res.winner, feed: g.killfeed.slice(), announce: g.announce, summary: !!res.summary, played: s.arenasPlayed }; });
@@ -93,12 +94,12 @@ try {
 
   // ---- battle 2: god-power aim + Take Command input at 1x
   await ev(() => { window.__vw.app.router.closeOverlay('results'); return window.__vw.game.rematch(); }); await page.waitForTimeout(500);
+  await ev(() => window.__vw.step(100)); await page.waitForTimeout(300);
   check(await waitState('running', 12), 'rematch reached running');
-  await ev(() => window.__vw.game.setSpeed(1));
   const aim = await ev(() => { const g = window.__vw.game; const ok = g.aim('zeus_lightning'); const armed = window.__vw.app.meta.aim.active; const ring = g.engine.scene.children.some((c) => c.type === 'Group' && c.visible && c.renderOrder === 22); return { ok, armed, ring, hudAim: g.hud().aim }; });
   check(aim.ok && aim.armed && aim.hudAim === 'zeus_lightning', 'aim(zeus_lightning) arms target mode ' + JSON.stringify(aim));
   const box = await ev(() => { const r = window.__vw.engine.renderer.domElement.getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
-  await page.mouse.move(box.x, box.y); await page.waitForTimeout(150);
+  await page.mouse.move(box.x - 30, box.y); await page.mouse.move(box.x, box.y); await page.waitForTimeout(900);
   const ringOn = await ev(() => window.__vw.game.engine.scene.children.some((c) => c.type === 'Group' && c.visible && c.renderOrder === 22)); check(ringOn, 'the aim ring follows the cursor'); await shot('aim');
   await page.mouse.click(box.x, box.y); await page.waitForTimeout(400);
   const cast = await ev(() => { const g = window.__vw.game; return { armed: window.__vw.app.meta.aim.active, cd: g.godPowers().find((p) => p.id === 'zeus_lightning'), selected: g.selected() }; });
@@ -110,7 +111,7 @@ try {
   // take command
   const tc = await ev(async () => { const g = window.__vw.game, w = g.world; const u = w.units.find((x) => x.team === 0 && x.alive); g.possess(u.id); await new Promise((r) => setTimeout(r, 400)); const x0 = u.x, z0 = u.z; const ok = g.possessInput({ move: { x: 0, y: -1 } }); await new Promise((r) => setTimeout(r, 1200)); const hud = g.hud(); return { ok, moved: Math.hypot(u.x - x0, u.z - z0), possess: hud.possess && { id: hud.possess.id, name: hud.possess.name, ab: hud.possess.abilities.length }, alive: u.alive }; });
   check(tc.ok && (tc.moved > 0.8 || !tc.alive), 'possessInput moves the possessed soldier (moved ' + tc.moved.toFixed(2) + ')'); check(!!tc.possess || !tc.alive, 'hud.possess is filled ' + JSON.stringify(tc.possess));
-  await shot('possess');
+  await page.waitForTimeout(600); await shot('possess');
   await ev(() => window.__vw.game.possess(null));
   // teaching: not a mission-1 setup, so nothing is shown
   check(await ev(() => window.__vw.game.hud().teaching === null), 'no teaching card outside mission 1');

@@ -41,5 +41,5 @@ export function mount(root, ctx, params) {
   paint();
   K.enter(Array.from(frame.content.querySelectorAll('.vw-tablet')), 'pop', 0);
   cleanups.push(frame.destroy);
-  return { destroy() { cleanups.forEach((f) => f()); }, onBack() { if (K.hasModal()) return false; ctx.nav.back(); return true; } };
+  return K.withExit(root, { destroy() { cleanups.forEach((f) => f()); }, onBack() { return K.hasModal(); } });
 }

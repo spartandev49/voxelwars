@@ -422,17 +422,20 @@ export function createMockApp(opts) {
   }
   const nav = {
     goto(id, params) { if (curId) stack.push({ id: curId, params: cur && cur.params }); return mountScreen(id, params); },
-    back() { const p = stack.pop(); if (p) mountScreen(p.id, p.params); else mountScreen(opts.home || 'title'); },
+    back() {   // same contract as src/app/router.js: the screen may consume Esc/back (returns true), otherwise navigate to the previous screen
+      if (cur && cur.api.onBack && cur.api.onBack()) return true;
+      const p = stack.pop(); if (p) mountScreen(p.id, p.params); else mountScreen(opts.home || 'title'); return true;
+    },
     current: () => curId,
     modal: (o) => import('./kit.js').then((K) => K.modal(o)),
     toast: (text, o) => { calls.toasts.push(text); import('./kit.js').then((K) => K.toast(text, o)); },
   };
-  const ctx = { nav, settings, save, content, audio, preview, game, platform, diag, version: { build: '2026-10-06', date: '2026-10-06', version: '1.0.0' } };
+  const ctx = { nav, settings, save, content, audio, preview, game, platform, diag, version: { build: '1.0.0', date: '2026-10-06' } };
   const app = {
     ctx, game, nav, calls, content, save, settings, store,
     goto(id, params) { stack.length = 0; curId = ''; return mountScreen(id, params); },
     current: () => cur,
-    key(e) { if (cur && cur.api.onKey && cur.api.onKey(e)) return true; if ((e.key === 'Escape') && cur && cur.api.onBack) return !!cur.api.onBack(); return false; },
+    key(e) { if (cur && cur.api.onKey && cur.api.onKey(e)) return true; if (e.key === 'Escape') return nav.back(); return false; },
     destroy() { if (cur) { try { cur.api.destroy(); } catch (e) { /* ignore */ } cur.el.remove(); cur = null; } },
   };
   // Esc/key routing like the real shell: modal handler (kit) swallows Esc first; otherwise the screen gets onKey/onBack.

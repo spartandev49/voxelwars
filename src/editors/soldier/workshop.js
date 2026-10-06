@@ -2,7 +2,7 @@
 // Colours / Personality / Voxel Paint, bottom = name, cost, Save, Use in battle, Share, Randomise, Reset.
 import * as K from '../../ui/kit.js';
 import { RNG } from '../../core/rng.js';
-import { PART_REGISTRY, listParts, compileSoldier } from '../../content/era_ancient/blueprints.js';
+import { PART_REGISTRY, listParts } from '../../content/era_ancient/blueprints.js';
 import * as C from '../../content/era_ancient/custom.js';
 import { checkSoldier, ValidationError } from '../../save/validate.js';
 import { ClipLib } from '../../anim/clips.js';
@@ -48,7 +48,7 @@ export function mount(root, ctx, params = {}) {
   if (params.resume && dr && initial) { doc.savedRef = dr.dirty === false ? doc.cs : null; }
 
   // ---------------------------------------------------------------- derived info (def, compile) shared by every panel
-  let info = null, lastRev = '', lastColorSig = '';
+  let info = null, lastRev = '', lastColorSig = '', lastComp = null;
   function compute() {
     const ev = C.evaluate(doc.cs), def = ev.def;
     let comp = info && info.comp;
@@ -138,7 +138,7 @@ export function mount(root, ctx, params = {}) {
   const stage = new SoldierStage(stageHost, { animator: guard(() => ctx.game.animator, undefined), palette: () => guard(() => ctx.settings.get('palette'), 'classic'), ghost: hoplite, reduceMotion: reduced, label: 'Soldier preview. Drag to turn, scroll to zoom, arrow keys to turn.' });
   cleanups.push(() => stage.destroy());
   if (!stage.ok) stageHost.appendChild(K.emptyState({ icon: 'cube', title: '3D preview unavailable', text: 'This browser did not give the Workshop a WebGL view. Everything else still works.' }));
-  const clipSeg = K.segmented({ id: 'ws-clip', label: WS.clip, value: 'idle', class: 'vw-seg--compact ws-clips', options: [{ value: 'idle', label: WS.clips.idle }], onChange: (v) => setClip(v) });
+  const clipSeg = K.segmented({ id: 'ws-clip', label: WS.clip, value: 'idle', class: 'vw-seg--compact ws-clips', options: ['idle', 'walk', 'attack', 'block', 'death', 'cheer'].map((c) => ({ value: c, label: WS.clips[c] })), onChange: (v) => setClip(v) });
   const ghostToggle = K.toggle({ id: 'ws-ghost', label: WS.ghost, value: false, onChange: (v) => { stage.setGhost(v); } });
   K.tooltip(ghostToggle, WS.ghostTip);
   const tintSeg = K.segmented({ id: 'ws-tint', label: WS.tint, value: 'a', class: 'vw-seg--compact', options: [{ value: 'a', label: WS.tintOptions.a }, { value: 'b', label: WS.tintOptions.b }, { value: 'map', label: WS.tintOptions.map }], onChange: (v) => setTint(v) });
@@ -146,26 +146,17 @@ export function mount(root, ctx, params = {}) {
   const spinToggle = K.toggle({ id: 'ws-spin', label: WS.spin, value: true, onChange: (v) => stage.setSpin(v) });
   const hud = h('div', { class: 'ws-stage__hud' },
     h('div', { class: 'ws-hud ws-hud--tr' }, h('label', { class: 'ws-hudrow' }, h('span', { class: 'vw-micro', text: WS.ghost }), ghostToggle), h('label', { class: 'ws-hudrow' }, h('span', { class: 'vw-micro', text: WS.spin }), spinToggle), tintSeg),
-    h('div', { class: 'ws-hud ws-hud--bl' }, clipSeg), h('div', { class: 'ws-hud ws-hud--br vw-micro', text: WS.stageHint }));
+    h('div', { class: 'ws-hud ws-hud--bl' }, clipSeg), h('div', { class: 'ws-hud ws-hud--tl vw-micro', text: WS.stageHint }));
   const stageBox = h('div', { class: 'ws-stage' }, stageHost, hud);
   const checks = h('div', { class: 'ws-checks', id: 'ws-checks', role: 'status', 'aria-live': 'polite' });
   const centre = h('div', { class: 'ws-centre' }, stageBox, checks);
-  let clipOptsSig = '';
   function setClip(v) { const def = info && info.def; let id = v; if (v === 'attack') id = def ? attackClipOf(def) : 'strike_slash_1'; else if (v === 'block') id = ClipLib.has('block_hold') ? 'block_hold' : 'block_hit'; else if (v === 'death') id = 'death_back'; stage.setClip(id); }
-  function setTint(m) {
-    tintSeg.set(m, true); stage.setTintMode(m === 'map' ? 'map' : 'off'); stage.setTeam(m === 'b' ? 1 : 0);
-    if (m !== 'map' && frame.el) { /* palette tab note stays */ }
-  }
+  function setTint(m) { tintSeg.set(m, true); stage.setTintMode(m === 'map' ? 'map' : 'off'); stage.setTeam(m === 'b' ? 1 : 0); }
   function syncClipOptions() {
-    const def = info.def, opts = [{ value: 'idle', label: WS.clips.idle }, { value: 'walk', label: WS.clips.walk }, { value: 'attack', label: WS.clips.attack }];
-    if (def.shield) opts.push({ value: 'block', label: WS.clips.block });
-    opts.push({ value: 'death', label: WS.clips.death }, { value: 'cheer', label: WS.clips.cheer });
-    const sig = opts.map((o) => o.value).join(',');
-    if (sig === clipOptsSig) return; clipOptsSig = sig;
-    const keep = clipSeg.get(); const fresh = K.segmented({ id: 'ws-clip', label: WS.clip, value: opts.some((o) => o.value === keep) ? keep : 'idle', class: 'vw-seg--compact ws-clips', options: opts, onChange: (v) => setClip(v) });
-    clipSeg.replaceWith(fresh); Object.assign(clipSeg, {}); clipRef = fresh;
+    const noShield = !info.def.shield; clipSeg.setDisabled('block', noShield);
+    if (noShield && clipSeg.get() === 'block') { clipSeg.set('idle', true); stage.setClip('idle'); }
+    else if (clipSeg.get() === 'attack') stage.setClip(attackClipOf(info.def), true);
   }
-  let clipRef = clipSeg;
 
   // ---------------------------------------------------------------- right: tabs
   const panels = { stats: statsPanel(env), abilities: abilitiesPanel(env), colours: coloursPanel(env), personality: personalityPanel(env), paint: paintPanel(env) };
@@ -182,15 +173,15 @@ export function mount(root, ctx, params = {}) {
   const diceBtn = K.iconButton('dice', WS.dice, { id: 'ws-dice', variant: 'secondary', onClick: () => doc.newName() }); K.tooltip(diceBtn, WS.dice);
   const costChip = K.chip('', { variant: 'gold', icon: 'coin', id: 'ws-cost' }); costChip.setAttribute('aria-live', 'polite');
   const roleChip = K.chip('', { variant: 'sky', id: 'ws-role' });
-  const randBtn = K.button(WS.randomise, { icon: 'dice', variant: 'secondary', id: 'ws-randomise', hint: 'R', onClick: () => randomise() }); K.tooltip(randBtn, WS.randomiseTip + ' (R)');
-  const mutBtn = K.button(WS.mutate, { icon: 'wand', variant: 'secondary', id: 'ws-mutate', hint: 'M', onClick: () => mutate() }); K.tooltip(mutBtn, WS.mutateTip + ' (M)');
-  const resetBtn = K.button(WS.resetAll, { icon: 'refresh', variant: 'ghost', id: 'ws-reset', onClick: () => doc.reset() }); K.tooltip(resetBtn, WS.resetTip);
+  const randBtn = K.iconButton('dice', WS.randomise, { variant: 'secondary', id: 'ws-randomise', onClick: () => randomise() }); K.tooltip(randBtn, WS.randomise + ': ' + WS.randomiseTip + ' (R)');
+  const mutBtn = K.iconButton('wand', WS.mutate, { variant: 'secondary', id: 'ws-mutate', onClick: () => mutate() }); K.tooltip(mutBtn, WS.mutate + ': ' + WS.mutateTip + ' (M)');
+  const resetBtn = K.iconButton('refresh', WS.resetAll, { variant: 'secondary', id: 'ws-reset', onClick: () => doc.reset() }); K.tooltip(resetBtn, WS.resetAll + ': ' + WS.resetTip);
   const saveBtn = K.button(WS.save, { icon: 'save', variant: 'primary', id: 'ws-save', onClick: () => save() }); K.tooltip(saveBtn, WS.save + ' (Ctrl+S)');
   const battleBtn = K.button(WS.useInBattle, { icon: 'sword', variant: 'olive', id: 'ws-battle', onClick: () => useInBattle() });
-  const shareBtn = K.button(WS.share, { icon: 'upload', variant: 'secondary', id: 'ws-share', onClick: () => shareNow() });
+  const shareBtn = K.iconButton('upload', WS.share, { variant: 'secondary', id: 'ws-share', onClick: () => shareNow() }); K.tooltip(shareBtn, WS.share + ': get a code or a file to send to a friend');
   const bottom = h('footer', { class: 'ws-bottom vw-tablet vw-tablet--glass' },
     h('div', { class: 'ws-bottom__name' }, nameInput, diceBtn), h('div', { class: 'ws-bottom__chips' }, costChip, roleChip), h('span', { class: 'vw-spacer' }),
-    h('div', { class: 'ws-bottom__btns' }, randBtn, mutBtn, resetBtn, shareBtn, battleBtn, saveBtn));
+    h('div', { class: 'ws-bottom__tools' }, randBtn, mutBtn, resetBtn), h('div', { class: 'ws-bottom__btns' }, shareBtn, battleBtn, saveBtn));
   layout.append(left, centre, right, bottom);
 
   // ---------------------------------------------------------------- refresh pipeline (one per animation frame)
@@ -201,7 +192,7 @@ export function mount(root, ctx, params = {}) {
     compute();
     const cs = doc.cs, def = info.def;
     // 3D
-    if (info.comp !== stage.lastComp) { stage.lastComp = info.comp; stage.setSoldier({ model: info.comp.compiled.model, scale: info.comp.eff }); }
+    if (info.comp !== lastComp) { lastComp = info.comp; stage.setSoldier({ model: info.comp.compiled.model, scale: info.comp.eff }); }
     syncClipOptions();
     // bottom
     if (document.activeElement !== nameInput && nameInput.value !== cs.name) nameInput.value = cs.name;
