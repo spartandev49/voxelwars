@@ -218,6 +218,7 @@ export function killUnit(w, u, src, cause, o) {
   p.src = src ? src.id : 0; p.dst = u.id; p.srcDef = src ? src.def.id : ''; p.dstDef = u.def.id; p.srcTeam = src ? src.team : -1; p.dstTeam = u.team; p.friendly = friendly; p.cause = cause;
   p.byPlayer = !!(src && src.controlled); p.revived = !!u.revived;
   p.x = u.x; p.y = u.y; p.z = u.z;
+  w.lastKillT = w.time;
   w.emit('unit_kill', p);
   if (u.def.role === 'hero' || u.def.role === 'monster' || w.barkRoll(u, 6)) w.bark(u, 'deaths');
   w.moraleShock(u);

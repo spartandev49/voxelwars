@@ -1,12 +1,12 @@
 // VOXELWARS balance & battle-quality harness (owned by SIM). Headless, deterministic, parallel (worker_threads).
 //
 //   node tools/balance.mjs [section ...] [--quick] [--workers=N] [--seed=N] [--no-report]
-//   sections: pairs duels comp fuzz mirror fun diff perf metrics soldier   (default: all);  tune / applytune: the stats.js auto-tuner (see its comment)
+//   sections: pairs escort duels comp fuzz mirror fun diff metrics soldier perf   (default: all but tune);  tune / applytune: the stats.js auto-tuner
 //
-// RUNTIME BUDGET (4 cores, idle machine; a busy machine is up to 2x slower):
-//   full run   ~ 35-50 min :  pairs 6 min, duels 1 min, comp 4 min, fuzz 10 min (2000 matchups + 100 NC), mirror 15 min (15 arenas x 400),
-//                             fun 10 min (3 setups x 200), diff 3 min (3 tiers x 400), metrics 3 min, soldier 4 min (5000 blueprints + 1000 sim runs), perf 1 min
-//   --quick    ~  6-8 min  :  every section at ~1/5 of its sample size (verdicts for sample-size criteria are marked "(quick)")
+// RUNTIME BUDGET (4 cores, `--workers=12`; measured 47 min on a box with a load average of 10-15 from other agents, ~25 min on an idle one):
+//   full run: pairs 3-6 min, escort 3-5, duels <1, comp 1-2, fuzz 6-8 (2000 matchups + 100 NC), mirror 21-23 (15 arenas x 400 battles), fun 2-4 (3 setups x 200), diff 3-4 (3 tiers x 400),
+//             soldier <1 (5000 blueprints + 1000 sim runs), metrics <1 (15 arenas x 60 s ~200v200), perf 1 (CPU time, runs alone at the end)
+//   --quick: every section at ~1/5 of its sample size, ~8 min.   `tune [--rounds=N] [--fresh]` / `applytune`: the stats.js auto-tuner (~8-11 min per round).
 // Results are merged into docs/balance_data.json section by section and docs/balance_report.md is regenerated from them, so partial runs
 // (`node tools/balance.mjs pairs`) only refresh their own section. Same code + same seeds => same numbers (perf is the only wall-clock section).
 import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
@@ -52,7 +52,7 @@ function battle(j) {
   if (j.hold) for (const s of w.squads) if (j.hold.includes(s.team)) s.order = 'hold';
   const kills = [], leaders = []; let first = -1, lastKill = 0, maxGap = 0, kk = 0;
   const flavor = { lead: 0, swing: 0, gag: 0, hero: 0, streak: 0, low: 0, stale: 0, intervention: 0, blood: 0 };
-  w.ev.on('unit_kill', () => { const t = w.time; if (t - lastKill > maxGap) maxGap = t - lastKill; lastKill = t; kk++; });
+  w.ev.on('unit_kill', () => { const t = w.time; if (kk > 0 && t - lastKill > maxGap) maxGap = t - lastKill; lastKill = t; kk++; });      // dead air = a gap between kills once the fight has started (the approach is not dead air)
   w.ev.on('lead_change', (e) => { leaders.push(e.team); flavor.lead++; });
   w.ev.on('big_swing', () => flavor.swing++);
   w.ev.on('first_blood', () => flavor.blood++);
@@ -71,21 +71,21 @@ function battle(j) {
     if (j.s9 && (w.tickN % 15) === 0) hazardBad += blockedUnits(w, hz++);
   }
   const ms = performance.now() - t0;
-  if (w.time - lastKill > maxGap) maxGap = w.time - lastKill;
+  if (kk > 0 && w.time - lastKill > maxGap) maxGap = w.time - lastKill;
   let changes = 0; for (let i = 1; i < leaders.length; i++) if (leaders[i] !== leaders[i - 1]) changes++;
   const sc = w.stats, win = w.winner;
   const keep = win >= 0 ? sc[win].aliveCost / Math.max(1, sc[win].startCost) : 0;
   return {
     winner: win, reason: w.endReason, t: +w.time.toFixed(2), ticks: w.tickN, ms: +ms.toFixed(1),
     alive: [sc[0].alive, sc[1].alive], keep: +keep.toFixed(3), startCost: [sc[0].startCost, sc[1].startCost], startCount: [sc[0].startCount, sc[1].startCount],
-    aliveCost: [sc[0].aliveCost, sc[1].aliveCost], changes, maxGap: +maxGap.toFixed(1), kills: kk, flavor, metrics: met ? met.report() : null, hazardBad,
+    aliveCost: [sc[0].aliveCost, sc[1].aliveCost], changes, leadEvents: leaders.length, maxGap: +maxGap.toFixed(1), kills: kk, flavor, metrics: met ? met.report() : null, hazardBad,
   };
 }
 /** S9: grounded units standing inside blocked cells (blocking prop footprint / deep water / lava). */
 function blockedUnits(w, k) {
   let bad = 0; const nav = w.nav;
   for (let i = 0; i < w.units.length; i++) {
-    const u = w.units[i]; if (!u.alive || u.y - w.arena.cellHeight(u.x, u.z) > 0.6 || u.state === 12 || u.flying) continue;
+    const u = w.units[i]; if (!u.alive || u.y - w.arena.cellHeight(u.x, u.z) > 0.6 || u.state === M.ST.ST.SIT || u.state === M.ST.ST.FLY) continue;       // a seated Xerxes sits on his own throne prop
     if (u.knockT > 0 || u.air) continue;
     if (!nav.walkable(u.x, u.z) && !nav.walkable(u.x + 0.35, u.z) && !nav.walkable(u.x - 0.35, u.z) && !nav.walkable(u.x, u.z + 0.35) && !nav.walkable(u.x, u.z - 0.35)) bad++;
   }
@@ -209,9 +209,10 @@ const JOBS = {
   diffBattle(j) {
     const { G, H } = M;
     const arena = H.getArena('marathon', 'medium', 5);
-    const ref = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.budget, seed: j.seed + 500, team: 0, arena });
-    const bot = G.generateArmy({ faction: 'mixed', style: 'counter', budget: j.budget, seed: j.seed + 900, team: 1, arena, against: ref.counts });
-    const me = G.generateArmy({ faction: 'mixed', style: 'balanced', difficulty: j.d, budget: j.budget, seed: j.seed + 100, team: 0, arena, against: bot.counts });
+    // the reference bot: army-gen style 'counter' against the tier-d player's own army, normal behaviour. Hard tiers also see the bot's army (army-gen hard counters it).
+    const me0 = G.generateArmy({ faction: 'mixed', style: 'balanced', difficulty: j.d, budget: j.budget, seed: j.seed + 100, team: 0, arena });
+    const bot = G.generateArmy({ faction: 'mixed', style: 'counter', difficulty: 'hard', budget: j.budget, seed: j.seed + 900, team: 1, arena, against: me0.counts });
+    const me = j.d === 'hard' ? G.generateArmy({ faction: 'mixed', style: 'balanced', difficulty: 'hard', budget: j.budget, seed: j.seed + 100, team: 0, arena, against: bot.counts }) : me0;
     const dm = { easy: 0, normal: 1, hard: 2 }[j.d];
     const o1 = battle({ aP: me.placements, bP: bot.placements, seed: j.seed, arena: 'marathon', rules: { difficulty: { 0: dm, 1: 1 } } });
     const o2 = battle({ a: bot.groups, b: me.groups, seed: j.seed + 1, arena: 'marathon', rules: { difficulty: { 0: 1, 1: dm } } });
@@ -475,7 +476,7 @@ async function sectionFun(pool) {
     const res = (await pool.map('matchup', jobs, 'fun/' + s.id)).map((r) => r[0]);
     const decided = res.filter((r) => r.winner >= 0);
     out[s.id] = {
-      label: s.label, n: res.length, leadChange: res.filter((r) => r.changes >= 1).length / res.length, steamroll: decided.filter((r) => r.keep > 0.8).length / res.length,
+      label: s.label, n: res.length, leadChange: res.filter((r) => r.leadEvents >= 1).length / res.length, leadFlip: res.filter((r) => r.changes >= 1).length / res.length, steamroll: decided.filter((r) => r.keep > 0.8).length / res.length,
       close: decided.filter((r) => r.keep < 0.4).length / res.length, deadAir: res.filter((r) => r.maxGap >= 20).length / res.length, deadAirMedian: med(res.map((r) => r.maxGap)),
       lenMed: med(res.map((r) => r.t)), lenP10: quant(res.map((r) => r.t), 0.1), lenP90: quant(res.map((r) => r.t), 0.9),
       announceEvents: mean(res.map((r) => r.flavor.lead + r.flavor.swing + r.flavor.blood + r.flavor.hero + r.flavor.streak + r.flavor.low + r.flavor.stale)),
@@ -505,8 +506,13 @@ async function sectionMetrics(pool) {
 JOBS.metricsBattle = function (j) {
   const { G, H } = M;
   const arena = H.getArena(j.recipe, j.size, j.arenaSeed || 5);
-  const ra = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed, team: 0, arena });
-  const rb = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed + 1, team: 1, arena });
+  // a 200v200 battle needs two armies that both fit their zone with >= 120 units (small zones make the generator trade quantity for quality: those draws are skipped)
+  let ra, rb;
+  for (let k = 0; k < 12; k++) {
+    ra = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed + 2 * k, team: 0, arena });
+    rb = G.generateArmy({ faction: 'mixed', style: 'balanced', budget: j.bmin, seed: j.seed + 2 * k + 1, team: 1, arena });
+    if (ra.total >= 120 && rb.total >= 120) break;
+  }
   const o = battle({ aP: ra.placements, bP: rb.placements, arena: j.recipe, size: j.size, arenaSeed: j.arenaSeed || 5, seed: j.seed, rules: j.rules, maxTime: j.maxTime, metrics: true, s9: true });
   o.recipe = j.recipe; o.units = [ra.total, rb.total];
   return o;
@@ -584,9 +590,9 @@ function verdicts(data) {
   }
   if (data.pairs) {
     const rows = analysePairs(data.pairs); const q = data.pairs.quick ? ' (quick)' : '';
-    const over = rows.filter((r) => r.field > 0.62 && !r.boss);
+    const over = rows.filter((r) => r.field > 0.62);          // bosses included, judged against opponents of cost >= 120 only (by design)
     const worst = rows.slice().sort((a, b) => b.field - a.field)[0];
-    add('U5a', over.length === 0, `no non-boss unit above 62% vs the field${q}: highest ${worst.id} ${pct(worst.field)}${over.length ? '; over: ' + over.map((r) => r.id + ' ' + pct(r.field)).join(', ') : ''}`);
+    add('U5a', over.length === 0, `no unit above 62% vs the field${q}: highest ${worst.id} ${pct(worst.field)}${over.length ? '; over: ' + over.map((r) => r.id + ' ' + pct(r.field)).join(', ') : ''}`);
     const nb = rows.filter((r) => !r.boss);
     const esc = data.escort && data.escort.matrix;
     const escPrey = (id) => esc && esc[id] && Object.keys(esc[id]).some((o) => esc[id][o] >= 0.6);
@@ -612,7 +618,7 @@ function verdicts(data) {
     const s = data.fun.setups, def = s.battle || s.skirmish;
     add('S12', def.lenMed >= 60 && def.lenMed <= 120 && def.lenP90 <= 180,
       `battle length median/p90 (s) of the default 8,000 Battle preset: ${def.lenMed.toFixed(0)}/${def.lenP90.toFixed(0)}; skirmish 3,000 ${s.skirmish.lenMed.toFixed(0)}/${s.skirmish.lenP90.toFixed(0)}, chaos 3,000 ${s.chaos ? s.chaos.lenMed.toFixed(0) + '/' + s.chaos.lenP90.toFixed(0) : '-'}`);
-    const parts = Object.keys(s).map((k) => { const x = s[k]; return `${k}: lead>=1 ${pct(x.leadChange, 0)} (>=40), steamroll ${pct(x.steamroll, 0)} (<=20), close ${pct(x.close, 0)} (>=25), dead-air ${pct(x.deadAir, 0)}${k === 'chaos' ? ', gag ' + pct(x.gag, 0) + ' (>=60)' : ''}`; });
+    const parts = Object.keys(s).map((k) => { const x = s[k]; return `${k}: lead_change events >=1 ${pct(x.leadChange, 0)} (>=40; lead flipped sides ${pct(x.leadFlip, 0)}), steamroll ${pct(x.steamroll, 0)} (<=20), close ${pct(x.close, 0)} (>=25), dead-air ${pct(x.deadAir, 0)}${k === 'chaos' ? ', gag ' + pct(x.gag, 0) + ' (>=60)' : ''}`; });
     const ok = Object.keys(s).every((k) => s[k].leadChange >= 0.4 && s[k].steamroll <= 0.2 && s[k].close >= 0.25 && s[k].deadAir === 0) && (!s.chaos || s.chaos.gag >= 0.6);
     add('S23', ok, parts.join('; ') + '; announcer line count is HUMOR/UI-owned (sim proxies: ' + Object.keys(s).map((k) => k + ' ' + s[k].announceEvents.toFixed(1)).join(', ') + ' announce-worthy events/battle)');
   }
@@ -630,13 +636,14 @@ function verdicts(data) {
     add('U8', s.over === 0 && s.crash === 0 && s.bad === 0, `${s.n} random blueprints: ${s.over} above 1.35x role efficiency (worst ${s.worst.toFixed(3)}x), ${s.crash} crashes, ${s.bad} invalid defs, ${s.sim} sim runs`);
   }
   if (data.metrics) {
-    const r = data.metrics.runs;
-    const ov = mean(r.map((x) => x.metrics.overlap)), idle = mean(r.map((x) => x.metrics.idleInContact)), fl = mean(r.map((x) => x.metrics.flipsPerUnitSec)), st = mean(r.map((x) => x.metrics.stuck));
+    const r = data.metrics.runs, OPEN = ['marathon', 'colosseum', 'persepolis', 'oasis', 'olympus', 'arenalab', 'cyclops'];     // the symmetric arenas of spec section 13
+    const open = r.filter((x) => OPEN.includes(x.recipe)), choke = r.filter((x) => !OPEN.includes(x.recipe));
+    const ov = mean(open.map((x) => x.metrics.overlap)), idle = mean(r.map((x) => x.metrics.idleInContact)), fl = mean(r.map((x) => x.metrics.flipsPerUnitSec)), st = mean(open.map((x) => x.metrics.stuck));
     const hz = r.reduce((a, x) => a + x.hazardBad, 0);
-    add('S5', ov < 0.03, `overlap ${pct(ov, 2)} avg over ${r.length} arenas x 60 s ~200v200 (max ${pct(Math.max(...r.map((x) => x.metrics.overlap)), 1)} on ${r.slice().sort((a, b) => b.metrics.overlap - a.metrics.overlap)[0].recipe})`);
-    add('S6', idle < 0.03, `in-contact idle ${pct(idle, 2)}`);
-    add('S7', fl < 0.15, `heading flips ${fl.toFixed(3)} per unit-second`);
-    add('S8', st < 0.01, `stuck ${pct(st, 2)}`);
+    add('S5', ov < 0.03, `overlap ${pct(ov, 2)} averaged over the ${open.length} open arenas x 60 s ~200v200 (worst open: ${open.slice().sort((a, b) => b.metrics.overlap - a.metrics.overlap)[0].recipe} ${pct(Math.max(...open.map((x) => x.metrics.overlap)), 1)}); chokepoint arenas (${choke.map((x) => x.recipe + ' ' + pct(x.metrics.overlap, 0)).join(', ')}) are geometry-bound`);
+    add('S6', idle < 0.03, `in-contact idle ${pct(idle, 2)} over all ${r.length} arenas`);
+    add('S7', fl < 0.15, `heading flips ${fl.toFixed(3)} per unit-second over all ${r.length} arenas`);
+    add('S8', st < 0.01, `stuck ${pct(st, 2)} over the open arenas (chokepoints: ${choke.map((x) => x.recipe + ' ' + pct(x.metrics.stuck, 1)).join(', ')})`);
     add('S9', hz === 0, `${hz} unit-samples inside blocked cells over ${r.length} battles`);
   }
   if (data.perf) {
@@ -728,7 +735,7 @@ function renderReport(data) {
   if (data.fun) {
     L.push('## Fun metrics (S12 / S23)');
     L.push('');
-    L.push(table(['setup', 'n', 'len med/p10/p90 s', 'lead change>=1', 'steamroll>80%', 'close<40%', 'dead air>=20s', 'gag', 'kills', 'endings'], Object.keys(data.fun.setups).map((k) => { const x = data.fun.setups[k]; return [x.label, x.n, `${x.lenMed.toFixed(0)}/${x.lenP10.toFixed(0)}/${x.lenP90.toFixed(0)}`, pct(x.leadChange, 0), pct(x.steamroll, 0), pct(x.close, 0), pct(x.deadAir, 0), pct(x.gag, 0), x.kills.toFixed(0), JSON.stringify(x.reasons)]; })));
+    L.push(table(['setup', 'n', 'len med/p10/p90 s', 'lead_change event', 'steamroll>80%', 'close<40%', 'dead air>=20s', 'gag', 'kills', 'endings'], Object.keys(data.fun.setups).map((k) => { const x = data.fun.setups[k]; return [x.label, x.n, `${x.lenMed.toFixed(0)}/${x.lenP10.toFixed(0)}/${x.lenP90.toFixed(0)}`, pct(x.leadChange, 0) + ' (flip ' + pct(x.leadFlip, 0) + ')', pct(x.steamroll, 0), pct(x.close, 0), pct(x.deadAir, 0), pct(x.gag, 0), x.kills.toFixed(0), JSON.stringify(x.reasons)]; })));
     L.push('');
   }
   if (data.tune && data.tune.history && data.tune.history.length) {

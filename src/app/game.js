@@ -369,6 +369,28 @@ export class Game {
     }
     return out;
   }
+  /** FIGHT needs a soldier on each side, except where the enemy arrives by script or by waves (survival, mission 9): then only the player needs one. */
+  canFight() {
+    const w = this.world; if (!w || this.state !== 'placement') return false;
+    const comes = !!(w.waves || (this.run && this.run.waves));
+    return w.stats[0].alive > 0 && (comes || w.stats[1].alive > 0);
+  }
+  /** A campaign mission carries a tested deployment of its own (campaignApi.reference); the placement screen offers it as "Suggested army". */
+  hasSuggestedArmy() {
+    const m = this.mode && this.mode.kind === 'campaign' ? this.mode.m : null, capi = this.content.campaignApi;
+    return !!(m && capi && capi.reference && capi.reference(m));
+  }
+  /** Replace the player's army with the mission's reference deployment; returns the number of soldiers placed (0 when the mission has none). */
+  suggestArmy() {
+    if (this.state !== 'placement' || !this.hasSuggestedArmy() || !ARMYGEN || !ARMYGEN.layoutArmy) return 0;
+    const w = this.world, a = w.arena, groups = this.content.campaignApi.reference(this.mode.m).map((g) => ({ defId: g.defId, n: g.n, order: g.order }));
+    this.tools.clear(0);
+    const placements = ARMYGEN.layoutArmy(groups, a.zones.A, a.zones.B, this.content.defs, { seed: (this.setup.arena.seed || 1) + 4242, firstSquad: 1 });
+    const plan = this._recordsFromPlacements(placements); let n = 0;
+    for (const rec of plan) { rec.team = 0; rec.heading = this._heading(0); this._applyRecord(rec, false); n += rec.positions.length; }
+    this.undo.clear(); this.emit('placement', {});
+    return n;
+  }
   _enemyComposition(team) { const by = {}; if (this.world) for (const u of this.world.units) if (u.team !== team) by[u.def.id] = (by[u.def.id] || 0) + 1; return by; }
   _fallbackPlan(team, faction, budget, zone, style) {
     const defs = Object.values(this.content.defs).filter((d) => (faction === 'mixed' || d.faction === faction) && d.role !== 'hero' && d.cost <= budget * 0.5);
@@ -404,8 +426,8 @@ export class Game {
   fight() {
     if (this.state !== 'placement') return;
     if (this._inter) { this._resumeWave(); return; }
-    const w = this.world, waves = !!w.waves;
-    if (w.stats[0].alive === 0 || (!waves && w.stats[1].alive === 0)) { this.emit('toast', { text: 'Both armies need at least one soldier. Fighting yourself is allowed but lonely.', kind: 'error' }); return; }
+    const w = this.world;
+    if (!this.canFight()) { this.emit('toast', { text: 'Both armies need at least one soldier. Fighting yourself is allowed but lonely.', kind: 'error' }); return; }
     this.ghost.visible = false; this.ghostInfo.show = false;
     // freeze the placement into the setup so rematch/tweak can replay it
     for (const k of ['A', 'B']) if (!(k === 'B' && this.mode && this.mode.locked)) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));

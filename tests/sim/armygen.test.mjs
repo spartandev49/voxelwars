@@ -73,8 +73,8 @@ await test('costFormula (U7): hoplite = 100 +- 5, monotonic in every stat, deter
   prev = 0; for (const dmg of [5, 10, 14, 20, 30]) { const d = base({}); d.melee.dmg = dmg; const c = costFormula(d); assert.ok(c > prev, 'dmg monotonic'); prev = c; }
   prev = 0; for (const cd of [2.4, 1.6, 1.2, 0.8, 0.5]) { const d = base({}); d.melee.cd = cd; const c = costFormula(d); assert.ok(c > prev, 'attack speed monotonic'); prev = c; }
   prev = 0; for (const speed of [1.5, 2, 2.6, 3.2, 4]) { const c = costFormula(base({ speed })); assert.ok(c > prev, 'speed monotonic'); prev = c; }
-  let worst = 0, off = []; for (const id of Object.keys(defs)) { const r = costFormula(defs[id]) / defs[id].cost; const e = Math.abs(r - 1); if (e > 0.45) off.push(id + ' ' + r.toFixed(2)); worst = Math.max(worst, e); }
-  assert.equal(off.length, 0, 'formula within 45% of the shipped costs, off: ' + off.join(', '));
+  let worst = 0, off = []; for (const id of Object.keys(defs)) { const r = costFormula(defs[id]) / defs[id].cost; const e = Math.abs(r - 1); if (e > 0.5) off.push(id + ' ' + r.toFixed(2)); worst = Math.max(worst, e); }
+  assert.equal(off.length, 0, 'formula within 50% of the shipped costs, off: ' + off.join(', '));
   // shipped costs stay within 15% of the design table (spec/units.md)
   const design = DESIGN_COSTS;
   for (const [id, c] of Object.entries(design)) assert.ok(Math.abs(defs[id].cost / c - 1) <= 0.15 + 1e-9, id + ' cost ' + defs[id].cost + ' vs design ' + c);

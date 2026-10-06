@@ -22,6 +22,10 @@ for (const p of list) {
   let prev = out[p.id];
   let prevRobust = false;
   if (prev) { const re = runPuzzle(p, prev.placements); if (!re.win || re.stars < prev.stars) { console.log(p.id, 'the stored solution no longer wins (stars ' + re.stars + '): replaced'); prev = null; } else prevRobust = [3, 7].every((d) => { const x = runPuzzle(p, prev.placements, { seed: (p.arena.seed || 1) + d }); return x.win && x.stars >= re.stars; }); }
+  if (prev) {          // the stored placement still wins: refresh its recorded numbers (costs and times move with the stats and the sim)
+    const re2 = runPuzzle(p, prev.placements), counts = {}; for (const q of prev.placements) counts[q.defId] = (counts[q.defId] || 0) + 1;
+    out[p.id] = prev = Object.assign({}, prev, { cost: costOf(counts), stars: re2.stars, earned: re2.earned, t: +re2.t.toFixed(1), lost: re2.summary.unitsLost, alive: re2.alive[0] });
+  }
   const better = !prev || result.stars > prev.stars || (result.robust && !prevRobust) || (result.stars === prev.stars && !!result.robust === prevRobust && best.cost < prev.cost);
   console.log(p.id, 'best: stars', result.stars, 'cost', best.cost, 't', result.t.toFixed(1), better ? '(stored)' : '(kept the previous)');
   if (better) out[p.id] = { placements: best.placements, cost: best.cost, stars: result.stars, earned: result.earned, t: +result.t.toFixed(1), lost: result.summary.unitsLost, alive: result.alive[0] };

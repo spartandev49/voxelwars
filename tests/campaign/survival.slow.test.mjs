@@ -13,12 +13,13 @@ const defs = buildSimDefs();
 const arena = generateArena('marathon', 'medium', 11);
 
 /** One scripted run: returns {cleared, reached (wave number alive at the end), kills, remainingCost, t, score, bossSeen, events}. */
-function survive({ seed, reinforce = true, maxWaves = 6, faction = 'hellenes', immortal = false }) {
-  const w = new World({ arena, seed, defs, rules: survivalRules({}, { autoAdvance: false }) });
+function survive({ seed, reinforce = true, maxWaves = 6, faction = 'hellenes', immortal = false, interval = 0 }) {
+  const w = new World({ arena, seed, defs, rules: survivalRules({}, { autoAdvance: false, interval }) });
   const A = arena.zones.A, B = arena.zones.B;
-  const first = generateArmy({ faction, budget: SURVIVAL.start, style: 'balanced', difficulty: 'normal', seed: seed * 17, defs, cap: 300 });
+  const w1 = survivalWave(1, seed), against1 = {}; for (const g of w1.groups) against1[g.defId] = g.n;
+  const first = generateArmy({ faction, budget: SURVIVAL.start, style: 'counter', difficulty: 'normal', against: against1, seed: seed * 17, defs, cap: 300 });
   w.addPlacements(0, layoutArmy(first.groups, A, B, defs, { seed }), { defs });
-  const log = []; let bossSeen = false;
+  const log = []; let bossSeen = false, w1Left = -1;
   if (immortal) w.events.on('unit_spawn', (e) => { if (e.team === 0) { const u = w.unitById(e.id); u.hpMax = u.hp = 1e7; } });
   if (immortal) for (const u of w.units) if (u.team === 0) u.hpMax = u.hp = 1e7;
   w.events.on('wave_spawn', (e) => log.push(['spawn', e.n, e.count, +w.time.toFixed(1)]));
@@ -34,29 +35,34 @@ function survive({ seed, reinforce = true, maxWaves = 6, faction = 'hellenes', i
   });
   w.start();
   const t0 = performance.now();
-  while (w.state !== 'ended' && w.waves.cleared < maxWaves && w.time < 60 * 40 && w.stats[0].alive > 0) w.tick();
-  return { cleared: w.waves.cleared, reached: w.waves.n, kills: w.stats[0].kills, remaining: Math.round(w.stats[0].aliveCost), t: w.time, score: w.waves.score(), bossSeen, log, alive: w.stats[0].alive, ms: performance.now() - t0, w };
+  while (w.state !== 'ended' && w.waves.cleared < maxWaves && w.time < 60 * 40 && w.stats[0].alive > 0) { w.tick(); if (w1Left < 0 && (w.waves.cleared >= 1 || (w.time >= 39.9 && w.waves.n === 1))) w1Left = w.waves.cleared >= 1 ? 0 : w.stats[1].alive; }
+  return { w1Left, w1Count: w1.count, cleared: w.waves.cleared, reached: w.waves.n, kills: w.stats[0].kills, remaining: Math.round(w.stats[0].aliveCost), t: w.time, score: w.waves.score(), bossSeen, log, alive: w.stats[0].alive, ms: performance.now() - t0, w };
 }
 
-const runs = {};
-await test('the reference player (no powers, no micro) clears wave 1 and meets wave 3 on 3 seeds (no early wave is unwinnable by construction); the wave sizes it fights are the table\'s', () => {
+const runs = {}, runs90 = {};
+await test('the reference player (a counter-pick of the scouted wave 1, no powers, no micro) all but clears wave 1 before wave 2 arrives on the 40 s schedule on 3 seeds (no early wave is unwinnable by construction); the wave sizes it fights are the table\'s', () => {
   for (const seed of [1, 2, 3]) {
     const r = runs[seed] = survive({ seed });
-    console.log('  survival seed', seed, 'cleared', r.cleared, 'reached wave', r.reached, 'alive for', r.t.toFixed(0), 's', 'score', r.score);
-    assert.ok(r.cleared >= 1 && r.reached >= 3, 'seed ' + seed + ' cleared ' + r.cleared + ' reached ' + r.reached);
+    console.log('  survival seed', seed, 'wave 1 had', r.w1Count, 'enemies,', r.w1Left, 'left at 40 s; reached wave', r.reached, 'alive for', r.t.toFixed(0), 's');
+    assert.ok(r.w1Left >= 0 && r.w1Left <= 0.25 * r.w1Count, 'seed ' + seed + ': ' + r.w1Left + ' of ' + r.w1Count + ' left at 40 s'); assert.ok(r.reached >= 2);
     const spawns = r.log.filter((e) => e[0] === 'spawn');
     spawns.forEach((s) => assert.equal(s[2], survivalWave(s[1], seed).count, 'wave ' + s[1] + ' spawned with the table count'));
-    const inters = r.log.filter((e) => e[0] === 'inter'); inters.forEach((e) => assert.equal(e[2], reinforceBudget(e[1] - 1), 'intermission before wave ' + e[1] + ' offers 1,600 + 240 x cleared'));
   }
 });
 
-await test('score of a finished run = cleared x 1000 + kills x 10 + remaining cost (the sim\'s score() and the content formula agree on real runs)', () => {
-  for (const seed of [1, 2, 3]) { const r = runs[seed]; assert.equal(r.score, survivalScore({ waves: r.cleared, kills: r.kills, remainingCost: r.remaining }), 'seed ' + seed); assert.ok(r.score >= r.cleared * 1000); }
+await test('with a 90 s wave clock (the same waves, time to finish each one) the player clears waves, the intermission offers 1,600 + 240 x cleared and the score is cleared x 1000 + kills x 10 + remaining cost (the sim\'s score() and the content formula agree on real runs)', () => {
+  for (const seed of [1, 2, 3]) {
+    const r = runs90[seed] = survive({ seed, interval: 90 });
+    console.log('  survival (90 s clock) seed', seed, 'cleared', r.cleared, 'reached wave', r.reached, 'alive for', r.t.toFixed(0), 's', 'score', r.score);
+    assert.ok(r.cleared >= 1 && r.reached >= 3, 'seed ' + seed + ' cleared ' + r.cleared + ' reached ' + r.reached);
+    const inters = r.log.filter((e) => e[0] === 'inter'); assert.ok(inters.length >= 1); inters.forEach((e) => assert.equal(e[2], reinforceBudget(e[1] - 1), 'intermission before wave ' + e[1] + ' offers 1,600 + 240 x cleared'));
+    assert.equal(r.score, survivalScore({ waves: r.cleared, kills: r.kills, remainingCost: r.remaining }), 'seed ' + seed); assert.ok(r.score >= r.cleared * 1000);
+  }
 });
 
 await test('negative control: the same player without any reinforcement survives for less time (the intermission budget is what keeps a run alive)', () => {
   let better = 0;
-  for (const seed of [1, 2, 3]) { const nr = survive({ seed, reinforce: false, maxWaves: 6 }); console.log('  no reinforcement, seed', seed, 'alive for', nr.t.toFixed(0), 's vs', runs[seed].t.toFixed(0), 's'); if (runs[seed].t > nr.t) better++; }
+  for (const seed of [1, 2, 3]) { const nr = survive({ seed, reinforce: false, maxWaves: 6, interval: 90 }); console.log('  no reinforcement, seed', seed, 'alive for', nr.t.toFixed(0), 's vs', runs90[seed].t.toFixed(0), 's'); if (runs90[seed].t > nr.t) better++; }
   assert.ok(better >= 2, 'reinforcements lengthened the run on ' + better + ' of 3 seeds');
 });
 

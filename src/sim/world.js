@@ -78,7 +78,7 @@ export class World {
     this.effects = [];                               // ground effects (dot clouds, fire patches)
     this.weather = weatherMods(this.rules.weather || arena.env.weather);
     this.stats = [newStats(), newStats(), newStats()];
-    this.lastDamageT = 0; this.firstBlood = false; this.stalemateWarned = false; this.stalemateStage = 0;
+    this.lastDamageT = 0; this.lastKillT = 0; this.dryMark = -1; this.firstBlood = false; this.stalemateWarned = false; this.stalemateStage = 0;
     this.countdown = 0; this.leadTeam = -1; this.lastRatio = 1;
     this.officers = [];
     this.forceAdvance = false;
@@ -101,7 +101,7 @@ export class World {
 
   emit(type, p) { this.ev.emit(type, p); }
   setDifficulty(d) {
-    const m = (x) => (x === 'easy' ? 0 : x === 'hard' ? 2 : 1);
+    const m = (x) => (x === 'easy' || x === 0 ? 0 : x === 'hard' || x === 2 ? 2 : 1);      // names or 0|1|2
     if (d && typeof d === 'object') { this.diff[0] = m(d[0] !== undefined ? d[0] : d.A); this.diff[1] = m(d[1] !== undefined ? d[1] : d.B); }
     else { this.diff[0] = this.diff[1] = m(d); }
     for (let t = 0; t < 2; t++) this.retarget[t] = this.diff[t] === 0 ? G.retargetEasy : this.diff[t] === 2 ? G.retargetHard : G.retargetNormal;
@@ -241,6 +241,7 @@ export class World {
     const def = (o.def) || this.defs[defId];
     if (!def) throw new Error('unknown unit def ' + defId);
     aiInfo(def);                                                // caches def._ai (target-side flags) before any unit scans it
+    { const lim = this.nav.half - 0.4; if (x > lim) x = lim; else if (x < -lim) x = -lim; if (z > lim) z = lim; else if (z < -lim) z = -lim; }      // never spawn outside the walkable world (such a unit could not move)
     const u = new Unit(def, team, x, z, o.heading !== undefined ? o.heading : (team === TEAM_A ? Math.PI / 2 : -Math.PI / 2), this.nextUnitId++);
     u.y = u.py = this.arena.cellHeight(x, z);
     u.cd = this.rng.next() * 0.9;
@@ -537,6 +538,7 @@ export class World {
       if (se[SE.CONFUSE] > 0) mCd *= 0.4;
       if (se[SE.ROOT] > 0) mS = 0;
       if (se[SE.STONE] > 0) { u.stone = Math.min(1, u.stone + dt * 4); }
+      mD *= G.diffDmg[this.diff[u.team]];                                  // difficulty tier: easy -12% / hard +15% damage on top of the behaviour differences (ai.js)
       mS *= wx.speedMul * u.mEnv;
       u.mDmg = mD; u.mSpeed = mS; u.mArmor = 0; u.mBlock = 0; u.mProj = 0; u.mCd = mCd; u.mDmgTaken = 1; u.mReach = 0; u.mMoraleLoss = 1;
       if (u.convertT > 0) { u.convertT -= dt; if (u.convertT <= 0) { const old = u.team; this.stats[old].alive--; this.stats[old].aliveCost -= u.def.cost; u.team = u.origTeam; this.stats[u.team].alive++; this.stats[u.team].aliveCost += u.def.cost; u.target = null; u.claim = null; } }
@@ -678,7 +680,7 @@ export class World {
         const b = units[j]; if (!b || !b.alive) continue;
         const dx = b.x - a.x, dz = b.z - a.z;
         const same = a.team === b.team;
-        const minD = (a.radius + b.radius) * (same ? 0.96 : 1.0);
+        const minD = (a.radius + b.radius) * 1.0;
         const d2 = dx * dx + dz * dz;
         if (d2 >= minD * minD) continue;
         const d = Math.sqrt(d2) || 0.001;
@@ -813,6 +815,12 @@ export class World {
     if (idle > G.stalemateAdvance && !this.forceAdvance) this.forceAdvance = true;
     if (idle > G.stalemateZeus && this.stalemateStage < 1) { this.stalemateStage = 1; this.zeusIntervene(); }
     if (idle > G.stalemateQuit && this.stalemateStage < 2) { this.stalemateStage = 2; const e = this.P.intervention; e.kind = 'ragequit'; this.emit('intervention', e); this.end(-1, 'intervention'); return; }
+    // dead air: once the fight has started, 16 s without a kill brings Zeus (and a goat for the weaker side); 11 s already makes everyone advance (S23)
+    if (this.firstBlood) {
+      const dry = this.time - this.lastKillT;
+      if (dry > 11) this.forceAdvance = true;
+      if (dry > 16 && this.dryMark !== this.lastKillT) { this.dryMark = this.lastKillT; this.zeusIntervene(); }
+    }
     // pacing governor: lopsided long battles collapse faster; even idle ones advance
     const ca = this.stats[0].aliveCost, cb = this.stats[1].aliveCost;
     if (this.time > 90) { const r = (ca + 1) / (cb + 1); this.collapseTeam = r > 4 ? 1 : r < 0.25 ? 0 : -1; }
@@ -856,7 +864,7 @@ export class World {
     for (let i = 0; i < this.units.length; i += 3) { const u = this.units[i]; if (!u.alive) continue; const n = this.hash.query(u.x, u.z, 5, this.qbuf2); if (n > bn) { bn = n; best = u; } }
     const e = this.P.intervention; e.kind = 'zeus'; this.emit('intervention', e);
     const keepT = this.lastDamageT;
-    if (best) this.lightning(best.x, best.z, 90, 3.5, null);
+    if (best) this.lightning(best.x, best.z, 90 * G.godMul * 1.4, 3.5, null);
     this.lastDamageT = keepT;                           // the intervention itself must not reset the watchdog
     const weaker = this.stats[0].aliveCost <= this.stats[1].aliveCost ? 0 : 1;
     const zone = this.arena.zones[weaker === 0 ? 'A' : 'B'];

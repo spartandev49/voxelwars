@@ -11,7 +11,7 @@ export const STAT_POINTS = 100;
 export const MAX_ABILITIES = 2;
 export const EFFICIENCY_CAP = 1.35;
 /** The balance pass scaled every shipped unit's hp by this factor (battle length, S12); custom soldiers use the same scale so a 100-point soldier stays comparable. */
-export const HP_SCALE = 1.7;
+export const HP_SCALE = 1.84;
 
 /** Weapon class table by blueprint weapon style (parts meta.style): base numbers for an average body. */
 export const WEAPON_CLASSES = {

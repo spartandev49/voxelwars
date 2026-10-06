@@ -72,7 +72,7 @@ export function pickTarget(w, u) {
       if (info.spear && ci.tCav) s += 24;
       if (info.siege) s += (c.def.role === 'siege' ? 12 : 0) + clusterBonus(w, c);
       if (info.ranged1st && !info.siege && c.hp < c.hpMax * 0.5) s += 8;
-      if (hard) s += 14 * (1 - c.hp / c.hpMax);
+      if (hard) s += 14 * (1 - c.hp / c.hpMax);                                    // hard: finish the wounded
       if (ci.officer) s += info.hero ? 10 : 6;
       if (c.stone > 0.5) s -= 20;
       if (c.se[SE.SLEEP] > 0) s += 6;
@@ -354,7 +354,7 @@ function rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, 
   const diff = w.diff[u.team];
   u.face = want;
   // kite: shoot-and-scoot when an enemy gets close (skirmishers always on normal+, plain archers only on hard)
-  const kiteGap = info.kiter ? 5.2 : (info.archer && diff === 2 && !info.siege ? 3.4 : 0);
+  const kiteGap = info.kiter ? 5.2 : 0;
   if (!w.rules.noKite && (gap < minR || (kiteGap > 0 && diff > 0 && gap < kiteGap && u.cdR > 0.25 && !(info.siege)))) {
     if (kiteAway(w, u, t, dist, dx, dz, speedBase, sq)) { u.engaged = true; return true; }
     // cornered: fight back

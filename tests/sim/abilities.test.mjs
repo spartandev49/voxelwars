@@ -237,7 +237,7 @@ await test('dot_cloud: pharaoh summons locusts on a cluster of >= 4; 8 dps to en
 // ------------------------------------------------------------------------------------------------ revive / rage / chain / horn / dash
 await test('revive: first lethal blow is not final (3 s down, 40% hp, unit_revive); the second is; unit_kill.revived', () => {
   const w = world({ rules: noMorale }); const log = record(w, ['unit_revive', 'unit_kill']);
-  const im = pin(add(w, 'immortal', 0, 0, 0)), e = add(w, 'hoplite', 1, 3, 0); pin(e);
+  const im = pin(add(w, 'immortal', 0, 0, 0)), e = add(w, 'hoplite', 1, 7, 0); pin(e);          // out of spear reach: only the scripted blows hurt it
   im.hp = 1; hit(w, e, im, 50, (h) => { h.noBlock = true; });
   assert.ok(im.alive && im.state === ST.DOWN && count(log, 'unit_kill') === 0, 'fell but is not dead');
   assert.equal(hit(w, e, im, 999, (h) => { h.noBlock = true; }), 0, 'untouchable while down');
@@ -303,7 +303,7 @@ await test('dash goat_charge: 8 u, headbutt x2 damage, stops on impact; not used
   const g = ready(add(w, 'battle_goat', 0, -8, 0)), v = pin(add(w, 'hoplite', 1, 0, 0)); g.target = v;
   stepUntil(w, 3, () => count(log, 'unit_hit') > 0);
   assert.equal(count(log, 'ability_cast', (e) => e.ability === 'goat_charge'), 1);
-  const h = log.find((e) => e[0] === 'unit_hit')[1]; assert.ok(h.dmg > 15, 'x2 dmg ' + h.dmg.toFixed(1));
+  const h = log.find((e) => e[0] === 'unit_hit')[1]; assert.ok(h.dmg > defs.battle_goat.melee.dmg * 1.4, 'x2 dmg ' + h.dmg.toFixed(1));
   const w2 = world({ rules: noMorale }); const l2 = record(w2);
   const g2 = ready(add(w2, 'battle_goat', 0, -2.0, 0)); const v2 = pin(add(w2, 'hoplite', 1, 0, 0)); g2.target = v2;
   run(w2, 0.4); assert.equal(count(l2, 'ability_channel_start', (e) => e.ability === 'goat_charge'), 0);

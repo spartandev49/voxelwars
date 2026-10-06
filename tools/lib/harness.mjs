@@ -4,7 +4,7 @@ import { generateArena } from '../../src/world/gen.js';
 import { World } from '../../src/sim/world.js';
 import { buildSimDefs } from '../../src/sim/defs.js';
 import { layoutArmy } from '../../src/sim/armygen.js';
-import { ST } from '../../src/sim/consts.js';
+import { ST, SE } from '../../src/sim/consts.js';
 
 export const DEFS = buildSimDefs();
 const arenaCache = new Map();
@@ -87,7 +87,8 @@ export class Metrics {
       for (let i = 0; i < units.length; i++) {
         const u = units[i]; if (!u.alive) continue;
         const t = u.target; let elig = false;
-        if (t && t.alive && u.state !== ST.WINDUP && u.state !== ST.ROUT && u.state !== ST.STUN && u.state !== ST.SIT && u.state !== ST.CAST && u.state !== ST.CHEER) {
+        const se = u.se; const disabled = se[SE.ROOT] > 0 || se[SE.STUN] > 0 || se[SE.SLEEP] > 0 || se[SE.STONE] > 0 || se[SE.DOWNED] > 0 || se[SE.SCARE] > 0 || se[SE.PANIC] > 0 || se[SE.CONFUSE] > 0 || se[SE.TAUNT] > 0;   // a status that pins or scrambles the unit is not 'stuck'
+        if (!disabled && t && t.alive && u.state !== ST.WINDUP && u.state !== ST.ROUT && u.state !== ST.STUN && u.state !== ST.SIT && u.state !== ST.CAST && u.state !== ST.CHEER) {
           const reach = u.def.ranged ? u.def.ranged.range : (u.def.melee ? u.def.melee.range : 1);
           const gap = Math.hypot(t.x - u.x, t.z - u.z) - u.radius - t.radius;
           elig = gap > reach * 1.3 + 0.4 && !u.engaged && !(u.squad && u.squad.order === 'hold');

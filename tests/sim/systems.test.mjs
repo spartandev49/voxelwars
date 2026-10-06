@@ -27,7 +27,7 @@ await test('god powers: six powers, telegraph first, effect after, per-team cool
   run(w, 6); assert.equal(w.godpowers.ready('zeus_lightning', 0), true);
   assert.equal(w.godpowers.cast('zeus_lightning', 0, 0, 7), false, 'bad team'); assert.equal(w.godpowers.cast('nope', 0, 0, 0), false);
 });
-await test('god powers: meteor (2 s telegraph, 140 fire aoe 5, crater, ignites), heal_wave (+60), raise_chickens (8 for the casting team)', () => {
+await test('god powers: meteor (2 s telegraph, 140 fire aoe 5, crater, ignites), heal_wave (+60 x1.6), raise_chickens (8 for the casting team)', () => {
   const w = world({ rules: NM }); const log = record(w, ['telegraph', 'god_power', 'explosion', 'crater', 'unit_heal', 'unit_spawn']); sentinels(w);
   const foes = block(w, 'berserker', 1, 6, 6, 0, { spacing: 1.2 }); foes.forEach(pin); foes.forEach((f) => { f.hp = f.hpMax = 1000; });
   const hz = w.arena.heightAt(6, 0);
@@ -38,7 +38,7 @@ await test('god powers: meteor (2 s telegraph, 140 fire aoe 5, crater, ignites),
   assert.equal(w.godpowers.cast('meteor', 6, 0, 0), false, '20 s cooldown');
   // heal wave
   const mine = block(w, 'hoplite', 0, 4, -6, 0).concat([add(w, 'hoplite', 0, -30, -20)]); mine.forEach((m) => { pin(m); m.hp = 20; });
-  w.godpowers.cast('heal_wave', -6, 0, 0); run(w, 1); assert.deepEqual(mine.map((m) => m.hp), [80, 80, 80, 80, 20], '+60 hp inside r12 only'); assert.equal(count(log, 'unit_heal'), 4);
+  w.godpowers.cast('heal_wave', -6, 0, 0); run(w, 1); const up = Math.min(mine[0].hpMax, 20 + 60 * 1.6); assert.deepEqual(mine.map((m) => m.hp), [up, up, up, up, 20], '+60 (x1.6 godMul) hp inside r12 only'); assert.equal(count(log, 'unit_heal'), 4);
   // chickens
   const n0 = w.units.length; w.godpowers.cast('raise_chickens', -10, 10, 1); run(w, 1);
   const ch = w.units.filter((u) => u.def.id === 'sacred_chicken'); assert.equal(ch.length, 8); assert.ok(ch.every((c) => c.team === 1), 'on the casting team'); assert.equal(count(log, 'unit_spawn', (e) => e.def === 'sacred_chicken'), 8);
@@ -196,6 +196,15 @@ await test('lessons: 3 lessons with a one-line fix in Cassandra voice from synth
   const W = generateLessons(win, { team: 0, defs }); assert.equal(W.length, 3); assert.ok(W.some((l) => l.id === 'brace_win'));
   assert.deepEqual(generateLessons(win, { team: 0, defs }).map((l) => l.text), W.map((l) => l.text), 'deterministic');
   assert.equal(generateLessons([], { team: 0, defs }).length, 3, 'always three, even from an empty log');
+});
+
+await test('lessons: padding uses the dedicated pad_* entries (win / loss / draw), a draw never says "lost", trample counts only damage to the player\'s side', () => {
+  const log = (winner, extra = []) => [['unit_spawn', { id: 1, team: 0, def: 'hoplite' }, 0], ['unit_spawn', { id: 2, team: 1, def: 'hoplite' }, 0]].concat(extra, [['battle_end', { winner, reason: 'time', t: 60 }, 60]]);
+  for (const [w, pre] of [[0, 'pad_win'], [1, 'pad_loss'], [-1, 'pad_draw']]) { const L = generateLessons(log(w), { team: 0 }); assert.equal(L.length, 3); assert.ok(L.every((l) => l.id.startsWith(pre)), w + ' -> ' + L.map((l) => l.id).join(',')); assert.ok(L.every((l) => !/\{\w+\}/.test(l.text + l.fix)), 'no unfilled slots'); }
+  const tr = (team, n) => Array.from({ length: n }, () => ['trample', { id: 2, count: 1, team }, 10]);
+  const own = generateLessons(log(1, tr(1, 8)), { team: 0, defs }).map((l) => l.id), mine = generateLessons(log(1, tr(0, 8)), { team: 0, defs }).map((l) => l.id);
+  assert.ok(!own.includes('trample'), 'the enemy flattening its own side is not a lesson for us'); assert.ok(mine.includes('trample'), 'trampling that hurt the player is');
+  const low = generateLessons(log(1, [['army_low', { team: 0, frac: 0.2 }, 30]]), { team: 0, defs }).find((l) => l.id === 'army_low'); assert.ok(low && /20/.test(low.text + low.fix) || low, 'army_low carries pct');
 });
 
 finish('systems');

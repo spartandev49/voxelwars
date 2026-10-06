@@ -2,7 +2,7 @@
 // `node tests/campaign/run_feasibility.mjs --report` after the long run) and this fast test checks them against the CURRENT mission data:
 //   - every mission has a record for counter (>= 20 seeds), greedy (>= 20) and turtle (>= 10) made on the same data (hash match; a changed mission fails
 //     here until the feasibility run is repeated),
-//   - counter wins 60-100% (a reference deployment wins >= 60%; for missions 4-7 it is an authored deployment, mission.reference), greedy 25-70% (the naive deployment wins <= 70%), turtle 10-60%, per mission.bots,
+//   - counter wins 60-100% (a reference deployment wins >= 60%; for missions 2, 3, 4, 5, 6, 7 and 9 it is an authored deployment, mission.reference), greedy 25-70% (the naive deployment wins <= 70%), turtle 10-60%, per mission.bots (exceptions carry a reason in mission.botsWhy),
 //   - star 3 is reachable (some recorded battle earned it) for every mission, and the thrifty bot proves star 3 of mission 1,
 //   - one stored battle is replayed now and must reproduce exactly (the sim is deterministic: an unrecorded sim change shows up here).
 // docs/campaign_report.md is generated from the same file.

@@ -32,7 +32,7 @@ await page.route('**/*', (route) => {
 const shot = (n) => page.screenshot({ path: path.join(out, n + '.png') });
 const state = () => page.evaluate(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current(), tick: window.__vw.game.world ? window.__vw.game.world.tickN : -1, alive: window.__vw.game.world ? [window.__vw.game.world.stats[0].alive, window.__vw.game.world.stats[1].alive] : null }));
 let fail = '';
-const ONLY = arg('only', 'campaign,puzzle,survival,daily,nav,camera').split(',');
+const ONLY = arg('only', 'campaign,suggest,missions,puzzle,survival,daily,nav,camera').split(',');
 const ev = (fn, a) => page.evaluate(fn, a);
 // run the sim in small chunks until the predicate holds (the headless browser is slow: world.step is the same code the frame loop runs)
 const verbose = process.argv.includes('--verbose');
@@ -74,6 +74,43 @@ try {
     log('progress stars: ' + JSON.stringify(saved));
     if (r.winner === 0 && !(saved && saved.marathon_sort_of >= 1)) throw new Error('a won mission recorded no star');
     await page.waitForTimeout(2200); await shot('c3_results'); void end;
+  }
+
+  if (ONLY.includes('suggest')) {
+    log('--- campaign: the suggested army button (mission 9 carries an authored deployment)');
+    await ev(() => window.__vw.goto('briefing', { mission: 'zeus_bad_day' })); await page.waitForTimeout(800);
+    await page.locator('#brief-deploy').click(); await page.waitForTimeout(1800);
+    if (!(await page.locator('#pl-suggest').count())) throw new Error('no Suggested army button on mission 9');
+    await page.locator('#pl-suggest').click(); await page.waitForTimeout(600);
+    const r = await ev(() => { const g = window.__vw.game; const m = g.mode.m, ref = window.__vw.app.content.campaignApi.reference(m); return { budget: g.info.budget(0), counts: g.info.counts(0), want: ref.reduce((a, x) => a + x.n, 0), types: ref.length }; });
+    log('after the click: ' + JSON.stringify(r));
+    if (r.counts.total < r.want - 1 || r.budget.spent > r.budget.cap || r.counts.types !== r.types) throw new Error('the suggested army was not placed as written: ' + JSON.stringify(r));
+    await shot('sg1_suggested');
+    const fb = await page.locator('.vw-pl__bottom [class*=fight], #pl-fight').first().getAttribute('aria-disabled').catch(() => null);
+    log('FIGHT aria-disabled: ' + fb); if (fb === 'true') throw new Error('FIGHT is disabled although the enemy of mission 9 arrives by script');
+    const st = await ev(() => { const g = window.__vw.game; g.fight(); return { state: g.state, enemyNow: g.world.stats[1].alive }; }); log('after fight: ' + JSON.stringify(st));
+    if (st.state !== 'countdown') throw new Error('mission 9 cannot start: ' + JSON.stringify(st));
+    await ev(() => window.__vw.game.exitToMenu());
+  }
+
+  if (ONLY.includes('missions')) {
+    log('--- every mission and puzzle deploys, accepts an army, fights 20 s of sim and ends the run cleanly');
+    const ids = await ev(() => { const a = window.__vw.app.content; return { m: a.campaign.missions.map((x) => x.id), p: a.puzzles.map((x) => x.id) }; });
+    for (const [kind, list] of [['mission', ids.m], ['puzzle', ids.p]]) for (const id of list) {
+      await ev(([k, id]) => window.__vw.goto('briefing', k === 'puzzle' ? { puzzle: id } : { mission: id }), [kind, id]); await page.waitForTimeout(500);
+      await page.locator('#brief-deploy').click(); await page.waitForTimeout(1200);
+      const r = await ev(async () => {
+        const g = window.__vw.game, out = { state: g.state, enemy: g.world.stats[1].alive, obj: g.world.objective ? g.world.objective.type : null, suggest: g.hasSuggestedArmy() };
+        if (g.hasSuggestedArmy()) out.placed = g.suggestArmy();
+        else if (g.setup.kind === 'puzzle') { const pz = window.__vw.app.content.puzzleApi.puzzleById(g.setup.mission); for (const rec of g._recordsFromPlacements(pz.solution.placements)) { rec.team = 0; rec.heading = g._heading(0); g._applyRecord(rec, false); } out.placed = g.info.counts(0).total; }
+        else { g.tools.autoFill(0, { style: 'balanced', faction: g.setup.armies.A.faction, budget: g.info.budget(0).cap }); out.placed = g.info.counts(0).total; }
+        out.can = g.canFight(); if (out.can) { g.fight(); g.world.countdown = 0; window.__vw.step(1); window.__vw.step(600); out.after = { state: g.state, a: g.world.stats[0].alive, b: g.world.stats[1].alive, tick: g.world.tickN }; }
+        return out;
+      });
+      log(kind + ' ' + id + ': ' + JSON.stringify(r));
+      if (!r.can || !r.after || r.after.tick < 300) throw new Error(kind + ' ' + id + ' could not be started or stepped: ' + JSON.stringify(r));
+      await ev(() => window.__vw.game.exitToMenu());
+    }
   }
 
   if (ONLY.includes('puzzle')) {

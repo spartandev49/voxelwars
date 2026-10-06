@@ -49,7 +49,7 @@ export function mount(root, ctx, params) {
   if (m.timeLimit) forces.push(stat('clock', 'Time limit', Math.floor(m.timeLimit / 60) + ':' + String(m.timeLimit % 60).padStart(2, '0')));
   const starList = h('ul', { class: 'bs-brief-stars', 'aria-label': 'Star conditions' }, m.stars.map((s, i) => h('li', {}, h('span', { class: 'bs-brief-star-n' }, icon('star'), h('b', { text: String(i + 1) })), h('span', { text: s.text }))));
   const rules = m.rules.length ? h('ul', { class: 'bs-brief-rules' }, m.rules.map((t) => h('li', {}, icon('check'), h('span', { text: t })))) : null;
-  const rewards = m.rewards ? h('div', { class: 'bs-brief-rewards' }, m.rewards.title ? K.chip('Title: ' + m.rewards.title, { icon: 'laurel', variant: 'gold' }) : null, ...(m.rewards.unlockMutators || []).map((x) => mutatorBadge(ctx, x)), ...(m.rewards.unlockParts || []).map((x) => K.chip('Workshop: ' + x, { icon: 'hammer', variant: 'pink' }))) : null;
+  const rewards = m.rewards ? h('div', { class: 'bs-brief-rewards' }, m.rewards.title ? K.chip('Title: ' + m.rewards.title, { icon: 'laurel', variant: 'gold' }) : null, ...(m.rewards.unlockMutators || []).map((x) => mutatorBadge(ctx, x)), ...(m.rewards.unlockParts || []).map((x, i) => K.chip('Workshop: ' + ((m.rewards.partNames && m.rewards.partNames[i]) || x), { icon: 'hammer', variant: 'pink' }))) : null;
   const facts = h('div', { class: 'bs-brief-facts' },
     h('div', { class: 'bs-brief-act' }, K.chip(pz ? act[1] : 'Act ' + act[0] + ' · ' + act[1], { variant: 'lapis' })),
     h('h2', { class: 'bs-brief-title', id: 'brief-title', text: m.title }),

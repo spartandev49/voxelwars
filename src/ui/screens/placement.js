@@ -193,6 +193,12 @@ export function mount(root, ctx, params) {
   const fillMine = K.button(T.autoFillMine, { icon: 'wand', size: 'sm', id: 'pl-fill-mine', onClick: () => { G.tools.autoFill(0, { style: S.style, faction: fillFaction(0), budget: budget(0).cap }); lastSig = ''; refresh(true); K.sfx('ui_place'); } });
   const fillEnemy = K.button(T.autoFillEnemy, { icon: 'wand', size: 'sm', id: 'pl-fill-enemy', onClick: () => { G.tools.autoFill(1, { style: S.style, faction: fillFaction(1), budget: budget(1).cap }); lastSig = ''; refresh(true); K.sfx('ui_place'); } });
   K.tooltip(fillMine, T.autoFillTip); K.tooltip(fillEnemy, T.autoFillTip);
+  // campaign missions carry a tested deployment of their own: one click places the briefing's advice
+  const suggestBtn = safe(() => G.hasSuggestedArmy && G.hasSuggestedArmy(), false) ? K.button('Suggested army', { icon: 'wand', size: 'sm', id: 'pl-suggest', onClick: () => {
+    const n = safe(() => G.suggestArmy(), 0); lastSig = ''; refresh(true); K.sfx(n ? 'ui_place' : 'ui_error');
+    K.toast(n ? 'Placed the briefing\'s suggestion: ' + n + ' soldiers. Move them if you disagree.' : 'This mission has no suggestion. You are on your own.', { kind: n ? 'success' : 'warn' });
+  } }) : null;
+  if (suggestBtn) K.tooltip(suggestBtn, 'The army the briefing recommends, placed for you. It will still need your judgement.');
 
   const scoutList = K.h('ul', { class: 'vw-pl__scout-list', 'aria-live': 'polite', id: 'pl-scout' });
   const section = (id, label, icon, open, ...kids) => {
@@ -209,6 +215,7 @@ export function mount(root, ctx, params) {
       section('pl-sec-brush', T.brush, 'brush', true, modeGrid, formRow, countRow, K.field(T.order, orderSeg, { stack: true, class: 'vw-pl__row' }), lockedB ? null : K.field(T.mirror, mirrorTog, { class: 'vw-pl__row' })),
       section('pl-sec-army', T.presets, 'save', true,
         K.h('div', { class: 'vw-chips' }, saveBtn, loadBtn, exportBtn, importBtn),
+        suggestBtn ? K.h('div', { class: 'vw-chips' }, suggestBtn) : null,
         ...(puzzleMode ? [] : [K.h('div', { class: 'vw-label vw-pl__lbl', text: T.autoFill }), styleSel, K.h('div', { class: 'vw-chips' }, fillMine, lockedB ? null : fillEnemy)]))));   // auto-fill ignores a puzzle's roster
   const scoutStrip = K.h('section', { class: 'vw-pl__scout-strip', 'aria-label': T.scout, id: 'pl-scout-strip' }, K.h('div', { class: 'vw-pl__scout-h' }, K.icon('eye'), K.h('span', { class: 'vw-display', text: T.scout })), scoutList);
   const mid = K.h('div', { class: 'vw-pl__mid' }, scoutStrip);
@@ -225,8 +232,8 @@ export function mount(root, ctx, params) {
     K.h('div', { class: 'vw-pl__counts' }, K.h('div', { class: 'vw-pl__count' }, K.h('span', { class: 'vw-label', text: T.soldiersLabel }), capBar), K.h('div', { class: 'vw-pl__count' }, K.h('span', { class: 'vw-label', text: T.typesLabel }), typeBar)),
     fightBtn);
   async function fight() {
-    const a = counts(0).total, b = counts(1).total;
-    if (!a || !b) { K.toast(T.fightEmpty, { kind: 'warn' }); K.sfx('ui_error'); return; }
+    const ok = safe(() => G.canFight(), counts(0).total > 0 && counts(1).total > 0);          // the enemy of a scripted or wave mission arrives after FIGHT
+    if (!ok) { K.toast(T.fightEmpty, { kind: 'warn' }); K.sfx('ui_error'); return; }
     G.fight();
   }
 
@@ -344,7 +351,7 @@ export function mount(root, ctx, params) {
     typeBar.setMax(ct.typeCap || 16); typeBar.set(ct.types, T.types(ct.types, ct.typeCap || 16));
     capBar.classList.toggle('is-over', ct.cap && ct.total >= ct.cap); typeBar.classList.toggle('is-over', ct.types >= (ct.typeCap || 16));
     undoBtn.setDisabled(!safe(() => G.tools.canUndo(), false)); redoBtn.setDisabled(!safe(() => G.tools.canRedo(), false));
-    const ok = c0.total > 0 && c1.total > 0;
+    const ok = safe(() => G.canFight(), c0.total > 0 && c1.total > 0);
     fightBtn.setAttribute('aria-disabled', ok ? 'false' : 'true'); fightBtn.classList.toggle('is-soft-disabled', !ok);
     const byType = {}; (ct.byType || []).forEach((x) => { byType[x.defId] = x.n; });
     const typesFull = ct.types >= (ct.typeCap || 16), capFull = ct.cap && ct.total >= ct.cap;

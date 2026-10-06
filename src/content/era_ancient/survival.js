@@ -60,7 +60,7 @@ export function survivalRules(rules = {}, o = {}) {
   // the endless run is a survive_waves objective that never completes: it is what keeps the battle alive while the field is empty between waves
   // (World._checkEnd lets an objective block the elimination end; without it the first cleared wave would end the run as a victory)
   const objective = { id: 'survive_waves', type: 'survive_waves', params: { waves: 1e9 }, markerIds: [], playerTeam: 0 };
-  return Object.assign({}, rules, { waves: { faction: o.faction || 'mixed', interval: SURVIVAL.every, autoAdvance: o.autoAdvance !== false }, timeLimit: 0, objective, budget: SURVIVAL.start, survival: true });
+  return Object.assign({}, rules, { waves: { faction: o.faction || 'mixed', interval: o.interval || SURVIVAL.every, autoAdvance: o.autoAdvance !== false }, timeLimit: 0, objective, budget: SURVIVAL.start, survival: true });
 }
 
 /** Budget a player may place for the next wave: the first wave uses the start budget, later waves the reinforcement of the cleared wave. */

@@ -30,14 +30,14 @@ await test('every wave: budget 2,400 + 900n, spends it to within 150 drachmae (t
   }
 });
 
-await test('boss every 5th wave cycling minotaur, cyclops, war_elephant, medusa, pharaoh; names from wave_names.js ("Wave 3: The Tax Collectors")', () => {
+await test('boss every 5th wave cycling minotaur, cyclops, war_elephant, medusa, pharaoh; names from wave_names.js ("Wave 3: " + the third funny name)', () => {
   assert.deepEqual(BOSS_IDS, BOSS_CYCLE); assert.deepEqual(BOSS_CYCLE, ['minotaur', 'cyclops', 'war_elephant', 'medusa', 'pharaoh']);
   rows.forEach((r) => {
     const boss = r.n % 5 === 0; assert.equal(isBossWave(r.n), boss); assert.equal(r.boss !== null, boss, 'wave ' + r.n);
     if (boss) { assert.equal(r.boss, BOSS_CYCLE[(r.n / 5 - 1) % 5]); assert.ok(r.groups.some((g) => g.defId === r.boss && g.n >= 1)); assert.equal(r.bossCost, defs[r.boss].cost); assert.ok(r.name.includes(String(r.n))); assert.equal(r.name, BOSS_NAMES[r.boss].replace('{n}', String(r.n))); }
     else assert.equal(r.name, 'Wave ' + r.n + ': ' + WAVE_NAMES[(r.n - 1) % WAVE_NAMES.length]);
   });
-  assert.equal(rows[2].name, 'Wave 3: The Tax Collectors'); assert.equal(rows[6].name, 'Wave 7: Mildly Annoyed Titans'); assert.equal(rows.filter((r) => r.boss).length, 8);
+  assert.equal(rows[2].name, 'Wave 3: ' + WAVE_NAMES[2]); assert.equal(rows[6].name, 'Wave 7: ' + WAVE_NAMES[6]); assert.ok(WAVE_NAMES.every((x) => typeof x === 'string' && x.length > 3)); assert.equal(rows.filter((r) => r.boss).length, 8);
   assert.deepEqual(rows.slice(0, 6).map((r) => r.style), STYLES.slice(0, 6)); assert.equal(waveStyle(7), STYLES[0]); assert.equal(rows[9].style, waveStyle(10));
 });
 

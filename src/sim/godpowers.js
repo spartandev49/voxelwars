@@ -1,10 +1,10 @@
 // God powers (units.md): the six player powers, each with a ground telegraph, an effect and a per-team cooldown.
-//   zeus_lightning (6 s): bolt 90 magic aoe 3 + chain to 4 more targets.   meteor (20 s): 2 s telegraph, 140 fire aoe 5, crater r4.
+//   zeus_lightning (6 s): bolt 90 magic aoe 3 + chain to 4 more targets.   meteor (20 s): 2 s telegraph, 140 fire aoe 5, crater r4.   (damage and healing numbers x G.godMul = 1.6: units have ~1.8x the hp the spec numbers were written for)
 //   earthquake (30 s): 5 s shake, r14: units stagger/fall, props damaged, walls collapse.   heal_wave (25 s): +60 hp to allies in r12.
 //   wine_rain (30 s): 8 s, r12: everyone inside is tipsy (40% random movement, damage x0.6).   raise_chickens (15 s): 8 sacred chickens for the caster's team.
 // API: world.godpowers.cast(power, x, z, team) -> bool (false: unknown, on cooldown, or battle not running); list(team) -> [{id,name,key,cd,cdMax,ready}].
 // Events: telegraph (delay), god_power{kind,x,z,team} on the strike, explosion/lightning_arc/crater/status_apply/unit_heal/unit_spawn from the effects.
-import { SE, ST } from './consts.js';
+import { SE, ST, G } from './consts.js';
 import { applyStatus, healUnit, staggerUnit, newHit, applyDamage } from './combat.js';
 import { chainLightning, collect } from './abilities/util.js';
 
@@ -67,19 +67,19 @@ export class GodPowers {
       case 'zeus_lightning': {
         const y = w.arena.heightAt(x, z);
         const e = w.P.lightning_arc; e.x0 = x + 1.5; e.y0 = y + 40; e.z0 = z + 1.5; e.x1 = x; e.y1 = y; e.z1 = z; w.emit('lightning_arc', e);
-        w.lightning(x, z, 90, 3, null);
+        w.lightning(x, z, 90 * G.godMul, 3, null);
         // chain: the nearest enemy of the caster to the strike point, then up to 3 more jumps
         const n = collect(w, x, z, 9, L, team, 'enemy');
         let best = null, bd = 1e9;
         for (let i = 0; i < n; i++) { const o = L[i]; const d = (o.x - x) ** 2 + (o.z - z) ** 2; if (d < bd) { bd = d; best = o; } }
-        if (best) chainLightning(w, null, best, 63, 4, team);
+        if (best) chainLightning(w, null, best, 63 * G.godMul, 4, team);
         break;
       }
       case 'meteor': {
         const y = w.arena.heightAt(x, z);
         const e = w.P.explosion; e.kind = 'meteor'; e.x = x; e.y = y; e.z = z; e.r = 5; w.emit('explosion', e);
         const h = H.reset(); h.type = 'fire'; h.ap = 1; h.kb = 8; h.cause = 'aoe'; h.fire = true; h.noBlock = true;
-        w.areaDamage(null, x, z, 5, 140, h, -1);
+        w.areaDamage(null, x, z, 5, 140 * G.godMul, h, -1);
         w.makeCrater(x, z, 4, 4);
         w.igniteAt(x, z, 5);
         w.damageProps(x, z, 5, 200);
@@ -88,7 +88,7 @@ export class GodPowers {
       case 'earthquake': this.active.push({ power, x, z, team, t: 5, tick: 0, every: 1, n: 0 }); break;
       case 'heal_wave': {
         const n = collect(w, x, z, 12, L, team, 'ally');
-        for (let i = 0; i < n; i++) healUnit(w, L[i], 60);
+        for (let i = 0; i < n; i++) healUnit(w, L[i], 60 * G.godMul);
         break;
       }
       case 'wine_rain': this.active.push({ power, x, z, team, t: 8, tick: 0, every: 0.5, n: 0 }); break;

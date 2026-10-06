@@ -90,7 +90,7 @@ await test('mission 3 (kill_general): the pharaoh is flagged and guards, killing
 
 await test('mission 4 (protect_vip): the goat is a free, unarmed VIP squad that holds, leaves when the way to the exit is clear, wins by reaching the exit marker; the goat dying loses; vipDamage feeds the star', () => {
   const m = M('nile_crossing'), { w, rt } = world(m, { noEnemy: true, player: [{ defId: 'medjay', n: 6 }] });
-  const goat = w.units.find((u) => u.vip); assert.ok(goat && goat.def.id === 'battle_goat' && !goat.def.melee && goat.team === 0); assert.equal(w.stats[0].startCost, 6 * 85 + 45, 'the goat is a free extra unit placed by the mission, counted in the army value');
+  const goat = w.units.find((u) => u.vip); assert.ok(goat && goat.def.id === 'battle_goat' && !goat.def.melee && goat.team === 0); assert.equal(w.stats[0].startCost, 6 * defs.medjay.cost + defs.battle_goat.cost, 'the goat is a free extra unit placed by the mission, counted in the army value');
   assert.ok(defs.battle_goat.melee, 'the shared def keeps its melee (the override is per unit)');
   // an enemy standing next to the route keeps the goat at home; once it is gone the goat walks to the exit
   const foe = pin(w.addUnit('berserker', 1, -10, -8, {})); for (const sq of w.squads) if (sq.team === 0) sq.order = 'hold'; w.start(); run(w, 20); assert.equal(goat.squad.order, 'hold', 'route not clear: the goat waits');

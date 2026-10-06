@@ -1,6 +1,6 @@
 // Headless battle-quality metrics (S5-S9) + battle length (S12) + termination (S11) at reduced sample sizes. Slow: run by `node tests/sim/metrics.slow.test.mjs` / the full gate.
 // The full-size versions (2,000 matchups, 400 mirror battles per arena, 200 fun battles per setup, 5,000 blueprints) live in tools/balance.mjs.
-import { test, finish, assert } from './_util.mjs';
+import { test, finish, assert, ST } from './_util.mjs';
 import { buildWorld, getArena, DEFS, Metrics } from '../../tools/lib/harness.mjs';
 import { generateArmy } from '../../src/sim/armygen.js';
 import { RECIPES } from '../../src/world/gen.js';
@@ -15,7 +15,7 @@ function warBattle(recipe, seed, budget = 20000, size = 'large') {
 function blockedCount(w) {
   let bad = 0; const nav = w.nav;
   for (const u of w.units) {
-    if (!u.alive || u.state === 12 || u.ky > 0 || u.kx * u.kx + u.kz * u.kz > 0.25 || u.y - w.arena.cellHeight(u.x, u.z) > 0.6) continue;
+    if (!u.alive || u.state === ST.SIT || u.state === ST.FLY || u.ky > 0 || u.kx * u.kx + u.kz * u.kz > 0.25 || u.y - w.arena.cellHeight(u.x, u.z) > 0.6) continue;
     if (!nav.walkable(u.x, u.z) && !nav.walkable(u.x + 0.4, u.z) && !nav.walkable(u.x - 0.4, u.z) && !nav.walkable(u.x, u.z + 0.4) && !nav.walkable(u.x, u.z - 0.4)) bad++;
   }
   return bad;

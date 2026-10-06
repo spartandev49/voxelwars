@@ -25,7 +25,7 @@ export const G = {
   kbScale: 0.06, kbMax: 48, staggerKb: 5,   // knockback: v0 = kb*dmg/mass*kbScale (u/s), clamp kbMax (8 u of travel); stagger when v0 > staggerKb
   backstabMul: 1.35, backstabArcCos: 0.5,    // attacker outside the target's 120deg front arc: dot(targetForward, toAttacker) < cos(60deg)
   chargeDmg: 1.0, chargeKb: 1.5,
-  braceMul: 1.6, braceArcCos: 0.64,          // 50 degrees
+  braceMul: 2.4, braceArcCos: 0.64,          // 50 degrees
   trampleDps: 18, trampleMassMax: 3, trampleMassMin: 8, trampleSpeed: 1.5,
   moraleAllyDeath: 2, moraleFlanked: 6, moraleLowHp: 0.3, moraleLowRate: 0.9, moraleOfficerRate: 1.2, moraleOfficerR: 10,
   routThreshold: 15, rallyThreshold: 40, rallyHold: 3,
@@ -33,7 +33,7 @@ export const G = {
   stalemateWarn: 12, stalemateAdvance: 18, stalemateZeus: 30, stalemateQuit: 44, maxBattle: 360,
   hashCell: 3,
   navRefresh: 6,                             // ticks between flow field recomputes (teams alternate: each field refreshes every 12 ticks = 2.5 Hz)
-  retargetNormal: 12, retargetEasy: 24, retargetHard: 6,   // ticks between target scans (reaction 0.4 / 0.8 / 0.2 s)
+  retargetNormal: 12, retargetEasy: 24, retargetHard: 6, diffDmg: [0.88, 1, 1.15], godMul: 1.6,   // ticks between target scans (reaction 0.4 / 0.8 / 0.2 s)
   deathLinger: 1.6,                          // seconds a corpse stays in `dying` for its clip
   slotsBase: 2, slotsPerRadius: 4, slotsLarge: 8,
   jogMul: 1.3,                               // formation march speed multiplier far from the enemy
