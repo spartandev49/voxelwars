@@ -124,4 +124,5 @@ export function avatar(who, size) {
   return root;
 }
 export const ANNOUNCERS = { brutus: FACES.brutus, plato: FACES.plato, cassandra: FACES.cassandra };
+export const PORTRAIT_DATA = FACES;
 export const announcerInfo = (who) => FACES[who] || FACES.brutus;

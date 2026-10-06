@@ -18,12 +18,12 @@ function weaponGrid(kind) {
     case 'sword':
       g.box(3, 6, 3, 2, 4, 2, V(LEATHER));                                // grip
       g.box(1, 10, 3, 6, 1, 2, V(GOLD));                                  // guard
-      g.box(2, 11, 3, 4, 17, 2, V(IRON)).box(3, 28, 3, 2, 3, 2, V(0xdfe3ea)); // blade, tip
+      g.box(3, 11, 2, 2, 17, 4, V(IRON)).box(3, 28, 3, 2, 3, 2, V(0xdfe3ea)); // blade (broad faces +-X, edge toward +Z), tip
       g.box(3, 4, 3, 2, 2, 2, V(GOLD));                                   // pommel
       break;
     case 'axe':
       g.box(3, 0, 3, 2, 32, 2, V(WOOD));
-      g.box(1, 22, 3, 7, 9, 2, V(IRON)).box(0, 24, 3, 1, 5, 2, V(0xdfe3ea));
+      g.box(3, 21, 0, 2, 10, 8, V(IRON)).box(3, 23, 0, 2, 6, 1, V(0xdfe3ea));
       break;
     case 'club':
       g.box(3, 0, 3, 2, 26, 2, V(WOOD)).box(2, 18, 2, 4, 14, 4, V(shade(WOOD, 0.85)));
@@ -70,7 +70,7 @@ export function makeHum1Ref(opts = {}) {
   m.addPart('armLL', armL, { parent: 'armUL', origin: [0, -5, 0], pivot: [1.5, 5, 1.5] });
   m.addPart('armUR', armU, { parent: 'body', origin: [-6.5, 8, 0], pivot: [1.5, 5, 1.5] });
   m.addPart('armLR', armL, { parent: 'armUR', origin: [0, -5, 0], pivot: [1.5, 5, 1.5] });
-  if (o.weapon !== 'none') m.addPart('weapon', weaponGrid(o.weapon), { parent: 'armLR', origin: [0, -4, 0.5], pivot: [4, 10, 4], rest: o.weaponRest || [0, 0, 0] });
+  if (o.weapon !== 'none') m.addPart('weapon', weaponGrid(o.weapon), { parent: 'armLR', origin: [0, -4, 0.5], pivot: [4, 10, 4], rest: o.weaponRest || ({ spear: [0.3, 0, 0], staff: [0.3, 0, 0], bow: [0.3, 0, 0] }[o.weapon] || [2.44, 0, 0]) });
   if (o.shield) {
     const sh = new VoxelGrid(16, 16, 6);
     sh.ellipsoid(8, 8, 2.5, 7.6, 7.6, 2.4, V(shade(BRONZE, 0.85)));
@@ -147,4 +147,18 @@ function coarseQuad(o = {}) {
   m.addPart('saddle', sad, { parent: 'body', origin: [0, 12, 0], pivot: [(W + 2) / 2, 0, 7] });
   m.addAttach('saddle', 'saddle', [(W + 2) / 2, 6, 7]);
   return m;
+}
+
+/** a real compiled soldier (UNITS-LIB compileSoldier). o: {main, off, cape, back, helm, range, id} */
+export async function makeSoldier(o = {}) {
+  const { compileSoldier, defaultBlueprint } = await import('../../src/content/era_ancient/blueprints.js');
+  const bp = defaultBlueprint();
+  bp.id = o.id || 'ref_' + (o.main || 'dory');
+  bp.main = o.main || 'dory'; bp.off = o.off === undefined ? 'hoplon' : o.off;
+  bp.cape = o.cape || 'short'; bp.back = o.back || 'none';
+  bp.head.helm = o.helm || 'corinthian_tall';
+  const c = compileSoldier(bp, { range: o.range });
+  c.model.meta.weaponStyle = c.weaponStyle;      // compileSoldier returns the style next to the model; the animator reads it from meta
+  c.model.meta.twoHanded = c.twoHanded;
+  return c.model;
 }

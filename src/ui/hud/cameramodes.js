@@ -14,12 +14,16 @@ const MODES = [
   { id: 'photo', label: 'Photo', tip: 'Photo mode: hide the HUD, take pictures', key: 'photo' },
 ];
 
+const ICON_OF = { orbit: 'orbit', follow: 'follow', command: 'command', topdown: 'topdown', cinematic: 'cinematic', photo: 'photo' };
+
 export function mount(parent, ctx) {
   const btns = MODES.map((m) => {
     const k = m.key ? keyOf(ctx.settings, m.key) : '';
     return h('button', { class: 'hud-btn hud-cam', type: 'button', id: 'hud-cam-' + m.id, 'data-mode': m.id, 'aria-pressed': 'false', 'aria-label': m.label + ' camera', 'data-tip': m.tip + (k ? ' (' + k + ')' : ''), 'data-tip-pos': 'below' }, icon(m.id));
   });
-  const el = h('div', { class: 'hud-cams hud-panel', 'data-hud': 'camera', role: 'toolbar', 'aria-label': 'Camera mode' }, btns);
+  const menu = h('button', { class: 'hud-btn hud-cam-menu', type: 'button', id: 'hud-cam-menu', 'aria-label': 'Camera modes', 'aria-expanded': 'false', 'data-tip': 'Camera modes', 'data-tip-pos': 'below' }, icon('orbit'));
+  const row = h('div', { class: 'hud-cams-row', role: 'toolbar', 'aria-label': 'Camera mode' }, btns);
+  const el = h('div', { class: 'hud-cams hud-panel', 'data-hud': 'camera' }, menu, row);
   parent.appendChild(el);
   let mode = 'orbit', selId = null;
 
@@ -27,14 +31,17 @@ export function mount(parent, ctx) {
     const cam = ctx.game && ctx.game.camera; if (!cam) return;
     try {
       if (id === 'follow') {
-        if (selId == null) { ctx.nav && ctx.nav.toast && ctx.nav.toast('Select a unit first (click one), then follow it.', { kind: 'info' }); sfx(ctx, 'ui_error', { vol: 0.4 }); return; }
-        if (cam.follow) cam.follow(selId);
+        if (selId == null) { ctx.nav && ctx.nav.toast && ctx.nav.toast('Following a volunteer. Click a soldier first to pick your favourite.', { kind: 'info' }); }
+        else if (cam.follow) cam.follow(selId);
         if (cam.setMode) cam.setMode('follow');
       } else if (cam.setMode) cam.setMode(id);
     } catch (e) { /* camera not ready */ }
-    mode = id; paint();
+    mode = id; paint(); setMenu(false);
   }
-  function paint() { btns.forEach((b, i) => { const on = MODES[i].id === mode; setCls(b, 'is-on', on); setAttr(b, 'aria-pressed', on); }); }
+  function paint() { btns.forEach((b, i) => { const on = MODES[i].id === mode; setCls(b, 'is-on', on); setAttr(b, 'aria-pressed', on); }); menu.replaceChildren(icon(mode in ICON_OF ? ICON_OF[mode] : 'orbit')); }
+  let menuOpen = false;
+  function setMenu(b) { menuOpen = b; setCls(el, 'is-open', b); menu.setAttribute('aria-expanded', String(b)); }
+  menu.addEventListener('click', () => setMenu(!menuOpen));
   btns.forEach((b, i) => b.addEventListener('click', () => set(MODES[i].id)));
   paint();
 

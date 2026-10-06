@@ -90,6 +90,7 @@ const I = {
   joystick: ['M12 3a4 4 0 1 0 .01 0', 'M5 17.500h14v3H5z', 's:M12 10v7.500'],
   grid: ['M3 3h8v8H3z', 'M13 3h8v8h-8z', 'M3 13h8v8H3z', 'M13 13h8v8h-8z'],
   diamond: ['M12 2l9 10-9 10-9-10z'],
+  calendar: ['w:M3.5 5h17v15.5h-17z', 'r:M3.5 5h17v4.5h-17z', 'k:M3.5 9.5h17 M8 2.8v4 M16 2.8v4 M7.5 13h3 M13.5 13h3 M7.5 16.5h3'],
 };
 
 /** icon('sword') -> <svg class="ic ic-sword"> ; entries are cached as templates and cloned. */

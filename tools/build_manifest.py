@@ -59,7 +59,7 @@ for s in music_spec.SPEC:
              notes='source file: %s; leading silence trimmed %.2fs; %s; loop seam metrics (end-vs-start RMS dB %s, zero-crossing ratio %s, seam jump %s, beat fraction %s)' % (
                  b['srcfile'], b['trimmed_lead'], s.get('notes', 'normalised to -16 LUFS'), lc.get('rms_end_vs_start_db'), lc.get('zc_ratio'), lc.get('seam_jump'), lc.get('beat_frac')))
     if s.get('core'): e['core'] = True
-    if not e['loop']: e['notes'] += '; not seamless -> cross-fade 2-3 s when looping'
+    if not e['loop']: e['notes'] += '; not seamless -> cross-fade 2-3 s when looping'; e['crossfadeSeconds'] = 2.5
     music.append(e)
 
 ken = C.attrib('kenney-particle-pack'); note_credit(ken, 'vfx', 'particles')
@@ -67,14 +67,22 @@ for vid, v in vfx_build.items():
     vfx.append(dict(id=vid, file=vid + '.png', path='vfx/%s.png' % vid, tags=v['tags'], width=v['width'], height=v['height'], size=v['size'], author=ken['author'], title=ken['title'],
                     source=ken['source'], license=ken['license'], licenseUrl=ken['licenseUrl'], attributionRequired=False, notes='downscaled from 512px, alpha PNG'))
 
-man = dict(version=1, generated='by tools/build_manifest.py', format=dict(sfx='mp3 mono', music='mp3 stereo (joint)', vfx='png rgba 256px'), sfx=sfx, music=music, vfx=vfx)
+by_cat = collections.OrderedDict()
+for e in sfx: by_cat.setdefault(e['category'], []).append(e['id'])
+by_mood = collections.OrderedDict()
+for e in music: by_mood.setdefault(e['mood'], []).append(e['id'])
+man = dict(version=1, generated='by tools/build_manifest.py', credits='CREDITS.md',
+           format=dict(sfx='mp3 mono 44.1 kHz (64-80 kbps)', music='mp3 stereo joint (80-112 kbps), loudness ~-16 LUFS', vfx='png rgba 256px'),
+           categories=list(by_cat), sfxByCategory=by_cat, musicByMood=by_mood,
+           coreSfx=[e['id'] for e in sfx if e.get('core')], coreMusic=[e['id'] for e in music if e.get('core')],
+           sfx=sfx, music=music, vfx=vfx)
 json.dump(man, open(ROOT + '/manifest.json', 'w'), indent=1, ensure_ascii=False)
 print('manifest: sfx', len(sfx), 'music', len(music), 'vfx', len(vfx), 'missing', missing)
 
 # ---------------------------------------------------------------- CREDITS.md
 L = ['# VOXELWARS audio and VFX credits', '',
      'All third-party audio / sprites below are used under CC0 / Public Domain, or under Creative Commons Attribution (CC BY 3.0 / 4.0).',
-     'Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (changes made). Entries marked **ATTRIBUTION REQUIRED** must stay in the in-game credits.', '']
+     'Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (changes made). Every entry in the first section (CC BY) must stay in the in-game credits; the CC0 section is listed as a courtesy.', '']
 by = [i for i in credit_items.values() if i['info']['attributionRequired']]
 L += ['## Required attribution lines (CC BY)', '']
 for e in sorted(by, key=lambda e: (e['info']['author'].lower(), e['info']['title'].lower())):

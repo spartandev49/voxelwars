@@ -261,15 +261,23 @@ export function createRouter(deps) {
   const D = (def, kind) => { const s = P(def).sfx; if (!s) return null; const v = s[kind]; return Array.isArray(v) ? v[(rng() * v.length) | 0] : v || null; };
   const R = (a, b) => a + (b - a) * rng();
 
-  // unit lookup by id for events that carry no position (scan is O(n) but only used by low-rate events)
+  // last known position per unit id, fed by the events that carry one (fallback when no `world` was provided)
+  const tracked = new Map();
+  function track(id, def, x, y, z) {
+    let r = tracked.get(id);
+    if (r === undefined) { r = { x, y, z, def: { id: def } }; tracked.set(id, r); return; }
+    r.x = x; r.y = y; r.z = z; if (def) r.def.id = def;
+  }
+  // unit lookup by id for events that carry no position (world scan is O(n) but only used by low-rate events)
   function unitAt(id) {
-    if (!world || !world.units) return null;
+    if (!world || !world.units) return tracked.get(id) || null;
     const t = now();
     if (t - cacheT > 0.4) { cache.clear(); cacheT = t; }
     let u = cache.get(id); if (u !== undefined) return u;
     u = null;
     const us = world.units; for (let i = 0; i < us.length; i++) if (us[i].id === id) { u = us[i]; break; }
     if (!u && world.dying) { const ds = world.dying; for (let i = 0; i < ds.length; i++) if (ds[i].id === id) { u = ds[i]; break; } }
+    if (!u) u = tracked.get(id) || null;
     cache.set(id, u); return u;
   }
   function cull(x, z, max) { const l = deps.listener(), dx = x - l.x, dz = z - l.z; return dx * dx + dz * dz > max * max; }
@@ -283,6 +291,7 @@ export function createRouter(deps) {
 
   const H = Object.create(null);
   H.unit_hit = (p) => {
+    track(p.dst, p.dstDef, p.x, p.y, p.z);
     if (cull(p.x, p.z, 90)) { stats.culled++; return; }
     const dst = P(p.dstDef), src = P(p.srcDef);
     const hero = dst.hero || src.hero, prio = hero ? 85 : p.crit ? 70 : 50;
@@ -333,6 +342,7 @@ export function createRouter(deps) {
   };
   H.unit_kill = (p) => {
     const t = now();
+    tracked.delete(p.dst);
     // kill-cluster tracking for crowd reactions (colosseum)
     if (crowdOn()) { killT[killN++ % 24] = t; }
     const dst = P(p.dstDef), src = P(p.srcDef);
@@ -370,6 +380,7 @@ export function createRouter(deps) {
     if (p.n >= 3 && voiced()) play('announce_ready', undefined, undefined, undefined, { delay: 0.1 });
   };
   H.battle_start = () => {
+    tracked.clear();
     play('jingle_start', undefined, undefined, undefined, {});
     play('horn_war', undefined, undefined, undefined, { delay: 0.35, vol: 0.85 });
     play('drum_boom', undefined, undefined, undefined, { delay: 0.5, vol: 0.9 });
@@ -380,7 +391,8 @@ export function createRouter(deps) {
     if (hooks.battleStart) hooks.battleStart();
   };
   H.battle_end = (p) => {
-    const lost = deps.playerTeam !== undefined && deps.playerTeam !== null && p.winner !== deps.playerTeam && p.winner !== -1;
+    const pt = deps.playerTeam;
+    const lost = pt !== undefined && pt !== null && p.winner !== pt && p.winner !== -1;
     if (p.winner === -1) play('stinger_funny', undefined, undefined, undefined, {});
     else play(lost ? 'jingle_defeat' : 'jingle_victory', undefined, undefined, undefined, {});
     if (!lost && p.winner !== -1) play('horn_victory', undefined, undefined, undefined, { delay: 0.3, vol: 0.6 });
@@ -418,11 +430,13 @@ export function createRouter(deps) {
     }
   };
   H.ability_cast = (p) => {
+    if (Number.isFinite(p.x)) track(p.id, '', p.x, 0, p.z);
     let cue = ABILITY_CUES[p.ability];
     const u = p.ability === 'cc_field' || p.ability === 'dash' ? unitAt(p.id) : null;
     if (p.ability === 'cc_field') cue = (u && CC_BY_SPECIES[u.def.id]) || 'curse_whoosh';
     else if (p.ability === 'dash' && u && u.def.id === 'minotaur') cue = 'minotaur_roar';
     if (!cue) return;
+    if (cue === 'crowd_cheer_small') { if (crowdOn()) { crowdReact(now(), false); return; } cue = 'cheer_small'; }   // no stands outside the colosseum: a unit cheer instead
     const x = p.x, z = p.z;
     if (Number.isFinite(x) && cull(x, z, 120)) { stats.culled++; return; }
     play(cue, x, undefined, z, { priority: 75 });
@@ -482,6 +496,7 @@ export function createRouter(deps) {
     play(cue, u.x, u.y, u.z, { vol: 0.8 });
   };
   H.unit_spawn = (p) => {
+    track(p.id, p.def, p.x, 0, p.z);
     if (!world || world.state !== 'placing') return;
     const mass = P(p.def).mass;
     play('ui_place', undefined, undefined, undefined, { pitch: 1.04 - 0.08 * clamp(Math.log2(mass + 1) / 4, 0, 1) });
@@ -517,7 +532,7 @@ export function createRouter(deps) {
       if (heavyAcc >= 1 && hp) { heavyAcc = 0; play(hp.species === 'elephant' || hp.big ? 'elephant_step' : 'horse_gallop', hx, 0, hz, { priority: 36, vol: 0.8 }); }
       else if (heavyAcc >= 1) heavyAcc = 0;
     },
-    reset() { killN = 0; killHero = false; lastStinger = lastCrowd = -1e9; footAcc = rustleAcc = heavyAcc = 0; cache.clear(); },
+    reset() { killN = 0; killHero = false; lastStinger = lastCrowd = -1e9; footAcc = rustleAcc = heavyAcc = 0; cache.clear(); tracked.clear(); },
     /** exposed for tests */
     _unitAt: unitAt,
   };

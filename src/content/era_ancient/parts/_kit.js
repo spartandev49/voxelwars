@@ -130,8 +130,8 @@ export function emblem(g, name, x0, yTop, z, v) {
 export const W = { cx: 4, cz: 4, grip: 10, top: 47, bottom: 0 };
 /** Leather-wrapped grip block that also hides the hand overlap (3x3, y a..b). */
 export function gripWrap(g, ctx, a = 8, b = 11) {
-  const c = ctx.c.trim;
-  B(g, 3, a, 3, 5, b, 5, (x, y) => V(shade(c, y % 2 ? 0.9 : 1.05)));
+  const c = mixRGB(0x7a5232, ctx.c.trim, 0.25);
+  B(g, 3, a, 3, 5, b, 5, (x, y) => V(shade(c, y % 2 ? 0.88 : 1.04)));
   return g;
 }
 /** Straight 1-voxel shaft along y between ya..yb (inclusive) at the weapon axis. */
@@ -147,6 +147,12 @@ export class HeadSpace {
   set(x, y, z, v) { x = Math.round(x); y = Math.round(y); z = Math.round(z); if (y < 8) this.head.set(x, y, z, v); else this.crest.set(x, y - 6, z + 1, v); return this; }
   setIfEmpty(x, y, z, v) { x = Math.round(x); y = Math.round(y); z = Math.round(z); if (y < 8) this.head.setIfEmpty(x, y, z, v); else this.crest.setIfEmpty(x, y - 6, z + 1, v); return this; }
   get(x, y, z) { return y < 8 ? this.head.get(x, y, z) : this.crest.get(x, y - 6, z + 1); }
+  /** 1-voxel line in head space */
+  line(x0, y0, z0, x1, y1, z1, v) {
+    const n = Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0), Math.abs(z1 - z0), 1);
+    for (let i = 0; i <= n; i++) { const t = i / n; this.set(x0 + (x1 - x0) * t, y0 + (y1 - y0) * t, z0 + (z1 - z0) * t, v); }
+    return this;
+  }
 }
 export const headSpace = () => { const head = newGrid('head'), crest = newGrid('crest'); return { head, crest, hs: new HeadSpace(head, crest) }; };
 /** helm/hair builders return this: {head, crest} with empty grids dropped by the compiler */

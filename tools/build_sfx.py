@@ -72,8 +72,12 @@ def process(spec):
             if po.get('seg') is not None:
                 sg = A.segments(a, thresh_db=po.get('thr', -38)); t0, t1 = sg[po['seg']]; a = a[int(t0 * A.SR):int(t1 * A.SR)]
             a, _, _ = A.trim_silence(a, o['start_db'], o['end_db'])
+            if 'rate' in po:
+                n = int(len(a) / po['rate']); a = np.interp(np.linspace(0, len(a) - 1, n), np.arange(len(a)), a).astype(np.float32)
             if 'lp' in po: a = lowpass(a, po['lp'])
             if po.get('norm', True): a = a / (np.max(np.abs(a)) + 1e-9)
+            if po.get('pk'):            # offset = time at which this layer's peak should land
+                off = max(0.0, off - float(np.argmax(np.abs(a))) / A.SR)
             parts.append((a, off, g))
         a = layer_mix(parts)
         srcfile = ' + '.join(os.path.relpath(resolve(s), RAW) for (s, _, _, _) in o['layers'])
@@ -128,6 +132,10 @@ def process(spec):
     A.write_wav(mfile, a)
     mp3 = os.path.join(OUT, spec['id'] + '.mp3')
     A.encode_mp3(mfile, mp3, o['kbps'], mono=True)
+    for _ in range(3):            # lossy encoding can overshoot the master peak; keep the *decoded* MP3 peak near -3 dBFS
+        dpk = A.peak_db(A.decode(mp3))
+        if dpk <= -2.0: break
+        a = a * (10 ** ((-3.0 - dpk) / 20)); A.write_wav(mfile, a); A.encode_mp3(mfile, mp3, o['kbps'], mono=True)
     d = A.descriptors(a)
     try: d['n_on'] = len(A.onsets(a, rise_db=9.0, refractory=0.08))
     except Exception: d['n_on'] = None

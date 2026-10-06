@@ -4,6 +4,7 @@
 //   node tools/shot_ui.mjs --sizes=1280x720      only these viewports
 //   node tools/shot_ui.mjs --entry=tests/ui/kitchen.js --out=docs/sheets   shoot a standalone entry (one PNG per size)
 //   node tools/shot_ui.mjs --list                list scenario names
+//   node tools/shot_ui.mjs --all                  also register UI-B's screens (every non-underscore module in src/ui/screens; default = UI-A's own)
 // Fonts: Bungee/Rubik/Cinzel are fetched once into .cache/fonts (via curl) and served locally so shots match the shipped look.
 import { build } from 'esbuild';
 import { chromium } from 'playwright-core';
@@ -43,9 +44,11 @@ export function cssBundle() {
 }
 
 /** Generate an entry that registers every non-underscore screen module in src/ui/screens/ by meta.id, then loads the scenario list. */
-export function writeRegistryEntry() {
+export const OWN_SCREENS = ['splash', 'title', 'quick', 'placement', 'settings', 'credits', 'diagnostics', 'codex', 'achievements', 'stats', 'fatal', 'phone_notice'];
+export function writeRegistryEntry(all) {
   const dir = path.join(root, 'src/ui/screens');
-  const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => /\.js$/.test(f) && !f.startsWith('_')).sort() : [];
+  const every = all || process.env.UI_ALL === '1' || process.argv.includes('--all');
+  const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => /\.js$/.test(f) && !f.startsWith('_') && (every || OWN_SCREENS.includes(f.replace(/\.js$/, '')))).sort() : [];
   const out = path.join(root, '.cache/ui');
   fs.mkdirSync(out, { recursive: true });
   const lines = files.map((f, i) => `import * as s${i} from '../../src/ui/screens/${f}';`);
@@ -58,7 +61,7 @@ export function writeRegistryEntry() {
 }
 
 export async function bundle(entry) {
-  const r = await build({ entryPoints: [entry], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', define: { __VW_VERSION__: '"1.0.0"', __VW_BUILD__: '"2026-10-06"' } });
+  const r = await build({ entryPoints: [entry], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', loader: { '.md': 'text' }, define: { __VW_VERSION__: '"1.0.0"', __VW_BUILD__: '"2026-10-06"' } });
   return r.outputFiles[0].text;
 }
 
@@ -87,6 +90,12 @@ export async function launch(html, fontsCss, viewport) {
   return { b, p, logs };
 }
 
+/** Finish finite animations/transitions so slow software rendering cannot leave a screenshot mid-tween. */
+export async function settle(p) {
+  await p.evaluate(() => { for (const a of document.getAnimations()) { try { const t = a.effect && a.effect.getComputedTiming(); if (t && isFinite(t.endTime)) a.finish(); } catch (e) { /* ignore */ } } });
+  await p.waitForTimeout(80);
+}
+
 async function main() {
   const fonts = ensureFonts();
   const sizes = arg('sizes') ? arg('sizes').split(',').map((s) => s.split('x').map(Number)) : SIZES;
@@ -105,6 +114,7 @@ async function main() {
     await p.evaluate(() => document.fonts && document.fonts.ready);
     if (entryArg) {
       await p.waitForTimeout(wait);
+      await settle(p);
       const f = path.join(outDir, 'ui_' + path.basename(entryArg, '.js') + `_${sz[0]}x${sz[1]}.png`);
       await p.screenshot({ path: f }); console.log(f);
     } else {
@@ -115,6 +125,7 @@ async function main() {
         if (only && !only.some((o) => n === o || n.startsWith(o))) continue;
         await p.evaluate((nm) => window.__ui.run(nm), n);
         await p.waitForTimeout(wait);
+        await settle(p);
         const f = path.join(outDir, `ui_${n}_${sz[0]}x${sz[1]}.png`);
         await p.screenshot({ path: f });
         if (first) console.log('shooting', n);

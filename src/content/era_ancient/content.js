@@ -4,8 +4,22 @@ import { STAT_TABLE, FACTIONS } from './stats.js';
 import { buildSimDefs } from '../../sim/defs.js';
 import { fallbackHumanoid, fallbackBeast } from './fallback_model.js';
 import { UNIT_MODEL_MODULES, BEAST_MODULES, HUMOR_MODULES, PART_MODULES } from '../../_generated/registry.content.js';
+import { ARENAS } from './arenas.js';
+import { MUTATORS } from '../../sim/mutators.js';
+import { MUTATORS_TEXT, MUTATORS_HEADING } from './humor/mutators_text.js';
+import { TIPS } from './humor/tips.js';
+import { ACHIEVEMENTS } from './humor/achievements.js';
+import { KILL_VERBS } from './humor/killverbs.js';
+import { FIRST_NAMES, TITLES, EPITHETS, randomName } from './humor/names.js';
+import { SETTINGS_TIPS, RULES_TIPS } from './humor/ui_text.js';
+import { PROP_CATALOG } from './props/catalog.js';
+import { FORMATIONS } from '../../sim/formations.js';
+import { counterTable } from '../../sim/armygen.js';
 
 function collect(mods, name) { const out = {}; for (const k of Object.keys(mods)) { const m = mods[k]; const v = m[name] || (m.default && m.default[name]); if (v) Object.assign(out, v); } return out; }
+
+/** Campaign-star unlock thresholds for the mutators (spec §14): nine mutators, unlocked in order as stars are earned. */
+const MUTATOR_STARS = { big_heads: 3, tiny_titans: 6, moon_gravity: 9, chicken_rain: 12, wine_rain_always: 15, friendly_fire_fiesta: 18, speedy_soldiers: 21, ragdoll_frenzy: 24, glass_cannons: 27 };
 
 export function buildContent() {
   const MODELS = collect(UNIT_MODEL_MODULES, 'MODELS');
@@ -33,5 +47,16 @@ export function buildContent() {
     if (!r) { const isBeast = def.role === 'cavalry' || def.role === 'beast' || def.role === 'siege' || (def.tags && def.tags.indexOf('animal') >= 0); r = { model: isBeast ? fallbackBeast(def) : fallbackHumanoid(def) }; }
     cache.set(key, r); return r;
   }
-  return { defs, factions: FACTIONS, modelFor, setCompiler, unitList: () => Object.values(defs), MODELS, BUILDERS };
+  // ---- the data the UI screens read (app_contract §2) ----
+  const mutators = MUTATORS.map((m) => { const t = MUTATORS_TEXT.find((x) => x.id === m.id) || {}; return { id: m.id, name: t.name || m.name, desc: t.desc || m.desc, blurb: t.desc || m.desc, short: t.short || '', locked: t.locked || '', stars: MUTATOR_STARS[m.id] || 0, mods: m.mods }; });
+  const humor = { tips: TIPS, achievements: ACHIEVEMENTS, killVerbs: KILL_VERBS, names: { first: FIRST_NAMES, titles: TITLES, epithets: EPITHETS, random: randomName }, settingsTips: SETTINGS_TIPS, rulesTips: RULES_TIPS, mutatorsHeading: MUTATORS_HEADING, scout: collect(HUMOR_MODULES, 'SCOUT_TEXT') };
+  let counters = null;
+  const arenaThumb = (id) => null;   // replaced by main.js once the preview service exists
+  return {
+    defs, units: defs, factions: FACTIONS, modelFor, setCompiler, unitList: () => Object.values(defs), MODELS, BUILDERS,
+    arenas: ARENAS, arenaThumb, props: PROP_CATALOG, formations: FORMATIONS, mutators, humor,
+    campaign: { missions: [] },                 // filled by the campaign module (content/era_ancient/campaign.js) when it is present
+    get counters() { return counters || (counters = counterTable(defs)); },
+    glossary: null, parts: PART_MODULES,
+  };
 }

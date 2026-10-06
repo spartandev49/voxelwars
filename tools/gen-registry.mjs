@@ -39,6 +39,8 @@ const OPTIONAL = {
   PROP_RENDERER: 'src/render/props.js', AUDIO: 'src/audio/index.js', LESSONS: 'src/sim/lessons.js', MUTATORS: 'src/sim/mutators.js', WAVES: 'src/sim/waves.js', POWER: 'src/sim/power.js',
   PROP_BUILDERS: 'src/content/era_ancient/props/models/index.js', CAMPAIGN: 'src/content/era_ancient/campaign.js', ANNOUNCER: 'src/content/era_ancient/humor/announcer.js', UI_TEXT: 'src/content/era_ancient/humor/ui_text.js',
   KIT: 'src/ui/kit.js', MOCK: 'src/ui/mockctx.js',
+  CUSTOM: 'src/content/era_ancient/custom.js', SURVIVAL: 'src/content/era_ancient/survival.js', PUZZLES: 'src/content/era_ancient/puzzles.js', DAILY: 'src/content/era_ancient/daily.js',
+  META: 'src/app/meta.js', EDITOR_HOST: 'src/app/editorhost.js', SAVE_STATS: 'src/save/stats.js', SAVE_DOCS: 'src/save/docs.js', SAVE_TRANSFER: 'src/save/transfer.js',
 };
 let oi = '', ob = '';
 let k = 0;

@@ -40,9 +40,10 @@ export class IntensityTracker {
 
 // ---------------------------------------------------------------- track choice
 const THEME_STYLE = {
-  greek: ['heroic', 'orchestral', 'epic'], roman: ['heroic', 'orchestral', 'epic'], egypt: ['eastern', 'desert', 'exotic'], persian: ['eastern', 'desert', 'exotic'],
-  barbarian: ['dark', 'drums', 'tribal'], alpine: ['dark', 'drums', 'tribal'], styx: ['dark', 'drums', 'tribal'],
-  mythic: ['choir', 'epic', 'mythic'], olympus: ['choir', 'epic', 'mythic'], carthage: ['brass', 'military', 'march'],
+  greek: ['heroic', 'orchestral', 'epic', 'fanfare'], roman: ['heroic', 'orchestral', 'epic', 'fanfare'],
+  egypt: ['eastern', 'middle eastern', 'desert', 'exotic', 'dulcimer'], persian: ['eastern', 'middle eastern', 'desert', 'exotic', 'dulcimer'],
+  barbarian: ['dark', 'drums', 'war drums', 'tribal', 'percussion', 'somber'], alpine: ['dark', 'drums', 'war drums', 'tribal', 'percussion', 'somber'], styx: ['dark', 'drums', 'war drums', 'tribal', 'percussion', 'somber'],
+  mythic: ['choir', 'epic', 'mythic', 'boss', 'driving'], olympus: ['choir', 'epic', 'mythic', 'boss', 'driving'], carthage: ['brass', 'timpani', 'intense', 'military', 'march'],
 };
 const THEME_ENERGY = { greek: ['mid', 'high'], roman: ['mid', 'high'], egypt: ['low', 'mid'], persian: ['low', 'mid'], barbarian: ['low', 'high'], alpine: ['low'], styx: ['low'], mythic: ['mid'], olympus: ['mid'], carthage: ['high', 'mid'] };
 export function normMood(m) {
@@ -63,11 +64,11 @@ export function rankTracks(catalog, mood, theme) {
     return { e, s };
   }).sort((a, b) => b.s - a.s);
 }
-/** pick one track: the top-scoring group (within 1.0 of the best) is shuffled through a per-mood bag (no immediate repeat) */
+/** pick one track: the top-scoring group (within 2.0 of the best) is shuffled through a per-mood bag (no immediate repeat) */
 export function pickTrack(catalog, mood, theme, bags, rng) {
   const r = rankTracks(catalog, mood, theme);
   if (!r.length) return null;
-  const top = r.filter((x) => x.s >= r[0].s - 1.0).map((x) => x.e);
+  const top = r.filter((x) => x.s >= r[0].s - 2.0).map((x) => x.e);
   const key = mood + ':' + (theme || '');
   let bag = bags.get(key); if (!bag) { bag = new ShuffleBag(top, rng); bags.set(key, bag); } else bag.setItems(top);
   return bag.next();
@@ -78,7 +79,9 @@ const CURVE_IN = equalPowerCurve(64, false), CURVE_OUT = equalPowerCurve(64, tru
 export class LoopPlayer {
   /** @param {object} o {ctx, buf, out, loop?, loopStart?, loopEnd?, xf?, baked?, gain?} */
   constructor(o) {
-    this.ctx = o.ctx; this.buf = o.buf; this.xf = o.xf || XFADE_LOOP; this.baked = !!o.baked;
+    this.ctx = o.ctx; this.buf = o.buf; this.baked = !!o.baked;
+    // the cross-fade can never exceed 40% of the track, so a short file still advances (period >= 0.6 * duration) instead of looping forever
+    this.xf = Math.min(o.xf || XFADE_LOOP, Math.max(0.02, o.buf.duration * 0.4));
     this.loop = !!o.loop; this.loopStart = o.loopStart; this.loopEnd = o.loopEnd;
     this.g = o.ctx.createGain(); this.g.gain.value = 0; this.g.connect(o.out);
     this.base = o.gain === undefined ? 1 : o.gain;
@@ -109,13 +112,16 @@ export class LoopPlayer {
     if (prev && fade && !this.baked) prev.g.gain.setValueCurveAtTime(CURVE_OUT, when, this.xf);
     this.iters.push(it); this.n++;
     this.next = end - this.xf;
-    if (this.iters.length > 3) { const old = this.iters.shift(); try { old.s.disconnect(); old.g && old.g.disconnect(); } catch (e) { /* already gone */ } }
   }
   /** schedule upcoming loop iterations that start within `ahead` seconds of `now`; returns true if it scheduled any */
   pump(now, ahead = 4) {
     if (this.dead || !this.started || this.loop) return false;
+    // drop iterations that have fully played (never ones that are only scheduled for later)
+    while (this.iters.length > 2 && this.iters[0].end + 0.2 < now) { const old = this.iters.shift(); try { old.s.disconnect(); old.g && old.g.disconnect(); } catch (e) { /* already gone */ } }
     let any = false;
-    while (this.next - now < ahead) { this._iter(this.next, true); any = true; }
+    // after a long stall the next seam is already in the past: restart a fresh iteration instead of stacking late ones
+    if (this.next < now - 0.05) { this.next = now + 0.05; this._iter(this.next, true); any = true; }
+    for (let guard = 0; this.next - now < ahead && guard < 24; guard++) { this._iter(this.next, true); any = true; }
     return any;
   }
   setGain(v, when, tau = 0.2) { this.base = v; this.g.gain.setTargetAtTime(v, when, tau); }
@@ -160,7 +166,7 @@ export class MusicDirector {
     this._arm();
   }
   _now() { return this.ctx ? this.ctx.currentTime : 0; }
-  _arm() { if (this.timer || !this.ctx) return; this.timer = this.setT(() => { this.timer = null; this.pump(); this._arm(); }, 1000); }
+  _arm() { if (this.timer || !this.ctx) return; this.timer = this.setT(() => { this.timer = null; this.pump(); this._arm(); }, 1000); if (this.timer && this.timer.unref) this.timer.unref(); }
   /** keep cross-fade loop iterations scheduled (timer in the browser, called explicitly by the offline renderer) */
   pump(until) { if (this.player && this.ctx) this.player.pump(until === undefined ? this._now() : 0, until === undefined ? 4 : until - 0); for (const f of this.fading.slice()) if (f.endAt && this._now() > f.endAt) { f.dispose(); this.fading.splice(this.fading.indexOf(f), 1); } }
   suspendTimers() { if (this.timer) { this.clrT(this.timer); this.timer = null; } }
@@ -224,7 +230,8 @@ export class MusicDirector {
     if (token !== this.token) return;
     if (!buf) { if (!bridged && !this.player) await startSynth(); this.d.onChange && this.d.onChange(); return; }
     const looped = entry.loop && entry.loopStart !== undefined ? true : !!entry.loop;
-    this._crossTo({ buf, loop: looped, loopStart: entry.loopStart, loopEnd: entry.loopEnd, baked: entry.bakedFade, gain: db2lin(entry.gainDb || 0) }, token, 'fetched', entry.id, o);
+    const via = this.cache.get(entry.id) ? this.cache.get(entry.id).via : 'fetched';
+    this._crossTo({ buf, loop: looped, loopStart: entry.loopStart, loopEnd: entry.loopEnd, baked: entry.bakedFade, gain: db2lin(entry.gainDb || 0) }, token, via, entry.id, o);
     this._evictCache(entry.id);
     this.d.onChange && this.d.onChange();
   }
@@ -247,11 +254,13 @@ export class MusicDirector {
   // ---------------------------------------------------------------- loading
   async _load(entry) {
     const hit = this.cache.get(entry.id); if (hit) { hit.last = ++this.cacheTick || (this.cacheTick = 1); return hit.buf; }
-    if (!this.d.fetch) throw new Error('no fetch');
-    let ab = null;
+    let ab = null, via = 'fetched';
+    const emb = this.d.core && this.d.core[entry.id];
+    if (emb) { try { const bin = (typeof atob === 'function' ? atob : (x) => Buffer.from(x, 'base64').toString('binary'))(String(emb).replace(/^data:[^,]*,/, '')); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); ab = u.buffer; via = 'embedded'; } catch (e) { ab = null; } }
+    if (!ab && !this.d.fetch) throw new Error('no fetch');
     for (let a = 0; a < 2 && !ab; a++) {
       try { const r = await this.d.fetch(entry.url); if (!r.ok) throw new Error('http ' + r.status); ab = await r.arrayBuffer(); }
-      catch (e) { if (a === 1) throw e; await new Promise((r) => this.setT(r, 400)); }
+      catch (e) { if (a === 1) throw e; await new Promise((r) => this.setT(r, this.d.retryMs === undefined ? 400 : this.d.retryMs)); }
     }
     let buf = await this.d.decode(ab);
     const tier = this.d.quality ? this.d.quality() : 'marble';
@@ -262,7 +271,7 @@ export class MusicDirector {
       buf = this.d.makeMono(m, buf.sampleRate);
     }
     this.cacheTick = (this.cacheTick || 0) + 1;
-    this.cache.set(entry.id, { buf, last: this.cacheTick, bytes: buf.length * buf.numberOfChannels * 4 });
+    this.cache.set(entry.id, { buf, last: this.cacheTick, bytes: buf.length * buf.numberOfChannels * 4, via });
     this._recount();
     return buf;
   }

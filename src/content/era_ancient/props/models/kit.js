@@ -268,7 +268,7 @@ export function makeBuilder(type, spec) {
   return function build(stage = 0, variant = 0, rng = null) {
     stage = Math.min(2, Math.max(0, stage | 0));
     const v = ((variant | 0) % nv + nv) % nv;
-    const r = rng || new RNG(hashString(type) ^ (stage * 7919) ^ (v * 104729));
+    const r = rng || new RNG((hashString(type) ^ Math.imul(v + 1, 104729)) >>> 0);
     const id = `prop_${type}_s${stage}_v${v}`;
     let pen;
     if (stage === 0 || spec.indestructible) pen = spec.build(v, r.fork('build'));

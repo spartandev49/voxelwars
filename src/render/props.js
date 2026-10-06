@@ -302,9 +302,10 @@ export class PropRenderer {
   _groundY(it) {
     if (it.y0 !== undefined && it.y0 !== null && !Number.isNaN(+it.y0)) return +it.y0;
     const a = this.arena; if (!a || !a.cellHeight) return 0;
-    const r = (it.cat ? it.cat.r : 0) * it.s;
+    // seat the model on the LOWEST ground under its footprint (never floats; the uphill side is buried, models carry a foundation skirt)
+    const r = clamp((it.cat && it.cat.r > 0 ? it.cat.r : 0.4) * it.s * 0.9, 0.3, 3.2);
     let y = a.cellHeight(it.x, it.z);
-    if (r > 0.9) { const k = r * 0.8; y = Math.min(y, a.cellHeight(it.x + k, it.z), a.cellHeight(it.x - k, it.z), a.cellHeight(it.x, it.z + k), a.cellHeight(it.x, it.z - k)); }
+    y = Math.min(y, a.cellHeight(it.x + r, it.z), a.cellHeight(it.x - r, it.z), a.cellHeight(it.x, it.z + r), a.cellHeight(it.x, it.z - r));
     const fl = FLOAT[it.type];
     if (fl && fl.kind === 'water' && a.water > 0) y = Math.max(y, a.waterY() - 0.06);
     return y;

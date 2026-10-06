@@ -1,7 +1,7 @@
 // _hud.js: the battle HUD manager. Builds the slot skeleton, mounts every HUD module, throttles update() to <= 10 Hz, owns Tab-hide, theme classes
 // (palette / reduce motion / high contrast), the layout class (wide | tablet | phone) and the battle hotkeys (onKey).
 // mountHud(parent, ctx, opts) -> { root, update(hud, dt, force), destroy(), onKey(e), modules, hide(b), toggleHide(), isHidden() }
-import { h, applyTheme, disposer, isTyping, sfx, camMode } from './_dom.js';
+import { h, applyTheme, disposer, isTyping, sfx, camMode, layoutOf } from './_dom.js';
 import { isAction, FIXED } from './_bindings.js';
 import * as armymeter from './armymeter.js';
 import * as timer from './timer.js';
@@ -25,24 +25,19 @@ import * as helpoverlay from './helpoverlay.js';
 export const HUD_PARTS = [armymeter, timer, objective, mutators, speed, cameramodes, killfeed, announcer, selection, powers, orders, typecounts, minimap, bubbles, takecommand, photo, teaching, helpoverlay];
 const SLOTS = ['top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'];
 
-function layoutOf(ctx) {
-  let w = window.innerWidth, hh = window.innerHeight;
-  try { const v = ctx.platform && ctx.platform.viewport && ctx.platform.viewport(); if (v && v.w) { w = v.w; hh = v.h; } } catch (e) { /* use window */ }
-  if (Math.min(w, hh) < 520 || w < 640) return 'phone';
-  if (w < 1100) return 'tablet';
-  return 'wide';
-}
-
 export function mountHud(parent, ctx, opts) {
   const o = opts || {};
   const d = disposer();
   const root = h('div', { class: 'vw-hud', 'data-hud-root': '', 'data-layout': layoutOf(ctx) });
   const slots = {};
   const world = h('div', { class: 'hud-world' });
-  root.appendChild(world); slots.world = world;
-  for (const s of SLOTS) { slots[s] = h('div', { class: 'hud-slot hud-' + s }); root.appendChild(slots[s]); }
+  slots.world = world;
+  for (const s of SLOTS) slots[s] = h('div', { class: 'hud-slot hud-' + s });
+  const top = h('div', { class: 'hud-top' }, slots['top-center'], slots['top-right']);
+  const bottom = h('div', { class: 'hud-bottom' }, slots['bottom-left'], slots['bottom-center'], slots['bottom-right']);
   const overlay = h('div', { class: 'hud-overlay' });
-  root.appendChild(overlay); slots.overlay = overlay;
+  root.append(world, top, bottom, overlay);
+  slots.overlay = overlay;
   const chip = h('div', { class: 'hud-hidden-chip', hidden: true, role: 'status' }, h('span', { text: 'HUD hidden. Tab brings it back.' }));
   overlay.appendChild(chip);
   parent.appendChild(root);
@@ -82,12 +77,23 @@ export function mountHud(parent, ctx, opts) {
   let lastHover = null;
   d.on(root, 'pointerover', (e) => { const b = e.target.closest && e.target.closest('.hud-btn, .hud-power, .hud-order'); if (b && b !== lastHover) { lastHover = b; sfx(ctx, 'ui_hover', { vol: 0.25 }); } else if (!b) lastHover = null; });
 
+  /** Escape belongs to the HUD while something HUD-level is open: help overlay, aim mode, photo mode, Take Command. Returns true when it handled it. */
+  function consumeEscape() {
+    const m = modules;
+    if (m.help && m.help.isOpen()) { m.help.show(false); return true; }
+    if (m.powers && m.powers.isAiming()) { m.powers.cancel(); return true; }
+    if (m.photo && m.photo.isActive()) { if (m.cameramodes) m.cameramodes.set('orbit'); return true; }
+    if (lastHud && lastHud.possess && m.takecommand) { m.takecommand.exit(); return true; }
+    return false;
+  }
+
   const hudApi = {
+    consumeEscape,
     root, modules, slots, layers, menuOpen,
     hide, isHidden: () => hidden, toggleHide: () => hide(!hidden),
     update(hud, dt, force) {
       const t = performance.now();
-      if (!force && t - last < (o.interval || 95)) return false;
+      if (!force && t - last < (o.interval || 100)) return false;
       last = t; lastHud = hud;
       if (!hud) return false;
       for (let i = 0; i < list.length; i++) { const m = list[i]; if (!hidden || m.keep) m.api.update(hud, dt); }
@@ -97,17 +103,13 @@ export function mountHud(parent, ctx, opts) {
     onKey(e) {
       if (isTyping(e) || e.ctrlKey || e.metaKey || e.altKey) return false;
       const m = modules, s = ctx.settings, code = e.code;
+      if ((code === 'Space' || code === 'Enter') && e.target && e.target.tagName === 'BUTTON') return false;      // a focused button keeps its own Space / Enter
       const eat = () => { e.preventDefault(); return true; };
       const help = m.help;
       if (help && help.isOpen()) { if (code === 'Escape' || code === FIXED.help || e.key === '?') { help.show(false); return eat(); } return false; }
       if (code === FIXED.help || e.key === '?') { if (help) { help.show(true); return eat(); } return false; }
       if (code === FIXED.hide_hud) { hide(!hidden); return eat(); }
-      if (code === 'Escape') {
-        if (m.powers && m.powers.isAiming()) { m.powers.cancel(); return eat(); }
-        if (m.photo && m.photo.isActive()) { m.cameramodes && m.cameramodes.set('orbit'); return eat(); }
-        if (lastHud && lastHud.possess && m.takecommand) { m.takecommand.exit(); return eat(); }
-        return false;
-      }
+      if (code === 'Escape') return consumeEscape() ? eat() : false;
       if (isAction(e, s, 'pause')) { if (m.speed) { m.speed.togglePause(); return eat(); } }
       if (isAction(e, s, 'slower')) { if (m.speed) { m.speed.slower(); return eat(); } }
       if (isAction(e, s, 'faster')) { if (m.speed) { m.speed.faster(); return eat(); } }

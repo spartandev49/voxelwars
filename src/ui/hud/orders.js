@@ -13,15 +13,16 @@ const ORDERS = [
 
 export function mount(parent, ctx) {
   const btns = ORDERS.map((o) => h('button', { class: 'hud-order', type: 'button', id: 'hud-order-' + o.id, 'data-order': o.id, 'aria-pressed': 'false', 'aria-label': o.label + ' order', 'data-tip': o.tip, 'data-tip-pos': 'above' }, icon(o.id), h('span', { class: 'hud-order-label', text: o.label })));
-  const scope = h('span', { class: 'hud-orders-scope', text: 'All squads' });
-  const el = h('div', { class: 'hud-orders hud-panel', 'data-hud': 'orders', role: 'toolbar', 'aria-label': 'Orders' }, scope, h('div', { class: 'hud-orders-row' }, btns));
+  const scope = h('span', { class: 'hud-orders-scope', text: 'All', 'data-tip': 'Orders apply to: all squads', 'data-tip-pos': 'above' });
+  const el = h('div', { class: 'hud-orders hud-panel', 'data-hud': 'orders', role: 'toolbar', 'aria-label': 'Orders' }, scope, btns);
   parent.appendChild(el);
   let sel = null, current = null, disabled = false, hover = null;
 
   function issue(i) {
     const o = ORDERS[i];
     if (disabled) { sfx(ctx, 'ui_error', { vol: 0.4 }); return false; }
-    const cmd = { type: 'command', order: o.id, squad: sel && sel.squad != null ? sel.squad : 'all', team: 0 };
+    const own = sel && sel.team !== 1;
+    const cmd = { type: 'command', order: o.id, squad: own && sel.squad != null ? sel.squad : 'all', team: 0 };
     if (o.id === 'focus') {
       const t = (sel && sel.team === 1) ? sel : (hover && hover.team === 1 ? hover : null);
       if (!t) { ctx.nav && ctx.nav.toast && ctx.nav.toast('Focus needs a target: select or hover an enemy first.', { kind: 'info' }); sfx(ctx, 'ui_error', { vol: 0.4 }); return false; }
@@ -41,13 +42,15 @@ export function mount(parent, ctx) {
     el,
     issue: (id) => issue(ORDERS.findIndex((o) => o.id === id)),
     update(hud) {
-      sel = hud.selection && hud.selection.team === 0 ? hud.selection : (hud.selection || null);
+      sel = hud.selection || null;
       hover = hud.hover || null;
       disabled = !!hud.possess;
       setCls(el, 'is-disabled', disabled);
       const c = hud.orders && hud.orders.current;
       if (c !== undefined && c !== current) { current = c || null; paint(); }
-      setText(scope, sel && sel.team === 0 ? 'Squad: ' + (sel.squadName || sel.name || 'selected') : 'All squads');
+      const sq = sel && sel.team !== 1 && sel.squad != null;
+      setText(scope, sq ? 'Squad' : 'All');
+      setAttr(scope, 'data-tip', sq ? 'Orders apply to the selected squad: ' + (sel.squadName || sel.name || 'selected') : 'Orders apply to: all squads');
     },
     destroy() { el.remove(); },
   };

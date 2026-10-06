@@ -43,6 +43,15 @@ export function rangedClip(def) {
   return 'throw';
 }
 
+const RIG_BY_ID = { war_elephant: 'elephant1', sacred_chicken: 'chicken1', catapult: 'catapult1', ballista: 'ballista1', trojan_horse: 'trojan1', chariot_archer: 'chariot1' };
+/** Rig id used to look up rig-specific clip timing (death clip length). */
+export function defRig(def) {
+  if (def._rig) return def._rig;
+  let r = RIG_BY_ID[def.id] || (def.model && def.model.rig) || def.rig;
+  if (!r) r = (def.role === 'beast' || def.tags.includes('animal')) ? 'quad1' : 'hum1';
+  def._rig = r; return r;
+}
+
 export function setAnim(u, clip, rate) {
   const a = u.anim;
   if (a.clip === clip) { a.rate = rate; return; }
@@ -73,7 +82,7 @@ export function healUnit(w, u, amount) {
  * @param o Hit descriptor. Returns final damage dealt (0 if blocked).
  */
 export function applyDamage(w, src, dst, base, o) {
-  if (!dst.alive) return 0;
+  if (!dst.alive || dst.state === ST.DOWN) return 0;       // downed (reviving) units are untouchable
   const type = o.type;
   const mut = w.mut;
   let raw = base * (0.9 + w.rng.next() * 0.2);
@@ -138,6 +147,7 @@ export function applyDamage(w, src, dst, base, o) {
     dst.kx += dx / l * kb; dst.kz += dz / l * kb;
     if (kb > G.staggerKb && dst.hp > 0 && dst.state !== ST.STUN && dst.mass < 6) staggerUnit(w, dst, Math.min(0.9, 0.2 + kb * 0.04));
   }
+  if (mut && mut.ragdoll && dst.hp > 0 && !o.dot) staggerUnit(w, dst, 0.5);
   if (type === 'blunt' && o.kb > 0 && fin > dst.hpMax * 0.1 && dst.hp > 0 && dst.mass < 6 && !o.dot && !o.aoe) staggerUnit(w, dst, 0.2);
   // events
   if (!o.dot) {
@@ -186,12 +196,17 @@ export function killUnit(w, u, src, cause, o) {
   // death clip + fling
   const sp = Math.hypot(u.kx, u.kz);
   let clip = 'death_back';
+  if (u.se[SE.STONE] > 0) cause = 'stone';
   if (cause === 'stone') clip = 'stun';
   else if (cause === 'kick' || sp > 6) { clip = 'death_spin'; u.deathKind = 2; }
   else if (src) { const dx = src.x - u.x, dz = src.z - u.z; clip = (dx * Math.sin(u.heading) + dz * Math.cos(u.heading)) >= 0 ? 'death_back' : 'death_front'; }
   if (u.def.role === 'monster' || u.def.tags.includes('large')) clip = 'death_back';
   u.anim.dir = Math.atan2(u.kx, u.kz);
   setAnim(u, clip, 1);
+  // corpse bookkeeping for the renderer (D5): cause, launch velocity, and a per-unit linger long enough for the real death clip
+  u.deathCause = cause;
+  u.deathLinger = Math.max(G.deathLinger, ClipLib.dur(clip, defRig(u.def)) + 0.2);
+  u.ky = u.deathKind === 2 ? Math.min(7, sp * 0.4) : 0;
   u.state = ST.IDLE; u.stateT = 0; u.dvx = 0; u.dvz = 0;
   const p = w.P.unit_kill;
   p.src = src ? src.id : 0; p.dst = u.id; p.srcDef = src ? src.def.id : ''; p.dstDef = u.def.id; p.srcTeam = src ? src.team : -1; p.dstTeam = u.team; p.friendly = friendly; p.cause = cause;
@@ -235,9 +250,21 @@ export function startRanged(w, u) {
   setAnim(u, clip, rate);
 }
 
+function hasBreachReach(u) {
+  const p = u.breach, d = Math.sqrt((p.x - u.x) ** 2 + (p.z - u.z) ** 2) - u.radius - p.radius;
+  const t = u.target, td = t && t.alive ? Math.sqrt((t.x - u.x) ** 2 + (t.z - u.z) ** 2) - u.radius - t.radius : 1e9;
+  return d <= u.def.melee.range + 0.5 && d <= td;
+}
+
 /** The damage moment of a melee windup. */
 export function resolveMelee(w, u) {
   const t = u.target, m = u.def.melee;
+  if ((!t || !t.alive || (u.breach && !u.breach.dead && u.hold === true && hasBreachReach(u))) && u.breach && !u.breach.dead) {
+    // breaching: damage the obstacle (blunt/heavy weapons are better at it)
+    const p = u.breach, mul = (m.type === 'blunt' ? 1.5 : m.type === 'slash' ? 1.0 : 0.7) * (u.mass >= 6 ? 2.0 : 1.0);
+    w.hurtProp(p, m.dmg * mul * u.mDmg);
+    return;
+  }
   if (!t || !t.alive) return;
   const dx = t.x - u.x, dz = t.z - u.z, dist = Math.hypot(dx, dz);
   const reach = m.range + u.mReach + u.radius + t.radius;

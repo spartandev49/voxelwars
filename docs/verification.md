@@ -1,7 +1,7 @@
-# verification.md — acceptance criteria (written BEFORE building; every gate cites these)
+# verification.md — acceptance criteria (written BEFORE building; every gate cites these; v1.2: patched for review round 3, written against spec.md v1.2 and docs/decisions_r3.md D11)
 
 Legend: **How** = `N` Node test, `B` browser smoke (Playwright/headless Chromium, no autoplay flag), `V` visual (screenshot/contact sheet read by a human-equivalent reviewer against a written checklist), `M` metric script, `R` manual review of code/docs, `H` honest limitation (cannot be verified here; declared in the final message).
-Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence is recorded in `docs/verification_report.md`.
+Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence is recorded in `docs/verification_report.md`. A criterion that names a **negative control** (NC) is only accepted when QA has recorded the pass-then-fail pair (Q7 lists them).
 
 ## B. Boot, packaging, resilience
 | id | criterion | how | gate |
@@ -13,11 +13,12 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | B5 | With `three.min.js` blocked on cdnjs the loader falls back to jsDelivr then unpkg; with all three blocked a full-screen fatal panel appears with cause text and a working Copy button (no white screen) | B | T0 |
 | B6 | With WebGL2 disabled the fatal panel names WebGL2 as the cause and offers Safe mode instructions | B | T0 |
 | B7 | A shader/compile error is reported in Diagnostics (not swallowed) — verified by an injected bad material in a test build; compile warm-up yields per material (no single task > 600 ms excluding GPU compile) | B | T1 |
-| B8 | `window.__vw` exists with `step/seed/metrics/goto/state/audio/clock` | B | T0 |
+| B8 | `window.__vw` exists with `step/seed/metrics/goto/state/audio/clock/world/engine/game` (spec §0.11); `world`, `engine`, `game`, `state` are live getters: after `quick()` + `fight()` + `step(30)`, `__vw.world.tickN` has advanced and `__vw.state` changed (a copied snapshot would stay frozen: NC) | B | T0 |
 | B9 | Page never calls `alert/confirm/prompt` (grep) and never writes user strings with `innerHTML` (grep + fuzz) | N | T0 |
-| B10 | Artifact page (fragment) <= 3 MB (budget: JS + CSS + embedded core SFX <= 450 KB raw + inline manifest); supporting files (audio/vfx) published separately, <= 255 files per publish call, total <= 40 MB; page itself well under the 16 MB limit | N | T0 |
+| B10 | Artifact page (fragment) <= 3 MB (budget: JS + CSS + embedded core SFX <= 450 KB raw + the inlined UAL clip JSON (about 340 KB) + inline manifest); supporting files (audio/vfx) published separately, <= 255 files per publish call, total <= 40 MB; page itself well under the 16 MB limit | N | T0 |
 | B11 | A republish keeps saves: save fixtures from build N load in build N+1 (migration test) | N | T2 |
 | B12 | `claude.hot.snapshot/ready` wiring: battle setup survives a hot reload (simulated by calling the snapshot/ready path) | B | T3 |
+| B13 | Diagnostics beacon (spec §14; owner-only, opt-out setting `beacon`): with the setting on, one `diag/*` document (<= 8 KB, no free-text user data) is written per visit through a stubbed `db` capability; with it off, zero writes (NC); after the first owner visit of the hosted page the document is read back with `ArtifactData` and attached to `verification_report.md` | B + H | T3 |
 
 ## R. Rendering
 | id | criterion | how | gate |
@@ -29,7 +30,7 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | R5 | Shadows: texel-snapped (camera pan of 1 u changes shadow pixels by < 1% of edge pixels), no acne on voxel faces at 3 sun angles | V | T1 |
 | R6 | Units follow `cellHeight` smoothly (max rise 12 u/s) and never sink below it over a 60 s AI battle on 3 arenas (clearance >= 0) | M | T0 |
 | R7 | Crater: boulder impact deforms terrain, mesh rebuilds for dirty chunks only (<= 4 chunks), nav updates within one second | N/B | T1 |
-| R8 | Debris/particle/number pools never exceed caps; cap values per tier match spec (6000 default at Marble); battle end cleans up | M | T1 |
+| R8 | Debris/particle/number pools never exceed caps; cap values per tier equal `engine.js QUALITY` and spec §2 (debris + particles: Potato 1,200 + 600, Papyrus 3,500 + 1,500, Marble 8,000 + 3,500, Olympian 16,000 + 7,000; CubeFX cap = the sum); battle end cleans up | M | T1 |
 | R9 | 20 consecutive battles: `renderer.info.memory.geometries/textures` stable (±5%), JS heap growth < 15% | B/M | T3 |
 | R10 | Context loss/restore rebuilds scene without exception | B | T3 |
 | R11 | Quality tiers produce different settings (pixel ratio, shadow res, post, clouds, debris cap) and auto-scale hysteresis never changes tier twice within 60 s | M | T1 |
@@ -45,39 +46,39 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | S1 | Sim runs headless in Node; `world.tick()` deterministic: 3 runs with the same seed produce identical hash after 2000 ticks | N | T0 |
 | S2 | RNG streams separate; `Math.random` absent in `sim/` and `content/` (lint) | N | T0 |
 | S3 | Per-tick CPU at 150/300/500/1000 units: <= 1.2 / 2 / 3 / 6 ms (Node proxy), heap growth over 10k ticks < 1 MB | M | T1 |
-| S4 | Damage/armor/shield/charge/brace/backstab/knockback/trample/friendly-fire formulas each have a unit test matching spec §7.1 | N | T1 |
-| S5 | Overlap ratio (units closer than 0.8*(r1+r2)) < 3% averaged over a 60 s 150v150 battle (War preset ≈ 15,000 per team) | M | T0 |
+| S4 | Damage/armor/shield/charge/brace/backstab/knockback/trample/friendly-fire formulas each have a unit test matching spec §8.1 | N | T1 |
+| S5 | Overlap ratio (units closer than 0.8*(r1+r2)) < 3% averaged over a 60 s 200v200 battle (War preset: 20,000 per team ≈ 200 units, spec §2) | M | T0 |
 | S6 | In-contact idle fraction (melee unit within range of an enemy but not attacking/moving) < 3% | M | T1 |
 | S7 | Heading flips (>90° reversal within 0.5 s) < 0.15 per unit-second | M | T1 |
 | S8 | Stuck units (displacement < 0.5 u over 6 s while having a target and not engaged) < 1% | M | T1 |
 | S9 | No grounded, non-knockback unit stands inside a blocking prop footprint, deep water or lava at the end of any tick (airborne units from geyser/launch excluded) over 20 battles; knockback never moves a unit onto a non-walkable cell | M | T1 |
 | S10 | Flow field routes around the Thermopylae wall, the Nile river (via the ford) and Styx lava (via bridges): both armies reach each other in each | N | T1 |
-| S11 | Termination fuzz: 2,000 random matchups x random arenas end within 6 sim-minutes (stalemate watchdog + governor) | M | T1 |
+| S11 | Termination fuzz: of 2,000 random matchups x random arenas, >= 99% end with `reason != 'time'` (elimination, rout, objective or the stalemate watchdog's intervention) within 6 sim-minutes; the `time` reason fires for every battle at `timeLimit`, so ending at all proves nothing. NC: with `rules.timeLimit = 20` the criterion must fail | M | T1 |
 | S12 | Battle length distribution for default armies: median 60-120 s at 1x, 90th percentile <= 180 s | M | T1 |
 | S13 | Archers hold at 0.85*range and kite when enemies are inside `minRange`; cavalry prefer archers/siege; spears prefer cavalry (target-score unit tests + behaviour test) | N | T1 |
 | S14 | Spear wall beats cavalry charge: 20 hoplites (holding) vs 10 companion cavalry (charge): cavalry loses >= 70% in 20 seeds; shield wall blocks >= 60% of frontal arrows | N | T1 |
 | S15 | Morale/rout: army collapse below 20% triggers rout events; routed units flee and do not attack | N | T1 |
-| S16 | Abilities (18 classes): each has a unit test of effect + cooldown + AI cast rule + telegraph event emitted | N | T1 |
+| S16 | Abilities (spec §6.1: 20 classes + 11 modifiers = 31 <= 32): each cast class has a unit test of effect + cooldown + AI cast rule + telegraph event emitted; `crowd_favorite` (unit flag), `bribe` (ranged param) and each of the 11 modifiers have an effect test with visible feedback; the registry holds <= 32 ids | N | T1 |
 | S17 | Objectives: eliminate, kill_general, hold_hill, protect_vip, survive_waves, destroy each complete and fail correctly (unit tests with scripted worlds) | N | T1 |
 | S18 | God powers: each applies its effect, telegraphs, respects cooldown | N | T1 |
 | S19 | Time model: 4x speed, pause, hit-stop, catch-up clamp (<= 5 ticks/frame), injectable clock | N | T0 |
 | S20 | Army generator respects budget (±1 cheapest unit), zone bounds, legality, 16-type cap; all 6 styles produce different compositions | N | T1 |
 | S21 | Difficulty tiers differ by behaviour metrics (reaction delay, focus-fire rate, ability use) and by win-rate bands of `normal` army-gen vs the fixed reference bot `counter`: easy-AI < 35%, normal-AI 45-55%, hard-AI > 65% for equal-cost armies, n >= 200 | M | T3 |
-| S22 | Mirror fairness on each SYMMETRIC arena (marathon, colosseum, persepolis, arenalab, oasis, olympus, cyclops): equal armies, n >= 400 battles with sides swapped, both sides' win rate within 45-55%; ASYMMETRIC arenas (troy, thermopylae, nile, carthage, styx, alpine, giza, teutoburg) are exempt but must stay within 35-65% | M | T1 |
+| S22 | Mirror fairness (equal armies, n >= 400 battles per arena with sides swapped): every arena NOT on the exemption list of spec §13 (marathon, colosseum, persepolis, arenalab, oasis, olympus, cyclops) has both sides' win rate within 45-55%; the 8 exempt asymmetric arenas of spec §13 (troy, thermopylae, nile, carthage, styx, alpine, giza, teutoburg) must stay within 35-65%. The list lives only in spec §13 (spec/world.md §1 references it). NC: a biased zone offset on marathon must fail the 45-55% band | M | T1 |
 | S23 | **Fun metrics** over 200 default battles per setup: lead changes >= 1 in >= 40% of battles; steamroll (winner keeps > 80% of cost) <= 20%; close finish (winner keeps < 40%) >= 25%; no 20 s window without a kill (dead air); announcer lines 8-15 per battle; gag events >= 1 in >= 60% of 'chaos' battles; distributions reported | M | T3 |
-| S24 | Sim identity: unit ids are never reused over a 10-minute battle with 400 spawns/deaths; `world.dying` units keep rendering their death clip for 1.6 s; arena is cloned on construction (mutating the world's arena never changes the source) | N | T0 |
-| S25 | Knockback: a normal hoplite hit moves a hoplite <= 0.7 u; a charge hit 1.5-3 u; the Spartan kick 8 ± 1 u; clamp at 8 u for any hit (unit tests) | N | T1 |
+| S24 | Sim identity: unit ids are never reused over a 10-minute battle with 400 spawns/deaths; `world.dying` units keep their death clip for `deathLinger = max(1.6, deathClipDuration(rig) + 0.2)` s (hum1 `death_back` 2.43 s -> 2.63 s) and `unit_corpse_done` fires only after that; arena is cloned on construction (mutating the world's arena never changes the source) | N | T0 |
+| S25 | Knockback (unit tests, crits disabled, mass-1 target facing the attacker), three classes: **infantry** hit <= 0.7 u (hoplite -> hoplite about 0.5 u); **cavalry charge** hit 1.5-3 u (companion_cavalry, equites, cataphract, camel_rider, numidian, hannibal); **monster** hit 3-5 u (war_elephant, minotaur, cyclops); the Spartan kick 8 ± 1 u; no hit exceeds 8 u (clamp 48 u/s). With crits enabled the infantry bound is 1.0 u | N | T1 |
 | S26 | Input log determinism: replaying the same tick-stamped `world.input` list produces the identical state hash; unstamped calls are rejected in tests | N | T1 |
 | S27 | Breach: when the only route to the enemy passes a destructible wall/gate, armies attack it and the battle still ends (Troy test with gate_door x2) | N | T1 |
 
 ## A. Animation
 | id | criterion | how | gate |
 |---|---|---|---|
-| A1 | Clip format validator: all clips have `frames`, `parts` for valid part ids, finite numbers, meta hit/recover inside range | N | T0 |
-| A2 | Humanoid minimum clip set (spec §6) exists and plays on every humanoid; missing-clip fallback logs an error in tests (never in production) | N | T0 |
+| A1 | Clip format validator (spec §7): every registered clip has `frames > 0`, `fps`, `rig`, and `q` rows (euler rx,ry,rz per frame, length `3*frames`) only for part ids that exist in the rig (hum1: the 16 `DIM` ids; other rigs: spec/rigs.md), finite numbers, `t`/`s`/`root`/`aim` arrays of the right length, `meta.hitFrame <= meta.recoverFrame` inside `[0, frames-1]`; the UAL container `humanoid_clips.json` converts through `convertUAL` without error | N | T0 |
+| A2 | Humanoid minimum clip set (spec §7: every sim-requested humanoid id) exists and plays on every humanoid; missing-clip fallback logs an error in tests (never in production) | N | T0 |
 | A3 | Retargeted clips adopted only if the filmstrip review passes: no limb flips, joint ranges sane; foot slide <= 15% of stride (single threshold with A4); rejected clips replaced by authored ones | V/M | T0 |
-| A4 | Walk/run playback rate matches speed: foot slide <= 15% of stride at the unit's walk/run speed (same metric as A3) | M | T1 |
-| A5 | Damage lands within 1 tick of the clip's `hitFrame` (test per attack style) | N | T1 |
+| A4 | Locomotion matches speed (same foot-slide metric as A3): for every infantry def, at its walk speed and at `speed * runMul`, foot slide <= 15% of stride AND steps/s within 1.5-3.5 (cadence from distance travelled and the rig's own `speedRef`, spec §7.3); every non-hum rig meets the slide bound at its own `meta.gait` speeds | M | T1 |
+| A5 | The clip's `meta.hitFrame` coincides with the baked tip-speed peak: `abs(hitFrame - peakSpeedFrame) <= 2` frames for every strike/shoot/throw clip, where `peakSpeedFrame` is `meta.peakSpeedFrame` (retargeted clips) or the frame of maximum weapon-tip speed measured with `anim/analysis.js` (authored clips). The sim's `hitAt = hit / rate` is not evidence (it is the same number). NC: shift a clip's `hitFrame` by 6 frames, the test must fail | N | T1 |
 | A6 | Crossfade: no pose popping > 0.35 rad per frame at clip switches (test over a random switch sequence) | M | T1 |
 | A7 | Death: all unit kinds play a death clip then burst into debris sampled from their own palette (20-40 cubes by size); no body left T-posed | V/B | T0 |
 | A8 | Beast/siege/mount rigs: gallop/walk/trample/throw clips authored; rider stays on the saddle (attach error < 0.05 u) | V/M | T1 |
@@ -87,9 +88,9 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 ## U. Units, content, balance
 | id | criterion | how | gate |
 |---|---|---|---|
-| U1 | 43 UnitDefs validate against the schema; ids unique snake_case; every field in spec/units.md present | N | T1 |
-| U2 | Every humanoid compiles via `compileSoldier` to a ModelDef <= 48 parts (<= 24 for non-mounted), bounds within the canonical grids, height 2.4-3.4 u including crest (giants excepted), voxel count 600-6000, no part penetrates the ground at idle (offhand bottom >= ground) | N | T1 |
-| U3 | >=30% team-tinted visible surface per soldier (script on 3 projections); team-tint voxels exist on every unit | M | T1 |
+| U1 | The 43 UnitDefs of `buildContent().defs` validate against the UnitDef schema of spec §6 after the `normalizeDef` defaults (a field may be absent only where `normalizeDef` supplies it); required: id, name, faction, role, cost, hp, speed, model, text; ids unique snake_case | N | T1 |
+| U2 | Every humanoid compiles via `compileSoldier` to a ModelDef of <= 16 parts (the `DIM` ids), every composed model (mounted, chariot, elephant + crew, siege + crew) to <= 48 parts (`VoxSkin MAX_PARTS`), bounds within the canonical grids, height 2.4-3.4 u including crest (giants excepted), voxel count 600-6000; at the rest pose no weapon or offhand voxel is below y = 0 and the offhand does not poke through the back of the body (spec §4.1; overlap with torso/forearm is allowed) | N | T1 |
+| U3 | Team tint measured by `tools/tintcheck.mjs`: humanoids >= 30% pooled over front/back/side in BOTH the rest and the READY pose and >= 22% in every projection; non-humanoids (animals, monsters, siege) >= 15% (same projector, `--min 0.15`); `F_TEAM` voxels exist on every unit; every shield carries a tint band >= 3 voxels wide | M | T1 |
 | U4 | Each unit has blurb, lore, >=3 death quotes, >=2 taunts, codex joke, sfx families that exist in the cue map | N | T1 |
 | U5 | Equal-cost mass battles: no unit has a win-rate above 62% vs the field (excluding bosses vs low-tier by design); every non-boss unit has a counter (≥1 unit beats it at 60%+ at equal cost) and a prey | M | T3 |
 | U6 | Duels sanity: hoplite beats peltast and archer in melee; cavalry beats archers; spear beats cavalry; elephant loses to massed spears + fire but beats equal-cost infantry blobs in open; catapult kills clusters | M | T3 |
@@ -100,9 +101,9 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 ## W. World, arenas, props, campaign
 | id | criterion | how | gate |
 |---|---|---|---|
-| W1 | 14 arena presets generate deterministically for 3 sizes; zones never underwater; path A->B exists with radius 0.45 | N | T1 |
+| W1 | 14 arena presets (+ `arenalab`, `random`) generate deterministically for 3 sizes; zones never underwater; a path A->B exists on the nav grid for unit radius 0.45 AND 0.55 (1 u grid with soft blockers) with the real `PROP_CATALOG` footprints stamped (`tests/nav.test.mjs`; stand-in props are not accepted). NC: close a corridor to the narrower radius, the test must fail | N | T1 |
 | W2 | Each preset passes the look gate: top-down + 2 oblique screenshots reviewed; no floating props, no z-fighting, props on ground | V | T1 |
-| W3 | Props: 40 catalog entries with models, radius, hp stages; destroyed props leave rubble and update nav once; destruction emits events | N/V | T1 |
+| W3 | Props: 41 catalog entries (incl. `gate_door`) with models, radius, hp stages; destroyed props leave rubble and update nav once; destruction emits events | N/V | T1 |
 | W4 | Hazards (6 kinds) each telegraph + effect + AI avoidance verified | N | T1 |
 | W5 | Weather modifiers: rain halves burn, snow -10% speed, sandstorm spread x1.5 (unit tests) | N | T1 |
 | W6 | Campaign: 9 missions load, objectives work, stars computed; scripted bots over 40 seeds each land in win-rate bands (greedy 25-75%, counter 50-90%, turtle 10-60%) per mission (report in verification_report.md) | M | T1 |
@@ -115,7 +116,7 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | AU1 | Manifest ledger: every shipped file has author, title, source URL, licence (CC0/CC-BY only), edit notes; CREDITS generated; build fails on a missing row | N | T0 |
 | AU2 | With a stubbed `AudioContext` that starts `suspended` and resumes only on a synthetic user gesture: music bus RMS stays 0 before the gesture and > 0.001 within 3 s after it; **negative control**: remove the gesture gate => the test fails | B | T0 |
 | AU3 | Every cue family resolves to ≥1 real asset or a flagged synth; coverage matrix doc lists synth-only families with justification | N | T1 |
-| AU4 | Core pack embedded works with fetch blocked (offline test): hits, UI, horns, death sounds, one music track play | B | T0 |
+| AU4 | With `fetch` blocked (offline test): hits, UI, horns and death sounds play from the embedded core pack; music (fetched in the online build) falls back to the synthesized ambient track, and Diagnostics flags it `synth` (spec §10) | B | T0 |
 | AU5 | Voice budget 32 enforced; scripted 150v150 battle: no more than 32 voices, voice-steal logic prefers heroes/near; rate limits hold | B/M | T1 |
 | AU6 | Offline mix render of a scripted battle: master true-peak < -1 dBFS, 0 clipped samples, loudness -18 ± 3 LUFS (ffmpeg ebur128) | M | T1 |
 | AU7 | Music: one track per battle chosen by arena theme; intensity changes lowpass/gain smoothly; crossfade loop with no gap > 20 ms (validator) | M | T1 |
@@ -128,8 +129,8 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 ## H. Humor and copy
 | id | criterion | how | gate |
 |---|---|---|---|
-| H1 | ≥90 announcer lines across all categories (≥3 per category), three voices each used 25-45% | N | T1 |
-| H2 | Repetition sim (20 simulated minutes, 10 recorded event logs): <8% repeats within 5 min, all categories hit | M | T3 |
+| H1 | ≥90 announcer lines across all categories (≥3 per category; slotted templates count, H8 requires ≥120 templates in total), three voices each used 25-45% | N | T1 |
+| H2 | Repetition sim (60 simulated minutes, the same horizon as H8; 10 recorded event logs): <8% repeats within 5 min, all categories hit | M | T3 |
 | H3 | All units have complete text (U4); ≥40 tips; 24 achievements implemented with working tests; ≥60 epithets | N | T1 |
 | H4 | Sensitivity sweep: grep list + manual review: no ethnic/religious/stereotype punchlines; recorded | R | T3 |
 | H5 | 14 systemic gags each demonstrably fire in a scripted scenario (event emitted + clip + cue + announcer line) | N/B | T1 |
@@ -158,7 +159,7 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | UI16 | Results screen shows 3 generated lessons per defeat/victory from the event log (`sim/lessons.js` unit-tested on recorded logs); placement shows the Scout report with counter chips | B/N | T1 |
 | UI17 | Battle choreography: pre-battle stand-off (camera establishing shot, banners, Brutus intro), finish (winners cheer, losers rout/sit, slow-mo on the last kill), results orbit; reduce-motion variants; filmstrip reviewed | V | T1 |
 | UI18 | Mission 1 teaching beats run with a visible Skip; persona run reaches a deliberate counter-pick within 3 minutes | B | T1 |
-| UI19 | Mutators (>= 8) apply as data-only rule multipliers, unlock by stars, show in the rules tablet; Daily Skirmish is deterministic per date and shows a copyable result string | N/B | T1 |
+| UI19 | Mutators (>= 8) apply as data-only rule multipliers, unlock by stars, show in the rules tablet; Daily Skirmish is deterministic per date and shows a copyable result string; the 6 Puzzle Challenges (data-only missions: goal, par, budget) load, complete and fail correctly in scripted worlds | N/B | T1 |
 
 ## E. Editors
 | id | criterion | how | gate |
@@ -170,23 +171,24 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 | E5 | Voxel painter: pencil/erase/paint/fill/line/box/eyedropper/mirror/undo/redo/slice view/3D view via pointer sequences; painted data persists through save/load and appears on the battlefield model | B | T2 |
 | E6 | Custom soldier fields in battle: appears in palette, spawns, fights, dies with debris from its painted palette, announcer uses its name/quotes | B | T2 |
 | E7 | Hostile imports: 1,000 mutated/corrupt share codes never crash, never produce XSS (`<img onerror>` names rendered as text), clamp or reject with a human message | N | T2 |
-| E8 | Share-code round trip for 1,000 random arenas/soldiers; code length ≤ 60 KB; CRC detects single-bit corruption; pure-JS fallback works without `CompressionStream` | N | T2 |
+| E8 | Share-code round trip for 1,000 random arenas/soldiers; code length ≤ 38,000 characters (size classes S ≤ 1.8k, M ≤ 8k, L ≤ 38k; larger goes to a file); CRC detects single-bit corruption; pure-JS fallback works without `CompressionStream` | N | T2 |
 | E9 | Unlockable silly parts remain locked until the campaign reward and then appear | N/B | T2 |
 | E10 | Three share channels (text code, file via `downloads.save`/file input, PNG card) parse through one validator; round-trip fuzz on all three | N | T2 |
 
 ## P. Persistence
 | id | criterion | how | gate |
 |---|---|---|---|
-| P1 | Settings, progress, arenas, soldiers, armies persist across reload; with storage blocked the game runs and shows the "Not saving" indicator | B | T1 |
+| P1 | Settings, progress, lifetime stats, arenas, soldiers, armies, survival, daily and seen-hints persist across reload; with storage blocked the game runs and shows the "Not saving" indicator | B | T1 |
 | P2 | Quota test: fill storage, saving shows the quota-exceeded modal with export/delete options and loses nothing | B | T2 |
 | P3 | Schema versions + migrations tested with fixtures; tombstoned ids map to "Mystery Goat" | N | T2 |
 | P4 | Settings > Data: Export all / Import all works via file and text fallback; 'Not saving' indicator appears with storage blocked (device-local-by-design decision recorded) | B | T1 |
+| P5 | Editor drafts autosave every 20 s to `vw.draft.<editor>` and are offered back after a reload (arena builder, workshop, painter); a saved item clears its draft | B | T2 |
 
 ## PF. Performance (CPU-side, as measured here; GPU frame rate is `H`)
 | id | criterion | how | gate |
 |---|---|---|---|
 | PF1 | Frame CPU (sim ticks + anim + upload + HUD) <= 12 ms at 300 units **at 1x speed** (at 4x the budget is 4 ticks: state the measured value, `H` for real devices) | M | T1 |
-| PF2 | Triangles per frame at Marble, 300 near + 200 far units: near units use full mesh, far units the 2x-downsampled LOD (<= 30% of quads); units <= 1.2 M, terrain <= 0.6 M (chunk culling + LOD) | M | T1 |
+| PF2 | Triangles per frame, per tier: `near*trisNear + far*trisFar <= triBudget(tier)` with the measured per-model counts (`VoxSkin.triangles` / `modelStats`; far = the 2x-downsampled LOD, <= 30% of the quads). Reference rows: **Marble 120 near + 380 far <= 1.2 M; Olympian 250 near + 650 far <= 2.4 M** (the plain demo humanoid is 4,068 triangles, so Marble is about 0.95 M); terrain <= 0.6 M at Marble (chunk culling + LOD). NC: doubling the near count must fail the Marble row | M | T1 |
 | PF3 | Boot work staged: no single JS task > 200 ms before the title other than shader compile tasks (<= 600 ms each, yielded between materials) | B | T1 |
 | PF4 | Unit-cap per tier enforced in placement UI with a message; first-run benchmark chooses the tier | B | T3 |
 | PF5 | Real-GPU frame rate and thermal behaviour: cannot be verified here | H | — |
@@ -202,15 +204,15 @@ Gate tags: T0, T1, T2, T3 (the tier by which the criterion must pass). Evidence 
 ## Q. Process and QA
 | id | criterion | how | gate |
 |---|---|---|---|
-| Q1 | `npm run gate` passes (lint, check, tests, contracts, build, smoke) before every commit to the branch | N/B | all |
+| Q1 | `npm run gate` passes before every commit to the branch AND runs all six steps: the output of `node tools/gate.mjs` lists PASS lines for lint, syntax, tests (`tests/**/*.test.mjs`), contract validators (UnitDef/Blueprint/Clip/Arena/Mission, <= 48 parts, cues resolve), build and smoke (`tools/smoke.mjs`), ending in `GATE PASSED`; a gate that skips any of them fails Q1 (NC: remove the smoke step). `--fast` (agents' finish line) omits only smoke and the tests whose path contains `slow`, `fuzz` or `balance` | N/B | all |
 | Q2 | Each tier published to the same artifact URL; commit + push at every gate | R | all |
 | Q3 | Independent QA agent reviews each gate diff and runs these criteria; findings tracked | R | all |
 | Q4 | `docs/verification_report.md` lists each criterion with evidence (command, output, screenshot path) and an explicit "unverified" section | R | T3 |
 | Q5 | Dilution audit: grep for TODO/FIXME/placeholder/lorem/mock/stub/"coming soon" (roadmap tag excepted) returns only reviewed legitimate matches | N | T3 |
 | Q6 | Repo contains source, build output, tools, assets ledger, docs; README with controls and how to rebuild | R | T3 |
-| Q7 | **Negative controls** (NC): QA runs and records pass-then-fail for: remove the audio gesture gate (AU2), break a share-code CRC (E8), delete a team-tint voxel from a unit (U3), widen a unit past radius 0.7 (U8), drop a cue file (AU3), shrink a nav gap (S10), reuse a unit id (S24), drop the CSP header (B3) | N/B | T3 |
+| Q7 | **Negative controls** (NC): QA runs and records pass-then-fail for: remove the audio gesture gate (AU2), break a share-code CRC (E8), delete a team-tint voxel from a unit (U3), widen a unit past radius 0.7 (U8), drop a cue file (AU3), shrink a nav gap (S10, W1), reuse a unit id (S24), drop the CSP header (B3), set `rules.timeLimit` to 20 s (S11), shift a clip's `hitFrame` by 6 frames (A5), double the near-unit count (PF2), remove the smoke step from the gate (Q1), copy `__vw` accessors by value (B8), turn the `beacon` setting off (B13: zero writes) | N/B | T3 |
 | Q8 | Persona playtests at T1a, T1b and T3 (novice, picky art director, speed-runner) from screenshots + DOM + `__vw` only; findings in `docs/persona_notes.md`, each becoming a fix or a criterion | R | T1 |
-| Q9 | T0 publish rehearsal: the real Artifact publish of the T0 build including >= 100 asset files in batches, confirming relative-fetch of published files in the hosted page via the in-game Diagnostics (owner-visible) before the audio pipeline is finalised | R | T0 |
+| Q9 | T0 publish rehearsal: the real Artifact publish of the T0 build including >= 100 asset files in batches; **the owner opens the hosted page, presses Copy on the in-game Diagnostics screen and pastes it back (manual read-back; the automated `db` beacon is B13 at T3)**; the pasted report must show relative-fetch of published files working (`loaded.fetched > 0`, no CSP violations) before the audio pipeline is finalised | R/H | T0 |
 
 ## S-criteria (surpass the conventional version of this game)
 | id | baseline (K1) | gold |

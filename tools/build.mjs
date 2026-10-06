@@ -35,7 +35,7 @@ let js = result.outputFiles[0].text;
 js = js.replace(/<\/script/gi, '<\\/script').replace(/<!--/g, '<\\!--');
 
 // ---------- CSS ----------
-const cssFiles = ['src/ui/boot.css', 'src/ui/kit.css', 'src/ui/screens.css', 'src/ui/hud.css', 'src/ui/editors.css'].filter(exists);
+const cssFiles = ['src/ui/boot.css', 'src/ui/kit.css', 'src/ui/screens.css', 'src/ui/hud.css', 'src/ui/editors.css', 'src/ui/editors_arena.css', 'src/ui/editors_soldier.css'].filter(exists);
 let css = cssFiles.map(read).join('\n');
 if (minify) css = css.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\s+/g, ' ');
 

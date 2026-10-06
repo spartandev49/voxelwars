@@ -226,7 +226,7 @@ const tree_palm = {
     return p;
   },
   damage(p, rng) { chip(p, rng, { bites: 24, rmin: 2, rmax: 4, bias: 0.9 }); cracks(p, rng, { n: 2, len: 14 }); darken(p, rng, 0.12, 0.8); prune(p, 26); },
-  rubble: { w: 22, d: 22, h: 5, kind: 'mixed', cols: [0x3fae4b, 0x62c85a, 0xb98b57, 0xa57a48], n: 60 },
+  rubble: { w: 18, d: 18, h: 5, kind: 'mixed', cols: [0x3fae4b, 0x62c85a, 0xb98b57, 0xa57a48], n: 60 },
   afterRubble(p) { p.disc(p.cx, p.cz, 0, 4, 2.6, V(0xa57a48)); },
 };
 
@@ -341,6 +341,7 @@ const bones = {
     for (let x = 3; x < 12; x++) p.set(x, 0, cz + 6 + (x > 9 ? 1 : 0), bone(x, 0, 6));    // femur
     p.box(2, 0, cz + 6, 2, 2, 2, V(BONE[0])); p.box(11, 0, cz + 6, 2, 2, 2, V(BONE[0]));
     if (v === 2) { for (let i = 0; i < 6; i++) p.box(rng.int(2, 18), 0, rng.int(2, 14), 2, 1, 1, V(BONE[i % 3])); }
+    if (v === 1) { p.box(15, 3, cz - 4, 1, 3, 1, V(BONE[0])); p.box(19, 3, cz - 4, 1, 3, 1, V(BONE[0])); p.box(14, 5, cz - 4, 1, 1, 1, V(BONE[1])); p.box(20, 5, cz - 4, 1, 1, 1, V(BONE[1])); p.box(13, 0, cz - 2, 2, 1, 5, V(BONE[1])); }   // horned skull and a shoulder blade
     return p;
   },
 };
@@ -358,8 +359,8 @@ const skull_pile = {
       if (glow) { p.set(x, y + 2, fz, G(0xff4020)); p.set(x + 3, y + 2, fz, G(0xff4020)); }
     };
     for (let j = 0; j < 4; j++) for (let i = 0; i < 4; i++) skull(1 + i * 4 + (j & 1), 0, 1 + j * 4, rng.next() < 0.5 ? 1 : -1, false);
-    for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) skull(3 + i * 4, 4, 3 + j * 4, rng.next() < 0.5 ? 1 : -1, false);
-    skull(7, 8, 7, 1, v === 1 || v === 3); skull(11, 8, 9, -1, false);
+    for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) skull(3 + i * 4, 3, 3 + j * 4, rng.next() < 0.5 ? 1 : -1, false);
+    skull(7, 6, 7, 1, v === 1 || v === 3); skull(11, 6, 9, -1, false);
     return p;
   },
 };

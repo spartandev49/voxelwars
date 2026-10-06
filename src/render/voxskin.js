@@ -98,6 +98,9 @@ function restMatrix(rx, ry, rz) {
   return [cy * cz + sy * sx * sz, -cy * sz + sy * sx * cz, sy * cx, cx * sz, cx * cz, -sx, -sy * cz + cy * sx * sz, sy * sz + cy * sx * cz, cy * cx];
 }
 
+/** spec §2/§4: composed models may carry up to 48 parts (part texture is 3 texels per part, 144 texels wide). */
+export const MAX_PARTS = 48;
+
 export class VoxSkin {
   /**
    * @param {{scene:any}} host  object with a THREE.Scene at .scene
@@ -108,7 +111,7 @@ export class VoxSkin {
     this.host = host; this.model = model;
     this.parts = model.parts;
     this.P = this.parts.length;
-    if (this.P > 24) throw new Error(`model ${model.id} has ${this.P} parts (max 24)`);
+    if (this.P > MAX_PARTS) throw new Error(`model ${model.id} has ${this.P} parts (max ${MAX_PARTS})`);
     this.shadow = shadow;
     this.count = 0;
     this.capacity = 0;

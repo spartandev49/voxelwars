@@ -50,9 +50,9 @@ function add(dst, src, tSec, g, sr = ADD_SR) {
   return dst;
 }
 function mix(k, sec, parts) { const o = mk(sec, k.sr); for (const [s, t, g] of parts) add(o, s, t || 0, g === undefined ? 1 : g, k.sr); return o; }
-function finish(x, peak = 0.9) {
+function finish(x, peak = 0.9, loop = false) {
   let m = 0; for (let i = 0; i < x.length; i++) { const a = Math.abs(x[i]); if (a > m) m = a; }
-  const g = m > 1e-6 ? peak / m : 1; const fo = Math.min(x.length >> 2, 64);
+  const g = m > 1e-6 ? peak / m : 1; const fo = loop ? 0 : Math.min(x.length >> 2, 64);
   for (let i = 0; i < x.length; i++) x[i] *= g;
   for (let i = 0; i < fo; i++) x[x.length - 1 - i] *= i / fo;       // never end on a click
   return x;
@@ -72,10 +72,10 @@ const WAVES = {
 };
 /** oscillator with pitch sweep f0->f1, optional vibrato [hz, depth], FM [ratio, index], envelope a/d */
 function tone(k, o) {
-  const { f0, f1 = f0, dur, wave = 'sin', a = 0.004, d = dur / 3, amp = 1, vib, fm } = o, sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n), w = WAVES[wave];
+  const { f0, f1 = f0, dur, wave = 'sin', a = 0.004, d = dur / 3, amp = 1, vib, fm } = o, sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n), w = WAVES[wave], pv = 1 + (k.v - 1) * 0.015;
   let ph = 0, pm = 0;
   for (let i = 0; i < n; i++) {
-    const t = i / sr; let f = f0 + (f1 - f0) * (i / n);
+    const t = i / sr; let f = (f0 + (f1 - f0) * (i / n)) * pv;
     if (vib) f *= 1 + vib[1] * Math.sin(TAU * vib[0] * t);
     ph += f / sr;
     let s;
@@ -86,8 +86,8 @@ function tone(k, o) {
 }
 /** additive inharmonic partials (bells, gongs, chimes): [[freqRatio, amp, decaySec]...] */
 function partials(k, f, parts, dur) {
-  const sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n);
-  for (const [r, a, d] of parts) { const w = TAU * f * r / sr; for (let i = 0; i < n; i++) x[i] += a * Math.sin(w * i) * Math.exp(-i / sr / d); }
+  const sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n), pv = 1 + (k.v - 1) * 0.015;
+  for (const [r, a, d] of parts) { const w = TAU * f * pv * r / sr; for (let i = 0; i < n; i++) x[i] += a * Math.sin(w * i) * Math.exp(-i / sr / d); }
   return x;
 }
 /** low thump: pitch-dropping sine + optional click */
@@ -118,12 +118,12 @@ const VOW = { a: [800, 1200, 2600], o: [500, 850, 2500], u: [330, 800, 2400], e:
 function voice(k, o) {
   const { f0, f1 = f0, dur, vowel = 'a', vib = [5.5, 0.012], a = 0.03, r = 0.08, amp = 1, breath = 0.05, rough = 0, v1 = null } = o;
   const F = typeof vowel === 'string' ? VOW[vowel] : vowel, sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n);
-  const res = F.map((f, i) => new BQ(sr).set('bp', f, [5, 7, 9][i])), gn = [1, 0.7, 0.35];
+  const res = F.map((f, i) => new BQ(sr).set('bp', f, [5, 7, 9][i])), gn = [1, 0.7, 0.35], pv = 1 + (k.v - 1) * 0.02;
   let ph = 0;
   for (let i = 0; i < n; i++) {
     const t = i / sr, u = i / n;
     let f = f0 + (f1 - f0) * u; if (v1 !== null) f += (v1 - f) * Math.sin(Math.PI * u) * 0.5;
-    f *= 1 + vib[1] * Math.sin(TAU * vib[0] * t) + (rough ? rough * (k.rng() - 0.5) : 0);
+    f *= pv * (1 + vib[1] * Math.sin(TAU * vib[0] * t) + (rough ? rough * (k.rng() - 0.5) : 0));
     ph += f / sr; const src = 2 * (ph - Math.floor(ph)) - 1 + breath * (k.rng() * 2 - 1);
     let s = 0; for (let j = 0; j < 3; j++) s += res[j].p(src) * gn[j];
     x[i] = s * amp * Math.min(1, t / a) * Math.min(1, (dur - t) / r);
@@ -133,11 +133,11 @@ function voice(k, o) {
 /** sawtooth brass: lowpass opens with the envelope; bend = start pitch ratio */
 function brass(k, o) {
   const { f, dur, amp = 1, a = 0.08, r = 0.15, bend = 1, vib = [5, 0.006], bright = 0.6 } = o, sr = k.sr, n = Math.round(dur * sr), x = new Float32Array(n);
-  const lp = new BQ(sr); let ph = 0, ph2 = 0;
+  const lp = new BQ(sr), pv = 1 + (k.v - 1) * 0.012; let ph = 0, ph2 = 0;
   for (let i = 0; i < n; i++) {
     const t = i / sr, e = Math.min(1, t / a) * Math.min(1, (dur - t) / r);
     if ((i & 15) === 0) lp.set('lp', 400 + (800 + 5200 * bright) * e, 0.9);
-    const fr = f * (bend + (1 - bend) * Math.min(1, t / 0.12)) * (1 + vib[1] * Math.sin(TAU * vib[0] * t));
+    const fr = f * pv * (bend + (1 - bend) * Math.min(1, t / 0.12)) * (1 + vib[1] * Math.sin(TAU * vib[0] * t));
     ph += fr / sr; ph2 += fr * 1.004 / sr;
     x[i] = lp.p(((ph - Math.floor(ph)) * 2 - 1) * 0.6 + ((ph2 - Math.floor(ph2)) * 2 - 1) * 0.4) * e * amp;
   }
@@ -313,7 +313,7 @@ export function renderSynth(id, variant = 0, sr = SYNTH_SR) {
   const k = new K(id, variant, sr);
   ADD_SR = sr;
   const x = fn(k);
-  return LOOP_FAMILIES.has(id) ? finish(x, 0.8) : finish(x, 0.9);
+  return LOOP_FAMILIES.has(id) ? finish(x, 0.8, true) : finish(x, 0.9);
 }
 
 // ------------------------------------------------------------------ synthesized music (offline fallback)

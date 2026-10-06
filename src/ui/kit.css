@@ -156,7 +156,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* page chrome used by most menu screens */
 .vw-page { position: relative; z-index: 1; flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
-.vw-page__bar { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: .6rem var(--gutter) .85rem; }
+.vw-page__bar { flex: 0 0 auto; display: flex; align-items: center; gap: var(--space-3); padding: .6rem var(--gutter) .85rem; min-width: 0; }
+.vw-page__bar > .vw-grow { min-width: 0; }
 .vw-page__title { font: 400 var(--fs-d2)/1 var(--font-display); text-transform: uppercase; letter-spacing: .04em; color: var(--marble); text-shadow: 0 3px 0 var(--ink), 2px 0 0 var(--ink), -2px 0 0 var(--ink), 0 -2px 0 var(--ink); margin: 0; min-width: 0; overflow-wrap: anywhere; }
 .vw-page__sub { font-size: var(--fs-small); color: var(--marble); text-shadow: 0 2px 0 var(--ink); }
 .vw-page__scroll { flex: 1 1 auto; min-height: 0; overflow: auto; padding: .35rem var(--gutter) 2rem; scrollbar-width: thin; scrollbar-color: var(--night-3) transparent; }
@@ -190,6 +191,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .vw-chip--pink { --c-bg: var(--pink); --c-fg: var(--ink); } .vw-chip--lava { --c-bg: var(--lava); --c-fg: var(--ink); } .vw-chip--danger { --c-bg: var(--danger); --c-fg: var(--ink); }
 .vw-chip--lapis { --c-bg: var(--lapis-deep); --c-fg: var(--marble); } .vw-chip--crimson { --c-bg: var(--crimson-deep); --c-fg: var(--marble); } .vw-chip--ink { --c-bg: var(--ink); --c-fg: var(--marble); }
 .vw-chip--team-a { --c-bg: var(--team-a-deep); --c-fg: #fff; } .vw-chip--team-b { --c-bg: var(--team-b-deep); --c-fg: #fff; }
+.vw-chip--wrap { white-space: normal; height: auto; min-height: 1.65rem; padding: .25rem .65rem; line-height: 1.2; border-radius: 14px; }
 .vw-chip--dash { background: transparent; border-style: dashed; border-color: var(--marble-dim); color: var(--marble-dim); }
 .vw-chip--btn { position: relative; height: auto; min-height: var(--tap); padding: .35rem .9rem; cursor: pointer; font-size: .78rem; transform: translateY(0); transition: transform var(--t-fast) var(--ease-spring); box-shadow: 0 3px 0 var(--ink); -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .vw-chip--btn:hover { transform: translateY(-2px); } .vw-chip--btn:active { transform: translateY(2px); }
@@ -199,18 +201,20 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 .vw-seg { display: inline-flex; flex-wrap: wrap; gap: 0; border: var(--outline); border-radius: var(--r-md); background: var(--ink); overflow: hidden; box-shadow: 0 4px 0 var(--ink); max-width: 100%; }
 .vw-seg--fill { display: flex; width: 100%; }
-.vw-seg__opt { flex: 1 1 auto; position: relative; min-height: var(--tap); padding: .45rem .85rem; background: var(--night-3); color: var(--marble); border: 0; border-right: 3px solid var(--ink); cursor: pointer;
+.vw-seg__opt { flex: 1 1 auto; position: relative; min-height: var(--tap); min-width: var(--tap); padding: .45rem .85rem; background: var(--night-3); color: var(--marble); border: 0; border-right: 3px solid var(--ink); cursor: pointer;
   font: 400 .78rem/1.1 var(--font-display); text-transform: uppercase; letter-spacing: .05em; display: inline-flex; align-items: center; justify-content: center; gap: .4rem; text-align: center; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .vw-seg__opt:last-child { border-right: 0; }
 .vw-seg__opt:hover { background: #454c9c; }
 .vw-seg__opt[aria-checked="true"] { background: var(--gold); color: var(--ink); box-shadow: inset 0 -4px 0 var(--gold-deep); }
 .vw-seg__opt:focus-visible { outline-offset: -4px; z-index: 1; }
 .vw-seg__opt[disabled] { opacity: .45; cursor: not-allowed; }
+.vw-seg--compact .vw-seg__opt { padding: .35rem .3rem; font-size: .66rem; letter-spacing: .03em; }
 .vw-seg__sub { display: block; font: 500 .68rem/1.2 var(--font-body); text-transform: none; letter-spacing: 0; opacity: .85; }
 
 .vw-toggle { position: relative; display: inline-flex; align-items: center; flex: 0 0 auto; width: 4rem; min-width: 4rem; height: var(--tap); padding: 0; background: none; border: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 .vw-toggle__track { position: absolute; left: 0; right: 0; top: 50%; height: 2rem; margin-top: -1rem; background: var(--night-3); border: var(--outline); border-radius: 999px; box-shadow: inset 0 3px 0 rgba(0, 0, 0, .25), 0 3px 0 var(--ink); }
 .vw-toggle__txt { position: absolute; top: 50%; margin-top: -.45em; font: 400 .6rem/1 var(--font-display); letter-spacing: .06em; color: var(--marble); right: .55rem; }
+.vw-check { display: flex; align-items: center; gap: .6rem; min-height: var(--tap); cursor: pointer; }
 .vw-toggle__knob { position: absolute; top: 50%; left: 0; width: 1.5rem; height: 1.5rem; margin: -.75rem 0 0 .3rem; border-radius: 50%; background: var(--marble); border: 3px solid var(--ink); box-shadow: 0 2px 0 var(--ink); transform: translateX(0); transition: transform var(--t-med) var(--ease-spring); }
 .vw-toggle[aria-checked="true"] .vw-toggle__track { background: var(--olive); }
 .vw-toggle[aria-checked="true"] .vw-toggle__txt { right: auto; left: .55rem; color: var(--ink); }
@@ -270,7 +274,11 @@ textarea.vw-input { min-height: 7rem; resize: vertical; font-family: ui-monospac
 .vw-card:hover { transform: translateY(-2px); }
 .vw-card:active { transform: translateY(2px); }
 .vw-card[aria-pressed="true"], .vw-card.is-selected { background: #3b3399; border-color: var(--ink); box-shadow: 0 4px 0 var(--ink), 0 0 0 3px var(--gold), inset 0 3px 0 rgba(255, 255, 255, .16); }
-.vw-card[disabled], .vw-card.is-disabled { opacity: .55; cursor: not-allowed; }
+.vw-card[disabled], .vw-card.is-disabled { opacity: .6; cursor: not-allowed; filter: saturate(.55); }
+.vw-card--compact { padding: .4rem .5rem .45rem; gap: .25rem; }
+.vw-card--compact .vw-card__art { width: 2rem; height: 2rem; border-radius: 8px; }
+.vw-card--compact .vw-card__art .vw-icon { width: 1.15rem; height: 1.15rem; }
+.vw-card--compact .vw-card__name { font-size: .8rem; }
 .vw-card.is-locked { filter: saturate(.3); }
 .vw-card__top { display: flex; align-items: center; gap: .5rem; }
 .vw-card__art { flex: 0 0 auto; width: 2.4rem; height: 2.4rem; display: grid; place-items: center; background: var(--fc); color: var(--ink); border: 3px solid var(--ink); border-radius: 10px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .22); }

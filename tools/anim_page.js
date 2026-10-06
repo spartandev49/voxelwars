@@ -94,11 +94,17 @@ async function render(job) {
       const st = Object.assign({ clip: clipId, t, rate: 1, flinch: 0, dir: 0, prev: 'idle', blend: 1 }, row.state || {});
       if (row.state && row.state.tOffset) st.t = t + row.state.tOffset;
       const heading = row.view === 'side' ? 0 : -0.6;
-      const extra = { root: rootOut, heading, phase: 0, speed: row.speed || 0 };
+      const extra = { root: rootOut, heading, scale: 1, id: row.id || 0, t, speed: row.speed || 0, gait: NaN };
+      if (row.speed && /^(walk|run|jog|trot|gallop|sprint)$/.test(clipId)) {
+        // locomotion is driven by distance: walk a fraction of one stride so the cell shows phase c/n
+        const gi = Animator.gaitInfo(e.model, row.speed);
+        const dist = gi ? (c / n) * gi.stride : 0;
+        extra.gait = 0; Animator.pose(e.model, st, extra, e.pose);
+        extra.gait = dist; st.t = 0;
+      }
       Animator.pose(e.model, st, extra, e.pose);
       const px = 0, pz = c * cellW + (row.zShift || 0), py = rowY(ri);
-      Animator.applyRoot(rootOut, px, py, pz, heading, 1, out4);
-      e.skin.add(out4[0], out4[1], out4[2], out4[3], 1, 1, 1, e.pose, TEAM[row.team || 'a'], row.flash || 0, row.stone || 0, 0, rootOut.pitch, rootOut.roll);
+      e.skin.add(px + rootOut.x, py + rootOut.y, pz + rootOut.z, heading + rootOut.yaw, 1, 1, 1, e.pose, TEAM[row.team || 'a'], row.flash || 0, row.stone || 0, 0, rootOut.pitch, rootOut.roll);
       const hitF = ClipLib.meta(clipId, rig).hit, recT = ClipLib.meta(clipId, rig).recover;
       const frameDt = dur / Math.max(1, (loop ? n : n - 1));
       let mark = '';

@@ -20,15 +20,15 @@ export function mount(parent, ctx) {
   const statWrap = h('span', { class: 'hud-sel-status', 'aria-label': 'Status effects' });
   for (let i = 0; i < MAX_STATUS; i++) { const s = { el: h('span', { class: 'hud-stat', hidden: true }), kind: '' }; stat.push(s); statWrap.appendChild(s.el); }
   const blurb = h('p', { class: 'hud-sel-blurb' });
-  const follow = h('button', { class: 'hud-btn hud-sel-btn', type: 'button', id: 'hud-sel-follow', 'data-tip': 'Follow this unit (' + keyOf(ctx.settings, 'follow') + ')', 'data-tip-pos': 'above' }, icon('follow'), h('span', { text: 'Follow' }));
-  const cmd = h('button', { class: 'hud-btn hud-sel-btn is-gold', type: 'button', id: 'hud-sel-command', 'data-tip': 'Take Command: you drive this unit (Enter)', 'data-tip-pos': 'above' }, icon('joystick'), h('span', { text: 'Take Command' }));
-  const actions = h('div', { class: 'hud-sel-actions' }, follow, cmd);
+  const follow = h('button', { class: 'hud-btn hud-sel-btn', type: 'button', id: 'hud-sel-follow', 'aria-label': 'Follow this unit', 'data-tip': 'Follow this unit (' + keyOf(ctx.settings, 'follow') + ')', 'data-tip-pos': 'above' }, icon('follow'));
+  const cmd = h('button', { class: 'hud-btn hud-sel-btn is-gold', type: 'button', id: 'hud-sel-command', 'aria-label': 'Take Command', 'data-tip': 'Take Command: you drive this unit (Enter)', 'data-tip-pos': 'above' }, icon('joystick'), h('span', { text: 'Command' }));
+  const actions = h('span', { class: 'hud-sel-actions' }, follow, cmd);
   const el = h('div', { class: 'hud-sel hud-panel', 'data-hud': 'selection', role: 'region', 'aria-label': 'Selected unit', hidden: true },
     ico, h('div', { class: 'hud-sel-main' },
       h('div', { class: 'hud-sel-head' }, nameEl, typeEl),
       h('div', { class: 'hud-sel-hprow' }, hpBar, hpTx),
-      h('div', { class: 'hud-sel-row' }, kills, statWrap),
-      blurb, actions));
+      h('div', { class: 'hud-sel-row' }, kills, statWrap, actions),
+      blurb));
   parent.appendChild(el);
 
   const hint = h('div', { class: 'hud-sel-hint', hidden: true }, icon('help'), h('span', { text: 'Click a soldier to inspect it. Double-click to follow.' }));

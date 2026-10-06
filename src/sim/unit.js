@@ -18,7 +18,7 @@ export class Unit {
     this.face = heading;                           // desired facing
     // stats (copied from def so statuses can modify without touching shared data)
     this.hpMax = def.hp; this.hp = def.hp;
-    this.alive = true; this.deadT = 0; this.deathKind = 0;
+    this.alive = true; this.deadT = 0; this.deathKind = 0; this.deathCause = ''; this.deathLinger = 1.6;
     this.radius = def.radius !== undefined ? def.radius : DEFAULTS.radius;
     this.mass = def.mass !== undefined ? def.mass : DEFAULTS.mass;
     this.scale = def.scale !== undefined ? def.scale : DEFAULTS.scale;
@@ -40,7 +40,7 @@ export class Unit {
     this.se = new Float32Array(N_SE);
     this.moraleMax = 100; this.morale = 100; this.routT = 0;
     // modifiers recomputed every tick: multipliers and additive bonuses
-    this.mDmg = 1; this.mSpeed = 1; this.mArmor = 0; this.mBlock = 0; this.mProj = 0; this.mCd = 1; this.mDmgTaken = 1; this.mReach = 0;
+    this.mDmg = 1; this.mSpeed = 1; this.mArmor = 0; this.mBlock = 0; this.mProj = 0; this.mCd = 1; this.mDmgTaken = 1; this.mReach = 0; this.mMoraleLoss = 1; this.ex = 0; this.ez = 0; this.poisonSrc = null; this.rageDmg = 1.5; this.rageSpeed = 1.3;
     // charge / movement info
     this.speedNow = 0;
     this.kills = 0; this.dmgDealt = 0; this.dmgTaken = 0; this.lastAttacker = null;
@@ -61,7 +61,7 @@ export class Unit {
     this.controlled = false;                       // player-possessed (Take Command)
     this.altitude = 0;
     this.tauntSrc = null; this.lastHitT = -99; this.lastFlankT = -99;
-    this.press = 0; this.claims = 0; this.engaged = false; this.hold = false; this.oppT = 0; this.kiteT = 0; this.mEnv = 1; this.rank = 0; this.focusT = 0;
+    this.sink = 0; this.sinkWarn = false; this.drown = 0; this.guard = false; this.breach = null; this.breachT = 0; this.press = 0; this.claims = 0; this.engaged = false; this.hold = false; this.oppT = 0; this.kiteT = 0; this.mEnv = 1; this.rank = 0; this.focusT = 0;
     this.fleeX = 0; this.fleeZ = 0;
     this.routFrom = null;
     this.mutScale = 1;

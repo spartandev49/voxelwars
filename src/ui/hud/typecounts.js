@@ -24,7 +24,7 @@ export function mount(parent, ctx) {
   parent.appendChild(el);
 
   let open = false, order = [];           // order: defIds, stable once seen
-  function setOpen(b) { open = b; rememberedOpen = b; setHidden(body, !b); setAttr(head, 'aria-expanded', b); setCls(el, 'is-open', b); }
+  function setOpen(b) { open = b; rememberedOpen = b; setHidden(body, !b); setAttr(head, 'aria-expanded', b); setCls(el, 'is-open', b); parent.classList.toggle('types-open', b); }
   head.addEventListener('click', () => setOpen(!open));
   setOpen(rememberedOpen);
 

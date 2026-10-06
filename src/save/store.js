@@ -38,7 +38,7 @@ export const DEFAULT_SETTINGS = {
   gore: 'red', corpses: 'stay', camSens: 1, edgeScroll: false, autoPauseBlur: true,
   vol: { master: 0.8, music: 0.6, sfx: 0.9, ui: 0.8, announcer: 0.9 }, muted: false, tts: false, subtitles: true,
   reduceMotion: false, shake: 1, flashLimiter: false, uiScale: 1, palette: 'classic', highContrastUI: false,
-  keys: {}, beacon: true, seenHints: {}, cinematicStart: false,
+  keys: {}, beacon: false, seenHints: {}, cinematicStart: false, choreoIntro: true, choreoFinish: true, choreoOrbit: true,
 };
 
 export class Settings {

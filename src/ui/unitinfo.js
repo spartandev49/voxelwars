@@ -97,3 +97,23 @@ export function abilityInfo(ref, glossary) {
   if (b) return b;
   return { name: ref.id.replace(/_/g, ' '), icon: 'sparkle', text: 'A special ability.' };
 }
+
+/** Clip ids the codex turntable can ask for (ids per spec section 7 state->clip mapping). */
+export function attackClip(def) {
+  if (def.ranged) {
+    const pr = def.ranged.proj;
+    if (pr === 'arrow') return 'shoot_bow';
+    if (pr === 'boulder' || pr === 'bolt') return 'launch';
+    if (pr === 'sunbeam' || pr === 'scepter' || pr === 'thunderbolt') return 'cast';
+    return 'throw';
+  }
+  const st = def.melee && def.melee.style;
+  return st ? 'strike_' + st : 'strike_slash_1';
+}
+export function clipOptions(def) {
+  const out = [{ id: 'idle', clip: 'idle' }, { id: 'walk', clip: 'walk' }, { id: 'attack', clip: attackClip(def) }];
+  if (def.shield) out.push({ id: 'block', clip: 'block_hit' });
+  if ((def.abilities || []).some((a) => ['cc_field', 'heal_pulse', 'chain_lightning', 'dot_cloud'].indexOf(a.id) >= 0)) out.push({ id: 'cast', clip: 'cast' });
+  out.push({ id: 'death', clip: 'death_back' });
+  return out;
+}

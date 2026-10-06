@@ -134,61 +134,65 @@ export class NavGrid {
   }
 }
 
-/** Dijkstra distance field from source cells. dist in "cell units" x cost. Typed binary heap, no allocation after construction. */
+/**
+ * Distance field from source cells (Dijkstra with a bucket queue: integer costs, circular buckets, no heap, no allocation after construction).
+ * dist is in "cell units x cost" (Float32); units follow the descent direction.
+ */
+const QS = 8;                // cost quantisation (1 cell step = 8 units)
+const NBUCKET = 2048;        // > max single step cost
 export class FlowField {
   constructor(nav) {
     this.nav = nav;
     const N = nav.n * nav.n;
     this.dist = new Float32Array(N);
-    this.heapI = new Int32Array(N * 9);
-    this.heapD = new Float32Array(N * 9);
-    this.hn = 0;
+    this.idist = new Int32Array(N);
+    this.eNode = new Int32Array(N * 6 + 64);
+    this.eDist = new Int32Array(N * 6 + 64);
+    this.eNext = new Int32Array(N * 6 + 64);
+    this.head = new Int32Array(NBUCKET);
     this.version = -1;
     this.valid = false;
   }
-  _push(i, d) {
-    let k = this.hn++;
-    const hi = this.heapI, hd = this.heapD;
-    while (k > 0) { const p = (k - 1) >> 1; if (hd[p] <= d) break; hi[k] = hi[p]; hd[k] = hd[p]; k = p; }
-    hi[k] = i; hd[k] = d;
-  }
-  _pop() {
-    const hi = this.heapI, hd = this.heapD;
-    const top = hi[0];
-    const li = hi[--this.hn], ld = hd[this.hn];
-    let k = 0, n = this.hn;
-    while (true) {
-      let c = k * 2 + 1; if (c >= n) break;
-      if (c + 1 < n && hd[c + 1] < hd[c]) c++;
-      if (hd[c] >= ld) break;
-      hi[k] = hi[c]; hd[k] = hd[c]; k = c;
-    }
-    hi[k] = li; hd[k] = ld;
-    this._topD = top;
-    return top;
-  }
-  /** sources: Int32Array/array of nav cell indices; count: number of valid entries. maxDist optional cutoff. */
+  /** sources: Int32Array/array of nav cell indices; count: number of valid entries. maxDist optional cutoff. extra: optional per-cell additive cost. */
   compute(sources, count, maxDist = 1e9, extra = null) {
-    const nav = this.nav, n = nav.n, dist = this.dist, walk = nav.walk, block = nav.block, soft = nav.soft, cost = nav.cost;
-    dist.fill(1e9); this.hn = 0;
-    for (let s = 0; s < count; s++) { const i = sources[s]; if (dist[i] > 0) { dist[i] = 0; this._push(i, 0); } }
-    while (this.hn > 0) {
-      const d0 = this.heapD[0];
-      const i = this._pop();
-      if (d0 > dist[i]) continue;
-      if (d0 > maxDist) break;
-      const cx = i % n, cz = (i / n) | 0;
-      for (let k = 0; k < 8; k++) {
-        const nb = NB[k], bx = cx + nb[0], bz = cz + nb[1];
-        if (bx < 0 || bz < 0 || bx >= n || bz >= n) continue;
-        const j = bx + bz * n;
-        if (!walk[j] || block[j]) { /* allow sources to start inside blocked cells but never traverse them */ continue; }
-        if (Math.abs(nav.hs[j] - nav.hs[i]) > 1.0) continue;
-        if (nb[0] !== 0 && nb[1] !== 0) { const k1 = bx + cz * n, k2 = cx + bz * n; if (!walk[k1] || block[k1] || !walk[k2] || block[k2]) continue; }
-        const nd = Math.fround(d0 + nb[2] * (cost[j] + (nav.hazard[j] ? 8 : 0) + (soft[j] ? 30 : 0) + (extra ? extra[j] : 0)));
-        if (nd < dist[j]) { dist[j] = nd; this._push(j, nd); }
-      }
+    const nav = this.nav, n = nav.n, N = n * n, dist = this.dist, idist = this.idist, walk = nav.walk, block = nav.block, soft = nav.soft, cost = nav.cost, haz = nav.hazard, hs = nav.hs;
+    const eNode = this.eNode, eDist = this.eDist, eNext = this.eNext, head = this.head, cap = eNode.length;
+    const INF = 0x3fffffff, MASK = NBUCKET - 1, limit = maxDist >= 1e8 ? INF : Math.floor(maxDist * QS);
+    idist.fill(INF); head.fill(-1);
+    let ec = 0, pend = 0;
+    for (let s = 0; s < count; s++) {
+      const i = sources[s];
+      if (idist[i] > 0) { idist[i] = 0; eNode[ec] = i; eDist[ec] = 0; eNext[ec] = head[0]; head[0] = ec++; pend++; }
     }
+    let cur = 0;
+    while (pend > 0) {
+      const b = cur & MASK;
+      let e = head[b];
+      if (e < 0) { cur++; if (cur > limit) break; continue; }
+      head[b] = -1;
+      while (e >= 0) {
+        const nxt = eNext[e], i = eNode[e];
+        pend--;
+        if (eDist[e] === idist[i]) {
+          const cx = i % n, cz = (i / n) | 0, hi = hs[i];
+          for (let k = 0; k < 8; k++) {
+            const nb = NB[k], bx = cx + nb[0], bz = cz + nb[1];
+            if (bx < 0 || bz < 0 || bx >= n || bz >= n) continue;
+            const j = bx + bz * n;
+            if (!walk[j] || block[j]) continue;
+            const dh = hs[j] - hi; if (dh > 1.0 || dh < -1.0) continue;
+            if (nb[0] !== 0 && nb[1] !== 0) { const k1 = bx + cz * n, k2 = cx + bz * n; if (!walk[k1] || block[k1] || !walk[k2] || block[k2]) continue; }
+            let c = cost[j] + (haz[j] ? 8 : 0) + (soft[j] ? 30 : 0); if (extra) c += extra[j];
+            let step = (nb[2] * c * QS + 0.5) | 0; if (step > 1000) step = 1000; else if (step < 1) step = 1;
+            const nd = cur + step;
+            if (nd < idist[j] && ec < cap) { idist[j] = nd; eNode[ec] = j; eDist[ec] = nd; const bb = nd & MASK; eNext[ec] = head[bb]; head[bb] = ec++; pend++; }
+          }
+        }
+        e = nxt;
+      }
+      cur++; if (cur > limit) break;
+    }
+    for (let i = 0; i < N; i++) { const d = idist[i]; dist[i] = d >= INF ? 1e9 : d / QS; }
     this.version = nav.version; this.valid = true;
   }
   /** Descent direction at a world position, written to out[0..1] (unit vector) ; returns false if no gradient. */

@@ -13,6 +13,8 @@
 // Time is in SECONDS in the DSL; the baked clip is 30 fps. Looping clips are sampled periodically (frame N == frame 0).
 // Pure module: no THREE, no DOM.
 
+import { HUM1_RIG, describeRig, fk, lowestPoint } from './analysis.js';
+
 export const FPS = 30;
 const PI = Math.PI, TAU = Math.PI * 2;
 
@@ -105,7 +107,7 @@ function neighbour(keys, i, dir, cyc) {
 const ROOT_CH = ['y', 'x', 'z', 'pitch', 'roll', 'yaw'];
 /** parse 'armUR' | 'armUR.t' | 'armUR.s' | 'root.y' | 'aim' */
 function parseChannel(name) {
-  if (name === 'aim') return { kind: 'aim', n: 3 };
+  if (name === 'aim') return { kind: 'aim', n: 4 };
   const dot = name.indexOf('.');
   if (dot < 0) return { kind: 'q', part: name, n: 3 };
   const part = name.slice(0, dot), sub = name.slice(dot + 1);
@@ -125,6 +127,7 @@ function normaliseKeys(keys) {
       let vals = [], ease;
       for (let i = 1; i < k.length; i++) { if (typeof k[i] === 'number') vals.push(k[i]); else { ease = k[i]; } }
       if (ch.kind === 's' && vals.length === 1) vals = [vals[0], vals[0], vals[0]];
+      if (ch.kind === 'aim' && vals.length === 3) vals.push(0);          // optional 4th value: twist about the weapon axis
       if (vals.length !== ch.n) throw new Error(`channel ${name}: key at ${t} has ${vals.length} values, want ${ch.n}`);
       const o = [t, ...vals]; o.push(ease); return o;
     }).sort((a, b) => a[0] - b[0]);
@@ -186,7 +189,7 @@ class FrameCtx {
   mulScl(part, sx, sy = sx, sz = sx) { const a = this._arr(this.s, part, 3, 1), o = this.f * 3; a[o] *= sx; a[o + 1] *= sy; a[o + 2] *= sz; return this; }
   rootSet(ch, v) { this._arr(this.root, ch, 1)[this.f] = v; return this; }
   rootAdd(ch, v) { this._arr(this.root, ch, 1)[this.f] += v; return this; }
-  setAim(e, a, w) { if (!this.aim) this.aim = new Float32Array(this.N * 3); const o = this.f * 3; this.aim[o] = e; this.aim[o + 1] = a; this.aim[o + 2] = w; return this; }
+  setAim(e, a, w, tw = 0) { if (!this.aim) this.aim = new Float32Array(this.N * 4); const o = this.f * 4; this.aim[o] = e; this.aim[o + 1] = a; this.aim[o + 2] = w; this.aim[o + 3] = tw; return this; }
   // ---- readers ----
   rotOf(part, k) { const a = this.q[part]; return a ? a[this.f * 3 + k] : 0; }
   /** sample a KEYED channel at another time (follow-through / lag helpers) */
@@ -208,7 +211,7 @@ function applyKeys(c, keys, t) {
       case 't': c.pos(ch.part, tmp[0], tmp[1], tmp[2]); break;
       case 's': c.scl(ch.part, tmp[0], tmp[1], tmp[2]); break;
       case 'root': c.rootSet(ch.ch, tmp[0]); break;
-      case 'aim': c.setAim(tmp[0], tmp[1], tmp[2]); break;
+      case 'aim': c.setAim(tmp[0], tmp[1], tmp[2], tmp[3]); break;
       default: break;
     }
   }
@@ -240,6 +243,7 @@ export function bake(spec) {
   for (const p of Object.keys(c.s)) if (nonTrivial(c.s[p], 3, 1)) (clip.s ||= {})[p] = c.s[p];
   for (const ch of Object.keys(c.root)) if (nonTrivial(c.root[ch], 1, 0)) (clip.root ||= {})[ch] = c.root[ch];
   if (c.aim) clip.aim = c.aim;
+  if (spec.floor) applyFloor(clip, spec.floor);
   const m = clip.meta;
   if (spec.hit !== undefined) m.hitFrame = Math.max(0, Math.min(N - 1, Math.round(spec.hit * FPS)));
   if (spec.recover !== undefined) m.recoverFrame = Math.max(0, Math.min(N - 1, Math.round(spec.recover * FPS)));
@@ -277,7 +281,7 @@ export function mirrorClip(clip, newId) {
   if (clip.t) { out.t = {}; for (const p of Object.keys(clip.t)) { const a = clip.t[p], b = new Float32Array(a.length); for (let i = 0; i < N; i++) { b[i * 3] = -a[i * 3]; b[i * 3 + 1] = a[i * 3 + 1]; b[i * 3 + 2] = a[i * 3 + 2]; } out.t[SWAP(p)] = b; } }
   if (clip.s) { out.s = {}; for (const p of Object.keys(clip.s)) out.s[SWAP(p)] = clip.s[p].slice(); }
   if (clip.root) { out.root = {}; for (const k of Object.keys(clip.root)) { const a = clip.root[k].slice(); if (k === 'x' || k === 'roll' || k === 'yaw') for (let i = 0; i < a.length; i++) a[i] = -a[i]; out.root[k] = a; } }
-  if (clip.aim) { out.aim = clip.aim.slice(); for (let i = 0; i < N; i++) out.aim[i * 3 + 1] = -out.aim[i * 3 + 1]; }
+  if (clip.aim) { out.aim = clip.aim.slice(); for (let i = 0; i < N; i++) { out.aim[i * 4 + 1] = -out.aim[i * 4 + 1]; out.aim[i * 4 + 3] = -out.aim[i * 4 + 3]; } }
   return out;
 }
 
@@ -321,7 +325,7 @@ export function timeWarp(clip, map, opts = {}) {
     }
   }
   if (clip.root) { out.root = {}; for (const k of Object.keys(clip.root)) { const a = clip.root[k], b = new Float32Array(N); for (let f = 0; f < N; f++) { sampleArr(a, 1, clip.frames, clip.loop, src(f / fps) * fps, tmp); b[f] = tmp[0]; } out.root[k] = b; } }
-  if (clip.aim) { out.aim = new Float32Array(N * 3); for (let f = 0; f < N; f++) { sampleArr(clip.aim, 3, clip.frames, clip.loop, src(f / fps) * fps, tmp); for (let k = 0; k < 3; k++) out.aim[f * 3 + k] = tmp[k]; } }
+  if (clip.aim) { out.aim = new Float32Array(N * 4); const t4 = [0, 0, 0, 0]; for (let f = 0; f < N; f++) { sampleArr(clip.aim, 4, clip.frames, clip.loop, src(f / fps) * fps, t4); for (let k = 0; k < 4; k++) out.aim[f * 4 + k] = t4[k]; } }
   const m = out.meta;
   for (const k of ['hitFrame', 'recoverFrame']) if (m[k] !== undefined) m[k] = Math.max(0, Math.min(N - 1, Math.round(mapFrame(m[k]))));
   if (Array.isArray(m.hitFrames)) m.hitFrames = m.hitFrames.map((x) => Math.round(mapFrame(x)));
@@ -419,3 +423,40 @@ export const bump = (t, tc, w) => { const x = (t - tc) / w; return Math.abs(x) >
 export const clamp = (x, a, b) => (x < a ? a : x > b ? b : x);
 export const lerp = (a, b, w) => a + (b - a) * w;
 export const smoothstep = (a, b, x) => { const u = clamp((x - a) / (b - a), 0, 1); return u * u * (3 - 2 * u); };
+
+// ------------------------------------------------------------------------------------------------------------------ ground contact fit
+/**
+ * Keep a hum1 clip on the ground: raise root.y per frame so that no part box goes below y = 0 (floor:true), and with {snapFrom: seconds}
+ * also lower the body to rest exactly on the ground in the given windows (lying poses; {snap: [[t0, t1], ...]}). Uses the canonical hum1
+ * part boxes (spec §4.1).
+ */
+export function applyFloor(clip, opt) {
+  const desc = describeRig(HUM1_RIG);
+  const P = desc.P, N = clip.frames, pose = new Float32Array(P * 9), W = new Float64Array(P * 12);
+  const root = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+  const ry = clip.root && clip.root.y ? clip.root.y : ((clip.root = clip.root || {}).y = new Float32Array(N));
+  const snap = opt && opt.snap ? opt.snap.map((w) => [Math.round(w[0] * FPS), Math.round(w[1] * FPS)]) : [];
+  const inSnap = (f) => snap.some((w) => f >= w[0] && f <= w[1]);
+  const pv = [0, 1, 0];
+  for (let f = 0; f < N; f++) {
+    for (let p = 0; p < P; p++) {
+      const id = desc.ids[p], o = p * 9;
+      const q = clip.q[id], tt = clip.t && clip.t[id], ss = clip.s && clip.s[id];
+      pose[o] = tt ? tt[f * 3] : 0; pose[o + 1] = tt ? tt[f * 3 + 1] : 0; pose[o + 2] = tt ? tt[f * 3 + 2] : 0;
+      pose[o + 3] = q ? q[f * 3] : 0; pose[o + 4] = q ? q[f * 3 + 1] : 0; pose[o + 5] = q ? q[f * 3 + 2] : 0;
+      pose[o + 6] = ss ? ss[f * 3] : 1; pose[o + 7] = ss ? ss[f * 3 + 1] : 1; pose[o + 8] = ss ? ss[f * 3 + 2] : 1;
+    }
+    fk(desc, pose, W);
+    const r = clip.root || {};
+    root.pitch = r.pitch ? r.pitch[f] : 0; root.roll = r.roll ? r.roll[f] : 0; root.yaw = r.yaw ? r.yaw[f] : 0;
+    // root offset = authored offset + pivot compensation (rotation about the hip), as the animator applies it
+    const cx = Math.cos(root.pitch), sx = Math.sin(root.pitch), cy = Math.cos(root.yaw), sy = Math.sin(root.yaw), cz = Math.cos(root.roll), sz = Math.sin(root.roll);
+    const m10 = cx * sz, m11 = cx * cz, m12 = -sx, m00 = cy * cz + sy * sx * sz, m01 = -cy * sz + sy * sx * cz, m02 = sy * cx, m20 = -sy * cz + cy * sx * sz, m21 = sy * sz + cy * sx * cz, m22 = cy * cx;
+    root.x = (r.x ? r.x[f] : 0) + pv[0] - (m00 * pv[0] + m01 * pv[1] + m02 * pv[2]);
+    root.y = (r.y ? r.y[f] : 0) + pv[1] - (m10 * pv[0] + m11 * pv[1] + m12 * pv[2]);
+    root.z = (r.z ? r.z[f] : 0) + pv[2] - (m20 * pv[0] + m21 * pv[1] + m22 * pv[2]);
+    const lo = lowestPoint(desc, W, root);
+    if (lo < 0 || inSnap(f)) ry[f] += -lo;
+  }
+  clip.meta.floorFit = true;
+}

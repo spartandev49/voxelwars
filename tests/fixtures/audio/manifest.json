@@ -1,0 +1,1196 @@
+{
+ "version": 1,
+ "sfx": [
+  {
+   "id": "sword_hit_1",
+   "file": "sword_hit_1.wav",
+   "path": "audio/sfx/sword_hit_1.wav",
+   "category": "blade",
+   "tags": [
+    "sword_hit"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "sword_hit_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": true
+  },
+  {
+   "id": "sword_hit_2",
+   "file": "sword_hit_2.wav",
+   "path": "audio/sfx/sword_hit_2.wav",
+   "category": "blade",
+   "tags": [
+    "sword_hit"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "sword_hit_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "sword_hit_3",
+   "file": "sword_hit_3.wav",
+   "path": "audio/sfx/sword_hit_3.wav",
+   "category": "blade",
+   "tags": [
+    "sword_hit"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "sword_hit_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "flesh_hit_light_1",
+   "file": "flesh_hit_light_1.wav",
+   "path": "audio/sfx/flesh_hit_light_1.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_light"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_light_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": true
+  },
+  {
+   "id": "flesh_hit_light_2",
+   "file": "flesh_hit_light_2.wav",
+   "path": "audio/sfx/flesh_hit_light_2.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_light"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_light_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "flesh_hit_light_3",
+   "file": "flesh_hit_light_3.wav",
+   "path": "audio/sfx/flesh_hit_light_3.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_light"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_light_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "flesh_hit_heavy_1",
+   "file": "flesh_hit_heavy_1.wav",
+   "path": "audio/sfx/flesh_hit_heavy_1.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_heavy"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_heavy_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "flesh_hit_heavy_2",
+   "file": "flesh_hit_heavy_2.wav",
+   "path": "audio/sfx/flesh_hit_heavy_2.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_heavy"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_heavy_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "flesh_hit_heavy_3",
+   "file": "flesh_hit_heavy_3.wav",
+   "path": "audio/sfx/flesh_hit_heavy_3.wav",
+   "category": "impact",
+   "tags": [
+    "flesh_hit_heavy"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "flesh_hit_heavy_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "death_grunt_1",
+   "file": "death_grunt_1.wav",
+   "path": "audio/sfx/death_grunt_1.wav",
+   "category": "death",
+   "tags": [
+    "death_grunt"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "death_grunt_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": true
+  },
+  {
+   "id": "death_grunt_2",
+   "file": "death_grunt_2.wav",
+   "path": "audio/sfx/death_grunt_2.wav",
+   "category": "death",
+   "tags": [
+    "death_grunt"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "death_grunt_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "death_grunt_3",
+   "file": "death_grunt_3.wav",
+   "path": "audio/sfx/death_grunt_3.wav",
+   "category": "death",
+   "tags": [
+    "death_grunt"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "death_grunt_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "war_horn_1",
+   "file": "war_horn_1.wav",
+   "path": "audio/sfx/war_horn_1.wav",
+   "category": "horn",
+   "tags": [
+    "war_horn"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "war_horn_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": true
+  },
+  {
+   "id": "war_horn_2",
+   "file": "war_horn_2.wav",
+   "path": "audio/sfx/war_horn_2.wav",
+   "category": "horn",
+   "tags": [
+    "war_horn"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "war_horn_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "war_horn_3",
+   "file": "war_horn_3.wav",
+   "path": "audio/sfx/war_horn_3.wav",
+   "category": "horn",
+   "tags": [
+    "war_horn"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "war_horn_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ui_click_1",
+   "file": "ui_click_1.wav",
+   "path": "audio/sfx/ui_click_1.wav",
+   "category": "ui",
+   "tags": [
+    "ui_click"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_click_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": true
+  },
+  {
+   "id": "ui_click_2",
+   "file": "ui_click_2.wav",
+   "path": "audio/sfx/ui_click_2.wav",
+   "category": "ui",
+   "tags": [
+    "ui_click"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_click_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ui_click_3",
+   "file": "ui_click_3.wav",
+   "path": "audio/sfx/ui_click_3.wav",
+   "category": "ui",
+   "tags": [
+    "ui_click"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_click_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ui_hover_1",
+   "file": "ui_hover_1.wav",
+   "path": "audio/sfx/ui_hover_1.wav",
+   "category": "ui",
+   "tags": [
+    "ui_hover"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_hover_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ui_hover_2",
+   "file": "ui_hover_2.wav",
+   "path": "audio/sfx/ui_hover_2.wav",
+   "category": "ui",
+   "tags": [
+    "ui_hover"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_hover_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ui_hover_3",
+   "file": "ui_hover_3.wav",
+   "path": "audio/sfx/ui_hover_3.wav",
+   "category": "ui",
+   "tags": [
+    "ui_hover"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ui_hover_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "bow_shot_1",
+   "file": "bow_shot_1.wav",
+   "path": "audio/sfx/bow_shot_1.wav",
+   "category": "bow",
+   "tags": [
+    "bow_shot"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "bow_shot_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "bow_shot_2",
+   "file": "bow_shot_2.wav",
+   "path": "audio/sfx/bow_shot_2.wav",
+   "category": "bow",
+   "tags": [
+    "bow_shot"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "bow_shot_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "bow_shot_3",
+   "file": "bow_shot_3.wav",
+   "path": "audio/sfx/bow_shot_3.wav",
+   "category": "bow",
+   "tags": [
+    "bow_shot"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "bow_shot_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "crowd_cheer_1",
+   "file": "crowd_cheer_1.wav",
+   "path": "audio/sfx/crowd_cheer_1.wav",
+   "category": "crowd",
+   "tags": [
+    "crowd_cheer"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "crowd_cheer_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "crowd_cheer_2",
+   "file": "crowd_cheer_2.wav",
+   "path": "audio/sfx/crowd_cheer_2.wav",
+   "category": "crowd",
+   "tags": [
+    "crowd_cheer"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "crowd_cheer_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "crowd_cheer_3",
+   "file": "crowd_cheer_3.wav",
+   "path": "audio/sfx/crowd_cheer_3.wav",
+   "category": "crowd",
+   "tags": [
+    "crowd_cheer"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "crowd_cheer_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "thunder_crack_1",
+   "file": "thunder_crack_1.wav",
+   "path": "audio/sfx/thunder_crack_1.wav",
+   "category": "magic",
+   "tags": [
+    "thunder_crack"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "thunder_crack_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "thunder_crack_2",
+   "file": "thunder_crack_2.wav",
+   "path": "audio/sfx/thunder_crack_2.wav",
+   "category": "magic",
+   "tags": [
+    "thunder_crack"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "thunder_crack_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "thunder_crack_3",
+   "file": "thunder_crack_3.wav",
+   "path": "audio/sfx/thunder_crack_3.wav",
+   "category": "magic",
+   "tags": [
+    "thunder_crack"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "thunder_crack_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_victory_1",
+   "file": "jingle_victory_1.wav",
+   "path": "audio/sfx/jingle_victory_1.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_victory"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_victory_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_victory_2",
+   "file": "jingle_victory_2.wav",
+   "path": "audio/sfx/jingle_victory_2.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_victory"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_victory_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_victory_3",
+   "file": "jingle_victory_3.wav",
+   "path": "audio/sfx/jingle_victory_3.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_victory"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_victory_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_defeat_1",
+   "file": "jingle_defeat_1.wav",
+   "path": "audio/sfx/jingle_defeat_1.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_defeat"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_defeat_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_defeat_2",
+   "file": "jingle_defeat_2.wav",
+   "path": "audio/sfx/jingle_defeat_2.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_defeat"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_defeat_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_defeat_3",
+   "file": "jingle_defeat_3.wav",
+   "path": "audio/sfx/jingle_defeat_3.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_defeat"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_defeat_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_battle_start_1",
+   "file": "jingle_battle_start_1.wav",
+   "path": "audio/sfx/jingle_battle_start_1.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_battle_start"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_battle_start_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_battle_start_2",
+   "file": "jingle_battle_start_2.wav",
+   "path": "audio/sfx/jingle_battle_start_2.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_battle_start"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_battle_start_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "jingle_battle_start_3",
+   "file": "jingle_battle_start_3.wav",
+   "path": "audio/sfx/jingle_battle_start_3.wav",
+   "category": "jingle",
+   "tags": [
+    "jingle_battle_start"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "jingle_battle_start_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "drum_boom_1",
+   "file": "drum_boom_1.wav",
+   "path": "audio/sfx/drum_boom_1.wav",
+   "category": "drum",
+   "tags": [
+    "drum_boom"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "drum_boom_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "drum_boom_2",
+   "file": "drum_boom_2.wav",
+   "path": "audio/sfx/drum_boom_2.wav",
+   "category": "drum",
+   "tags": [
+    "drum_boom"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "drum_boom_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "drum_boom_3",
+   "file": "drum_boom_3.wav",
+   "path": "audio/sfx/drum_boom_3.wav",
+   "category": "drum",
+   "tags": [
+    "drum_boom"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "drum_boom_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "ambience_wind_loop",
+   "file": "ambience_wind_loop.wav",
+   "path": "audio/sfx/ambience_wind_loop.wav",
+   "category": "ambience",
+   "tags": [
+    "ambience_wind_loop"
+   ],
+   "duration": 2,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "ambience_wind_loop",
+   "source": "tests/fixtures/audio/gen.mjs"
+  },
+  {
+   "id": "armor_rustle_1",
+   "file": "armor_rustle_1.wav",
+   "path": "audio/sfx/armor_rustle_1.wav",
+   "category": "foley",
+   "tags": [
+    "armor_rustle"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "armor_rustle_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "armor_rustle_2",
+   "file": "armor_rustle_2.wav",
+   "path": "audio/sfx/armor_rustle_2.wav",
+   "category": "foley",
+   "tags": [
+    "armor_rustle"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "armor_rustle_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "armor_rustle_3",
+   "file": "armor_rustle_3.wav",
+   "path": "audio/sfx/armor_rustle_3.wav",
+   "category": "foley",
+   "tags": [
+    "armor_rustle"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "armor_rustle_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "footstep_grass_1",
+   "file": "footstep_grass_1.wav",
+   "path": "audio/sfx/footstep_grass_1.wav",
+   "category": "foley",
+   "tags": [
+    "footstep_grass"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "footstep_grass_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "footstep_grass_2",
+   "file": "footstep_grass_2.wav",
+   "path": "audio/sfx/footstep_grass_2.wav",
+   "category": "foley",
+   "tags": [
+    "footstep_grass"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "footstep_grass_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "footstep_grass_3",
+   "file": "footstep_grass_3.wav",
+   "path": "audio/sfx/footstep_grass_3.wav",
+   "category": "foley",
+   "tags": [
+    "footstep_grass"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "footstep_grass_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "wood_thud_1",
+   "file": "wood_thud_1.wav",
+   "path": "audio/sfx/wood_thud_1.wav",
+   "category": "shield",
+   "tags": [
+    "wood_thud"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "wood_thud_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "wood_thud_2",
+   "file": "wood_thud_2.wav",
+   "path": "audio/sfx/wood_thud_2.wav",
+   "category": "shield",
+   "tags": [
+    "wood_thud"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "wood_thud_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "wood_thud_3",
+   "file": "wood_thud_3.wav",
+   "path": "audio/sfx/wood_thud_3.wav",
+   "category": "shield",
+   "tags": [
+    "wood_thud"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "wood_thud_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "shield_block_1",
+   "file": "shield_block_1.wav",
+   "path": "audio/sfx/shield_block_1.wav",
+   "category": "shield",
+   "tags": [
+    "shield_block"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "shield_block_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "shield_block_2",
+   "file": "shield_block_2.wav",
+   "path": "audio/sfx/shield_block_2.wav",
+   "category": "shield",
+   "tags": [
+    "shield_block"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "shield_block_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "shield_block_3",
+   "file": "shield_block_3.wav",
+   "path": "audio/sfx/shield_block_3.wav",
+   "category": "shield",
+   "tags": [
+    "shield_block"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "shield_block_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "arrow_hit_flesh_1",
+   "file": "arrow_hit_flesh_1.wav",
+   "path": "audio/sfx/arrow_hit_flesh_1.wav",
+   "category": "bow",
+   "tags": [
+    "arrow_hit_flesh"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "arrow_hit_flesh_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "arrow_hit_flesh_2",
+   "file": "arrow_hit_flesh_2.wav",
+   "path": "audio/sfx/arrow_hit_flesh_2.wav",
+   "category": "bow",
+   "tags": [
+    "arrow_hit_flesh"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "arrow_hit_flesh_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "arrow_hit_flesh_3",
+   "file": "arrow_hit_flesh_3.wav",
+   "path": "audio/sfx/arrow_hit_flesh_3.wav",
+   "category": "bow",
+   "tags": [
+    "arrow_hit_flesh"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "arrow_hit_flesh_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "boulder_impact_1",
+   "file": "boulder_impact_1.wav",
+   "path": "audio/sfx/boulder_impact_1.wav",
+   "category": "siege",
+   "tags": [
+    "boulder_impact"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "boulder_impact_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "boulder_impact_2",
+   "file": "boulder_impact_2.wav",
+   "path": "audio/sfx/boulder_impact_2.wav",
+   "category": "siege",
+   "tags": [
+    "boulder_impact"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "boulder_impact_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "boulder_impact_3",
+   "file": "boulder_impact_3.wav",
+   "path": "audio/sfx/boulder_impact_3.wav",
+   "category": "siege",
+   "tags": [
+    "boulder_impact"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "boulder_impact_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "catapult_launch_1",
+   "file": "catapult_launch_1.wav",
+   "path": "audio/sfx/catapult_launch_1.wav",
+   "category": "siege",
+   "tags": [
+    "catapult_launch"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "catapult_launch_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "catapult_launch_2",
+   "file": "catapult_launch_2.wav",
+   "path": "audio/sfx/catapult_launch_2.wav",
+   "category": "siege",
+   "tags": [
+    "catapult_launch"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "catapult_launch_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "catapult_launch_3",
+   "file": "catapult_launch_3.wav",
+   "path": "audio/sfx/catapult_launch_3.wav",
+   "category": "siege",
+   "tags": [
+    "catapult_launch"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "catapult_launch_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "chicken_cluck_1",
+   "file": "chicken_cluck_1.wav",
+   "path": "audio/sfx/chicken_cluck_1.wav",
+   "category": "animal",
+   "tags": [
+    "chicken_cluck"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "chicken_cluck_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "chicken_cluck_2",
+   "file": "chicken_cluck_2.wav",
+   "path": "audio/sfx/chicken_cluck_2.wav",
+   "category": "animal",
+   "tags": [
+    "chicken_cluck"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "chicken_cluck_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "chicken_cluck_3",
+   "file": "chicken_cluck_3.wav",
+   "path": "audio/sfx/chicken_cluck_3.wav",
+   "category": "animal",
+   "tags": [
+    "chicken_cluck"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "chicken_cluck_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_beep_1",
+   "file": "countdown_beep_1.wav",
+   "path": "audio/sfx/countdown_beep_1.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_beep"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_beep_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_beep_2",
+   "file": "countdown_beep_2.wav",
+   "path": "audio/sfx/countdown_beep_2.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_beep"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_beep_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_beep_3",
+   "file": "countdown_beep_3.wav",
+   "path": "audio/sfx/countdown_beep_3.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_beep"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_beep_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_go_1",
+   "file": "countdown_go_1.wav",
+   "path": "audio/sfx/countdown_go_1.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_go"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_go_1",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_go_2",
+   "file": "countdown_go_2.wav",
+   "path": "audio/sfx/countdown_go_2.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_go"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_go_2",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  },
+  {
+   "id": "countdown_go_3",
+   "file": "countdown_go_3.wav",
+   "path": "audio/sfx/countdown_go_3.wav",
+   "category": "ui",
+   "tags": [
+    "countdown_go"
+   ],
+   "duration": 0.4,
+   "license": "CC0 1.0",
+   "author": "generated",
+   "title": "countdown_go_3",
+   "source": "tests/fixtures/audio/gen.mjs",
+   "core": false
+  }
+ ],
+ "music": [
+  {
+   "id": "menu_a",
+   "file": "menu_a.wav",
+   "path": "audio/music/menu_a.wav",
+   "mood": "menu",
+   "tags": [
+    "epic"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "menu_b",
+   "file": "menu_b.wav",
+   "path": "audio/music/menu_b.wav",
+   "mood": "menu",
+   "tags": [
+    "calm"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "battle_low_dark",
+   "file": "battle_low_dark.wav",
+   "path": "audio/music/battle_low_dark.wav",
+   "mood": "battle_low",
+   "tags": [
+    "tribal",
+    "war drums"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "battle_mid_epic",
+   "file": "battle_mid_epic.wav",
+   "path": "audio/music/battle_mid_epic.wav",
+   "mood": "battle_mid",
+   "tags": [
+    "epic",
+    "orchestral"
+   ],
+   "duration": 8,
+   "loop": true,
+   "loopStart": 0,
+   "loopEnd": 8
+  },
+  {
+   "id": "battle_high_brass",
+   "file": "battle_high_brass.wav",
+   "path": "audio/music/battle_high_brass.wav",
+   "mood": "battle_high",
+   "tags": [
+    "brass",
+    "timpani",
+    "epic"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "victory_x",
+   "file": "victory_x.wav",
+   "path": "audio/music/victory_x.wav",
+   "mood": "victory",
+   "tags": [
+    "fanfare"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "defeat_x",
+   "file": "defeat_x.wav",
+   "path": "audio/music/defeat_x.wav",
+   "mood": "defeat",
+   "tags": [
+    "somber"
+   ],
+   "duration": 8,
+   "loop": false
+  },
+  {
+   "id": "comedy_x",
+   "file": "comedy_x.wav",
+   "path": "audio/music/comedy_x.wav",
+   "mood": "comedy",
+   "tags": [
+    "silly"
+   ],
+   "duration": 8,
+   "loop": false
+  }
+ ],
+ "vfx": []
+}

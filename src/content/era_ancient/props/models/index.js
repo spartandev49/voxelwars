@@ -6,10 +6,11 @@ import * as nature from './nature.js';
 import * as architecture from './architecture.js';
 import * as camp from './camp.js';
 import * as crowd from './crowd.js';
+import * as monuments from './monuments.js';
 import { RNG, hashString, measure, colorHistogram } from './kit.js';
 
-const SPECS = Object.assign({}, nature.MODELS, architecture.MODELS, camp.MODELS, crowd.MODELS);
-const BUILD = Object.assign({}, nature.BUILDERS, architecture.BUILDERS, camp.BUILDERS, crowd.BUILDERS);
+const SPECS = Object.assign({}, nature.MODELS, architecture.MODELS, camp.MODELS, monuments.MODELS, crowd.MODELS);
+const BUILD = Object.assign({}, nature.BUILDERS, architecture.BUILDERS, camp.BUILDERS, monuments.BUILDERS, crowd.BUILDERS);
 
 export const PROP_MODEL_IDS = Object.keys(BUILD);
 
@@ -18,12 +19,14 @@ export function hasPropModel(type) { return !!BUILD[type]; }
 export function variantCount(type) { return SPECS[type] ? SPECS[type].variants || 1 : 1; }
 /** true when stages 1 and 2 are never shown (indestructible props). */
 export function isStaticProp(type) { return !!(SPECS[type] && SPECS[type].indestructible); }
-export function propRng(type, stage, variant) { return new RNG((hashString(type) ^ Math.imul(stage + 1, 7919) ^ Math.imul(variant + 1, 104729)) >>> 0); }
+/** Seed shared by every stage of a (type, variant): stage 1 is the SAME structure as stage 0 with damage applied, never a different roll. */
+export function propRng(type, stage, variant) { return new RNG((hashString(type) ^ Math.imul(wrap(variant, variantCount(type)) + 1, 104729)) >>> 0); }
+const wrap = (v, n) => { n = Math.max(1, n | 0); return (((v | 0) % n) + n) % n; };
 
 export function buildProp(type, stage = 0, variant = 0, rng = null) {
   const b = BUILD[type];
   if (!b) throw new Error('No prop model for ' + type);
-  return b(stage, variant, rng || propRng(type, stage | 0, variant | 0));
+  return b(stage, variant, rng || propRng(type, stage | 0, variant));
 }
 
 const DEBRIS_CACHE = Object.create(null);

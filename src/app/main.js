@@ -11,7 +11,8 @@ import { Loop } from './loop.js';
 import { Router } from './router.js';
 import { FALLBACK_SCREENS } from './debugui.js';
 import { createNullAudio } from './nullaudio.js';
-import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT } from '../_generated/registry.optional.js';
+import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT, CAMPAIGN, CUSTOM } from '../_generated/registry.optional.js';
+import { generateArena } from '../world/gen.js';
 import { ClipLib } from '../anim/clips.js';
 import { PreviewService } from '../render/preview.js';
 
@@ -38,6 +39,9 @@ async function start() {
   // content + optional integrations
   const content = buildContent();
   if (BLUEPRINTS && BLUEPRINTS.compileSoldier) content.setCompiler(BLUEPRINTS.compileSoldier);
+  if (CAMPAIGN) content.campaign = CAMPAIGN.CAMPAIGN || CAMPAIGN.campaign || content.campaign;
+  if (CAMPAIGN && CAMPAIGN.campaignApi) content.campaignApi = CAMPAIGN.campaignApi;
+  if (CUSTOM && CUSTOM.customDef) content.customDef = CUSTOM.customDef;
   try { if (ANIM_BOOT && ANIM_BOOT.registerAllClips) { const r = ANIM_BOOT.registerAllClips(ClipLib, { humanoid: window.__VW_UAL_CLIPS__ || null, onReport: (m) => diag.note(m) }); diag.extra.clips = r; } } catch (e) { diag.error('anim', e && e.message); }
   const audio = (AUDIO && AUDIO.createAudio) ? AUDIO.createAudio({ settings, getListener: () => game.rig.listener, quality: () => engine.qualityKey }) : createNullAudio();
 
@@ -51,6 +55,7 @@ async function start() {
     save: { arenas: collections.arenas, soldiers: collections.soldiers, armies: collections.armies, status: () => store.status(), store },
     preview: lazyPreview(() => new PreviewService({ modelFor: (d, u) => content.modelFor(d, u), animator: game.animator, defs: content.defs, palette: () => settings.get('palette') || 'classic', compile: BLUEPRINTS && BLUEPRINTS.compileSoldier })), platform: platformApi(), version: { build: typeof __VW_VERSION__ !== 'undefined' ? __VW_VERSION__ : 'dev', date: typeof __VW_BUILD__ !== 'undefined' ? __VW_BUILD__ : '' },
   };
+  content.arenaThumb = arenaThumbQueue(content, ctx.preview);
   const router = new Router(ui, () => ctx, FALLBACK_SCREENS);
   app.router = router;
   ctx.nav = { goto: (id, p) => router.goto(id, p), back: () => router.back(), current: () => router.current(), overlay: (id, p) => router.overlay(id, p), closeOverlay: (id) => router.closeOverlay(id), modal: (o) => router.modal(o), toast: (t, o) => router.toast(t, o) };
@@ -99,6 +104,22 @@ async function start() {
   diag.markTitle();
   if (audio.attach) audio.attach(null);
   document.body.dataset.vwReady = '1';
+}
+
+/** Arena thumbnails for the carousels: generated one at a time in idle slices (a terrain mesh build is ~50-150 ms), cached by preset id. Returns a Promise<dataURL|''>. */
+function arenaThumbQueue(content, preview) {
+  const cache = new Map(), queue = []; let busy = false;
+  const pump = () => {
+    if (busy || !queue.length) return; busy = true;
+    const job = queue.shift();
+    const run = () => {
+      let url = '';
+      try { const p = content.arenas.find((a) => a.id === job.id); if (p) { const arena = generateArena(p.recipe === 'random' ? 'marathon' : p.recipe, 'small', p.seed || 1); url = preview.arenaThumb(arena, 'preset:' + p.id, 192, 108) || ''; } } catch (e) { url = ''; }
+      job.resolve(url); busy = false; setTimeout(pump, 16);
+    };
+    if (typeof requestIdleCallback === 'function') requestIdleCallback(run, { timeout: 400 }); else setTimeout(run, 24);
+  };
+  return (id) => { if (cache.has(id)) return cache.get(id); const pr = new Promise((resolve) => { queue.push({ id, resolve }); pump(); }); cache.set(id, pr); return pr; };
 }
 
 /** The preview service owns a second WebGL context: create it on first use. */

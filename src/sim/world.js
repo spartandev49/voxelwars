@@ -10,7 +10,7 @@ import { applyDamage, killUnit, setAnim, angleDiff, dotDamage, newHit, Hit } fro
 import { ProjectileSystem } from './projectiles.js';
 import { NavGrid, FlowField } from '../world/nav.js';
 import { RNG } from '../core/rng.js';
-import { EventBus } from '../core/events.js';
+import { EventBus, EVENTS, makePayloads } from '../core/events.js';
 import { propInfo } from '../content/era_ancient/props/catalog.js';
 import { formationOffsets, placeOffsets } from './formations.js';
 import { abilityRegistry } from './abilities/index.js';
@@ -19,18 +19,15 @@ import { GodPowers } from './godpowers.js';
 import { Possession } from './possession.js';
 import { createObjective } from './objectives.js';
 import { PowerTracker } from './power.js';
-import { mutatorMods } from './mutators.js';
+import { WaveSystem } from './waves.js';
+import { mutatorMods, MutatorRuntime } from './mutators.js';
+import { SIM_BARKS } from '../content/era_ancient/sim_text.js';
 
 export { Squad };
 const TAU = Math.PI * 2;
 const DEFLECT = [0.6, -0.6, 1.2, -1.2, 1.9, -1.9, 2.6, -2.6];
 
-export const EVENT_NAMES = ['battle_countdown', 'battle_start', 'battle_end', 'unit_spawn', 'unit_hit', 'unit_block', 'unit_kill', 'unit_heal', 'unit_stagger', 'unit_rout', 'unit_rally', 'unit_revive', 'unit_convert',
-  'ability_cast', 'ability_channel_start', 'ability_channel_end', 'telegraph', 'status_apply',
-  'projectile_launch', 'projectile_hit', 'explosion', 'lightning_arc', 'crater', 'prop_damaged', 'prop_destroyed', 'prop_spawned',
-  'first_blood', 'kill_streak', 'hero_down', 'army_low', 'lead_change', 'big_swing', 'stalemate_warning', 'intervention', 'objective_update', 'wave_spawn', 'god_power',
-  'chicken_tantrum', 'philosopher_monologue', 'trojan_reveal', 'stone_gaze', 'throne_sit', 'friendly_fire', 'trample', 'charge_hit', 'unit_brace', 'cyclops_misaim', 'catapult_misfire',
-  'unit_corpse_done', 'bark', 'fire_started', 'crowd_roar', 'hazard_trigger', 'possess'];
+export const EVENT_NAMES = Object.keys(EVENTS);
 
 export class Prop {
   constructor(id, o, info) {
@@ -47,7 +44,7 @@ export class Prop {
   }
 }
 
-const DEFAULT_RULES = { friendlyFire: false, morale: true, speed: 1, timeLimit: 360, difficulty: 'normal', objective: null, godPowers: true, deathCorpses: true, mutators: [], weather: null, noKite: false };
+const DEFAULT_RULES = { friendlyFire: false, morale: true, speed: 1, timeLimit: 360, difficulty: 'normal', objective: null, godPowers: true, mutators: [], weather: null, noKite: false };
 
 export class World {
   /**
@@ -57,8 +54,8 @@ export class World {
     this.arena = arena.clone(); arena = this.arena; this.defs = defs; this.seed = seed;   // the world mutates its own copy (craters, collapses)
     this.rules = Object.assign({}, DEFAULT_RULES, rules);
     this.rng = new RNG(seed);
-    this.ev = new EventBus(); this.events = this.ev;
-    this.P = Object.create(null); for (const n of EVENT_NAMES) this.P[n] = {};
+    this.ev = new EventBus(); this.events = this.ev; this.ev.now = () => this.time;
+    this.P = makePayloads();
     this.time = 0; this.tickN = 0; this.state = 'placing'; this.winner = -1; this.endReason = '';
     this.units = []; this.dying = []; this.squads = []; this.nextSquad = 1; this.nextUnitId = 1; this.byId = new Map();
     this.hash = new Spatial(arena.worldSize(), G.hashCell, 2048);
@@ -66,7 +63,7 @@ export class World {
     this.nav = new NavGrid(arena);
     this.fields = [new FlowField(this.nav), new FlowField(this.nav)];
     this.fieldSrc = [new Int32Array(this.nav.n * this.nav.n), new Int32Array(this.nav.n * this.nav.n)];
-    this.fieldStamp = new Uint32Array(this.nav.n * this.nav.n); this.stamp = 1;
+    this._fieldTeam = 0; this.fieldStamp = new Uint32Array(this.nav.n * this.nav.n); this.stamp = 1;
     this.crowd = [new Float32Array(this.nav.n * this.nav.n), new Float32Array(this.nav.n * this.nav.n)];   // per-team congestion cost (spreads armies over parallel routes)
     this.centroid = [{ x: 0, z: 0, n: 0 }, { x: 0, z: 0, n: 0 }];
     this.axis = new Float32Array(4); this.enemyExt = [12, 12]; this.enemyBack = [{ x: 0, z: 0, n: 0 }, { x: 0, z: 0, n: 0 }];
@@ -89,15 +86,17 @@ export class World {
     this.onTick = null;
     this.inputQ = [];                                // tick-stamped inputs (sorted by tick)
     this.record = null;                              // set to [] to record applied inputs
-    this.collapseTeam = -1;
+    this.collapseTeam = -1; this._lastBark = -9;
     this.hitPool = []; for (let i = 0; i < 8; i++) this.hitPool.push(new Hit()); this.hitDepth = 0;
     this.power = new PowerTracker(this);
     if (props) this._buildProps(arena.props);
     this.hazardSys = new HazardSystem(this);
     this.godpowers = this.rules.godPowers === false ? null : new GodPowers(this);
     this.possession = new Possession(this);
+    this.mutRt = this.mut.chickenRain || this.mut.wineRain ? new MutatorRuntime(this) : null;
     this.objective = this.rules.objective ? createObjective(this, this.rules.objective) : null;
-    this.waves = null;                                // set by waves.js (Survival)
+    this.waves = null;                                // Survival: rules.waves = {..} or new WaveSystem(world, opts)
+    if (this.rules.waves) new WaveSystem(this, this.rules.waves === true ? {} : this.rules.waves);
   }
 
   emit(type, p) { this.ev.emit(type, p); }
@@ -213,7 +212,7 @@ export class World {
     const f = { kind, x, z, r, t, dps, team, src, tm: 0 };
     this.effects.push(f); return f;
   }
-  invalidateFields() { this.fields[0].valid = false; this.fields[1].valid = false; this.fieldTimer = 0; }
+  invalidateFields() { this.fields[0].valid = false; this.fields[1].valid = false; this.fieldTimer = 0; this._fieldAll = true; }
 
   /**
    * Radial damage with falloff 1 -> 0.4. `h` is a prepared Hit (type/kb/cause/ap...). Allies of `protect` are skipped unless protect < 0.
@@ -255,7 +254,7 @@ export class World {
     u.abil = [];
     for (const a of def.abilities) {
       const impl = abilityRegistry[a.id];
-      if (impl) { const st = impl.init ? impl.init(u, a, this) : {}; u.abil.push({ p: a, impl, st: st || {}, cd: (a.cd || 0) * (0.3 + this.rng.next() * 0.5) }); }
+      if (impl) { const st = impl.init ? impl.init(u, a, this) : {}; u.abil.push({ p: a, impl, st: st || {}, cd: (a.cd || 0) * (0.3 + this.rng.next() * 0.5) }); if (a.id === 'throne' && o.squad) o.squad.watch = true; }
     }
     this.units.push(u); this.byId.set(u.id, u);
     const s = this.stats[team]; s.alive++; s.aliveCost += def.cost; s.startCount++; s.startCost += def.cost;
@@ -364,10 +363,26 @@ export class World {
     }
   }
   fireRanged(u) {
-    const t = u.target; if (!t) return;
-    const r = u.def.ranged;
-    this.proj.fire(u, t, t.x, t.z, t.y + t.height * 0.55);
-    if (r.volley) for (let i = 1; i < r.volley; i++) this.proj.fire(u, t, t.x, t.z, t.y + t.height * 0.55);
+    const t = u.target, r = u.def.ranged;
+    if (t && t.alive) {
+      this.proj.fire(u, t, t.x, t.z, t.y + t.height * 0.55);
+      if (r.volley) for (let i = 1; i < r.volley; i++) this.proj.fire(u, t, t.x, t.z, t.y + t.height * 0.55);
+    } else if (u.breach && !u.breach.dead) {
+      const p = u.breach, gy = this.arena.heightAt(p.x, p.z) + p.height * 0.4;
+      this.proj.fire(u, null, p.x, p.z, gy);
+    }
+  }
+
+  /** Speech-bubble line for an ability moment: UnitDef.text[key] (HUMOR) or the default in content/sim_text.js. Rate limited (global 1.2 s, per unit 6 s; heroes/bosses bypass the global limit). */
+  bark(u, key) {
+    if (u.bark > 0) return false;
+    const big = u.def.role === 'hero' || u.def.role === 'monster';
+    if (!big && this.time - this._lastBark < 1.2) return false;
+    const lines = (u.def.text && u.def.text[key]) || SIM_BARKS[key];
+    if (!lines || !lines.length) return false;
+    this._lastBark = this.time; u.bark = 6;
+    const e = this.P.bark; e.id = u.id; e.text = lines[(this.rng.next() * lines.length) | 0]; this.emit('bark', e);
+    return true;
   }
 
   // ------------------------------------------------------------------ inputs (tick-stamped => deterministic)
@@ -436,7 +451,7 @@ export class World {
     for (let i = 0; i < units.length; i++) { const u = units[i]; if (u.alive) this.hash.insert(i, u.x, u.z); }
     // flow fields (staggered)
     this.fieldTimer = (this.fieldTimer || 0) - 1;
-    if (this.fieldTimer <= 0) { this.recomputeCentroids(); this.refreshFields(); this.fieldTimer = G.navRefresh; }
+    if (this.fieldTimer <= 0) { this.recomputeCentroids(); this.refreshFields(this._fieldAll ? undefined : this._fieldTeam); this._fieldAll = false; this._fieldTeam ^= 1; this.fieldTimer = G.navRefresh; }
     // statuses, modifiers, auras
     this._updateStatusesAndMods(dt);
     // squads
@@ -446,6 +461,7 @@ export class World {
     this.hazardSys.tick(dt);
     if (this.godpowers) this.godpowers.tick(dt);
     this.possession.tick(dt);
+    if (this.mutRt) this.mutRt.tick(dt);
     // AI think + ability AI
     for (let i = 0; i < units.length; i++) {
       const u = units[i]; if (!u.alive) continue;
@@ -547,8 +563,10 @@ export class World {
       this.enemyExt[t] = ext;
     }
   }
-  refreshFields() {
+  /** Recompute the flow field of one team (both when team is undefined). Teams alternate so a tick never pays for two Dijkstras. */
+  refreshFields(only) {
     for (let team = 0; team < 2; team++) {
+      if (only !== undefined && only !== team) continue;
       const src = this.fieldSrc[team]; let n = 0;
       this.stamp++;
       for (let i = 0; i < this.units.length; i++) {
@@ -578,7 +596,7 @@ export class World {
     let k = mat.speed;
     if (arena.water > 0 && arena.cellHeight(u.x, u.z) < arena.waterY()) k *= 0.6;
     const fr = Math.exp(-G.knockFriction * dt);
-    const mvx = u.vx * k + u.kx, mvz = u.vz * k + u.kz;
+    const mvx = u.vx * k + u.kx + u.ex, mvz = u.vz * k + u.kz + u.ez;
     u.kx *= fr; u.kz *= fr; if (u.kx < 0.05 && u.kx > -0.05) u.kx = 0; if (u.kz < 0.05 && u.kz > -0.05) u.kz = 0;
     let nx = u.x + mvx * dt, nz = u.z + mvz * dt;
     const nav = this.nav, ocx = nav.cx(u.x), ocz = nav.cz(u.z);
@@ -743,9 +761,18 @@ export class World {
     const d = this.dying;
     for (let i = d.length - 1; i >= 0; i--) {
       const u = d[i]; u.deadT += dt; u.anim.t += dt * u.anim.rate; if (u.anim.blend < 1) u.anim.blend = Math.min(1, u.anim.blend + dt / 0.1);
-      // flung corpses keep sliding
-      if (u.deathKind === 2 && u.deadT < 0.9) { u.x += u.kx * dt; u.z += u.kz * dt; u.kx *= 0.94; u.kz *= 0.94; const gy = this.arena.heightAt(u.x, u.z); u.y = gy + Math.max(0, Math.sin(Math.min(1, u.deadT / 0.9) * Math.PI) * Math.min(2.5, Math.hypot(u.kx, u.kz) * 0.25)); u.pitch = -u.deadT * 5; }
-      if (u.deadT > G.deathLinger) {
+      // flung corpses keep sliding on their launch velocity (render owns pitch/roll)
+      if (u.deathKind === 2 && u.deadT < 0.9) {
+        const nx = u.x + u.kx * dt, nz = u.z + u.kz * dt;
+        if (this.nav.walkable(nx, nz)) { u.x = nx; u.z = nz; }
+        u.kx *= 0.94; u.kz *= 0.94;
+      }
+      if (u.ky !== 0 || u.y > this.arena.cellHeight(u.x, u.z) + 0.01) {
+        const gy = this.arena.cellHeight(u.x, u.z);
+        u.ky -= G.gravity * dt; u.y += u.ky * dt;
+        if (u.y <= gy) { u.y = gy; u.ky = 0; }
+      }
+      if (u.deadT > u.deathLinger) {
         const e = this.P.unit_corpse_done; e.id = u.id; e.def = u.def.id; e.team = u.team; e.x = u.x; e.y = u.y; e.z = u.z; this.emit('unit_corpse_done', e);
         this.byId.delete(u.id);
         d.splice(i, 1);
@@ -768,11 +795,13 @@ export class World {
     const ca = this.stats[0].aliveCost, cb = this.stats[1].aliveCost;
     if (this.time > 90) { const r = (ca + 1) / (cb + 1); this.collapseTeam = r > 4 ? 1 : r < 0.25 ? 0 : -1; }
     if (this.time > 45 && !this.forceAdvance && idle > 6) { const r = (ca + 1) / (cb + 1); if (r > 0.9 && r < 1.1) this.forceAdvance = true; }
+    const obj = this.objective, blk = obj && obj.blocksElimination ? obj.enemy : -1;      // an objective may keep the battle going after the enemy is wiped out (waves, destroy+eliminate)
     if (a <= 0 || b <= 0) {
-      if (!(this.objective && this.objective.blocksElimination)) { this.end(a > 0 ? 0 : b > 0 ? 1 : -1, 'elimination'); return; }
+      const gone = a <= 0 && b <= 0 ? -2 : a <= 0 ? 0 : 1;
+      if (gone === -2 || gone !== blk) { this.end(a > 0 ? 0 : b > 0 ? 1 : -1, 'elimination'); return; }
     }
-    if ((this.tickN % 15) === 0 && !(this.objective && this.objective.blocksElimination) && this._routCheck(a, b)) return;
-    if (this.time >= this.rules.timeLimit) this.end(ca > cb * 1.02 ? 0 : cb > ca * 1.02 ? 1 : -1, 'time');
+    if ((this.tickN % 15) === 0 && blk < 0 && this._routCheck(a, b)) return;
+    if (this.rules.timeLimit > 0 && this.time >= this.rules.timeLimit) this.end(ca > cb * 1.02 ? 0 : cb > ca * 1.02 ? 1 : -1, 'time');
   }
   /** An army whose survivors are all routing for 3 s has lost ('rout' end). */
   _routCheck(a, b) {

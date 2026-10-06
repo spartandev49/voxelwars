@@ -1,7 +1,7 @@
 // Boot: bake every authored clip and register them together with the retargeted UAL clips (spec.md §7).
 import { bakeAll } from './dsl.js';
 import './clips/index.js';
-import { convertUAL } from './ual.js';
+import { convertUAL, buildAdopted } from './ual.js';
 
 /**
  * registerAllClips(ClipLib, opts)
@@ -11,15 +11,20 @@ import { convertUAL } from './ual.js';
  */
 export function registerAllClips(ClipLib, opts = {}) {
   const baked = bakeAll();
-  const have = new Set(baked.filter((c) => c.rig === 'hum1').map((c) => c.id));
-  for (const c of baked) ClipLib.register(c);
-  let n = 0, alt = 0;
-  if (opts.humanoid && opts.humanoid.clips) {
-    for (const id of Object.keys(opts.humanoid.clips)) {
-      if (have.has(id)) { if (opts.alternates) { ClipLib.register(convertUAL(id, opts.humanoid.clips[id], { id: 'ual_' + id })); alt++; } continue; }
-      ClipLib.register(convertUAL(id, opts.humanoid.clips[id])); n++;
-    }
+  const authored = new Map(baked.filter((c) => c.rig === 'hum1').map((c) => [c.id, c]));
+  const adopted = buildAdopted(opts.humanoid, (id, why) => { if (opts.onReport) opts.onReport(`UAL clip '${id}' rejected at boot: ${why}`); });
+  const replaced = new Set();
+  for (const a of adopted) if (a.entry.use !== 'extra' && authored.has(a.entry.id)) replaced.add(a.entry.id);
+  // authored clips first (every id), then the adopted UAL clips replace their authored twins in the plain slot
+  for (const c of baked) {
+    if (c.rig === 'hum1' && replaced.has(c.id)) { if (opts.alternates) ClipLib.register(Object.assign({}, c, { id: 'authored_' + c.id })); continue; }
+    ClipLib.register(c);
   }
-  if (opts.onReport) opts.onReport(`registered ${baked.length} authored + ${n} retargeted clips (+${alt} alternates)`);
-  return { authored: baked.length, retargeted: n };
+  for (const a of adopted) ClipLib.register(a.clip);
+  let alt = 0;
+  if (opts.alternates && opts.humanoid && opts.humanoid.clips) {
+    for (const id of Object.keys(opts.humanoid.clips)) { ClipLib.register(convertUAL(id, opts.humanoid.clips[id], { id: 'ual_' + id })); alt++; }
+  }
+  if (opts.onReport) opts.onReport(`registered ${baked.length} authored clips, ${adopted.length} UAL clips (${replaced.size} replace an authored twin)${alt ? `, ${alt} alternates` : ''}`);
+  return { authored: baked.length, adopted: adopted.length, replaced: Array.from(replaced) };
 }

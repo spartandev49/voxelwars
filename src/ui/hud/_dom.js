@@ -119,6 +119,15 @@ export function disposer() {
   };
 }
 
+/** wide | tablet | phone from the viewport (ctx.platform.viewport() when present). */
+export function layoutOf(ctx) {
+  let w = window.innerWidth, hh = window.innerHeight;
+  try { const v = ctx && ctx.platform && ctx.platform.viewport && ctx.platform.viewport(); if (v && v.w) { w = v.w; hh = v.h; } } catch (e) { /* use window */ }
+  if (Math.min(w, hh) < 520 || w < 640) return 'phone';
+  if (w < 1100) return 'tablet';
+  return 'wide';
+}
+
 /** Plain-language list join: ['a','b','c'] -> 'a, b and c'. */
 export function andList(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
 

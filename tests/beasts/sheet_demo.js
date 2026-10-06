@@ -3,7 +3,9 @@
 // The finished PNG is published as window.__SHEET_RESULT = {dataUrl, models:[...ids], log:[...]}.
 import { Engine, lin } from '../../src/render/engine.js';
 import { VoxSkin, newPose } from '../../src/render/voxskin.js';
-import { SHEET_MODELS } from '../../src/content/era_ancient/beasts/index.js';
+import { SHEET_MODELS as BASE_MODELS, BUILDERS } from '../../src/content/era_ancient/beasts/index.js';
+import { compileSoldier } from '../../src/content/era_ancient/blueprints.js';
+import { BLUEPRINTS } from '../../src/content/era_ancient/units/t0.js';
 import { modelBounds } from '../../src/content/era_ancient/beasts/common.js';
 
 const cfg = Object.assign({ cell: 240, mode: 'sheet', only: null, group: null, labels: true }, window.__SHEET || {});
@@ -12,6 +14,9 @@ const TEAMS = [lin(0x2f6bff), lin(0xe23b3b)];            // A cobalt, B crimson 
 const ANGLES = cfg.angles || [{ n: '3/4 front', h: 0.62 }, { n: 'side', h: Math.PI / 2 }, { n: 'rear 3/4', h: Math.PI + 0.62 }];
 const log = [];
 
+// UNITS-LIB's real riders (units/t0.js) seated on our mounts, appended to the sheet when available
+const REAL = [['companion_cavalry', 'rider_companion'], ['equites', 'rider_equites']].filter(([, r]) => BLUEPRINTS[r]).map(([b, r]) => ({ id: b + '_real', group: 'mount', label: b.replace(/_/g, ' ') + ' (UNITS rider)', make: () => BUILDERS[b]({ rider: compileSoldier(BLUEPRINTS[r]).model }) }));
+const SHEET_MODELS = BASE_MODELS.concat(REAL);
 let list = SHEET_MODELS.slice();
 if (cfg.group) list = list.filter((m) => m.group === cfg.group);
 if (cfg.only) list = cfg.only.map((id) => list.find((m) => m.id === id) || SHEET_MODELS.find((m) => m.id === id)).filter(Boolean);
@@ -101,21 +106,28 @@ if (cfg.mode === 'sheet') {
     });
   });
 } else if (cfg.mode === 'zoom') {
-  // 3 zoom levels per model rendered natively at 160 / 80 / 40 px model height (side-ish 3/4 view), team A then B
-  const sizes = [160, 80, 40], colW = 200, rowH = 190, head = 24;
-  startSheet(labelW + 6 * colW, head + rows * rowH);
+  // native 120 / 80 / 40 px model height renders (3/4 side view), team A then team B, side by side per model (width follows the footprint)
+  const sizes = [120, 80, 40], head = 24, rowH = 190, gap = 8;
+  const widths = built.map((item) => {
+    const hgt = item.b.max[1] - item.b.min[1], hr = Math.max(Math.abs(item.b.min[0]), Math.abs(item.b.max[0]), Math.abs(item.b.min[2]), Math.abs(item.b.max[2]));
+    return sizes.map((s) => Math.max(Math.ceil(s * 1.4), Math.ceil(2 * hr * (s / hgt) * 1.12)));
+  });
+  const rowW = (r) => 2 * widths[r].reduce((a, w) => a + w + gap, 0);
+  startSheet(labelW + Math.max(...built.map((_, r) => rowW(r))), head + rows * rowH);
   ctx.font = 'bold 13px sans-serif'; ctx.fillStyle = '#e8e8e8';
-  for (let t = 0; t < 2; t++) sizes.forEach((s, i) => ctx.fillText(`team ${t ? 'B' : 'A'}  ${s}px tall`, labelW + (t * 3 + i) * colW + 8, 17));
+  ctx.fillText('team A blue: 120 / 80 / 40 px tall   |   team B red: 120 / 80 / 40 px tall   (native renders, nothing upscaled)', labelW, 17);
   built.forEach((item, r) => {
     ctx.fillStyle = '#ffe9a8'; ctx.font = 'bold 13px sans-serif'; ctx.fillText(item.entry.label || item.entry.id, 8, head + r * rowH + 22);
+    let x = labelW;
     for (let t = 0; t < 2; t++) sizes.forEach((s, i) => {
-      const V = Math.min(colW, Math.ceil(Math.max(s * 1.9, (item.b.max[0] - item.b.min[0] + 2) * s / (item.b.max[1] - item.b.min[1] || 1) * 1.3)));
-      eng.renderer.setSize(V, V, false); eng.camera.aspect = 1; eng.camera.updateProjectionMatrix();
-      frame(item, Math.PI / 2 - 0.5, TEAMS[t], s, V);
-      ctx.drawImage(gl, 0, 0, V, V, labelW + (t * 3 + i) * colW + (colW - V) / 2, head + r * rowH + (rowH - V) / 2, V, V);
+      const Vh = Math.ceil(s * 1.4), Vw = widths[r][i];
+      eng.renderer.setSize(Vw, Vh, false); eng.camera.aspect = Vw / Vh; eng.camera.updateProjectionMatrix();
+      frame(item, Math.PI / 2 - 0.5, TEAMS[t], s, Vh);
+      ctx.drawImage(gl, 0, 0, Vw, Vh, x, head + r * rowH + (rowH - Vh) / 2, Vw, Vh);
+      x += Vw + gap;
     });
-    eng.renderer.setSize(CW, CH, false);
   });
+  eng.renderer.setSize(CW, CH, false); eng.camera.aspect = 1; eng.camera.updateProjectionMatrix();
 } else if (cfg.mode === 'turn') {
   // one model, 8 headings, big cells
   const item = built[0], n = 8;

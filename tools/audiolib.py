@@ -2,7 +2,7 @@
 """Shared audio helpers (ffmpeg + numpy). Never executes downloaded files; only decodes them with ffmpeg."""
 import os, sys, subprocess, json, re, math
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, 'pylib'))
+sys.path.insert(0, os.path.join(HERE, '..', '.cache', 'pylib'))
 import numpy as np
 
 SR = 44100

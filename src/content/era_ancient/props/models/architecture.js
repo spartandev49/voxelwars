@@ -134,7 +134,7 @@ const wall_stone = {
 };
 
 const ruin_wall = {
-  variants: 4, pal: [0xd8c9a8, 0xc8b894, 0xb8a884, 0x5f9a4a],
+  variants: 4, pal: [0xe6d4a8, 0xd6c28f, 0xc4ae7a, 0x9a8a66, 0x5f9a4a],
   build(v, rng) {
     const p = new Pen(21, 34, 9, 3), w = [WALL_PAL[1], WALL_PAL[0], WALL_PAL[3], WALL_PAL[2]][v];
     const ph = rng.range(0, TAU), win = rng.int(6, 11);
@@ -206,7 +206,7 @@ const tower = {
 
 // ------------------------------------------------------------------ gates
 const arch_gate = {
-  variants: 4, pal: [0xd8c9a8, 0xc8b894, 0xe8dcc0, 0xffc93c],
+  variants: 4, pal: [0xe6d4a8, 0xd6c28f, 0xc4ae7a, 0xf0e4c0, 0xb89a68, 0xffc93c],
   build(v, rng) {
     const p = new Pen(100, 70, 16, 4), w = [WALL_PAL[1], WALL_PAL[0], WALL_PAL[3], WALL_PAL[2]][v];
     const mas = masonry(w.t, w.m, 4, 8, 51 + v);
@@ -309,7 +309,10 @@ const temple = {
       p.blob(cx, 76, zz + (sz > 0 ? -1 : 1), 5, 5, 1.2, V(0xffc93c)); p.blob(cx, 76, zz + (sz > 0 ? -1 : 1), 2.4, 2.4, 1.6, V(0xfff0a0));
       for (const fx of [-24, -14, 14, 24]) p.box(cx + fx, 71, zz + (sz > 0 ? -2 : 1), 3, 5 + (Math.abs(fx) < 20 ? 2 : 0), 1, V(0xf4f6fb));
     }
-    for (const [x, z] of [[cx, cz + 43], [cx, cz - 43], [cx - 53, cz + 43], [cx + 53, cz + 43], [cx - 53, cz - 43], [cx + 53, cz - 43]]) p.blob(x, 85, z, 2, 2.4, 2, V(0xffc93c));
+    for (const sz of [-1, 1]) {                                                      // golden acroteria: apex and both gable feet
+      p.blob(cx, 85, cz + sz * 43, 2, 2.4, 2, V(0xffc93c));
+      for (const sx of [-1, 1]) p.blob(cx + sx * 53, 73, cz + sz * 43, 2, 2.4, 2, V(0xffc93c));
+    }
     return p;
   },
 };

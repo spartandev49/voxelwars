@@ -3,11 +3,14 @@
 //   Animator.pose(model, state, extra, out)
 //     model  : ModelDef (parts in model order; meta.rig, meta.subrigs, meta.clipMap, meta.species, meta.weaponStyle ...)
 //     state  : u.anim = {clip, t, rate, flinch, dir, prev, blend, mount?, rider?}   (the SIM chooses clips and times; we only sample)
-//     extra  : optional {root, heading, phase, speed, lod}
-//                root    out object {x,y,z,pitch,roll,yaw}: instance root tracks (see applyRoot)
-//                heading unit heading (radians), needed for hit-direction flinch and fall direction
-//                phase   0..1 per-unit offset added to looping clips (de-synchronises crowds; use idlePhase(unit.id))
-//                speed   current ground speed u/s (cape/crest lean); lod 0 full, 1 reduced (no secondary/overlays), 2 pose only
+//     extra  : {root, speed, gait, id, t, heading?, scale?, phase?, lod?}   (BattleView owns the object, see render/battleview.js)
+//                root    out object {x,y,z,pitch,roll,yaw}: instance root tracks. When extra.heading is given the x/y/z offsets are returned
+//                        in WORLD units (rotated by the heading, times extra.scale), ready to add to the unit position; pitch/roll/yaw are
+//                        radians applied about the rig's hip pivot (the compensating translation is already folded into x/y/z).
+//                speed   current ground speed u/s;  gait = distance travelled (u, monotonic; u.gait in the sim). Locomotion clips are driven
+//                        by DISTANCE (feet never slide) and the walk/jog/run (quads: walk/trot/gallop) mix is picked from speed.
+//                id      unit id (idle phase offset);  t = global time (s);  heading = unit heading (rad, flinch + fall direction)
+//                scale   instance scale (root offsets are multiplied by it);  phase = explicit 0..1 offset;  lod 0 full, 1 reduced, 2 pose only
 //     out    : Float32Array(parts*9): tx,ty,tz, rx,ry,rz, sx,sy,sz per part (VoxSkin POSE_STRIDE)
 //
 // What it does: crossfade (state.blend 0..1 between state.prev and state.clip) with shortest-angle blending, looped/one-shot
@@ -68,6 +71,13 @@ function matToEuler(m, out) {
   if (Math.abs(m[5]) < 0.99999) { out[1] = Math.atan2(m[2], m[8]); out[2] = Math.atan2(m[3], m[4]); }
   else { out[1] = Math.atan2(-m[6], m[0]); out[2] = 0; }
 }
+/** rotation by angle about unit axis (x,y,z) -> matrix */
+function axisMat(x, y, z, ang, m) {
+  const c = Math.cos(ang), s = Math.sin(ang), k = 1 - c;
+  m[0] = c + x * x * k; m[1] = x * y * k - z * s; m[2] = x * z * k + y * s;
+  m[3] = y * x * k + z * s; m[4] = c + y * y * k; m[5] = y * z * k - x * s;
+  m[6] = z * x * k - y * s; m[7] = z * y * k + x * s; m[8] = c + z * z * k;
+}
 /** shortest-arc rotation taking unit vector a to unit vector b -> matrix */
 function arcMat(ax, ay, az, bx, by, bz, m) {
   const vx = ay * bz - az * by, vy = az * bx - ax * bz, vz = ax * by - ay * bx;
@@ -103,6 +113,7 @@ const CLASS_CODE = { idle: CL_IDLE, ready: CL_READY, move: CL_MOVE, strike: CL_S
 
 // ------------------------------------------------------------------------------------------------------------------ clip fallbacks
 const FALLBACK = {
+  crew_launch: ['crew_react', 'crew_idle'],
   idle_combat: ['idle'], block_hold: ['idle_combat', 'idle'], block_hit: ['hit_front', 'idle_combat'], hit_front: ['idle_combat'], hit_back: ['hit_front', 'idle_combat'],
   walk: ['idle'], run: ['walk'], trot: ['walk'], gallop: ['trot', 'run'], rout: ['run', 'walk'], cower: ['idle'], sleep: ['cower', 'idle'],
   stagger: ['hit_front', 'idle_combat'], stun: ['dizzy', 'idle'], dizzy: ['stun', 'idle'], cheer: ['idle'], taunt: ['idle_combat'], sit: ['idle'],
@@ -115,6 +126,15 @@ const FALLBACK = {
   launch: ['throw'], reload: ['idle'], flap: ['idle'], tantrum: ['flap', 'idle'], reveal: ['idle'], trumpet: ['idle'], rear: ['idle'],
   crew_idle: ['idle'], crew_shoot: ['shoot_bow', 'ride_shoot'], crew_crank: ['crew_idle'], crew_push: ['crew_idle'], crew_react: ['crew_idle'],
 };
+
+// ------------------------------------------------------------------------------------------------------------------ gait sets
+// Locomotion ids the sim may publish; the animator replaces them by a speed-driven mix of the rig's gait clips (ordered by speedRef).
+const MOVE_IDS = { walk: 1, run: 1, jog: 1, trot: 1, gallop: 1, sprint: 1 };
+const GAIT_SETS = {
+  hum1: ['walk', 'jog', 'run'], hum_lite: ['walk', 'jog', 'run'], quad1: ['walk', 'trot', 'gallop'], elephant1: ['walk', 'run'], chariot1: ['trot', 'gallop'],
+  catapult1: ['walk'], ballista1: ['walk'], trojan1: ['walk', 'run'], chicken1: ['walk', 'trot', 'gallop'],
+};
+const RIDE_OF = { walk: 'ride_walk', trot: 'ride_trot', gallop: 'ride_gallop', run: 'ride_gallop', jog: 'ride_trot' };
 
 // ------------------------------------------------------------------------------------------------------------------ per-model info (cached on the ModelDef)
 const TOP_NAMES = ['body', 'frame', 'chassis'];
@@ -276,28 +296,27 @@ function sampleInto(g, clip, bind, t, phaseOff, buf, rootOut) {
   return bind.cls;
 }
 // aim sampling: writes _aimE/_aimA/_aimW (clip.aim track or table lookup)
-let _aimE = 0, _aimA = 0, _aimW = 0;
+let _aimE = 0, _aimA = 0, _aimW = 0, _aimT = 0;
 function sampleAim(clip, t, phaseOff) {
   const aim = clip.aim;
   if (aim === undefined) return false;
   frameAt(clip, t, phaseOff);
-  const b = 1 - _fa, a = _fa, o = _i0 * 3, p = _i1 * 3;
-  _aimE = aim[o] * b + aim[p] * a; _aimA = aim[o + 1] * b + aim[p + 1] * a; _aimW = aim[o + 2] * b + aim[p + 2] * a;
+  const b = 1 - _fa, a = _fa, o = _i0 * 4, p = _i1 * 4;
+  _aimE = aim[o] * b + aim[p] * a; _aimA = aim[o + 1] * b + aim[p + 1] * a; _aimW = aim[o + 2] * b + aim[p + 2] * a; _aimT = aim[o + 3] * b + aim[p + 3] * a;
   return true;
 }
 
 // ------------------------------------------------------------------------------------------------------------------ weapon style tables
-// [elevation (rad above the horizontal, + up), azimuth (+ left), weight 0..1] in the BODY frame, per clip class.
+// [elevation (rad above the horizontal, + up), azimuth (+ left), weight 0..1] in the UNIT frame (heading-aligned, upright), per clip class.
 // weight 0 = the weapon simply follows the forearm (its rest rotation from the model); 1 = aim exactly at the target direction.
 const AIM = {
-  //          idle                ready               move                strike (default when the clip has no aim track)  shoot               down  other
+  //          idle                ready               move                strike (when the clip has no aim track)  shoot               down                other
   thrust: { 1: [1.30, -0.05, 1], 2: [0.55, 0.08, 1], 3: [0.95, -0.02, 1], 4: [0.12, 0.0, 1], 5: [0.30, 0.0, 1], 6: [0, 0, 0], 7: [0.9, 0, 1] },
-  slash:  { 1: [-0.85, 0.15, 0.85], 2: [0.35, 0.15, 0.7], 3: [-0.15, 0.1, 0.8], 4: [0, 0, 0], 5: [0, 0, 0], 6: [0, 0, 0], 7: [-0.5, 0.1, 0.7] },
-  overhead: { 1: [0.9, 0.1, 0.8], 2: [1.0, 0.1, 0.8], 3: [0.7, 0.1, 0.8], 4: [0, 0, 0], 5: [0, 0, 0], 6: [0, 0, 0], 7: [0.9, 0.1, 0.8] },
-  bash:   { 1: [-0.6, 0.1, 0.8], 2: [0.5, 0.1, 0.7], 3: [-0.2, 0.1, 0.7], 4: [0, 0, 0], 5: [0, 0, 0], 6: [0, 0, 0], 7: [-0.3, 0.1, 0.7] },
   shoot:  { 1: [1.45, 0.0, 1], 2: [1.35, 0.0, 1], 3: [1.35, 0.0, 1], 4: [1.2, 0.0, 0.8], 5: [1.5, 0.0, 1], 6: [0, 0, 0], 7: [1.4, 0, 1] },
-  throw:  { 1: [1.1, 0.0, 0.8], 2: [1.0, 0.0, 0.8], 3: [0.9, 0.0, 0.8], 4: [0, 0, 0], 5: [0, 0, 0], 6: [0, 0, 0], 7: [1.0, 0, 0.8] },
-  cast:   { 1: [1.45, 0.0, 1], 2: [1.35, 0.0, 1], 3: [1.3, 0.0, 1], 4: [0, 0, 0], 5: [0.9, 0, 0.6], 6: [0, 0, 0], 7: [1.4, 0, 1] },
+  throw:  { 1: [1.15, 0.0, 1], 2: [0.9, 0.0, 1], 3: [0.9, 0.0, 1], 4: [0.5, 0.0, 1], 5: [0.45, 0.0, 1], 6: [0, 0, 0], 7: [1.1, 0, 1] },
+  cast:   { 1: [1.4, 0.0, 1], 2: [1.35, 0.0, 1], 3: [1.3, 0.0, 1], 4: [1.4, 0.0, 1], 5: [1.2, 0.0, 1], 6: [0, 0, 0], 7: [1.4, 0, 1] },
+  // slash / overhead / bash: the blade follows the forearm through its rest rotation (UNITS carries blades hanging forward-down);
+  // clips steer the blade explicitly with an `aim` track when they need to.
 };
 AIM.pike = AIM.thrust;
 const STYLE_NAMES = ['none', 'slash', 'thrust', 'overhead', 'bash', 'shoot', 'throw', 'cast'];
@@ -316,16 +335,24 @@ const RIDER_OF = { // state.clip -> clip for a rider on a quad1 mount
   shoot_bow: 'ride_shoot', throw: 'ride_shoot', cast: 'ride_shoot', ride_shoot: 'ride_shoot', launch: 'ride_shoot',
   death_back: 'ride_death', death_front: 'ride_death', death_spin: 'ride_death', stagger: 'ride_idle', stun: 'ride_idle', dizzy: 'ride_idle', cower: 'ride_idle', cheer: 'ride_idle', taunt: 'ride_idle',
 };
-const CREW_OF = { // crew of siege / chariot / howdah (hum1 / hum_lite sub-rigs)
-  idle: 'crew_idle', idle_combat: 'crew_idle', walk: 'crew_push', run: 'crew_push', trot: 'crew_idle', gallop: 'crew_idle',
-  launch: 'crew_react', reload: 'crew_crank', shoot_bow: 'crew_shoot', throw: 'crew_shoot', strike_ram: 'crew_idle',
-  death_back: 'crew_idle', death_front: 'crew_idle', death_spin: 'crew_idle',
+const CREW_SIEGE = { // crew of catapults / ballistae (they crank, push and jump back)
+  idle: 'crew_idle', idle_combat: 'crew_idle', walk: 'crew_push', run: 'crew_push', jog: 'crew_push', launch: 'crew_launch', reload: 'crew_crank', throw: 'crew_launch', shoot_bow: 'crew_launch', cast: 'crew_launch', hit_front: 'crew_react',
 };
+const CREW_RIDE = { // archers / drivers standing in a howdah or a chariot
+  idle: 'crew_idle', idle_combat: 'crew_idle', shoot_bow: 'crew_shoot', throw: 'crew_shoot', launch: 'crew_shoot', hit_front: 'crew_react', stagger: 'crew_react',
+};
+/** clip for a mount / animal sub-rig derived from the unit's clip id (attacks of the rider or the machine leave the animals standing) */
+function mountClip(id) {
+  const m = MOUNT_OF[id];
+  if (m !== undefined) return m;
+  if (id.startsWith('strike_') || id.startsWith('ride_') || id.startsWith('crew_') || id === 'reveal' || id === 'trumpet' || id === 'launch' || id === 'reload' || id === 'tantrum') return 'idle';
+  return id;
+}
 function subClip(info, g, state) {
   // explicit overrides from the sim
   if (g.role === 'mount') {
     if (state.mount) return state.mount;
-    return MOUNT_OF[state.clip] || state.clip;
+    return mountClip(state.clip);
   }
   if (g.role === 'rider') {
     if (state.rider) return state.rider;
@@ -334,15 +361,16 @@ function subClip(info, g, state) {
   if (g.role === 'driver' || g.role === 'archer' || g.role === 'crew') {
     if (state.crew) return state.crew;
     if (state.rider && g.role !== 'crew') return state.rider;
-    const base = CREW_OF[state.clip] || 'crew_idle';
-    if (g.role === 'driver' && (base === 'crew_shoot' || base === 'crew_crank')) return 'crew_idle';
+    const siege = info.rig === 'catapult1' || info.rig === 'ballista1';
+    const base = (siege ? CREW_SIEGE : CREW_RIDE)[state.clip] || 'crew_idle';
+    if (g.role === 'driver' && base === 'crew_shoot') return 'crew_idle';
     return base;
   }
   return state.clip;
 }
 // where a composed model's base group is a mount, the base clip is the derived mount clip
 function baseClipId(info, g, state) {
-  if (g.role === 'mount' && info.composed) return state.mount || MOUNT_OF[state.clip] || state.clip;
+  if (g.role === 'mount' && info.composed) return state.mount || mountClip(state.clip);
   return state.clip;
 }
 
@@ -353,6 +381,58 @@ function resetOut(out, P) {
   }
 }
 
+// ---- gait selection --------------------------------------------------------------------------------------------------------
+const _sel = { a: 0, b: 0, w: 0 };
+/** gait entries of a group: [{id, clip, sr, dur, stride}] sorted by speedRef (cached per ClipLib.version) */
+function gaitSet(info, g, ids) {
+  const key = '#g' + ids[0] + ids.length;
+  let set = g.cache[key];
+  if (set !== undefined) return set;
+  set = [];
+  for (let i = 0; i < ids.length; i++) {
+    const clip = resolveQuiet(info, g, ids[i]);
+    if (!clip || !clip.loop) continue;
+    const sr = clip.meta && clip.meta.speedRef ? clip.meta.speedRef : 0, dur = clip.frames / clip.fps;
+    if (sr > 0) set.push({ id: ids[i], clip, sr, dur, stride: sr * dur });
+  }
+  set.sort((x, y) => x.sr - y.sr);
+  g.cache[key] = set;
+  return set;
+}
+function resolveQuiet(info, g, id) {
+  const tryId = (cid) => {
+    let cand;
+    if (info.clipMap && info.clipMap[cid] !== undefined) { cand = ClipLib.getQualified(info.clipMap[cid], g.clipRig); if (cand) return cand; }
+    if (info.species) { cand = ClipLib.getQualified(info.species + '_' + cid, g.clipRig); if (cand) return cand; }
+    return ClipLib.getQualified(cid, g.clipRig);
+  };
+  return tryId(id);
+}
+/** pick the two neighbouring gaits for speed v and the blend weight (centres at the geometric mean of the speedRefs, +-10% wide) */
+function pickGait(set, v) {
+  const n = set.length;
+  _sel.a = 0; _sel.b = 0; _sel.w = 0;
+  for (let k = 0; k < n - 1; k++) {
+    const c = Math.sqrt(set[k].sr * set[k + 1].sr), bw = 0.1 * c;
+    if (v < c - bw) { _sel.a = k; _sel.b = k; return; }
+    if (v < c + bw) { _sel.a = k; _sel.b = k + 1; const x = (v - (c - bw)) / (2 * bw); _sel.w = x * x * (3 - 2 * x); return; }
+    _sel.a = k + 1; _sel.b = k + 1;
+  }
+}
+const _L0 = { active: false, ia: 0, ib: 0, w: 0, u: 0, m: 1, idA: '', idB: '' };   // locomotion result of the base group (riders reuse it)
+let _scratch2 = new Float32Array(48 * POSE_STRIDE);
+const _rootD = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+
+/** sample clip c at NORMALISED loop phase u into buf */
+function sampleLoop(g, clip, u, buf, rootOut) {
+  const bind = bindOf(g, clip);
+  return sampleInto(g, clip, bind, u * (clip.frames / clip.fps), 0, buf, rootOut);
+}
+function lerpRoot(a, b, w) { // a = lerp(b, a, w)
+  a.x = b.x + (a.x - b.x) * w; a.y = b.y + (a.y - b.y) * w; a.z = b.z + (a.z - b.z) * w;
+  a.pitch = b.pitch + wrapPi(a.pitch - b.pitch) * w; a.roll = b.roll + wrapPi(a.roll - b.roll) * w; a.yaw = b.yaw + wrapPi(a.yaw - b.yaw) * w;
+}
+
 /**
  * Pose `model` into `out`. Returns the (shared) root track object when extra.root was not supplied.
  */
@@ -360,12 +440,15 @@ Animator.pose = function pose(model, state, extra, out) {
   const info = infoOf(model);
   const P = info.P;
   resetOut(out, P);
-  const root = (extra !== undefined && extra !== null && extra.root) ? extra.root : _rootA;
+  const hasExtra = extra !== undefined && extra !== null;
+  const root = (hasExtra && extra.root) ? extra.root : _rootA;
   root.x = 0; root.y = 0; root.z = 0; root.pitch = 0; root.roll = 0; root.yaw = 0;
-  const lod = extra && extra.lod ? extra.lod : 0;
-  const phase = extra && extra.phase ? extra.phase : 0;
-  const speed = extra && extra.speed ? extra.speed : 0;
-  const heading = extra && extra.heading !== undefined ? extra.heading : NaN;
+  const lod = hasExtra && extra.lod ? extra.lod : 0;
+  const phase = hasExtra ? (extra.phase !== undefined ? extra.phase : (extra.id ? Animator.idlePhase(extra.id) : 0)) : 0;
+  const speed = hasExtra && extra.speed ? extra.speed : 0;
+  const heading = hasExtra && extra.heading !== undefined ? extra.heading : NaN;
+  const gait = hasExtra && typeof extra.gait === 'number' ? extra.gait : NaN;
+  const gtime = hasExtra && typeof extra.t === 'number' ? extra.t : 0;
 
   // ---- previous-clip bookkeeping (see header) ----
   const blend = state.blend === undefined ? 1 : state.blend;
@@ -380,6 +463,15 @@ Animator.pose = function pose(model, state, extra, out) {
   const w = blending ? sstep(blend) : 1;
   const t = state.t < 0 ? 0 : state.t;
   const frozen = state.rate === 0;
+  const moveReq = MOVE_IDS[state.clip] === 1 && gait === gait;      // locomotion driven by distance
+  // distance accumulator per group (stateful phase: integrates, so speed changes never jump the feet)
+  let phs = state._phs;
+  if (moveReq && (phs === undefined || phs.length < info.groups.length)) {
+    phs = state._phs = new Float64Array(info.groups.length * 2);
+    for (let i = 0; i < info.groups.length; i++) phs[i * 2] = phase;           // phase offset per unit
+    for (let i = 0; i < info.groups.length; i++) phs[i * 2 + 1] = gait;
+  }
+  _L0.active = false;
 
   const groups = info.groups;
   let clsCur = CL_OTHER, clsPrev = CL_OTHER, curClip0 = null, prevClip0 = null;
@@ -387,16 +479,51 @@ Animator.pose = function pose(model, state, extra, out) {
     const g = groups[gi];
     const isBase = gi === 0;
     const cid = info.composed ? (isBase ? baseClipId(info, g, state) : subClip(info, g, state)) : state.clip;
-    const clipA = resolveClip(info, g, cid);
+    let clipA = resolveClip(info, g, cid);
     if (clipA === 0) continue;
-    const bindA = bindOf(g, clipA);
-    // per-group root tracks go to _R (base group: the instance root; riders: onto their top-level parts)
     const rA = isBase ? root : _rootB;
-    const cls = sampleInto(g, clipA, bindA, t, phase, out, rA);
-    let rootW = 1;
+    let cls;
+    let locoDone = false;
+    if (moveReq && (isBase || g.role === 'mount' || g.role === 'rider')) {
+      // ---- distance-driven locomotion ----
+      let set, ia, ib, lw, u, m;
+      if (g.role === 'rider' && _L0.active) { ia = _L0.ia; ib = _L0.ib; lw = _L0.w; u = _L0.u; m = _L0.m; set = null; }
+      else {
+        set = gaitSet(info, g, GAIT_SETS[g.clipRig] || GAIT_SETS.hum1);
+        if (set.length) {
+          pickGait(set, speed); ia = _sel.a; ib = _sel.b; lw = _sel.w;
+          const stride = set[ia].stride + (set[ib].stride - set[ia].stride) * lw;
+          let ph = phs[gi * 2] + (gait - phs[gi * 2 + 1]) / stride;
+          ph -= Math.floor(ph);
+          phs[gi * 2] = ph; phs[gi * 2 + 1] = gait;
+          u = ph; m = speed >= 0.7 ? 1 : (speed <= 0.05 ? 0 : sstep((speed - 0.05) / 0.65));
+          if (isBase) { _L0.active = true; _L0.ia = ia; _L0.ib = ib; _L0.w = lw; _L0.u = u; _L0.m = m; _L0.idA = set[ia].id; _L0.idB = set[ib].id; }
+        }
+      }
+      if (set === null) {
+        // rider on a gaiting mount: ride_<gait> clips at the SAME phase and weights
+        const ca = resolveQuiet(info, g, RIDE_OF[_L0.idA] || 'ride_idle'), cb = resolveQuiet(info, g, RIDE_OF[_L0.idB] || 'ride_idle');
+        if (ca && cb) {
+          cls = sampleLoop(g, cb, u, out, rA);
+          if (lw > 0.001 && ca !== cb) { if (_scratch2.length < P * 9) _scratch2 = new Float32Array(P * 9); sampleLoop(g, ca, u, _scratch2, _rootD); blendGroup(g, out, _scratch2, lw); lerpRoot(rA, _rootD, lw); }
+          clipA = lw > 0.5 ? cb : ca; locoDone = true;
+        }
+      } else if (set.length) {
+        const eA = set[ia], eB = set[ib];
+        if (_scratch2.length < P * 9) _scratch2 = new Float32Array(P * 9);
+        cls = sampleLoop(g, eB.clip, u, out, rA);
+        if (lw > 0.001 && ia !== ib) { sampleLoop(g, eA.clip, u, _scratch2, _rootD); blendGroup(g, out, _scratch2, lw); lerpRoot(rA, _rootD, lw); }
+        if (m < 1) { // nearly standing: ease into the idle pose
+          const idle = resolveClip(info, g, 'idle');
+          if (idle !== 0) { sampleInto(g, idle, bindOf(g, idle), gtime, phase, _scratch2, _rootD); blendGroup(g, out, _scratch2, m); lerpRoot(rA, _rootD, m); }
+        }
+        clipA = lw > 0.5 ? eB.clip : eA.clip; cls = CL_MOVE; locoDone = true;
+      }
+    }
+    if (!locoDone) cls = sampleInto(g, clipA, bindOf(g, clipA), t, phase, out, rA);
     let clsP = cls, clipP = null;
     if (blending) {
-      const pid = info.composed ? (isBase ? (g.role === 'mount' ? (state.prev && MOUNT_OF[state.prev]) || state.prev : state.prev) : prevSubClip(info, g, state)) : state.prev;
+      const pid = info.composed ? (isBase ? (g.role === 'mount' ? mountClip(state.prev) : state.prev) : prevSubClip(info, g, state)) : state.prev;
       clipP = resolveClip(info, g, pid);
       if (clipP !== 0) {
         if (_scratch.length < P * 9) _scratch = new Float32Array(P * 9);
@@ -404,17 +531,16 @@ Animator.pose = function pose(model, state, extra, out) {
         const rB = _rootB === rA ? _rootC : _rootB;
         clsP = sampleInto(g, clipP, bindP, prevT, phase, _scratch, rB);
         blendGroup(g, out, _scratch, w);
-        rA.x = rB.x + (rA.x - rB.x) * w; rA.y = rB.y + (rA.y - rB.y) * w; rA.z = rB.z + (rA.z - rB.z) * w;
-        rA.pitch = rB.pitch + wrapPi(rA.pitch - rB.pitch) * w; rA.roll = rB.roll + wrapPi(rA.roll - rB.roll) * w; rA.yaw = rB.yaw + wrapPi(rA.yaw - rB.yaw) * w;
+        lerpRoot(rA, rB, w);
       } else clipP = null;
     }
     if (isBase) { clsCur = cls; clsPrev = clsP; curClip0 = clipA; prevClip0 = clipP; }
     else applyRiderRoot(g, out, rA);
-    if (g.wheels.length) applyWheels(model, g, clipA, t, phase, out);
+    if (g.wheels.length) applyWheels(model, g, clipA, t, phase, out, gait);
     // humanoid overlays
     if (g.hum && lod < 2) humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, speed, heading, frozen, lod, isBase, root, prevT);
   }
-  if (lod < 2) rootFinish(info, state, root, curClip0, heading, t);
+  if (lod < 2) rootFinish(info, state, root, curClip0, heading, t, hasExtra && extra.scale ? extra.scale : 1);
   return root;
 };
 const _rootC = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
@@ -447,10 +573,11 @@ function applyRiderRoot(g, out, r) {
   }
 }
 /** wheels roll with ground distance: angle = distance / radius, distance = t * speedRef (t is already rate-scaled by the sim) */
-function applyWheels(model, g, clip, t, phase, out) {
+function applyWheels(model, g, clip, t, phase, out, gait) {
   const m = clip.meta;
-  if (!m || m.wheelSpeed === undefined) return;
-  const dist = (t + (clip.loop ? phase * clip.frames / clip.fps : 0)) * m.wheelSpeed;
+  let dist;
+  if (gait === gait) dist = gait;                                   // ground distance travelled (u.gait): wheels never slip
+  else { if (!m || m.wheelSpeed === undefined) return; dist = (t + (clip.loop ? phase * clip.frames / clip.fps : 0)) * m.wheelSpeed; }
   for (let k = 0; k < g.wheels.length; k++) {
     const wh = g.wheels[k];
     out[g.idx[wh.j] * 9 + 3] += dist / wh.r;
@@ -497,7 +624,7 @@ function humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, pha
     if (g.legLR >= 0) out[(idx[g.legLR] * 9) + 3] += 0.25 * e;
     if (isBase) { root.y -= 0.07 * e; root.x += 0.05 * e * px; root.z += 0.05 * e * pz; }
   }
-  if (lod >= 1) { aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT); return; }
+  if (lod >= 1) { aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT, isBase ? root : null); return; }
   // --- secondary motion: crest plume + cape follow-through ---
   if (g.crest >= 0 || g.cape >= 0) {
     const sk = sp > 6 ? 6 : sp, lean = sk * 0.11, fl2 = Math.sin(tt * 6.2) * 0.07;
@@ -508,44 +635,49 @@ function humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, pha
     }
     if (g.cape2 >= 0) { const oc = (idx[g.cape2] * 9); out[oc + 3] += 0.14 + lean * 0.35 + Math.sin(tt * 6.2 - 0.9) * 0.1; out[oc + 5] += Math.sin(tt * 2.3 + 1) * 0.06; }
   }
-  aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT);
+  aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT, isBase ? root : null);
 }
 
-/** weapon aim + shield facing (hum1 groups). All in the body frame. */
-function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT) {
+/** weapon aim + shield facing (hum1 groups). Directions are expressed in the unit frame (heading-aligned, upright). */
+function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prevT, root) {
   if (g.weapon < 0 && g.offhand < 0) return;
   if (g.body < 0) return;
   const style = info.style;
   const idx = g.idx;
+  // R_rb = R_root * R_body (the frame every arm chain hangs from)
+  const oB = idx[g.body] * 9;
+  if (root) eulerToMat(root.pitch, root.yaw, root.roll, _R1); else { _R1[0] = 1; _R1[1] = 0; _R1[2] = 0; _R1[3] = 0; _R1[4] = 1; _R1[5] = 0; _R1[6] = 0; _R1[7] = 0; _R1[8] = 1; }
+  eulerToMat(out[oB + 3], out[oB + 4], out[oB + 5], _R2);
+  mulMat(_R1, _R2, _RB);
   if (g.weapon >= 0 && g.armUR >= 0 && g.armLR >= 0 && style !== 'none') {
     const tab = AIM[style];
-    if (tab) {
+    const hasTrack = clipA.aim !== undefined;
+    if (tab || hasTrack) {
       // current + previous aim parameters, blended by w
-      let e, a, wt;
-      if (clipA.aim !== undefined && sampleAim(clipA, t, phase)) { e = _aimE; a = _aimA; wt = _aimW; }
-      else { const r = tab[cls] || tab[CL_OTHER]; e = r[0]; a = r[1]; wt = r[2]; }
+      let e = 0, a = 0, wt = 0, tw = 0;
+      if (hasTrack && sampleAim(clipA, t, phase)) { e = _aimE; a = _aimA; wt = _aimW; tw = _aimT; }
+      else if (tab) { const r = tab[cls] || tab[CL_OTHER]; e = r[0]; a = r[1]; wt = r[2]; }
       if (w < 1 && clipP) {
-        let e2, a2, w2;
-        if (clipP.aim !== undefined && sampleAim(clipP, prevT, phase)) { e2 = _aimE; a2 = _aimA; w2 = _aimW; }
-        else { const r = tab[clsP] || tab[CL_OTHER]; e2 = r[0]; a2 = r[1]; w2 = r[2]; }
-        e = e2 + (e - e2) * w; a = a2 + (a - a2) * w; wt = w2 + (wt - w2) * w;
+        let e2 = 0, a2 = 0, w2 = 0, t2 = 0;
+        if (clipP.aim !== undefined && sampleAim(clipP, prevT, phase)) { e2 = _aimE; a2 = _aimA; w2 = _aimW; t2 = _aimT; }
+        else if (tab) { const r = tab[clsP] || tab[CL_OTHER]; e2 = r[0]; a2 = r[1]; w2 = r[2]; }
+        e = e2 + (e - e2) * w; a = a2 + (a - a2) * w; wt = w2 + (wt - w2) * w; tw = t2 + (tw - t2) * w;
       }
-      const oUR = idx[g.armUR] * 9, oLR = idx[g.armLR] * 9, oW = idx[g.weapon] * 9;
-      // chain rotation body-frame: R_UR * R_LR
-      eulerToMat(out[oUR + 3], out[oUR + 4], out[oUR + 5], _R1);
-      eulerToMat(out[oLR + 3], out[oLR + 4], out[oLR + 5], _R2);
-      mulMat(_R1, _R2, _R3);                      // R_c (body frame)
-      // follow direction: R_c * a0 (a0 = weapon axis after its rest rotation)
-      const a0 = g.wRestAxis;
-      const fx = _R3[0] * a0[0] + _R3[1] * a0[1] + _R3[2] * a0[2], fy = _R3[3] * a0[0] + _R3[4] * a0[1] + _R3[5] * a0[2], fz = _R3[6] * a0[0] + _R3[7] * a0[1] + _R3[8] * a0[2];
       if (wt > 0.001) {
+        const oUR = idx[g.armUR] * 9, oLR = idx[g.armLR] * 9, oW = idx[g.weapon] * 9;
+        eulerToMat(out[oUR + 3], out[oUR + 4], out[oUR + 5], _R1);
+        eulerToMat(out[oLR + 3], out[oLR + 4], out[oLR + 5], _R2);
+        mulMat(_R1, _R2, _R3);
+        mulMat(_RB, _R3, _RC);                      // R_c: unit frame <- weapon parent frame
+        const a0 = g.wRestAxis;
+        const fx = _RC[0] * a0[0] + _RC[1] * a0[1] + _RC[2] * a0[2], fy = _RC[3] * a0[0] + _RC[4] * a0[1] + _RC[5] * a0[2], fz = _RC[6] * a0[0] + _RC[7] * a0[1] + _RC[8] * a0[2];
         const ce = Math.cos(e), dx = Math.sin(a) * ce, dy = Math.sin(e), dz = Math.cos(a) * ce;
         let tx = fx + (dx - fx) * wt, ty = fy + (dy - fy) * wt, tz = fz + (dz - fz) * wt;
         const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
-        // into the forearm frame: R_c^T * t
-        const vx = _R3[0] * tx + _R3[3] * ty + _R3[6] * tz, vy = _R3[1] * tx + _R3[4] * ty + _R3[7] * tz, vz = _R3[2] * tx + _R3[5] * ty + _R3[8] * tz;
-        arcMat(a0[0], a0[1], a0[2], vx, vy, vz, _R1);       // pose rotation of the weapon part (maps rest axis -> wanted axis)
-        matToEuler(_R1, _V);
+        const vx = _RC[0] * tx + _RC[3] * ty + _RC[6] * tz, vy = _RC[1] * tx + _RC[4] * ty + _RC[7] * tz, vz = _RC[2] * tx + _RC[5] * ty + _RC[8] * tz;
+        arcMat(a0[0], a0[1], a0[2], vx, vy, vz, _R1);
+        if (tw !== 0) { axisMat(a0[0], a0[1], a0[2], tw * wt, _R2); mulMat(_R1, _R2, _R3); matToEuler(_R3, _V); }   // twist about the weapon axis (bow belly, blade edge)
+        else matToEuler(_R1, _V);
         out[oW + 3] = _V[0]; out[oW + 4] = _V[1]; out[oW + 5] = _V[2];
       }
     }
@@ -559,21 +691,22 @@ function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prev
       eulerToMat(out[oUL + 3], out[oUL + 4], out[oUL + 5], _R1);
       eulerToMat(out[oLL + 3], out[oLL + 4], out[oLL + 5], _R2);
       mulMat(_R1, _R2, _R3);
+      mulMat(_RB, _R3, _RC);
       const n0 = g.oRestNormal;
-      // follow normal = R_c * n0 ; wanted normal = lerp(follow, body +Z, wt)
-      const fx = _R3[0] * n0[0] + _R3[1] * n0[1] + _R3[2] * n0[2], fy = _R3[3] * n0[0] + _R3[4] * n0[1] + _R3[5] * n0[2], fz = _R3[6] * n0[0] + _R3[7] * n0[1] + _R3[8] * n0[2];
+      const fx = _RC[0] * n0[0] + _RC[1] * n0[1] + _RC[2] * n0[2], fy = _RC[3] * n0[0] + _RC[4] * n0[1] + _RC[5] * n0[2], fz = _RC[6] * n0[0] + _RC[7] * n0[1] + _RC[8] * n0[2];
       let tx = fx + (0 - fx) * wt, ty = fy + (0 - fy) * wt, tz = fz + (1 - fz) * wt;
       const l = Math.hypot(tx, ty, tz) || 1; tx /= l; ty /= l; tz /= l;
-      const vx = _R3[0] * tx + _R3[3] * ty + _R3[6] * tz, vy = _R3[1] * tx + _R3[4] * ty + _R3[7] * tz, vz = _R3[2] * tx + _R3[5] * ty + _R3[8] * tz;
+      const vx = _RC[0] * tx + _RC[3] * ty + _RC[6] * tz, vy = _RC[1] * tx + _RC[4] * ty + _RC[7] * tz, vz = _RC[2] * tx + _RC[5] * ty + _RC[8] * tz;
       arcMat(n0[0], n0[1], n0[2], vx, vy, vz, _R1);
       matToEuler(_R1, _V);
       out[oO + 3] = _V[0]; out[oO + 4] = _V[1]; out[oO + 5] = _V[2];
     }
   }
 }
+const _RB = new Float64Array(9), _RC = new Float64Array(9);
 
 // ------------------------------------------------------------------------------------------------------------------ root finishing (flinch lean, fall direction, hip-pivot compensation)
-function rootFinish(info, state, root, clip, heading, t) {
+function rootFinish(info, state, root, clip, heading, t, scale) {
   // fall direction: death clips fall along `meta.fall` (local angle); turn the body so that the fall points along state.dir
   if (clip && clip.meta && clip.meta.fall !== undefined && heading === heading && state.dir === state.dir && state.dir !== 0) {
     const fallAng = clip.meta.fall;
@@ -598,6 +731,11 @@ function rootFinish(info, state, root, clip, heading, t) {
     const rx = _R1[0] * pv[0] + _R1[1] * pv[1] + _R1[2] * pv[2], ry = _R1[3] * pv[0] + _R1[4] * pv[1] + _R1[5] * pv[2], rz = _R1[6] * pv[0] + _R1[7] * pv[1] + _R1[8] * pv[2];
     root.x += pv[0] - rx; root.y += pv[1] - ry; root.z += pv[2] - rz;
   }
+  // world space: rotate the model-local offsets by the unit heading and apply the instance scale (BattleView adds them to x,y,z)
+  if (heading === heading) {
+    const c = Math.cos(heading), sn = Math.sin(heading), x = root.x, z = root.z;
+    root.x = (x * c + z * sn) * scale; root.z = (-x * sn + z * c) * scale; root.y *= scale;
+  } else if (scale !== 1) { root.x *= scale; root.y *= scale; root.z *= scale; }
 }
 
 // ------------------------------------------------------------------------------------------------------------------ public helpers
@@ -606,7 +744,7 @@ function rootFinish(info, state, root, clip, heading, t) {
  * pitch/roll/yaw rotate about the hip pivot); they are rotated by the unit heading and scaled by the instance scale.
  * out4 = [worldX, worldY, worldZ, heading + root.yaw]; pass pitch/roll straight to VoxSkin.add.
  */
-Animator.applyRoot = function applyRoot(root, x, y, z, h, scale, out4) {
+Animator.applyRoot = function applyRoot(root, x, y, z, h, scale, out4) {   // for MODEL-LOCAL root offsets (extra.heading not given)
   const c = Math.cos(h), s = Math.sin(h), k = scale === undefined ? 1 : scale;
   out4[0] = x + (root.x * c + root.z * s) * k;
   out4[1] = y + root.y * k;
@@ -638,5 +776,16 @@ Animator.subClips = function subClips(model, stateClip) {
   for (let gi = 0; gi < info.groups.length; gi++) { const g = info.groups[gi]; res.push(gi === 0 ? baseClipId(info, g, st) : subClip(info, g, st)); }
   return res;
 };
+/** gait info for a model at ground speed v: {stride (u per cycle), stepsPerSec, a, b, w} (A4 measurement / BattleView hints) */
+Animator.gaitInfo = function gaitInfo(model, v) {
+  const info = infoOf(model), g = info.groups[0];
+  const set = gaitSet(info, g, GAIT_SETS[g.clipRig] || GAIT_SETS.hum1);
+  if (!set.length) return null;
+  pickGait(set, v);
+  const A = set[_sel.a], B = set[_sel.b], w = _sel.w, stride = A.stride + (B.stride - A.stride) * w;
+  return { stride, stepsPerSec: (2 * v) / stride, a: A.id, b: B.id, w, speedRefA: A.sr, speedRefB: B.sr };
+};
 Animator.classOf = classOf;
+/** clip duration (s) for a rig-qualified clip id */
+Animator.clipDur = (id, rig) => ClipLib.meta(id, rig).dur;
 export { STYLE_NAMES, classOf };

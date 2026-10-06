@@ -85,8 +85,8 @@
   "size": 8882,
   "desc": {
    "dur": 0.83,
-   "peak_db": -3.0,
-   "rms_db": -18.5,
+   "peak_db": -4.5,
+   "rms_db": -20.0,
    "crest": 5.9,
    "centroid": 9010,
    "low": 0.0,
@@ -101,8 +101,8 @@
   "size": 6531,
   "desc": {
    "dur": 0.59,
-   "peak_db": -3.0,
-   "rms_db": -19.5,
+   "peak_db": -6.6,
+   "rms_db": -23.1,
    "crest": 6.7,
    "centroid": 10530,
    "low": 0.0,
@@ -117,8 +117,8 @@
   "size": 5225,
   "desc": {
    "dur": 0.44,
-   "peak_db": -3.0,
-   "rms_db": -18.6,
+   "peak_db": -5.8,
+   "rms_db": -21.5,
    "crest": 6.0,
    "centroid": 8476,
    "low": 0.0,
@@ -149,8 +149,8 @@
   "size": 8882,
   "desc": {
    "dur": 0.82,
-   "peak_db": -3.0,
-   "rms_db": -16.6,
+   "peak_db": -8.4,
+   "rms_db": -22.0,
    "crest": 4.8,
    "centroid": 6497,
    "low": 0.0,
@@ -165,8 +165,8 @@
   "size": 6008,
   "desc": {
    "dur": 0.53,
-   "peak_db": -3.0,
-   "rms_db": -19.0,
+   "peak_db": -5.6,
+   "rms_db": -21.6,
    "crest": 6.3,
    "centroid": 6170,
    "low": 0.0,
@@ -181,8 +181,8 @@
   "size": 5225,
   "desc": {
    "dur": 0.45,
-   "peak_db": -3.0,
-   "rms_db": -17.5,
+   "peak_db": -8.2,
+   "rms_db": -22.7,
    "crest": 5.3,
    "centroid": 8292,
    "low": 0.0,
@@ -197,8 +197,8 @@
   "size": 7837,
   "desc": {
    "dur": 0.72,
-   "peak_db": -3.0,
-   "rms_db": -22.8,
+   "peak_db": -5.4,
+   "rms_db": -25.2,
    "crest": 9.8,
    "centroid": 9068,
    "low": 0.0,
@@ -245,8 +245,8 @@
   "size": 15674,
   "desc": {
    "dur": 1.5,
-   "peak_db": -3.0,
-   "rms_db": -26.8,
+   "peak_db": -4.0,
+   "rms_db": -27.8,
    "crest": 15.4,
    "centroid": 4529,
    "low": 0.0,
@@ -405,8 +405,8 @@
   "size": 5486,
   "desc": {
    "dur": 0.48,
-   "peak_db": -3.0,
-   "rms_db": -18.3,
+   "peak_db": -4.5,
+   "rms_db": -19.8,
    "crest": 5.8,
    "centroid": 1480,
    "low": 0.26,
@@ -560,31 +560,31 @@
   "cut": false
  },
  "javelin_throw_1": {
-  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-31.flac",
-  "duration": 1.332,
-  "size": 13584,
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac",
+  "duration": 0.836,
+  "size": 8620,
   "desc": {
-   "dur": 1.3,
+   "dur": 0.8,
    "peak_db": -3.0,
-   "rms_db": -20.8,
-   "crest": 7.8,
-   "centroid": 252,
-   "low": 0.69,
+   "rms_db": -22.1,
+   "crest": 9.0,
+   "centroid": 274,
+   "low": 0.4,
    "flat": 0.0,
-   "n_on": 2
+   "n_on": 1
   },
-  "cut": true
+  "cut": false
  },
  "javelin_throw_2": {
   "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-35.flac",
-  "duration": 1.176,
-  "size": 12016,
+  "duration": 1.097,
+  "size": 11233,
   "desc": {
-   "dur": 1.14,
+   "dur": 1.05,
    "peak_db": -3.0,
-   "rms_db": -22.3,
-   "crest": 9.2,
-   "centroid": 327,
+   "rms_db": -22.1,
+   "crest": 9.0,
+   "centroid": 318,
    "low": 0.15,
    "flat": 0.0,
    "n_on": 2
@@ -593,48 +593,48 @@
  },
  "bow_shot_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Scythian Recurve Shoot.wav",
-  "duration": 0.94,
-  "size": 9665,
+  "duration": 0.627,
+  "size": 6531,
   "desc": {
-   "dur": 0.9,
-   "peak_db": -3.0,
-   "rms_db": -29.3,
-   "crest": 20.7,
-   "centroid": 574,
-   "low": 0.8,
-   "flat": 0.066,
-   "n_on": 1
+   "dur": 0.6,
+   "peak_db": -5.6,
+   "rms_db": -31.5,
+   "crest": 19.7,
+   "centroid": 805,
+   "low": 0.48,
+   "flat": 0.025,
+   "n_on": 0
   },
   "cut": true
  },
  "bow_shot_2": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/English Longbow Shoot.wav",
-  "duration": 0.94,
-  "size": 9665,
+  "duration": 0.34,
+  "size": 3657,
   "desc": {
-   "dur": 0.9,
+   "dur": 0.3,
    "peak_db": -3.0,
-   "rms_db": -27.7,
-   "crest": 17.3,
-   "centroid": 3297,
-   "low": 0.07,
-   "flat": 0.035,
-   "n_on": 2
+   "rms_db": -26.9,
+   "crest": 15.7,
+   "centroid": 1505,
+   "low": 0.19,
+   "flat": 0.012,
+   "n_on": 0
   },
   "cut": true
  },
  "crossbow_shot_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Crossbow Shoot.wav",
-  "duration": 0.94,
-  "size": 9665,
+  "duration": 0.627,
+  "size": 6531,
   "desc": {
-   "dur": 0.9,
+   "dur": 0.6,
    "peak_db": -3.0,
-   "rms_db": -28.0,
-   "crest": 17.7,
-   "centroid": 4037,
-   "low": 0.01,
-   "flat": 0.139,
+   "rms_db": -27.7,
+   "crest": 17.2,
+   "centroid": 2582,
+   "low": 0.02,
+   "flat": 0.068,
    "n_on": 1
   },
   "cut": true
@@ -1040,32 +1040,32 @@
   "cut": false
  },
  "death_grunt_4": {
-  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_24.wav",
-  "duration": 0.522,
-  "size": 5486,
+  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_06.wav",
+  "duration": 0.549,
+  "size": 5747,
   "desc": {
-   "dur": 0.49,
+   "dur": 0.5,
    "peak_db": -3.0,
-   "rms_db": -9.6,
-   "crest": 2.1,
-   "centroid": 140,
-   "low": 0.9,
+   "rms_db": -11.8,
+   "crest": 2.8,
+   "centroid": 700,
+   "low": 0.0,
    "flat": 0.0,
    "n_on": 1
   },
   "cut": false
  },
  "death_grunt_5": {
-  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_33.wav",
-  "duration": 0.888,
-  "size": 9143,
+  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_09.wav",
+  "duration": 0.522,
+  "size": 5486,
   "desc": {
-   "dur": 0.86,
+   "dur": 0.49,
    "peak_db": -3.0,
-   "rms_db": -8.4,
-   "crest": 1.9,
-   "centroid": 205,
-   "low": 0.65,
+   "rms_db": -10.7,
+   "crest": 2.4,
+   "centroid": 1094,
+   "low": 0.0,
    "flat": 0.0,
    "n_on": 0
   },
@@ -1904,34 +1904,34 @@
   "cut": false
  },
  "catapult_launch_1": {
-  "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_001.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-28.flac + kenney-rpg-audio/files/Audio/creak1.ogg",
-  "duration": 1.567,
-  "size": 15935,
+  "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_001.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-33.flac + kenney-impact-sounds/files/Audio/impactWood_medium_002.ogg",
+  "duration": 0.784,
+  "size": 8098,
   "desc": {
-   "dur": 1.53,
+   "dur": 0.74,
    "peak_db": -3.0,
-   "rms_db": -24.9,
-   "crest": 12.4,
-   "centroid": 601,
-   "low": 0.27,
+   "rms_db": -21.7,
+   "crest": 8.6,
+   "centroid": 246,
+   "low": 0.47,
    "flat": 0.0,
-   "n_on": 2
+   "n_on": 0
   },
   "cut": false
  },
  "catapult_launch_2": {
-  "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_003.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-31.flac + kenney-rpg-audio/files/Audio/creak3.ogg",
-  "duration": 1.437,
-  "size": 14629,
+  "srcfile": "kenney-impact-sounds/files/Audio/impactWood_heavy_003.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac + kenney-impact-sounds/files/Audio/impactPlate_heavy_002.ogg",
+  "duration": 0.94,
+  "size": 9665,
   "desc": {
-   "dur": 1.39,
+   "dur": 0.89,
    "peak_db": -3.0,
-   "rms_db": -23.7,
-   "crest": 10.8,
-   "centroid": 312,
-   "low": 0.39,
-   "flat": 0.0,
-   "n_on": 1
+   "rms_db": -21.9,
+   "crest": 8.8,
+   "centroid": 263,
+   "low": 0.43,
+   "flat": 0.001,
+   "n_on": 4
   },
   "cut": false
  },
@@ -1952,20 +1952,20 @@
   "cut": true
  },
  "boulder_whoosh_1": {
-  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-32.flac",
-  "duration": 1.437,
-  "size": 14629,
+  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-41.flac",
+  "duration": 1.332,
+  "size": 13584,
   "desc": {
-   "dur": 1.39,
+   "dur": 1.3,
    "peak_db": -3.0,
-   "rms_db": -21.2,
-   "crest": 8.1,
-   "centroid": 308,
-   "low": 0.19,
+   "rms_db": -20.5,
+   "crest": 7.5,
+   "centroid": 270,
+   "low": 0.37,
    "flat": 0.0,
-   "n_on": 2
+   "n_on": 1
   },
-  "cut": false
+  "cut": true
  },
  "boulder_impact_1": {
   "srcfile": "oga-moving-boulder/files/boulder_drop_0/boulder_drop_0.ogg",
@@ -2165,8 +2165,8 @@
   "size": 16718,
   "desc": {
    "dur": 1.6,
-   "peak_db": -3.0,
-   "rms_db": -20.5,
+   "peak_db": -4.3,
+   "rms_db": -21.8,
    "crest": 7.5,
    "centroid": 2776,
    "low": 0.08,
@@ -2472,10 +2472,10 @@
    "peak_db": -3.0,
    "rms_db": -21.6,
    "crest": 8.5,
-   "centroid": 211,
-   "low": 0.81,
+   "centroid": 192,
+   "low": 0.82,
    "flat": 0.0,
-   "n_on": 4
+   "n_on": 1
   },
   "cut": true
  },
@@ -2549,8 +2549,8 @@
   "size": 14629,
   "desc": {
    "dur": 1.4,
-   "peak_db": -3.0,
-   "rms_db": -21.6,
+   "peak_db": -4.8,
+   "rms_db": -23.5,
    "crest": 8.5,
    "centroid": 9892,
    "low": 0.0,
@@ -2997,8 +2997,8 @@
   "size": 3396,
   "desc": {
    "dur": 0.29,
-   "peak_db": -3.0,
-   "rms_db": -27.6,
+   "peak_db": -4.5,
+   "rms_db": -29.0,
    "crest": 16.9,
    "centroid": 6881,
    "low": 0.0,
@@ -3221,8 +3221,8 @@
   "size": 2090,
   "desc": {
    "dur": 0.15,
-   "peak_db": -3.0,
-   "rms_db": -15.1,
+   "peak_db": -5.0,
+   "rms_db": -17.1,
    "crest": 4.0,
    "centroid": 11387,
    "low": 0.0,
@@ -3237,8 +3237,8 @@
   "size": 2090,
   "desc": {
    "dur": 0.15,
-   "peak_db": -3.0,
-   "rms_db": -15.8,
+   "peak_db": -6.1,
+   "rms_db": -18.9,
    "crest": 4.4,
    "centroid": 12847,
    "low": 0.0,
@@ -3854,5 +3854,37 @@
    "n_on": 0
   },
   "cut": false
+ },
+ "crowd_ooh_1": {
+  "srcfile": "oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3",
+  "duration": 1.437,
+  "size": 14629,
+  "desc": {
+   "dur": 1.4,
+   "peak_db": -3.0,
+   "rms_db": -17.5,
+   "crest": 5.3,
+   "centroid": 252,
+   "low": 0.68,
+   "flat": 0.0,
+   "n_on": 1
+  },
+  "cut": true
+ },
+ "crowd_gasp_1": {
+  "srcfile": "oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3",
+  "duration": 1.228,
+  "size": 12539,
+  "desc": {
+   "dur": 1.2,
+   "peak_db": -3.0,
+   "rms_db": -21.5,
+   "crest": 8.4,
+   "centroid": 1919,
+   "low": 0.0,
+   "flat": 0.005,
+   "n_on": 1
+  },
+  "cut": true
  }
 }

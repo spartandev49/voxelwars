@@ -7,7 +7,7 @@ usage: python3 -I tools/fetch_oga.py slug [slug ...]
 """
 import sys, os, json, subprocess, zipfile, tarfile, urllib.parse, shutil
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, HERE); sys.path.insert(1, os.path.join(HERE, 'pylib'))
+sys.path.insert(0, HERE); sys.path.insert(1, os.path.join(HERE, '..', '.cache', 'pylib'))
 import oga
 RAW = '/home/user/voxelwars/assets/raw'
 OK = ('CC0', 'CC-BY 3.0', 'CC-BY 4.0')

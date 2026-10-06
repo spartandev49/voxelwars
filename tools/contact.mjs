@@ -53,8 +53,13 @@ if (catArg) {
   for (const id of Object.keys(BP.PART_REGISTRY[cat])) {
     if (only && only.indexOf(id) < 0) continue;
     const b = JSON.parse(JSON.stringify(baseBp)); b.id = 'cat_' + id;
+    if (!opt('keepface', false) && cat !== 'faces') b.head.face = 'none';
     if (slot[0]) b[slot[0]][slot[1]] = id; else b[slot[1]] = id;
     if (cat === 'mains' && BP.PART_REGISTRY.mains[id].meta.twoHanded) b.off = 'none';
+    if (cat === 'offs') b.main = 'none';
+    if (['armors', 'tunics', 'shoulders', 'legs', 'skirts', 'capes', 'backs'].includes(cat)) { b.off = 'none'; b.main = 'none'; if (b.head.helm !== 'none') { b.head.helm = 'none'; } }
+    if (cat === 'hair' || cat === 'faces') { b.head.helm = 'none'; }
+    if (cat === 'hair') b.head.face = 'none';
     items.push({ id, name: id, bp: b, opts: {} });
   }
 } else if (bpArg) {
@@ -76,7 +81,7 @@ const CW = 220, CH = 290;                        // full cell, CSS px (sheet px 
 const sx = (v) => Math.round(v * S);
 const VIEWS = { front: 0, q34: -38, q34l: 38, side: -90, back: 180 };
 const camFull = (az) => ({ az, el: 12, dist: 6.2, ty: 1.5 });
-const camHead = (az) => ({ az, el: 8, dist: 2.9, ty: 2.55 });
+const camHead = (az) => ({ az, el: 8, dist: 2.9, ty: (catArg === 'hair' || catArg === 'faces') ? 2.3 : 2.55 });
 const camTorso = (az) => ({ az, el: 10, dist: 4.2, ty: 1.9 });
 const camMini = (az) => ({ az, el: 24, dist: 6.6, ty: 1.45 });
 const cellFull = (item, team, az, x, y, cam) => ({ item, team, cam: cam || camFull(az), x, y, w: sx(CW), h: sx(CH), cssW: CW, cssH: CH, border: '#2a313c' });
@@ -87,17 +92,20 @@ function sheetFor(slice, idx0) {
   let y = 0, maxW = 0;
   const catalog = !!catArg;
   if (catalog) {
-    const head = ['helms', 'hair', 'faces'].includes(catArg), torso = ['armors', 'tunics', 'shoulders', 'legs', 'skirts'].includes(catArg), back = ['capes', 'backs'].includes(catArg);
-    const per_row = 5;
-    const cw = head ? sx(170) : sx(CW), ch = head ? sx(220) : sx(CH);
+    const g = ['helms', 'hair', 'faces'].includes(catArg) ? 'head' : ['armors', 'tunics', 'shoulders'].includes(catArg) ? 'torso' : ['legs', 'skirts'].includes(catArg) ? 'legs' : ['capes', 'backs'].includes(catArg) ? 'back' : catArg === 'offs' ? 'off' : 'full';
+    const views = { head: [camHead(-35)], torso: [camTorso(0), camTorso(180)], legs: [{ az: -35, el: 8, dist: 4.4, ty: 0.95 }, { az: 180, el: 8, dist: 4.4, ty: 0.95 }], back: [camFull(150), camFull(60)], off: [camFull(38)], full: [camFull(-35)] }[g];
+    const cw = g === 'head' ? sx(170) : (views.length > 1 ? sx(150) : sx(CW)), ch = g === 'head' ? sx(220) : (views.length > 1 ? sx(210) : sx(CH));
+    const perRow = Math.max(2, Math.floor(1700 / (cw * views.length + gap)));
+    let cellIdx = 0;
     slice.forEach((it, k) => {
-      const i = idx0 + k, col = k % per_row, row = Math.floor(k / per_row);
-      const x = col * (cw + gap), yy = row * (ch + 18 + gap);
-      const cam = head ? camHead(-35) : torso ? camTorso(-35) : back ? camFull(150) : camFull(-35);
-      const c = { item: k, team: 0, cam, x, y: yy + 18, w: cw, h: ch, cssW: cw / S, cssH: ch / S, border: '#2a313c' };
-      cells.push(c);
-      texts.push({ x: x + 4, y: yy + 2, text: it.id, size: 13, weight: '600' });
-      maxW = Math.max(maxW, x + cw); y = Math.max(y, yy + 18 + ch);
+      const col = k % perRow, row = Math.floor(k / perRow);
+      const x0 = col * (cw * views.length + gap * 2), yy = row * (ch + 18 + gap);
+      views.forEach((cam, vi) => {
+        cells.push({ item: k, team: 0, cam, x: x0 + vi * cw, y: yy + 18, w: cw, h: ch, cssW: cw / S, cssH: ch / S, border: '#2a313c' });
+        maxW = Math.max(maxW, x0 + (vi + 1) * cw);
+      });
+      texts.push({ x: x0 + 4, y: yy + 2, text: it.id, size: 13, weight: '600' });
+      y = Math.max(y, yy + 18 + ch);
     });
     return { cells, texts, width: maxW, height: y };
   }

@@ -1,6 +1,12 @@
-// Mounted units: a quad1 mount (horse / camel) + a hum1 rider composed into ONE ModelDef via composeModels.
-//   rider parts are prefixed 'r_' (r_body, r_head, r_armUL ...), the rider's root parts hang off the mount's `saddle` part.
-//   The rider's seated pose is baked as static `rest` rotations on the thigh/shin/cape parts (the ride_* clips only add deltas).
+// Mounted units: a quad1 mount (horse / camel, see quad1.js) + a hum1 rider composed into ONE ModelDef via composeModels.
+//   meta.subrigs = [{prefix:'', rig:'quad1', ...mount parts}, {prefix:'r_', rig:'hum1', ...r_body, r_head, r_armUL ...}]; meta.kind 'mounted';
+//   meta.riderPrefix 'r_'; meta.weaponStyle from the unit preset (thrust for lances/spears, throw for the Numidian).
+//   The rider's root-level parts (r_body, r_legUL, r_legUR) hang off the mount's `saddle` part: composeModels puts them at the `saddle` attach
+//   (the rider's HIP point) + offset [0,-10,0] (the hum1 hip is 10 voxels above its soles), so r_body's pivot == the saddle attach (seat error 0).
+//   Seated pose = STATIC rest rotations (SEAT_REST, applied after the clip pose): r_legUL rest [-1.22, 0, +0.30], r_legLL [1.2, 0, 0],
+//   r_legUR [-1.22, 0, -0.30], r_legLR [1.2, 0, 0] (thighs forward and spread, shins hang down), r_cape [0.55,0,0], r_cape2 [0.3,0,0] (flares over the rump).
+//   The ride_* clips therefore only add DELTAS on the legs (the rest already seats them); arm/torso poses are the rider's own.
+//   A rider can be supplied (compileSoldier(...).model); a stand-in hum1 (fixture_rider.js) is used otherwise. <= 26 parts for horse + 15 rider parts.
 import { composeModels } from '../../../voxel/compose.js';
 import { buildHorse, buildCamel } from './quad1.js';
 import { buildFixtureRider } from './fixture_rider.js';

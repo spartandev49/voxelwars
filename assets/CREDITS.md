@@ -1,7 +1,7 @@
 # VOXELWARS audio and VFX credits
 
 All third-party audio / sprites below are used under CC0 / Public Domain, or under Creative Commons Attribution (CC BY 3.0 / 4.0).
-Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (changes made). Entries marked **ATTRIBUTION REQUIRED** must stay in the in-game credits.
+Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (changes made). Every entry in the first section (CC BY) must stay in the in-game credits; the CC0 section is listed as a courtesy.
 
 ## Required attribution lines (CC BY)
 
@@ -21,7 +21,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
   Used for: sfx (3 file(s))
 
 - "Free Crowd Cheering Sounds" by Gregor Quendel, https://opengameart.org/content/free-crowd-cheering-sounds, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (6 file(s))
+  Used for: sfx (8 file(s))
 
 - "Chicken Sound Effect" by IMadeIt, https://opengameart.org/content/chicken-sound-effect, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified (trimmed/normalised/encoded).  
   Used for: sfx (2 file(s))
@@ -163,11 +163,14 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - 7 Assorted Sound Effects (Menu, Level Up) - CC0 1.0 - https://opengameart.org/content/7-assorted-sound-effects-menu-level-up (1 file(s))
 - Chunky Explosion - CC0 1.0 - https://opengameart.org/content/chunky-explosion (1 file(s))
 
+### Juhani Junkala (SubspaceAudio)
+- Boss Battle Music - CC0 1.0 - https://opengameart.org/content/boss-battle-music (1 file(s))
+
 ### Kenney (kenney.nl)
 - Kenney Impact Sounds - CC0 1.0 - https://kenney.nl/assets/impact-sounds (30 file(s))
 - Kenney Interface Sounds - CC0 1.0 - https://kenney.nl/assets/interface-sounds (13 file(s))
 - Kenney Particle Pack - CC0 1.0 - https://kenney.nl/assets/particle-pack (1 file(s))
-- Kenney RPG Audio - CC0 1.0 - https://kenney.nl/assets/rpg-audio (9 file(s))
+- Kenney RPG Audio - CC0 1.0 - https://kenney.nl/assets/rpg-audio (7 file(s))
 - Kenney UI SFX Set - CC0 1.0 - https://kenney.nl/assets/ui-audio (3 file(s))
 - Kenney Voiceover Pack #1 - CC0 1.0 - https://kenney.nl/assets/voiceover-pack (4 file(s))
 - Kenney Voiceover Pack: Fighter - CC0 1.0 - https://kenney.nl/assets/voiceover-pack-fighter (5 file(s))
@@ -225,7 +228,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - 100 CC0 SFX - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx (3 file(s))
 - 100 CC0 SFX #2 - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx-2 (1 file(s))
 - 75 CC0 breaking / falling / hit sfx - CC0 1.0 - https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx (7 file(s))
-- 80 CC0 creature SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-creature-sfx (1 file(s))
+- 80 CC0 creature SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-creature-sfx (3 file(s))
 - 80 CC0 creture SFX #2 - CC0 1.0 - https://opengameart.org/content/80-cc0-creture-sfx-2 (1 file(s))
 - 80 CC0 RPG SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-rpg-sfx (4 file(s))
 
@@ -246,9 +249,6 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 
 ### StumpyStrust
 - Their Coming (generic horn sound) - CC0 1.0 - https://opengameart.org/content/their-coming-generic-horn-sound (3 file(s))
-
-### SubspaceAudio
-- Boss Battle Music - CC0 1.0 - https://opengameart.org/content/boss-battle-music (1 file(s))
 
 ### tcpp
 - Explosion 10.ogg - Public Domain - https://commons.wikimedia.org/wiki/File:Explosion_10.ogg (1 file(s))

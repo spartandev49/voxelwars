@@ -4,7 +4,6 @@
 
 import { ST, SE, G } from './consts.js';
 import { startMelee, startRanged, resolveMelee, setAnim, angleDiff, releaseClaim } from './combat.js';
-import { ClipLib } from '../anim/clips.js';
 import { CLS } from './squads.js';
 
 const TAU = Math.PI * 2;
@@ -133,16 +132,8 @@ function setFace(u, a) {
   if (Math.abs(angleDiff(u.face, a)) > 0.12 || u.state !== ST.MOVE) u.face = a;
 }
 
-function clipForMove(u, speed) {
-  const d = u.def;
-  if (d.role === 'cavalry' || d.tags.includes('cavalry')) return speed > d.speed * 1.35 ? 'gallop' : 'trot';
-  if (d.role === 'beast' || d.tags.includes('animal')) return speed > d.speed * 1.2 ? 'gallop' : 'trot';
-  return speed > d.speed * 1.3 ? 'run' : 'walk';
-}
-function playMove(u, sp) {
-  const clip = clipForMove(u, sp), ref = ClipLib.meta(clip).speedRef || 2.6;
-  setAnim(u, clip, Math.max(0.5, Math.min(2.2, sp / ref)));
-}
+/** Locomotion: the sim publishes ONE clip id ('walk') plus speed; the Animator picks walk/jog/run bands (decisions D5). */
+function playMove(u) { setAnim(u, 'walk', 1); }
 function playIdle(u, combat) { setAnim(u, combat ? 'idle_combat' : 'idle', 1); }
 
 export function think(w, u, dt) {
@@ -166,11 +157,12 @@ export function think(w, u, dt) {
       u.stateT += dt;
       const t = u.target;
       if (t && t.alive) { u.face = Math.atan2(t.x - u.x, t.z - u.z); }
+      else if (u.breach && !u.breach.dead) { u.face = Math.atan2(u.breach.x - u.x, u.breach.z - u.z); }
       if (!(u.atkKind === 1 && def.ranged && def.ranged.whileMoving)) { u.dvx = 0; u.dvz = 0; }
       if (!u.hitDone && u.stateT >= u.hitAt) {
         u.hitDone = true;
         if (u.atkKind === 0) resolveMelee(w, u);
-        else if (t && t.alive) w.fireRanged(u);
+        else w.fireRanged(u);
       }
       if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; playIdle(u, true); }
       u.engaged = true;
@@ -219,6 +211,8 @@ export function think(w, u, dt) {
     if (t && sq && order === 'hold') { const dd = hyp(u.x - sq.ax, u.z - sq.az); if (dd > 16) { releaseClaim(u); u.target = t = null; u.targetT = 20; } }
   }
   const melee = def.melee, ranged = def.ranged;
+  if (u.guard && guardBehaviour(w, u, speedBase)) return;
+  if (u.breach || (u.blockT > 0.7 && (melee || info.siege) && !info.support)) { if (breachBehaviour(w, u, t, dt, speedBase, info)) return; }
   if (t) {
     const dx = t.x - u.x, dz = t.z - u.z, dist = hyp(dx, dz), gap = dist - u.radius - t.radius;
     const want = Math.atan2(dx, dz);
@@ -228,6 +222,65 @@ export function think(w, u, dt) {
   }
   // ----- no (usable) target: formation slot or the flow field -----
   followFormation(w, u, sq, speedBase, info);
+}
+
+// ------------------------------------------------------------------ guard (kill_general: the general avoids contact)
+/** Slip away from enemies within 9 u toward the friendly army; fights back only when cornered (an enemy in reach and no room to flee). */
+function guardBehaviour(w, u, speedBase) {
+  const n = w.hash.query(u.x, u.z, 9, w.qbuf2);
+  let ex = 0, ez = 0, wsum = 0, nearest = 99;
+  for (let k = 0; k < n; k++) {
+    const c = w.units[w.qbuf2[k]]; if (!c || !c.alive || c.team === u.team) continue;
+    const d = hyp(c.x - u.x, c.z - u.z); if (d < nearest) nearest = d;
+    const wt = 1 / (0.5 + d); ex += (c.x - u.x) * wt; ez += (c.z - u.z) * wt; wsum += wt;
+  }
+  if (wsum === 0) return false;                       // nobody close: normal behaviour (stay with the squad slot)
+  const mc = w.centroid[u.team];
+  let dx = -ex / wsum, dz = -ez / wsum;
+  if (mc && mc.n) { const bx = mc.x - u.x, bz = mc.z - u.z, bl = hyp(bx, bz) || 1; dx += bx / bl * 0.4; dz += bz / bl * 0.4; }
+  const l = hyp(dx, dz) || 1; dx /= l; dz /= l;
+  if (!w.nav.walkable(u.x + dx * 0.9, u.z + dz * 0.9)) { if (nearest < 3.2) return false; u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; return true; }
+  u.dvx = dx * speedBase * 1.1; u.dvz = dz * speedBase * 1.1; u.face = Math.atan2(dx, dz); u.state = ST.MOVE; playMove(u);
+  return true;
+}
+
+// ------------------------------------------------------------------ breach (destructible props that block the only path)
+/** Attack the destructible prop in the way. Returns true if the unit is busy breaching. */
+function breachBehaviour(w, u, t, dt, speedBase, info) {
+  let p = u.breach;
+  if (p && p.dead) { p = u.breach = null; u.breachT = 0; }
+  if (!p) {
+    if (u.breachT > 0) { u.breachT -= dt; return false; }
+    const l = hyp(u.dvx, u.dvz);
+    if (l < 0.3) return false;
+    p = w.nearestSoftProp(u.x + u.dvx / l * 1.4, u.z + u.dvz / l * 1.4, 1.5);
+    if (!p) { u.breachT = 1.0; return false; }
+    u.breach = p; u.breachT = 0;
+  }
+  // an enemy in reach beats the wall
+  const def = u.def, dx = p.x - u.x, dz = p.z - u.z, dist = hyp(dx, dz), gap = dist - u.radius - p.radius;
+  if (info.siege || (def.ranged && !def.melee)) {
+    // siege engines shell the obstacle from range; infantry ranged units just wait
+    if (!info.siege) { u.breach = null; return false; }
+    if (t && t.alive) { u.breach = null; return false; }
+    const r = def.ranged;
+    if (gap > r.range * 0.95) { u.breach = null; u.breachT = 2; return false; }
+    u.face = Math.atan2(dx, dz); u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.engaged = true;
+    if (u.cdR <= 0 && Math.abs(angleDiff(u.heading, u.face)) < 0.4) { startRanged(w, u); return true; }
+    playIdle(u, true);
+    return true;
+  }
+  if (t && t.alive) { const g2 = hyp(t.x - u.x, t.z - u.z) - u.radius - t.radius; if (g2 <= def.melee.range + 0.4) { u.breach = null; u.breachT = 1.5; return false; } }
+  const reach = def.melee.range + u.mReach;
+  if (gap <= reach + 0.25) {
+    u.face = Math.atan2(dx, dz); u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.engaged = true; u.hold = true;
+    if (u.cd <= 0 && Math.abs(angleDiff(u.heading, u.face)) < 0.6) { startMelee(w, u); return true; }
+    playIdle(u, true);
+    return true;
+  }
+  if (gap > reach + 6) { u.breach = null; u.breachT = 1.5; return false; }
+  u.state = ST.MOVE; steer(w, u, p.x, p.z, speedBase); playMove(u);
+  return true;
 }
 
 // ------------------------------------------------------------------ melee
@@ -261,7 +314,7 @@ function meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq) {
     if (u.targetT > 6) u.targetT = 6;
     steer(w, u, t.x, t.z, speedBase * 0.95);
     if (u.blockT > 0.4 && crowdAhead(w, u, u.dvx, u.dvz)) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
-    playMove(u, speedBase * 0.95);
+    playMove(u);
     return true;
   }
   let sp = speedBase;
@@ -269,7 +322,7 @@ function meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq) {
   else if (gap > 5) sp = speedBase * 1.2;
   u.state = ST.MOVE; u.engaged = gap < 5;
   steer(w, u, t.x, t.z, sp);
-  playMove(u, sp);
+  playMove(u);
   // melee units with a ranged side-arm (elephant archers, cyclops boulders, pharaoh's scepter) throw while closing in
   if (def.ranged && u.cdR <= 0 && gap > reach + 2 && gap > (def.ranged.minRange || 0) && gap <= def.ranged.range * 0.95 && fdiffOk(u, want)) { startRanged(w, u); }
   return true;
@@ -308,7 +361,7 @@ function rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, 
     if (!r.whileMoving) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
     else { steer(w, u, t.x, t.z, speedBase * 0.9); u.state = ST.MOVE; }
     if (u.cdR <= 0 && fdiff < 0.4) { startRanged(w, u); return true; }
-    if (r.whileMoving) playMove(u, speedBase * 0.9); else playIdle(u, true);
+    if (r.whileMoving) playMove(u); else playIdle(u, true);
     return true;
   }
   if (gap < minR) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
@@ -317,7 +370,7 @@ function rangedBehaviour(w, u, t, dt, gap, dist, dx, dz, want, speedBase, info, 
   if (sq && sq.cls === CLS.RANGED && sq.order !== 'hold' && sq.engF === 0 && gap > range + 2) return false;   // keep marching with the squad
   u.state = ST.MOVE;
   steer(w, u, t.x, t.z, speedBase);
-  playMove(u, speedBase);
+  playMove(u);
   return true;
 }
 
@@ -338,7 +391,7 @@ function kiteAway(w, u, t, dist, dx, dz, speedBase, sq) {
   u.face = Math.atan2(-dx, -dz) ;
   // keep looking at the enemy while backing away (shoot-and-scoot reads better)
   u.face = Math.atan2(dx, dz);
-  setAnim(u, 'walk', Math.max(0.6, sp / 2.6));
+  playMove(u);
   return true;
 }
 
@@ -363,12 +416,12 @@ function followFormation(w, u, sq, speedBase, info) {
     u.dvx = vx; u.dvz = vz; u.state = ST.MOVE;
     const fa = l > 0.3 ? Math.atan2(vx, vz) : sq.facing;
     setFace(u, ed < 1.5 && sq.speed < 0.3 ? sq.facing : fa);
-    playMove(u, Math.min(l, cap));
+    playMove(u);
     return;
   }
   // lone unit: advance on the nearest enemy via the flow field
   if (info.support) { supportMove(w, u, speedBase); return; }
-  if (enemyDir(w, u, _d)) { u.dvx = _d[0] * speedBase; u.dvz = _d[1] * speedBase; setFace(u, Math.atan2(_d[0], _d[1])); u.state = ST.MOVE; playMove(u, speedBase); }
+  if (enemyDir(w, u, _d)) { u.dvx = _d[0] * speedBase; u.dvz = _d[1] * speedBase; setFace(u, Math.atan2(_d[0], _d[1])); u.state = ST.MOVE; playMove(u); }
   else { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false); }
 }
 
@@ -379,7 +432,7 @@ function retreatMove(w, u, sq, speedBase) {
   const l = hyp(dx, dz) || 1;
   u.dvx = dx / l * speedBase * 1.15; u.dvz = dz / l * speedBase * 1.15; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE;
   if (!w.nav.walkable(u.x + u.dvx * 0.3, u.z + u.dvz * 0.3)) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; }
-  playMove(u, speedBase * 1.15);
+  playMove(u);
 }
 
 /** Support units stay behind friendly melee and away from enemies. */
@@ -391,9 +444,9 @@ function supportMove(w, u, speed) {
     if (c.team !== u.team) { ex += c.x; ez += c.z; en++; }
     else if (c.def.role === 'melee' || c.def.role === 'hero') { fx += c.x; fz += c.z; fn++; }
   }
-  if (en > 0) { const l = hyp(u.x - ex / en, u.z - ez / en) || 1; u.dvx = (u.x - ex / en) / l * speed; u.dvz = (u.z - ez / en) / l * speed; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE; playMove(u, speed); return; }
-  if (fn > 0) { const tx = fx / fn, tz = fz / fn, d = hyp(tx - u.x, tz - u.z); if (d > 4) { steer(w, u, tx, tz, speed); playMove(u, speed); u.state = ST.MOVE; return; } }
-  if (enemyDir(w, u, _d) && fn === 0) { u.dvx = _d[0] * speed * 0.8; u.dvz = _d[1] * speed * 0.8; u.face = Math.atan2(_d[0], _d[1]); u.state = ST.MOVE; playMove(u, speed * 0.8); return; }
+  if (en > 0) { const l = hyp(u.x - ex / en, u.z - ez / en) || 1; u.dvx = (u.x - ex / en) / l * speed; u.dvz = (u.z - ez / en) / l * speed; u.face = Math.atan2(u.dvx, u.dvz); u.state = ST.MOVE; playMove(u); return; }
+  if (fn > 0) { const tx = fx / fn, tz = fz / fn, d = hyp(tx - u.x, tz - u.z); if (d > 4) { steer(w, u, tx, tz, speed); playMove(u); u.state = ST.MOVE; return; } }
+  if (enemyDir(w, u, _d) && fn === 0) { u.dvx = _d[0] * speed * 0.8; u.dvz = _d[1] * speed * 0.8; u.face = Math.atan2(_d[0], _d[1]); u.state = ST.MOVE; playMove(u); return; }
   u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false);
 }
 

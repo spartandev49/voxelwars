@@ -1,17 +1,38 @@
-// quad1: the four-legged rig (horse, pony, camel, mastiff, battle goat, centaur body).
+// quad1: the four-legged rig (riding horse / pony / warhorse, camel, mastiff, battle goat; the centaur body reuses the horse).
 //
-// Parts (spec 4.2, ids frozen):  body, neck, head, tail, legFL, legFR, legBL, legBR  (+ static children: saddle, mane, ears, horns, barding)
-// Frames (all coordinates in VOXELS, +Z forward, +X = the animal's LEFT):
-//   root            : on the ground under the body centre.
-//   body            : origin [0, legLen, 0]; pivot at the BELLY LINE on the centre line (grid y=0 is the belly).
-//   neck            : child of body, pivot at the neck base (inside the shoulders), the neck is baked rising forward/up.
-//   head            : child of neck, pivot at the poll (top of the neck); the face is baked pointing forward/down.
-//   tail            : child of body, pivot at the tail root, hangs along -Y.
-//   legXY           : child of body, pivot at the TOP of the leg (2 voxels inside the barrel), legs hang along -Y.
-//   saddle/barding  : child of body in the SAME frame as the body (origin [0,0,0], same pivot).
-//   mane            : child of neck, same frame.   ears/horns : child of head, same frame.
+// CONVENTIONS (all numbers in VOXELS of 0.1 u unless stated; +Z forward, +Y up, +X = the animal's LEFT; euler order Ry*Rx*Rz,
+// positive rx rotates +Y toward +Z, positive ry turns +Z toward +X, positive rz turns +Y toward -X):
+//   Parts (spec 4.2, ids frozen): body, neck, head, tail, legFL, legFR, legBL, legBR  + optional STATIC children saddle, mane, ears, horns, barding.
+//   body    parent root.  origin [0, legLen, 0]; pivot on the BELLY LINE at the centre of the barrel (grid y=0 is the belly, the back is above).
+//   legXX   parent body.  Pivot at the TOP of the leg (2 voxels inside the barrel), the leg hangs along -Y; hoof sole at pivot-y = -(legLen+2).
+//           Swing about X: FORWARD swing = NEGATIVE rx (same as hum1). Gallop: fore pair and hind pair lead, see meta.gait. Camel: pace gait
+//           (meta.gait.pace = true: legFL moves with legBL, legFR with legBR).
+//   neck    parent body.  Pivot at the neck base inside the shoulders; the neck is baked rising forward/up. Positive rx leans it FORWARD
+//           (head lowers, grazing), negative rx raises it (rearing, alert); small ry turns it toward a target.
+//   head    parent neck.  Pivot at the poll (top of the neck); the face is baked pointing forward/down. Positive rx nods the face DOWN,
+//           negative lifts it; ry turns, rz tilts.
+//   tail    parent body.  Pivot at the tail root, hangs along -Y. Horse/camel: positive rx lifts the tip BACKWARD (tail carried high),
+//           swish with rz (positive = tip toward +X). Hound/goat tails point up/back: wag with ry.
+//   saddle, barding   parent body, SAME frame as the body (origin [0,0,0], same local coordinates), they follow the body exactly.
+//   mane    parent neck, same frame as the neck.   ears, horns   parent head, same frame as the head (ears origin [0,2.4,1.6] on the horse).
+//   Attach points: saddle (HIP POINT of a seated rider, local coords of the body frame; horse: (0, +16.2, 0) = 2.62 u above the ground, camel:
+//   (0, +14, +4.5) in front of the hump; hound/goat: top of the coat), head_top, mouth, feet (ground under the body centre).
+//   meta: {rig:'quad1', species, legLen (u), hipHeight (u), gait:{hipH, pace, walk|trot|gallop:{amp rad, duty, stride}}, subrigs, clipMap}.
+//   Gait recipe: stride (u travelled per full cycle of ONE leg) = 2*hipH*sin(amp)/duty; horse hipH 1.2 u: walk amp 0.42 stride 1.48,
+//   trot 0.55 / 2.51, gallop 0.85 / 5.3; camel hipH 1.6 (walk 1.98, gallop 7.07); hound hipH 0.8 (0.99, 3.54); goat hipH 0.9 (1.11, 3.98).
+//
+// SPECIES (origins relative to the parent pivot):
+//   horse (k=1; k scales every dimension: 0.9 = chariot horse / Numidian pony): back 2.2 u, body 3.4 u long, head top 3.4 u. legLen 10, legs
+//     origin (+-3.5, 2, +10.5 / -10.5), neck (0, 9.4, 10.6), head (0, 12.2, 7.1) from the neck pivot, tail (0, 11, -16.2).
+//     options: coat white|chestnut|black|bay|dun|grey|palomino|0xRRGGBB, socks, blaze, saddle 'cloth'|'pad'|'none', plume, barded (cloth caparison with a
+//     scale pattern + steel chamfron; team tinted), harness, lean (mane+ears baked into neck/head: 8 parts), trim.
+//   camel: legLen 14, legs (+-3.5, 2, +10.5 / -10.5), neck (0, 6.8, 12.2) S-curved, head (0, 16, 5.6), tail (0, 8.6, -16.2); hump behind the saddle.
+//   hound (mastiff): legLen 6, legs (+-2.5, 2, +5.2 / -5.4), neck (0, 5.8, 7) with the spiked team collar, head (0, 2.8, 4.6), tail (0, 5.4, -8.6),
+//     ears (floppy, static), `saddle` = team battle coat.
+//   goat: legLen 7, legs (+-2.5, 2, +5.4 / -5.6), neck (0, 6.6, 6.6) with collar + bell, head (0, 5.4, 3.2) (tiny helmet with a team crest,
+//     beard), horns (static, huge curls), ears, tail (0, 7.8, -9.6), `saddle` = team blanket.
 // Species builders return plain {parts, attach, ...} descriptions; assembleQuad() turns them into a ModelDef.
-import { LG, V, T, G, C, shade, mixRGB, newModel, addLG, attachLG, resolveCoat, shellOf, mergeSame } from './common.js';
+import { LG, V, T, G, C, shade, mixRGB, newModel, addLG, attachLG, resolveCoat, shellOf, mergeSame, finishModel } from './common.js';
 
 const rnd = Math.round;
 const ev = (n) => 2 * Math.round(n / 2);
@@ -51,6 +72,10 @@ function horseSpecies(o) {
     if (y > Y(10.8) && Math.abs(z) < Z(15)) return V(shade(col.main, 0.9));
     return undefined;
   });
+  if (o.harness) {                                                  // team breast collar + girth band (chariot horses)
+    body.paint((x, y, z) => ((z > Z(13.4) && y > Y(3.5) && y < Y(9)) || (Math.abs(z - Z(4.5)) < 1.2 && y > Y(1.8)) ? T(0xffffff) : undefined));
+    body.paint((x, y, z) => ((z > Z(13.4) && y > Y(8) && y < Y(9.2)) || (Math.abs(z - Z(4.5)) < 1.2 && y > Y(1.8) && y < Y(2.8)) ? V(trim) : undefined));
+  }
   sp.parts.body = { lg: body, origin: [0, legLen, 0] };
 
   // ---- legs
@@ -59,7 +84,7 @@ function horseSpecies(o) {
     const lg = new LG(5, LL + 1, 8, 2.5, LL, 4.5);
     const w = sock ? V(0xf1efe8) : legc;
     if (!hind) {
-      drawLeg(lg, [[0, -Y(5), -2.5, 2.5, 1.5, legc], [-Y(5), -Y(8), -1.5, 1.5, 1.5, w], [-Y(8), -Y(9.5), -2, 2, 1.5, w], [-Y(9.5), -LL, -2.5, 3, 1.5, hoof]]);
+      drawLeg(lg, [[0, -Y(2.5), -3, 3, 2.5, legc], [-Y(2.5), -Y(5.5), -2.5, 2.5, 1.5, legc], [-Y(5.5), -Y(8), -1.7, 1.7, 1.5, w], [-Y(8), -Y(9.5), -2.2, 2.2, 1.5, w], [-Y(9.5), -LL, -2.5, 3, 1.5, hoof]]);
     } else {
       drawLeg(lg, [[0, -Y(4), -3.5, 2.5, 2.5, legc], [-Y(4), -Y(6.5), -4, 0.5, 1.5, legc], [-Y(6.5), -Y(9), -3, 0, 1.5, w], [-Y(9), -Y(9.5), -2.5, 1, 1.5, w], [-Y(9.5), -LL, -2.5, 2.5, 1.5, hoof]]);
     }
@@ -78,7 +103,7 @@ function horseSpecies(o) {
   sp.parts.neck = { lg: neck, origin: [0, Y(9.4), Z(10.6)], parent: 'body' };
 
   // ---- head (pivot at the poll)
-  const hd = new LG(10, 20, 22, 5, 12, 4);
+  const hd = new LG(10, 28, 22, 5, 12, 4);
   hd.ell(0, -1.8, 2.7, 3.4, 4.1, 4.5, main);                                 // skull
   hd.tube([0, -2.6, 4.8], [0, -8.6, 11.6], 3.3, 2.3, main, 1.0);              // face
   hd.ell(0, -8.8, 12.0, 2.5, 2.4, 2.7, main);                                // muzzle
@@ -124,7 +149,7 @@ function horseSpecies(o) {
   sp.parts.mane = { lg: mane, origin: [0, 0, 0], parent: 'neck' };
 
   // ---- tail
-  const tail = new LG(8, 18, 12, 4, 16.5, 8);
+  const tail = new LG(8, 19, 12, 4, 16.5, 8);
   tail.tube([0, 0, 0], [0, -5, -2], 2.0, 2.3, maneC, 1);
   tail.tube([0, -5, -2], [0, -14, -3.6], 2.3, 1.2, maneC, 1);
   sp.parts.tail = { lg: tail, origin: [0, Y(11), Z(-16.2)], parent: 'body' };
@@ -143,7 +168,7 @@ function horseSpecies(o) {
     sp.parts.saddle = { lg: sad, origin: [0, 0, 0], parent: 'body' };
     sp.attach.saddle = { part: 'saddle', at: [0, sy + 3.2, zc - 0.5] };
   } else if (o.saddle === 'pad') {
-    const pad = shellOf(body, (x, y, z, d) => Math.abs(z - zc) <= 5.6 && y > 6.2 && d === 1, 1, (x, y, z) => (y < 7.4 ? V(trim) : T(0xffffff)));
+    const pad = shellOf(body, (x, y, z, d) => Math.abs(z - zc) <= 7.2 && y > 4.6 + (Math.abs(z - zc) > 6 ? 1.4 : 0) && d === 1, 1, (x, y, z) => (y < 5.8 ? V(trim) : (y < 7.2 ? T(0xd6d6d6) : T(0xffffff))));
     sp.parts.saddle = { lg: pad, origin: [0, 0, 0], parent: 'body' };
     sp.attach.saddle = { part: 'saddle', at: [0, topY + 1 + 2.2, zc - 0.5] };
   }
@@ -207,6 +232,7 @@ function camelSpecies(o) {
     if (z > 13 && y < 7) return V(shade(col.mane, 1.25));
     return undefined;
   });
+  body.paint((x, y, z) => ((z > 12.2 && z < 14 && y > 2.5 && y < 9.5) ? T(0xffffff) : undefined));                         // team chest strap
   sp.parts.body = { lg: body, origin: [0, legLen, 0] };
 
   const top = 2, LL = legLen + top;
@@ -254,15 +280,15 @@ function camelSpecies(o) {
   }
   sp.parts.mane = { lg: mane, origin: [0, 0, 0], parent: 'neck' };
 
-  const tail = new LG(5, 14, 7, 2.5, 12.5, 3);
+  const tail = new LG(5, 14, 8, 2.5, 12.5, 4.5);
   tail.tube([0, 0, 0], [0, -6.5, -1.6], 1.2, 1.0, maneC, 1);
   tail.ell(0, -9.2, -2, 1.6, 2.6, 1.6, maneC);
   sp.parts.tail = { lg: tail, origin: [0, 8.6, -16.2], parent: 'body' };
 
   // saddle: wooden frame with cantle/pommel + team blanket draped over the back, in front of the hump
   const zc = 5.0, topY = topAt(body, zc);
-  const sad = shellOf(body, (x, y, z, d) => Math.abs(z - zc) <= 6.4 && y > 2.2 + (Math.abs(z - zc) > 5 ? 2 : 0) && d === 1, 1,
-    (x, y, z) => (y < 3.0 + (Math.abs(z - zc) > 5 ? 2 : 0) ? V(trim) : (y < 5 ? T(0xd0d0d0) : T(0xffffff))));
+  const sad = shellOf(body, (x, y, z, d) => Math.abs(z - zc) <= 8 && y > 1.4 + (Math.abs(z - zc) > 6.4 ? 2 : 0) && d === 1, 1,
+    (x, y, z) => (y < 2.4 + (Math.abs(z - zc) > 6.4 ? 2 : 0) ? V(trim) : (y < 4.6 ? T(0xd0d0d0) : T(0xffffff))));
   const sy = topY + 1;
   sad.box(-3.6, sy, zc - 4.4, 3.6, sy + 1.4, zc + 4.2, V(C.leather), 'empty');
   sad.box(-3.6, sy + 1.4, zc - 4.4, 3.6, sy + 4.4, zc - 3.2, V(C.woodDark), 'empty');      // cantle
@@ -303,7 +329,7 @@ function houndSpecies(o) {
 
   // neck with spiked collar (team leather band + steel spikes)
   const neck = new LG(10, 14, 14, 5, 5, 5);
-  const nv = [0, 3.6, 3.6], nl = Math.hypot(nv[1], nv[2]), ax = [0, nv[1] / nl, nv[2] / nl], pr = [0, ax[2], -ax[1]];
+  const nv = [0, 2.4, 4.4], nl = Math.hypot(nv[1], nv[2]), ax = [0, nv[1] / nl, nv[2] / nl], pr = [0, ax[2], -ax[1]];
   neck.tube([0, 0, 0], nv, 3.5, 3.0, main, 0.95);
   neck.paint((x, y, z) => { const a = y * ax[1] + z * ax[2]; return a > 1.0 && a < 2.6 ? T(0xffffff) : undefined; });
   for (let i = 0; i < 8; i++) {
@@ -312,22 +338,23 @@ function houndSpecies(o) {
   }
   sp.parts.neck = { lg: neck, origin: [0, 5.8, 7.0], parent: 'body' };
 
-  const hd = new LG(8, 12, 14, 4, 7, 3);
-  hd.ell(0, 0, 2.6, 3.3, 3.0, 3.4, main);
-  hd.box(-2, -2.8, 4.6, 2, 0.6, 8.6, main);                          // muzzle block
-  hd.box(-1.6, -3.6, 4.0, 1.6, -2.6, 7.8, dark);                      // lower jaw
-  hd.ell(-2.8, -1.8, 5.2, 0.9, 1.2, 1.8, main); hd.ell(2.8, -1.8, 5.2, 0.9, 1.2, 1.8, main);   // jowls
-  hd.box(-1.2, -1.0, 8.5, 1.2, -0.2, 9.1, V(col.nose));                  // nose
-  hd.set(-2.0, 1.4, 5.0, eye); hd.set(1.5, 1.4, 5.0, eye);
-  hd.box(-0.5, 1.8, 3.4, 0.5, 2.6, 5.6, V(shade(col.main, 0.7)));    // brow ridge
-  hd.set(-0.5, -3.4, 7.4, V(C.tongue)); hd.set(-1.6, -4.4, 6.6, V(0xffffff)); hd.set(1.4, -4.2, 7.0, V(0xffffff));   // tongue + drool
-  sp.parts.head = { lg: hd, origin: [0, nv[1] + 0.5, nv[2] + 0.2], parent: 'neck' };
-  sp.attach.head_top = { part: 'head', at: [0, 3, 2.6] };
-  sp.attach.mouth = { part: 'head', at: [0, -2, 8] };
+  const hd = new LG(10, 12, 16, 5, 7, 3);
+  hd.ell(0, 0.4, 2.6, 3.4, 3.1, 3.5, main);                              // broad skull
+  hd.box(-2.2, -2.4, 5, 2.2, 1.0, 11, main);                              // long square muzzle
+  hd.box(-1.8, -3.4, 4.2, 1.8, -2.4, 10, dark);                           // lower jaw
+  hd.box(-2.6, -2.6, 5.4, -2.2, -1.2, 9.2, main); hd.box(2.2, -2.6, 5.4, 2.6, -1.2, 9.2, main);   // flews (hanging lips)
+  hd.box(-1.4, -0.2, 11, 1.4, 1.0, 11.8, V(col.nose));                    // nose
+  hd.set(-2.0, 1.6, 5.2, eye); hd.set(1.5, 1.6, 5.2, eye);
+  hd.box(-3, 2.0, 3.6, 3, 2.9, 5.6, V(shade(col.main, 0.72)));            // heavy brow ridge
+  hd.set(-0.5, -3.6, 9.2, V(C.tongue)); hd.set(-0.5, -3.6, 8.2, V(C.tongue)); hd.set(-1.6, -4.4, 7.6, V(0xffffff)); hd.set(1.4, -4.4, 8.4, V(0xffffff));   // tongue + drool
+  hd.box(-1.2, 0.8, 10.2, 1.2, 1.4, 10.8, V(shade(col.main, 0.8)));       // muzzle wrinkle
+  sp.parts.head = { lg: hd, origin: [0, nv[1] + 0.4, nv[2] + 0.2], parent: 'neck' };
+  sp.attach.head_top = { part: 'head', at: [0, 3.4, 2.6] };
+  sp.attach.mouth = { part: 'head', at: [0, -2, 10] };
 
-  const ears = new LG(10, 8, 8, 5, 0, 4);
-  for (const sx of [-1, 1]) { ears.box(sx * 3 - 0.5, -3, 0, sx * 3 + 0.5, 1, 2.6, dark); ears.box(sx * 3 - 0.5 + sx * 0.4, -3, 0.6, sx * 3 + 0.5 + sx * 0.4, -1, 1.6, dark); }
-  sp.parts.ears = { lg: ears, origin: [0, 3.0, 0.8], parent: 'head' };
+  const ears = new LG(12, 8, 8, 6, 4, 4);
+  for (const sx of [-1, 1]) { ears.box(sx * 3.7 - 0.5, -3.4, 0.6, sx * 3.7 + 0.5, 0, 3.2, dark); ears.box(sx * 3.7 - 0.5, -3.4, 2.4, sx * 3.7 + 0.5, -1.6, 3.2, V(shade(col.dark, 0.8))); }
+  sp.parts.ears = { lg: ears, origin: [0, 2.8, 0.4], parent: 'head' };
 
   const tail = new LG(4, 11, 10, 2, 3.2, 7.5);
   tail.tube([0, 0, 0], [0, 1.2, -3], 1.5, 1.2, main, 1);
@@ -397,7 +424,7 @@ function goatSpecies(o) {
   sp.parts.ears = { lg: ears, origin: [0, 0.4, 1.0], parent: 'head' };
 
   // huge curled horns (static child of head): control polyline for the left horn, mirrored
-  const horns = new LG(24, 20, 20, 12, 8, 6);
+  const horns = new LG(24, 20, 22, 12, 8, 13);
   const H = [[1.4, 2.2, 0.4, 1.7], [2.4, 4.4, -1.6, 1.6], [3.6, 5.8, -4.2, 1.5], [5.4, 5.2, -6.6, 1.4], [6.8, 3.2, -7.2, 1.3], [7.4, 0.6, -5.6, 1.1], [6.8, -0.8, -3.2, 0.9], [5.4, -0.6, -1.8, 0.7]];
   for (const sx of [-1, 1]) for (let i = 0; i < H.length - 1; i++) {
     const a = H[i], b = H[i + 1];
@@ -438,7 +465,7 @@ export function assembleQuad(id, sp, meta = {}, opts = {}) {
   m.meta.hipHeight = (sp.legLen + 2) * m.voxelSize;
   m.meta.gait = makeGait(sp);
   m.meta.species = sp.kind;
-  return m;
+  return finishModel(m);
 }
 
 /** Gait recipe for ANIM (see docs/beasts_rigs.md): stride (u per full leg cycle) = 2 * hipH * sin(amp) / duty. */

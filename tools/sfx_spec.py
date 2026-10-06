@@ -49,16 +49,14 @@ S('wood_thud_3', 'shield', K_IMP + r':impactWood_medium_001', 'wood,thud', max=0
 
 # ---------------------------------------------------------------- pierce
 S('spear_swing_1', 'pierce', MWT + r':Spear Swing', 'spear,thrust,swing,whoosh', peak=1, pre=0.3, post=0.4, max=0.7, hp=300)
-S('spear_stab_1', 'pierce', 'commons-stab-damage-gravity-sound:Stab Damage', 'spear,stab,flesh', max=1.0, notes='Gravity Sound')
-S('spear_stab_2', 'pierce', 'commons-stab-damage-monster-gravity-sound:Stab Damage', 'spear,stab,flesh', max=1.0)
 S('spear_stab_3', 'pierce', K_IMP + r':impactSoft_heavy_001', 'spear,stab,flesh,soft', max=0.9)
-S('javelin_throw_1', 'pierce', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-31', 'javelin,throw,whoosh', max=1.3)
-S('javelin_throw_2', 'pierce', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-35', 'javelin,throw,whoosh', max=1.3)
+S('javelin_throw_1', 'pierce', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-38', 'javelin,throw,whoosh', peak=0, pre=0.45, post=0.45, max=0.9, hp=60)
+S('javelin_throw_2', 'pierce', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-35', 'javelin,throw,whoosh', peak=0, pre=0.5, post=0.55, max=1.05, hp=60)
 
 # ---------------------------------------------------------------- bow
-S('bow_shot_1', 'bow', MWT + r':Scythian Recurve Shoot', 'bow,arrow,shoot,twang', core=True, on=0, max=0.9, fout=0.12)
-S('bow_shot_2', 'bow', MWT + r':English Longbow Shoot', 'bow,arrow,shoot,twang', on=0, max=0.9, fout=0.12)
-S('crossbow_shot_1', 'bow', MWT + r':Crossbow Shoot', 'crossbow,bolt,shoot,twang', on=0, max=0.9, fout=0.12)
+S('bow_shot_1', 'bow', MWT + r':Scythian Recurve Shoot', 'bow,arrow,shoot,twang', core=True, on=0, max=0.6, fout=0.1, hp=180)
+S('bow_shot_2', 'bow', MWT + r':English Longbow Shoot', 'bow,arrow,shoot,twang', on=0, max=0.3, fout=0.08)
+S('crossbow_shot_1', 'bow', MWT + r':Crossbow Shoot', 'crossbow,bolt,shoot,twang', on=0, max=0.6, fout=0.1)
 S('bow_draw_1', 'bow', MWT + r':Scythian Recurve Draw', 'bow,draw,creak', max=1.6)
 S('bow_nock_1', 'bow', MWT + r':English Longbow Nock', 'bow,nock', max=0.9)
 S('arrow_whoosh_1', 'bow', MWT + r':Scythian Recurve Arrow Pass\.', 'arrow,whoosh,flyby', peak=0, pre=0.5, post=0.5, max=1.0)
@@ -77,7 +75,6 @@ S('flesh_hit_light_4', 'impact', K_IMP + r':impactPunch_medium_003', 'flesh,hit,
 S('flesh_hit_heavy_1', 'impact', K_IMP + r':impactPunch_heavy_000', 'flesh,hit,heavy,punch', core=True, max=1.0)
 S('flesh_hit_heavy_2', 'impact', K_IMP + r':impactPunch_heavy_002', 'flesh,hit,heavy,punch', core=True, max=1.0)
 S('flesh_hit_heavy_3', 'impact', K_IMP + r':impactPunch_heavy_004', 'flesh,hit,heavy,punch', max=1.0)
-S('flesh_hit_heavy_4', 'impact', 'commons-hard-punch-flesh-gravity-sound:Punch', 'flesh,hit,heavy,punch', max=1.0)
 S('mace_bonk_1', 'impact', K_IMP + r':impactMetal_heavy_001', 'mace,bonk,metal,helmet', max=1.2)
 S('mace_bonk_2', 'impact', K_IMP + r':impactMetal_medium_003', 'mace,bonk,metal,helmet', max=1.0)
 S('club_bonk_1', 'impact', K_IMP + r':impactWood_heavy_004', 'club,bonk,wood', max=1.0)
@@ -89,8 +86,8 @@ S('flesh_slap_1', 'impact', 'oga-37-hitspunches:hit33', 'slap,flesh', max=0.8)
 S('death_grunt_1', 'death', 'oga-male-dead-voice:enemy_dead_00', 'death,grunt,male,oof', core=True, max=1.0)
 S('death_grunt_2', 'death', 'oga-male-dead-voice:enemy_dead_05', 'death,grunt,male', core=True, max=1.0)
 S('death_grunt_3', 'death', 'oga-male-dead-voice:enemy_dead_11', 'death,grunt,male', core=True, max=1.0)
-S('death_grunt_4', 'death', 'oga-male-dead-voice:enemy_dead_24', 'death,grunt,male', max=1.0)
-S('death_grunt_5', 'death', 'oga-male-dead-voice:enemy_dead_33', 'death,grunt,male', max=1.2)
+S('death_grunt_4', 'death', 'oga-male-dead-voice:enemy_dead_06', 'death,grunt,male', max=1.0)
+S('death_grunt_5', 'death', 'oga-male-dead-voice:enemy_dead_09', 'death,grunt,male', max=1.2)
 S('death_oof_1', 'death', 'oga-15-vocal-male-strainhurtpainjump-sounds:slightscream-03', 'death,oof,grunt,male,comic', max=1.0)
 S('death_oof_2', 'death', 'oga-15-vocal-male-strainhurtpainjump-sounds:slightscream-10', 'death,oof,grunt,male,comic', max=1.0)
 S('death_scream_1', 'death', 'oga-aargh-male-screams:aargh5', 'death,scream,male', max=1.4)
@@ -170,13 +167,13 @@ S('minotaur_grunt_1', 'animal', 'oga-osare-minotaur-sounds:mino', 'minotaur,grun
 # ---------------------------------------------------------------- siege
 S('catapult_creak_1', 'siege', 'oga-tree-creaking:tree_creak', 'catapult,creak,wood,rope', max=2.0, fout=0.3)
 S('catapult_creak_2', 'siege', K_RPG + r':creak2', 'catapult,creak,wood', max=1.6, fout=0.3)
-S('catapult_launch_1', 'siege', '', 'catapult,launch,thwump', core=True, notes='composite: wood thwump + swing whoosh + creak',
-  layers=[(K_IMP + r':impactWood_heavy_001', 0.0, 0.0, dict(lp=900)), ('oga-swish-bamboo-stick-weapon-swhoshes:swosh-28', 0.02, -4.0, dict(lp=5000)), (K_RPG + r':creak1', 0.0, -9.0, dict())], max=1.6)
-S('catapult_launch_2', 'siege', '', 'trebuchet,launch,thwump', notes='composite: heavy thud + slow whoosh',
-  layers=[(K_IMP + r':impactWood_heavy_003', 0.0, 0.0, dict(lp=700)), ('oga-swish-bamboo-stick-weapon-swhoshes:swosh-31', 0.05, -5.0, dict(lp=4000)), (K_RPG + r':creak3', 0.0, -10.0, dict())], max=1.8)
+S('catapult_launch_1', 'siege', '', 'catapult,launch,thwump', core=True, notes='composite: low wood thwump + short flight whoosh',
+  layers=[(K_IMP + r':impactWood_heavy_001', 0.0, 0.0, dict(lp=900, pk=True)), ('oga-swish-bamboo-stick-weapon-swhoshes:swosh-33', 0.10, -4.0, dict(lp=5000, pk=True)), (K_IMP + r':impactWood_medium_002', 0.0, -6.0, dict(lp=2500, pk=True))], max=1.4, fout=0.25)
+S('catapult_launch_2', 'siege', '', 'trebuchet,launch,thwump', notes='composite: heavy thud + slower whoosh',
+  layers=[(K_IMP + r':impactWood_heavy_003', 0.0, 0.0, dict(lp=700, pk=True)), ('oga-swish-bamboo-stick-weapon-swhoshes:swosh-38', 0.16, -5.0, dict(lp=4000, pk=True)), (K_IMP + r':impactPlate_heavy_002', 0.0, -8.0, dict(lp=600, pk=True))], max=1.6, fout=0.25)
 S('ballista_twang_1', 'siege', '', 'ballista,twang,bow', notes='composite: crossbow shoot + heavy wood knock',
   layers=[(MWT + r':Crossbow Shoot', 0.0, 0.0, dict()), (K_IMP + r':impactWood_heavy_000', 0.01, -5.0, dict(lp=1200))], max=1.4)
-S('boulder_whoosh_1', 'siege', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-32', 'boulder,whoosh,flyby', max=1.4, lp=3500)
+S('boulder_whoosh_1', 'siege', 'oga-swish-bamboo-stick-weapon-swhoshes:swosh-41', 'boulder,whoosh,flyby', peak=0, pre=0.6, post=0.7, max=1.3, lp=3500, rate=0.85)
 S('boulder_impact_1', 'siege', 'oga-moving-boulder:boulder_drop', 'boulder,impact,thud,rock', core=True, max=2.0, fout=0.25)
 S('boulder_impact_2', 'siege', 'oga-battle-at-sea:cannon_hit_wall_no_splash', 'boulder,impact,wall,crash', max=1.8, fout=0.3)
 S('boulder_impact_3', 'siege', BRK + r':bfh1_rock_hit_01', 'boulder,impact,rock', max=1.6, fout=0.25)
@@ -217,7 +214,7 @@ S('curse_dark_1', 'magic', 'oga-8-heals-and-buffs-sfx:21_Debuff', 'curse,dark,de
 S('curse_dark_2', 'magic', 'oga-8-magic-attacks:46_Poison', 'curse,dark,poison,whoosh', max=1.8, fout=0.3)
 S('magic_cast_1', 'magic', 'oga-8-magic-attacks:45_Charge', 'magic,cast,charge', max=1.8, fout=0.3)
 S('thunder_crack_1', 'magic', 'oga-8-magic-attacks:18_Thunder', 'thunder,lightning,zeus', max=1.8, fout=0.3)
-S('thunder_crack_2', 'magic', 'oga-100-cc0-sfx-2:sfx100v2_thunder_01', 'thunder,lightning,zeus', max=2.4, fout=0.5)
+S('thunder_crack_2', 'magic', 'oga-100-cc0-sfx-2:sfx100v2_thunder_01', 'thunder,lightning,zeus', max=2.4, fout=0.5, start_db=-22)
 S('lightning_zap_1', 'magic', 'oga-electricity-sound-effects-0:/spark\\.wav', 'lightning,zap,spark', max=1.0)
 
 # ---------------------------------------------------------------- coin / bell
@@ -302,3 +299,62 @@ GQ = 'oga-free-cinematic-sound-effects'
 S('fire_burst_1', 'fire', GQ + r':Short - Swoosh Burst Sizzling 01', 'fire,whoosh,burst,sizzle', max=2.2, fout=0.4)
 S('fire_impact_1', 'fire', GQ + r':Fire - Impacts - Complex 04', 'fire,impact,explosion,burst', max=2.4, fout=0.5)
 S('rock_crumble_4', 'destruction', GQ + r':Rocks - Elements 09', 'rock,crumble,stone,debris', max=2.2, fout=0.4)
+
+# ---------------------------------------------------------------- Wikimedia Commons (rate-limited download; entries are skipped by the manifest if the file could not be fetched)
+S('crowd_ooh_1', 'crowd', 'commons-ohhh-ahhh:Ohhh', 'crowd,gasp,ooh,aww', max=2.2, fout=0.4, fin=0.05)
+S('crowd_hurray_1', 'crowd', 'commons-hurray:Hurray', 'crowd,cheer,hurray', max=2.2, fout=0.3)
+S('crowd_cheer_4', 'crowd', 'commons-clapping-hurray:Clapping', 'crowd,cheer,clap', max=3.0, fout=0.5)
+S('crowd_boo_1', 'crowd', 'commons-soundgoats-audience-booing:Booing', 'crowd,boo,disapproval', max=2.6, fout=0.5, fin=0.1)
+S('war_horn_4', 'horn', 'commons-hunting-horn-tone:Hunting', 'horn,hunting horn,signal', t0=0.0, read=5.0, max=2.5, fout=0.35)
+S('war_horn_5', 'horn', 'commons-blumlisalp-horn:Horn', 'horn,alphorn,deep,signal', max=1.9, fout=0.3)
+S('bugle_call_1', 'horn', 'commons-assembly-bugle-call:Assembly', 'bugle,trumpet,signal,call', max=3.0, fout=0.4)
+S('bugle_call_2', 'horn', 'commons-attention-bugle-call-us:Attention', 'bugle,trumpet,signal,call', max=3.0, fout=0.4)
+S('drum_boom_7', 'drum', 'commons-02-taiko2-short:Taiko', 'drum,taiko,boom,low', on=0, max=1.2, fout=0.25)
+S('drum_boom_8', 'drum', 'commons-02-taiko2-short:Taiko', 'drum,taiko,boom,low', on='strongest', max=1.2, fout=0.25)
+S('timpani_hit_1', 'drum', 'commons-timpani-64-c-p5:Timpani', 'drum,timpani,boom,low', max=1.6, fout=0.3)
+S('gong_4', 'drum', 'commons-gong55:Gong', 'gong,metal,ring', max=2.4, fout=0.5)
+S('gong_5', 'drum', 'commons-gong-or-bell-vibrant-short:Gong', 'gong,bell,metal,ring', max=2.2, fout=0.4)
+S('chicken_cluck_3', 'animal', 'commons-chicken-in-vezo:Chicken', 'chicken,cluck,comedy', max=1.2)
+S('chicken_cluck_4', 'animal', 'commons-chicken-in-antefasy:Chicken', 'chicken,cluck,comedy', max=1.5)
+S('goat_bleat_2', 'animal', 'commons-goat-in-antefasy:Goat', 'goat,bleat,comedy', max=1.7)
+S('sheep_baa_2', 'animal', 'commons-sheep-bleat:Sheep', 'sheep,baa,comedy', max=0.8)
+S('wolf_howl_2', 'animal', 'commons-wolf-howls:Wolf', 'wolf,howl', seg=0, thr=-30, max=2.4, fout=0.4)
+S('death_hurt_3', 'death', 'commons-male-pain-grunts:Male', 'hurt,pain,grunt,male', seg=1, thr=-30, max=0.9)
+S('death_hurt_4', 'death', 'commons-male-pain-grunts:Male', 'hurt,pain,grunt,male', seg=3, thr=-30, max=0.9)
+S('death_grunt_7', 'death', 'commons-male-grunts-jumps:Male', 'death,grunt,male,oof', seg=2, thr=-30, max=0.9)
+S('death_scream_4', 'death', 'commons-now-screaming:NOW', 'death,scream,comic', max=1.8, fout=0.3)
+S('death_oof_3', 'death', 'commons-grunt-of-pain:Grunt', 'death,oof,grunt,male', max=0.6)
+S('thunder_crack_4', 'magic', 'commons-nosferatu-thunderclap-richard-humphries:Nosferatu', 'thunder,lightning,zeus', max=2.6, fout=0.6, start_db=-26)
+S('thunder_rumble_1', 'magic', 'commons-thunder-and-rain-on-a-v:Thunder', 'thunder,rumble,rain', t0=3.0, read=8.0, max=2.6, fout=0.6, start_db=-26)
+S('explosion_rumble_6', 'destruction', 'commons-explosions-ls100152:Explosions', 'explosion,boom,heavy', max=2.4, fout=0.5)
+S('spear_stab_1', 'pierce', 'commons-stab-damage-gravity-sound:Stab', 'spear,stab,flesh', max=1.0)
+S('spear_stab_2', 'pierce', 'commons-stab-damage-monster-gravity-sound:Stab', 'spear,stab,flesh,monster', max=1.0)
+S('flesh_hit_heavy_4', 'impact', 'commons-hard-punch-flesh-gravity-sound:Punch', 'flesh,hit,heavy,punch', max=1.0)
+S('flesh_hit_heavy_5', 'impact', 'commons-hard-punch-gut-gravity-sound:Punch', 'flesh,hit,heavy,gut', max=1.0)
+S('flesh_hit_light_6', 'impact', 'commons-punch-flesh-damage-gravity-sound:Punch', 'flesh,hit,light,punch', max=0.9)
+S('blade_clash_7', 'blade', 'commons-sword-clash-gravity-sound:Sword Clash', 'metal,clash,parry,sword', max=1.2)
+S('blade_clash_8', 'blade', 'commons-sword-clash-3-gravity-sound:Sword Clash', 'metal,clash,parry,sword', max=1.2)
+S('sword_slash_5', 'blade', 'commons-sword-swipe-gravity-sound:Sword Swipe', 'sword,slash,swing,whoosh', max=0.6)
+S('sword_hit_6', 'blade', 'commons-sword-1-gravity-sound:Sword', 'sword,hit,slash', max=1.0)
+S('sword_hit_7', 'blade', 'commons-sword-6-gravity-sound:Sword', 'sword,hit,slash', max=1.0)
+S('creature_swipe_1', 'blade', 'commons-swipe-monster-gravity-sound:Swipe', 'claw,swipe,monster,whoosh', max=1.0)
+S('footstep_gravel_4', 'foley', 'commons-footstep-on-gravel-gravity-sound:Footstep', 'footstep,gravel', max=0.6)
+
+
+# ---------------------------------------------------------------- availability filter
+# Wikimedia Commons downloads are rate limited (HTTP 429 on upload.wikimedia.org); entries whose raw folder was not fetched are skipped,
+# so the build stays reproducible. Re-run `tools/fetch_commons.py @tools/commons_wanted.txt` later and rebuild to add them.
+import os as _os
+def _raw_ok(s):
+    o = s.get('opts', {})
+    dirs = [l[0].split(':')[0] for l in o['layers']] if 'layers' in o else ([] if s['src'].startswith('synth:') else [s['src'].split(':')[0]])
+    return all(_os.path.isdir(_os.path.join('/home/user/voxelwars/assets/raw', d)) for d in dirs)
+SPEC[:] = [s for s in SPEC if _raw_ok(s)]
+
+# ---------------------------------------------------------------- derived composites (no real recording available under an acceptable licence)
+S('crowd_ooh_1', 'crowd', '', 'crowd,ooh,gasp,aww,reaction', notes='derived composite (approximation): four pitch-shifted copies of a creature "ooh" voice over a soft crowd murmur bed',
+  layers=[(CRE1 + r':/ooh\.', 0.00, -2.0, dict(rate=0.66, lp=5000)), (CRE1 + r':/ooh\.', 0.035, -3.0, dict(rate=0.74, lp=5000)), (CRE1 + r':/ooh\.', 0.075, -3.0, dict(rate=0.82, lp=5000)), (CRE1 + r':/ooh\.', 0.12, -4.0, dict(rate=0.92, lp=5000)),
+          ('oga-free-crowd-cheering-sounds:07 - Soft cheering and chatter', 0.0, -9.0, dict(t0=3.0, dur=1.6, norm=False))], max=1.4, fout=0.35)
+S('crowd_gasp_1', 'crowd', '', 'crowd,gasp,inhale,reaction', notes='derived composite (approximation): five pitch-shifted creature breaths over a soft crowd murmur bed',
+  layers=[(CRE1 + r':/breath\.', 0.00, -2.0, dict(rate=0.8)), (CRE1 + r':/breath\.', 0.03, -3.0, dict(rate=0.9)), (CRE1 + r':/breath\.', 0.07, -3.0, dict(rate=1.0)), (CRE1 + r':/breath\.', 0.10, -4.0, dict(rate=1.1)), (CRE1 + r':/breath\.', 0.15, -5.0, dict(rate=1.2)),
+          ('oga-free-crowd-cheering-sounds:07 - Soft cheering and chatter', 0.0, -12.0, dict(t0=6.0, dur=1.4, norm=False))], max=1.2, fout=0.3)

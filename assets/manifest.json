@@ -1,11 +1,377 @@
 {
  "version": 1,
  "generated": "by tools/build_manifest.py",
+ "credits": "CREDITS.md",
  "format": {
-  "sfx": "mp3 mono",
-  "music": "mp3 stereo (joint)",
+  "sfx": "mp3 mono 44.1 kHz (64-80 kbps)",
+  "music": "mp3 stereo joint (80-112 kbps), loudness ~-16 LUFS",
   "vfx": "png rgba 256px"
  },
+ "categories": [
+  "blade",
+  "shield",
+  "pierce",
+  "bow",
+  "impact",
+  "death",
+  "voice",
+  "crowd",
+  "horn",
+  "drum",
+  "animal",
+  "siege",
+  "destruction",
+  "fire",
+  "magic",
+  "coin",
+  "foley",
+  "ui",
+  "jingle",
+  "ambience"
+ ],
+ "sfxByCategory": {
+  "blade": [
+   "sword_slash_1",
+   "sword_slash_2",
+   "sword_slash_3",
+   "sword_slash_4",
+   "axe_swing_1",
+   "sword_hit_1",
+   "sword_hit_2",
+   "sword_hit_3",
+   "sword_hit_4",
+   "blade_clash_1",
+   "blade_clash_2",
+   "blade_clash_3",
+   "blade_clash_4",
+   "blade_clash_5",
+   "blade_parry_1",
+   "blade_parry_2",
+   "sword_draw_1",
+   "sword_draw_2",
+   "sword_sheath_1",
+   "axe_chop_1",
+   "axe_chop_2",
+   "blade_swish_1",
+   "blade_swish_2",
+   "knife_slice_1"
+  ],
+  "shield": [
+   "shield_block_1",
+   "shield_block_2",
+   "shield_block_3",
+   "shield_block_4",
+   "shield_bash_1",
+   "shield_bash_2",
+   "wood_thud_1",
+   "wood_thud_2",
+   "wood_thud_3"
+  ],
+  "pierce": [
+   "spear_swing_1",
+   "spear_stab_3",
+   "javelin_throw_1",
+   "javelin_throw_2"
+  ],
+  "bow": [
+   "bow_shot_1",
+   "bow_shot_2",
+   "crossbow_shot_1",
+   "bow_draw_1",
+   "bow_nock_1",
+   "arrow_whoosh_1",
+   "arrow_whoosh_2",
+   "arrow_whoosh_3",
+   "arrow_hit_flesh_1",
+   "arrow_hit_flesh_2",
+   "arrow_hit_wood_1",
+   "arrow_hit_wood_2"
+  ],
+  "impact": [
+   "flesh_hit_light_1",
+   "flesh_hit_light_2",
+   "flesh_hit_light_3",
+   "flesh_hit_light_4",
+   "flesh_hit_heavy_1",
+   "flesh_hit_heavy_2",
+   "flesh_hit_heavy_3",
+   "mace_bonk_1",
+   "mace_bonk_2",
+   "club_bonk_1",
+   "club_bonk_2",
+   "helmet_ping_1",
+   "flesh_slap_1"
+  ],
+  "death": [
+   "death_grunt_1",
+   "death_grunt_2",
+   "death_grunt_3",
+   "death_grunt_4",
+   "death_grunt_5",
+   "death_oof_1",
+   "death_oof_2",
+   "death_scream_1",
+   "death_scream_2",
+   "death_dying_1",
+   "death_dying_2",
+   "death_hurt_1",
+   "death_comic_1",
+   "death_comic_2",
+   "death_comic_3"
+  ],
+  "voice": [
+   "battle_cry_1",
+   "battle_cry_2",
+   "battle_cry_3",
+   "battle_cry_4",
+   "battle_cry_5",
+   "war_cry_1",
+   "war_cry_2",
+   "orc_roar_2",
+   "grunt_effort_1",
+   "grunt_effort_2",
+   "announcer_fight",
+   "announcer_ready",
+   "announcer_winner",
+   "announcer_game_over",
+   "announcer_final_round"
+  ],
+  "crowd": [
+   "crowd_cheer_1",
+   "crowd_cheer_2",
+   "crowd_cheer_3",
+   "crowd_roar_1",
+   "crowd_roar_2",
+   "crowd_chant_1",
+   "applause_1",
+   "crowd_ooh_1",
+   "crowd_gasp_1"
+  ],
+  "horn": [
+   "war_horn_1",
+   "war_horn_2",
+   "war_horn_3"
+  ],
+  "drum": [
+   "drum_boom_1",
+   "drum_boom_2",
+   "drum_boom_3",
+   "drum_boom_4",
+   "drum_boom_5",
+   "drum_boom_6",
+   "gong_1",
+   "gong_2",
+   "gong_3",
+   "drum_roll_1"
+  ],
+  "animal": [
+   "horse_neigh_1",
+   "horse_gallop_1",
+   "hoof_step_1",
+   "hoof_step_2",
+   "elephant_trumpet_1",
+   "chicken_cluck_1",
+   "chicken_cluck_2",
+   "goat_bleat_1",
+   "camel_groan_1",
+   "donkey_bray_1",
+   "sheep_baa_1",
+   "dog_bark_1",
+   "dog_bark_2",
+   "wolf_howl_1",
+   "lion_roar_1",
+   "monster_roar_1",
+   "monster_roar_2",
+   "monster_roar_4",
+   "bear_roar_1",
+   "snake_hiss_1",
+   "minotaur_grunt_1",
+   "horse_neigh_2",
+   "horse_neigh_3"
+  ],
+  "siege": [
+   "catapult_creak_1",
+   "catapult_creak_2",
+   "catapult_launch_1",
+   "catapult_launch_2",
+   "ballista_twang_1",
+   "boulder_whoosh_1",
+   "boulder_impact_1",
+   "boulder_impact_2",
+   "boulder_impact_3",
+   "boulder_impact_4"
+  ],
+  "destruction": [
+   "explosion_rumble_1",
+   "explosion_rumble_2",
+   "explosion_rumble_4",
+   "explosion_rumble_5",
+   "rock_crumble_1",
+   "rock_crumble_2",
+   "rock_crumble_3",
+   "rock_fall_1",
+   "wood_crack_1",
+   "wood_crack_2",
+   "wood_crack_3",
+   "wood_splinter_1",
+   "wall_collapse_1",
+   "debris_big_1",
+   "voxel_break_1",
+   "voxel_break_2",
+   "voxel_break_3",
+   "rock_crumble_4"
+  ],
+  "fire": [
+   "fire_whoosh_1",
+   "fire_whoosh_2",
+   "fire_ignite_1",
+   "torch_crackle_1",
+   "fire_burst_1",
+   "fire_impact_1"
+  ],
+  "magic": [
+   "heal_chime_1",
+   "heal_chime_2",
+   "buff_powerup_1",
+   "buff_powerup_2",
+   "buff_powerup_3",
+   "curse_dark_1",
+   "curse_dark_2",
+   "magic_cast_1",
+   "thunder_crack_1",
+   "thunder_crack_2",
+   "lightning_zap_1"
+  ],
+  "coin": [
+   "coin_pickup_1",
+   "coin_pickup_2",
+   "coin_clink_1",
+   "coin_clink_2",
+   "coin_sack_1",
+   "bell_ding_1",
+   "bell_heavy_1"
+  ],
+  "foley": [
+   "footstep_dirt_1",
+   "footstep_dirt_2",
+   "footstep_gravel_1",
+   "footstep_gravel_2",
+   "footstep_grass_1",
+   "footstep_grass_2",
+   "footstep_grass_3",
+   "armor_rustle_1",
+   "armor_rustle_2",
+   "cloth_flap_1",
+   "cloth_flap_2",
+   "whoosh_camera_1",
+   "pop_place_1",
+   "pop_place_2",
+   "confetti_pop_1",
+   "splat_1"
+  ],
+  "ui": [
+   "ui_hover_1",
+   "ui_hover_2",
+   "ui_click_1",
+   "ui_click_2",
+   "ui_confirm_1",
+   "ui_confirm_2",
+   "ui_back_1",
+   "ui_back_2",
+   "ui_error_1",
+   "ui_error_2",
+   "ui_toggle_on",
+   "ui_slider_tick",
+   "ui_select_1",
+   "ui_panel_open",
+   "ui_panel_close",
+   "ui_drop_1",
+   "ui_achievement_1",
+   "ui_achievement_2",
+   "ui_achievement_3",
+   "countdown_beep",
+   "countdown_go",
+   "countdown_voice_3",
+   "countdown_voice_2",
+   "countdown_voice_1",
+   "countdown_voice_go"
+  ],
+  "jingle": [
+   "jingle_victory_1",
+   "jingle_victory_2",
+   "jingle_victory_3",
+   "jingle_victory_4",
+   "jingle_fanfare_1",
+   "jingle_battle_start_1",
+   "jingle_battle_start_2",
+   "jingle_defeat_1",
+   "jingle_defeat_2",
+   "jingle_achievement_1"
+  ],
+  "ambience": [
+   "ambience_wind_loop",
+   "ambience_crowd_loop",
+   "ambience_fire_loop"
+  ]
+ },
+ "musicByMood": {
+  "menu": [
+   "menu_heroic_age"
+  ],
+  "battle_low": [
+   "battle_low_grim_league"
+  ],
+  "battle_mid": [
+   "battle_mid_epic_boss"
+  ],
+  "battle_high": [
+   "battle_high_clenched_teeth"
+  ],
+  "victory": [
+   "victory_dark_star"
+  ],
+  "defeat": [
+   "defeat_gladiators_lament"
+  ],
+  "editor": [
+   "editor_desert_city"
+  ],
+  "comedy": [
+   "comedy_bumbly_march"
+  ]
+ },
+ "coreSfx": [
+  "sword_hit_1",
+  "sword_hit_2",
+  "blade_clash_1",
+  "shield_block_1",
+  "bow_shot_1",
+  "arrow_hit_flesh_1",
+  "arrow_hit_wood_1",
+  "flesh_hit_light_1",
+  "flesh_hit_light_2",
+  "flesh_hit_heavy_1",
+  "flesh_hit_heavy_2",
+  "death_grunt_1",
+  "death_grunt_2",
+  "death_grunt_3",
+  "crowd_cheer_1",
+  "war_horn_1",
+  "drum_boom_1",
+  "chicken_cluck_1",
+  "goat_bleat_1",
+  "catapult_launch_1",
+  "boulder_impact_1",
+  "ui_hover_1",
+  "ui_click_1",
+  "ui_confirm_1",
+  "ui_back_1",
+  "jingle_victory_1",
+  "jingle_defeat_1"
+ ],
+ "coreMusic": [
+  "battle_mid_epic_boss"
+ ],
  "sfx": [
   {
    "id": "sword_slash_1",
@@ -690,14 +1056,14 @@
     "throw",
     "whoosh"
    ],
-   "duration": 1.33,
+   "duration": 0.84,
    "author": "qubodup",
    "title": "Swish - bamboo stick weapon swhoshes",
    "source": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-31.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "javelin_throw_2",
@@ -709,7 +1075,7 @@
     "throw",
     "whoosh"
    ],
-   "duration": 1.18,
+   "duration": 1.1,
    "author": "qubodup",
    "title": "Swish - bamboo stick weapon swhoshes",
    "source": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
@@ -729,7 +1095,7 @@
     "shoot",
     "twang"
    ],
-   "duration": 0.94,
+   "duration": 0.63,
    "author": "Ben Jaszczak & Brian Nelson",
    "title": "Medieval sound effects - Weapon Textures",
    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
@@ -750,7 +1116,7 @@
     "shoot",
     "twang"
    ],
-   "duration": 0.94,
+   "duration": 0.34,
    "author": "Ben Jaszczak & Brian Nelson",
    "title": "Medieval sound effects - Weapon Textures",
    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
@@ -770,7 +1136,7 @@
     "shoot",
     "twang"
    ],
-   "duration": 0.94,
+   "duration": 0.63,
    "author": "Ben Jaszczak & Brian Nelson",
    "title": "Medieval sound effects - Weapon Textures",
    "source": "https://opengameart.org/content/medieval-sound-effects-weapon-textures",
@@ -1284,14 +1650,14 @@
     "grunt",
     "male"
    ],
-   "duration": 0.52,
+   "duration": 0.55,
    "author": "mieki256",
    "title": "Male dead voice",
    "source": "https://opengameart.org/content/male-dead-voice",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_24.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_06.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "death_grunt_5",
@@ -1303,14 +1669,14 @@
     "grunt",
     "male"
    ],
-   "duration": 0.89,
+   "duration": 0.52,
    "author": "mieki256",
    "title": "Male dead voice",
    "source": "https://opengameart.org/content/male-dead-voice",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_33.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_09.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "death_oof_1",
@@ -2611,14 +2977,14 @@
     "launch",
     "thwump"
    ],
-   "duration": 1.57,
+   "duration": 0.78,
    "author": "Kenney (kenney.nl) + qubodup",
-   "title": "Kenney Impact Sounds + Swish - bamboo stick weapon swhoshes + Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/impact-sounds ; https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes ; https://kenney.nl/assets/rpg-audio",
+   "title": "Kenney Impact Sounds + Swish - bamboo stick weapon swhoshes",
+   "source": "https://kenney.nl/assets/impact-sounds ; https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "composite: wood thwump + swing whoosh + creak; source file: kenney-impact-sounds/files/Audio/impactWood_heavy_001.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-28.flac + kenney-rpg-audio/files/Audio/creak1.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3",
+   "notes": "composite: low wood thwump + short flight whoosh; source file: kenney-impact-sounds/files/Audio/impactWood_heavy_001.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-33.flac + kenney-impact-sounds/files/Audio/impactWood_medium_002.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3",
    "core": true
   },
   {
@@ -2631,14 +2997,14 @@
     "launch",
     "thwump"
    ],
-   "duration": 1.44,
+   "duration": 0.94,
    "author": "Kenney (kenney.nl) + qubodup",
-   "title": "Kenney Impact Sounds + Swish - bamboo stick weapon swhoshes + Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/impact-sounds ; https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes ; https://kenney.nl/assets/rpg-audio",
+   "title": "Kenney Impact Sounds + Swish - bamboo stick weapon swhoshes",
+   "source": "https://kenney.nl/assets/impact-sounds ; https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "composite: heavy thud + slow whoosh; source file: kenney-impact-sounds/files/Audio/impactWood_heavy_003.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-31.flac + kenney-rpg-audio/files/Audio/creak3.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "composite: heavy thud + slower whoosh; source file: kenney-impact-sounds/files/Audio/impactWood_heavy_003.ogg + oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-38.flac + kenney-impact-sounds/files/Audio/impactPlate_heavy_002.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "ballista_twang_1",
@@ -2669,14 +3035,14 @@
     "whoosh",
     "flyby"
    ],
-   "duration": 1.44,
+   "duration": 1.33,
    "author": "qubodup",
    "title": "Swish - bamboo stick weapon swhoshes",
    "source": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-32.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-41.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "boulder_impact_1",
@@ -4648,6 +5014,47 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Rocks - Free Sounds/Gregor Quendel - Designed Rocks - Elements 09.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "crowd_ooh_1",
+   "file": "crowd_ooh_1.mp3",
+   "path": "audio/sfx/crowd_ooh_1.mp3",
+   "category": "crowd",
+   "tags": [
+    "crowd",
+    "ooh",
+    "gasp",
+    "aww",
+    "reaction"
+   ],
+   "duration": 1.44,
+   "author": "rubberduck + Gregor Quendel",
+   "title": "80 CC0 creature SFX + Free Crowd Cheering Sounds",
+   "source": "https://opengameart.org/content/80-cc0-creature-sfx ; https://opengameart.org/content/free-crowd-cheering-sounds",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "derived composite (approximation): four pitch-shifted copies of a creature \"ooh\" voice over a soft crowd murmur bed; source file: oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/ooh.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "crowd_gasp_1",
+   "file": "crowd_gasp_1.mp3",
+   "path": "audio/sfx/crowd_gasp_1.mp3",
+   "category": "crowd",
+   "tags": [
+    "crowd",
+    "gasp",
+    "inhale",
+    "reaction"
+   ],
+   "duration": 1.23,
+   "author": "rubberduck + Gregor Quendel",
+   "title": "80 CC0 creature SFX + Free Crowd Cheering Sounds",
+   "source": "https://opengameart.org/content/80-cc0-creature-sfx ; https://opengameart.org/content/free-crowd-cheering-sounds",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "derived composite (approximation): five pitch-shifted creature breaths over a soft crowd murmur bed; source file: oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/breath.ogg + oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 07 - Soft cheering and chatter.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   }
  ],
  "music": [
@@ -4677,7 +5084,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-heroic-age/Heroic Age.mp3; leading silence trimmed 0.94s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -38.56, zero-crossing ratio 0.72, seam jump 0.01, beat fraction 0.381); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-heroic-age/Heroic Age.mp3; leading silence trimmed 0.94s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -38.56, zero-crossing ratio 0.72, seam jump 0.01, beat fraction 0.381); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "battle_low_grim_league",
@@ -4705,7 +5113,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-grim-league/Grim League.mp3; leading silence trimmed 0.02s; all-percussion ensemble; cut to 25 bars (78.95 s) at the original tempo and faded; loop seam metrics (end-vs-start RMS dB 1.71, zero-crossing ratio 0.33, seam jump 0.43, beat fraction 0.003); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-grim-league/Grim League.mp3; leading silence trimmed 0.02s; all-percussion ensemble; cut to 25 bars (78.95 s) at the original tempo and faded; loop seam metrics (end-vs-start RMS dB 1.71, zero-crossing ratio 0.33, seam jump 0.43, beat fraction 0.003); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "battle_mid_epic_boss",
@@ -4728,7 +5137,7 @@
    "integratedLoudness": -16.38,
    "truePeak": -6.84,
    "kbps": 80,
-   "author": "SubspaceAudio",
+   "author": "Juhani Junkala (SubspaceAudio)",
    "title": "Boss Battle Music",
    "source": "https://opengameart.org/content/boss-battle-music",
    "license": "CC0 1.0",
@@ -4764,7 +5173,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-clenched-teeth/Clenched Teeth.mp3; leading silence trimmed 1.13s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -9.4, zero-crossing ratio 0.62, seam jump 1.17, beat fraction 0.485); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-clenched-teeth/Clenched Teeth.mp3; leading silence trimmed 1.13s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -9.4, zero-crossing ratio 0.62, seam jump 1.17, beat fraction 0.485); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "victory_dark_star",
@@ -4792,7 +5202,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-dark-star/Dark Star.mp3; leading silence trimmed 0.73s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -6.6, zero-crossing ratio 0.06, seam jump 0.76, beat fraction 0.382); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-dark-star/Dark Star.mp3; leading silence trimmed 0.73s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -6.6, zero-crossing ratio 0.06, seam jump 0.76, beat fraction 0.382); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "defeat_gladiators_lament",
@@ -4820,7 +5231,8 @@
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-gladiators-lament-epic-tragic-music/files/gladiator_lament/gladiator_lament.mp3; leading silence trimmed 0.63s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB 9.53, zero-crossing ratio 1.26, seam jump 0.37, beat fraction 0.415); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: oga-gladiators-lament-epic-tragic-music/files/gladiator_lament/gladiator_lament.mp3; leading silence trimmed 0.63s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB 9.53, zero-crossing ratio 1.26, seam jump 0.37, beat fraction 0.415); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "editor_desert_city",
@@ -4849,7 +5261,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-desert-city/Desert City.mp3; leading silence trimmed 0.02s; composer describes it as easy to loop; end is a decay so treat as cross-fade loop; loop seam metrics (end-vs-start RMS dB -10.15, zero-crossing ratio 0.71, seam jump 0.0, beat fraction 0.011); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-desert-city/Desert City.mp3; leading silence trimmed 0.02s; composer describes it as easy to loop; end is a decay so treat as cross-fade loop; loop seam metrics (end-vs-start RMS dB -10.15, zero-crossing ratio 0.71, seam jump 0.0, beat fraction 0.011); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   },
   {
    "id": "comedy_bumbly_march",
@@ -4877,7 +5290,8 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-bumbly-march/Bumbly March.mp3; leading silence trimmed 0.06s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -29.7, zero-crossing ratio 0.86, seam jump 0.03, beat fraction 0.38); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-bumbly-march/Bumbly March.mp3; leading silence trimmed 0.06s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -29.7, zero-crossing ratio 0.86, seam jump 0.03, beat fraction 0.38); not seamless -> cross-fade 2-3 s when looping",
+   "crossfadeSeconds": 2.5
   }
  ],
  "vfx": [

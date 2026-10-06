@@ -11,8 +11,8 @@ export const SIZES = { small: 128, medium: 192, large: 256 };
 
 /** Terrain materials. top = [3 colour variants], strata = [subsurface colour, deep colour]. */
 export const MATERIALS = [
-  { id: 0, key: 'grass', name: 'Grass', top: [0x6fae3f, 0x66a53a, 0x78b94a], strata: [0x8a5a34, 0x6e6a66], speed: 1.0, foot: 'grass', flammable: true },
-  { id: 1, key: 'dirt', name: 'Dirt', top: [0x9a6b3f, 0x8f633a, 0xa5744a], strata: [0x7c5430, 0x6e6a66], speed: 1.0, foot: 'dirt', flammable: false },
+  { id: 0, key: 'grass', name: 'Grass', top: [0x739a47, 0x6a9141, 0x7ea64f], strata: [0x7d5a38, 0x6e6a66], speed: 1.0, foot: 'grass', flammable: true },
+  { id: 1, key: 'dirt', name: 'Dirt', top: [0x9b7448, 0x916b42, 0xa67f52], strata: [0x7c5430, 0x6e6a66], speed: 1.0, foot: 'dirt', flammable: false },
   { id: 2, key: 'sand', name: 'Sand', top: [0xe3c887, 0xdcc07e, 0xeacf92], strata: [0xd1b06a, 0xb89a62], speed: 0.88, foot: 'sand', flammable: false },
   { id: 3, key: 'stone', name: 'Stone', top: [0x8d8d92, 0x84848a, 0x97979c], strata: [0x77777c, 0x66666b], speed: 1.0, foot: 'stone', flammable: false },
   { id: 4, key: 'snow', name: 'Snow', top: [0xf2f6fb, 0xe6edf6, 0xfafcff], strata: [0xdfe8f2, 0x9aa3ad], speed: 0.82, foot: 'snow', flammable: false },

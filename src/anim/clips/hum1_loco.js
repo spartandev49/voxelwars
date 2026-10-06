@@ -34,18 +34,14 @@ define('idle_combat', {
   },
 });
 
-// ---- walk / run (IK gaits) -----------------------------------------------------------------------------------------------
-const WALK = { D: 0.8, speed: 2.6, duty: 0.62, h0: 9.25, bob: 0.5, lift: 2.4, lean: 0.05, armSwing: 0.55, armBend: 0.3, armPhase: 0, twist: 0.09, twistPhase: PI, sway: 0.55, swayPhase: 0, rollAmt: 0.025, bodyRoll: 0.03, armOut: 0.1, headStab: 0.9, bodyRx: 0.02 };
-define('walk', {
-  rig: 'hum1', dur: WALK.D, loop: true, speedRef: WALK.speed, meta: { cls: 'move' },
-  build(c, t, u) { bipedFrame(c, u, WALK); },
-});
-const RUN = { D: 0.56, speed: 4.6, duty: 0.36, flight: true, h0: 8.7, bob: 1.1, lift: 5.2, lean: 0.2, armSwing: 1.0, armBend: 1.3, armBendSwing: 0.2, armPhase: 0, twist: 0.2, twistPhase: PI, sway: 0.4, swayPhase: 0, rollAmt: 0.02, bodyRoll: 0.04, armOut: 0.15, headStab: 0.9, bodyRx: 0.08 };
-define('run', {
-  rig: 'hum1', dur: RUN.D, loop: true, speedRef: RUN.speed, meta: { cls: 'move' },
-  build(c, t, u) { bipedFrame(c, u, RUN); },
-});
-const ROUT = { D: 0.5, speed: 5.0, duty: 0.34, flight: true, h0: 8.6, bob: 1.2, lift: 5.6, lean: 0.1, armSwing: 0.5, armBend: 0.5, armPhase: 0, twist: 0.28, twistPhase: PI, sway: 0.5, swayPhase: 0, rollAmt: 0.03, bodyRoll: 0.06, armOut: 0.5, headStab: 0.3, armRx: 0.0 };
+// ---- walk / jog / run (IK gaits, driven by distance travelled: feet never slide) -----------------------------------------------
+const WALK = { D: 0.8, speed: 2.4, duty: 0.62, h0: 9.25, bob: 0.5, lift: 1.2, lean: 0.05, armSwing: 0.55, armBend: 0.3, armPhase: 0, twist: 0.09, twistPhase: PI, sway: 0.55, swayPhase: 0, rollAmt: 0.025, bodyRoll: 0.03, armOut: 0.1, headStab: 0.9, bodyRx: 0.02 };
+define('walk', { rig: 'hum1', dur: WALK.D, loop: true, speedRef: WALK.speed, meta: { cls: 'move' }, build(c, t, u) { bipedFrame(c, u, WALK); } });
+const JOG = { D: 0.68, speed: 3.8, duty: 0.5, flight: false, h0: 9.0, bob: 0.7, lift: 2.2, lean: 0.12, armSwing: 0.8, armBend: 0.9, armBendSwing: 0.1, armPhase: 0, twist: 0.15, twistPhase: PI, sway: 0.45, swayPhase: 0, rollAmt: 0.02, bodyRoll: 0.035, armOut: 0.12, headStab: 0.9, bodyRx: 0.05 };
+define('jog', { rig: 'hum1', dur: JOG.D, loop: true, speedRef: JOG.speed, meta: { cls: 'move' }, build(c, t, u) { bipedFrame(c, u, JOG); } });
+const RUN = { D: 0.64, speed: 5.6, duty: 0.35, flight: true, h0: 8.7, bob: 1.1, lift: 3.2, lean: 0.2, armSwing: 1.0, armBend: 1.3, armBendSwing: 0.2, armPhase: 0, twist: 0.2, twistPhase: PI, sway: 0.4, swayPhase: 0, rollAmt: 0.02, bodyRoll: 0.04, armOut: 0.15, headStab: 0.9, bodyRx: 0.08 };
+define('run', { rig: 'hum1', dur: RUN.D, loop: true, speedRef: RUN.speed, meta: { cls: 'move' }, build(c, t, u) { bipedFrame(c, u, RUN); } });
+const ROUT = { D: 0.5, speed: 5.0, duty: 0.34, flight: true, h0: 8.6, bob: 1.2, lift: 3.4, lean: 0.1, armSwing: 0.5, armBend: 0.5, armPhase: 0, twist: 0.28, twistPhase: PI, sway: 0.5, swayPhase: 0, rollAmt: 0.03, bodyRoll: 0.06, armOut: 0.5, headStab: 0.3, armRx: 0.0 };
 define('rout', {
   rig: 'hum1', dur: ROUT.D, loop: true, speedRef: ROUT.speed, meta: { cls: 'move' },
   build(c, t, u) {

@@ -3,3 +3,5 @@
 assets/raw/
 node_modules/
 assets/masters/
+tools/pylib/
+__pycache__/

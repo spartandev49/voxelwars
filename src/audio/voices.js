@@ -26,30 +26,31 @@ export class VoiceManager {
     }
     return w;
   }
-  _evict(h) {
+  _evict(h, t) {
     const i = this.v.indexOf(h); if (i >= 0) { this.v[i] = this.v[this.v.length - 1]; this.v.pop(); }
-    this.steals++;
-    if (this.onSteal) this.onSteal(h);
+    this.steals++; h.stolenAt = t;
+    if (this.onSteal) this.onSteal(h, t);
   }
   /**
    * Try to start a voice. Returns the voice handle {id,fam,prio,start,end,node} or null (reason in this.lastDrop).
    * Rules: cooldown (per family), family max (steal the family's weakest if the new voice outranks it), global budget
-   * (steal the globally weakest if the new voice outranks it).
+   * (steal the globally weakest if the new voice outranks it). `t` is the time of the request (pruning, cooldown); `start` is when
+   * the sound actually begins (>= t for delayed layers): a delayed voice holds its slot from the request time, which is conservative.
    */
-  acquire(fam, prio, t, end, cooldown = 0, maxFam = 99) {
+  acquire(fam, prio, t, end, cooldown = 0, maxFam = 99, start = t) {
     this.prune(t);
     if (cooldown > 0 && t - this.lastStart(fam) < cooldown) { this.drops.cooldown++; this.lastDrop = 'cooldown'; return null; }
     if (maxFam < 99 && this.famActive(fam) >= maxFam) {
       const w = this._weakest((c) => c.fam === fam);
-      if (w && prio > w.prio) this._evict(w); else { this.drops.family++; this.lastDrop = 'family'; return null; }
+      if (w && prio > w.prio) this._evict(w, t); else { this.drops.family++; this.lastDrop = 'family'; return null; }
     }
     if (this.v.length >= this.budget) {
       const w = this._weakest(null);
-      if (w && prio > w.prio) this._evict(w); else { this.drops.budget++; this.lastDrop = 'budget'; return null; }
+      if (w && prio > w.prio) this._evict(w, t); else { this.drops.budget++; this.lastDrop = 'budget'; return null; }
     }
-    const h = { id: this.nextId++, fam, prio, start: t, end, node: null };
+    const h = { id: this.nextId++, fam, prio, start, end, node: null };
     this.v.push(h); this.famLast.set(fam, t); this.started++;
-    if (this.v.length > this.peak) this.peak = this.v.length;
+    if (this.v.length + this.reserved > this.peak) this.peak = this.v.length + this.reserved;
     return h;
   }
   totalDrops() { return this.drops.cooldown + this.drops.family + this.drops.budget; }

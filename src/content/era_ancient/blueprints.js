@@ -374,16 +374,18 @@ export function compileSoldier(bpIn, opts = {}) {
     model.addPart(id, g, { parent: d.parent && has[d.parent] ? d.parent : null, origin: d.origin, pivot: d.pivot, rest: id === 'weapon' ? restW : (id === 'offhand' ? ((PART_REGISTRY.offs[b.offId].meta.rest) || [0, 0, 0]) : [0, 0, 0]), shadow: id !== 'cape2' && id !== 'back' ? true : true });
     has[id] = true;
   }
-  // keep the weapon above the floor at rest: tilt it toward horizontal until its lowest corner clears y = 0
-  if (has.weapon) {
-    const wp = model.byId.weapon;
+  // keep the weapon (and a rotated off-hand item) above the floor at rest: tilt toward horizontal until the lowest corner clears y = 0
+  const fitAboveGround = (pid, rest) => {
+    const p = model.byId[pid];
     for (let i = 0; i < 40; i++) {
-      const bb = restBounds(model, (pid) => pid === 'weapon');
+      const bb = restBounds(model, (q) => q === pid);
       if (bb.min[1] >= -1e-6) break;
-      restW[0] += restW[0] > Math.PI / 2 ? -0.05 : 0.05;
-      wp.rest = restW.slice();
+      rest[0] += rest[0] > Math.PI / 2 ? -0.05 : 0.05;
+      p.rest = rest.slice();
     }
-  }
+  };
+  if (has.weapon) fitAboveGround('weapon', restW);
+  if (has.offhand && model.byId.offhand.rest[0]) fitAboveGround('offhand', model.byId.offhand.rest.slice());
   // attach points (voxel coordinates inside the named part grid)
   const hb = grids.head.bounds(), cb = has.crest ? grids.crest.bounds() : null;
   if (has.weapon) { model.addAttach('grip_main', 'weapon', [4, 10, 4]); model.addAttach('muzzle', 'weapon', [4, 10 + weapon.len, 4]); }

@@ -19,7 +19,7 @@ export function lathe(g, rows, o = {}) {
   return g;
 }
 const mcol = (ctx, y, y1 = 7, bias = 0) => metalAt(ctx, 0.18 + 0.72 * Math.min(1, y / y1) + bias);
-const bowlColor = (ctx) => (x, y, z, ax, az) => metalAt(ctx, 0.2 + 0.1 * y * 0.7 + (x > 4.5 ? 0.04 : 0) + ((ax > 0.85 || az > 0.85) ? -0.05 : 0.02) + (y >= 6 ? 0.12 : 0));
+const bowlColor = (ctx) => (x, y, z, ax, az) => metalAt(ctx, 0.2 + 0.1 * y * 0.7 + (x > 4.5 ? 0.04 : 0) + ((ax > 0.85 || az > 0.85) ? -0.05 : 0.02) + (y >= 6 ? 0.05 : 0));
 const fur = (base, s) => (x, y, z) => V(shade(base, 0.82 + 0.34 * hash3(x, y, z, s)));
 const HAIR_ALL = { hair: 'all' };
 const SILLY = UNLOCKS.silly_helms;
@@ -143,7 +143,7 @@ H.chalcidian = {
   },
 };
 
-function galea(name, flaps, tall) {
+function galea(name, flaps, tall, crestKind) {
   return {
     name, meta: { hair: 'none' },
     build(ctx) {
@@ -159,11 +159,13 @@ function galea(name, flaps, tall) {
       B(hs, 2, 6, 4, 7, 6, 5, mcol(ctx, 7, 7, 0.18));                              // cross brace
       Bs(hs, 1, 4, 2, 1, 4, 7, V(ctx.m[0]));                                       // rim shadow line
       if (tall) { B(hs, 4, 8, 2, 5, 8, 7, mcol(ctx, 7, 7, 0.2)); }
+      if (crestKind) horsehair(hs, ctx, crestKind, 11);
       return { head, crest };
     },
   };
 }
 H.galea = galea('Galea (Imperial Gallic)', true, false);
+H.galea_crest = galea('Galea with crest', true, false, 'long');
 H.galea_light = galea('Galea, light (no cheek flaps)', false, false);
 
 H.montefortino = {
@@ -231,9 +233,9 @@ H.pschent = {
     cutFaceCube(hs);
     X(hs, 2, 4, 8, 7, 4, 8);
     B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? V(ctx.m[2]) : 0));
-    B(hs, 3, 8, 1, 6, 11, 2, red);                                                  // tall back plate of the red crown
-    lathe(hs, [null, null, null, null, null, null, null, null, [2.2, 2.2], [2.1, 2.1], [2.1, 2.1], [2.1, 2.1], [1.9, 1.9], [1.1, 1.1]], { color: white, n: 2.4, cz: 4.0 });
-    B(hs, 4, 8, 7, 5, 9, 8, red); B(hs, 4, 10, 8, 5, 10, 8, red);                  // the curled wire
+    B(hs, 3, 8, 1, 6, 12, 2, red);                                                  // tall back plate of the red crown
+    lathe(hs, [null, null, null, null, null, null, null, null, [2.3, 2.7], [2.2, 2.7], [2.2, 2.6], [2.2, 2.4], [1.9, 2.1], [1.3, 1.5]], { color: white, n: 2.4 });
+    B(hs, 4, 8, 8, 5, 10, 8, red); B(hs, 4, 11, 8, 5, 11, 9, red);                  // curled wire at the front
     B(hs, 4, 5, 8, 5, 6, 9, V(ctx.m[3]));                                           // uraeus
     return { head, crest };
   },
@@ -294,14 +296,13 @@ H.gallic_winged = {
     X(hs, 2, 0, 8, 7, 4, 8);
     B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? V(ctx.m[1]) : 0));
     B(hs, 4, 1, 8, 5, 4, 8, mcol(ctx, 5, 7, 0.1));
-    // big white feathered wings out of the sides, tips swept up
-    const wing = (x, y, z) => V(shade(0xf4f1e6, 0.88 + 0.14 * hash3(x, y, z, 6) - (y > 10 ? 0.06 : 0)));
-    const sets = [[0, 5, 9], [0, 6, 10], [1, 8, 11], [0, 7, 11], [2, 9, 12]];
-    const cols = [[0, 5, 8], [0, 7, 10], [1, 8, 12]];
-    for (const [x, y0, y1] of cols) Bs(hs, x, y0, 4, x, y1, 5, (xx, yy, zz) => wing(xx, yy, zz));
-    Bs(hs, 1, 9, 4, 1, 11, 5, (xx, yy, zz) => wing(xx, yy, zz));
-    Bs(hs, 2, 11, 4, 2, 12, 5, wing);
-    Bs(hs, 0, 9, 4, 0, 9, 5, wing);
+    // big feathered wings out of the sides, swept up and out
+    const wing = (x, y, z) => V(shade(0xf4f1e6, 0.86 + 0.14 * hash3(x, y, z, 6) - (y > 11 ? 0.05 : 0)));
+    const cols = [[0, 5, 9], [0, 7, 11], [1, 8, 13]];
+    for (const [x, y0, y1] of cols) Bs(hs, x, y0, 3, x, y1, 6, wing);
+    Bs(hs, 0, 9, 3, 0, 10, 6, (x, y, z) => V(shade(0xd8d4c4, 0.9 + 0.1 * hash3(x, y, z, 7))));
+    Bs(hs, 1, 12, 3, 1, 13, 5, wing);
+    Bs(hs, 2, 13, 4, 2, 13, 5, wing);
     return { head, crest };
   },
 };
@@ -317,18 +318,14 @@ function horned(name, hh, spread) {
       Bs(hs, 1, 0, 8, 2, 4, 8, mcol(ctx, 3, 7, 0.0));
       B(hs, 4, 1, 8, 5, 5, 8, mcol(ctx, 5, 7, 0.1));                              // nasal bar
       B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? V(ctx.m[0]) : 0));
-      // horns: out, then up, tips curling in
-      const bone = (y, y1) => V(mixRGB(0xe8dcc0, 0xb8a888, Math.min(1, (y - 5) / (y1 - 5 + 1))));
-      const y1 = 5 + hh;
-      for (let s = 0; s < 2; s++) {
-        const dx = s ? 1 : -1, x0 = s ? 8 : 1, ex = s ? 9 : 0;
-        P(hs, x0, 5, 4, bone(5, y1)); P(hs, x0, 5, 5, bone(5, y1));
-        for (let y = 5; y <= y1; y++) {
-          const t = (y - 5) / hh, x = y <= 6 ? ex : (spread && y > y1 - 2 ? ex - dx : ex);
-          P(hs, x, y, 4, bone(y, y1)); if (t < 0.7) P(hs, x, y, 5, bone(y, y1));
-        }
-        P(hs, ex - dx, y1, 4, bone(y1, y1)); if (hh > 5) P(hs, ex - dx, y1 + 1, 4, bone(y1, y1));
-      }
+      // horns: chunky 2x2 shafts that sprout sideways at brow height, rise, and curl inward at the tips
+      const y1 = 4 + hh;
+      const bone = (y) => V(mixRGB(0xefe4c6, 0xa89870, Math.min(1, (y - 4) / (hh + 1))));
+      Bs(hs, 0, 4, 3, 0, 5, 6, bone(4)); Bs(hs, 1, 4, 4, 1, 5, 5, bone(4));
+      for (let y = 6; y <= y1 - 2; y++) Bs(hs, 0, y, 4, 1, y, 5, bone(y));
+      Bs(hs, 1, y1 - 1, 4, 2, y1 - 1, 5, bone(y1 - 1));
+      Bs(hs, 2, Math.min(13, y1), 4, 2, Math.min(13, y1), 4, bone(y1));
+      if (spread) Bs(hs, 3, Math.min(13, y1), 4, 3, Math.min(13, y1), 4, bone(y1));
       return { head, crest };
     },
   };
@@ -346,19 +343,21 @@ H.wolf_hood = {
     cutFaceCube(hs);
     X(hs, 2, 0, 8, 7, 3, 8);
     // snout over the brow, black nose, fangs
-    B(hs, 3, 4, 8, 6, 5, 8, pelt); B(hs, 4, 4, 9, 5, 5, 9, V(0x8a847a)); P(hs, 4, 5, 10, V(0x15151a)); P(hs, 5, 5, 10, V(0x15151a));
+    B(hs, 3, 4, 8, 6, 5, 8, pelt); B(hs, 4, 4, 9, 5, 4, 9, V(0x8a847a)); P(hs, 4, 5, 9, V(0x15151a)); P(hs, 5, 5, 9, V(0x15151a));
     Ps(hs, 3, 3, 9, V(0xf4f0e0)); Ps(hs, 2, 4, 8, pelt);
     // ears
     Bs(hs, 2, 8, 3, 3, 9, 4, pelt); Ps(hs, 2, 10, 3, pelt); Ps(hs, 2, 8, 3, V(0x2a2622));
-    // fur ruff around the face
+    // fur ruff around the face, woad stripes over the crown
     Bs(hs, 1, 0, 3, 1, 4, 8, pelt); Bs(hs, 2, 3, 8, 2, 3, 8, pelt);
+    for (const x of [3, 6]) for (let z = 2; z <= 8; z++) for (const y of [8, 7, 6]) if (hs.get(x, y, z)) hs.set(x, y, z, ctx.t(1.0));
+    Bs(hs, 3, 5, 8, 3, 5, 8, ctx.t(1.0));
     // back flap
     B(hs, 2, 0, 0, 7, 5, 1, pelt);
     // pelt draped over the shoulders and down the back
     const body = newGrid('body');
     const pl = fur(0x7a7468, 7);
     B(body, 0, 8, 0, 9, 8, 4, pl);
-    for (let y = 2; y <= 8; y++) for (let x = 1; x <= 8; x++) { const ragged = y < 4 && hash3(x, y, 0, 3) > 0.5; if (!ragged) B(body, x, y, 0, x, y, 1, pl); }
+    for (let y = 5; y <= 8; y++) for (let x = 1; x <= 8; x++) { const ragged = y < 6 && hash3(x, y, 0, 3) > 0.5; if (!ragged) B(body, x, y, 0, x, y, 1, pl); }
     Bs(body, 0, 6, 0, 0, 8, 3, pl); Bs(body, 1, 7, 4, 2, 7, 4, pl);
     return { head, crest, body };
   },
@@ -375,8 +374,8 @@ H.boar_helm = {
     // bristly mane along the top
     for (let z = 1; z <= 8; z++) { const h = 2 + (z % 2) + (z > 2 && z < 7 ? 1 : 0); for (let y = 7; y < 7 + h; y++) Bs(hs, 4, y, z, 4, y, z, V(shade(0x3a2a1c, 0.8 + 0.4 * hash3(4, y, z, 3)))); }
     // boar snout on the brow with tusks
-    B(hs, 3, 5, 8, 6, 6, 9, V(0xc49a84)); B(hs, 3, 5, 10, 6, 6, 10, V(0xa77a66)); B(hs, 4, 5, 10, 5, 5, 10, V(0x2a1a14));
-    Ps(hs, 3, 4, 10, V(0xf4f0e0)); Ps(hs, 3, 3, 10, V(0xf4f0e0));
+    B(hs, 3, 5, 8, 6, 6, 8, V(0xc49a84)); B(hs, 3, 5, 9, 6, 6, 9, V(0xa77a66)); B(hs, 4, 5, 9, 5, 5, 9, V(0x2a1a14));
+    Ps(hs, 3, 4, 9, V(0xf4f0e0)); Ps(hs, 3, 3, 9, V(0xf4f0e0));
     Ps(hs, 1, 6, 5, V(0x5a3a2a)); Ps(hs, 1, 7, 5, V(0x5a3a2a)); Ps(hs, 1, 7, 4, V(0x5a3a2a));
     return { head, crest };
   },
@@ -418,11 +417,11 @@ H.jackal_head = {
     cutFaceCube(hs);
     B(hs, 2, 2, 8, 7, 5, 8, coat);
     B(hs, 3, 0, 8, 6, 2, 8, coat);                                                   // long narrow snout
-    B(hs, 4, 0, 9, 5, 2, 9, coat); B(hs, 4, 1, 10, 5, 2, 10, V(0x15151a));
+    B(hs, 4, 0, 9, 5, 2, 9, coat); B(hs, 4, 1, 9, 5, 2, 9, V(0x15151a));
     Ps(hs, 3, 3, 8, V(0xe8c050)); Ps(hs, 3, 3, 9, V(0x15151a)); Ps(hs, 2, 3, 8, V(0xe8c050));
     Ps(hs, 3, 4, 8, V(0x15151a));
     // tall pointed ears
-    for (const [x0, w] of [[2, 2]]) { Bs(hs, x0, 8, 4, x0 + 1, 9, 5, coat); Bs(hs, x0, 10, 4, x0, 12, 5, coat); Bs(hs, x0, 13, 4, x0, 13, 4, V(0x15151a)); Bs(hs, x0 + 1, 10, 4, x0 + 1, 10, 5, V(0xd8a8a0)); }
+    Bs(hs, 2, 8, 4, 3, 9, 5, coat); Bs(hs, 2, 10, 4, 2, 12, 5, coat); Bs(hs, 2, 13, 4, 2, 13, 4, V(0x15151a)); Bs(hs, 3, 10, 4, 3, 11, 5, V(0x6a4a44));
     B(hs, 1, 5, 1, 8, 5, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? V(ctx.m[2]) : 0));   // gold headband
     Ps(hs, 1, 2, 4, V(ctx.m[3]));                                                                           // earrings
     return { head, crest };
@@ -437,7 +436,7 @@ H.cyclops_head = {
     B(hs, 2, 4, 8, 7, 5, 8, (x, y, z) => sk(0.78 + 0.1 * hash3(x, y, z, 1)));       // heavy brow ridge
     B(hs, 2, 5, 9, 7, 5, 9, sk(0.7));
     B(hs, 3, 1, 8, 6, 3, 8, V(0xf4f0e6)); B(hs, 3, 2, 9, 6, 3, 9, V(0xf4f0e6));     // the one big eye
-    B(hs, 4, 2, 9, 5, 3, 9, V(ctx.c.eyes)); B(hs, 4, 2, 10, 5, 3, 10, V(ctx.c.eyes)); P(hs, 4, 3, 10, V(0xffffff));
+    B(hs, 4, 2, 9, 5, 3, 9, V(ctx.c.eyes)); P(hs, 4, 3, 9, V(0xffffff));
     B(hs, 3, 0, 8, 6, 0, 8, V(0x7a3a30));                                            // mouth
     Ps(hs, 3, 0, 8, V(0xf4f0e0)); Ps(hs, 3, 1, 9, V(0xf4f0e0));                      // tusks
     return { head, crest };
@@ -522,18 +521,20 @@ H.boeotian = {
   name: 'Boeotian helm', meta: { hair: 'none' },
   build(ctx) {
     const { head, crest, hs } = headSpace();
-    lathe(hs, [null, null, null, null, null, [4.9, 4.9], [3.5, 3.5], [3.1, 3.1], [2.3, 2.3], [1.4, 1.4]], { color: bowlColor(ctx), n: 2.2 });
+    // low rounded crown over a broad drooping brim
+    lathe(hs, [null, null, null, null, null, [4.9, 4.9], [3.7, 3.7], [3.3, 3.3], [2.4, 2.4]], { color: bowlColor(ctx), n: 2.2 });
     lathe(hs, [null, null, null, null, null, [4.9, 4.9]], { color: (x, y, z, ax, az) => (ax > 0.82 || az > 0.82 ? V(ctx.m[1]) : metalAt({ m: ctx.m }, 0.45)), n: 2.2 });
     cutFaceCube(hs);
     B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? V(ctx.m[0]) : 0));
+    B(hs, 3, 8, 3, 6, 8, 6, V(ctx.m[3]));                                           // crown ridge
+    B(hs, 4, 9, 4, 5, 9, 5, V(ctx.m[4]));
     // big swept plume (tinted) rising from the crown and arching back
-    const path = [[4.5, 9, 4], [4.5, 10, 3], [4.5, 11, 3], [4.5, 12, 2], [4.5, 12, 1], [4.5, 12, 0], [4.5, 11, -1], [4.5, 10, -1]];
+    const path = [[9, 3], [10, 3], [11, 2], [12, 2], [12, 1], [12, 0], [11, -1], [10, -1]];
     for (let i = 0; i < path.length - 1; i++) {
       const a = path[i], b = path[i + 1];
-      for (let k = 0; k <= 1; k++) hs.line(4 + k, a[1], a[2], 4 + k, b[1], b[2], ctx.t(0.9 + 0.2 * hash3(i, k, 1, 9)));
+      for (let k = 0; k <= 1; k++) hs.line(4 + k, a[0], a[1], 4 + k, b[0], b[1], ctx.t(0.9 + 0.2 * hash3(i, k, 1, 9)));
     }
-    for (let i = 0; i < path.length - 1; i++) { const a = path[i]; P(hs, 3, a[1] - (i > 2 ? 1 : 0), a[2] + 0, ctx.t(0.85)); P(hs, 6, a[1] - (i > 2 ? 1 : 0), a[2] + 0, ctx.t(0.85)); }
-    B(hs, 4, 8, 3, 5, 8, 5, V(ctx.m[3]));
+    for (let i = 0; i < path.length - 1; i++) { const a = path[i]; P(hs, 3, a[0] - (i > 2 ? 1 : 0), a[1], ctx.t(0.85)); P(hs, 6, a[0] - (i > 2 ? 1 : 0), a[1], ctx.t(0.85)); }
     return { head, crest };
   },
 };
@@ -557,8 +558,10 @@ H.feather_band = {
   name: 'Feather headband', meta: { hair: 'all' },
   build(ctx) {
     const { head, crest, hs } = headSpace();
-    B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) && !((x === 1 || x === 8) && (z === 1 || z === 8)) ? V(shade(ctx.c.trim, 0.9)) : 0));
-    B(hs, 1, 5, 1, 8, 5, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) && !((x === 1 || x === 8) && (z === 1 || z === 8)) ? V(ctx.c.secondary) : 0));
+    const ringOnly = (x, z) => (x === 1 || x === 8 || z === 1 || z === 8) && !((x === 1 || x === 8) && (z === 1 || z === 8));
+    B(hs, 1, 4, 1, 8, 4, 8, (x, y, z) => (ringOnly(x, z) ? ctx.t(0.95) : 0));
+    B(hs, 1, 5, 1, 8, 5, 8, (x, y, z) => (ringOnly(x, z) ? V(ctx.c.secondary) : 0));
+    B(hs, 1, 3, 1, 8, 3, 8, (x, y, z) => (ringOnly(x, z) && z < 4 ? ctx.t(0.85) : 0));
     // ostrich plumes sweeping up and back from the nape (tinted, white-ish tips)
     const feather = (x0, z0, h, dz) => {
       for (let i = 0; i < h; i++) {
@@ -566,7 +569,7 @@ H.feather_band = {
         P(hs, x0, y, z, c); if (i > 1 && i < h - 1) P(hs, x0 + (x0 > 4 ? -1 : 1), y, z, c);
       }
     };
-    feather(3, 2, 7, 0.1); feather(6, 2, 7, 0.1); feather(2, 3, 5, 0.0); feather(7, 3, 5, 0.0); feather(4, 1, 9, 0.2); feather(5, 1, 9, 0.2);
+    feather(3, 2, 7, 0.1); feather(6, 2, 7, 0.1); feather(2, 3, 5, 0.0); feather(7, 3, 5, 0.0); feather(4, 1, 8, 0.2); feather(5, 1, 8, 0.2);
     return { head, crest };
   },
 };

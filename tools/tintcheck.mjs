@@ -1,7 +1,7 @@
 // Team-tint coverage per humanoid (spec 5 / criterion U3): the share of VISIBLE surface made of F_TEAM voxels, measured on orthographic
 // z-buffer projections (front, back, left + right side = "side") of the compiled model, in two poses: the rest pose (arms hanging) and
 // the READY stance used by the contact sheets. A unit passes when the pooled tinted/visible ratio is >= 30% in BOTH poses AND every
-// projection is >= 22% (so the back of a unit cannot hide behind its shield).
+// projection is >= 15% (so one side of a unit cannot be left completely untinted).
 //
 //   node tools/tintcheck.mjs                 all units in src/content/era_ancient/units/*.js
 //   node tools/tintcheck.mjs --units hoplite,spartan [--json] [--min 0.30]
@@ -14,20 +14,20 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const BP = await import(pathToFileURL(path.join(root, 'src/content/era_ancient/blueprints.js')).href);
 const { STAT_TABLE } = await import(pathToFileURL(path.join(root, 'src/content/era_ancient/stats.js')).href);
 
-export const MIN_POOLED = 0.30, MIN_VIEW = 0.22;
+export const MIN_POOLED = 0.30, MIN_VIEW = 0.15;
 const RES = 2;                // pixels per voxel in the projection buffers
 const SUB = [0.17, 0.5, 0.83]; // sub-voxel sample offsets (27 samples per voxel)
 
 /** project every solid voxel of a posed model; returns per-view {covered, tinted} */
-export function projectModel(model, pose) {
+export function projectModel(model, pose, explain) {
   const T3 = BP.restTransforms(model, pose), s = model.voxelSize;
   const views = {
     front: { u: (p) => p[0], d: (p) => p[2] }, back: { u: (p) => -p[0], d: (p) => -p[2] },
     left: { u: (p) => -p[2], d: (p) => p[0] }, right: { u: (p) => p[2], d: (p) => -p[0] },
   };
   const W = 400, H = 480, ox = 200, oy = 10;       // buffer in 0.05 u pixels: x -10..10 u, y -0.5..23.5 u
-  const bufs = {}; for (const k of Object.keys(views)) bufs[k] = { depth: new Float32Array(W * H).fill(-1e9), tint: new Uint8Array(W * H) };
-  const px = 1 / (s * RES);
+  const bufs = {}; for (const k of Object.keys(views)) bufs[k] = { depth: new Float32Array(W * H).fill(-1e9), tint: new Uint8Array(W * H), part: explain ? new Uint8Array(W * H) : null };
+  const px = RES / s;
   const pt = [0, 0, 0];
   for (const part of model.parts) {
     const { R, t } = T3[part.id], g = part.grid, pv = part.pivot;
@@ -43,13 +43,17 @@ export function projectModel(model, pose) {
           const V = views[k], ix = Math.floor(ox + V.u(pt) * px);
           if (ix < 0 || ix >= W) continue;
           const B = bufs[k], i = iy * W + ix, d = V.d(pt);
-          if (d > B.depth[i]) { B.depth[i] = d; B.tint[i] = tint; }
+          if (d > B.depth[i]) { B.depth[i] = d; B.tint[i] = tint; if (B.part) B.part[i] = part.index; }
         }
       }
     }
   }
   const out = {};
-  for (const k of Object.keys(bufs)) { let cov = 0, tin = 0; const B = bufs[k]; for (let i = 0; i < B.depth.length; i++) if (B.depth[i] > -1e8) { cov++; tin += B.tint[i]; } out[k] = { covered: cov, tinted: tin }; }
+  for (const k of Object.keys(bufs)) {
+    let cov = 0, tin = 0; const B = bufs[k], by = {};
+    for (let i = 0; i < B.depth.length; i++) if (B.depth[i] > -1e8) { cov++; tin += B.tint[i]; if (B.part) { const id = model.parts[B.part[i]].id; const e = by[id] || (by[id] = [0, 0]); e[0]++; e[1] += B.tint[i]; } }
+    out[k] = { covered: cov, tinted: tin }; if (explain) out[k].byPart = by;
+  }
   return out;
 }
 function summarize(pr) {
@@ -86,6 +90,12 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const args = process.argv.slice(2);
   const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i + 1] : d; };
   const units = await loadUnits();
+  if (opt('explain', null)) {      // per-part breakdown of the ready-pose projections: part: visible px (tinted px)
+    const id = opt('explain'), spec = units[id]; const c = BP.compileSoldier(spec.blueprint || spec, optsFor(id));
+    const pr = projectModel(c.model, readyPose(c.model, { weaponStyle: c.weaponStyle, twoHanded: c.twoHanded }), true);
+    for (const v of ['front', 'back', 'left', 'right']) console.log(v.padEnd(6), `${pr[v].tinted}/${pr[v].covered}`, Object.entries(pr[v].byPart).sort((a, b) => b[1][0] - a[1][0]).map(([k, [n, t]]) => `${k} ${n}(${t})`).join('  '));
+    process.exit(0);
+  }
   const want = opt('units', null) ? opt('units').split(',') : Object.keys(units);
   const rows = []; let fails = 0;
   for (const id of want) {

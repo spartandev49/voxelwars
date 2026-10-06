@@ -26,7 +26,7 @@ export class Squad {
     this.moveTo = null; this.focus = 0;
     this.flankStage = 0; this.flankT = 0; this.flankX = 0; this.flankZ = 0; this.flankSide = 0; this.holdX = 0; this.holdZ = 0; this.holdSet = false;
     this.mode = 'form';                        // kept for render/debug compatibility
-    this.minSpeed = 2.5; this.press = 0; this.lineT = 0; this.lineOk = true;
+    this.watch = false; this.minSpeed = 2.5; this.press = 0; this.lineT = 0; this.lineOk = true;
   }
 }
 
@@ -132,6 +132,7 @@ export function updateSquads(w, dt) {
           else if (sq.cls === CLS.SUPPORT) { const lim = ahead - (-5.0); sp *= clamp(1 - 0.2 * lim, 0, 1.1); }
           else if (sq.cls === CLS.SIEGE) { const lim = ahead - (-7.0); sp *= clamp(1 - 0.2 * lim, 0, 1.0); }
         }
+        if (sq.watch && D < 24) sp = 0;            // overseer squads (Xerxes) stop at a distance and watch
         // in contact: push the anchor forward slowly so rear ranks follow the front as it advances
         if (sq.engF > 0) {
           if (sq.cls === CLS.RANGED || sq.cls === CLS.SIEGE || sq.cls === CLS.SUPPORT) sp *= sq.engF > 0.2 ? 0 : 0.5;

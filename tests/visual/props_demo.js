@@ -27,10 +27,11 @@ types.forEach((t, row) => {
 });
 const n = types.length, span = Math.max(8, n * gap * 0.9);
 const cam = q.get('cam') || 'iso', zoom = +(q.get('zoom') || 1);
-const R = (span * 0.9 + 14) * zoom;
-if (cam === 'front') { eng.camera.position.set(0, 6 + n * 0.5, R * 0.9); eng.camera.lookAt(0, 2.5, 0); }
+const maxH = Math.max(...types.map((t) => PROP_CATALOG[t].h * s));
+const R = Math.max(span * 0.9 + 10, maxH * 2.6, cols * gap * 1.1) * zoom;
+if (cam === 'front') { eng.camera.position.set(0, maxH * 0.6 + 1, R * 0.9); eng.camera.lookAt(0, maxH * 0.4, 0); }
 else if (cam === 'top') { eng.camera.position.set(0, R * 1.1, 0.01); eng.camera.lookAt(0, 0, 0); }
-else { eng.camera.position.set(R * 0.35, R * 0.62, R * 0.8); eng.camera.lookAt(0, 2, 0); }
+else { eng.camera.position.set(R * 0.35, R * 0.55 + maxH * 0.3, R * 0.8); eng.camera.lookAt(0, maxH * 0.35, 0); }
 eng.focus.set(0, 3, 0);
 pr.update(0.016, eng.camera);
 for (let i = 0; i < 3; i++) { pr.update(0.016, eng.camera); eng.render(0.016); }

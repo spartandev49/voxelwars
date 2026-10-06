@@ -32,7 +32,7 @@ export const G = {
   armyCollapseFrac: 0.2, armyCollapseRate: 10, armyCollapseMin: 6,
   stalemateWarn: 12, stalemateAdvance: 18, stalemateZeus: 30, stalemateQuit: 44, maxBattle: 360,
   hashCell: 3,
-  navRefresh: 8,                             // ticks between flow field recomputes (~3.75 Hz)
+  navRefresh: 6,                             // ticks between flow field recomputes (teams alternate: each field refreshes every 12 ticks = 2.5 Hz)
   retargetNormal: 12, retargetEasy: 24, retargetHard: 6,   // ticks between target scans (reaction 0.4 / 0.8 / 0.2 s)
   deathLinger: 1.6,                          // seconds a corpse stays in `dying` for its clip
   slotsBase: 2, slotsPerRadius: 4, slotsLarge: 8,

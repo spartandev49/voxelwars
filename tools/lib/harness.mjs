@@ -63,7 +63,7 @@ export class Metrics {
       if (h.filled >= 15 && h.cool === 0 && u.state !== ST.STAGGER && u.state !== ST.STUN && Math.abs(adiff(old, u.heading)) > Math.PI / 2) { this.flips++; h.cool = 15; }
       h.a[h.k] = u.heading; h.k = (h.k + 1) % 15; if (h.filled < 15) h.filled++;
       // ---- overlap (sampled every 3rd tick)
-      const reach = u.def.melee ? u.def.melee.range + 0.15 : 0;
+      const r0 = u.def.role, reach = u.def.melee && r0 !== 'ranged' && r0 !== 'support' && r0 !== 'siege' ? u.def.melee.range + 0.15 : 0;
       let contact = false;
       if (sampleOv || (reach > 0 && u.cd <= 0)) {
         const q = w.qbuf; const nq = hash.query(u.x, u.z, 3.2, q);
@@ -76,7 +76,7 @@ export class Metrics {
         }
         if (sampleOv) { this.ovSamples++; if (ov) this.ovUnits++; }
       }
-      if (reach > 0 && contact && u.cd <= 0 && u.state !== ST.STUN && u.state !== ST.ROUT && u.state !== ST.CHEER) {
+      if (reach > 0 && contact && u.cd <= 0 && (u.state === ST.IDLE || u.state === ST.MOVE || u.state === ST.WINDUP)) {
         this.ctxTicks++;
         if (u.state !== ST.WINDUP && u.state !== ST.STAGGER && u.speedNow < 0.4) this.idleTicks++;
       }

@@ -3,7 +3,7 @@
 //                 frustum?: [x0,z0,x1,z1,x2,z2,x3,z3], cam?: {x,z}, markers?: [{x,z,r?,type}], zones?: [{team,x,z,w,d}] }
 // terrain = HTMLCanvasElement | OffscreenCanvas | ImageBitmap | ImageData | {w,h,data:Uint8ClampedArray RGBA}. World coords are centred on the origin.
 // Canvas is redrawn at the HUD pull rate (<= 10 Hz); size is measured on mount/resize only (never inside update()).
-import { h, setCls, hexCss, sfx, disposer } from './_dom.js';
+import { h, setCls, hexCss, sfx, disposer, layoutOf } from './_dom.js';
 import { icon } from './_icons.js';
 import { TEAM_PALETTES } from '../../render/style.js';
 
@@ -14,7 +14,7 @@ export function mount(parent, ctx) {
   const d = disposer();
   const cv = h('canvas', { class: 'hud-mini-cv', id: 'hud-minimap', role: 'img', 'aria-label': 'Radar: click to move the camera', width: 160, height: 160 });
   const toggle = h('button', { class: 'hud-btn hud-mini-toggle', type: 'button', id: 'hud-mini-toggle', 'aria-label': 'Hide radar', 'aria-expanded': 'true', 'data-tip': 'Radar on/off (M)', 'data-tip-pos': 'above' }, icon('map'));
-  const el = h('div', { class: 'hud-mini hud-panel', 'data-hud': 'minimap' }, h('div', { class: 'hud-mini-head' }, h('span', { class: 'hud-mini-title', text: 'Radar' }), toggle), h('div', { class: 'hud-mini-body' }, cv));
+  const el = h('div', { class: 'hud-mini hud-panel', 'data-hud': 'minimap' }, h('div', { class: 'hud-mini-body' }, cv, toggle));
   parent.appendChild(el);
   const g = cv.getContext('2d');
   let W = 160, H = 160, dpr = 1;
@@ -110,14 +110,15 @@ export function mount(parent, ctx) {
   const up = () => { dragging = false; };
   cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
 
-  let open = true;
+  let open = layoutOf(ctx) !== 'phone';        // phones start with the radar folded away
   function setOpen(b) {
     open = b; setCls(el, 'is-closed', !b);
-    toggle.setAttribute('aria-expanded', String(b)); toggle.setAttribute('aria-label', b ? 'Hide radar' : 'Show radar');
+    toggle.setAttribute('aria-expanded', String(b)); toggle.setAttribute('aria-label', b ? 'Hide radar' : 'Show radar'); toggle.dataset.tip = b ? 'Hide radar (M)' : 'Show radar (M)';
     if (b) resize();
   }
   toggle.addEventListener('click', () => setOpen(!open));
 
+  setCls(el, 'is-closed', !open);
   palette(); resize();
   d.on(window, 'resize', resize);
   d.add(ctx.settings && ctx.settings.on ? ctx.settings.on(() => { palette(); if (last) draw(last); }) : null);

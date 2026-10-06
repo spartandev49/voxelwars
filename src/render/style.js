@@ -13,7 +13,7 @@ export function teamColorsLinear(palette = 'classic') {
 }
 
 /** Final grade (applied in post composite). */
-export const GRADE = { exposure: 1.0, saturation: 1.12, contrast: 1.04, vignette: 0.32 };
+export const GRADE = { exposure: 1.0, saturation: 1.0, contrast: 1.06, vignette: 0.32 };
 
 /** Per-tier post settings: bloom levels/strength and MSAA samples. */
 export const POST_TIERS = {

@@ -1,5 +1,5 @@
 // speed.js: top-right pause + speed controls (0.25/0.5/1/2/4) + settings gear. Hotkeys are routed by the battle screen through api.*.
-import { h, setCls, setAttr, sfx, anim } from './_dom.js';
+import { h, setCls, setAttr, setText, sfx, anim } from './_dom.js';
 import { icon } from './_icons.js';
 import { keyOf } from './_bindings.js';
 
@@ -13,7 +13,8 @@ export function mount(parent, ctx, layers) {
   const gear = h('button', { class: 'hud-btn hud-gear', id: 'hud-gear', type: 'button', 'aria-label': 'Menu and settings', 'data-tip': 'Menu (Esc)', 'data-tip-pos': 'below' }, icon('gear'));
   const btns = SPEEDS.map((s) => h('button', { class: 'hud-btn hud-spd', type: 'button', id: 'hud-speed-' + String(s).replace('.', '_'), 'data-speed': s, 'aria-pressed': 'false', 'aria-label': 'Speed ' + s + 'x', 'data-tip': s + 'x speed', 'data-tip-pos': 'below', text: LABEL[s] }));
   const seg = h('div', { class: 'hud-seg', role: 'group', 'aria-label': 'Game speed' }, btns);
-  const el = h('div', { class: 'hud-speed hud-panel', 'data-hud': 'speed', role: 'toolbar', 'aria-label': 'Speed controls' }, pauseBtn, seg, gear);
+  const cycle = h('button', { class: 'hud-btn hud-spd-cycle', type: 'button', id: 'hud-speed-cycle', 'aria-label': 'Change speed', 'data-tip': 'Next speed', 'data-tip-pos': 'below', text: '1x' });
+  const el = h('div', { class: 'hud-speed hud-panel', 'data-hud': 'speed', role: 'toolbar', 'aria-label': 'Speed controls' }, pauseBtn, seg, cycle, gear);
   parent.appendChild(el);
 
   // "Paused" ribbon lives in the overlay layer so it is centred on the screen
@@ -36,6 +37,7 @@ export function mount(parent, ctx, layers) {
 
   function paint() {
     btns.forEach((b, i) => { const on = SPEEDS[i] === speed; setCls(b, 'is-on', on); setAttr(b, 'aria-pressed', on); });
+    setText(cycle, LABEL[speed] || speed + 'x');
     pauseBtn.replaceChildren(icon(paused ? 'play' : 'pause'));
     setAttr(pauseBtn, 'aria-label', paused ? 'Resume' : 'Pause');
     setCls(pauseBtn, 'is-on', paused);
@@ -45,6 +47,7 @@ export function mount(parent, ctx, layers) {
   pauseBtn.addEventListener('click', togglePause);
   gear.addEventListener('click', () => el.dispatchEvent(new CustomEvent('hud:menu', { bubbles: true })));
   btns.forEach((b, i) => b.addEventListener('click', () => setSpeed(SPEEDS[i])));
+  cycle.addEventListener('click', () => { const i = SPEEDS.indexOf(speed); setSpeed(SPEEDS[(i + 1) % SPEEDS.length]); });
 
   return {
     el,

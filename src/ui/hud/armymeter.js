@@ -15,7 +15,7 @@ function side(t) {
   const cost = h('span', { class: 'hud-army-cost' });
   const badge = h('span', { class: 'hud-team-badge', 'aria-hidden': 'true' }, icon(t === 0 ? 'hold' : 'sword'));
   const el = h('div', { class: 'hud-army-side is-' + key, 'data-team': key }, badge,
-    h('div', { class: 'hud-army-col' }, h('div', { class: 'hud-army-top' }, name, count), bar, cost));
+    h('div', { class: 'hud-army-col' }, h('div', { class: 'hud-army-top' }, count, h('div', { class: 'hud-army-meta' }, name, cost)), bar));
   return { el, name, count, ghost, fill, bar, cost, key, frac: -1, alive: -1, badge };
 }
 

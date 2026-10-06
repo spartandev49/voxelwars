@@ -1,12 +1,12 @@
 // Procedural gait generators for authored locomotion clips (pure). Legs are solved with a planar two-bone IK so that planted feet
 // move back exactly at the clip's speedRef (no foot slide at rate = speed / speedRef) and the rigid hum1 foot never digs into the ground.
 //
-// Units here are VOXELS (1 voxel = 0.1 world unit) for geometry; angles in radians. hum1: thigh 5, shin 5, foot 2 high, heel 2 behind
-// the ankle pivot, toe 3 in front (legLL grid 4x5x6, pivot (2,5,2)).
+// Units here are VOXELS (1 voxel = 0.1 world unit) for geometry; angles in radians. hum1: thigh 5, shin 5, foot 2 high (legLL grid 4x5x6, pivot (2,5,2)): heel 2 behind
+// the ankle pivot, toe 4 in front.
 import { clamp } from './dsl.js';
 
 const PI = Math.PI, TAU = Math.PI * 2;
-export const THIGH = 5, SHIN = 5, TOE = 3, HEEL = 2;
+export const THIGH = 5, SHIN = 5, TOE = 4, HEEL = 2;
 
 /**
  * Planar 2-bone IK. Target = sole point (bottom of the shin) relative to the hip pivot: dz forward, dy up (negative below the hip).
@@ -27,9 +27,9 @@ export function legIK(dz, dy, out, a = THIGH, b = SHIN) {
 }
 
 /** extra ankle height needed so that neither toe nor heel goes below the sole line for a total foot pitch (rx thigh+knee) */
-export function footLift(rxTotal) {
+export function footLift(rxTotal, tol = 0) {
   const s = Math.sin(rxTotal);
-  return Math.max(0, TOE * s, -HEEL * s);
+  return Math.max(0, TOE * s - tol, -HEEL * s - tol);
 }
 
 const _ik = [0, 0];
@@ -37,10 +37,15 @@ const _ik = [0, 0];
  * Solve one leg for a foot at hip-relative position (z, liftY above ground) with the hip `h` voxels above the ground.
  * Ground contact: the foot is lifted by footLift so the sole never penetrates. Writes [thighRx, kneeRx] into out.
  */
-export function solveLeg(z, ankleY, h, out) {
+export function solveLeg(z, ankleY, h, out, tol = 0.3) {
   legIK(z, ankleY - h, _ik);
-  let lift = footLift(_ik[0] + _ik[1]);
-  if (lift > 0) { legIK(z, ankleY + lift - h, _ik); const l2 = footLift(_ik[0] + _ik[1]); if (l2 > lift) legIK(z, ankleY + l2 - h, _ik); }
+  let lift = 0;
+  for (let i = 0; i < 6; i++) {                       // fixed point: the lift changes the pitch, the pitch changes the lift
+    const need = footLift(_ik[0] + _ik[1], tol);
+    if (Math.abs(need - lift) < 0.02) break;
+    lift = need;
+    legIK(z, ankleY + lift - h, _ik);
+  }
   out[0] = _ik[0]; out[1] = _ik[1];
   return out;
 }

@@ -28,15 +28,15 @@
      K.toggle({value,onChange(v),label,id,disabled}) -> <button role=switch>   .get() .set(v,silent)
      K.select({options:[{value,label,disabled?,group?}],value,onChange(v),label,id,disabled}) -> div.vw-select   .get() .set(v,silent) .select
      K.segmented({options:[{value,label,sub?,icon?,disabled?,title?}],value,onChange(v),label,id,fill}) -> radiogroup  .get() .set(v,silent) .setDisabled(value,b)
-     K.card(unitDef, {onClick, selected, count, locked, disabled, reason, blurb, counters, factions}) -> <button class=vw-card>   .setSelected(b) .setCount(n)
+     K.card(unitDef, {onClick, selected, count, locked, disabled, reason, blurb, counters:true|'beats'|false, compact, factions}) -> <button class=vw-card>   .setSelected(b) .setCount(n) .setDisabled(b, reasonText)
      K.tooltip(el, textOrFn, {kind:'bad'}) -> off()     hover (350ms) + keyboard focus + touch long-press; sets aria-describedby while shown
      K.showTip({x,y,text,kind}) / K.hideTip()           free-floating tip (cursor-following invalid-placement reasons)
      K.toast(text, {kind:'info|success|warn|error|achievement', ms, icon, sound}) -> el  .dismiss()
-     K.modal({title, body:Node|string|(api)=>Node, buttons:[{label,variant,value,cancel?,primary?,keep?,onClick?(api)}], dismissible=true, wide, dismissValue=null, id, icon}) -> Promise<value>
+     K.modal({title, body:Node|string|(api)=>Node, buttons:[{label,variant,value,cancel?,primary?,keep?,onClick?(api)}]  (api = {close(v), el, body, foot}), dismissible=true, wide, dismissValue=null, id, icon}) -> Promise<value>
         (replaces confirm(); Esc closes (resolves dismissValue); focus trap; background inert; focus restored) ;  K.hasModal() ; K.closeModals(value)
-     K.ask({title,text,yes,no,danger}) -> Promise<boolean>        K.textModal({title,text,note,readOnly,copy}) -> Promise<string|null>
+     K.ask({title,text,yes,no,danger}) -> Promise<boolean>        K.textModal({title,text,note,readOnly,copy,ok,placeholder,onSubmit(text)->errString|null}) -> Promise<string|null>
      K.banner(text, {kind:'gold|lapis|crimson|olive', ms=1900, host}) -> el  .hide()            round-start ribbon
-     K.progress({value,max,label,tone:'gold|olive|lapis|crimson|lava|sky|team-a|team-b',thin,tall,aria}) -> div  .set(v,labelText?)
+     K.progress({value,max,label,tone:'gold|olive|lapis|crimson|lava|sky|team-a|team-b',thin,tall,aria}) -> div  .set(v,labelText?,over?) .setMax(m)
      K.meter({a,b,labelA,labelB}) -> div  .set(a,b)                                         army meter (team A vs B)
      K.kbd(key|code) -> <kbd>          K.toolbar(children, {label,id}) -> role=toolbar (arrow-key roving)     K.emptyState({icon,title,text,action})
    LAYOUT HELPERS
@@ -388,7 +388,7 @@ let toggleSeq = 0;
 export function toggle(o) {
   o = o || {};
   const el = h('button', { type: 'button', class: ['vw-toggle', o.class], role: 'switch', id: o.id || 'vw-toggle-' + (++toggleSeq), 'aria-checked': String(!!o.value), 'aria-label': o.label || null, disabled: o.disabled ? true : null },
-    h('span', { class: 'vw-toggle__track' }), h('span', { class: 'vw-toggle__txt', 'aria-hidden': 'true' }), h('span', { class: 'vw-toggle__knob' }));
+    h('span', { class: 'vw-toggle__track' }, h('span', { class: 'vw-toggle__txt', 'aria-hidden': 'true' })), h('span', { class: 'vw-toggle__knob' }));
   const txt = el.querySelector('.vw-toggle__txt');
   const paint = () => { txt.textContent = el.getAttribute('aria-checked') === 'true' ? 'ON' : 'OFF'; };
   paint();
@@ -470,8 +470,10 @@ export function card(def, o) {
   o = o || {};
   const fc = factionColor(o.factions, def.faction);
   const locked = !!o.locked;
-  const el = h('button', { type: 'button', class: ['vw-card', locked && 'is-locked', o.class], 'aria-pressed': o.selected === undefined ? null : String(!!o.selected), disabled: o.disabled ? true : null, style: { '--fc': fc }, dataset: { id: def.id } });
+  let why = o.reason || '';
+  const el = h('button', { type: 'button', class: ['vw-card', locked && 'is-locked', o.compact && 'vw-card--compact', o.class], 'aria-pressed': o.selected === undefined ? null : String(!!o.selected), 'aria-disabled': o.disabled ? 'true' : null, style: { '--fc': fc }, dataset: { id: def.id } });
   if (o.selected) el.classList.add('is-selected');
+  if (o.disabled) el.classList.add('is-disabled');
   const nm = locked ? '???' : def.name;
   const top = h('span', { class: 'vw-card__top' },
     h('span', { class: 'vw-card__art' }, makeIcon(locked ? 'lock' : (ROLE_ICON[def.role] || 'sword'))),
@@ -483,20 +485,24 @@ export function card(def, o) {
     if (o.counters !== false) {
       const c = counterHints(def);
       if (c.beats[0]) meta.appendChild(chip('Beats ' + c.beats[0], { variant: 'olive' }));
-      if (c.weak[0]) meta.appendChild(chip('Weak: ' + c.weak[0], { variant: 'danger' }));
+      if (c.weak[0] && o.counters !== 'beats') meta.appendChild(chip('Weak: ' + c.weak[0], { variant: 'danger' }));
     }
     el.appendChild(meta);
     const blurb = o.blurb != null ? o.blurb : (def.text && def.text.blurb);
-    if (blurb) el.appendChild(h('span', { class: 'vw-card__blurb', text: blurb }));
+    if (blurb && !o.compact) el.appendChild(h('span', { class: 'vw-card__blurb', text: blurb }));
   } else if (o.reason) el.appendChild(h('span', { class: 'vw-card__blurb', text: o.reason }));
   const cnt = h('span', { class: 'vw-card__count vw-hide', 'aria-hidden': 'true' });
   el.appendChild(cnt);
   el.setCount = (n) => { cnt.textContent = String(n); cnt.classList.toggle('vw-hide', !n); };
   if (o.count) el.setCount(o.count);
   el.setSelected = (b) => { el.setAttribute('aria-pressed', String(!!b)); el.classList.toggle('is-selected', !!b); };
-  el.addEventListener('pointerenter', (e) => { if (!el.disabled) hoverSfx(e); });
-  el.addEventListener('click', (e) => { if (el.disabled) return; sfx(locked ? 'ui_error' : 'ui_click'); if (o.onClick) o.onClick(e, def); });
-  if (o.reason && o.disabled) tooltip(el, o.reason);
+  el.setDisabled = (b, reason) => { why = reason || ''; el.classList.toggle('is-disabled', !!b); if (b) el.setAttribute('aria-disabled', 'true'); else el.removeAttribute('aria-disabled'); };
+  el.addEventListener('pointerenter', (e) => { if (el.getAttribute('aria-disabled') !== 'true') hoverSfx(e); });
+  el.addEventListener('click', (e) => {
+    if (el.getAttribute('aria-disabled') === 'true' || locked) { sfx('ui_error'); if (why) toast(why, { kind: 'warn', ms: 2400, sound: false }); return; }
+    sfx('ui_click'); if (o.onClick) o.onClick(e, def);
+  });
+  tooltip(el, () => (el.getAttribute('aria-disabled') === 'true' || locked ? why : ''));
   return el;
 }
 
@@ -578,6 +584,7 @@ export function toast(text, o) {
   const dismiss = () => {
     if (gone) return; gone = true; clearTimeout(timer);
     anim(el, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(10px)' }], { duration: 180, fill: 'forwards' }).then(() => el.remove());
+    setTimeout(() => el.remove(), 380);
     if (reduced()) el.remove();
   };
   const arm = () => { clearTimeout(timer); timer = setTimeout(dismiss, o.ms || (kind === 'error' ? 5200 : 3600)); };
@@ -626,6 +633,7 @@ export function modal(opts) {
       resolve(value);
       const f = () => wrap.remove();
       anim(dlg, [{ opacity: 1, transform: 'none' }, { opacity: 0, transform: 'translateY(10px) scale(.97)' }], { duration: 140, fill: 'forwards' }).then(f);
+      setTimeout(f, 320);
       if (reduced()) f();
       if (prevFocus && prevFocus.isConnected && typeof prevFocus.focus === 'function') { try { prevFocus.focus({ preventScroll: true }); } catch (e) { /* ignore */ } }
     }
@@ -684,20 +692,28 @@ export function ask(o) {
     buttons: [{ label: o.no || 'Cancel', variant: 'secondary', value: false, cancel: true }, { label: o.yes || 'OK', variant: o.danger ? 'danger' : 'primary', value: true }],
   });
 }
-/** Modal with a text area (read-only export/copy, or paste-in import). Resolves the text on the primary button, null on cancel. */
+/** Modal with a text area (read-only export/copy, or paste-in import). Resolves the text on OK, null on cancel.
+ *  o.onSubmit(text) may return an error string (or a Promise of one): the modal then stays open and shows it. */
 export function textModal(o) {
   o = o || {};
   const ta = h('textarea', { class: 'vw-input', rows: o.rows || 8, 'aria-label': o.label || o.title || 'Text', readonly: o.readOnly ? true : null, spellcheck: 'false', autocomplete: 'off' });
   ta.value = o.text || '';
   if (o.placeholder) ta.setAttribute('placeholder', o.placeholder);
   const err = h('p', { class: 'vw-note vw-note--bad vw-hide', role: 'alert' });
+  const showErr = (m) => { err.textContent = m || ''; err.classList.toggle('vw-hide', !m); };
   return modal({
     title: o.title || 'Text', wide: true, dismissValue: null,
     body: () => h('div', { class: 'vw-col' }, o.note ? h('p', { text: o.note }) : null, ta, err),
     buttons: o.readOnly
       ? [{ label: 'Close', variant: 'secondary', value: null, cancel: true }, o.copy === false ? null : { label: 'Select all', variant: 'primary', keep: true, id: 'vw-textmodal-select', onClick: () => { ta.focus(); ta.select(); } }].filter(Boolean)
-      : [{ label: 'Cancel', variant: 'secondary', value: null, cancel: true }, { label: o.ok || 'OK', variant: 'primary', value: 'ok' }],
-  }).then((v) => (o.readOnly ? v : (v === 'ok' ? ta.value : null)));
+      : [{ label: 'Cancel', variant: 'secondary', value: null, cancel: true },
+        { label: o.ok || 'OK', variant: 'primary', keep: true, id: 'vw-textmodal-ok', onClick: async (api) => {
+          showErr('');
+          let msg = null;
+          if (o.onSubmit) { try { msg = await o.onSubmit(ta.value); } catch (e) { msg = (e && e.message) || 'That did not work.'; } }
+          if (msg) { showErr(msg); sfx('ui_error'); ta.focus(); } else api.close(ta.value);
+        } }],
+  }).then((v) => (o.readOnly ? v : (typeof v === 'string' ? v : null)));
 }
 
 /* ---------------------------------------------------------------- banner / progress / meter / kbd / toolbar / empty */
@@ -712,6 +728,7 @@ export function banner(text, o) {
   const hide = () => {
     if (gone) return; gone = true; clearTimeout(timer);
     anim(el, [{ opacity: 1, transform: 'rotate(-2deg)' }, { opacity: 0, transform: 'translateY(-26px) rotate(-2deg) scale(.96)' }], { duration: 260, fill: 'forwards' }).then(() => el.remove());
+    setTimeout(() => el.remove(), 460);
     if (reduced()) el.remove();
   };
   if (o.ms !== 0) timer = setTimeout(hide, o.ms || 1900);
@@ -723,7 +740,8 @@ export function progress(o) {
   const el = h('div', { class: ['vw-progress', o.tone && 'vw-progress--' + o.tone, o.thin && 'vw-progress--thin', o.tall && 'vw-progress--tall', o.class], role: 'progressbar', 'aria-valuemin': '0', 'aria-valuemax': String(o.max != null ? o.max : 1), 'aria-label': o.aria || o.label || 'Progress' },
     h('div', { class: 'vw-progress__fill' }), o.label !== false && o.showLabel !== false ? h('div', { class: 'vw-progress__label' }) : null);
   const lab = el.querySelector('.vw-progress__label');
-  const mx = o.max != null ? o.max : 1;
+  let mx = o.max != null ? o.max : 1;
+  el.setMax = (m) => { mx = m; el.setAttribute('aria-valuemax', String(m)); };
   el.set = (v, text, over) => {
     const f = clamp(mx ? v / mx : 0, 0, 1);
     el.style.setProperty('--v', String(f));

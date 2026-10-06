@@ -5,11 +5,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PURE = ['src/sim/', 'src/content/', 'src/voxel/', 'src/anim/', 'src/core/', 'src/world/', 'src/save/'];
+// The only browser adapters inside pure directories (spec §0.1): gsap shim and the localStorage wrapper.
+const ADAPTERS = ['src/core/tween.js', 'src/save/store.js'];
 const NO_RANDOM = ['src/sim/', 'src/content/'];
 const files = [];
 (function walk(d) { for (const e of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) { if (e.name === '_generated' || e.name === 'node_modules') continue; walk(p); } else if (/\.(js|mjs)$/.test(e.name)) files.push(p); } })(path.join(root, 'src'));
 const rules = [
-  { id: 'pure-dom', test: (rel, l) => PURE.some((p) => rel.startsWith(p)) && /\b(window|document|navigator|localStorage|AudioContext|requestAnimationFrame)\b/.test(l), msg: 'pure module touches the browser (window/document/localStorage/AudioContext)' },
+  { id: 'pure-dom', test: (rel, l) => !ADAPTERS.includes(rel) && PURE.some((p) => rel.startsWith(p)) && /\b(window|document|navigator|localStorage|AudioContext|requestAnimationFrame)\b/.test(l), msg: 'pure module touches the browser (window/document/localStorage/AudioContext)' },
   { id: 'pure-three', test: (rel, l) => PURE.some((p) => rel.startsWith(p)) && /\bTHREE\b/.test(l), msg: 'pure module uses THREE' },
   { id: 'math-random', test: (rel, l) => NO_RANDOM.some((p) => rel.startsWith(p)) && /Math\.random\s*\(/.test(l), msg: 'Math.random in sim/content (use the seeded RNG)' },
   { id: 'import-three', test: (rel, l) => /from\s+['"]three['"]|require\(['"]three['"]\)/.test(l), msg: "import from 'three' (use window.THREE)" },

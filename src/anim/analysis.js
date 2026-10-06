@@ -26,6 +26,17 @@ function mat3(rx, ry, rz, m) {
   m[6] = -sy * cz + cy * sx * sz; m[7] = sy * sz + cy * sx * cz; m[8] = cy * cx;
 }
 
+/** description of a rig TABLE like HUM1_RIG (voxel units) in the same shape describeModel returns (world units, voxelSize 0.1) */
+export function describeRig(table, vs = 0.1) {
+  const ids = Object.keys(table), P = ids.length, parent = new Int16Array(P), origin = new Float64Array(P * 3), rest = [], box = new Float64Array(P * 6);
+  ids.forEach((id, i) => {
+    const e = table[id];
+    parent[i] = e.parent ? ids.indexOf(e.parent) : -1;
+    origin.set(e.origin.map((v) => v * vs), i * 3); rest.push([0, 0, 0]); box.set(e.box.map((v) => v * vs), i * 6);
+  });
+  return { P, ids, parent, origin, rest, box, vs };
+}
+
 /**
  * Build a flat description {ids, parent:Int16Array, origin:Float64Array(3n) world units, rest:Array, box:Array(6n) world units} from a ModelDef
  * (box = tight grid bounds relative to the pivot) or from a rig table (HUM1_RIG, voxel units * vs).
@@ -42,30 +53,22 @@ export function describeModel(model, parts) {
   return { P, ids, parent, origin, rest, box, vs };
 }
 
-/** forward kinematics: W (Float64Array P*12, 3x4 rows) = model-space transform of every part (root-relative) */
+/** forward kinematics: W (Float64Array P*12, 3x4 rows) = model-space transform of every part (root-relative), same math as VoxSkin.add */
 export function fk(desc, pose, W) {
-  const m = new Float64Array(9), r = new Float64Array(9);
+  const m = new Float64Array(9), r = new Float64Array(9), b = new Float64Array(9);
   for (let p = 0; p < desc.P; p++) {
     const q = p * 9;
     mat3(pose[q + 3], pose[q + 4], pose[q + 5], m);
     const rs = desc.rest[p];
     if (rs[0] || rs[1] || rs[2]) {
       mat3(rs[0], rs[1], rs[2], r);
-      const b = new Float64Array(9);
       for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) b[i * 3 + j] = m[i * 3] * r[j] + m[i * 3 + 1] * r[3 + j] + m[i * 3 + 2] * r[6 + j];
       m.set(b);
     }
-    for (let j = 0; j < 3; j++) { m[j] *= pose[q + 6]; m[3 + j] *= pose[q + 7]; m[6 + j] *= pose[q + 8]; } // scale columns (approx: per-axis scale applied after rotation as VoxSkin does)
-    // VoxSkin: a00 *= psx; a10 *= psx; a20 *= psx (column scale) -> columns of the matrix
-    const tx = desc.origin[p * 3] + pose[q], ty = desc.origin[p * 3 + 1] + pose[q + 1], tz = desc.origin[p * 3 + 2] + pose[q + 2];
-    const w = p * 12, pi = desc.parent[p];
-    // undo the row-scaling above and apply column scaling like VoxSkin
-    const a = [m[0] / pose[q + 6] * pose[q + 6], 0, 0];
-    void a;
-    mat3(pose[q + 3], pose[q + 4], pose[q + 5], m);
-    if (rs[0] || rs[1] || rs[2]) { mat3(rs[0], rs[1], rs[2], r); const b = new Float64Array(9); for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) b[i * 3 + j] = m[i * 3] * r[j] + m[i * 3 + 1] * r[3 + j] + m[i * 3 + 2] * r[6 + j]; m.set(b); }
     const sx = pose[q + 6], sy = pose[q + 7], sz = pose[q + 8];
     m[0] *= sx; m[3] *= sx; m[6] *= sx; m[1] *= sy; m[4] *= sy; m[7] *= sy; m[2] *= sz; m[5] *= sz; m[8] *= sz;
+    const tx = desc.origin[p * 3] + pose[q], ty = desc.origin[p * 3 + 1] + pose[q + 1], tz = desc.origin[p * 3 + 2] + pose[q + 2];
+    const w = p * 12, pi = desc.parent[p];
     if (pi < 0) {
       W[w] = m[0]; W[w + 1] = m[1]; W[w + 2] = m[2]; W[w + 3] = tx; W[w + 4] = m[3]; W[w + 5] = m[4]; W[w + 6] = m[5]; W[w + 7] = ty; W[w + 8] = m[6]; W[w + 9] = m[7]; W[w + 10] = m[8]; W[w + 11] = tz;
     } else {
@@ -142,34 +145,83 @@ export function profileClip(model, clipId, opts = {}) {
 
 /**
  * Foot slide metric for a looping locomotion clip played at ground speed v (u/s) with rate = v / speedRef.
- * A foot is "planted" while its sole is within `plantTol` of the lowest sole height of the cycle. For each stance the world z of the
- * foot (hip travels v*t, foot z relative to the hip comes from the pose) should stay constant: slide = range of world z during the stance.
- * Returns {stride, worst, perFoot:[...], ratio} where ratio = worst slide / stride (stride = distance travelled per cycle at v).
+ * A foot is "planted" while its sole is within `plantTol` of the lowest sole height of the cycle. During a stance the foot's WORLD z
+ * (hip travels at v, foot z relative to the hip comes from the pose) should stay constant: slide = range of world z during the stance.
+ * Returns {stride, worst, perFoot, ratio}, ratio = worst slide / stride (stride = distance travelled per cycle at v).
  */
 export function footSlide(model, clipId, v, speedRef, opts = {}) {
   const rig = model.meta.rig || 'hum1';
   const dur = Animator.clipDur(clipId, rig);
-  const rate = v / speedRef, dtClip = 1 / 60;
-  const prof = profileClip(model, clipId, { t0: 0, t1: dur - dtClip, dt: dtClip });
-  const n = prof.times.length, plantTol = opts.plantTol !== undefined ? opts.plantTol : 0.035;
+  const rate = v / speedRef, dtClip = 1 / 60, plantTol = opts.plantTol !== undefined ? opts.plantTol : 0.035;
+  const prof = profileClip(model, clipId, { t0: 0, t1: 2 * dur - dtClip, dt: dtClip });   // two cycles so no stance straddles the seam
+  const n = prof.times.length;
   const stride = v * (dur / rate);
   let worst = 0; const perFoot = [];
   for (const feet of [prof.feetL, prof.feetR]) {
     let minY = Infinity; for (const f of feet) if (f[1] < minY) minY = f[1];
-    // world z of the foot over time: hip travels at v (clip time t / rate = real time)
     const zw = feet.map((f, i) => f[2] + v * (prof.times[i] / rate));
-    // find stance runs (circular)
-    const planted = feet.map((f) => f[1] <= minY + plantTol);
-    let slide = 0, i0 = planted.findIndex((p) => !p);
-    if (i0 < 0) { perFoot.push(0); continue; }
-    let runMin = 0, runMax = 0, inRun = false;
-    for (let k = 1; k <= n; k++) {
-      const i = (i0 + k) % n;
-      if (planted[i]) { const z = zw[i] + (i < i0 && k > n - i0 ? v * (dur / rate) : 0); if (!inRun) { inRun = true; runMin = runMax = z; } else { if (z < runMin) runMin = z; if (z > runMax) runMax = z; } }
-      else if (inRun) { slide = Math.max(slide, runMax - runMin); inRun = false; }
+    let slide = 0, runMin = 0, runMax = 0, inRun = false, runStart = 0;
+    for (let i = 0; i < n; i++) {
+      const pl = feet[i][1] <= minY + plantTol;
+      if (pl) { if (!inRun) { inRun = true; runStart = i; runMin = runMax = zw[i]; } else { if (zw[i] < runMin) runMin = zw[i]; if (zw[i] > runMax) runMax = zw[i]; } }
+      else if (inRun) { inRun = false; if (runStart > 0) slide = Math.max(slide, runMax - runMin); }
     }
-    if (inRun) slide = Math.max(slide, runMax - runMin);
     perFoot.push(slide); worst = Math.max(worst, slide);
   }
   return { stride, worst, perFoot, ratio: stride > 0 ? worst / stride : 0 };
+}
+
+// ------------------------------------------------------------------------------------------------------------------ live (pipeline) metrics
+/**
+ * Foot slide of the REAL pipeline: the model walks at ground speed v (u/s) for `seconds`; extra.gait accumulates v*dt exactly like u.gait in the
+ * sim, so the animator mixes walk/jog/run by speed. Planted feet (sole within plantTol of the lowest sole height) should stay put in world space.
+ * Returns {ratio, worst, stride, stepsPerSec, a, b} where ratio = worst slide / distance per gait cycle.
+ */
+export function footSlideLive(model, v, opts = {}) {
+  const desc = describeModel(model), P = desc.P, pose = new Float32Array(P * 9), W = new Float64Array(P * 12);
+  const root = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+  const iLL = model.partIndex('legLL'), iLR = model.partIndex('legLR');
+  const dt = 1 / 60, seconds = opts.seconds || 4, plantTol = opts.plantTol !== undefined ? opts.plantTol : 0.035;
+  const st = { clip: opts.clip || 'walk', t: 0, rate: 1, flinch: 0, dir: 0, prev: opts.clip || 'walk', blend: 1 };
+  const extra = { root, speed: v, gait: 0, id: 7, t: 0, heading: 0, scale: 1 };
+  const info = Animator.gaitInfo(model, v);
+  const n = Math.round(seconds / dt), L = [], R = [];
+  for (let i = 0; i < n; i++) {
+    extra.gait = v * i * dt; extra.t = i * dt; st.t = i * dt;
+    Animator.pose(model, st, extra, pose);
+    fk(desc, pose, W);
+    L.push(partPointWorld(desc, W, iLL, 0, -0.5, 0, root, [0, 0, 0]).slice());
+    R.push(partPointWorld(desc, W, iLR, 0, -0.5, 0, root, [0, 0, 0]).slice());
+  }
+  let worst = 0; const skip = Math.round(0.5 / dt);
+  for (const feet of [L, R]) {
+    let minY = Infinity; for (let i = skip; i < n; i++) if (feet[i][1] < minY) minY = feet[i][1];
+    let inRun = false, lo = 0, hi = 0, start = 0;
+    for (let i = skip; i < n; i++) {
+      const zw = feet[i][2] + v * i * dt;
+      const pl = feet[i][1] <= minY + plantTol;
+      if (pl) { if (!inRun) { inRun = true; start = i; lo = hi = zw; } else { if (zw < lo) lo = zw; if (zw > hi) hi = zw; } }
+      else if (inRun) { inRun = false; if (start > skip) worst = Math.max(worst, hi - lo); }
+    }
+  }
+  const stride = info ? info.stride : 0;
+  return { ratio: stride ? worst / stride : 0, worst, stride, stepsPerSec: info ? info.stepsPerSec : 0, a: info && info.a, b: info && info.b };
+}
+
+/** per-frame speed (u/s) of a model point attached to a part (pivot frame, world units) over a clip; returns {speeds[], peakFrame} */
+export function pointSpeedProfile(model, clipId, partId, local, opts = {}) {
+  const desc = describeModel(model), P = desc.P, pose = new Float32Array(P * 9), W = new Float64Array(P * 12);
+  const root = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+  const rig = model.meta.rig || 'hum1', idx = model.partIndex(partId);
+  const dur = Animator.clipDur(clipId, rig), N = Math.round(dur * 30);
+  const st = { clip: clipId, t: 0, rate: 1, flinch: 0, dir: 0, prev: clipId, blend: 1 };
+  const pts = [];
+  for (let f = 0; f < N; f++) {
+    st.t = f / 30; Animator.pose(model, st, { root, heading: 0, scale: 1 }, pose); fk(desc, pose, W);
+    pts.push(partPointWorld(desc, W, idx, local[0], local[1], local[2], root, [0, 0, 0]).slice());
+  }
+  const speeds = [0];
+  for (let f = 1; f < N; f++) speeds.push(Math.hypot(pts[f][0] - pts[f - 1][0], pts[f][1] - pts[f - 1][1], pts[f][2] - pts[f - 1][2]) * 30);
+  let peak = 0; for (let f = 1; f < N; f++) if (speeds[f] > speeds[peak]) peak = f;
+  return { speeds, peakFrame: peak, points: pts };
 }

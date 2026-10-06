@@ -76,7 +76,7 @@ export class LG {
     const len = Math.hypot(dx, dy, dz), n = Math.max(2, Math.ceil(len * 2.2));
     for (let i = 0; i <= n; i++) {
       const t = i / n, r = r0 + (r1 - r0) * t;
-      this.ell(p0[0] + dx * t, p0[1] + dy * t, p0[2] + dz * t, Math.max(0.5, r * xs), Math.max(0.5, r), Math.max(0.5, r), v, mode);
+      this._ell(p0[0] + dx * t, p0[1] + dy * t, p0[2] + dz * t, Math.max(0.5, r * xs), Math.max(0.5, r), Math.max(0.5, r), v, mode);
     }
     return this;
   }
@@ -86,8 +86,8 @@ export class LG {
     const n = Math.max(1, Math.ceil(Math.hypot(dx, dy, dz) * 2));
     for (let i = 0; i <= n; i++) {
       const f = i / n, x = p0[0] + dx * f, y = p0[1] + dy * f, z = p0[2] + dz * f;
-      if (t <= 1) { if (mode === 'empty') this.setIfEmpty(x, y, z, v); else this.set(x, y, z, v); }
-      else this.ell(x, y, z, t / 2, t / 2, t / 2, v, mode);
+      if (t <= 1) { if (mode === 'empty') this._setIfEmpty(x, y, z, v); else this._set(x, y, z, v); }
+      else this._ell(x, y, z, t / 2, t / 2, t / 2, v, mode);
     }
     return this;
   }
@@ -97,17 +97,17 @@ export class LG {
     if (axis === 'x') { // a=y, b=z
       for (let y = Math.floor(a - r) - 1; y <= Math.ceil(a + r) + 1; y++) for (let z = Math.floor(b - r) - 1; z <= Math.ceil(b + r) + 1; z++) {
         const yy = y + 0.5, zz = z + 0.5; if ((yy - a) * (yy - a) + (zz - b) * (zz - b) > rr) continue;
-        this.box(s0, yy - 0.5, zz - 0.5, s1, yy + 0.5, zz + 0.5, v, mode);
+        this._box(s0, yy - 0.5, zz - 0.5, s1, yy + 0.5, zz + 0.5, v, mode);
       }
     } else if (axis === 'y') { // a=x, b=z
       for (let x = Math.floor(a - r) - 1; x <= Math.ceil(a + r) + 1; x++) for (let z = Math.floor(b - r) - 1; z <= Math.ceil(b + r) + 1; z++) {
         const xx = x + 0.5, zz = z + 0.5; if ((xx - a) * (xx - a) + (zz - b) * (zz - b) > rr) continue;
-        this.box(xx - 0.5, s0, zz - 0.5, xx + 0.5, s1, zz + 0.5, v, mode);
+        this._box(xx - 0.5, s0, zz - 0.5, xx + 0.5, s1, zz + 0.5, v, mode);
       }
     } else { // z: a=x, b=y
       for (let x = Math.floor(a - r) - 1; x <= Math.ceil(a + r) + 1; x++) for (let y = Math.floor(b - r) - 1; y <= Math.ceil(b + r) + 1; y++) {
         const xx = x + 0.5, yy = y + 0.5; if ((xx - a) * (xx - a) + (yy - b) * (yy - b) > rr) continue;
-        this.box(xx - 0.5, yy - 0.5, s0, xx + 0.5, yy + 0.5, s1, v, mode);
+        this._box(xx - 0.5, yy - 0.5, s0, xx + 0.5, yy + 0.5, s1, v, mode);
       }
     }
     return this;
@@ -128,6 +128,22 @@ export class LG {
   solidIdx(i, j, k) { return this.g.inb(i, j, k) && this.g.d[this.g.idx(i, j, k)] !== 0; }
   count() { return this.g.count(); }
   bounds() { return this.g.bounds(); }
+}
+LG.prototype._box = LG.prototype.box; LG.prototype._ell = LG.prototype.ell; LG.prototype._set = LG.prototype.set; LG.prototype._setIfEmpty = LG.prototype.setIfEmpty;
+
+/**
+ * LG whose modelling coordinates (box/ell/tube/line/cyl/set and the grid size + pivot) are multiplied by `k`: write a machine once at
+ * "design size" and build it bigger (siege engines must tower over their hum_lite crews). Value functions get the real voxel coordinates.
+ */
+export class SLG extends LG {
+  constructor(k, sx, sy, sz, px, py, pz) { super(Math.ceil(sx * k), Math.ceil(sy * k), Math.ceil(sz * k), px * k, py * k, pz * k); this.k = k; }
+  set(x, y, z, v) { const k = this.k; return super.set(x * k, y * k, z * k, v); }
+  setIfEmpty(x, y, z, v) { const k = this.k; return super.setIfEmpty(x * k, y * k, z * k, v); }
+  box(x0, y0, z0, x1, y1, z1, v, mode) { const k = this.k; return super.box(x0 * k, y0 * k, z0 * k, x1 * k, y1 * k, z1 * k, v, mode); }
+  ell(cx, cy, cz, rx, ry, rz, v, mode) { const k = this.k; return super.ell(cx * k, cy * k, cz * k, rx * k, ry * k, rz * k, v, mode); }
+  tube(p0, p1, r0, r1, v, xs, mode) { const k = this.k; return super.tube(p0.map((n) => n * k), p1.map((n) => n * k), r0 * k, r1 * k, v, xs, mode); }
+  line(p0, p1, v, t = 1, mode) { const k = this.k; return super.line(p0.map((n) => n * k), p1.map((n) => n * k), v, t <= 1 ? 1 : t * k, mode); }
+  cyl(axis, a, b, s0, s1, r, v, mode) { const k = this.k; return super.cyl(axis, a * k, b * k, s0 * k, s1 * k, r * k, v, mode); }
 }
 
 /**
@@ -324,5 +340,44 @@ export function modelStats(model) {
 export function newModel(id, meta = {}) {
   const m = new ModelDef(id, VS);
   m.meta = Object.assign({ author: 'beasts' }, meta);
+  return m;
+}
+
+// ---------------------------------------------------------------- wheels
+/**
+ * Spoked wheel with its axle along X, pivot at the hub centre (rotate about X to roll). radius/thickness in voxels.
+ * o: {spokes=6, rim, spoke, hub, tire, rimW}
+ */
+export function wheelLG(radius, thickness, o = {}) {
+  const n = 2 * Math.ceil(radius) + 2, spokes = o.spokes || 6;
+  const lg = new LG(thickness, n, n, thickness / 2, n / 2, n / 2);
+  const rim = o.rim ?? V(C.wood), spoke = o.spoke ?? V(C.woodLight), hub = o.hub ?? V(C.woodDark), tire = o.tire ?? null, rimW = o.rimW ?? 1.8;
+  const half = thickness / 2;
+  for (let j = 0; j < n; j++) for (let k = 0; k < n; k++) {
+    const y = lg.cy(j), z = lg.cz(k), d = Math.hypot(y, z);
+    if (d > radius) continue;
+    let v = 0;
+    if (d >= radius - rimW) v = rim;
+    else if (d < Math.max(1.6, radius * 0.22)) v = hub;
+    else {
+      for (let s = 0; s < spokes / 2; s++) { const a = (s * Math.PI * 2) / spokes; if (Math.abs(y * Math.cos(a) - z * Math.sin(a)) < 0.72) { v = spoke; break; } }
+    }
+    if (!v) continue;
+    for (let i = 0; i < thickness; i++) {
+      let vv = v;
+      if (tire && d >= radius - 0.9) vv = tire;
+      if (v === hub && (i === 0 || i === thickness - 1)) vv = o.hubCap ?? hub;
+      // thin spokes sit in the middle of the wheel thickness
+      if (v === spoke && thickness > 2 && (i === 0 || i === thickness - 1) && !(o.fullSpokes)) continue;
+      lg.g.set(i, j, k, vv);
+    }
+  }
+  return lg;
+}
+
+/** Final touch for a single-rig model: meta.subrigs (one record covering every part) and an empty clipMap unless already set. */
+export function finishModel(m) {
+  m.meta.subrigs = [{ prefix: '', rig: m.meta.rig, parts: m.parts.map((p) => p.id), kind: m.meta.kind || '' }];
+  if (!m.meta.clipMap) m.meta.clipMap = {};
   return m;
 }

@@ -172,6 +172,7 @@ export function buildContent() {
     mutators: MUTATORS.map(([id, name, desc, stars]) => ({ id, name, desc, stars })),
     glossary: {},
     formations: FORMATIONS,
+    customDef: (cs) => ({ id: cs.id, name: cs.name, role: cs.role || 'melee', cost: cs.cost || 100, faction: 'custom', tags: [], hp: 100, armor: 0.1, speed: 3, melee: { dmg: 12, cd: 1.1, range: 1.5 }, text: { blurb: 'Made in the Soldier Workshop.' } }),
   };
 }
 
@@ -193,7 +194,7 @@ export function buildSave(content, opts) {
     get() { return stats.totals; },
   };
   const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', size: 'medium', thumb: content.arenaThumb('marathon') }, { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', size: 'small', thumb: content.arenaThumb('oasis') }]);
-  const soldiers = collection([{ id: 'cs_chad', name: 'Sir Chadius the Mildly Concerned', blueprint: { v: 1 }, stats: {} }, { id: 'cs_pan', name: 'Frying Pan Dave', blueprint: { v: 1 }, stats: {} }, { id: 'cs_olive', name: 'Olive Branch Olga', blueprint: { v: 1 }, stats: {} }]);
+  const soldiers = collection([{ id: 'cs_chad', name: 'Sir Chadius the Mildly Concerned', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 140 }, { id: 'cs_pan', name: 'Frying Pan Dave', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 95 }, { id: 'cs_olive', name: 'Olive Branch Olga', blueprint: { v: 1 }, stats: {}, role: 'support', cost: 120 }]);
   const armies = collection([{ id: 'army_phalanx', name: 'Big Phalanx Energy', n: 38, cost: 3900 }, { id: 'army_birds', name: 'Chicken Rain Insurance', n: 61, cost: 2400 }]);
   return {
     arenas, soldiers, armies, progress, stats,
@@ -267,14 +268,15 @@ function mountTurntable(container, opts, ctxDefs, factions) {
     if (!dragging && !(typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches) && !document.documentElement.classList.contains('vw-reduce-motion')) ang += 0.012;
     const ca = Math.cos(ang), sa = Math.sin(ang);
     const sc = Math.min(w, hgt) / 34;
-    const bob = clip === 'idle' ? Math.sin(t * 2) * 0.3 : 0;
+    const kind = /^(strike|shoot|throw|launch|kick)/.test(clip) ? 'attack' : /^block/.test(clip) ? 'block' : /^death/.test(clip) ? 'death' : clip;
+    const bob = kind === 'idle' ? Math.sin(t * 2) * 0.3 : 0;
     const pts = vox.map(([x, y, z, c]) => {
       let yy = y + bob, xx = x, zz = z;
-      if (clip === 'walk' && y < 3 && (def.role === 'melee' || def.role === 'ranged' || def.role === 'hero' || def.role === 'support')) zz += Math.sin(t * 7 + (x > 0 ? 3.14 : 0)) * 1.4;
-      if (clip === 'attack' && x >= 4 && y >= 4) zz += Math.max(0, Math.sin(t * 6)) * 5;
-      if (clip === 'block' && x <= -4) { zz -= 1; xx += 1.5; }
-      if (clip === 'cast') yy += (y > 8 ? Math.abs(Math.sin(t * 4)) * 1.5 : 0);
-      if (clip === 'death') { const k = Math.min(1, (t % 3) / 1.2); const fall = k * 1.5; yy = y * (1 - 0.8 * k) - 0 + 0; zz = z - y * 0.8 * k * fall; }
+      if (kind === 'walk' && y < 3 && (def.role === 'melee' || def.role === 'ranged' || def.role === 'hero' || def.role === 'support')) zz += Math.sin(t * 7 + (x > 0 ? 3.14 : 0)) * 1.4;
+      if (kind === 'attack' && x >= 4 && y >= 4) zz += Math.max(0, Math.sin(t * 6)) * 5;
+      if (kind === 'block' && x <= -4) { zz -= 1; xx += 1.5; }
+      if (kind === 'cast') yy += (y > 8 ? Math.abs(Math.sin(t * 4)) * 1.5 : 0);
+      if (kind === 'death') { const k = Math.min(1, (t % 3) / 1.2); const fall = k * 1.5; yy = y * (1 - 0.8 * k) - 0 + 0; zz = z - y * 0.8 * k * fall; }
       const rx = xx * ca - zz * sa, rz = xx * sa + zz * ca;
       return { sx: w / 2 + (rx - rz * 0.0) * sc * 1.0 + rz * sc * 0.0, sy: hgt * 0.84 - yy * sc * 0.85 - rz * sc * 0.45, d: rz, c };
     }).sort((a, b) => b.d - a.d);
@@ -304,6 +306,7 @@ export function buildGame(content, save, settings) {
   const units = content.units;
   const CAP = () => ({ potato: 100, papyrus: 200, marble: 300, olympian: 400 }[settings.get('quality')] || 300);
   const G = {
+    get setup() { return G._setup; },
     state: 'idle', paused: false, speed: 1, _setup: null, _brush: { mode: 'single', defId: null, team: 0, formation: 'block', count: 9, mirror: false, order: 'advance' }, _p: [[], []], _undo: [], _redo: [], _budget: [8000, 8000], _time: 0, log: [],
     newSetup(kind, preset) {
       const base = { kind, arena: { presetId: 'marathon', size: 'medium', seed: 1, env: {} }, rules: { budget: 8000, difficulty: 'normal', friendlyFire: false, morale: true, speed: 1, gore: 'red', corpses: 'fade', freePlacement: false, mirror: false, timeLimit: 0, weather: null, time: null, mood: 'auto', mutators: [], formation: 'block' }, armies: { A: { faction: 'hellenes', placements: [], budget: 8000 }, B: { faction: 'persians', placements: [], budget: 8000 } } };
@@ -315,20 +318,20 @@ export function buildGame(content, save, settings) {
     rematch() { G.log.push('rematch'); }, tweak() { G.log.push('tweak'); G.state = 'placement'; emit('state', 'placement'); }, exitToMenu() { G.log.push('exit'); G.state = 'idle'; emit('state', 'idle'); },
     tools: {
       setBrush(b) { Object.assign(G._brush, b); emit('brush', G._brush); }, brush() { return G._brush; },
-      place(team, defId, n) { const def = units[defId]; if (!def) return false; const cost = def.cost * n; if (G.info.budget(team).left < cost) return false; for (let i = 0; i < n; i++) G._p[team].push({ defId, x: (i % 5) * 1.2 + (team ? 20 : -20), z: Math.floor(i / 5) * 1.2, heading: team ? Math.PI : 0 }); G._undo.push({ team, n }); G._redo = []; emit('placed', { team, defId, n }); return true; },
-      undo() { const u = G._undo.pop(); if (!u) return; G._p[u.team].splice(-u.n); G._redo.push(u); }, redo() { const u = G._redo.pop(); if (!u) return; G._undo.push(u); for (let i = 0; i < u.n; i++) G._p[u.team].push({ defId: 'hoplite', x: 0, z: 0, heading: 0 }); },
+      place(team, defId, n) { const def = units[defId]; if (!def) return false; const cost = def.cost * n; if (G.info.budget(team).left < cost) return false; for (let i = 0; i < n; i++) G._p[team].push({ defId, x: (i % 5) * 1.2 + (team ? 20 : -20), z: Math.floor(i / 5) * 1.2, heading: team ? Math.PI : 0 }); G._undo.push({ team, n }); G._redo = []; emit('placed', { team, defId, n }); emit('placement_changed'); return true; },
+      undo() { const u = G._undo.pop(); if (!u) return; G._p[u.team].splice(-u.n); G._redo.push(u); emit('placement_changed'); }, redo() { const u = G._redo.pop(); if (!u) return; G._undo.push(u); for (let i = 0; i < u.n; i++) G._p[u.team].push({ defId: 'hoplite', x: 0, z: 0, heading: 0 }); emit('placement_changed'); },
       canUndo() { return G._undo.length > 0; }, canRedo() { return G._redo.length > 0; },
-      clear(team) { if (team === undefined) { G._p = [[], []]; } else G._p[team] = []; G._undo = []; G._redo = []; },
+      clear(team) { if (team === undefined) { G._p = [[], []]; } else G._p[team] = []; G._undo = []; G._redo = []; emit('placement_changed'); },
       autoFill(team, o) {
         o = o || {};
-        const cap = o.budget || G._budget[team];
-        const pool = Object.keys(units).filter((id) => (!o.faction || o.faction === 'mixed' || units[id].faction === o.faction) && units[id].role !== 'monster' && units[id].cost <= cap);
+        const target = Math.min(o.budget || G._budget[team], G._budget[team]);
+        const pool = Object.keys(units).filter((id) => (!o.faction || o.faction === 'mixed' || units[id].faction === o.faction) && units[id].role !== 'monster' && units[id].cost <= target);
         let guard = 0;
-        while (guard++ < 400) { const left = G.info.budget(team).left; const afford = pool.filter((id) => units[id].cost <= left); if (!afford.length || G._p[team].length >= CAP()) break; const id = afford[(guard * 7 + team * 3) % afford.length]; G._p[team].push({ defId: id, x: 0, z: 0, heading: 0 }); }
-        G._undo.push({ team, n: 1 });
+        while (guard++ < 400) { const spent = G.info.budget(team).spent; const afford = pool.filter((id) => spent + units[id].cost <= target); if (!afford.length || G._p[team].length >= CAP()) break; const id = afford[(guard * 7 + team * 3) % afford.length]; G._p[team].push({ defId: id, x: 0, z: 0, heading: 0 }); }
+        G._undo.push({ team, n: 1 }); emit('placement_changed');
       },
       saveArmy(name) { const it = { id: makeId('army'), name, n: G._p[0].length, cost: G._p[0].reduce((s, p) => s + units[p.defId].cost, 0), placements: clone(G._p[0]) }; save.armies.put(it); return it; },
-      loadArmy(idOrData) { const a = typeof idOrData === 'string' ? save.armies.get(idOrData) : idOrData; if (!a) return false; G._p[G._brush.team] = a.placements ? clone(a.placements) : G._p[G._brush.team]; return true; },
+      loadArmy(idOrData) { const a = typeof idOrData === 'string' ? save.armies.get(idOrData) : idOrData; if (!a) return false; G._p[G._brush.team] = a.placements ? clone(a.placements) : G._p[G._brush.team]; emit('placement_changed'); return true; },
       exportArmy() { return 'VW1.army.' + btoa(JSON.stringify(G._p[0].slice(0, 5))).replace(/=+$/, '') + '.0badc0de'; },
       importArmy(text) { if (typeof text === 'string' && !text.startsWith('VW1.army.')) throw new Error('This code is for something else, not an army.'); return true; },
     },
@@ -368,7 +371,7 @@ export function createMockApp(opts) {
     get: (k) => store[k], set: (k, v) => { store[k] = v; setEm.emit(k, v); }, on: (fn) => setEm.on(fn), all: () => Object.assign({}, store),
   };
   const save = buildSave(content, { storage: opts.storage });
-  const calls = { audio: [], toasts: [], downloads: [], clipboard: [] };
+  const calls = { audio: [], toasts: [], downloads: [], clipboard: [], misc: [] };
   const audio = {
     play: (cue, o) => { calls.audio.push(cue); }, music: { setMood() {}, setIntensity() {} }, duck() {}, setVolume: (b, v) => { store['vol.' + b] = v; }, getVolume: (b) => store['vol.' + b], state: () => 'running',
     diagnostics: () => ({ loaded: { embedded: 38, fetched: 71, synth: 3, failed: 0 } }),

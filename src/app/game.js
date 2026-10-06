@@ -24,6 +24,18 @@ export const BUDGET_PRESETS = { skirmish: 3000, battle: 8000, war: 20000, epic: 
 export const TIER_CAP = { potato: 100, papyrus: 200, marble: 300, olympian: 400 };
 const TYPE_CAP = 16;
 
+const DEFAULT_SCOUT = {
+  no_anti_cav: 'Enemy cavalry is coming and you have no spears. Hoplites like horses (at a distance).',
+  exposed_archers: 'Your archers are exposed to cavalry. Put a spear line in front of them.',
+  no_ranged: 'No ranged units at all. The enemy can stand back and enjoy the show.',
+  no_cavalry: 'The enemy shoots a lot and you have no horses to ride them down.',
+  siege_exposed: 'Enemy siege engines are unguarded targets. Horses love unguarded targets.',
+  blob_vs_ranged: 'A tight blob of infantry meets ranged fire. Spread out or bring cavalry.',
+  monster_incoming: 'A very large monster is on the other side. Fire and focus help.',
+  no_support: 'No healers or leaders. Your army will run out of encouragement.',
+  one_note: 'Your army has one note. It is a good note, but it is the only note.',
+};
+
 export class Game {
   /** @param {{engine:any, content:any, settings:any, audio:any, bus?:EventBus}} app */
   constructor(app) {
@@ -61,7 +73,7 @@ export class Game {
 
   // ------------------------------------------------------------------ setup / lifecycle
   newSetup(kind = 'quick', preset = {}) {
-    const dateSeed = kind === 'daily' ? Number(new Date().toISOString().slice(0, 10).replace(/-/g, '')) : (Math.random() * 1e9) >>> 0;
+    const dateSeed = kind === 'daily' ? (() => { const d = new Date(); return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate(); })() : (Math.random() * 1e9) >>> 0;
     const s = {
       kind, arena: Object.assign({ presetId: 'marathon', size: 'medium', seed: dateSeed, env: {} }, preset.arena || {}),
       rules: Object.assign({ budget: BUDGET_PRESETS.battle, difficulty: 'normal', friendlyFire: false, morale: true, speed: 1, gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay', freePlacement: false, mirror: false, timeLimit: 360, weather: null, mood: 'auto', mutators: [] }, preset.rules || {}),
@@ -86,7 +98,7 @@ export class Game {
     this.dispose(false);
     this.setup = setup; this.rules = setup.rules;
     const arena = this._arenaFor(setup);
-    const rules = Object.assign({}, setup.rules, { timeLimit: setup.rules.timeLimit || 360 });
+    const rules = Object.assign({}, setup.rules, { timeLimit: setup.rules.timeLimit === undefined || setup.rules.timeLimit === null ? 360 : +setup.rules.timeLimit });
     this.world = new World({ arena, seed: (setup.arena.seed || 1) >>> 0, rules, defs: this.content.defs });
     const w = this.world;
     if (MUTATORS && MUTATORS.applyMutators) MUTATORS.applyMutators(w, setup.rules.mutators || []);
@@ -210,7 +222,7 @@ export class Game {
       const u = w.addUnit(rec.defId, team, rec.positions[0][0], rec.positions[0][1], { heading: rec.heading, custom: rec.custom || undefined, def: rec.custom ? rec.custom.def : undefined });
       rec.units.push(u);
     } else {
-      const sq = w.addSquad(rec.defId, team, rec.positions.length, rec.cx !== undefined ? rec.cx : rec.positions[0][0], rec.cz !== undefined ? rec.cz : rec.positions[0][1], { heading: rec.heading, order: rec.order || 'advance', offsets: rec.offsets, def: rec.custom ? rec.custom.def : undefined });
+      const sq = w.addSquad(rec.defId, team, rec.positions.length, rec.cx !== undefined ? rec.cx : rec.positions[0][0], rec.cz !== undefined ? rec.cz : rec.positions[0][1], { heading: rec.heading, order: rec.order || 'advance', formation: rec.formation, offsets: rec.offsets, def: rec.custom ? rec.custom.def : undefined });
       // addSquad positions by offsets; snap each unit to our explicit positions
       sq.units.forEach((u, i) => { if (rec.positions[i]) { u.x = u.px = rec.positions[i][0]; u.z = u.pz = rec.positions[i][1]; u.y = u.py = w.arena.cellHeight(u.x, u.z); } });
       rec.units.push(...sq.units);
@@ -270,12 +282,26 @@ export class Game {
     if (o.replace !== false) this.tools.clear(team);
     let plan = null;
     if (ARMYGEN && ARMYGEN.generateArmy) {
-      try { plan = ARMYGEN.generateArmy({ faction, budget: this._budgetCap(team), style: o.style || 'balanced', difficulty: this.setup.rules.difficulty, defs: this.content.defs, zone, arena: a, team, world: w, against: this._enemyComposition(team), unitCap: this._teamCap() }); } catch (e) { console.warn('armygen failed, using fallback', e); }
+      try {
+        const army = ARMYGEN.generateArmy({ faction, budget: this._budgetCap(team), style: o.style || 'balanced', difficulty: this.setup.rules.difficulty, defs: this.content.defs, zone, arena: a, team, seed: (this.setup.arena.seed || 1) + team * 977 + (o.reroll || 0), against: this._enemyComposition(team), cap: this._teamCap() });
+        plan = this._recordsFromPlacements(army && army.placements);
+      } catch (e) { console.warn('armygen failed, using fallback', e); }
     }
-    if (!plan) plan = this._fallbackPlan(team, faction, this._budgetCap(team), zone, o.style);
+    if (!plan || !plan.length) plan = this._fallbackPlan(team, faction, this._budgetCap(team), zone, o.style);
     for (const rec of plan) { rec.team = team; rec.heading = this._heading(team); this._applyRecord(rec, false); }
     this.undo.clear();
     this.emit('placement', {});
+  }
+  /** armygen placements (one entry per unit, grouped by squadId) -> placement records ({defId, positions, cx, cz, heading, order}). */
+  _recordsFromPlacements(list) {
+    const groups = new Map();
+    for (const p of list || []) { const k = (p.squadId !== undefined ? p.squadId : 'solo' + groups.size) + ':' + p.defId; let g = groups.get(k); if (!g) { g = []; groups.set(k, g); } g.push(p); }
+    const out = [];
+    for (const g of groups.values()) {
+      let cx = 0, cz = 0; for (const p of g) { cx += p.x; cz += p.z; } cx /= g.length; cz /= g.length;
+      out.push({ defId: g[0].defId, positions: g.map((p) => [p.x, p.z]), cx, cz, heading: g[0].heading, order: g[0].order || 'advance', formation: g[0].formation, squadSize: g.length });
+    }
+    return out;
   }
   _enemyComposition(team) { const by = {}; if (this.world) for (const u of this.world.units) if (u.team !== team) by[u.def.id] = (by[u.def.id] || 0) + 1; return by; }
   _fallbackPlan(team, faction, budget, zone, style) {
@@ -294,14 +320,16 @@ export class Game {
     }
     return out;
   }
+  /** Scout report for the placement screen: armygen.scoutReport over the two compositions, worded by humor.scout (text per code). */
   _scout(team) {
-    const adv = []; const c = this._enemyComposition(team); const mine = this.info.counts(team).byType;
-    const myRoles = {}; for (const t of mine) { const d = this.content.defs[t.defId]; if (d) myRoles[d.role] = (myRoles[d.role] || 0) + t.n; }
-    const enemyCav = Object.keys(c).some((id) => this.content.defs[id] && this.content.defs[id].role === 'cavalry');
-    const mySpears = mine.some((t) => (this.content.defs[t.defId].tags || []).includes('spear'));
-    if (enemyCav && !mySpears) adv.push({ kind: 'warn', text: 'Enemy cavalry detected and you have no spears. Hoplites like horses (at a distance).' });
-    if ((myRoles.ranged || 0) > 0 && !(myRoles.melee || 0)) adv.push({ kind: 'warn', text: 'Archers with no front line. They will have to fight the enemy with strongly worded arrows.' });
-    return adv;
+    const defs = this.content.defs, mine = {}, theirs = this._enemyComposition(team);
+    for (const t of this.info.counts(team).byType) mine[t.defId] = t.n;
+    if (!Object.keys(mine).length || !ARMYGEN || !ARMYGEN.scoutReport) return [];
+    const words = (this.content.humor && this.content.humor.scout) || {};
+    return ARMYGEN.scoutReport(defs, mine, theirs).map((a) => {
+      const w = words[a.code] || {};
+      return { code: a.code, severity: a.severity > 0.35 ? 'weak' : 'tip', kind: a.severity > 0.35 ? 'warn' : 'tip', text: w.text || DEFAULT_SCOUT[a.code] || a.code, counters: a.ids || [], share: a.share };
+    });
   }
 
   // ------------------------------------------------------------------ battle control
@@ -314,8 +342,18 @@ export class Game {
     for (const k of ['A', 'B']) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));
     w.start(3); this.state = 'countdown'; this.acc = 0;
     this.rig.setMode(this.settings.get('cinematicStart') ? 'cinematic' : 'orbit');
+    this.frameArmies();
     this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('battle', { theme: w.arena.env.theme });
     this.emit('state', { state: 'countdown' });
+  }
+  /** Aim the orbit camera at the middle of the fight and pull back just far enough to hold both armies (smoothed by the rig). */
+  frameArmies(snap) {
+    const w = this.world; if (!w || !w.units.length) return;
+    let cx = 0, cz = 0; for (const u of w.units) { cx += u.x; cz += u.z; } cx /= w.units.length; cz /= w.units.length;
+    let r = 0; for (const u of w.units) r = Math.max(r, Math.hypot(u.x - cx, u.z - cz));
+    const dist = Math.min(this.rig.limits.maxDist, Math.max(this.rig.limits.minDist, r * 1.12 + 14));
+    this.rig.tx = cx; this.rig.tz = cz; this.rig.ty = w.arena.heightAt(cx, cz) + 1; this.rig.dist = dist;
+    if (snap) this.rig.snap();
   }
   pause(b) { this.paused = !!b; this.emit('pause', { paused: this.paused }); }
   isPaused() { return this.paused; }
@@ -325,7 +363,7 @@ export class Game {
   tweak() { const s = this.setup; if (!s) return; return this.begin(s, { keepPlacements: true }); }
   exitToMenu() { this.dispose(true); this.state = 'idle'; this.emit('state', { state: 'idle' }); }
 
-  command(c) { if (!this.world) return; this.world.input(this.world.tickN + 1, c); }
+  command(c) { if (!this.world || !c) return; this.world.input(this.world.tickN + 1, Object.assign({ type: 'command' }, c)); }
   cast(power, x, z, team = 0) { if (!this.world) return; this.world.input(this.world.tickN + 1, { type: 'cast', power, x, z, team }); }
   select(id) { this.selectedId = id || 0; this.view.selected = this.selectedId; this.emit('select', { id: this.selectedId }); }
   selected() { return this.selectedId; }

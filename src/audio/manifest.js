@@ -45,7 +45,8 @@ export class Catalog {
     let url = r.url || '';
     if (!url) {
       if (!rel) return null;
-      url = /^assets\//.test(rel) ? rel : `assets/${kind === 'vfx' ? 'vfx' : 'audio/' + kind}/${rel}`;
+      // the ledger stores `path` relative to assets/ (audio/sfx/x.mp3); a bare `file` lives in assets/audio/<kind>/
+      url = /^assets\//.test(rel) ? rel : /^(audio|vfx)\//.test(rel) ? `assets/${rel}` : `assets/${kind === 'vfx' ? 'vfx' : 'audio/' + kind}/${rel}`;
     }
     const tags = arr(r.tags).map((t) => String(t).toLowerCase());
     const moodsRaw = arr(r.moods).concat(arr(r.mood));
@@ -54,15 +55,17 @@ export class Catalog {
     for (const m of moodsRaw) { const mm = /^battle[_-](low|mid|high)$/.exec(String(m).toLowerCase()); if (mm) energy = mm[1]; }
     const lc = r.loop_check || r.loopCheck || null;
     const fadeOut = Number(r.fade_out ?? r.fadeOut ?? 0) || 0;
+    // the ledger's notes carry the seam metrics: "end-vs-start RMS dB -38.56" = the tail was faded out in the file
+    const nm = /end-vs-start RMS dB (-?\d+(?:\.\d+)?)/.exec(String(r.notes || '')); const endVsStart = nm ? Number(nm[1]) : NaN;
     const e = {
       id, kind, url, category: String(r.category || r.cat || '').toLowerCase(), tags, tagSet: new Set(tags),
       core: !!r.core, dur: Number(r.dur ?? r.duration ?? 0) || 0, size: Number(r.size || 0) || 0,
       loop: r.loop === true || (lc && lc.loop === true && r.loop !== false),
       loopStart: r.loopStart !== undefined ? Number(r.loopStart) : undefined, loopEnd: r.loopEnd !== undefined ? Number(r.loopEnd) : undefined,
       moods, themes: arr(r.themes).concat(arr(r.theme)).map((t) => String(t).toLowerCase()), energy: String(energy).toLowerCase(),
-      bpm: Number(r.bpm || 0) || 0, gainDb: Number(r.gainDb ?? r.gain_db ?? 0) || 0, lufs: Number(r.lufs ?? NaN),
+      bpm: Number(r.bpm || 0) || 0, gainDb: Number(r.gainDb ?? r.gain_db ?? 0) || 0, lufs: Number(r.lufs ?? r.integratedLoudness ?? NaN),
       // a baked-in fade-out means the tail is already silent: the crossfade loop must not fade it a second time
-      bakedFade: fadeOut >= 0.8 || (lc && Number(lc.tail_vs_body_db) < -12) || false,
+      bakedFade: fadeOut >= 0.8 || (lc && Number(lc.tail_vs_body_db) < -12) || endVsStart < -12 || false,
       license: r.license || r.licence || '', author: r.author || '', title: r.title || '', source: r.source || r.source_url || '',
     };
     return e;

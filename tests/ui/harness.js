@@ -3,6 +3,7 @@
 import { createMockApp } from '../../src/ui/mockctx.js';
 import * as K from '../../src/ui/kit.js';
 import { SCENARIOS } from './scenarios.js';
+import CREDITS_MD from '../../assets/CREDITS.md';
 
 function sceneStandIn(kind, content) {
   const el = document.createElement('div');
@@ -18,18 +19,38 @@ function sceneStandIn(kind, content) {
     add('left:46%;bottom:21%;width:3rem;height:3rem;background:#e3c887;border:3px solid #14163a;border-radius:8px');
     for (let i = 0; i < 9; i++) { add(`left:${48 + i * 3}%;bottom:25%;width:1.1rem;height:1.6rem;background:${i % 2 ? '#3b6cf0' : '#ee4b4b'};border:2px solid #14163a;border-radius:4px`); }
   } else if (kind === 'scene') {
-    el.style.background = 'linear-gradient(180deg,#6ec6ff 0%,#cfeaff 30%)';
+    el.style.background = 'linear-gradient(180deg,#6ec6ff 0%,#cfeaff 38%,#9ed3ff 100%)';
     const img = document.createElement('div');
     const url = content.arenaThumb('marathon');
-    img.style.cssText = `position:absolute;left:8%;right:8%;top:22%;bottom:-30%;background:url(${url}) center/cover;transform:perspective(900px) rotateX(52deg);transform-origin:50% 100%;border:3px solid #14163a;image-rendering:pixelated`;
+    img.style.cssText = `position:absolute;left:-15%;right:-15%;top:24%;height:110%;background:url(${url}) center/100% 100%;transform:perspective(900px) rotateX(62deg);transform-origin:50% 0;border:3px solid #14163a;image-rendering:pixelated`;
     el.appendChild(img);
+    const add = (css) => { const d = document.createElement('div'); d.style.cssText = 'position:absolute;' + css; el.appendChild(d); return d; };
+    for (let i = 0; i < 14; i++) add(`left:${22 + (i % 7) * 2.2}%;top:${48 + Math.floor(i / 7) * 3.2}%;width:.9rem;height:1.5rem;background:#3b6cf0;border:2px solid #14163a;border-radius:4px`);
+    for (let i = 0; i < 14; i++) add(`left:${62 + (i % 7) * 2.2}%;top:${48 + Math.floor(i / 7) * 3.2}%;width:.9rem;height:1.5rem;background:#ee4b4b;border:2px solid #14163a;border-radius:4px`);
   }
   return el;
 }
 
+// Screens owned by other agents (UI-B, editors) may not exist yet: a tiny stand-in module lets navigation from my screens be tested end to end.
+const STUB_IDS = ['campaign', 'survival', 'daily', 'arena_builder', 'workshop', 'battle', 'pause', 'results', 'briefing', 'countdown'];
+function stub(id) {
+  return {
+    meta: { id, layer: 'menu', music: 'none', canvas: 'none' },
+    mount(root, ctx) {
+      const el = document.createElement('div'); el.className = 'vw-page'; el.dataset.stub = id;
+      const t = document.createElement('h1'); t.className = 'vw-page__title'; t.textContent = 'Stand-in: ' + id;
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'vw-btn'; b.id = 'stub-back'; b.textContent = 'Back'; b.addEventListener('click', () => ctx.nav.back());
+      el.append(t, b); root.appendChild(el);
+      return { destroy() {}, onBack() { ctx.nav.back(); return true; } };
+    },
+  };
+}
+
 export function boot(mods) {
+  window.__VW_CREDITS__ = CREDITS_MD;
   const registry = {};
   for (const m of mods) if (m && m.meta) registry[m.meta.id] = m;
+  for (const id of STUB_IDS) if (!registry[id]) registry[id] = stub(id);
   let stage = null;
   const app = createMockApp({
     registry,
@@ -54,6 +75,42 @@ export function boot(mods) {
       await new Promise((r) => setTimeout(r, 60));
       if (sc.setup) await sc.setup(ui);
       return true;
+    },
+    /** Activate every visible interactive element of a scenario (fresh screen each time). Big homogeneous groups are sampled (first/middle/last). */
+    async clickthrough(name, opts) {
+      const SELQ = '#vw-root button, #vw-root [role=button], #vw-root [role=tab], #vw-root [role=radio], #vw-root [role=switch], #vw-root [role=menuitem], #vw-root summary, #vw-root select, #vw-root input[type=checkbox], #vw-root input[type=search], #vw-root input[type=text]';
+      const vis = (el) => { const r = el.getBoundingClientRect(); const cs = getComputedStyle(el); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none' && !el.closest('.vw-hide,[hidden],[inert]'); };
+      const targets = () => Array.from(document.querySelectorAll(SELQ)).filter((el) => vis(el) && !el.disabled && !el.closest('.vw-bg,.vw-tip'));
+      const fast = !!(opts && opts.fast);
+      await ui.run(name);
+      const list = targets();
+      // sample large homogeneous groups
+      const groupOf = (el) => el.closest('[role=radiogroup],[role=tablist],.vw-qb__strip,.vw-pl__cards,.vw-cx__grid,.vw-chips') || null;
+      const counts = new Map(); const picked = [];
+      list.forEach((el, i) => { const g = groupOf(el); if (!g) { picked.push(i); return; } const a = counts.get(g) || []; a.push(i); counts.set(g, a); });
+      counts.forEach((a) => { if (a.length <= 6) picked.push(...a); else picked.push(a[0], a[Math.floor(a.length / 2)], a[a.length - 1]); });
+      picked.sort((a, b) => a - b);
+      const results = [];
+      for (const idx of picked) {
+        await ui.run(name);
+        const els = targets(); const el = els[idx]; if (!el) continue;
+        const name2 = (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 30);
+        const already = (el.getAttribute('role') === 'radio' || el.getAttribute('role') === 'tab') && (el.getAttribute('aria-checked') === 'true' || el.getAttribute('aria-selected') === 'true');
+        const snap = () => ({ screen: app.nav.current(), game: app.game.log.length, dl: app.calls.downloads.length, clip: app.calls.clipboard.length, misc: app.calls.misc.length, checked: el.checked, value: el.value, selIdx: el.selectedIndex, pressed: el.getAttribute('aria-pressed'), ac: el.getAttribute('aria-checked'), sel: el.getAttribute('aria-selected'), open: el.parentElement && el.parentElement.open });
+        const before = snap(); let mut = 0;
+        const mo = new MutationObserver((l) => { mut += l.length; });
+        mo.observe(document.getElementById('vw-root'), { childList: true, subtree: true, attributes: true, characterData: true });
+        if (el.tagName === 'SELECT') { el.selectedIndex = (el.selectedIndex + 1) % el.options.length; el.dispatchEvent(new Event('change', { bubbles: true })); }
+        else if (el.tagName === 'INPUT' && (el.type === 'search' || el.type === 'text')) { el.value = 'zzq'; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
+        else el.click();
+        await ui.sleep(fast ? 50 : 90);
+        mo.disconnect();
+        const after = snap();
+        const changed = Object.keys(before).some((k) => before[k] !== after[k]);
+        const effect = mut > 0 || changed || !!document.querySelector('.vw-modal') || !!document.querySelector('.vw-toast');
+        results.push({ id: el.id, text: name2, tag: el.tagName.toLowerCase(), already, effect: effect || already });
+      }
+      return { total: list.length, tested: results.length, dead: results.filter((r) => !r.effect) };
     },
     goto(id, params) { return app.goto(id, params); },
     q: (s) => document.querySelector(s),

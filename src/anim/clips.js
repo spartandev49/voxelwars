@@ -15,8 +15,9 @@ export const DEFAULT_META = {
   // humanoid
   idle:            { dur: 2.4, loop: true },
   idle_combat:     { dur: 1.6, loop: true },
-  walk:            { dur: 1.0, loop: true, speedRef: 2.6 },
-  run:             { dur: 0.7, loop: true, speedRef: 4.6 },
+  walk:            { dur: 0.8, loop: true, speedRef: 2.4 },
+  jog:             { dur: 0.68, loop: true, speedRef: 3.8 },
+  run:             { dur: 0.64, loop: true, speedRef: 5.6 },
   strike_slash_1:  { dur: 0.62, hit: 0.30 },
   strike_slash_2:  { dur: 0.62, hit: 0.30 },
   strike_overhead: { dur: 0.95, hit: 0.46 },
@@ -39,7 +40,7 @@ export const DEFAULT_META = {
   getup:           { dur: 0.90 },
   cheer:           { dur: 1.2, loop: true },
   taunt:           { dur: 1.6 },
-  rout:            { dur: 0.6, loop: true, speedRef: 5.0 },
+  rout:            { dur: 0.5, loop: true, speedRef: 5.0 },
   cower:           { dur: 1.0, loop: true },
   sit:             { dur: 1.5, loop: true },
   // mounted / crew
@@ -96,6 +97,8 @@ export const ClipLib = {
   /** timing record {dur, hit?, loop, speedRef?} (never null; unknown clips fall back to idle timing). `rig` selects a rig-specific variant. */
   meta(id, rig) { return (rig !== undefined && qmeta[rig + ':' + id]) || meta[id] || meta.idle; },
   dur(id, rig) { return this.meta(id, rig).dur; },
+  /** same as dur (name used by decisions_r3 D5: deathLinger = max(1.6, duration + 0.2)) */
+  duration(id, rig) { return this.meta(id, rig).dur; },
   hit(id, rig) { const m = this.meta(id, rig); return m.hit === undefined ? m.dur * 0.5 : m.hit; },
   get(id, rig) { return (rig !== undefined && qclips[rig + ':' + id]) || clips[id] || null; },
   /** rig-specific variant only (no fallback to the plain id) */

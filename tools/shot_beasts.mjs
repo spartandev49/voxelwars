@@ -13,16 +13,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
 const flag = (k) => process.argv.includes('--' + k);
 
-// VoxSkin currently guards at 24 parts; the spec cap is 48 (spec section 2). The sheet patches the guard locally (request filed in docs/requests/beasts.md).
-const raise48 = {
-  name: 'voxskin-48',
-  setup(b) {
-    b.onLoad({ filter: /render[\\/]voxskin\.js$/ }, (a) => ({ contents: fs.readFileSync(a.path, 'utf8').replace('this.P > 24', 'this.P > 48'), loader: 'js' }));
-  },
-};
-
 async function bundle() {
-  const r = await build({ entryPoints: [path.join(root, 'tests/beasts/sheet_demo.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', plugins: [raise48] });
+  const r = await build({ entryPoints: [path.join(root, 'tests/beasts/sheet_demo.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', });
   return r.outputFiles[0].text;
 }
 

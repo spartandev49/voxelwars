@@ -1,5 +1,5 @@
 // Router: base screens (menu/battle/editor layers) replace each other; overlays stack on top. Screens follow docs/app_contract.md §1.
-import { SCREEN_MODULES } from '../_generated/registry.ui.js';
+import { SCREEN_MODULES, EDITOR_MODULES } from '../_generated/registry.ui.js';
 import { KIT } from '../_generated/registry.optional.js';
 
 export class Router {
@@ -7,7 +7,7 @@ export class Router {
   constructor(ui, getCtx, fallbacks = {}) {
     this.ui = ui; this.getCtx = getCtx; this.fallbacks = fallbacks; this.base = null; this.overlays = []; this.history = []; this.listeners = [];
     this.mods = {};
-    for (const k of Object.keys(SCREEN_MODULES)) { const m = SCREEN_MODULES[k]; const id = (m.meta && m.meta.id) || k; this.mods[id] = m; }
+    for (const set of [SCREEN_MODULES, EDITOR_MODULES || {}]) for (const k of Object.keys(set)) { const m = set[k]; if (!m || !m.mount) continue; const id = (m.meta && m.meta.id) || k; this.mods[id] = m; }
   }
   has(id) { return !!(this.mods[id] || this.fallbacks[id]); }
   _mod(id) { return this.mods[id] || this.fallbacks[id] || null; }
