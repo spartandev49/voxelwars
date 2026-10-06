@@ -41,6 +41,7 @@ class Gen {
     return (x, z) => (f(x, z) + f(-x, z) + f(x, -z) + f(-x, -z)) * 0.25;
   }
   fbm(x, z, s, o = 3) { return this.nz.fbm(x / s, z / s, o); }
+  wobble(x, z) { return (this._wob || (this._wob = this.S((px, pz) => this.fbm(px, pz, 8, 2))))(x, z); }
   ridged(x, z, s, o = 3) { return this.nz.ridged(x / s, z / s, o); }
   /** Sample hfn(x,z) -> height in steps (float) and mfn(x,z,h) -> material id for every cell. */
   fill(hfn, mfn) {
@@ -73,7 +74,8 @@ class Gen {
     const cx0 = Math.max(0, a.cx(x0 - margin)), cx1 = Math.min(n - 1, a.cx(x1 + margin)), cz0 = Math.max(0, a.cz(z0 - margin)), cz1 = Math.min(n - 1, a.cz(z1 + margin));
     for (let cz = cz0; cz <= cz1; cz++) for (let cx = cx0; cx <= cx1; cx++) {
       const wx = a.worldX(cx), wz = a.worldZ(cz), dx = Math.max(0, Math.abs(wx - z.x) - z.w / 2), dz = Math.max(0, Math.abs(wz - z.z) - z.d / 2);
-      const t = 1 - smoothstep(0, margin, Math.hypot(dx, dz));
+      const wob = this.wobble(wx, wz) * margin * 0.3;                                  // organic shoulders (symmetric for symmetric arenas)
+      const t = 1 - smoothstep(0, margin, Math.max(0, Math.hypot(dx, dz) + wob));
       if (t > 0) { const i = cx + cz * n; this.F[i] = lerp(this.F[i], target, t); }
     }
     return target;
@@ -83,8 +85,8 @@ class Gen {
   flatRect(cx, cz, hw, hd, target, margin = 3) {
     const a = this.a, n = this.n;
     for (let j = Math.max(0, a.cz(cz - hd - margin)); j <= Math.min(n - 1, a.cz(cz + hd + margin)); j++) for (let i = Math.max(0, a.cx(cx - hw - margin)); i <= Math.min(n - 1, a.cx(cx + hw + margin)); i++) {
-      const wx = a.worldX(i), wz = a.worldZ(j), d = Math.hypot(Math.max(0, Math.abs(wx - cx) - hw), Math.max(0, Math.abs(wz - cz) - hd));
-      const t = 1 - smoothstep(0, margin, d); if (t > 0) this.F[i + j * n] = lerp(this.F[i + j * n], target, t);
+      const wx = a.worldX(i), wz = a.worldZ(j), d = Math.hypot(Math.max(0, Math.abs(wx - cx) - hw), Math.max(0, Math.abs(wz - cz) - hd)) + this.wobble(wx + 40, wz) * margin * 0.3;
+      const t = 1 - smoothstep(0, margin, Math.max(0, d)); if (t > 0) this.F[i + j * n] = lerp(this.F[i + j * n], target, t);
     }
   }
   /** Quantise to plateaus of q steps; `sharp` (0..1) flattens the terrace treads and steepens the risers. */
@@ -671,16 +673,16 @@ R.troy = (g) => {
   g.levelStrip(wx, -W / 2, wx, W / 2, 2.0, top);
   g.keepClearPath([[-W * 0.4, 0], [W * 0.4, 0]], 3);
   for (const sg of [-1, 1]) {
-    const z0 = sg * 10.2, z1 = sg * (W / 2 - 2.2), n = Math.max(1, Math.floor(Math.abs(z1 - z0) / seg));
+    const z0 = sg * 8.7, z1 = sg * (W / 2 - 2.2), n = Math.max(1, Math.floor(Math.abs(z1 - z0) / seg));
     for (let i = 0; i <= n; i++) g.raw('wall_stone', wx, lerp(z0, z1, i / n), { r: Math.PI / 2, s: 1.3, v: 1 });
-    g.raw('tower', wx, sg * 8.6, { s: 1.35, v: 1, r: sg > 0 ? Math.PI : 0 });
+    g.raw('tower', wx, sg * 6.9, { s: 1.35, v: 1, r: sg > 0 ? Math.PI : 0 });
     for (const f of [0.17, 0.33]) g.raw('tower', wx, sg * W * f * 1.3, { s: 1.3, v: 1, r: Math.PI / 2 * (sg > 0 ? -1 : 1) });
     g.raw('gate_door', wx, sg * 2.0, { r: Math.PI / 2, s: 0.9, v: sg > 0 ? 1 : 0 });
   }
-  g.raw('arch_gate', wx, 0, { r: Math.PI / 2, s: 1.25, v: 0 });
+  g.raw('arch_gate', wx, 0, { r: Math.PI / 2, s: 1.0, v: 0 });
   const F = { force: true, noSpacing: true, noSym: true };
-  g.put('torch', wx - 3.4, -6.6, Object.assign({ s: 1.5, v: 1 }, F)); g.put('torch', wx - 3.4, 6.6, Object.assign({ s: 1.5, v: 1 }, F));
-  g.put('banner_post', wx + 3.2, -6.8, Object.assign({ s: 1.4, v: 0 }, F)); g.put('banner_post', wx + 3.2, 6.8, Object.assign({ s: 1.4, v: 0 }, F));
+  g.put('torch', wx - 3.4, -4.6, Object.assign({ s: 1.5, v: 1 }, F)); g.put('torch', wx - 3.4, 4.6, Object.assign({ s: 1.5, v: 1 }, F));
+  g.put('banner_post', wx + 3.2, -4.8, Object.assign({ s: 1.4, v: 0 }, F)); g.put('banner_post', wx + 3.2, 4.8, Object.assign({ s: 1.4, v: 0 }, F));
   // the besiegers' camp on the plain and the city behind the walls
   for (const [x, z, r, v] of [[-W * 0.46, -W * 0.2, 0.5, 0], [-W * 0.46, W * 0.1, -0.4, 1], [-W * 0.44, W * 0.26, 0.9, 2], [-W * 0.45, -W * 0.38, 0.2, 3]]) g.put('tent', x, z, Object.assign({ r, v, s: 1.2 }, F));
   for (const [x, z] of [[-W * 0.42, -W * 0.18], [-W * 0.42, W * 0.18], [-W * 0.4, 0]]) g.put('campfire', x, z, Object.assign({ s: 1.2, v: 0 }, F));

@@ -11,77 +11,91 @@ import * as m8 from '../content/era_ancient/parts/legs.js';
 import * as m9 from '../content/era_ancient/parts/offhands.js';
 import * as m10 from '../content/era_ancient/parts/shoulders.js';
 import * as m11 from '../content/era_ancient/parts/torsos.js';
-import * as m12 from '../content/era_ancient/parts/weapons_melee.js';
-import * as m13 from '../content/era_ancient/parts/weapons_ranged.js';
-import * as m14 from '../content/era_ancient/parts/weapons_silly.js';
-import * as m15 from '../content/era_ancient/beasts/ballista.js';
-import * as m16 from '../content/era_ancient/beasts/catapult.js';
-import * as m17 from '../content/era_ancient/beasts/centaur.js';
-import * as m18 from '../content/era_ancient/beasts/chariot.js';
-import * as m19 from '../content/era_ancient/beasts/chicken.js';
-import * as m20 from '../content/era_ancient/beasts/common.js';
-import * as m21 from '../content/era_ancient/beasts/elephant.js';
-import * as m22 from '../content/era_ancient/beasts/fixture_rider.js';
-import * as m23 from '../content/era_ancient/beasts/hum_lite.js';
-import * as m24 from '../content/era_ancient/beasts/index.js';
-import * as m25 from '../content/era_ancient/beasts/mounted.js';
-import * as m26 from '../content/era_ancient/beasts/quad1.js';
-import * as m27 from '../content/era_ancient/beasts/trojan.js';
-import * as m28 from '../content/era_ancient/humor/achievements.js';
-import * as m29 from '../content/era_ancient/humor/announcer.js';
-import * as m30 from '../content/era_ancient/humor/barks.js';
-import * as m31 from '../content/era_ancient/humor/credits_text.js';
-import * as m32 from '../content/era_ancient/humor/killverbs.js';
-import * as m33 from '../content/era_ancient/humor/mutators_text.js';
-import * as m34 from '../content/era_ancient/humor/names.js';
-import * as m35 from '../content/era_ancient/humor/results_text.js';
-import * as m36 from '../content/era_ancient/humor/scout_text.js';
-import * as m37 from '../content/era_ancient/humor/tips.js';
-import * as m38 from '../content/era_ancient/humor/ui_text.js';
-import * as m39 from '../content/era_ancient/humor/units_text.js';
-import * as m40 from '../anim/clips/chicken1.js';
-import * as m41 from '../anim/clips/elephant1.js';
-import * as m42 from '../anim/clips/hum1_death.js';
-import * as m43 from '../anim/clips/hum1_loco.js';
-import * as m44 from '../anim/clips/hum1_melee.js';
-import * as m45 from '../anim/clips/hum1_ranged.js';
-import * as m46 from '../anim/clips/hum1_react.js';
-import * as m47 from '../anim/clips/hum1_ride.js';
-import * as m48 from '../anim/clips/hum1_social.js';
-import * as m49 from '../anim/clips/index.js';
-import * as m50 from '../anim/clips/poses.js';
-import * as m51 from '../anim/clips/quad1.js';
-import * as m52 from '../anim/clips/siege.js';
-import * as m53 from '../sim/abilities/aura.js';
-import * as m54 from '../sim/abilities/breaks_shield.js';
-import * as m55 from '../sim/abilities/bribe.js';
-import * as m56 from '../sim/abilities/cc_field.js';
-import * as m57 from '../sim/abilities/chain_lightning.js';
-import * as m58 from '../sim/abilities/cluck.js';
-import * as m59 from '../sim/abilities/crowd_favorite.js';
-import * as m60 from '../sim/abilities/dash.js';
-import * as m61 from '../sim/abilities/dot_cloud.js';
-import * as m62 from '../sim/abilities/execute.js';
-import * as m63 from '../sim/abilities/fire_every.js';
-import * as m64 from '../sim/abilities/fire_panic.js';
-import * as m65 from '../sim/abilities/heal_pulse.js';
-import * as m66 from '../sim/abilities/hook.js';
-import * as m67 from '../sim/abilities/index.js';
-import * as m68 from '../sim/abilities/kick.js';
-import * as m69 from '../sim/abilities/misaim.js';
-import * as m70 from '../sim/abilities/misfire.js';
-import * as m71 from '../sim/abilities/net.js';
-import * as m72 from '../sim/abilities/pack_bonus.js';
-import * as m73 from '../sim/abilities/poison.js';
-import * as m74 from '../sim/abilities/rage.js';
-import * as m75 from '../sim/abilities/registry.js';
-import * as m76 from '../sim/abilities/revive.js';
-import * as m77 from '../sim/abilities/stance.js';
-import * as m78 from '../sim/abilities/summon_on_death.js';
-import * as m79 from '../sim/abilities/tantrum.js';
-import * as m80 from '../sim/abilities/throne.js';
-import * as m81 from '../sim/abilities/util.js';
-import * as m82 from '../sim/abilities/war_horn.js';
+import * as m12 from '../content/era_ancient/parts/units_a_faces.js';
+import * as m13 from '../content/era_ancient/parts/units_a_garb.js';
+import * as m14 from '../content/era_ancient/parts/units_a_gear.js';
+import * as m15 from '../content/era_ancient/parts/units_a_helms.js';
+import * as m16 from '../content/era_ancient/parts/units_b_barbarians.js';
+import * as m17 from '../content/era_ancient/parts/units_b_mythic.js';
+import * as m18 from '../content/era_ancient/parts/units_b_persians.js';
+import * as m19 from '../content/era_ancient/parts/weapons_melee.js';
+import * as m20 from '../content/era_ancient/parts/weapons_ranged.js';
+import * as m21 from '../content/era_ancient/parts/weapons_silly.js';
+import * as m22 from '../content/era_ancient/beasts/ballista.js';
+import * as m23 from '../content/era_ancient/beasts/catapult.js';
+import * as m24 from '../content/era_ancient/beasts/centaur.js';
+import * as m25 from '../content/era_ancient/beasts/chariot.js';
+import * as m26 from '../content/era_ancient/beasts/chicken.js';
+import * as m27 from '../content/era_ancient/beasts/common.js';
+import * as m28 from '../content/era_ancient/beasts/elephant.js';
+import * as m29 from '../content/era_ancient/beasts/fixture_rider.js';
+import * as m30 from '../content/era_ancient/beasts/hum_lite.js';
+import * as m31 from '../content/era_ancient/beasts/index.js';
+import * as m32 from '../content/era_ancient/beasts/mounted.js';
+import * as m33 from '../content/era_ancient/beasts/quad1.js';
+import * as m34 from '../content/era_ancient/beasts/trojan.js';
+import * as m35 from '../content/era_ancient/props/models/architecture.js';
+import * as m36 from '../content/era_ancient/props/models/camp.js';
+import * as m37 from '../content/era_ancient/props/models/crowd.js';
+import * as m38 from '../content/era_ancient/props/models/index.js';
+import * as m39 from '../content/era_ancient/props/models/kit.js';
+import * as m40 from '../content/era_ancient/props/models/monuments.js';
+import * as m41 from '../content/era_ancient/props/models/nature.js';
+import * as m42 from '../content/era_ancient/humor/achievements.js';
+import * as m43 from '../content/era_ancient/humor/announcer.js';
+import * as m44 from '../content/era_ancient/humor/barks.js';
+import * as m45 from '../content/era_ancient/humor/credits_text.js';
+import * as m46 from '../content/era_ancient/humor/killverbs.js';
+import * as m47 from '../content/era_ancient/humor/mutators_text.js';
+import * as m48 from '../content/era_ancient/humor/names.js';
+import * as m49 from '../content/era_ancient/humor/results_text.js';
+import * as m50 from '../content/era_ancient/humor/scout_text.js';
+import * as m51 from '../content/era_ancient/humor/tips.js';
+import * as m52 from '../content/era_ancient/humor/ui_text.js';
+import * as m53 from '../content/era_ancient/humor/units_text.js';
+import * as m54 from '../anim/clips/chicken1.js';
+import * as m55 from '../anim/clips/elephant1.js';
+import * as m56 from '../anim/clips/hum1_death.js';
+import * as m57 from '../anim/clips/hum1_loco.js';
+import * as m58 from '../anim/clips/hum1_melee.js';
+import * as m59 from '../anim/clips/hum1_ranged.js';
+import * as m60 from '../anim/clips/hum1_react.js';
+import * as m61 from '../anim/clips/hum1_ride.js';
+import * as m62 from '../anim/clips/hum1_social.js';
+import * as m63 from '../anim/clips/index.js';
+import * as m64 from '../anim/clips/poses.js';
+import * as m65 from '../anim/clips/quad1.js';
+import * as m66 from '../anim/clips/siege.js';
+import * as m67 from '../sim/abilities/aura.js';
+import * as m68 from '../sim/abilities/breaks_shield.js';
+import * as m69 from '../sim/abilities/bribe.js';
+import * as m70 from '../sim/abilities/cc_field.js';
+import * as m71 from '../sim/abilities/chain_lightning.js';
+import * as m72 from '../sim/abilities/cluck.js';
+import * as m73 from '../sim/abilities/crowd_favorite.js';
+import * as m74 from '../sim/abilities/dash.js';
+import * as m75 from '../sim/abilities/dot_cloud.js';
+import * as m76 from '../sim/abilities/execute.js';
+import * as m77 from '../sim/abilities/fire_every.js';
+import * as m78 from '../sim/abilities/fire_panic.js';
+import * as m79 from '../sim/abilities/heal_pulse.js';
+import * as m80 from '../sim/abilities/hook.js';
+import * as m81 from '../sim/abilities/index.js';
+import * as m82 from '../sim/abilities/kick.js';
+import * as m83 from '../sim/abilities/misaim.js';
+import * as m84 from '../sim/abilities/misfire.js';
+import * as m85 from '../sim/abilities/net.js';
+import * as m86 from '../sim/abilities/pack_bonus.js';
+import * as m87 from '../sim/abilities/poison.js';
+import * as m88 from '../sim/abilities/rage.js';
+import * as m89 from '../sim/abilities/registry.js';
+import * as m90 from '../sim/abilities/revive.js';
+import * as m91 from '../sim/abilities/stance.js';
+import * as m92 from '../sim/abilities/summon_on_death.js';
+import * as m93 from '../sim/abilities/tantrum.js';
+import * as m94 from '../sim/abilities/throne.js';
+import * as m95 from '../sim/abilities/util.js';
+import * as m96 from '../sim/abilities/war_horn.js';
 export const UNIT_MODEL_MODULES = {
   "t0": m0,
   "units_a": m1,
@@ -97,85 +111,99 @@ export const PART_MODULES = {
   "offhands": m9,
   "shoulders": m10,
   "torsos": m11,
-  "weapons_melee": m12,
-  "weapons_ranged": m13,
-  "weapons_silly": m14,
+  "units_a_faces": m12,
+  "units_a_garb": m13,
+  "units_a_gear": m14,
+  "units_a_helms": m15,
+  "units_b_barbarians": m16,
+  "units_b_mythic": m17,
+  "units_b_persians": m18,
+  "weapons_melee": m19,
+  "weapons_ranged": m20,
+  "weapons_silly": m21,
 };
 export const BEAST_MODULES = {
-  "ballista": m15,
-  "catapult": m16,
-  "centaur": m17,
-  "chariot": m18,
-  "chicken": m19,
-  "common": m20,
-  "elephant": m21,
-  "fixture_rider": m22,
-  "hum_lite": m23,
-  "index": m24,
-  "mounted": m25,
-  "quad1": m26,
-  "trojan": m27,
+  "ballista": m22,
+  "catapult": m23,
+  "centaur": m24,
+  "chariot": m25,
+  "chicken": m26,
+  "common": m27,
+  "elephant": m28,
+  "fixture_rider": m29,
+  "hum_lite": m30,
+  "index": m31,
+  "mounted": m32,
+  "quad1": m33,
+  "trojan": m34,
 };
 export const PROP_MODEL_MODULES = {
+  "architecture": m35,
+  "camp": m36,
+  "crowd": m37,
+  "index": m38,
+  "kit": m39,
+  "monuments": m40,
+  "nature": m41,
 };
 export const HUMOR_MODULES = {
-  "achievements": m28,
-  "announcer": m29,
-  "barks": m30,
-  "credits_text": m31,
-  "killverbs": m32,
-  "mutators_text": m33,
-  "names": m34,
-  "results_text": m35,
-  "scout_text": m36,
-  "tips": m37,
-  "ui_text": m38,
-  "units_text": m39,
+  "achievements": m42,
+  "announcer": m43,
+  "barks": m44,
+  "credits_text": m45,
+  "killverbs": m46,
+  "mutators_text": m47,
+  "names": m48,
+  "results_text": m49,
+  "scout_text": m50,
+  "tips": m51,
+  "ui_text": m52,
+  "units_text": m53,
 };
 export const CLIP_MODULES = {
-  "chicken1": m40,
-  "elephant1": m41,
-  "hum1_death": m42,
-  "hum1_loco": m43,
-  "hum1_melee": m44,
-  "hum1_ranged": m45,
-  "hum1_react": m46,
-  "hum1_ride": m47,
-  "hum1_social": m48,
-  "index": m49,
-  "poses": m50,
-  "quad1": m51,
-  "siege": m52,
+  "chicken1": m54,
+  "elephant1": m55,
+  "hum1_death": m56,
+  "hum1_loco": m57,
+  "hum1_melee": m58,
+  "hum1_ranged": m59,
+  "hum1_react": m60,
+  "hum1_ride": m61,
+  "hum1_social": m62,
+  "index": m63,
+  "poses": m64,
+  "quad1": m65,
+  "siege": m66,
 };
 export const ABILITY_MODULES = {
-  "aura": m53,
-  "breaks_shield": m54,
-  "bribe": m55,
-  "cc_field": m56,
-  "chain_lightning": m57,
-  "cluck": m58,
-  "crowd_favorite": m59,
-  "dash": m60,
-  "dot_cloud": m61,
-  "execute": m62,
-  "fire_every": m63,
-  "fire_panic": m64,
-  "heal_pulse": m65,
-  "hook": m66,
-  "index": m67,
-  "kick": m68,
-  "misaim": m69,
-  "misfire": m70,
-  "net": m71,
-  "pack_bonus": m72,
-  "poison": m73,
-  "rage": m74,
-  "registry": m75,
-  "revive": m76,
-  "stance": m77,
-  "summon_on_death": m78,
-  "tantrum": m79,
-  "throne": m80,
-  "util": m81,
-  "war_horn": m82,
+  "aura": m67,
+  "breaks_shield": m68,
+  "bribe": m69,
+  "cc_field": m70,
+  "chain_lightning": m71,
+  "cluck": m72,
+  "crowd_favorite": m73,
+  "dash": m74,
+  "dot_cloud": m75,
+  "execute": m76,
+  "fire_every": m77,
+  "fire_panic": m78,
+  "heal_pulse": m79,
+  "hook": m80,
+  "index": m81,
+  "kick": m82,
+  "misaim": m83,
+  "misfire": m84,
+  "net": m85,
+  "pack_bonus": m86,
+  "poison": m87,
+  "rage": m88,
+  "registry": m89,
+  "revive": m90,
+  "stance": m91,
+  "summon_on_death": m92,
+  "tantrum": m93,
+  "throne": m94,
+  "util": m95,
+  "war_horn": m96,
 };

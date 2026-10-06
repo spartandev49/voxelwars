@@ -168,8 +168,8 @@
 .vw-pl__top-ctl { gap: .6rem; padding-top: .3rem; }
 .vw-pl__brow { display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .5rem; }
 .vw-pl__budgets { gap: .45rem; }
-[data-team="0"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-a); color: #fff; box-shadow: inset 0 -4px 0 var(--team-a-deep); }
-[data-team="1"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-b); color: #fff; box-shadow: inset 0 -4px 0 var(--team-b-deep); }
+[data-team="0"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-a-deep); color: #fff; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .3); }
+[data-team="1"].vw-seg .vw-seg__opt[aria-checked="true"] { background: var(--team-b-deep); color: #fff; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .3); }
 .vw-pl__sec { margin-top: .7rem; border-top: 3px dashed var(--line); padding-top: .15rem; }
 .vw-pl__sum { display: flex; align-items: center; gap: .55rem; min-height: var(--tap); cursor: pointer; list-style: none; font: 400 .88rem/1 var(--font-display); text-transform: uppercase; letter-spacing: .06em; }
 .vw-pl__sum::-webkit-details-marker { display: none; }
@@ -327,7 +327,7 @@
 .vw-cx__lore { font-size: 1rem; line-height: 1.5; }
 .vw-cx__joke { font-size: .9rem; color: var(--marble-dim); font-style: italic; }
 .vw-cx__pgrid, .vw-cx__agrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); gap: var(--space-4); align-items: start; }
-.vw-cx__agrid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr)); }
+.vw-cx__agrid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr)); }
 .vw-cx__prop { display: flex; flex-direction: column; gap: .6rem; padding: .7rem; background: var(--night); border: var(--outline); border-radius: var(--r-md); box-shadow: 0 4px 0 var(--ink); }
 .vw-cx__pkv { font-size: .85rem; }
 .vw-cx__arena { overflow: hidden; display: flex; flex-direction: column; }

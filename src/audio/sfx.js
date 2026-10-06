@@ -1,7 +1,7 @@
 // SFX bank: decodes embedded core assets (atob -> decodeAudioData, no fetch), lazily fetches + decodes the rest by group under a
 // per-tier decoded-PCM ceiling (LRU eviction), retries once, falls back to synth.js (flagged), and serves variants through a
 // per-slot shuffle bag. All environment access (decode / fetch / buffer factory / clock) is injected so Node tests can drive it.
-import { ShuffleBag, mulberry32 } from './util.js';
+import { ShuffleBag, mulberry32, makeYield } from './util.js';
 import { groupOf, GROUP_ORDER, pcmCeiling } from './manifest.js';
 import { renderSynth, RECIPES, SYNTH_SR, LOOP_FAMILIES } from './synth.js';
 import { CUES } from './cues.js';
@@ -24,9 +24,9 @@ export class SfxBank {
   constructor(o) {
     this.catalog = o.catalog; this.decode = o.decode; this.makeBuffer = o.makeBuffer; this.fetchFn = o.fetch || null;
     this.core = o.core || {}; this.quality = o.quality || (() => 'marble'); this.rng = o.rng || mulberry32(0xa11d10);
-    this.yieldFn = o.yieldFn || (() => new Promise((r) => setTimeout(r, 0)));
+    this.yieldFn = o.yieldFn || makeYield();
     this.sleep = o.sleep || ((ms) => new Promise((r) => setTimeout(r, ms)));
-    this.concurrency = o.concurrency || 3;
+    this.concurrency = o.concurrency || 3; this.netFails = 0; this.netDownUntil = 0; this.nowMs = o.nowMs || (() => Date.now());
     this.assets = new Map();            // id -> {e, state:'idle'|'queued'|'loading'|'ready'|'failed', buf, path, bytes, last, err}
     this.slots = new Map();             // "fam#layer" -> {entries, bag, readyKey}
     this.synthBufs = new Map();         // fam -> AudioBuffer[]
@@ -114,6 +114,7 @@ export class SfxBank {
   }
   _enqueue(id, pr) {
     const a = this.assets.get(id); if (!a) return;
+    if (this.core[id]) pr = -1;                 // embedded assets need no network: always first in line
     if (a.state === 'idle') { a.state = 'queued'; this.queue.push({ id, pr }); }
     else if (a.state === 'queued') { const q = this.queue.find((x) => x.id === id); if (q && pr < q.pr) q.pr = pr; }
     else return;
@@ -133,12 +134,18 @@ export class SfxBank {
     if (embedded) { try { ab = b64ToBuf(embedded); a.path = 'embedded'; } catch (e) { ab = null; } }
     if (!ab) {
       if (!this.fetchFn) throw new Error('no fetch');
+      if (this.netDownUntil > this.nowMs()) { a.state = 'failed'; a.err = 'network down (skipped)'; return; }
       for (let attempt = 0; attempt < 2 && !ab; attempt++) {
         try {
           const r = await this.fetchFn(a.e.url);
-          if (!r.ok) throw new Error('http ' + r.status);
-          ab = await r.arrayBuffer(); a.path = 'fetched';
-        } catch (err) { a.err = String(err && err.message || err); if (attempt === 0) await this.sleep(350); }
+          if (!r.ok) { const e = new Error('http ' + r.status); e.status = r.status; e.permanent = r.status === 404 || r.status === 403 || r.status === 410; throw e; }
+          ab = await r.arrayBuffer(); a.path = 'fetched'; this.netFails = 0;
+        } catch (err) {
+          a.err = String(err && err.message || err);
+          if (err && err.permanent) break;               // a missing file stays missing: no second request, no second console line
+          if (!err || !err.status) { if (++this.netFails >= 8) { this.netDownUntil = this.nowMs() + 15000; break; } }   // fetch itself fails (blocked/offline): stop hammering the network
+          if (attempt === 0) await this.sleep(350);
+        }
       }
       if (!ab) { a.state = 'failed'; return; }
     }
@@ -174,7 +181,10 @@ export class SfxBank {
   async loadCore() {
     const ids = this.catalog.sfx.filter((e) => this.core[e.id]).map((e) => e.id);
     const jobs = [];
-    for (const id of ids) { const a = this.assets.get(id); if (a && a.state === 'idle') { a.state = 'loading'; jobs.push(this._load(a).catch((e) => { a.state = 'failed'; a.err = String(e && e.message || e); })); } }
+    for (const id of ids) {
+      const a = this.assets.get(id);
+      if (a && (a.state === 'idle' || a.state === 'queued')) { a.state = 'loading'; jobs.push(this._load(a).catch((e) => { a.state = 'failed'; a.err = String(e && e.message || e); })); }   // a queued one is skipped by the pump once it is no longer 'queued'
+    }
     await Promise.all(jobs); this.coreDone = true; this._emit();
   }
   /** wait until nothing is queued or loading (tests, mix render) */
@@ -191,6 +201,8 @@ export class SfxBank {
     }
     return { embedded, fetched, synth: this.synthUsed.size, failed, ready, loading, idle, total: this.assets.size, decodedBytes: this.decodedBytes, ceiling: this.ceiling, evictions: this.evictions, budgetSkips: this.budgetSkips };
   }
+  /** assets that could not be loaded (kept for Diagnostics; the families fall back to synth silently) */
+  failures() { const o = []; for (const a of this.assets.values()) if (a.state === 'failed' && o.length < 30) o.push({ id: a.e.id, url: a.e.url, err: a.err }); return o; }
   /** per-asset load path for Diagnostics: {id: 'embedded'|'fetched'|'failed'|'pending'} plus families served by synth */
   paths() {
     const o = {};

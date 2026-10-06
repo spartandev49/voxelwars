@@ -18,6 +18,13 @@
 4. Settings keys read by audio: `vol.master|music|sfx|ui|announcer` (0..1), `muted`, `tts`, `quality`, and NEW `announcerVoice` (bool, default false: opt-in spoken "Ready / Fight / Winner" clips on the Announcer bus). `settings.on(fn)` is subscribed once; the handler only reads.
 5. `window.__vw.audio` is installed by `audio.installTestHook(window.__vw)`; it is a live object (getters) with `state, ctxState, masterRMS, busRMS{music,sfx,ui,announcer,ambience}, voices, voicePeak, voiceDrops, loaded{embedded,fetched,synth,failed}, cueCounts, music{track,mood,intensity}` and `diagnostics()` (full report incl. per-asset load paths, decoded memory vs tier ceiling) for the Diagnostics screen.
 
+## COORD: published-file list (blocks the 404s)
+The ledger can list rows whose mp3 is not (yet) on disk; the page must never request them (smoke fails on any console error, and a browser 404 line cannot be suppressed from JS). Audio therefore accepts a **published file list**: in `tools/build.mjs` inline next to the manifest
+```js
+window.__VW_FILES__ = Object.keys(files)      // e.g. ['assets/audio/sfx/ui_click_1.mp3', ...] (same keys as dist/artifact/files.json)
+```
+and `Catalog` skips every ledger row whose `assets/<path>` is not in that list (never fetched; recorded in `audio.diagnostics().manifest.notPublished/notPublishedIds`, the family uses its other variants or the flagged synth). `tests/audio/assets.test.mjs` is the gate check: every ledger row must exist on disk, every file any cue family / warm-up / music mood requests must exist (as of this writing it fails on 38 rows listed in the asset-hunter section below, all of which are still being generated). Missing files that do get requested fall back to synth silently, are NOT retried on 404/403/410, and show up in `diagnostics().failedAssets`.
+
 ## UI
 - Mute button: `audio.setMuted(b)` / `audio.isMuted()`; `audio.on('state'|'mute'|'volume'|'load'|'music', fn)` returns an unsubscribe function; `audio.state()` is `'unavailable'|'locked'|'running'|'suspended'|'muted'|'closed'`.
 - UI sounds: `audio.ui('click'|'hover'|'confirm'|'back'|'error'|'toggle'|'tick'|'panel_open'|'panel_close'|'achievement'|'countdown_beep'|'go'|'place'|'erase')`; `audio.ui('place', {mass})` pitch-shifts +/- 4 % by mass.
@@ -28,5 +35,6 @@
 - `trample`, `charge_hit`, `unit_brace`, `bark`, `status_apply` carry only unit ids; audio resolves positions via `world.units` (pass `world` to `attach`) or the last position seen in `unit_spawn/unit_hit/ability_cast`.
 
 ## ASSET HUNTER (ledger)
+- **Ledger rows without a file on disk** (blocks `tests/audio/assets.test.mjs` and causes 404s in the built page): at the time of writing `announcer_game_over, announcer_final_round, fire_burst_1, fire_impact_1, arrow_hit_shield_1..3, death_big_1..3, death_animal_1..3, splat_2, splat_3, revive_chime_1..3, stone_freeze_1..3, ui_place_1..3, ui_erase_1..3, wall_crumble_1..3, rubble_1..3, elephant_step_1..3, chicken_rage_1, horse_snort_1` are in `assets/manifest.json` but not in `assets/audio/sfx/` (the rebuild was still running). Regenerate the ledger after the files are written and drop rows whose file does not exist.
 - Still synth-only (see `docs/audio_coverage.md`): `philosopher_mumble`, `senator_blah`, `crowd_boo`, `wine_pour`, `amb_birds`, `amb_desert`, `amb_forest`, `amb_water`. Real files named `<family>_<n>.mp3` (or any id starting with the family name) in the ledger are picked up automatically.
 - Music rows: add `fade_out`/`loop_check` notes as now (the runtime reads "end-vs-start RMS dB" from `notes` to avoid fading an already faded tail twice).

@@ -38,7 +38,7 @@ for (const [g, types] of Object.entries(GROUPS)) {
     if (u.startsWith('http://t/')) return r.fulfill({ contentType: 'text/html', body: html });
     return r.abort();
   });
-  const gap = types.some((t) => ['temple', 'pyramid', 'arch_gate', 'sphinx_statue', 'ship', 'cave_mouth', 'cloud_island'].includes(t)) ? 16 : types.some((t) => ['tower', 'statue_zeus', 'tree_oak', 'tree_pine', 'tree_cypress', 'palm', 'gate_door', 'wall_stone'].includes(t)) ? 8 : 5;
+  const gap = { trees: 6.5, ground: 3.0, camp: 4.2, stone: 5.2, big: 17, monuments: 9, places: 17 }[g] || 5;
   await p.goto(`http://t/?types=${types.join(',')}&rows=${mode}&gap=${gap}&t=${time}&cam=iso&zoom=${opt('zoom', '1')}`);
   await p.waitForFunction(() => window.__propsDone === true, null, { timeout: 120000 });
   await p.waitForTimeout(200);

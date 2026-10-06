@@ -27,9 +27,9 @@ export class FakeGame {
 export function makeWorld({ arena = 'arenalab', seed = 7, a = [['hoplite', 12]], b = [['hoplite', 4]], rules = {}, gap = 14 } = {}) {
   const ar = generateArena(arena, 'small', 3);
   const w = new World({ arena: ar, seed, defs, rules });
-  const A = ar.zones.A, B = ar.zones.B;
-  let i = 0; for (const [id, n] of a) w.addSquad(id, 0, n, A.x + (arena === 'arenalab' ? 8 : 0) - gap / 2 + 0, A.z + (i++ - a.length / 2) * 6, { heading: Math.PI / 2 });
-  i = 0; for (const [id, n] of b) w.addSquad(id, 1, n, B.x - (arena === 'arenalab' ? 8 : 0) + gap / 2, B.z + (i++ - b.length / 2) * 6, { heading: -Math.PI / 2 });
+  const half = Math.min(28, gap / 2);                           // the armies face each other `gap` units apart, centred on the arena (half-size is 32)
+  let i = 0; for (const [id, n] of a) w.addSquad(id, 0, n, -half, (i++ - a.length / 2) * 6, { heading: Math.PI / 2 });
+  i = 0; for (const [id, n] of b) w.addSquad(id, 1, n, half, (i++ - b.length / 2) * 6, { heading: -Math.PI / 2 });
   return w;
 }
 

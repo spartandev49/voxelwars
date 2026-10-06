@@ -31,7 +31,7 @@
      K.card(unitDef, {onClick, selected, count, locked, disabled, reason, blurb, counters:true|'beats'|false, compact, factions}) -> <button class=vw-card>   .setSelected(b) .setCount(n) .setDisabled(b, reasonText)
      K.tooltip(el, textOrFn, {kind:'bad'}) -> off()     hover (350ms) + keyboard focus + touch long-press; sets aria-describedby while shown
      K.showTip({x,y,text,kind}) / K.hideTip()           free-floating tip (cursor-following invalid-placement reasons)
-     K.toast(text, {kind:'info|success|warn|error|achievement', ms, icon, sound}) -> el  .dismiss()
+     K.toast(text, {kind:'info|success|warn|error|achievement', ms, icon, sound}) -> el  .dismiss()      K.toastInset(rem) -> restore()  (lift toasts above a bottom bar)
      K.modal({title, body:Node|string|(api)=>Node, buttons:[{label,variant,value,cancel?,primary?,keep?,onClick?(api)}]  (api = {close(v), el, body, foot}), dismissible=true, wide, dismissValue=null, id, icon}) -> Promise<value>
         (replaces confirm(); Esc closes (resolves dismissValue); focus trap; background inert; focus restored) ;  K.hasModal() ; K.closeModals(value)
      K.ask({title,text,yes,no,danger}) -> Promise<boolean>        K.textModal({title,text,note,readOnly,copy,ok,placeholder,onSubmit(text)->errString|null}) -> Promise<string|null>
@@ -570,16 +570,23 @@ export function tooltip(el, text, o) {
   const onKey = (e) => { if (e.key === 'Escape') hideTip(); };
   el.addEventListener('pointerenter', onEnter); el.addEventListener('pointerleave', onLeave); el.addEventListener('focus', onFocus); el.addEventListener('blur', onLeave);
   el.addEventListener('pointerdown', onDown); el.addEventListener('pointerup', onUp); el.addEventListener('pointercancel', onUp); el.addEventListener('keydown', onKey);
-  el.addEventListener('contextmenu', (e) => { if (e.pointerType === 'touch') e.preventDefault(); });
+  el.addEventListener('click', hideTip); el.addEventListener('contextmenu', (e) => { if (e.pointerType === 'touch') e.preventDefault(); });
   return () => {
     el.removeEventListener('pointerenter', onEnter); el.removeEventListener('pointerleave', onLeave); el.removeEventListener('focus', onFocus); el.removeEventListener('blur', onLeave);
-    el.removeEventListener('pointerdown', onDown); el.removeEventListener('pointerup', onUp); el.removeEventListener('pointercancel', onUp); el.removeEventListener('keydown', onKey);
+    el.removeEventListener('click', hideTip); el.removeEventListener('pointerdown', onDown); el.removeEventListener('pointerup', onUp); el.removeEventListener('pointercancel', onUp); el.removeEventListener('keydown', onKey);
     if (tipTarget === el) hideTip();
   };
 }
 
 /* ---------------------------------------------------------------- toast */
 const TOAST_ICON = { info: 'info', success: 'check', warn: 'warning', error: 'warning', achievement: 'trophy' };
+/** Lift the toast stack above a screen's bottom bar (e.g. placement). Returns a restore function (call it in destroy()). */
+export function toastInset(rem) {
+  const r = appRoot();
+  const prev = r.style.getPropertyValue('--toast-bottom');
+  r.style.setProperty('--toast-bottom', typeof rem === 'number' ? rem + 'rem' : rem);
+  return () => { if (prev) r.style.setProperty('--toast-bottom', prev); else r.style.removeProperty('--toast-bottom'); };
+}
 export function toast(text, o) {
   o = o || {};
   const kind = o.kind || 'info';

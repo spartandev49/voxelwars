@@ -12,15 +12,15 @@ define('strike_thrust', {
     // anticipation: rock back on the rear leg, twist the torso away, pull the spear arm back and cock the elbow
     [0.12, merge(readyAt(-1.8), { body: [0.0, -0.78, 0.05], head: [-0.05, 0.62, 0], armUR: [0.1, 0.55, -0.5], armLR: [-1.7, 0, 0], armUL: [-0.35, -0.5, 0.55], armLL: [-1.0, 0, 0], root: { y: -0.115, pitch: -0.04 } }), 'io'],
     // step: the front foot comes off the ground while the hip drives forward
-    [0.2, merge(feet(6.2, -2.6, { hipZ: 1.2, liftL: 2.2, turnL: 0.1, turnR: -0.5, spread: 0.1 }), { body: [0.2, -0.1, 0], head: [-0.1, 0.1, 0], armUR: [-0.55, 0.25, -0.35], armLR: [-0.8, 0, 0], armUL: [-0.3, -0.5, 0.5], armLL: [-0.9, 0, 0], root: { pitch: 0.1 } }), 'in2'],
+    [0.2, merge(feet(6.2, -2.6, { hipZ: 1.2, liftL: 2.2, turnL: 0.1, turnR: -0.5, spread: 0.1 }), { body: [0.2, -0.1, 0], head: [-0.1, 0.1, 0], armUR: [-0.55, 0.25, -0.35], armLR: [-0.8, 0, 0], armUL: [-0.3, -0.5, 0.5], armLL: [-0.9, 0, 0], root: { pitch: 0.1 } }), 'lin'],
     // HIT: full extension, hip over the front foot, torso turned into the thrust
-    [0.28, merge(feet(8.0, -2.6, { hipZ: 3.4, h: 7.5, turnL: 0.05, turnR: -0.55, spread: 0.08 }), { body: [0.34, 0.45, 0.02], head: [-0.2, -0.4, 0], armUR: [-1.5, 0.06, -0.1], armLR: [-0.06, 0, 0], armUL: [-0.2, -0.7, 0.6], armLL: [-0.8, 0, 0], root: { pitch: 0.1 } }), 'in'],
+    [0.28, merge(feet(8.0, -2.6, { hipZ: 3.4, h: 7.5, turnL: 0.05, turnR: -0.55, spread: 0.08 }), { body: [0.34, 0.45, 0.02], head: [-0.2, -0.4, 0], armUR: [-1.5, 0.06, -0.1], armLR: [-0.06, 0, 0], armUL: [-0.2, -0.7, 0.6], armLL: [-0.8, 0, 0], root: { pitch: 0.1 } }), 'lin'],
     // follow-through: the body keeps going a touch, then holds
     [0.35, merge(feet(8.0, -2.6, { hipZ: 3.9, h: 7.4, turnL: 0.05, turnR: -0.55, spread: 0.08 }), { body: [0.4, 0.52, 0.02], head: [-0.22, -0.45, 0], armUR: [-1.56, 0.08, -0.1], armLR: [-0.04, 0, 0], armUL: [-0.18, -0.75, 0.65], armLL: [-0.75, 0, 0], root: { pitch: 0.12 } }), 'out'],
     [0.5, merge(feet(8.0, -2.6, { hipZ: 2.4, h: 7.9, turnL: 0.1 }), { body: [0.26, 0.1, 0], head: [-0.15, 0.1, 0], armUR: [-1.0, 0.2, -0.25], armLR: [-0.5, 0, 0], armUL: [-0.4, -0.4, 0.4], armLL: [-1.0, 0, 0], root: { pitch: 0.06 } }), 'io'],
     [0.72, READY, 'io'],
   ]), {
-    aim: [[0, 0.55, 0.06, 1], [0.12, 0.85, 0.3, 1, 'io'], [0.2, 0.4, 0.15, 1, 'in2'], [0.28, 0.07, 0.0, 1, 'in'], [0.35, 0.05, 0.0, 1, 'out'], [0.5, 0.25, 0.08, 1, 'io'], [0.72, 0.55, 0.06, 1, 'io']],
+    aim: [[0, 0.55, 0.06, 1], [0.12, 0.85, 0.3, 1, 'io'], [0.28, 0.07, 0.0, 1, 'in'], [0.35, 0.05, 0.0, 1, 'out'], [0.5, 0.25, 0.08, 1, 'io'], [0.72, 0.55, 0.06, 1, 'io']],
   }),
 });
 
@@ -34,20 +34,20 @@ define('strike_overhead', {
     // quiver at the top (anticipation hold)
     [0.33, merge(feet(1.5, -3.2, { hipZ: -2.4, spread: 0.12, turnL: 0.1, turnR: -0.4 }), { body: [-0.34, -0.38, 0.05], head: [0.25, 0.2, 0], armUR: [-3.3, 0.2, -0.3], armLR: [-2.0, 0, 0], armUL: [-2.4, -0.3, 0.55], armLL: [-0.6, 0, 0], root: { pitch: -0.12 } }), 'io'],
     // chop: whole body drops into it, step forward, arm accelerates through the vertical
-    [0.46, merge(feet(7.0, -3.2, { hipZ: 3.0, h: 7.7, spread: 0.1, turnL: 0.05, turnR: -0.5 }), { body: [0.8, 0.12, 0], head: [0.1, 0, 0], armUR: [-0.6, 0.05, -0.2], armLR: [-0.15, 0, 0], armUL: [-0.5, -0.2, 0.45], armLL: [-0.9, 0, 0], root: { pitch: 0.2 } }), 'in'],
+    [0.46, merge(feet(7.0, -3.2, { hipZ: 3.0, h: 7.7, spread: 0.1, turnL: 0.05, turnR: -0.5 }), { body: [0.55, 0.12, 0], head: [0.1, 0, 0], armUR: [-0.6, 0.05, -0.2], armLR: [-0.15, 0, 0], armUL: [-0.5, -0.2, 0.45], armLL: [-0.9, 0, 0], root: { pitch: 0.12 } }), 'in'],
     // follow-through: weapon bites low, body folds over it
-    [0.54, merge(feet(7.0, -3.2, { hipZ: 3.4, h: 7.5, spread: 0.1, turnL: 0.05, turnR: -0.5 }), { body: [0.92, 0.14, 0], head: [-0.1, 0, 0], armUR: [-0.2, 0.05, -0.2], armLR: [0.0, 0, 0], armUL: [-0.3, -0.2, 0.45], armLL: [-0.9, 0, 0], root: { pitch: 0.24 } }), 'out'],
-    [0.7, merge(feet(7.0, -3.2, { hipZ: 3.0, h: 7.8 }), { body: [0.7, 0.1, 0], head: [-0.05, 0, 0], armUR: [-0.45, 0.1, -0.3], armLR: [-0.4, 0, 0], armUL: [-0.4, -0.2, 0.4], armLL: [-0.9, 0, 0], root: { pitch: 0.16 } }), 'io'],
+    [0.54, merge(feet(7.0, -3.2, { hipZ: 3.4, h: 7.5, spread: 0.1, turnL: 0.05, turnR: -0.5 }), { body: [0.62, 0.14, 0], head: [-0.1, 0, 0], armUR: [-0.2, 0.05, -0.2], armLR: [0.0, 0, 0], armUL: [-0.3, -0.2, 0.45], armLL: [-0.9, 0, 0], root: { pitch: 0.14 } }), 'out'],
+    [0.7, merge(feet(7.0, -3.2, { hipZ: 3.0, h: 7.8 }), { body: [0.5, 0.1, 0], head: [-0.05, 0, 0], armUR: [-0.45, 0.1, -0.3], armLR: [-0.4, 0, 0], armUL: [-0.4, -0.2, 0.4], armLL: [-0.9, 0, 0], root: { pitch: 0.1 } }), 'io'],
     [0.95, READY, 'io'],
   ]), {
-    aim: [[0, 0.3, 0.1, 1], [0.26, 1.85, 0.0, 1, 'out'], [0.33, 1.95, 0.0, 1, 'io'], [0.4, 1.4, 0.0, 1, 'in2'], [0.46, -0.45, 0.0, 1, 'in'], [0.54, -0.9, 0.0, 1, 'out'], [0.7, -0.3, 0.05, 1, 'io'], [0.95, 0.3, 0.1, 1, 'io']],
+    aim: [[0, 0.3, 0.1, 1], [0.26, 1.85, 0.0, 1, 'out'], [0.33, 1.95, 0.0, 1, 'io'], [0.46, -0.45, 0.0, 1, 'in'], [0.54, -0.9, 0.0, 1, 'out'], [0.7, -0.3, 0.05, 1, 'io'], [0.95, 0.3, 0.1, 1, 'io']],
   }),
 });
 
 // ---- kick: the Spartan push-kick. hit 0.30 ---------------------------------------------------------------------------------------
 define('kick', {
   rig: 'hum1', dur: 0.70, hit: 0.30, recover: 0.5, meta: { cls: 'strike', enter: 'neutral', exit: 'neutral', fx: 'dust' },
-  keys: seq([
+  keys: mergeKeys(seq([
     [0.0, READY],
     // chamber: weight onto the right leg, left knee up to the chest, torso leans back, arms out
     [0.13, merge({ body: [-0.12, -0.2, 0], head: [0.1, 0.2, 0], armUR: [-0.5, 0.1, -0.8], armLR: [-0.8, 0, 0], armUL: [-0.5, -0.1, 0.8], armLL: [-0.5, 0, 0],
@@ -61,7 +61,7 @@ define('kick', {
     [0.6, merge({ body: [0.0, -0.15, 0], head: [0.05, 0.2, 0], armUR: [-0.5, 0.2, -0.6], armLR: [-1.0, 0, 0], armUL: [-0.5, -0.1, 0.6], armLL: [-0.8, 0, 0],
       legUL: [-1.15, 0.1, 0.15], legLL: [1.5, 0, 0], legUR: [-0.2, -0.3, -0.1], legLR: [0.4, 0, 0], root: { y: -0.08, z: -0.1, pitch: 0.0 } }), 'io'],
     [0.7, READY, 'io'],
-  ]),
+  ]), { aim: [[0, 0.55, 0.08, 1], [0.7, 0.55, 0.08, 1]] }),     // the weapon stays at the ready while the leg works (same aim as idle_combat)
 });
 
 // ---- strike_bash: shield bash (left arm). hit 0.28 ------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ define('strike_slash_1', {
     [0.3, merge(feet(7.2, -2.6, { hipZ: 3.0, h: 7.6, turnL: 0.05, turnR: -0.5, spread: 0.1 }), { body: [0.4, 0.55, -0.08], head: [-0.15, -0.35, 0], armUR: [-1.2, -0.7, -0.15], armLR: [-0.25, 0, 0], armUL: [-0.2, -0.7, 0.6], armLL: [-0.8, 0, 0], root: { pitch: 0.12 } }), 'in'],
     [0.37, merge(feet(7.2, -2.6, { hipZ: 3.4, h: 7.5, turnL: 0.05, turnR: -0.5, spread: 0.1 }), { body: [0.45, 0.62, -0.1], head: [-0.18, -0.4, 0], armUR: [-0.95, -0.85, -0.15], armLR: [-0.15, 0, 0], armUL: [-0.18, -0.75, 0.65], armLL: [-0.75, 0, 0], root: { pitch: 0.14 } }), 'out'],
     [0.62, READY, 'io'],
-  ]), { aim: [[0, 0.3, 0.1, 1], [0.13, 1.7, -0.5, 1, 'out'], [0.22, 1.2, -0.2, 1, 'in2'], [0.3, -0.25, 0.55, 1, 'in'], [0.37, -0.6, 0.7, 1, 'out'], [0.62, 0.3, 0.1, 1, 'io']] }),
+  ]), { aim: [[0, 0.3, 0.1, 1], [0.13, 1.7, -0.5, 1, 'out'], [0.3, -0.25, 0.55, 1, 'in'], [0.37, -0.6, 0.7, 1, 'out'], [0.62, 0.3, 0.1, 1, 'io']] }),
 });
 define('strike_slash_2', {
   rig: 'hum1', dur: 0.62, hit: 0.30, recover: 0.42, meta: { cls: 'strike', enter: 'neutral', exit: 'neutral' },

@@ -43,7 +43,9 @@ export const TOOLS = [
   { id: 'info', key: 'KeyI', icon: 'info', group: 'world', brush: false },
   { id: 'markers', key: 'KeyM', icon: 'markers', group: 'place', brush: false },
 ];
-export const TOOL_BY_ID = Object.fromEntries(TOOLS.map((t) => [t.id, t]));
+/** Lookup tables are null-prototype objects so hostile ids such as '__proto__' or 'constructor' can never resolve. */
+const table = (list) => Object.assign(Object.create(null), Object.fromEntries(list.map((t) => [t.id, t])));
+export const TOOL_BY_ID = table(TOOLS);
 
 export const SYMMETRY = ['off', 'mx', 'mz', 'rot'];
 
@@ -56,7 +58,7 @@ export const HAZARDS = [
   { id: 'geyser', r: 2.6, color: 0x6ec6ff },
   { id: 'lava', r: 4, color: 0xff4a1a },
 ];
-export const HAZARD_BY_ID = Object.fromEntries(HAZARDS.map((h) => [h.id, h]));
+export const HAZARD_BY_ID = table(HAZARDS);
 export const HAZARD_RADIUS = { min: 1, max: 30 };
 /** Length (u, half) of the rolling-boulder lane: the sim uses max(r * 3, 16) along +z (sim/hazards.js). */
 export const boulderHalfLane = (r) => Math.max(r * 3, 16);
@@ -69,7 +71,7 @@ export const MARKER_TYPES = [
   { id: 'general_spawn', r: 4, color: 0xee4b4b },
   { id: 'waypoint', r: 4, color: 0x6ec6ff },
 ];
-export const MARKER_BY_ID = Object.fromEntries(MARKER_TYPES.map((m) => [m.id, m]));
+export const MARKER_BY_ID = table(MARKER_TYPES);
 export const MARKER_RADIUS = { min: 1, max: 30 };
 
 /** Default objective suggestions (world.md section 8). `markers` and `props` list what the objective needs. */
@@ -80,7 +82,7 @@ export const OBJECTIVES = [
   { id: 'protect_vip', markers: ['vip_start', 'exit'], props: [] },
   { id: 'destroy', markers: [], props: ['gate_door'] },
 ];
-export const OBJECTIVE_BY_ID = Object.fromEntries(OBJECTIVES.map((o) => [o.id, o]));
+export const OBJECTIVE_BY_ID = table(OBJECTIVES);
 
 export const STAMPS = ['hill', 'crater', 'mesa', 'trench', 'island', 'ridge'];
 

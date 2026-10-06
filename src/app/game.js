@@ -59,6 +59,7 @@ export class Game {
     this.ghost = this._makeGhost(); this.ghostInfo = { x: 0, z: 0, valid: false, reason: null, show: false };
     this.rng = new RNG(1);
     this.killfeed = []; this.announce = null; this.toasts = [];
+    this.meta = null;                       // app/meta.js (set by main.js): stats, achievements, announcer, kill feed, aim, Take Command input, teaching, kill-cam
     this.hoverId = 0; this.selectedId = 0; this.possessId = 0;
     this._counts = null; this._countsT = 0;
     this.cinematic = false;
@@ -123,6 +124,7 @@ export class Game {
       this.state = 'diorama'; this.audio && this.audio.detach && this.audio.detach();
       return;
     }
+    if (this.meta) this.meta.attach(w, setup);       // stats / achievements / announcer / kill feed subscribe to this world (never for the title diorama)
     w.events.on('unit_kill', (p) => this._feed(p));
     w.events.on('battle_end', (p) => { this.state = 'ended'; this.emit('battle_end', this.results()); this.emit('state', { state: 'ended' }); });
     w.events.on('battle_start', () => { this.state = 'running'; this.emit('state', { state: 'running' }); this.emit('battle_start', {}); });
@@ -385,8 +387,22 @@ export class Game {
     this.world.input(this.world.tickN + 1, { type: 'possess', unit: id || 0, release: !id });
   }
   /** Take Command: tick-stamped movement input (world-space direction), attack flag and ability slot. */
-  sendPossess(dx, dz, attack, ability) { if (!this.world || !this.possessId) return; this.world.input(this.world.tickN + 1, { type: 'possess', unit: this.possessId, move: { x: dx, z: dz }, attack: !!attack, ability: ability | 0 }); }
-  godPowers() { const gp = this.world && this.world.godpowers; return gp && gp.list ? gp.list() : []; }
+  sendPossess(dx, dz, attack, ability) {
+    if (!this.world || !this.possessId) return;
+    if (this.meta && this.meta.possess.fromKeyboard(dx, dz, attack, ability)) return;      // merges the keyboard stream with the touch stick (app/meta.js PossessController)
+    this.world.input(this.world.tickN + 1, { type: 'possess', unit: this.possessId, move: { x: dx, z: dz }, attack: !!attack, ability: ability | 0 });
+  }
+  /** Touch / HUD Take Command input: patch = { move:{x,y} (screen space, y < 0 = forward), attack?, ability?: 1|2|3, sprint? }. Camera-relative; false when nobody is possessed. */
+  possessInput(patch) { return this.meta ? this.meta.possess.input(patch) : false; }
+  /** God-power target mode: aim(id) arms a power (the next click on the terrain casts it there), aim(null) cancels. Esc / right-click cancel too. */
+  aim(id) { return this.meta ? this.meta.aim.set(id) : false; }
+  teachingNext() { return this.meta ? this.meta.teaching.next() : false; }
+  skipTeaching() { return this.meta ? this.meta.teaching.skip() : false; }
+  /** Kill-cam: a 4 s slow-mo dolly on the final kill after the battle, then everything is restored. Resolves true when it played. */
+  killcam() { return this.meta ? this.meta.killcam.start() : Promise.resolve(false); }
+  killcamActive() { return !!(this.meta && this.meta.killcam.active); }
+  killcamStop() { if (this.meta) this.meta.killcam.cancel(true); }
+  godPowers() { const gp = this.world && this.world.godpowers; return gp && gp.list ? gp.list(this.meta ? this.meta.pt : 0) : []; }
   camera = {
     mode: () => this.rig.mode,
     setMode: (m) => { if (m === 'follow') { const sel = this.selectedId || this._anyUnit(); this.rig.setMode('follow', { unit: sel }); } else if (m === 'command') this.possess(this.selectedId || this._anyUnit()); else this.rig.setMode(m); this.emit('camera', { mode: m }); },
@@ -396,6 +412,7 @@ export class Game {
   _anyUnit() { const w = this.world; if (!w) return 0; const u = w.units.find((x) => x.alive); return u ? u.id : 0; }
 
   _feed(p) {
+    if (this.meta) return;                  // app/meta.js writes the kill feed (killverbs.js, killer / victim split)
     const w = this.world; const verbs = (this.content.humor && this.content.humor.killVerbs) || null;
     const sd = w.defs[p.srcDef], dd = w.defs[p.dstDef];
     const verb = verbs && verbs[p.cause] ? verbs[p.cause][(Math.random() * verbs[p.cause].length) | 0] : { melee: 'bonked', ranged: 'perforated', aoe: 'flattened', fire: 'toasted', trample: 'trampled', magic: 'zapped', stone: 'petrified', kick: 'yeeted' }[p.cause] || 'defeated';
@@ -421,6 +438,7 @@ export class Game {
         const lp = this._pointer.lastPlace; if (!lp || Math.hypot(lp[0] - hit.x, lp[1] - hit.z) > (this.brushState.mode === 'erase' ? 1.2 : 3.0)) { this._pointer.lastPlace = [hit.x, hit.z]; this.placeAt(hit.x, hit.z); }
       }
     } else if (this.state === 'running' || this.state === 'countdown') {
+      if (this.meta) this.meta.aim.hover(hit.x, hit.z);          // the aim ring follows the cursor while a god power is armed
       let best = 0, bd = 3.5 * 3.5;
       for (const u of this.world.units) { const d = (u.x - hit.x) ** 2 + (u.z - hit.z) ** 2; if (d < bd) { bd = d; best = u.id; } }
       this.hoverId = best; this.view.hover = best;
@@ -431,7 +449,10 @@ export class Game {
     if (!this.world || button !== 0) return;
     const hit = this.groundAt(cx, cy);
     if (this.state === 'placement') { if (hit) { this.ghostInfo.x = hit.x; this.ghostInfo.z = hit.z; this.placeAt(hit.x, hit.z); this._pointer.lastPlace = [hit.x, hit.z]; } }
-    else if (this.state === 'running') { this.select(this.hoverId); this.emit('select', { id: this.hoverId }); }
+    else if (this.state === 'running') {
+      if (hit && this.meta && this.meta.aim.click(hit.x, hit.z)) return;      // an armed god power takes the click (casts at the terrain point); no selection change
+      this.select(this.hoverId); this.emit('select', { id: this.hoverId });
+    }
   }
   pointerUp() { this._pointer.down = false; }
 
@@ -440,6 +461,7 @@ export class Game {
   frame(dt) {
     const w = this.world; this.clock += dt;
     const eng = this.engine;
+    if (this.meta) this.meta.onFrame(dt);                                          // REAL seconds: announcer, toast queue, kill-cam camera, Take Command input (before the rig update)
     if (this.canvasMode === 'none' || this.canvasMode === 'preview') return;      // an opaque menu covers the canvas: do not pay for rendering it
     if (this.state === 'diorama') this._dioramaFrame(dt);
     if (w) {
@@ -513,13 +535,14 @@ export class Game {
     const sel = this.selectedId ? (w.units.find((u) => u.id === this.selectedId) || null) : null;
     const hv = this.hoverId ? (w.units.find((u) => u.id === this.hoverId) || null) : null;
     const show = sel || hv;
-    return {
+    const d = {
       state: this.state, time: w.time, speed: this.speed, paused: this.paused, fps: this.fps || 0, cam: this.rig.mode, teams, countdown: this.state === 'countdown' ? Math.ceil(w.countdown) : 0,
       objective: w.objective && w.objective.hud ? w.objective.hud(w) : null, killfeed: this.killfeed.slice(), announcer: this.announce,
       selection: show ? { id: show.id, defId: show.def.id, name: show.name || show.def.name, hp: show.hp, hpMax: show.hpMax, kills: show.kills, status: [], blurb: (show.def.text && show.def.text.blurb) || '' } : null,
       powers: this.godPowers(), minimap: null,
       worldLabels: this.labels.snapshot(this.engine.camera, this.engine.renderer.domElement.clientWidth, this.engine.renderer.domElement.clientHeight, w.time),
     };
+    return this.meta ? this.meta.decorateHud(d) : d;                              // + possess, teaching, aim (app/meta.js)
   }
   _byType(team) {
     const w = this.world; const m = new Map();
@@ -530,11 +553,13 @@ export class Game {
   results() {
     const w = this.world; const s = w.stats; let mvp = null;
     for (const u of w.units) if (!mvp || u.kills > mvp.kills) mvp = u; for (const u of w.dying) if (!mvp || u.kills > mvp.kills) mvp = u;
-    const lessons = LESSONS && LESSONS.generateLessons ? LESSONS.generateLessons(w) : [];
-    return { winner: w.winner, reason: w.endReason, time: w.time, teams: [0, 1].map((t) => ({ alive: s[t].alive, dead: s[t].dead, kills: s[t].kills, damage: s[t].damageDealt, lostCost: s[t].deadCost })), mvp: mvp ? { defId: mvp.def.id, name: mvp.name || mvp.def.name, kills: mvp.kills } : null, funnyStats: [], lessons, canRematch: true, canNext: false, setup: this.setup };
+    const lessons = [];                      // generated from the recorded event log by app/meta.js (sim/lessons.js reads a log, not the World)
+    const res = { winner: w.winner, reason: w.endReason, time: w.time, teams: [0, 1].map((t) => ({ alive: s[t].alive, dead: s[t].dead, kills: s[t].kills, damage: s[t].damageDealt, lostCost: s[t].deadCost })), mvp: mvp ? { defId: mvp.def.id, name: mvp.name || mvp.def.name, kills: mvp.kills } : null, funnyStats: [], lessons, canRematch: true, canNext: false, setup: this.setup };
+    return this.meta ? this.meta.decorateResults(res) : res;                      // + funnyStats, lessons, MVP last words, survival / daily blocks (app/meta.js)
   }
 
   dispose(full) {
+    if (this.meta) { this.meta.detach(); this.possessId = 0; }              // unsubscribes from the old world, cancels aim / kill-cam, clears the announcer slot
     if (this.audio && this.audio.detach) { try { this.audio.detach(); } catch (e) { /* ignore */ } }
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }

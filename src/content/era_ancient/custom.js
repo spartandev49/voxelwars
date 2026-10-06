@@ -9,7 +9,7 @@
 //                            while armygen, the Codex and the balance harness, which enumerate defs, never see them) and wraps content.modelFor for custom defs.
 import { RNG, hashString, clamp } from '../../core/rng.js';
 import { PART_REGISTRY, validateBlueprint, defaultBlueprint, compileSoldier, BODY_TYPES, BODY_RADIUS } from './blueprints.js';
-import { STAT_CAPS, STAT_POINTS, MAX_ABILITIES, ABILITY_PRESETS, legalAbilities, statsToUnitDef, clampedCost, SHIELDS } from '../../sim/stats.js';
+import { STAT_CAPS, STAT_POINTS, MAX_ABILITIES, ABILITY_PRESETS, legalAbilities, statsToUnitDef, clampedCost, costFormula, SHIELDS } from '../../sim/stats.js';
 import { power } from '../../sim/power.js';
 import { randomName } from './humor/names.js';
 import { BLURBS, LORE, CODEX_JOKES, CLASS_LABEL, ABILITY_TEXT, pickSeeded, defaultQuotes } from './custom_text.js';
@@ -121,6 +121,7 @@ export function customDef(cs) {
   const d = statsToUnitDef({ id: n.id, name: n.name, blueprint: bp, stats: n.stats, abilities: n.abilities, ai: n.ai || undefined, text: {} }, { weaponStyle: ws, shield, radius: radiusFor(bp.body.type, n.radius) });
   if (n.height !== 1) d.scale = n.height;
   d.cost = clampedCost(d);
+  d.clamped = d.cost > costFormula(d);                      // the role-efficiency clamp raised the price above the plain formula
   d.faction = 'custom'; d.custom = true; d.name = n.name;
   d.text = buildText(n, d);
   d.model = { kind: 'humanoid', blueprint: bp, height: n.height };
@@ -157,7 +158,8 @@ export function abilityCostDelta(cs, id) {
 /** The compile options (range, radius, scale) of a derived custom def: the Voxel Painter builds its generated grids with the same ones. */
 export function compileOptsOf(def) {
   const bp = def.model.blueprint, eff = effectiveScale(bp.body.type, def.model.height || 1);
-  return { range: def.melee ? def.melee.range : undefined, radius: def.radius, scale: eff[2] };
+  // melee weapons are trimmed to the sim's melee range; a thrown or magic weapon is carried for its projectile, so only the 3.6 u custom cap applies to it
+  return { range: def.melee && !def.ranged ? def.melee.range : undefined, radius: def.radius, scale: eff[2] };
 }
 /**
  * The ModelDef (and metrics) of an already derived custom def, compiled with its own range and radius so the weapon-length rule matches what the sim fights with.

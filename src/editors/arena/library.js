@@ -47,7 +47,8 @@ export function libraryFor(ctx) {
       return res;
     },
     remove(id) { if (col) col.remove(id); },
-    rename(id, name) { const it = lib.get(id); if (!it || !col) return false; it.name = String(name).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, LIMITS.nameMax) || it.name; it.updated = Date.now(); return col.put(it) !== false; },
+    /** Rename an item; returns the updated item (or null). Persistence is reported by status(), as for save(). */
+    rename(id, name) { const it = lib.get(id); if (!it || !col) return null; it.name = String(name).replace(/[\u0000-\u001f]/g, ' ').trim().slice(0, LIMITS.nameMax) || it.name; it.updated = Date.now(); col.put(it); return it; },
     async duplicate(id) {
       const it = lib.get(id); if (!it || !col) return null;
       const copy = Object.assign({}, it, { id: newId(), name: (it.name + ' copy').slice(0, LIMITS.nameMax), updated: Date.now() });

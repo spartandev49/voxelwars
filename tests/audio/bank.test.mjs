@@ -39,11 +39,13 @@ const mkBank = (o = {}) => new SfxBank(Object.assign({ catalog: cat, decode: dec
 
 // ---- retry once, then failure -> synth flagged
 {
-  const f = makeFetch({ fail: (u, n) => /sword_hit_1/.test(u) && n === 1 }); const b = mkBank({ fetch: f });
-  b.ensure('hit_blade'); await b.idle(); assert.equal(f.calls.filter((u) => /sword_hit_1/.test(u)).length, 2, 'retried once'); assert.equal(b.assets.get('sword_hit_1').state, 'ready');
-  const g = makeFetch({ fail: (u) => /war_horn/.test(u) }); const b2 = mkBank({ fetch: g });
+  const f = makeFetch({ failStatus: 503, fail: (u, n) => /sword_hit_1/.test(u) && n === 1 }); const b = mkBank({ fetch: f });
+  b.ensure('hit_blade'); await b.idle(); assert.equal(f.calls.filter((u) => /sword_hit_1/.test(u)).length, 2, 'transient failure (503) retried once'); assert.equal(b.assets.get('sword_hit_1').state, 'ready');
+  const g = makeFetch({ failStatus: 503, fail: (u) => /war_horn/.test(u) }); const b2 = mkBank({ fetch: g });
   b2.ensure('horn_war'); await b2.idle(); assert.equal(g.calls.filter((u) => /war_horn_1/.test(u)).length, 2, 'only one retry'); const st = b2.stats(); assert.equal(st.failed, 3, 'all three variants failed');
   const p = b2.pick('horn_war'); assert.ok(p && p.src === 'synth', 'graceful fallback to synth'); assert.equal(b2.stats().synth, 1); assert.ok(b2.paths()['synth:horn_war'] === 'synth'); assert.equal(b2.paths()['war_horn_1'], 'failed');
+  // 404 / 403 are permanent: one request, no retry, silent synth fallback
+  const gone = makeFetch({ fail: (u) => /war_horn/.test(u) }); const b404 = mkBank({ fetch: gone }); b404.ensure('horn_war'); await b404.idle(); assert.equal(gone.calls.filter((u) => /war_horn_1/.test(u)).length, 1, '404 is not retried'); assert.equal(b404.pick('horn_war').src, 'synth'); assert.ok(b404.failures().every((x) => /404/.test(x.err)) && b404.failures().length === 3);
   const blocked = mkBank({ fetch: makeFetch({ block: true }) }); blocked.ensure('hit_blade'); await blocked.idle(); assert.ok(blocked.pick('hit_blade').src === 'synth', 'fetch blocked -> synth');
   // an undecodable file fails cleanly too
   const bad = mkBank({ fetch: async () => ({ ok: true, status: 200, arrayBuffer: async () => new ArrayBuffer(64) }) }); bad.ensure('hit_blade'); await bad.idle(); assert.equal(bad.stats().failed, 3); assert.equal(bad.pick('hit_blade').src, 'synth');
@@ -90,5 +92,17 @@ const mkBank = (o = {}) => new SfxBank(Object.assign({ catalog: cat, decode: dec
   const p = b.pick('philosopher_mumble'); assert.ok(p.src === 'synth' && p.buf.sampleRate === 22050 && p.buf.duration > 0.5);
   const seen = new Set(); for (let i = 0; i < 30; i++) seen.add(b.pick('philosopher_mumble').id); assert.equal(seen.size, 3, 'three synth variants rotate');
   const loop = b.pick('amb_birds'); assert.ok(loop.loop === true, 'synth ambience flagged as loop');
+}
+// ---- fetch blocked wholesale: circuit breaker stops hammering the network (few console errors), embedded core still loads first
+{
+  const core = {}; for (const e of man.sfx) if (e.core) core[e.id] = wavB64(0.25, 300);
+  const blocked = makeFetch({ block: true }); const b = mkBank({ core, fetch: blocked, sleep: () => Promise.resolve() });
+  b.warm(['ui', 'combat', 'voice', 'siege', 'misc']);          // queues EVERYTHING (including the core ids) before loadCore() runs
+  await b.loadCore(); await b.idle();
+  const st = b.stats(); assert.equal(st.embedded, Object.keys(core).length, 'embedded assets load even when they were already queued behind 70 others');
+  assert.ok(blocked.calls.length <= 14, 'at most ~8 failing requests before the breaker opens: ' + blocked.calls.length + ' of ' + (st.total - st.embedded));
+  assert.ok(st.failed >= st.total - st.embedded - 0 && b.failures().some((x) => /network down/.test(x.err) || /blocked/.test(x.err)), 'the rest fail fast and are recorded');
+  assert.equal(b.pick('hit_blade').src, 'embedded', 'hits still play from the core pack');
+  assert.equal(b.pick('thunder_crack').src, 'synth', 'non-core families fall back to flagged synth');
 }
 console.log('bank.test OK');

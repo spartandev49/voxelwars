@@ -103,10 +103,7 @@
    "bow_shot_3",
    "arrow_hit_wood_3",
    "arrow_hit_flesh_3",
-   "arrow_hit_flesh_4",
-   "arrow_hit_shield_1",
-   "arrow_hit_shield_2",
-   "arrow_hit_shield_3"
+   "arrow_hit_flesh_4"
   ],
   "impact": [
    "flesh_hit_light_1",
@@ -144,13 +141,7 @@
    "death_scream_3",
    "death_scream_4",
    "death_dying_3",
-   "death_hurt_2",
-   "death_big_1",
-   "death_big_2",
-   "death_big_3",
-   "death_animal_1",
-   "death_animal_2",
-   "death_animal_3"
+   "death_hurt_2"
   ],
   "voice": [
    "battle_cry_1",
@@ -166,8 +157,6 @@
    "announcer_fight",
    "announcer_ready",
    "announcer_winner",
-   "announcer_game_over",
-   "announcer_final_round",
    "battle_cry_6",
    "war_cry_3",
    "war_cry_4",
@@ -190,8 +179,6 @@
    "crowd_roar_2",
    "crowd_chant_1",
    "applause_1",
-   "crowd_chant_2",
-   "crowd_cheer_5",
    "crowd_ooh_1",
    "crowd_gasp_1"
   ],
@@ -239,26 +226,19 @@
    "horse_neigh_2",
    "horse_neigh_3",
    "camel_groan_2",
-   "camel_groan_3",
    "monster_roar_3",
    "elephant_trumpet_2",
    "elephant_trumpet_3",
-   "elephant_step_1",
-   "elephant_step_2",
-   "elephant_step_3",
    "snake_hiss_2",
    "snake_hiss_3",
    "dog_bark_3",
    "dog_bark_4",
    "chicken_cluck_3",
    "chicken_cluck_4",
-   "chicken_rage_1",
    "goat_bleat_2",
    "goat_bleat_3",
    "sheep_baa_2",
-   "donkey_bray_2",
-   "horse_gallop_2",
-   "horse_snort_1"
+   "donkey_bray_2"
   ],
   "siege": [
    "catapult_creak_1",
@@ -299,21 +279,13 @@
    "explosion_rumble_3",
    "rock_fall_2",
    "debris_big_2",
-   "voxel_break_4",
-   "wall_crumble_1",
-   "wall_crumble_2",
-   "wall_crumble_3",
-   "rubble_1",
-   "rubble_2",
-   "rubble_3"
+   "voxel_break_4"
   ],
   "fire": [
    "fire_whoosh_1",
    "fire_whoosh_2",
    "fire_ignite_1",
    "torch_crackle_1",
-   "fire_burst_1",
-   "fire_impact_1",
    "fire_ignite_2",
    "torch_crackle_2",
    "torch_crackle_3"
@@ -332,17 +304,14 @@
    "lightning_zap_1",
    "heal_chime_3",
    "heal_chime_4",
-   "revive_chime_1",
-   "revive_chime_2",
-   "revive_chime_3",
    "curse_dark_3",
    "curse_dark_4",
    "thunder_crack_3",
    "lightning_zap_2",
    "lightning_zap_3",
-   "stone_freeze_1",
-   "stone_freeze_2",
-   "stone_freeze_3"
+   "magic_cast_2",
+   "magic_cast_3",
+   "magic_cast_4"
   ],
   "coin": [
    "coin_pickup_1",
@@ -398,8 +367,6 @@
    "cloth_flap_3",
    "whoosh_camera_2",
    "whoosh_camera_3",
-   "splat_2",
-   "splat_3",
    "pop_place_3",
    "pop_place_4",
    "confetti_pop_2",
@@ -446,12 +413,6 @@
    "ui_minimize",
    "ui_panel_open_2",
    "ui_panel_close_2",
-   "ui_place_1",
-   "ui_place_2",
-   "ui_place_3",
-   "ui_erase_1",
-   "ui_erase_2",
-   "ui_erase_3",
    "ui_notify_1",
    "countdown_beep_2",
    "countdown_beep_3",
@@ -470,19 +431,17 @@
    "jingle_defeat_2",
    "jingle_achievement_1",
    "jingle_defeat_3",
-   "jingle_battle_start_3",
-   "stinger_epic_1",
    "stinger_funny_1",
    "stinger_funny_2",
-   "stinger_funny_3",
-   "stinger_hero_down_1",
-   "stinger_hero_down_2",
-   "stinger_hero_down_3"
+   "stinger_funny_3"
   ],
   "ambience": [
    "ambience_wind_loop",
    "ambience_crowd_loop",
-   "ambience_fire_loop"
+   "ambience_fire_loop",
+   "ambience_wind_loop_2",
+   "ambience_crowd_loop_2",
+   "ambience_fire_loop_2"
   ]
  },
  "musicByMood": {
@@ -2291,43 +2250,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-voiceover-pack-fighter/files/Audio/winner.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "announcer_game_over",
-   "file": "announcer_game_over.mp3",
-   "path": "audio/sfx/announcer_game_over.mp3",
-   "category": "voice",
-   "tags": [
-    "announcer",
-    "game over",
-    "defeat"
-   ],
-   "duration": 1.65,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Voiceover Pack: Fighter",
-   "source": "https://kenney.nl/assets/voiceover-pack-fighter",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-voiceover-pack-fighter/files/Audio/game_over.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "announcer_final_round",
-   "file": "announcer_final_round.mp3",
-   "path": "audio/sfx/announcer_final_round.mp3",
-   "category": "voice",
-   "tags": [
-    "announcer",
-    "final round"
-   ],
-   "duration": 1.57,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Voiceover Pack: Fighter",
-   "source": "https://kenney.nl/assets/voiceover-pack-fighter",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-voiceover-pack-fighter/files/Audio/final_round.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "crowd_cheer_1",
@@ -5020,7 +4942,7 @@
     "wind",
     "loop"
    ],
-   "duration": 7.03,
+   "duration": 4.73,
    "author": "Luke.RUSTLTD",
    "title": "wind1",
    "source": "https://opengameart.org/content/wind1",
@@ -5040,7 +4962,7 @@
     "loop",
     "murmur"
    ],
-   "duration": 7.03,
+   "duration": 4.73,
    "author": "Gregor Quendel",
    "title": "Free Crowd Cheering Sounds",
    "source": "https://opengameart.org/content/free-crowd-cheering-sounds",
@@ -5060,7 +4982,7 @@
     "loop",
     "crackle"
    ],
-   "duration": 5.25,
+   "duration": 3.84,
    "author": "PagDev",
    "title": "Fireplace Sound loop",
    "source": "https://opengameart.org/content/fireplace-sound-loop",
@@ -5125,46 +5047,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: commons-drum-roll-intro/Drum_Roll_Intro.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "fire_burst_1",
-   "file": "fire_burst_1.mp3",
-   "path": "audio/sfx/fire_burst_1.mp3",
-   "category": "fire",
-   "tags": [
-    "fire",
-    "whoosh",
-    "burst",
-    "sizzle"
-   ],
-   "duration": 2.01,
-   "author": "Gregor Quendel",
-   "title": "Free Cinematic Sound Effects",
-   "source": "https://opengameart.org/content/free-cinematic-sound-effects",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Short - Swoosh Burst Sizzling 01.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "fire_impact_1",
-   "file": "fire_impact_1.mp3",
-   "path": "audio/sfx/fire_impact_1.mp3",
-   "category": "fire",
-   "tags": [
-    "fire",
-    "impact",
-    "explosion",
-    "burst"
-   ],
-   "duration": 2.43,
-   "author": "Gregor Quendel",
-   "title": "Free Cinematic Sound Effects",
-   "source": "https://opengameart.org/content/free-cinematic-sound-effects",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Impacts - Complex 04.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "rock_crumble_4",
@@ -5394,66 +5276,6 @@
    "notes": "source file: kenney-impact-sounds/files/Audio/impactSoft_medium_000.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "arrow_hit_shield_1",
-   "file": "arrow_hit_shield_1.mp3",
-   "path": "audio/sfx/arrow_hit_shield_1.mp3",
-   "category": "bow",
-   "tags": [
-    "arrow",
-    "hit",
-    "shield",
-    "wood"
-   ],
-   "duration": 0.16,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-impact-sounds/files/Audio/impactWood_light_000.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "arrow_hit_shield_2",
-   "file": "arrow_hit_shield_2.mp3",
-   "path": "audio/sfx/arrow_hit_shield_2.mp3",
-   "category": "bow",
-   "tags": [
-    "arrow",
-    "hit",
-    "shield",
-    "metal"
-   ],
-   "duration": 0.6,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-impact-sounds/files/Audio/impactPlate_light_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "arrow_hit_shield_3",
-   "file": "arrow_hit_shield_3.mp3",
-   "path": "audio/sfx/arrow_hit_shield_3.mp3",
-   "category": "bow",
-   "tags": [
-    "arrow",
-    "hit",
-    "shield",
-    "wood"
-   ],
-   "duration": 0.13,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-impact-sounds/files/Audio/impactWood_light_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "flesh_hit_light_5",
    "file": "flesh_hit_light_5.mp3",
    "path": "audio/sfx/flesh_hit_light_5.mp3",
@@ -5566,123 +5388,6 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
    "attributionRequired": true,
    "notes": "source file: oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain5.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_big_1",
-   "file": "death_big_1.mp3",
-   "path": "audio/sfx/death_big_1.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "big",
-    "monster",
-    "roar"
-   ],
-   "duration": 0.57,
-   "author": "rubberduck",
-   "title": "80 CC0 creture SFX #2",
-   "source": "https://opengameart.org/content/80-cc0-creture-sfx-2",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/die_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_big_2",
-   "file": "death_big_2.mp3",
-   "path": "audio/sfx/death_big_2.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "big",
-    "monster",
-    "roar"
-   ],
-   "duration": 0.78,
-   "author": "rubberduck",
-   "title": "80 CC0 creture SFX #2",
-   "source": "https://opengameart.org/content/80-cc0-creture-sfx-2",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/die_04.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_big_3",
-   "file": "death_big_3.mp3",
-   "path": "audio/sfx/death_big_3.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "big",
-    "monster",
-    "roar"
-   ],
-   "duration": 0.76,
-   "author": "rubberduck",
-   "title": "80 CC0 RPG SFX",
-   "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/creature_die_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_animal_1",
-   "file": "death_animal_1.mp3",
-   "path": "audio/sfx/death_animal_1.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "animal",
-    "hurt"
-   ],
-   "duration": 0.42,
-   "author": "rubberduck",
-   "title": "80 CC0 creature SFX",
-   "source": "https://opengameart.org/content/80-cc0-creature-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/hurt_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_animal_2",
-   "file": "death_animal_2.mp3",
-   "path": "audio/sfx/death_animal_2.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "animal",
-    "hurt"
-   ],
-   "duration": 0.31,
-   "author": "rubberduck",
-   "title": "80 CC0 creature SFX",
-   "source": "https://opengameart.org/content/80-cc0-creature-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creature-sfx/files/80-CC0-creature-SFX_0/hurt_04.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_animal_3",
-   "file": "death_animal_3.mp3",
-   "path": "audio/sfx/death_animal_3.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "animal",
-    "die"
-   ],
-   "duration": 0.39,
-   "author": "rubberduck",
-   "title": "80 CC0 creture SFX #2",
-   "source": "https://opengameart.org/content/80-cc0-creture-sfx-2",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/die_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "battle_cry_6",
@@ -6411,44 +6116,6 @@
    "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-12.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "splat_2",
-   "file": "splat_2.mp3",
-   "path": "audio/sfx/splat_2.mp3",
-   "category": "foley",
-   "tags": [
-    "splat",
-    "squish",
-    "comic"
-   ],
-   "duration": 0.73,
-   "author": "Independent.nu",
-   "title": "8 wet squish, slurp impacts",
-   "source": "https://opengameart.org/content/8-wet-squish-slurp-impacts",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-8-wet-squish-slurp-impacts/files/independent_nu_ljudbank-wet_squish_slurp_impacts/impsplat/impactsplat03.mp3.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "splat_3",
-   "file": "splat_3.mp3",
-   "path": "audio/sfx/splat_3.mp3",
-   "category": "foley",
-   "tags": [
-    "splat",
-    "squish",
-    "comic"
-   ],
-   "duration": 0.94,
-   "author": "Independent.nu",
-   "title": "8 wet squish, slurp impacts",
-   "source": "https://opengameart.org/content/8-wet-squish-slurp-impacts",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-8-wet-squish-slurp-impacts/files/independent_nu_ljudbank-wet_squish_slurp_impacts/impsplat/impactsplat06.mp3.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "pop_place_3",
    "file": "pop_place_3.mp3",
    "path": "audio/sfx/pop_place_3.mp3",
@@ -6697,63 +6364,6 @@
    "notes": "source file: oga-cure-magic/files/curemagic/Cure7.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "revive_chime_1",
-   "file": "revive_chime_1.mp3",
-   "path": "audio/sfx/revive_chime_1.mp3",
-   "category": "magic",
-   "tags": [
-    "revive",
-    "chime",
-    "heal"
-   ],
-   "duration": 2.04,
-   "author": "leohpaz",
-   "title": "8 Heals and Buffs SFX",
-   "source": "https://opengameart.org/content/8-heals-and-buffs-sfx",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-8-heals-and-buffs-sfx/files/8_rpg_heals_buffs_sfx_samples/30_Revive_03.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "revive_chime_2",
-   "file": "revive_chime_2.mp3",
-   "path": "audio/sfx/revive_chime_2.mp3",
-   "category": "magic",
-   "tags": [
-    "revive",
-    "chime",
-    "heal"
-   ],
-   "duration": 1.02,
-   "author": "Someoneman",
-   "title": "Cure Magic",
-   "source": "https://opengameart.org/content/cure-magic",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-cure-magic/files/curemagic/Cure8.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "revive_chime_3",
-   "file": "revive_chime_3.mp3",
-   "path": "audio/sfx/revive_chime_3.mp3",
-   "category": "magic",
-   "tags": [
-    "revive",
-    "chime",
-    "rise"
-   ],
-   "duration": 0.89,
-   "author": "wobbleboxx",
-   "title": "Level up, power up, Coin get (13 Sounds)",
-   "source": "https://opengameart.org/content/level-up-power-up-coin-get-13-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-level-up-power-up-coin-get-13-sounds/files/SoundPack01/Rise03.aif; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "curse_dark_3",
    "file": "curse_dark_3.mp3",
    "path": "audio/sfx/curse_dark_3.mp3",
@@ -6849,9 +6459,9 @@
    "notes": "source file: oga-electricity-sound-effects-0/files/continuousspark/continuousspark.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stone_freeze_1",
-   "file": "stone_freeze_1.mp3",
-   "path": "audio/sfx/stone_freeze_1.mp3",
+   "id": "magic_cast_2",
+   "file": "magic_cast_2.mp3",
+   "path": "audio/sfx/magic_cast_2.mp3",
    "category": "magic",
    "tags": [
     "freeze",
@@ -6869,9 +6479,9 @@
    "notes": "source file: oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/30_Earth_02.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stone_freeze_2",
-   "file": "stone_freeze_2.mp3",
-   "path": "audio/sfx/stone_freeze_2.mp3",
+   "id": "magic_cast_3",
+   "file": "magic_cast_3.mp3",
+   "path": "audio/sfx/magic_cast_3.mp3",
    "category": "magic",
    "tags": [
     "freeze",
@@ -6889,9 +6499,9 @@
    "notes": "source file: oga-8-magic-attacks/files/8_rpg_battle_magic_sfx_free_samples/13_Ice_explosion_01.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stone_freeze_3",
-   "file": "stone_freeze_3.mp3",
-   "path": "audio/sfx/stone_freeze_3.mp3",
+   "id": "magic_cast_4",
+   "file": "magic_cast_4.mp3",
+   "path": "audio/sfx/magic_cast_4.mp3",
    "category": "magic",
    "tags": [
     "freeze",
@@ -7228,125 +6838,6 @@
    "notes": "source file: kenney-interface-sounds/files/Audio/close_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "ui_place_1",
-   "file": "ui_place_1.mp3",
-   "path": "audio/sfx/ui_place_1.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "place",
-    "drop",
-    "unit"
-   ],
-   "duration": 0.1,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/drop_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_place_2",
-   "file": "ui_place_2.mp3",
-   "path": "audio/sfx/ui_place_2.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "place",
-    "drop",
-    "unit"
-   ],
-   "duration": 0.13,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/drop_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_place_3",
-   "file": "ui_place_3.mp3",
-   "path": "audio/sfx/ui_place_3.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "place",
-    "drop",
-    "unit"
-   ],
-   "duration": 0.16,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/drop_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_erase_1",
-   "file": "ui_erase_1.mp3",
-   "path": "audio/sfx/ui_erase_1.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "erase",
-    "delete",
-    "scratch"
-   ],
-   "duration": 0.16,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/scratch_002.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_erase_2",
-   "file": "ui_erase_2.mp3",
-   "path": "audio/sfx/ui_erase_2.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "erase",
-    "delete",
-    "scratch"
-   ],
-   "duration": 0.34,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/scratch_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_erase_3",
-   "file": "ui_erase_3.mp3",
-   "path": "audio/sfx/ui_erase_3.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "erase",
-    "delete"
-   ],
-   "duration": 0.08,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/glitch_002.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "ui_notify_1",
    "file": "ui_notify_1.mp3",
    "path": "audio/sfx/ui_notify_1.mp3",
@@ -7594,24 +7085,6 @@
    "notes": "source file: oga-fantasy-desert-ride-able-camel/files/fantasy_desert_camel/fantasy_desert_camel.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "camel_groan_3",
-   "file": "camel_groan_3.mp3",
-   "path": "audio/sfx/camel_groan_3.mp3",
-   "category": "animal",
-   "tags": [
-    "camel",
-    "groan"
-   ],
-   "duration": 2.43,
-   "author": "AntumDeluge",
-   "title": "Camel Groan",
-   "source": "https://opengameart.org/content/camel-groan",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-camel-groan/files/camel/flac/camel_02.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "monster_roar_3",
    "file": "monster_roar_3.mp3",
    "path": "audio/sfx/monster_roar_3.mp3",
@@ -7728,121 +7201,6 @@
    "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-35.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "wall_crumble_1",
-   "file": "wall_crumble_1.mp3",
-   "path": "audio/sfx/wall_crumble_1.mp3",
-   "category": "destruction",
-   "tags": [
-    "wall",
-    "crumble",
-    "collapse",
-    "rubble"
-   ],
-   "duration": 2.64,
-   "author": "StarNinjas",
-   "title": "Cave In",
-   "source": "https://opengameart.org/content/cave-in",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-cave-in/files/cave_in_-_starninjas_0/cave_in_-_starninjas_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "wall_crumble_2",
-   "file": "wall_crumble_2.mp3",
-   "path": "audio/sfx/wall_crumble_2.mp3",
-   "category": "destruction",
-   "tags": [
-    "wall",
-    "crumble",
-    "rubble"
-   ],
-   "duration": 0.81,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "wall_crumble_3",
-   "file": "wall_crumble_3.mp3",
-   "path": "audio/sfx/wall_crumble_3.mp3",
-   "category": "destruction",
-   "tags": [
-    "wall",
-    "crumble",
-    "rubble"
-   ],
-   "duration": 0.23,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_06.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "rubble_1",
-   "file": "rubble_1.mp3",
-   "path": "audio/sfx/rubble_1.mp3",
-   "category": "destruction",
-   "tags": [
-    "rubble",
-    "debris",
-    "rocks"
-   ],
-   "duration": 0.34,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "rubble_2",
-   "file": "rubble_2.mp3",
-   "path": "audio/sfx/rubble_2.mp3",
-   "category": "destruction",
-   "tags": [
-    "rubble",
-    "debris",
-    "rocks"
-   ],
-   "duration": 0.31,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_05.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "rubble_3",
-   "file": "rubble_3.mp3",
-   "path": "audio/sfx/rubble_3.mp3",
-   "category": "destruction",
-   "tags": [
-    "rubble",
-    "debris",
-    "rocks"
-   ],
-   "duration": 0.47,
-   "author": "pauliuw",
-   "title": "Stone, rock or wood moved sound",
-   "source": "https://opengameart.org/content/stone-rock-or-wood-moved-sound",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-stone-rock-or-wood-moved-sound/files/stone_rock_or_wood_moved/stone_rock_or_wood_moved.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "elephant_trumpet_2",
    "file": "elephant_trumpet_2.mp3",
    "path": "audio/sfx/elephant_trumpet_2.mp3",
@@ -7877,66 +7235,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "pitch-shifted variant of the same recording; source file: commons-elephant-voice-trumpeting/Elephant_voice_-_trumpeting.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "elephant_step_1",
-   "file": "elephant_step_1.mp3",
-   "path": "audio/sfx/elephant_step_1.mp3",
-   "category": "animal",
-   "tags": [
-    "elephant",
-    "step",
-    "stomp",
-    "heavy"
-   ],
-   "duration": 0.84,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "derived: pitched-down heavy thud; source file: kenney-impact-sounds/files/Audio/impactPlate_heavy_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "elephant_step_2",
-   "file": "elephant_step_2.mp3",
-   "path": "audio/sfx/elephant_step_2.mp3",
-   "category": "animal",
-   "tags": [
-    "elephant",
-    "step",
-    "stomp",
-    "heavy"
-   ],
-   "duration": 0.47,
-   "author": "rubberduck",
-   "title": "80 CC0 creture SFX #2",
-   "source": "https://opengameart.org/content/80-cc0-creture-sfx-2",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/stomp_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "elephant_step_3",
-   "file": "elephant_step_3.mp3",
-   "path": "audio/sfx/elephant_step_3.mp3",
-   "category": "animal",
-   "tags": [
-    "elephant",
-    "step",
-    "stomp",
-    "heavy"
-   ],
-   "duration": 0.57,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "derived: pitched-down heavy thud; source file: kenney-impact-sounds/files/Audio/impactPlate_heavy_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "snake_hiss_2",
@@ -8051,26 +7349,6 @@
    "notes": "pitch-shifted variant; source file: oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "chicken_rage_1",
-   "file": "chicken_rage_1.mp3",
-   "path": "audio/sfx/chicken_rage_1.mp3",
-   "category": "animal",
-   "tags": [
-    "chicken",
-    "rage",
-    "angry",
-    "comedy"
-   ],
-   "duration": 1.93,
-   "author": "IMadeIt",
-   "title": "Chicken Sound Effect",
-   "source": "https://opengameart.org/content/chicken-sound-effect",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "pitch-shifted variant (angry); source file: oga-chicken-sound-effect/files/chicken_sound_effect/Chicken Sound Effect.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "goat_bleat_2",
    "file": "goat_bleat_2.mp3",
    "path": "audio/sfx/goat_bleat_2.mp3",
@@ -8148,44 +7426,6 @@
    "notes": "pitch-shifted variant; source file: oga-donkey-bray/files/donkey_bray_-_starninjas_0/donkey_bray_-_starninjas_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "horse_gallop_2",
-   "file": "horse_gallop_2.mp3",
-   "path": "audio/sfx/horse_gallop_2.mp3",
-   "category": "animal",
-   "tags": [
-    "horse",
-    "gallop",
-    "hooves"
-   ],
-   "duration": 2.53,
-   "author": "AntumDeluge",
-   "title": "Horse Gallop Loop",
-   "source": "https://opengameart.org/content/horse-gallop-loop",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-horse-gallop-loop/files/gallop/gallop_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "horse_snort_1",
-   "file": "horse_snort_1.mp3",
-   "path": "audio/sfx/horse_snort_1.mp3",
-   "category": "animal",
-   "tags": [
-    "horse",
-    "whinny",
-    "zebra"
-   ],
-   "duration": 2.25,
-   "author": "AntumDeluge",
-   "title": "Zebra Whinny",
-   "source": "https://opengameart.org/content/zebra-whinny",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-zebra-whinny/files/zebra_0/zebra_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "drum_roll_2",
    "file": "drum_roll_2.mp3",
    "path": "audio/sfx/drum_roll_2.mp3",
@@ -8224,44 +7464,6 @@
    "notes": "pitch-shifted variant of the same roll; source file: commons-drum-roll-intro/Drum_Roll_Intro.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "crowd_chant_2",
-   "file": "crowd_chant_2.mp3",
-   "path": "audio/sfx/crowd_chant_2.mp3",
-   "category": "crowd",
-   "tags": [
-    "crowd",
-    "chant",
-    "rhythmic"
-   ],
-   "duration": 3.53,
-   "author": "Gregor Quendel",
-   "title": "Free Crowd Cheering Sounds",
-   "source": "https://opengameart.org/content/free-crowd-cheering-sounds",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 08 - Rhythmic cheering.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "crowd_cheer_5",
-   "file": "crowd_cheer_5.mp3",
-   "path": "audio/sfx/crowd_cheer_5.mp3",
-   "category": "crowd",
-   "tags": [
-    "crowd",
-    "cheer",
-    "soft"
-   ],
-   "duration": 2.85,
-   "author": "Gregor Quendel",
-   "title": "Free Crowd Cheering Sounds",
-   "source": "https://opengameart.org/content/free-crowd-cheering-sounds",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 05 - Soft cheering - I.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "jingle_defeat_3",
    "file": "jingle_defeat_3.mp3",
    "path": "audio/sfx/jingle_defeat_3.mp3",
@@ -8280,46 +7482,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-level-up-power-up-coin-get-13-sounds/files/SoundPack01/Downer01.aif; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "jingle_battle_start_3",
-   "file": "jingle_battle_start_3.mp3",
-   "path": "audio/sfx/jingle_battle_start_3.mp3",
-   "category": "jingle",
-   "tags": [
-    "jingle",
-    "fanfare",
-    "battle start",
-    "horn",
-    "drum"
-   ],
-   "duration": 3.03,
-   "author": "StumpyStrust + William Hector + rubberduck",
-   "title": "Their Coming (generic horn sound) + Horde War Drums loop + 100 CC0 SFX",
-   "source": "https://opengameart.org/content/their-coming-generic-horn-sound ; https://opengameart.org/content/horde-war-drums-loop ; https://opengameart.org/content/100-cc0-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "composite: war horn + drum + gong; source file: oga-their-coming-generic-horn-sound/files/theircoming_0/theircoming_0.ogg + oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav + oga-100-cc0-sfx/files/100-CC0-SFX_0/gong_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "stinger_epic_1",
-   "file": "stinger_epic_1.mp3",
-   "path": "audio/sfx/stinger_epic_1.mp3",
-   "category": "jingle",
-   "tags": [
-    "stinger",
-    "epic",
-    "drama"
-   ],
-   "duration": 2.25,
-   "author": "tcarisland",
-   "title": "Orchestral Stinger - Dramatic Entrance",
-   "source": "https://opengameart.org/content/orchestral-stinger-dramatic-entrance",
-   "license": "CC BY 4.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-orchestral-stinger-dramatic-entrance/files/orchestral_stinger_dramatic_entrance/orchestral_stinger_dramatic_entrance.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "stinger_funny_1",
@@ -8380,61 +7542,63 @@
    "notes": "source file: oga-slide-whistle-down/files/79671__joedeshon__slide-whistle-down-01/79671__joedeshon__slide-whistle-down-01.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stinger_hero_down_1",
-   "file": "stinger_hero_down_1.mp3",
-   "path": "audio/sfx/stinger_hero_down_1.mp3",
-   "category": "jingle",
+   "id": "ambience_wind_loop_2",
+   "file": "ambience_wind_loop_2.mp3",
+   "path": "audio/sfx/ambience_wind_loop_2.mp3",
+   "category": "ambience",
    "tags": [
-    "stinger",
-    "hero down",
-    "sad"
+    "ambience",
+    "wind",
+    "loop"
    ],
-   "duration": 2.43,
-   "author": "KLY",
-   "title": "KL Peach Game Over III",
-   "source": "https://opengameart.org/content/kl-peach-game-over-iii",
+   "duration": 4.73,
+   "author": "Luke.RUSTLTD",
+   "title": "wind1",
+   "source": "https://opengameart.org/content/wind1",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-kl-peach-game-over-iii/files/KL Peach Game Over III/KL Peach Game Over III.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-wind1/files/wind4/wind4.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stinger_hero_down_2",
-   "file": "stinger_hero_down_2.mp3",
-   "path": "audio/sfx/stinger_hero_down_2.mp3",
-   "category": "jingle",
+   "id": "ambience_crowd_loop_2",
+   "file": "ambience_crowd_loop_2.mp3",
+   "path": "audio/sfx/ambience_crowd_loop_2.mp3",
+   "category": "ambience",
    "tags": [
-    "stinger",
-    "hero down",
-    "sad"
+    "ambience",
+    "crowd",
+    "loop",
+    "murmur"
    ],
-   "duration": 1.15,
-   "author": "0new4y",
-   "title": "Game Over Trumpet SFX",
-   "source": "https://opengameart.org/content/game-over-trumpet-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-game-over-trumpet-sfx/files/losetrumpet/losetrumpet.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "duration": 4.73,
+   "author": "Gregor Quendel",
+   "title": "Free Crowd Cheering Sounds",
+   "source": "https://opengameart.org/content/free-crowd-cheering-sounds",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "source file: oga-free-crowd-cheering-sounds/files/gregor_quendel_-_free_crowd_cheering_sounds_-_mp3/Gregor Quendel - Free Crowd Cheering Sounds - MP3/Gregor Quendel - Crowd Cheering Sounds - 09 - Ambience and cheering.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "stinger_hero_down_3",
-   "file": "stinger_hero_down_3.mp3",
-   "path": "audio/sfx/stinger_hero_down_3.mp3",
-   "category": "jingle",
+   "id": "ambience_fire_loop_2",
+   "file": "ambience_fire_loop_2.mp3",
+   "path": "audio/sfx/ambience_fire_loop_2.mp3",
+   "category": "ambience",
    "tags": [
-    "stinger",
-    "hero down",
-    "sad"
+    "ambience",
+    "fire",
+    "loop",
+    "crackle"
    ],
-   "duration": 0.78,
-   "author": "wobbleboxx",
-   "title": "Level up, power up, Coin get (13 Sounds)",
-   "source": "https://opengameart.org/content/level-up-power-up-coin-get-13-sounds",
+   "duration": 2.53,
+   "author": "AntumDeluge",
+   "title": "Fire Crackling",
+   "source": "https://opengameart.org/content/fire-crackling",
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-level-up-power-up-coin-get-13-sounds/files/SoundPack01/Downer01.aif; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: oga-fire-crackling/files/fire-1_0/fire-1_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "crowd_ooh_1",

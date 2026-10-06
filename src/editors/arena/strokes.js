@@ -161,10 +161,10 @@ export function applyStamp(arena, rec, kind, wx, wz, o) {
   if (sym !== 'off') { const [a0, a1, b0, b1] = boxes[0]; boxes.push([sym === 'mz' ? a0 : n - 1 - a1, sym === 'mz' ? a1 : n - 1 - a0, sym === 'mx' ? b0 : n - 1 - b1, sym === 'mx' ? b1 : n - 1 - b0]); }
   // snapshot of the ORIGINAL heights over every box so overlapping copies read the same values
   const seen = new Set(); let rx0 = n, rz0 = n, rx1 = -1, rz1 = -1;
-  const todo = [];
-  for (const [x0, x1, z0, z1] of boxes) for (let z = z0; z <= z1; z++) for (let x = x0; x <= x1; x++) { const i = x + z * n; if (seen.has(i)) continue; seen.add(i); todo.push(i); }
+  const region = [];
+  for (const [x0, x1, z0, z1] of boxes) for (let z = z0; z <= z1; z++) for (let x = x0; x <= x1; x++) { const i = x + z * n; if (seen.has(i)) continue; seen.add(i); region.push(i); }
   const results = [];
-  for (const i of todo) {
+  for (const i of region) {
     const x = i % n, z = (i / n) | 0;
     const a = stampContrib(kind, ctx, x, z), mi = sym !== 'off' ? symCell(sym, x, z, n) : -1;
     const b = mi >= 0 ? stampContrib(kind, ctx, mi % n, (mi / n) | 0) : null;

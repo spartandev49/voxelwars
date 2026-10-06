@@ -17,7 +17,7 @@ const put = (be, key, env) => be.setItem('vw.' + key, JSON.stringify(env));
   assert.deepEqual(p.data.achievements, { first_victory: { at: 0 }, sparta: { at: 0 } }, 'achievement ids array -> {id:{at}}, invalid ids dropped');
   assert.deepEqual(p.data.codex, { locked: [], seen: { hoplite: true, spartan: true } });
   assert.equal(p.data.mystery, undefined); assert.equal(p.data.survivalBest, undefined, 'moved to the survival document');
-  assert.deepEqual(p.side, { survival: { best: 14230 }, daily: { last: '2026-03-01' } });
+  assert.deepEqual(p.side, { survival: { bestWave: 14 }, daily: { last: '2026-03-01' } });
 
   const pm = migrate('progress', V1.progressMap);
   assert.deepEqual(pm.data.stars, { marathon_sort_of: 2, thermopylae_snack: 3, future_mission: 1 }, 'invalid ids drop, valid unknown ids (a newer build) are kept');
@@ -53,9 +53,9 @@ const put = (be, key, env) => be.setItem('vw.' + key, JSON.stringify(env));
   assert.equal(docs.progress.get('stars').marathon_sort_of, 3);
   assert.deepEqual(docs.progress.info.migrated, ['progress v1 -> v2']);
   assert.equal(JSON.parse(be.getItem('vw.progress')).v, 2, 'migrated blob is written back as v2');
-  assert.ok(be.getItem('vw.bak.progress.v1'), 'the v1 blob is backed up once'); assert.deepEqual(JSON.parse(be.getItem('vw.bak.progress.v1')).data.survivalBest, 14230);
-  // side effect: progress.survivalBest (14230) beats the survival document's own best (100)
-  assert.equal(docs.survival.get('best'), 14230); assert.equal(docs.progress.get('survivalBest'), 14230);
+  assert.ok(be.getItem('vw.bak.progress.v1'), 'the v1 blob is backed up once'); assert.deepEqual(JSON.parse(be.getItem('vw.bak.progress.v1')).data.survivalBest, 14);
+  // side effect: progress.survivalBest (best wave 14) beats the survival document's own bestWave (the list's best wave is 1)
+  assert.equal(docs.survival.get('bestWave'), 14); assert.equal(docs.progress.get('survivalBest'), 14); assert.equal(docs.survival.get('best'), 100);
   assert.equal(docs.progress.get('dailyLast'), '2026-03-02', 'daily.last (from the daily doc) is newer than the side value');
   assert.equal(docs.daily.get('streak'), 2);
   // loading again does not re-migrate or overwrite the backup
@@ -97,8 +97,9 @@ const put = (be, key, env) => be.setItem('vw.' + key, JSON.stringify(env));
   const q = []; const be3 = mem(); const dd = new Doc(new Store(be3), 'seen', { debounceMs: 100, schedule: (fn) => { q.push(fn); return () => { q.length = 0; }; } });
   dd.set('a', 1); dd.set('b', 2); assert.equal(be3.getItem('vw.seen'), null); assert.equal(q.length, 1); q[0](); assert.equal(JSON.parse(be3.getItem('vw.seen')).data.b, 2);
   dd.set('c', 3); dd.flush(); assert.equal(JSON.parse(be3.getItem('vw.seen')).data.c, 3);
-  // reset progress wipes progress (UI: Settings > Reset)
-  const rp = createDocs(new Store(mem())); rp.progress.set('stars', { marathon_sort_of: 3 }); rp.progress.reset(); assert.deepEqual(rp.progress.get('stars'), {});
+  // reset progress wipes progress, survival, daily and (through the hook) the lifetime stats (UI: Settings > Reset progress); seen hints and settings stay
+  let statsReset = 0; const rp = createDocs(new Store(mem()), { onResetProgress: () => { statsReset++; } }); rp.progress.set('stars', { marathon_sort_of: 3 }); rp.survival.set('best', 9); rp.daily.set('last', '2026-01-01'); rp.seen.set('teaching', true);
+  rp.progress.reset(); assert.deepEqual(rp.progress.get('stars'), {}); assert.equal(rp.survival.get('best'), 0); assert.equal(rp.daily.get('last'), ''); assert.equal(statsReset, 1); assert.equal(rp.seen.get('teaching'), true);
 }
 
 // ---------------------------------------------------------------- drafts

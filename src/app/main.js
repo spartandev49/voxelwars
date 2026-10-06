@@ -11,10 +11,14 @@ import { Loop } from './loop.js';
 import { Router } from './router.js';
 import { FALLBACK_SCREENS } from './debugui.js';
 import { createNullAudio } from './nullaudio.js';
-import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT, CAMPAIGN, CUSTOM } from '../_generated/registry.optional.js';
+import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT, CAMPAIGN, CUSTOM, EDITOR_HOST } from '../_generated/registry.optional.js';
 import { generateArena } from '../world/gen.js';
 import { ClipLib } from '../anim/clips.js';
 import { PreviewService } from '../render/preview.js';
+import { createMeta, watchQuota } from './meta.js';
+import { createDocs, createDraft } from '../save/docs.js';
+import { LifetimeStats, storeAdapter } from '../save/stats.js';
+import { createTransfer } from '../save/transfer.js';
 
 const diag = new Diagnostics();
 
@@ -49,24 +53,60 @@ async function start() {
   const loop = new Loop({ game, engine, settings });
   const collections = { arenas: new Collection(store, 'arenas', 48), soldiers: new Collection(store, 'soldiers', 24), armies: new Collection(store, 'armies', 24) };
 
-  const app = { engine, game, loop, store, settings, audio, diag, content, bus, router: null };
+  // meta layer: progress documents (vw.progress / survival / daily / seen), lifetime stats (vw.stats), achievements, announcer, kill feed, aim / Take Command / teaching / kill-cam
+  const stats = new LifetimeStats({ adapter: storeAdapter(store) });
+  const docs = createDocs(store, { onResetProgress: () => stats.reset() }); docs.loadAll();
+  const meta = createMeta({ game, content, settings, store, audio, docs, stats });
+  game.meta = meta;
+  const transfer = createTransfer({ store, docs, stats, settings, collections, defs: content.defs, build: typeof __VW_VERSION__ !== 'undefined' ? __VW_VERSION__ : 'dev' });
+  const drafts = {}; const draft = (editor) => drafts[editor] || (drafts[editor] = createDraft(store, editor));
+  // explicit saves count for the Landscaper / Soldier Smith medals (the editors only call collection.put)
+  for (const [name, kind] of [['arenas', 'arena_saved'], ['soldiers', 'soldier_saved']]) { const put = collections[name].put.bind(collections[name]); collections[name].put = (item) => { const r = put(item); try { meta.ui(kind); } catch (e) { /* medals never block a save */ } return r; }; }
+  window.addEventListener('pagehide', () => { try { stats.flush(); docs.flush(); settings.flush(); } catch (e) { /* closing */ } });
+
+  const app = { engine, game, loop, store, settings, audio, diag, content, bus, meta, docs, stats, router: null };
   const ctx = {
     nav: null, settings, game, audio, content, diag: { snapshot: () => diag.snapshot(app), log: diag.log, error: (k, m) => diag.error(k, m) },
-    save: { arenas: collections.arenas, soldiers: collections.soldiers, armies: collections.armies, status: () => store.status(), store },
+    save: {
+      arenas: collections.arenas, soldiers: collections.soldiers, armies: collections.armies, status: () => store.status(), store,
+      progress: docs.progress, survival: docs.survival, daily: docs.daily, seen: docs.seen, stats, draft,
+      exportAll: () => transfer.exportAll(),
+      // resolves {ok:true, errors:[], warnings, applied, counts}; REJECTS with an Error (message = the first plain-English reason, .result = the full {ok:false, errors[]}) because
+      // ui/screens/settings.js treats a resolved promise as success (docs/requests/meta_import_contract.md). Nothing is applied on failure.
+      importAll: async (fileOrText) => {
+        const r = await transfer.importAll(fileOrText);
+        if (!r.ok) { const e = new Error(r.errors[0] || 'The import failed'); e.result = r; throw e; }
+        try { meta.achievements.recheck(); } catch (e) { /* medals are best effort */ }
+        return r;
+      },
+    },
     preview: lazyPreview(() => new PreviewService({ modelFor: (d, u) => content.modelFor(d, u), animator: game.animator, defs: content.defs, palette: () => settings.get('palette') || 'classic', compile: BLUEPRINTS && BLUEPRINTS.compileSoldier })), platform: platformApi(), version: { build: typeof __VW_VERSION__ !== 'undefined' ? __VW_VERSION__ : 'dev', date: typeof __VW_BUILD__ !== 'undefined' ? __VW_BUILD__ : '' },
   };
   content.arenaThumb = arenaThumbQueue(content, ctx.preview);
+  if (EDITOR_HOST && EDITOR_HOST.createEditorHost) ctx.editorHost = EDITOR_HOST.createEditorHost({ engine, game, settings });   // the 3D host the editors share (app/editorhost.js)
   const router = new Router(ui, () => ctx, FALLBACK_SCREENS);
   app.router = router;
   ctx.nav = { goto: (id, p) => router.goto(id, p), back: () => router.back(), current: () => router.current(), overlay: (id, p) => router.overlay(id, p), closeOverlay: (id) => router.closeOverlay(id), modal: (o) => router.modal(o), toast: (t, o) => router.toast(t, o) };
 
+  // storage quota: a refused write is kept in memory (nothing lost) and one modal offers export / delete-oldest (verification P2)
+  watchQuota({ store, nav: { modal: (o) => ctx.nav.modal(o), toast: (t, o) => ctx.nav.toast(t, o) }, transfer, collections, platform: ctx.platform });
+
   // input
   const input = new Input({ canvas: engine.renderer.domElement, game, settings, nav: ctx.nav });
   input.attach();
-  input.on('escape', () => { if (game.state === 'running') { if (!router.hasOverlay('pause')) { game.pause(true); if (!router.overlay('pause')) { /* fallback pause UI is the HUD button */ } } else { router.closeOverlay('pause'); game.pause(false); } } else router.back(); });
+  let swallowEsc = false;                                         // set while a right-click cancels god-power aiming (see below)
+  input.on('escape', () => { if (swallowEsc) return; if (game.killcamActive()) game.killcamStop(); else if (meta.aim.active) { meta.aim.cancel(); return; } if (game.state === 'running') { if (!router.hasOverlay('pause')) { game.pause(true); if (!router.overlay('pause')) { /* fallback pause UI is the HUD button */ } } else { router.closeOverlay('pause'); game.pause(false); } } else router.back(); });
   input.on('rematch', () => { router.closeOverlay('results'); game.rematch(); });
   input.on('tweak', () => { router.closeOverlay('results'); game.tweak(); });
   input.on('key', (e) => router.key(e));
+  input.on('killcam', () => { if (game.state === 'ended' && !game.killcamActive()) game.killcam(); });
+  // a right-click (a click, not an orbit drag) cancels god-power aiming; the HUD's armed state follows through its own Esc handler (ui/screens/battle.js -> powers.cancel)
+  { const cv = engine.renderer.domElement; let rc = null;
+    cv.addEventListener('pointerdown', (e) => { rc = e.button === 2 ? { x: e.clientX, y: e.clientY, t: performance.now() } : null; });
+    cv.addEventListener('pointerup', (e) => {
+      if (e.button !== 2 || !rc) return; const click = Math.hypot(e.clientX - rc.x, e.clientY - rc.y) <= 6 && performance.now() - rc.t <= 450; rc = null;
+      if (click && meta.aim.active) { meta.aim.cancel(); swallowEsc = true; try { window.dispatchEvent(new KeyboardEvent('keydown', { code: 'Escape', key: 'Escape', bubbles: true, cancelable: true })); } finally { swallowEsc = false; } }
+    }); }
   loop.onFrame = (dt) => { input.update(dt); };
 
   // flow glue: game state -> screens

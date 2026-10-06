@@ -48,12 +48,14 @@ window.__sheet = {
     if (fx) fx.dispose();
     eng.setQuality(opts.quality || 'marble');
     fx = new CubeFX(eng.scene, arena, eng.q.debris);
+    const t0 = performance.now();
     pr = new PropRenderer(eng, arena, { fx });
+    const buildMs = performance.now() - t0;
     const f = eng.setEnvironment(arena.env, arena); tr.setFog(f.color, f.near, f.far);
     if (opts.look) {   // look-dev experiment: multipliers on the engine light rig (does not touch engine.js)
       eng.sun.intensity *= opts.look.sun ?? 1; eng.hemi.intensity *= opts.look.hemi ?? 1; eng.renderer.toneMappingExposure = opts.look.exp ?? eng.renderer.toneMappingExposure;
     }
-    info = { light: [eng.sun.intensity, eng.hemi.intensity, eng.renderer.toneMappingExposure], recipe, size: arena.size, W: arena.worldSize(), props: arena.props.length, water: arena.water, env: arena.env };
+    info = { buildMs: Math.round(buildMs), light: [eng.sun.intensity, eng.hemi.intensity, eng.renderer.toneMappingExposure], recipe, size: arena.size, W: arena.worldSize(), props: arena.props.length, water: arena.water, env: arena.env };
     window.__pr = pr; window.__arena = arena;
     return info;
   },
@@ -62,7 +64,7 @@ window.__sheet = {
     if (w && h) { eng.renderer.setSize(w, h, false); c.aspect = w / h; c.updateProjectionMatrix(); eng.resize(); }
     const half = W / 2;
     if (name === 'top') {
-      const H = (half * 1.04) / Math.tan((c.fov / 2) * Math.PI / 180);
+      const H = (half * 1.2) / Math.tan((c.fov / 2) * Math.PI / 180);
       c.position.set(0, H, H * 0.05); c.lookAt(0, 0, 0); eng.focus.set(0, 8, 0);
     } else if (name === 'oblique') {
       c.position.set(-W * 0.52, W * 0.4, W * 0.5); c.lookAt(W * 0.02, groundAt(0, 0) * 0.6, 0); eng.focus.set(0, groundAt(0, 0), 0);

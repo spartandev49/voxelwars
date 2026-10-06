@@ -26,6 +26,7 @@ import { ClipLib } from './clips.js';
 
 export const POSE_STRIDE = 9;
 const PI = Math.PI, TAU = Math.PI * 2, HALF_PI = Math.PI / 2;
+const WRAP_AT = 4.7;             // blend two channel values the short way only when they differ by more than this (rad): authored channels are continuous (an arm raised past vertical is 3.3 rad), so only a gap near a full turn is a wrap
 const BLEND_S = 0.14;            // nominal crossfade length the sim uses (state.blend advances by dt / 0.14)
 
 // ------------------------------------------------------------------------------------------------------------------ reporting
@@ -45,8 +46,8 @@ function warnOnce(msg) {
 // ------------------------------------------------------------------------------------------------------------------ small math
 const wrapPi = (a) => { a = a % TAU; return a > PI ? a - TAU : a < -PI ? a + TAU : a; };
 const sstep = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x));
-/** C3 smoothstep (35x^4 - 84x^5 + 70x^6 - 20x^7): zero slope, curvature and jerk at both ends */
-const sstep7 = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * x * (35 + x * (-84 + x * (70 - 20 * x))));
+/** ease for crossfades: x^3 * (4 - 3x): zero slope AND curvature at the switch (the first frame moves poses by <= 4.5% of the gap), zero slope on landing */
+const blendEase = (x) => (x <= 0 ? 0 : x >= 1 ? 1 : x * x * x * (4 - 3 * x));
 
 // scratch (module level: zero allocation)
 const _R1 = new Float64Array(9), _R2 = new Float64Array(9), _R3 = new Float64Array(9), _V = new Float64Array(3), _W = new Float64Array(3);
@@ -450,6 +451,7 @@ Animator.pose = function pose(model, state, extra, out) {
   const heading = hasExtra && extra.heading !== undefined ? extra.heading : NaN;
   const gait = hasExtra && typeof extra.gait === 'number' ? extra.gait : NaN;
   const gtime = hasExtra && typeof extra.t === 'number' ? extra.t : 0;
+  const gscale = hasExtra && extra.scale > 0 ? extra.scale : 1;        // instance scale: a bigger unit takes longer steps (stride and speed bands are in model units)
 
   // ---- previous-clip bookkeeping (see header) ----
   const blend = state.blend === undefined ? 1 : state.blend;
@@ -461,7 +463,7 @@ Animator.pose = function pose(model, state, extra, out) {
   state._lt = state.t;
   const blending = blend < 1 && state.prev !== undefined && state.prev !== state.clip;
   if (blending) prevT = (typeof state.pt === 'number' ? state.pt : state._pt) + blend * BLEND_S;
-  const w = blending ? sstep7(blend) : 1;      // C3 ease in/out: with the sim's 0.14 s blend the first frame after a switch moves poses by ~6% of the gap, so a switch never pops
+  const w = blending ? blendEase(blend) : 1;
   const t = state.t < 0 ? 0 : state.t;
   const frozen = state.rate === 0;
   const moveReq = MOVE_IDS[state.clip] === 1 && gait === gait;      // locomotion driven by distance
@@ -492,8 +494,8 @@ Animator.pose = function pose(model, state, extra, out) {
       else {
         set = gaitSet(info, g, GAIT_SETS[g.clipRig] || GAIT_SETS.hum1);
         if (set.length) {
-          pickGait(set, speed); ia = _sel.a; ib = _sel.b; lw = _sel.w;
-          const stride = set[ia].stride + (set[ib].stride - set[ia].stride) * lw;
+          pickGait(set, speed / gscale); ia = _sel.a; ib = _sel.b; lw = _sel.w;
+          const stride = (set[ia].stride + (set[ib].stride - set[ia].stride) * lw) * gscale;
           let ph = phs[gi * 2] + (gait - phs[gi * 2 + 1]) / stride;
           ph -= Math.floor(ph);
           phs[gi * 2] = ph; phs[gi * 2 + 1] = gait;
@@ -559,7 +561,7 @@ function blendGroup(g, out, prev, w) {
     out[o] = prev[o] * iw + out[o] * w; out[o + 1] = prev[o + 1] * iw + out[o + 1] * w; out[o + 2] = prev[o + 2] * iw + out[o + 2] * w;
     for (let k = 3; k < 6; k++) {
       const a = prev[o + k]; let d = out[o + k] - a;
-      if (d > PI) d -= TAU; else if (d < -PI) d += TAU;
+      if (d > WRAP_AT) d -= TAU; else if (d < -WRAP_AT) d += TAU;
       out[o + k] = a + d * w;
     }
     out[o + 6] = prev[o + 6] * iw + out[o + 6] * w; out[o + 7] = prev[o + 7] * iw + out[o + 7] * w; out[o + 8] = prev[o + 8] * iw + out[o + 8] * w;
@@ -642,9 +644,9 @@ function humanoidOverlay(info, g, state, out, clipA, clipP, cls, clsP, w, t, pha
 /**
  * Weapon aim + shield facing (hum1 groups). Directions are expressed in the unit frame (heading-aligned, upright); R_c is the accumulated rotation of
  * a part's parent chain (root, body, arm, forearm: already blended).
- *   weapon: the blade axis is steered toward the target direction t. With weight wt the wanted direction is normalize((1 - wt) * f + wt * t), f being
+ *   weapon: the blade axis is steered toward the target direction t. With weight wt the wanted direction is slerp(f, t, wt), f being
  *           where the axis points when the weapon just follows the forearm (R_c * rest axis). The pose swings the rest axis to
- *           R_c^T * (wanted direction) (a wrist pitch plus a small arc), plus an optional twist about the axis (bow belly). Pure function of the blended arm pose: no solver branches,
+ *           R_c^T * (wanted direction) (shortest arc, a wrist pitch near the opposite direction), plus an optional twist about the axis (bow belly). Pure function of the blended arm pose: no solver branches,
  *           no per-unit state, so it cannot pop when clips switch (the only singularity is a wanted direction exactly opposite the rest axis, where the
  *           roll of the shaft about its own axis is arbitrary and invisible).
  *   shield: counter-rotates the arm relative to the torso (softly saturated, see below), engaged as the arm lifts.
@@ -680,19 +682,23 @@ function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prev
         mulMat(_RB, _R3, _RC);
         const a0 = g.wRestAxis;
         const ce = Math.cos(e), tx = Math.sin(a) * ce, ty = Math.sin(e), tz = Math.cos(a) * ce;
+        if (!SHAFT_STYLE[style]) {
+          // a blade / bow cannot be steered to a direction opposite its rest axis without its roll about the axis spinning (visible: the edge flips):
+          // the aim fades out as the demanded turn approaches half a turn, the weapon then simply follows the forearm (the fade is wide so that its gain stays low)
+          const ca = a0[0] * (_RC[0] * tx + _RC[3] * ty + _RC[6] * tz) + a0[1] * (_RC[1] * tx + _RC[4] * ty + _RC[7] * tz) + a0[2] * (_RC[2] * tx + _RC[5] * ty + _RC[8] * tz);
+          if (ca < 0.0707) { const an = Math.acos(ca < -1 ? -1 : ca); wt *= 1.5 * (PI - an) / ((PI - 1.5) * an); }   // aim in full up to a 1.5 rad turn from the rest axis; beyond, the turn shrinks linearly to nothing at half a turn (gain stays <= 1)
+        }
         const fx = _RC[0] * a0[0] + _RC[1] * a0[1] + _RC[2] * a0[2], fy = _RC[3] * a0[0] + _RC[4] * a0[1] + _RC[5] * a0[2], fz = _RC[6] * a0[0] + _RC[7] * a0[1] + _RC[8] * a0[2];
-        let dx = fx + (tx - fx) * wt, dy = fy + (ty - fy) * wt, dz = fz + (tz - fz) * wt;
-        const dl = Math.hypot(dx, dy, dz);
-        if (dl > 1e-3) { dx /= dl; dy /= dl; dz /= dl; } else { dx = tx; dy = ty; dz = tz; }
+        // wanted direction: spherical interpolation from where the axis points when following (f) to the target (t) by the weight
+        let dx, dy, dz;
+        {
+          const cf = fx * tx + fy * ty + fz * tz, an = Math.acos(cf > 1 ? 1 : cf < -1 ? -1 : cf), sn = Math.sin(an);
+          if (sn > 1e-3) { const k0 = Math.sin((1 - wt) * an) / sn, k1 = Math.sin(wt * an) / sn; dx = fx * k0 + tx * k1; dy = fy * k0 + ty * k1; dz = fz * k0 + tz * k1; }
+          else if (cf > 0 || wt > 0.5) { dx = tx; dy = ty; dz = tz; } else { dx = fx; dy = fy; dz = fz; }
+        }
         // wanted direction into the forearm frame: R_c^T * d
         const vx = _RC[0] * dx + _RC[3] * dy + _RC[6] * dz, vy = _RC[1] * dx + _RC[4] * dy + _RC[7] * dz, vz = _RC[2] * dx + _RC[5] * dy + _RC[8] * dz;
-        // swing = pitch about the wrist hinge (X) until the axis lies in the vertical plane of the wanted direction, then the small remaining arc out of
-        // that plane: the flip through half a turn (blade carried forward, wanted backward) is a plain wrist pitch, so there is no antipodal singularity
-        const th = (vy * vy + vz * vz > 1e-8) ? Math.atan2(vz, vy) - Math.atan2(a0[2], a0[1]) : 0;
-        axisMat(1, 0, 0, th, _R1);
-        const bx = _R1[0] * a0[0] + _R1[1] * a0[1] + _R1[2] * a0[2], by = _R1[3] * a0[0] + _R1[4] * a0[1] + _R1[5] * a0[2], bz = _R1[6] * a0[0] + _R1[7] * a0[1] + _R1[8] * a0[2];
-        arcMat(bx, by, bz, vx, vy, vz, _R3);
-        mulMat(_R3, _R1, _R2);
+        arcMat(a0[0], a0[1], a0[2], vx, vy, vz, _R2);       // swing: shortest arc from the rest axis (the roll follows by parallel transport)
         if (tw !== 0) { axisMat(a0[0], a0[1], a0[2], tw * wt, _R1); mulMat(_R2, _R1, _R3); matToEuler(_R3, _V); }   // twist about the weapon's own axis first, then the swing
         else matToEuler(_R2, _V);
         out[oW + 3] = _V[0]; out[oW + 4] = _V[1]; out[oW + 5] = _V[2];
@@ -722,7 +728,8 @@ function aimPass(info, g, state, out, clipA, clipP, cls, clsP, w, t, phase, prev
   }
 }
 const SHIELD_L = 1.4;
-const _RB = new Float64Array(9), _RC = new Float64Array(9), _RW = new Float64Array(9), _RV = new Float64Array(3);
+const _RB = new Float64Array(9), _RC = new Float64Array(9);
+const SHAFT_STYLE = { thrust: true, pike: true, throw: true, cast: true };       // rotationally symmetric about their axis: their roll is invisible
 
 // ------------------------------------------------------------------------------------------------------------------ root finishing (flinch lean, fall direction, hip-pivot compensation)
 function rootFinish(info, state, root, clip, heading, t, scale) {
@@ -795,13 +802,13 @@ Animator.subClips = function subClips(model, stateClip) {
   for (let gi = 0; gi < info.groups.length; gi++) { const g = info.groups[gi]; res.push(gi === 0 ? baseClipId(info, g, st) : subClip(info, g, st)); }
   return res;
 };
-/** gait info for a model at ground speed v: {stride (u per cycle), stepsPerSec, a, b, w} (A4 measurement / BattleView hints) */
-Animator.gaitInfo = function gaitInfo(model, v) {
+/** gait info for a model at ground speed v (instance scale `scale`): {stride (u per cycle), stepsPerSec, a, b, w} (A4 measurement / BattleView hints) */
+Animator.gaitInfo = function gaitInfo(model, v, scale = 1) {
   const info = infoOf(model), g = info.groups[0];
   const set = gaitSet(info, g, GAIT_SETS[g.clipRig] || GAIT_SETS.hum1);
   if (!set.length) return null;
-  pickGait(set, v);
-  const A = set[_sel.a], B = set[_sel.b], w = _sel.w, stride = A.stride + (B.stride - A.stride) * w;
+  pickGait(set, v / scale);
+  const A = set[_sel.a], B = set[_sel.b], w = _sel.w, stride = (A.stride + (B.stride - A.stride) * w) * scale;
   return { stride, stepsPerSec: (2 * v) / stride, a: A.id, b: B.id, w, speedRefA: A.sr, speedRefB: B.sr };
 };
 Animator.classOf = classOf;

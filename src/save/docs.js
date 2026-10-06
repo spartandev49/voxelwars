@@ -43,7 +43,7 @@ export class Doc {
    */
   constructor(store, name, opts = {}) {
     this.store = store; this.name = name; this.version = opts.version || CURRENT[name] || 1;
-    this.defaults = opts.defaults || (() => ({})); this.validate = opts.validate || null; this.onSide = opts.onSide || null;
+    this.defaults = opts.defaults || (() => ({})); this.validate = opts.validate || null; this.onSide = opts.onSide || null; this.onReset = opts.onReset || null;
     this.debounceMs = opts.debounceMs || 0; this.schedule = opts.schedule || defaultSchedule; this.now = opts.now || (() => Date.now());
     this.status = 'ok'; this.info = { migrated: [], backup: null, error: null, from: this.version };
     this.listeners = []; this.aliases = Object.create(null); this._data = null; this._cancel = null; this._dirty = false;
@@ -122,7 +122,7 @@ export class Doc {
     this._data = d; this._touch(); this._emit('*', undefined); return true;
   }
   /** Back to the defaults (Settings > Reset progress). Clears a read-only flag too: the player asked for a clean slate. */
-  reset() { this.status = 'ok'; this._data = sanitize(this.defaults()); this._touch(true); this._emit('*', undefined); return true; }
+  reset() { this.status = 'ok'; this._data = sanitize(this.defaults()); this._touch(true); this._emit('*', undefined); if (this.onReset) { try { this.onReset(); } catch (e) { /* siblings are best effort */ } } return true; }
   /** Fill keys that are missing or at their default (side effects of a sibling's migration). Never lowers a number. */
   mergeBetter(patch) {
     if (!this._writable() || !isObj(patch)) return false;
@@ -160,8 +160,9 @@ const SEEN_DEFAULTS = () => ({});
 /**
  * The four documents wired together. `progress` exposes the siblings the UI reads through it:
  *   progress.get('survival') / set('survival', v)  ->  the survival document        progress.get('daily') / set('daily', v)  ->  the daily document
- *   progress.get('survivalBest')  ->  survival.best                                  progress.get('dailyLast')  ->  daily.last
+ *   progress.get('survivalBest')  ->  survival.bestWave (the title tile prints "Best: wave N")                                  progress.get('dailyLast')  ->  daily.last
  * Migrations that move a value into a sibling (progress v1 survivalBest/dailyLast) are merged into it when the sibling has nothing better.
+ * progress.reset() also resets survival + daily and calls o.onResetProgress() (main.js: lifetime stats).
  */
 export function createDocs(store, o = {}) {
   const common = { debounceMs: o.debounceMs || 0, schedule: o.schedule, now: o.now };
@@ -170,10 +171,11 @@ export function createDocs(store, o = {}) {
   docs.survival = new Doc(store, 'survival', Object.assign({ defaults: SURVIVAL_DEFAULTS, validate: validateSurvival }, common));
   docs.daily = new Doc(store, 'daily', Object.assign({ defaults: DAILY_DEFAULTS, validate: validateDaily }, common));
   docs.seen = new Doc(store, 'seen', Object.assign({ defaults: SEEN_DEFAULTS }, common));
-  docs.progress = new Doc(store, 'progress', Object.assign({ defaults: PROGRESS_DEFAULTS, validate: validateProgress, onSide: side }, common));
+  // Settings > Reset progress wipes "campaign stars, achievements, lifetime stats and unlocks" (ui/strings.js): progress.reset() cascades; arenas/soldiers/armies/settings stay
+  docs.progress = new Doc(store, 'progress', Object.assign({ defaults: PROGRESS_DEFAULTS, validate: validateProgress, onSide: side, onReset: () => { docs.survival.reset(); docs.daily.reset(); if (o.onResetProgress) o.onResetProgress(); } }, common));
   docs.progress.alias('survival', { get: () => docs.survival.all(), set: (v) => docs.survival.replaceAll(v) })
     .alias('daily', { get: () => docs.daily.all(), set: (v) => docs.daily.replaceAll(v) })
-    .alias('survivalBest', { get: () => docs.survival.get('best', 0), set: (v) => docs.survival.set('best', Math.max(0, Math.floor(+v) || 0)) })
+    .alias('survivalBest', { get: () => docs.survival.get('bestWave', 0), set: (v) => docs.survival.set('bestWave', Math.max(0, Math.floor(+v) || 0)) })
     .alias('dailyLast', { get: () => { const l = docs.daily.get('last', ''); return l || null; }, set: (v) => docs.daily.set('last', typeof v === 'string' ? v : '') });
   // siblings load lazily: a progress v1 blob must be migrated (and its side effects merged) as soon as anything is read
   docs.loadAll = () => { for (const n of ['survival', 'daily', 'seen', 'progress']) docs[n]._load(); return docs; };

@@ -86,6 +86,21 @@ function geoInfo(type, stage, variant) {
   GEO.set(key, info);
   return info;
 }
+/**
+ * Build every geometry an arena's props need (stage 0) without blocking the main thread for long: yields between models.
+ * Call before PropRenderer.setArena() on the loading screen; onProgress(0..1).
+ */
+export async function preloadPropGeometry(props, onProgress) {
+  const keys = new Map();
+  for (const p of props || []) {
+    const t = p.t || p.type; if (!t || !hasPropModel(t)) continue;
+    const n = t === 'crowd' ? 0 : variantCount(t), v = n ? wrapVariant(p.v, n) : 0;
+    if (t !== 'crowd') keys.set(t + '|' + v, [t, v]);
+  }
+  let i = 0;
+  for (const [t, v] of keys.values()) { geoInfo(t, 0, v); if (onProgress) onProgress(++i / keys.size); await new Promise((r) => setTimeout(r, 0)); }
+  return keys.size;
+}
 /** Free every cached prop geometry (call when leaving the game; renderers re-create what they need). */
 export function disposePropGeometry() { for (const i of GEO.values()) for (const g of i.geos) g.dispose(); GEO.clear(); }
 

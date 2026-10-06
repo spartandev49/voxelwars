@@ -121,4 +121,29 @@ meta.onFrame(0.1); meta.decorateResults({}); meta.decorateHud({}); meta.aim.set(
   X.settings.set('muted', true); assert.equal(X.meta.speak(line), false, 'muted: silent'); X.settings.set('muted', false); X.settings.set('vol.announcer', 0); assert.equal(X.meta.speak(line), false);
   const X2 = makeMeta({ audio: { speech: { isEnabled: () => { throw new Error('boom'); } } } }); X2.settings.set('tts', true); assert.equal(X2.meta.speak(line), false, 'a broken audio facade never throws'); assert.equal(makeMeta({}).meta.speak(line), false, 'no audio: fine');
 }
+// ---------------------------------------------------------------- storage quota guard (P2): one modal, export or delete-oldest, nothing lost
+{
+  const { watchQuota } = await import('../../src/app/meta.js'); const { Collection } = await import('../../src/save/store.js'); const { createTransfer } = await import('../../src/save/transfer.js');
+  const qmem = (quota) => { const m = new Map(); let bytes = 0; return { get length() { return m.size; }, key: (i) => Array.from(m.keys())[i], getItem: (k) => (m.has(k) ? m.get(k) : null), setItem: (k, v) => { v = String(v); const old = m.has(k) ? m.get(k).length : 0; if (bytes - old + v.length > quota) { const e = new Error('quota'); e.name = 'QuotaExceededError'; throw e; } bytes += v.length - old; m.set(k, v); }, removeItem: (k) => { if (m.has(k)) { bytes -= m.get(k).length; m.delete(k); } } }; };
+  const store = new Store(qmem(1500)); const cols = { arenas: new Collection(store, 'arenas', 48), soldiers: new Collection(store, 'soldiers', 24), armies: new Collection(store, 'armies', 24) };
+  const modals = [], toasts = []; let resolveModal = null; let clock = 1000;
+  const T = createTransfer({ store, collections: cols, settings: { flush() {} }, docs: { flush() {} }, stats: { flush() {} } });
+  const nav = { modal: (o) => { modals.push(o); return new Promise((r) => { resolveModal = r; }); }, toast: (t, o) => toasts.push([t, o && o.kind]) };
+  const guard = watchQuota({ store, nav, transfer: T, collections: cols, platform: { clipboard: async () => true }, now: () => clock });
+  const tick = () => new Promise((r) => setTimeout(r, 15));
+  cols.arenas.put({ id: 'old', name: 'Old', pad: 'a'.repeat(500) }); cols.arenas.put({ id: 'mid', name: 'Mid', pad: 'b'.repeat(500) });
+  assert.equal(modals.length, 0); cols.arenas.put({ id: 'new', name: 'New', pad: 'c'.repeat(600) });          // refused by the browser
+  await tick(); assert.equal(store.status(), 'full'); assert.equal(modals.length, 1, 'one modal when the shelf is full');
+  assert.equal(modals[0].title, 'The storage shelf is full'); assert.deepEqual(modals[0].buttons.map((b) => b.value), ['export', 'arena', null]);
+  assert.ok(cols.arenas.get('new'), 'the refused save is still readable (nothing lost)'); assert.deepEqual(store.pending(), ['arenas']);
+  resolveModal('arena'); await tick();
+  assert.equal(store.status(), 'ok', 'deleting the oldest arena made room and flushPending wrote the kept save'); assert.deepEqual(cols.arenas.list().map((a) => a.id).sort(), ['mid', 'new'], 'the OLDEST arena was deleted'); assert.deepEqual(store.pending(), []);
+  assert.equal(toasts.at(-1)[1], 'success');
+  // no second modal inside 30 s
+  cols.arenas.put({ id: 'huge', name: 'Huge', pad: 'd'.repeat(1400) }); await tick(); assert.equal(store.status(), 'full'); assert.equal(modals.length, 1, 'throttled to one modal per 30 s');
+  cols.arenas.remove('huge'); store.flushPending(); clock += 31000;
+  cols.arenas.put({ id: 'huge2', name: 'Huge2', pad: 'e'.repeat(1400) }); await tick(); assert.equal(modals.length, 2, 'allowed again later'); resolveModal(null); await tick();
+  // the export button copies the code to the clipboard
+  const p = guard.show(); await tick(); resolveModal('export'); await p; assert.match(toasts.at(-1)[0], /copied/i);
+}
 console.log('meta OK');

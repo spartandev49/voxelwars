@@ -41,7 +41,7 @@ export const T = {
     advanced: { simple: 'Simple', advanced: 'Advanced' },
     arena: 'Arena', arenaPrev: 'Previous arena', arenaNext: 'Next arena', arenaGo: (n) => `Arena ${n}`,
     random: { name: 'Random', blurb: 'A surprise battlefield from a seed. Same seed, same field.', seed: 'Seed', reroll: 'Reroll', copy: 'Copy seed' },
-    recommended: (n) => `Recommended budget: ${n.toLocaleString('en-US')} drachmae`,
+    recommended: (n) => `Recommended budget: ${n.toLocaleString('en-US')} drachmae`, recommendedTip: 'Click to use the recommended budget for this arena.', recommendedApplied: (n) => `Budget set to ${n.toLocaleString('en-US')} drachmae.`,
     auto: 'Auto', conditions: 'Conditions', size: 'Size', weather: 'Weather', time: 'Time of day', arenaDefault: 'Arena default',
     sizes: { small: 'Small', medium: 'Medium', large: 'Large' },
     sizeSub: { small: '64 u', medium: '96 u', large: '128 u' },
@@ -77,7 +77,7 @@ export const T = {
 
   placement: {
     arena: (n) => n, back: 'Back to setup', backTip: 'Back to setup (your placements are kept)', help: 'Hints',
-    palette: 'Soldiers', search: 'Search soldiers', searchPh: 'Search soldiers...',
+    tools: 'Tools', palette: 'Soldiers', search: 'Search soldiers', searchPh: 'Search soldiers...',
     allRoles: 'All roles', mine: 'My Soldiers', mineEmpty: 'No custom soldiers yet. Build one in the Soldier Workshop and they will show up here.',
     noMatch: 'No soldier matches that. The philosophers are checking.',
     team: 'Placing for', teamA: 'Army A', teamB: 'Army B',

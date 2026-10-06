@@ -49,7 +49,7 @@ for (const mood of MUSIC_MOODS) {
 for (const [theme, mood] of Object.entries(THEME_TO_SYNTH_BATTLE)) assert.ok(MUSIC_MOODS.includes(mood), theme);
 assert.notEqual(synthMusicSpecFor('battle', 'egypt'), synthMusicSpecFor('battle', 'barbarian')); assert.equal(synthMusicSpecFor('battle', 'unknown'), synthMusicSpecFor('battle', 'greek'));
 const a = renderMusic('menu', '', SYNTH_SR), b = renderMusic('menu', '', SYNTH_SR); assert.deepEqual(Array.from(a.L.slice(1000, 1100)), Array.from(b.L.slice(1000, 1100)), 'music is deterministic');
-let steps = 0; const g = renderMusicGen('menu', '', SYNTH_SR); for (;;) { const r = g.next(); if (r.done) break; steps++; } assert.equal(steps, 8, 'generator yields once per bar so loading can be sliced');
+let steps = 0; const g = renderMusicGen('menu', '', SYNTH_SR); for (;;) { const r = g.next(); if (r.done) break; steps++; } assert.ok(steps >= 8, 'generator yields (per bar and per reverb pass) so loading can be sliced: ' + steps);
 // the battle bed has drums: strong transients
 const bt = renderMusic('battle', 'greek', SYNTH_SR); let peaks = 0; const win = 441; for (let i = 0; i + win < bt.L.length; i += win * 4) { let m = 0; for (let j = 0; j < win; j++) m = Math.max(m, Math.abs(bt.L[i + j])); if (m > 0.4) peaks++; } assert.ok(peaks > 10, 'battle bed has a drum pulse: ' + peaks);
 console.log('synth.test OK');

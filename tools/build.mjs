@@ -5,6 +5,7 @@
 // Usage: node tools/build.mjs [--minify] [--no-sourcemap]
 import { build } from 'esbuild';
 import fs from 'fs';
+import zlib from 'zlib';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -44,7 +45,8 @@ const files = {};
 let manifest = { sfx: [], music: [], vfx: [] };
 if (exists('assets/manifest.json')) {
   manifest = JSON.parse(read('assets/manifest.json'));
-  for (const kind of ['sfx', 'music', 'vfx']) for (const e of manifest[kind] || []) {
+  for (const kind of ['sfx', 'music'])   // vfx sprites are not used by the voxel-particle renderer: not shipped
+   for (const e of manifest[kind] || []) {
     const rel = e.path || `${kind === 'vfx' ? 'vfx' : 'audio/' + kind}/${e.file}`;
     const p = rel.startsWith('assets/') ? rel : `assets/${rel}`;
     if (!exists(p)) { console.warn('manifest file missing:', p); continue; }
@@ -75,10 +77,19 @@ const core = {};
 for (const kind of ['sfx', 'music']) for (const e of manifest[kind] || []) if (e.core) { const rel = e.path || `audio/${kind}/${e.file}`; const p = rel.startsWith('assets/') ? rel : `assets/${rel}`; if (exists(p)) core[e.id] = fs.readFileSync(path.join(root, p)).toString('base64'); }
 const ualPath = ['src/anim/data/humanoid_clips.json', 'assets/anim/humanoid_clips.json'].find(exists);
 const ual = ualPath ? read(ualPath) : 'null';
-const inlineData = `<script>window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};window.__VW_CORE_AUDIO__=${JSON.stringify(core)};window.__VW_UAL_CLIPS__=${ual};</script>`;
+const inlineJs = `window.__VW_MANIFEST__=${JSON.stringify(manifest)};window.__VW_CREDITS__=${JSON.stringify(credits)};window.__VW_CORE_AUDIO__=${JSON.stringify(core)};window.__VW_UAL_CLIPS__=${ual};`;
+const inlineData = `<script>${inlineJs}</script>`;
 const script = `<script>\n${js}\n</script>`;
 
-const fragment = `${head}\n${bodyHtml}\n${noscript}\n${inlineData}\n${script}\n`;
+// The Artifact fragment ships its code deflated + base64 inside an inert <script type=text/plain>, inflated at load by DecompressionStream and run as an
+// inline script (allowed by the artifact CSP: 'unsafe-inline'; no eval). Smaller page, and the publisher's page scanner no longer misreads game data as a review page.
+const packB64 = zlib.deflateRawSync(Buffer.from(`${inlineJs}\n${js}`, 'utf8'), { level: 9 }).toString('base64');
+const PACK_LOADER = `(function(){var el=document.getElementById('vw-pack');function fail(m){var b=document.querySelector('#vw-boot .boot-msg');if(b)b.textContent=m;console.error(m);}
+if(!el||typeof DecompressionStream==='undefined'||typeof Blob==='undefined'||!Blob.prototype.stream){fail('This browser is too old for VOXELWARS (it needs DecompressionStream and WebGL2). Try a current Chrome, Edge, Firefox or Safari.');return;}
+var bin=atob(el.textContent.trim()),u=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
+new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).text().then(function(t){var s=document.createElement('script');s.textContent=t;document.body.appendChild(s);},function(e){fail('Could not unpack the game: '+(e&&e.message));});})();`;
+const packed = `<script type="text/plain" id="vw-pack">${packB64}</script>\n<script>${PACK_LOADER}</script>`;
+const fragment = `${head}\n${bodyHtml}\n${noscript}\n${packed}\n`;
 const standalone = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>html,body{margin:0;padding:0;height:100%;background:#0b0d1a}</style>

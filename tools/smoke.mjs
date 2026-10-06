@@ -12,6 +12,8 @@ const shotsDir = arg('shots', path.join(root, '.cache/smoke')); fs.mkdirSync(sho
 const battleSecs = +arg('battle', 8);
 const pageFile = path.join(root, arg('page', 'dist/voxelwars.html'));
 const blockCdn = !!arg('block-cdn', false);
+// A page fragment (dist/artifact/index.html) is wrapped the way the Artifact publisher wraps it: doctype + charset/viewport metas + a small reset.
+const wrapPage = (h) => (/^\s*<!doctype/i.test(h) ? h : '<!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}</style></head><body>' + h + '</body></html>');
 const CSP = "default-src 'none'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://cdn.tailwindcss.com https://code.jquery.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src blob: 'self'; base-uri 'none'; form-action 'none'";
 const CDN = { 'three.min.js': '.cache/cdn/three.min.js', 'gsap.min.js': '.cache/cdn/gsap.min.js' };
 const MIME = { '.mp3': 'audio/mpeg', '.png': 'image/png', '.json': 'application/json', '.ogg': 'audio/ogg' };
@@ -28,7 +30,7 @@ await page.addInitScript(() => { document.addEventListener('securitypolicyviolat
 await page.route('**/*', (route) => {
   const u = new URL(route.request().url());
   if (u.host === 'vw.test') {
-    if (u.pathname === '/' || u.pathname === '/index.html') return route.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', headers: { 'Content-Security-Policy': CSP }, body: fs.readFileSync(pageFile) });
+    if (u.pathname === '/' || u.pathname === '/index.html') return route.fulfill({ status: 200, contentType: 'text/html; charset=utf-8', headers: { 'Content-Security-Policy': CSP }, body: wrapPage(fs.readFileSync(pageFile, 'utf8')) });
     const f = path.join(root, decodeURIComponent(u.pathname));
     if (!arg('no-assets', false) && f.startsWith(path.join(root, 'assets')) && fs.existsSync(f)) return route.fulfill({ status: 200, contentType: MIME[path.extname(f)] || 'application/octet-stream', body: fs.readFileSync(f) });
     return route.fulfill({ status: 404, body: 'not found' });

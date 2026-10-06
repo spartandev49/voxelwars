@@ -69,7 +69,8 @@ export function boot(mods) {
       if (!registry[sc.screen]) return false;
       K.closeModals();
       document.querySelectorAll('.vw-toasts,.vw-banner-host,.vw-tip').forEach((e) => e.remove());
-      if (sc.settings) for (const k of Object.keys(sc.settings)) app.settings.set(k, sc.settings[k]);
+      if (window.__restoreSettings) { window.__restoreSettings(); window.__restoreSettings = null; }
+      if (sc.settings) { const prev = {}; for (const k of Object.keys(sc.settings)) { prev[k] = app.settings.get(k); app.settings.set(k, sc.settings[k]); } window.__restoreSettings = () => { for (const k of Object.keys(prev)) app.settings.set(k, prev[k]); }; }
       if (sc.reset) sc.reset(app);
       app.goto(sc.screen, sc.params);
       await new Promise((r) => setTimeout(r, 60));

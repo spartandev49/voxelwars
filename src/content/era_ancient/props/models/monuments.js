@@ -199,8 +199,8 @@ const statue_zeus = {
     for (let y = 56; y < 74; y++) { const w = Math.max(3, Math.round(9 - (y < 64 ? (64 - y) * 0.4 : 0))); p.fill(cx - (w >> 1), y, cz + 5, w, 1, 4, V(h3(cx, y, 2, 9) > 0.8 ? 0xd0dcf0 : 0xf4f6fb)); }
     // right arm (raised, holds the thunderbolt) and left arm with sceptre
     p.line(cx - 12, 66, cz, cx - 16, 84, cz + 2, mr, 5); p.blob(cx - 16, 87, cz + 2, 3.2, 3.2, 3.2, mr);
-    p.line(cx + 12, 66, cz, cx + 16, 62, cz + 8, mr, 5); p.blob(cx + 16, 61, cz + 9, 3, 3, 3, mr);
-    p.box(cx + 15, 24, cz + 8, 3, 70, 3, gold); p.blob(cx + 16, 96, cz + 9, 3.2, 3.2, 3.2, V(0xfff0a0)); p.blob(cx + 16, 99, cz + 9, 1.6, 2.4, 1.6, V(0x3ad8d0));
+    p.line(cx + 12, 66, cz, cx + 17, 62, cz + 4, mr, 5); p.blob(cx + 17, 61, cz + 5, 3, 3, 3, mr);
+    p.box(cx + 16, 24, cz + 4, 3, 70, 3, gold); p.blob(cx + 17, 96, cz + 5, 3.2, 3.2, 3.2, V(0xfff0a0)); p.blob(cx + 17, 99, cz + 5, 1.6, 2.4, 1.6, V(0x3ad8d0));
     const bolt = [[cx - 16, 89, cz + 2], [cx - 12, 98, cz + 2], [cx - 19, 103, cz + 2], [cx - 14, 112, cz + 2], [cx - 18, 118, cz + 2]];
     for (let i = 0; i < bolt.length - 1; i++) { p.line(bolt[i][0], bolt[i][1], bolt[i][2], bolt[i + 1][0], bolt[i + 1][1], bolt[i + 1][2], G(0xffe848), 4); }
     for (let i = 0; i < bolt.length - 1; i++) { p.line(bolt[i][0], bolt[i][1], bolt[i][2], bolt[i + 1][0], bolt[i + 1][1], bolt[i + 1][2], G(0xffffff), 2); }

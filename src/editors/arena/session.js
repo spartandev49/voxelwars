@@ -17,6 +17,7 @@ import { clamp, lerp, symWorld, unionRect } from './geom.js';
 const clone = (v) => (v === null || v === undefined ? v : JSON.parse(JSON.stringify(v)));
 const now = () => (typeof performance !== 'undefined' ? performance.now() : Date.now());
 const round3 = (v) => Math.round(v * 1000) / 1000;
+const round2 = (v) => Math.round(v * 100) / 100;      // props serialise with 2 decimals (Arena.toJSON): keep exactly what survives a save
 
 /** FNV-1a over the whole document (terrain, materials, props, zones, hazards, markers, env, water, meta). Used by the undo / symmetry tests. */
 export function hashArena(a) {
@@ -105,11 +106,15 @@ class ListLog {
 }
 
 // ---------------------------------------------------------------------------------------------------------------- snapshots
+// Snapshots keep the IDENTITY of prop / hazard / marker objects (their fields are stored beside them): the list commands recorded earlier
+// refer to those objects, so undoing a resize or a generate must hand the very same objects back.
 function snapshotOf(a) {
-  return { size: a.size, h: a.h.slice(), m: a.m.slice(), props: a.props.map((p) => Object.assign({}, p)), zones: clone(a.zones), hazards: clone(a.hazards), markers: clone(a.markers), water: a.water, lava: a.lava, biome: a.biome, env: clone(a.env), seed: a.seed };
+  const keep = (list) => list.map((o) => [o, Object.assign({}, o)]);
+  return { size: a.size, h: a.h.slice(), m: a.m.slice(), props: keep(a.props), hazards: keep(a.hazards), markers: keep(a.markers), zones: clone(a.zones), water: a.water, lava: a.lava, biome: a.biome, env: clone(a.env), seed: a.seed };
 }
 function restoreSnapshot(a, s) {
-  a.size = s.size; a.h = s.h.slice(); a.m = s.m.slice(); a.props = s.props.map((p) => Object.assign({}, p)); a.zones = clone(s.zones); a.hazards = clone(s.hazards); a.markers = clone(s.markers);
+  const back = (list) => list.map(([o, f]) => Object.assign(o, f));
+  a.size = s.size; a.h = s.h.slice(); a.m = s.m.slice(); a.props = back(s.props); a.hazards = back(s.hazards); a.markers = back(s.markers); a.zones = clone(s.zones);
   a.water = s.water; a.lava = s.lava; a.biome = s.biome; a.env = clone(s.env); a.seed = s.seed;
 }
 
@@ -222,8 +227,8 @@ export class EditSession {
     const info = propInfo(d.t); if (!info) return null;
     const lim = this.arena.half() - 0.5, sc = info.scale || [0.7, 1.6];
     return {
-      t: d.t, x: round3(clamp(d.x, -lim, lim)), z: round3(clamp(d.z, -lim, lim)), r: round3(d.r || 0),
-      s: round3(clamp(d.s || 1, Math.min(sc[0], 0.3), Math.max(sc[1], 4))), v: (d.v | 0) & 3,
+      t: d.t, x: round2(clamp(d.x, -lim, lim)), z: round2(clamp(d.z, -lim, lim)), r: round3(d.r || 0),
+      s: round2(clamp(d.s || 1, Math.min(sc[0], 0.3), Math.max(sc[1], 4))), v: (d.v | 0) & 3,
     };
   }
   /** Begin a prop stroke (scatter brush, erase brush, drag). The returned object applies live; end() records one undo step. */

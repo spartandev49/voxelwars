@@ -7,7 +7,7 @@ export const V1 = {
       stars: [3, 2, 0, 1, 9, -2, 'x'],                                     // mission order; 9 clamps to 3, negatives and junk drop
       achievements: ['first_victory', 'sparta', 'Not Valid!', 42],
       codex: ['hoplite', 'spartan', 'bad id'],
-      survivalBest: 14230,
+      survivalBest: 14,                                                      // best wave
       dailyLast: 20260301,
       mystery: { keep: false },                                          // unknown keys are dropped
     },

@@ -40,3 +40,17 @@ console.log('fuzz: rejected', rejected, 'accepted', accepted); assert.ok(rejecte
 // arena limits: oversize prop list clamps
 const big = a.toJSON(); big.props = new Array(5000).fill(['tree_oak', 0, 0, 0, 1, 0]); assert.equal(Arena.fromJSON(big).props.length, 1500);
 console.log('share OK');
+
+// ---- soldier schema (EDITORS-B): seven stats, weapon only in blueprint.main, height/radius clamps, hostile fuzz (full suites in tests/editors/soldier/)
+{
+  const { checkSoldier } = await import('../../src/save/validate.js');
+  const good = { v: 1, id: 'cs_fz', name: 'Fuzz', blueprint: { v: 1, id: 'cs_fz', main: 'gladius', off: 'buckler' }, stats: { hp: 10, damage: 10, attackSpeed: 5, speed: 5, armor: 5, range: 5, morale: 5 }, abilities: ['kick'], ai: 'flank', height: 1.1, text: { catch: 'Hi', deaths: ['a', 'b', 'c'], pitch: 1 } };
+  const e7 = await encodeShare('soldier', good); const b7 = await importShare(e7.code, 'soldier', {});
+  assert.deepEqual(JSON.parse(JSON.stringify(b7.value.stats)), good.stats); assert.equal(b7.value.blueprint.main, 'gladius'); assert.equal(b7.value.height, 1.1);
+  assert.ok(!checkSoldier({ ...good, stats: { ...good.stats, hp: 30, damage: 30, attackSpeed: 20, speed: 20, armor: 20 } }).ok, 'total over 100');
+  assert.ok(!checkSoldier({ ...good, name: 'x'.repeat(41) }).ok && !checkSoldier({ ...good, name: '' }).ok, 'name 1-40');
+  assert.equal(checkSoldier({ ...good, radius: 4 }).soldier.radius, 0.7); assert.equal(checkSoldier({ ...good, height: 3 }).soldier.height, 1.2);
+  let rej = 0; const r7 = new RNG(5); for (let i = 0; i < 300; i++) { const c = e7.code.split(''); for (let j = 0; j < 1 + (i % 3); j++) c[r7.int(10, c.length - 1)] = 'AzZ09-_'[r7.int(0, 6)]; try { await importShare(c.join(''), 'soldier', {}); } catch (e) { assert.ok(e instanceof ValidationError); rej++; } }
+  assert.ok(rej >= 295, 'soldier fuzz rejected ' + rej);
+}
+console.log('share soldier OK');

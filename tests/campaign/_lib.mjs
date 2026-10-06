@@ -5,6 +5,7 @@ import { aiInfo } from '../../src/sim/ai.js';
 import { buildSimDefs } from '../../src/sim/defs.js';
 import { generateArmy, layoutArmy, groupsCost } from '../../src/sim/armygen.js';
 import { MISSIONS, missionArena, missionRules, setupMission, battleSummary, evaluateStars } from '../../src/content/era_ancient/campaign.js';
+import { PUZZLES, puzzleAsMission, evaluatePuzzleStars } from '../../src/content/era_ancient/puzzles.js';
 
 export const defs = buildSimDefs();
 // SIM bug (docs/requests/campaign_sim_bugs.md #1): a siege unit without a ranged weapon crashes breachBehaviour. Harness-only workaround so the missions can be measured.
@@ -34,7 +35,7 @@ export function botGroups(m, kind, seed) {
   const style = kind === 'counter' ? 'counter' : kind === 'greedy' ? 'chaos' : kind === 'turtle' ? 'balanced' : 'balanced';
   let pool = ids;
   if (kind === 'melee' && ids) pool = ids.filter((id) => defs[id].role === 'melee' || defs[id].role === 'hero');
-  const army = generateArmy({ faction: m.playerFaction, budget: rest, style, difficulty: kind === 'counter' ? 'hard' : 'normal', against: kind === 'counter' ? enemyAll(m) : undefined, ids: pool || undefined, seed: seed * 101 + 7, defs, cap: 300 });
+  const army = generateArmy({ faction: m.roster ? 'mixed' : m.playerFaction, budget: rest, style, difficulty: kind === 'counter' ? 'hard' : 'normal', against: kind === 'counter' ? enemyAll(m) : undefined, ids: pool || undefined, seed: seed * 101 + 7, defs, cap: 300 });
   const by = new Map();
   for (const g of core.concat(army.groups)) by.set(g.defId, (by.get(g.defId) || 0) + g.n);
   return Array.from(by, ([defId, n]) => ({ defId, n }));
@@ -79,3 +80,29 @@ export function sweep(m, bot, n, o = {}) {
   }
   return { bot, n, wins, rate: wins / n, starHits, avgWinT: wins ? t / wins : 0, cpuMs: cpu, results: res };
 }
+
+// ------------------------------------------------------------------------------------------------ puzzles
+const puzArena = new Map();
+export function puzzleArena(p) { let a = puzArena.get(p.id); if (!a) { a = missionArena(puzzleAsMission(p)); puzArena.set(p.id, a); } return a; }
+
+/** Build and start a puzzle world with the player's placements (records {defId, x, z, heading, squadId?, order?, formation?}). */
+export function buildPuzzleWorld(p, placements, o = {}) {
+  const m = puzzleAsMission(p), arena = puzzleArena(p);
+  const w = new World({ arena, seed: o.seed || 1, rules: Object.assign(missionRules(m), { godPowers: !!p.godPowers }), defs });
+  const rt = setupMission(w, m, { seed: o.seed || 1 });
+  w.addPlacements(0, placements, { defs });
+  w.start();
+  return { w, rt, m };
+}
+
+/** Fight a puzzle to its end. Returns {win, t, reason, stars, earned, summary, spent}. */
+export function runPuzzle(p, placements, o = {}) {
+  const { w, rt, m } = buildPuzzleWorld(p, placements, o);
+  const maxT = p.timeLimit + 20;
+  while (w.state !== 'ended' && w.time < maxT) w.tick();
+  if (w.state !== 'ended') w.end(-1, 'time');
+  const summary = battleSummary(w, m, rt.tracker), ev = evaluatePuzzleStars(p, summary);
+  rt.destroy();
+  return { win: summary.win, t: w.time, reason: w.endReason, stars: ev.stars, earned: ev.earned, summary, spent: summary.spent, alive: [w.stats[0].alive, w.stats[1].alive] };
+}
+export { PUZZLES };

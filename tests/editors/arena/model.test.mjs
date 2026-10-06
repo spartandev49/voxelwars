@@ -157,7 +157,12 @@ for (const mode of ['mx', 'mz', 'rot']) {
 {
   const s = newSession('persepolis', 'small', 6); const a = s.arena;
   s.addHazard({ t: 'geyser', x: 3, z: 3, r: 3 }); s.addMarker({ type: 'hill', x: 0, z: 0 }); s.setEnv({ time: 19, weather: 'rain', fog: 0.5 }); s.setWater(6, false);
-  const b = Arena.fromJSON(JSON.parse(JSON.stringify(a.toJSON())));
-  assert.strictEqual(hashArena(b), hashArena(a), 'toJSON -> fromJSON is hash-equal');
+  const b = Arena.fromJSON(JSON.parse(JSON.stringify(a.toJSON()))), c = Arena.fromJSON(JSON.parse(JSON.stringify(b.toJSON())));
+  assert.strictEqual(hashArena(c), hashArena(b), 'toJSON -> fromJSON is stable (hash-equal after the first pass)');
+  assert.deepStrictEqual(Array.from(b.h), Array.from(a.h)); assert.deepStrictEqual(Array.from(b.m), Array.from(a.m)); assert.strictEqual(b.props.length, a.props.length);
+  assert.deepStrictEqual(b.hazards, a.hazards); assert.deepStrictEqual(b.markers, a.markers); assert.strictEqual(b.water, a.water);
+  // props placed by the builder survive a save exactly (their precision matches Arena.toJSON)
+  const e = new EditSession(generateArena('arenalab', 'small', 1)); e.addProp({ t: 'tree_oak', x: 1.23456, z: -7.65432, r: 0.123456, s: 1.2345, v: 2 });
+  assert.strictEqual(hashArena(Arena.fromJSON(JSON.parse(JSON.stringify(e.arena.toJSON())))), hashArena(e.arena), 'builder props round-trip exactly');
 }
 console.log('arena model OK (' + checks + ' checks)');

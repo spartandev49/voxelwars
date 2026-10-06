@@ -11,7 +11,7 @@ window.runMix = async function runMix(cfg) {
   const T = data.frames.length ? data.frames[data.frames.length - 1].t : 60, total = Math.ceil((T + tail) * sr);
   const ctx = new OfflineAudioContext(2, total, sr);
   let curT = 0;
-  const eng = new AudioEngine({ quality: () => quality, env: { offlineCtx: ctx, manifest, coreAudio: {}, fetch: (u) => window.fetch(u), window: null, document: null, OfflineAudioContext, AudioContext: null, rng: mulberry32(1234), yieldFn: () => Promise.resolve(), bridgeMs: -1 } });
+  const eng = new AudioEngine({ quality: () => quality, env: { offlineCtx: ctx, manifest, publishedFiles: cfg.published || null, coreAudio: {}, fetch: (u) => window.fetch(u), window: null, document: null, OfflineAudioContext, AudioContext: null, rng: mulberry32(1234), yieldFn: () => Promise.resolve(), bridgeMs: -1 } });
   eng.setClock(() => curT);
   const t0 = performance.now();
   eng.bank.warm(['ui', 'combat', 'voice', 'siege', 'misc']); await eng.bank.idle();

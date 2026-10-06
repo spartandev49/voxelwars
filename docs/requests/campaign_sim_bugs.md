@@ -30,3 +30,6 @@ During `state === 'intermission'` nobody deals damage, so `World.lastDamageT` ag
 
 ## 6. `ST.DOWN` units count for `hold_hill` as absent but not for `Eliminate` progress
 Not a bug, noted for the objective HUD: `Eliminate.progress` uses `stats.alive`, which includes routed units far from the field. Fine as is.
+
+## 7. generateArmy at the unit cap leaves budget unspent (survival waves 38+)
+`generateArmy(..., cap: 300)`: when the first buy already exceeds the cap, `while (total() > cap)` drops the cheapest units and the top-up loop never refills (the swap branch only runs while `total() >= cap` inside the top-up). Wave 38 of a seed-7 run costs 31,185 of a 36,600 budget (wave 37: 35,685), wave 43: 34,145 of 41,100. Harmless below wave 37 and nobody reaches it, but the ramp stops being monotone there. Suggest: after trimming, run the same "swap the cheapest for the most expensive that fits" loop. Also: a boss wave of the chaos style has 17 unit types (16 + the boss), over the 16-type cap of spec 2 for a single army; fix by passing `maxTypes: 15` to generateArmy when a boss is appended.

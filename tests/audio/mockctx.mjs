@@ -148,7 +148,7 @@ export function makeFetch(opts = {}) {
     f.calls.push(url);
     if (opts.block) throw new Error('fetch blocked');
     const fail = opts.fail && opts.fail(url, f.calls.filter((u) => u === url).length);
-    if (fail) return { ok: false, status: 404, arrayBuffer: async () => new ArrayBuffer(0) };
+    if (fail) return { ok: false, status: opts.failStatus || 404, arrayBuffer: async () => new ArrayBuffer(0) };
     const dur = (opts.durOf && opts.durOf(url)) || 0.5;
     const seed = [...url].reduce((a, c) => (a * 31 + c.charCodeAt(0)) >>> 0, 7);
     const buf = writeWav([noiseBurst(dur, 22050, 0.5, seed)], 22050);

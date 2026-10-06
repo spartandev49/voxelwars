@@ -26,5 +26,9 @@ export const SCENARIOS = [
   { name: 'fatal', screen: 'fatal', params: { kind: 'webgl2', message: 'getContext("webgl2") returned null', diagnostics: 'ua: HeadlessChrome/131\nrenderer: none\nwebgl2: false\nbuild: 1.0.0 (2026-10-06)', onReload: () => window.__ui.app.calls.misc.push('reload') } },
   { name: 'fatal_cdn', screen: 'fatal', params: { kind: 'cdn', message: 'three.min.js failed on cdnjs, jsDelivr and unpkg', diagnostics: { tried: ['cdnjs', 'jsdelivr', 'unpkg'], online: true }, onReload: () => window.__ui.app.calls.misc.push('reload'), onSafeMode: () => window.__ui.app.calls.misc.push('safe') } },
   { name: 'modal_reset', screen: 'settings', params: { tab: 'data' }, setup: async (ui) => { click(ui, '#set-reset-progress'); await ui.sleep(450); } },
+  { name: 'title_contrast', screen: 'title', settings: { highContrastUI: true, palette: 'contrast' } },
+  { name: 'quick_cvd', screen: 'quick', settings: { palette: 'cvd' }, setup: async (ui) => { const b = ui.q('[data-adv="advanced"]'); if (b) b.click(); await ui.sleep(200); } },
+  { name: 'placement_cvd', screen: 'placement', settings: { palette: 'cvd' }, reset: (app) => { app.game.begin(app.game.newSetup('quick')); }, setup: async (ui) => { ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes', budget: 3800 }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians', budget: 2600 }); await ui.sleep(40); } },
+  { name: 'settings_access_hc', screen: 'settings', params: { tab: 'access' }, settings: { highContrastUI: true } },
   { name: 'toast_kit', screen: 'title', setup: async (ui) => { ui.K.toast('Hoplite placed. It looks smug.', { kind: 'success', ms: 600000 }); ui.K.toast('That square is underwater. Soldiers are not.', { kind: 'error', ms: 600000 }); await ui.sleep(450); } },
 ];

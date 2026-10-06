@@ -14,7 +14,7 @@ export class Store {
     const k = PREFIX + key;
     try {
       let raw = null;
-      if (this.backend) raw = this.backend.getItem(k); else raw = this.mem.has(k) ? this.mem.get(k) : null;
+      if (this.mem.has(k)) raw = this.mem.get(k); else if (this.backend) raw = this.backend.getItem(k);   // mem holds what the browser refused to store (quota) until flushPending() succeeds
       if (raw === null) return fallback;
       const o = JSON.parse(raw);
       if (!o || typeof o !== 'object' || !('data' in o)) return fallback;
@@ -30,26 +30,35 @@ export class Store {
   /** The exact stored string (for backups and rollback), or null. */
   getRaw(key) {
     const k = PREFIX + key;
-    try { if (this.backend) { const r = this.backend.getItem(k); return r === undefined ? null : r; } return this.mem.has(k) ? this.mem.get(k) : null; } catch (e) { return null; }
+    try { if (this.mem.has(k)) return this.mem.get(k); if (this.backend) { const r = this.backend.getItem(k); return r === undefined ? null : r; } return null; } catch (e) { return null; }
   }
   /** Write an exact string back (rollback); null removes the key. Returns false when storage refused it. */
   setRaw(key, raw) {
     if (raw === null || raw === undefined) { this.remove(key); return true; }
     const k = PREFIX + key; this.mem.set(k, raw);
     if (!this.backend) { this._set('memory'); return false; }
-    try { this.backend.setItem(k, raw); if (this._status === 'full') this._set('ok'); return true; }
+    try { this.backend.setItem(k, raw); this.mem.delete(k); if (this._status === 'full' && !this.mem.size) this._set('ok'); return true; }
     catch (e) { this._set(/quota/i.test(String(e && (e.name || e.message))) ? 'full' : 'memory'); return false; }
   }
   set(key, data, version = 1) {
     const k = PREFIX + key; const raw = JSON.stringify({ v: version, data });
     this.mem.set(k, raw);
     if (!this.backend) { this._set('memory'); return false; }
-    try { this.backend.setItem(k, raw); if (this._status === 'full') this._set('ok'); return true; }
+    try { this.backend.setItem(k, raw); this.mem.delete(k); if (this._status === 'full' && !this.mem.size) this._set('ok'); return true; }
     catch (e) { this._set(/quota/i.test(String(e && (e.name || e.message))) ? 'full' : 'memory'); return false; }
   }
-  remove(key) { const k = PREFIX + key; this.mem.delete(k); try { if (this.backend) this.backend.removeItem(k); } catch (e) { /* ignore */ } }
+  /** Keys whose latest value the browser refused to store (quota): readable this session, written again by flushPending(). Empty in memory mode (nothing to retry). */
+  pending() { return this.backend ? Array.from(this.mem.keys(), (k) => k.slice(PREFIX.length)) : []; }
+  /** Try to write every refused value again (after space was freed). Returns how many are still pending; status returns to 'ok' when none are. */
+  flushPending() {
+    if (!this.backend) return 0;
+    for (const [k, raw] of Array.from(this.mem)) { try { this.backend.setItem(k, raw); this.mem.delete(k); } catch (e) { /* still full */ } }
+    if (!this.mem.size && this._status === 'full') this._set('ok');
+    return this.mem.size;
+  }
+  remove(key) { const k = PREFIX + key; this.mem.delete(k); try { if (this.backend) this.backend.removeItem(k); } catch (e) { /* ignore */ } if (this.backend && this._status === 'full' && !this.mem.size) this._set('ok'); }
   bytes() { let n = 0; try { const src = this.backend; if (src) { for (let i = 0; i < src.length; i++) { const k = src.key(i); if (k && k.startsWith(PREFIX)) n += k.length + (src.getItem(k) || '').length; } } else for (const [k, v] of this.mem) n += k.length + v.length; } catch (e) { /* ignore */ } return n * 2; }
-  keys() { const out = []; try { if (this.backend) for (let i = 0; i < this.backend.length; i++) { const k = this.backend.key(i); if (k && k.startsWith(PREFIX)) out.push(k.slice(PREFIX.length)); } else for (const k of this.mem.keys()) out.push(k.slice(PREFIX.length)); } catch (e) { /* ignore */ } return out; }
+  keys() { const out = []; try { if (this.backend) { for (let i = 0; i < this.backend.length; i++) { const k = this.backend.key(i); if (k && k.startsWith(PREFIX)) out.push(k.slice(PREFIX.length)); } for (const k of this.mem.keys()) { const n = k.slice(PREFIX.length); if (!out.includes(n)) out.push(n); } } else for (const k of this.mem.keys()) out.push(k.slice(PREFIX.length)); } catch (e) { /* ignore */ } return out; }
 }
 
 export const DEFAULT_SETTINGS = {

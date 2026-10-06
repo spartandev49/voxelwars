@@ -6,9 +6,6 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 ## Required attribution lines (CC BY)
 
 - "Horse Gallop Loop" by AntumDeluge, https://opengameart.org/content/horse-gallop-loop, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (2 file(s))
-
-- "Zebra Whinny" by AntumDeluge, https://opengameart.org/content/zebra-whinny, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
   Used for: sfx (1 file(s))
 
 - "Aargh! (male screams)" by congusbongus, https://opengameart.org/content/aargh-male-screams, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified (trimmed/normalised/encoded).  
@@ -24,13 +21,13 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
   Used for: sfx (1 file(s))
 
 - "Free Cinematic Sound Effects" by Gregor Quendel, https://opengameart.org/content/free-cinematic-sound-effects, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (3 file(s))
+  Used for: sfx (1 file(s))
 
 - "Free Crowd Cheering Sounds" by Gregor Quendel, https://opengameart.org/content/free-crowd-cheering-sounds, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (10 file(s))
+  Used for: sfx (9 file(s))
 
 - "Chicken Sound Effect" by IMadeIt, https://opengameart.org/content/chicken-sound-effect, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (5 file(s))
+  Used for: sfx (4 file(s))
 
 - "Thunder" by Jerimee, https://opengameart.org/content/thunder, licensed under CC BY 3.0 (https://creativecommons.org/licenses/by/3.0/). Modified (trimmed/normalised/encoded).  
   Used for: sfx (1 file(s))
@@ -90,7 +87,7 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
   Used for: sfx (1 file(s))
 
 - "8 Heals and Buffs SFX" by leohpaz, https://opengameart.org/content/8-heals-and-buffs-sfx, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (5 file(s))
+  Used for: sfx (4 file(s))
 
 - "8 Magic Attacks" by leohpaz, https://opengameart.org/content/8-magic-attacks, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
   Used for: sfx (5 file(s))
@@ -105,12 +102,12 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
   Used for: sfx (1 file(s))
 
 - "Orchestral Stinger - Dramatic Entrance" by tcarisland, https://opengameart.org/content/orchestral-stinger-dramatic-entrance, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/). Modified (trimmed/normalised/encoded).  
-  Used for: sfx (2 file(s))
+  Used for: sfx (1 file(s))
 
 ## CC0 / Public Domain sources (no attribution required, listed as a courtesy)
 
 ### 0new4y
-- Game Over Trumpet SFX - CC0 1.0 - https://opengameart.org/content/game-over-trumpet-sfx (2 file(s))
+- Game Over Trumpet SFX - CC0 1.0 - https://opengameart.org/content/game-over-trumpet-sfx (1 file(s))
 
 ### Aeva
 - BOING! - CC0 1.0 - https://opengameart.org/content/boing (1 file(s))
@@ -121,8 +118,8 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 
 ### AntumDeluge
 - Balloon Sounds - CC0 1.0 - https://opengameart.org/content/balloon-sounds (1 file(s))
-- Camel Groan - CC0 1.0 - https://opengameart.org/content/camel-groan (2 file(s))
-- Fire Crackling - CC0 1.0 - https://opengameart.org/content/fire-crackling (3 file(s))
+- Camel Groan - CC0 1.0 - https://opengameart.org/content/camel-groan (1 file(s))
+- Fire Crackling - CC0 1.0 - https://opengameart.org/content/fire-crackling (4 file(s))
 - Sheep Baa - CC0 1.0 - https://opengameart.org/content/sheep-baa (2 file(s))
 - Tree Creaking - CC0 1.0 - https://opengameart.org/content/tree-creaking (1 file(s))
 
@@ -179,7 +176,6 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - 35 wooden cracks/hits/destructions - CC0 1.0 - https://opengameart.org/content/35-wooden-crackshitsdestructions (2 file(s))
 - 37 hits/punches - CC0 1.0 - https://opengameart.org/content/37-hitspunches (4 file(s))
 - 5 break, crunch impacts - CC0 1.0 - https://opengameart.org/content/5-break-crunch-impacts (2 file(s))
-- 8 wet squish, slurp impacts - CC0 1.0 - https://opengameart.org/content/8-wet-squish-slurp-impacts (2 file(s))
 
 ### Iwan Sounds and DIY
 - Drum Roll Intro.ogg - CC0 1.0 - https://commons.wikimedia.org/wiki/File:Drum_Roll_Intro.ogg (3 file(s))
@@ -192,25 +188,25 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Boss Battle Music - CC0 1.0 - https://opengameart.org/content/boss-battle-music (1 file(s))
 
 ### Kenney (kenney.nl)
-- Kenney Impact Sounds - CC0 1.0 - https://kenney.nl/assets/impact-sounds (43 file(s))
-- Kenney Interface Sounds - CC0 1.0 - https://kenney.nl/assets/interface-sounds (31 file(s))
+- Kenney Impact Sounds - CC0 1.0 - https://kenney.nl/assets/impact-sounds (38 file(s))
+- Kenney Interface Sounds - CC0 1.0 - https://kenney.nl/assets/interface-sounds (25 file(s))
 - Kenney Particle Pack - CC0 1.0 - https://kenney.nl/assets/particle-pack (1 file(s))
 - Kenney RPG Audio - CC0 1.0 - https://kenney.nl/assets/rpg-audio (12 file(s))
 - Kenney UI SFX Set - CC0 1.0 - https://kenney.nl/assets/ui-audio (6 file(s))
 - Kenney Voiceover Pack #1 - CC0 1.0 - https://kenney.nl/assets/voiceover-pack (7 file(s))
-- Kenney Voiceover Pack: Fighter - CC0 1.0 - https://kenney.nl/assets/voiceover-pack-fighter (9 file(s))
+- Kenney Voiceover Pack: Fighter - CC0 1.0 - https://kenney.nl/assets/voiceover-pack-fighter (7 file(s))
 
 ### kheetor
 - tree chop fall thud - CC0 1.0 - https://opengameart.org/content/tree-chop-fall-thud (1 file(s))
 
 ### KLY
-- KL Peach Game Over III - CC0 1.0 - https://opengameart.org/content/kl-peach-game-over-iii (2 file(s))
+- KL Peach Game Over III - CC0 1.0 - https://opengameart.org/content/kl-peach-game-over-iii (1 file(s))
 
 ### Listener
 - Win sound effect - CC0 1.0 - https://opengameart.org/content/win-sound-effect (1 file(s))
 
 ### Luke.RUSTLTD
-- wind1 - CC0 1.0 - https://opengameart.org/content/wind1 (1 file(s))
+- wind1 - CC0 1.0 - https://opengameart.org/content/wind1 (2 file(s))
 
 ### Manuel Senfft
 - Proto-Germanic Voices - CC0 1.0 - https://opengameart.org/content/proto-germanic-voices (3 file(s))
@@ -238,7 +234,6 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 
 ### pauliuw
 - Dog sounds - CC0 1.0 - https://opengameart.org/content/dog-sounds (4 file(s))
-- Stone, rock or wood moved sound - CC0 1.0 - https://opengameart.org/content/stone-rock-or-wood-moved-sound (1 file(s))
 
 ### PWL
 - Bell dings/chimes - CC0 1.0 - https://opengameart.org/content/bell-dingschimes (2 file(s))
@@ -252,16 +247,16 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Wood Wobbling & Rattling - CC0 1.0 - https://opengameart.org/content/wood-wobbling-rattling (1 file(s))
 
 ### rubberduck
-- 100 CC0 SFX - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx (4 file(s))
+- 100 CC0 SFX - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx (3 file(s))
 - 100 CC0 SFX #2 - CC0 1.0 - https://opengameart.org/content/100-cc0-sfx-2 (4 file(s))
 - 25 CC0 bang / firework SFX - CC0 1.0 - https://opengameart.org/content/25-cc0-bang-firework-sfx (2 file(s))
-- 75 CC0 breaking / falling / hit sfx - CC0 1.0 - https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx (15 file(s))
-- 80 CC0 creature SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-creature-sfx (5 file(s))
-- 80 CC0 creture SFX #2 - CC0 1.0 - https://opengameart.org/content/80-cc0-creture-sfx-2 (5 file(s))
-- 80 CC0 RPG SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-rpg-sfx (9 file(s))
+- 75 CC0 breaking / falling / hit sfx - CC0 1.0 - https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx (11 file(s))
+- 80 CC0 creature SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-creature-sfx (3 file(s))
+- 80 CC0 creture SFX #2 - CC0 1.0 - https://opengameart.org/content/80-cc0-creture-sfx-2 (1 file(s))
+- 80 CC0 RPG SFX - CC0 1.0 - https://opengameart.org/content/80-cc0-rpg-sfx (8 file(s))
 
 ### Someoneman
-- Cure Magic - CC0 1.0 - https://opengameart.org/content/cure-magic (4 file(s))
+- Cure Magic - CC0 1.0 - https://opengameart.org/content/cure-magic (3 file(s))
 
 ### Sorth
 - Gladiator's Lament - Epic Tragic Music - CC0 1.0 - https://opengameart.org/content/gladiators-lament-epic-tragic-music (1 file(s))
@@ -272,11 +267,11 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 ### StarNinjas
 - 10 Impact/Shield Blocks - CC0 1.0 - https://opengameart.org/content/10-impactshield-blocks (4 file(s))
 - 20 Sword Sound Effects (Attacks and Clashes) - CC0 1.0 - https://opengameart.org/content/20-sword-sound-effects-attacks-and-clashes (9 file(s))
-- Cave In - CC0 1.0 - https://opengameart.org/content/cave-in (3 file(s))
+- Cave In - CC0 1.0 - https://opengameart.org/content/cave-in (2 file(s))
 - Donkey Bray - CC0 1.0 - https://opengameart.org/content/donkey-bray (2 file(s))
 
 ### StumpyStrust
-- Their Coming (generic horn sound) - CC0 1.0 - https://opengameart.org/content/their-coming-generic-horn-sound (4 file(s))
+- Their Coming (generic horn sound) - CC0 1.0 - https://opengameart.org/content/their-coming-generic-horn-sound (3 file(s))
 
 ### tcpp
 - Explosion 10.ogg - Public Domain - https://commons.wikimedia.org/wiki/File:Explosion_10.ogg (1 file(s))
@@ -310,10 +305,10 @@ Audio was trimmed, loudness-normalised and re-encoded to MP3 for the game (chang
 - Synthesized UI beep - CC0 1.0 - tools/build_sfx.py (6 file(s))
 
 ### William Hector
-- Horde War Drums loop - CC0 1.0 - https://opengameart.org/content/horde-war-drums-loop (4 file(s))
+- Horde War Drums loop - CC0 1.0 - https://opengameart.org/content/horde-war-drums-loop (3 file(s))
 
 ### wobbleboxx
-- Level up, power up, Coin get (13 Sounds) - CC0 1.0 - https://opengameart.org/content/level-up-power-up-coin-get-13-sounds (3 file(s))
+- Level up, power up, Coin get (13 Sounds) - CC0 1.0 - https://opengameart.org/content/level-up-power-up-coin-get-13-sounds (1 file(s))
 
 ### xathien
 - Steampunk Fantasy Voices - CC0 1.0 - https://opengameart.org/content/steampunk-fantasy-voices (8 file(s))

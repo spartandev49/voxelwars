@@ -40,6 +40,25 @@ await p.waitForFunction(() => window.__ready === true, null, { timeout: 60000 })
 const all = await p.evaluate(() => window.__sheet.recipes);
 let list = positional.length && positional[0] !== 'all' ? positional[0].split(',') : all;
 const done = [];
+// --env times|weather: one recipe under several times of day / weather presets, composed into one labelled sheet (R12 / R13)
+if (opt('env')) {
+  const kind = opt('env'), recipe = list[0];
+  const variants = kind === 'look' ? [['engine default', undefined], ['sun .8 hemi .7', { sun: 0.8, hemi: 0.7, exp: 1 }], ['sun .65 hemi .55', { sun: 0.65, hemi: 0.55, exp: 1 }], ['sun .55 hemi .5 exp 1.1', { sun: 0.55, hemi: 0.5, exp: 1.1 }]].map(([label, look]) => ({ label, o: look ? { look } : {} })) : kind === 'times' ? [6, 12, 18, 23].map((t) => ({ label: `${t}:00`, o: { time: t } })) : ['clear', 'cloudy', 'rain', 'storm', 'snow', 'sandstorm', 'fog'].map((w) => ({ label: w, o: { weather: w } }));
+  const files = [];
+  for (const v of variants) {
+    await p.evaluate(([rr, s, sd, o]) => window.__sheet.load(rr, s, sd, o), [recipe, size, seed, Object.assign({}, loadOpts, v.o)]);
+    await p.evaluate(([cc, w, h]) => window.__sheet.cam(cc, w, h), [opt('cam', 'oblique'), W, H]);
+    await p.evaluate(() => window.__sheet.render(2)); await p.waitForTimeout(120);
+    const f = path.join(outDir, `env_${recipe}_${v.label.replace(/[^a-z0-9]+/gi, '_')}.png`); await p.screenshot({ path: f }); files.push({ label: v.label, f });
+  }
+  const big = kind === 'times' || kind === 'look', cols = big ? 2 : 4, tw = big ? 640 : 480, th = big ? 360 : 270, rows = Math.ceil(files.length / cols);
+  const page2 = await b.newPage({ viewport: { width: cols * tw, height: rows * th } });
+  const imgs = files.map((t, i) => `<div style="position:absolute;left:${(i % cols) * tw}px;top:${Math.floor(i / cols) * th}px;width:${tw}px;height:${th}px"><img src="data:image/png;base64,${fs.readFileSync(t.f).toString('base64')}" width="${tw}" height="${th}"><span style="position:absolute;left:8px;top:6px;font:bold 17px sans-serif;color:#fff;text-shadow:0 0 4px #000,0 0 3px #000">${recipe} ${t.label}</span></div>`).join('');
+  await page2.setContent(`<body style="margin:0;background:#000">${imgs}</body>`); await page2.waitForTimeout(300);
+  await page2.screenshot({ path: path.join(outDir, `sheet_${kind}_${recipe}.png`) });
+  for (const t of files) fs.unlinkSync(t.f);
+  console.log(logs.slice(0, 10).join('\n')); await b.close(); process.exit(0);
+}
 for (const r of (flag('index-only') ? [] : list)) {
   const t0 = Date.now();
   const info = await p.evaluate(([rr, s, sd, o]) => window.__sheet.load(rr, s, sd, o), [r, size, seed, loadOpts]);
@@ -51,7 +70,7 @@ for (const r of (flag('index-only') ? [] : list)) {
     await p.screenshot({ path: f });
     done.push({ r, c, f, st });
   }
-  console.log(r.padEnd(12), 'light', JSON.stringify(info.light), 'props', info.props, 'water', info.water, 'ms', Date.now() - t0, JSON.stringify(done[done.length - 1].st));
+  console.log(r.padEnd(12), 'props', info.props, 'propBuildMs', info.buildMs, 'water', info.water, 'ms', Date.now() - t0, JSON.stringify(done[done.length - 1].st));
 }
 console.log(logs.slice(0, 20).join('\n'));
 if (flag('index') || flag('index-only') || list.length > 1) {

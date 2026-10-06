@@ -42,7 +42,9 @@ export function mount(root, ctx, params) {
   const nameEl = K.h('h3', { class: 'vw-qb__arena-name', 'aria-live': 'polite' });
   const blurbEl = K.h('p', { class: 'vw-qb__arena-blurb' });
   const tacticsEl = K.h('div', { class: 'vw-chips' });
-  const recEl = K.h('span', { class: 'vw-chip vw-chip--gold vw-chip--wrap' });
+  const recEl = K.chip('', { variant: 'gold', class: 'vw-chip--wrap', id: 'qb-recommended', onClick: () => applyRecommended() });
+  const recLabel = recEl.querySelector('span');
+  K.tooltip(recEl, T.recommendedTip);
   const seedRow = K.h('div', { class: 'vw-qb__seed vw-row vw-wrapflex vw-hide' });
   const seedInput = K.h('input', { class: 'vw-input vw-qb__seed-input', id: 'qb-seed', type: 'text', inputmode: 'numeric', 'aria-label': T.random.seed, value: String(S.seed), maxlength: 10 });
   const rerollBtn = K.button(T.random.reroll, { icon: 'dice', size: 'sm', id: 'qb-reroll', onClick: () => { S.seed = Math.floor(Math.random() * 1e9); seedInput.value = String(S.seed); paintArena(); } });
@@ -74,12 +76,19 @@ export function mount(root, ctx, params) {
     K.h('div', { class: 'vw-qb__arena-info' }, nameEl, blurbEl, K.h('div', { class: 'vw-row vw-wrapflex' }, tacticsEl, recEl)));
   function step(d) { const i = (arenaIdx() + d + arenas.length) % arenas.length; K.sfx('ui_tick'); setArena(arenas[i].id); }
   function setArena(id) { S.arena = id; const a = curArena(); if (a.size && S.arena !== 'random') S.size = a.size; paintArena(); paintSummary(); sizeSeg.set(S.size, true); }
+  function applyRecommended() {
+    const want = curArena().recommendedBudget || 8000;
+    const presets = Object.keys(BUDGETS);
+    const best = presets.reduce((a, k) => (Math.abs(BUDGETS[k] - want) < Math.abs(BUDGETS[a] - want) ? k : a), presets[0]);
+    if (Math.abs(BUDGETS[best] - want) <= 1500) { S.budget = best; } else { S.budget = 'custom'; S.custom = Math.max(500, Math.min(40000, Math.round(want / 500) * 500)); customSlider.set(S.custom, true); }
+    budgetSeg.set(S.budget, true); customRow.classList.toggle('vw-hide', S.budget !== 'custom'); paintSummary(); K.toast(T.recommendedApplied(budgetValue()), { kind: 'success', ms: 1800 });
+  }
   function paintArena() {
     const a = curArena();
     nameEl.textContent = a.id === 'random' ? T.random.name : a.name;
     blurbEl.textContent = a.id === 'random' ? T.random.blurb : a.blurb;
     tacticsEl.replaceChildren(...(a.tactics || []).map((t) => K.chip(t, { variant: 'sky' })));
-    recEl.textContent = T.recommended(a.recommendedBudget || 8000);
+    recLabel.textContent = T.recommended(a.recommendedBudget || 8000);
     seedRow.classList.toggle('vw-hide', a.id !== 'random');
     stripBtns.forEach((b) => { const on = b.dataset.arena === a.id; b.setAttribute('aria-checked', String(on)); b.tabIndex = on ? 0 : -1; b.classList.toggle('is-on', on); });
     if (a.id === 'random') {

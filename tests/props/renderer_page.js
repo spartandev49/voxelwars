@@ -2,7 +2,7 @@
 import { Engine } from '../../src/render/engine.js';
 import { generateArena } from '../../src/world/gen.js';
 import { TerrainRenderer } from '../../src/render/terrain.js';
-import { PropRenderer, PROP_TIERS, disposePropGeometry } from '../../src/render/props.js';
+import { PropRenderer, PROP_TIERS, disposePropGeometry, preloadPropGeometry } from '../../src/render/props.js';
 import { CubeFX } from '../../src/render/fx.js';
 import { EventBus } from '../../src/core/events.js';
 import { PROP_CATALOG } from '../../src/content/era_ancient/props/catalog.js';
@@ -20,7 +20,7 @@ function setup(recipe, size = 'medium', seed = 3) {
   return { a, fx, pr };
 }
 function view(pr, a, h = 60) { eng.camera.position.set(0, h, a.worldSize() * 0.55); eng.camera.lookAt(0, 4, 0); eng.focus.set(0, 4, 0); eng.camera.updateMatrixWorld(); pr.update(0.016, eng.camera); }
-try {
+(async () => { try {
   // ---- items, ids, batches, culling
   let { a, fx, pr } = setup('teutoburg');
   view(pr, a);
@@ -37,6 +37,13 @@ try {
   t('far camera uses coarser LODs (fewer triangles per instance)', far.instances > 0 ? far.triangles / far.instances < st.triangles / st.instances : true, (far.triangles / Math.max(1, far.instances)).toFixed(0) + ' vs ' + (st.triangles / st.instances).toFixed(0));
   eng.camera.position.set(0, 60, a.worldSize() * 0.55); eng.camera.lookAt(0, 4, 180); eng.camera.updateMatrixWorld(); pr.update(0.016, eng.camera);
   t('looking away culls everything', pr.stats().instances === 0, pr.stats().instances);
+  view(pr, a);
+
+  // ---- CPU cost of the per-frame cull/LOD pass with a moving camera (frame budget input for PF1)
+  let tc = performance.now();
+  for (let i = 0; i < 60; i++) { eng.camera.position.x = Math.sin(i * 0.2) * 20; eng.camera.lookAt(0, 4, 0); eng.camera.updateMatrixWorld(); pr.update(0.016, eng.camera); }
+  const per = (performance.now() - tc) / 60;
+  t('update() with a moving camera costs under 3 ms for 532 props', per < 3, per.toFixed(2) + ' ms');
   view(pr, a);
 
   // ---- editor API
@@ -122,10 +129,14 @@ try {
   pr.update(0.05, eng.camera);
   t('ANIM can replace the spectator poses', true);
 
+  // ---- preload yields and fills the geometry cache
+  const arenaT = generateArena('nile', 'medium', 3); let prog = 0;
+  const built = await preloadPropGeometry(arenaT.props, (f) => { prog = f; });
+  t('preloadPropGeometry() builds every needed model with progress', built > 5 && prog === 1, built);
   // ---- dispose frees the scene
   const kids = eng.scene.children.length;
   pr.dispose(); fx.dispose();
   t('dispose() removes meshes and lights from the scene', eng.scene.children.length < kids, kids + ' -> ' + eng.scene.children.length);
   disposePropGeometry();
 } catch (e) { t('no exception', false, e && e.stack || e); }
-window.__result = out;
+window.__result = out; })();

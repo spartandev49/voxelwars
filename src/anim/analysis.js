@@ -180,26 +180,29 @@ export function footSlide(model, clipId, v, speedRef, opts = {}) {
 export function footSlideLive(model, v, opts = {}) {
   const desc = describeModel(model), P = desc.P, pose = new Float32Array(P * 9), W = new Float64Array(P * 12);
   const root = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
-  const iLL = model.partIndex('legLL'), iLR = model.partIndex('legLR');
+  // legs to track: default the hum1 pair; any rig passes its own leg part ids (the sole = the bottom of the part's grid below its pivot)
+  const legs = (opts.legs || ['legLL', 'legLR']).map((id) => model.partIndex(id)).filter((i) => i >= 0);
+  const sole = legs.map((i) => -(model.parts[i].pivot[1] * model.voxelSize));
   const dt = 1 / 60, seconds = opts.seconds || 4, plantTol = opts.plantTol !== undefined ? opts.plantTol : 0.035;
-  const st = { clip: opts.clip || 'walk', t: 0, rate: 1, flinch: 0, dir: 0, prev: opts.clip || 'walk', blend: 1 };
-  const extra = { root, speed: v, gait: 0, id: 7, t: 0, heading: 0, scale: 1 };
-  const info = Animator.gaitInfo(model, v);
-  const n = Math.round(seconds / dt), L = [], R = [];
+  const clip = opts.clip || 'walk';
+  const st = { clip, t: 0, rate: 1, flinch: 0, dir: 0, prev: clip, blend: 1 };
+  const sc = opts.scale || 1;
+  const extra = { root, speed: v, gait: 0, id: 7, t: 0, heading: 0, scale: sc };
+  const info = Animator.gaitInfo(model, v, sc);
+  const n = Math.round(seconds / dt), tracks = legs.map(() => []);
   for (let i = 0; i < n; i++) {
     extra.gait = v * i * dt; extra.t = i * dt; st.t = i * dt;
     Animator.pose(model, st, extra, pose);
     fk(desc, pose, W);
-    L.push(partPointWorld(desc, W, iLL, 0, -0.5, 0, root, [0, 0, 0]).slice());
-    R.push(partPointWorld(desc, W, iLR, 0, -0.5, 0, root, [0, 0, 0]).slice());
+    for (let k = 0; k < legs.length; k++) tracks[k].push(partPointWorld(desc, W, legs[k], 0, sole[k], 0, root, [0, 0, 0]).slice());
   }
   let worst = 0; const skip = Math.round(0.5 / dt);
-  for (const feet of [L, R]) {
+  for (const feet of tracks) {
     let minY = Infinity; for (let i = skip; i < n; i++) if (feet[i][1] < minY) minY = feet[i][1];
     let inRun = false, lo = 0, hi = 0, start = 0;
     for (let i = skip; i < n; i++) {
-      const zw = feet[i][2] + v * i * dt;
-      const pl = feet[i][1] <= minY + plantTol;
+      const zw = feet[i][2] * sc + v * i * dt;                          // world units: the model is scaled by sc
+      const pl = (feet[i][1] - minY) * sc <= plantTol;
       if (pl) { if (!inRun) { inRun = true; start = i; lo = hi = zw; } else { if (zw < lo) lo = zw; if (zw > hi) hi = zw; } }
       else if (inRun) { inRun = false; if (start > skip) worst = Math.max(worst, hi - lo); }
     }

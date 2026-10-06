@@ -63,3 +63,14 @@ export function equalPowerCurve(n, out) {
   for (let i = 0; i < n; i++) { const x = i / (n - 1); c[i] = out ? Math.cos(x * Math.PI * 0.5) : Math.sin(x * Math.PI * 0.5); }
   return c;
 }
+
+/** Cooperative yield to the event loop without the 4 ms setTimeout clamp (MessageChannel), falling back to setTimeout(0). */
+export function makeYield() {
+  if (typeof MessageChannel === 'function') {
+    const ch = new MessageChannel(); const q = []; ch.port1.onmessage = () => { const r = q.shift(); if (r) r(); };
+    if (ch.port1.unref) ch.port1.unref();
+    return () => new Promise((res) => { q.push(res); ch.port2.postMessage(0); });
+  }
+  return () => new Promise((res) => setTimeout(res, 0));
+}
+export const nowMs = () => (typeof performance !== 'undefined' && performance.now ? performance.now() : Date.now());

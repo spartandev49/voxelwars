@@ -50,7 +50,7 @@ for (const fx of FIX) {
     }
     return d;
   };
-  let n = 0, maxPop = 0, maxRamp = 0, where = '';
+  let n = 0, maxPop = 0, maxRamp = 0, where = '', rampAt = '';
   for (let it = 0; it < 1500; it++) {
     const a = IDS[(rnd() * IDS.length) | 0], b = IDS[(rnd() * IDS.length) | 0];
     if (a === b || !reachable(a, b)) continue;
@@ -68,10 +68,10 @@ for (const fx of FIX) {
     n++; if (pop > maxPop) { maxPop = pop; where = `${a}->${b} [${popPart}]`; }
     // the rest of the ramp (informational): the crossfade moves poses, at most ramp-velocity per frame
     let prev = outB.slice(), cur = new Float32Array(P * 9);
-    for (let f = 2; f <= 6; f++) { sw.t = (f - 1) * DT; sw.blend = Math.min(1, f * DT / 0.14); Animator.pose(m, sw, ex, cur); const d = maxDelta(prev, cur); if (d > maxRamp) maxRamp = d; prev = cur.slice(); }
+    for (let f = 2; f <= 6; f++) { sw.t = (f - 1) * DT; sw.blend = Math.min(1, f * DT / 0.14); Animator.pose(m, sw, ex, cur); const d = maxDelta(prev, cur); if (d > maxRamp) { maxRamp = d; rampAt = `${a}->${b} f${f} [${lastPart}]`; } prev = cur.slice(); }
     if (pop > 0.35) failures.push(`${fx.main}+${fx.off}: ${a}->${b} [${popPart}] ${pop.toFixed(3)} (ta ${ta.toFixed(2)})`);
   }
-  console.log(`  ${(fx.main + '+' + fx.off).padEnd(22)} style ${String(info.style).padEnd(8)} transitions ${n}  max switch-frame change ${maxPop.toFixed(3)} rad (${where})  ramp ${maxRamp.toFixed(2)}`);
+  console.log(`  ${(fx.main + '+' + fx.off).padEnd(22)} style ${String(info.style).padEnd(8)} transitions ${n}  max switch-frame change ${maxPop.toFixed(3)} rad (${where})  ramp ${maxRamp.toFixed(2)} (${rampAt})`);
   total += n; if (maxPop > grandMax) grandMax = maxPop; if (maxRamp > grandRamp) grandRamp = maxRamp;
 }
 if (failures.length) console.log(failures.slice(0, 20).join('\n'));

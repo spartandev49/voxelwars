@@ -49,6 +49,9 @@ log('events: ' + Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10)
 const bundle = await build({ entryPoints: [path.join(root, 'tests/audio/mix_entry.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error' });
 const js = bundle.outputFiles[0].text;
 const manifest = JSON.parse(fs.readFileSync(path.join(root, 'assets/manifest.json'), 'utf8'));
+// what tools/build.mjs publishes: ledger rows whose file exists on disk (the engine never requests the others)
+const published = []; for (const kind of ['sfx', 'music']) for (const e of manifest[kind]) if (fs.existsSync(path.join(root, 'assets', e.path))) published.push('assets/' + e.path);
+const unpublished = manifest.sfx.length + manifest.music.length - published.length; if (unpublished) console.log(`note: ${unpublished} ledger rows have no file on disk and are skipped (see tests/audio/assets.test.mjs)`);
 const html = `<!doctype html><html><head><meta charset="utf-8"></head><body><script>${js.replace(/<\/script/gi, '<\\/script')}</script></body></html>`;
 const exe = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 if (!fs.existsSync(exe)) { console.error('Chromium not found at ' + exe); process.exit(2); }
@@ -63,7 +66,7 @@ await page.route('**/*', (r) => {
 });
 await page.goto('http://t/'); // route fulfils any host
 async function render(name, cfg) {
-  const res = await page.evaluate((c) => window.runMix(c), Object.assign({ data, manifest, quality }, cfg));
+  const res = await page.evaluate((c) => window.runMix(c), Object.assign({ data, manifest, quality, published }, cfg));
   const wav = path.join(cache, `mix_${name}.wav`);
   const frames = res.frames, size = 1 << 21;   // 2 MiB chunks of interleaved float32
   const header = Buffer.alloc(44); const dataBytes = frames * 2 * 4;

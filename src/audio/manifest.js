@@ -15,12 +15,24 @@ import { clamp } from './util.js';
 
 const moodBase = (m) => String(m || '').toLowerCase().replace(/^battle[_-].*/, 'battle');
 
+/** accepts ['audio/sfx/a.mp3', 'assets/audio/sfx/a.mp3', ...] or {path: source} or a Set; stores the canonical assets/... form */
+function normPublished(p) {
+  const keys = p instanceof Set || Array.isArray(p) ? [...p] : Object.keys(p), out = new Set();
+  for (const k of keys) { const s = String(k).replace(/^\.?\//, ''); out.add(/^assets\//.test(s) ? s : 'assets/' + s); }
+  return out;
+}
 function arr(v) { return Array.isArray(v) ? v : (v === undefined || v === null || v === '' ? [] : [v]); }
 
 export class Catalog {
-  constructor(manifest) {
-    this.sfx = []; this.music = []; this.vfx = []; this.byId = new Map(); this._cache = new Map();
+  /**
+   * @param {object} manifest the ledger. @param {Iterable<string>|object|null} published optional list of the files that are really
+   * published beside the page (window.__VW_FILES__, written by tools/build.mjs): ledger rows whose file is not in it are skipped (never
+   * requested, so no 404 reaches the console) and recorded in `catalog.missing` / diagnostics.
+   */
+  constructor(manifest, published = null) {
+    this.sfx = []; this.music = []; this.vfx = []; this.byId = new Map(); this._cache = new Map(); this.missing = [];
     this.hasManifest = false;
+    this.published = published ? normPublished(published) : null;
     if (manifest && typeof manifest === 'object') this.ingest(manifest);
   }
   ingest(m) {
@@ -30,6 +42,7 @@ export class Catalog {
       for (const raw of list) {
         const e = this._norm(kind, raw);
         if (!e) continue;
+        if (this.published && kind !== 'vfx' && !this.published.has(e.url)) { this.missing.push({ id: e.id, kind, url: e.url }); continue; }
         this[kind].push(e); this.byId.set(kind + ':' + e.id, e);
       }
     }

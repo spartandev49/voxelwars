@@ -399,7 +399,7 @@ export function* renderMusicGen(mood, theme, sr = SYNTH_SR) {
   const D = (b, d) => degNote(sp.root, sp.mode, d + sp.prog[b % sp.prog.length]);
   for (let b = 0; b < sp.bars; b++) {
     const t0 = b * bar;
-    if (sp.pad) { [0, 2, 4].forEach((d, i) => padVoice(L, R, t0, bar * 1.04, note(D(b, d) + 12), sp.pad * 0.5, (i - 1) * 0.5, sr, rng)); }
+    if (sp.pad) { for (let i = 0; i < 3; i++) { padVoice(L, R, t0, bar * 1.04, note(D(b, [0, 2, 4][i]) + 12), sp.pad * 0.5, (i - 1) * 0.5, sr, rng); yield (b + i / 3) / sp.bars; } }
     // bass
     const bn = note(D(b, 0) - 12);
     if (sp.bass === 'half') { bassVoice(L, R, t0, bar * 0.48, bn, 0.34, sr); bassVoice(L, R, t0 + bar * 0.5, bar * 0.48, bn * (b % 2 ? 1.5 : 1), 0.28, sr); }
@@ -411,7 +411,7 @@ export function* renderMusicGen(mood, theme, sr = SYNTH_SR) {
     if (sp.lead) { const motif = sp.polka ? [4, 2, 4, 5] : [4, 5, 4, 2, 0, 2, 4, 1]; const m = motif.length; for (let i = 0; i < 4; i++) brassNote(L, R, t0 + i * spb, spb * 0.9, note(D(b, motif[(i + (b % 2) * 4) % m]) + 12), sp.lead * 0.5, sr, 0.15); }
     if (sp.polka) for (let i = 0; i < 8; i++) { const d = [4, 7, 5, 4, 7, 9, 7, 4][i]; pluckVoice(L, R, t0 + i * spb / 2, note(D(b, d) + 12), 0.2, ((i % 3) - 1) * 0.3, sr); bassVoice(L, R, t0 + i * spb / 2, spb * 0.2, note(D(b, d) - 12) * 2, 0.05, sr); }
     if (sp.brassChord && b % 2 === 0) [0, 2, 4].forEach((d, i) => brassNote(L, R, t0, bar * 0.9, note(D(b, d)), sp.brassChord * 0.4, sr, (i - 1) * 0.3));
-    if (sp.choir) choirChord(L, R, t0, bar * 1.9, [0, 2, 4].map((d) => note(D(b, d) + 12)), sp.choir * 0.5, sr, rng);
+    if (sp.choir) { choirChord(L, R, t0, bar * 1.9, [0, 2, 4].map((d) => note(D(b, d) + 12)), sp.choir * 0.5, sr, rng); yield b / sp.bars; }
     // drums
     const dr = sp.drums;
     for (const kind of Object.keys(dr)) for (let i = 0; i < 16; i++) if (dr[kind][i] === 'x') drumHit(L, R, t0 + i * s16 + (kind === 'tak' ? 0 : 0), kind, kind === 'kick' ? 0.8 : kind === 'tom' ? 0.6 : 0.4, sr, rng, kind === 'tom' ? ((i % 4) - 1.5) * 0.25 : 0);
@@ -427,7 +427,7 @@ export function* renderMusicGen(mood, theme, sr = SYNTH_SR) {
     const dl = [0.0297, 0.0371, 0.0411, 0.0437].map((s) => Math.round(s * sr)), buf = [oL, oR];
     for (let c = 0; c < 2; c++) {
       const src = buf[c], wet = new Float32Array(loopN);
-      for (let j = 0; j < 4; j++) { const d = dl[(j + c * 2) % 4], fb = 0.62 + 0.04 * j; const line = new Float32Array(d); let w = 0, lpz = 0; for (let i = 0; i < loopN; i++) { const y = line[w]; lpz += (y - lpz) * 0.35; wet[i] += y * 0.25; line[w] = src[i] + lpz * fb; if (++w >= d) w = 0; } }
+      for (let j = 0; j < 4; j++) { const d = dl[(j + c * 2) % 4], fb = 0.62 + 0.04 * j; const line = new Float32Array(d); let w = 0, lpz = 0; for (let i = 0; i < loopN; i++) { const y = line[w]; lpz += (y - lpz) * 0.35; wet[i] += y * 0.25; line[w] = src[i] + lpz * fb; if (++w >= d) w = 0; if ((i & 65535) === 65535) yield 1; } yield 1; }
       for (let i = 0; i < loopN; i++) src[i] += wet[i] * rv;
     }
   }

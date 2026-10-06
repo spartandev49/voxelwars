@@ -263,6 +263,45 @@ export class KillCam {
   }
 }
 
+// ====================================================================================================== storage quota (verification P2)
+/**
+ * When the browser refuses a write (quota), save/store.js keeps the value in memory (nothing is lost this session) and flips status() to 'full'.
+ * This opens ONE modal (at most every 30 s): export the save, or delete the oldest arena / soldier / army to make room; flushPending() then writes the kept values.
+ * o: { store, nav:{modal, toast}, transfer, collections:{arenas, soldiers, armies}, platform?:{downloads, clipboard}, now? }
+ */
+export function watchQuota(o) {
+  const { store, nav, transfer, collections = {}, platform = {} } = o; const now = o.now || (() => Date.now());
+  let last = -1e9, open = false;
+  const toast = (t, kind) => { try { nav.toast(t, { kind: kind || 'info' }); } catch (e) { /* no UI */ } };
+  async function exportNow() {
+    let code; try { code = await transfer.exportAll(); } catch (e) { toast(String(e && e.message || 'The export failed'), 'error'); return false; }
+    try { if (platform.downloads && platform.downloads.save) { const r = await platform.downloads.save('voxelwars-save.json', code); if (r) { toast('Export saved.', 'success'); return true; } } } catch (e) { /* fall through to the clipboard */ }
+    try { if (platform.clipboard && await platform.clipboard(code)) { toast('Save code copied to the clipboard. Paste it somewhere safe.', 'success'); return true; } } catch (e) { /* fall through to the text box */ }
+    if (typeof document !== 'undefined') { const ta = document.createElement('textarea'); ta.readOnly = true; ta.value = code; ta.rows = 6; ta.style.cssText = 'width:100%;font:12px monospace'; ta.addEventListener('focus', () => ta.select()); await nav.modal({ title: 'Your save code', body: ta, buttons: [{ label: 'Done', value: true }] }); }
+    return true;
+  }
+  async function show() {
+    if (open) return false; open = true;
+    try {
+      const counts = { arena: (collections.arenas && collections.arenas.list().length) || 0, soldier: (collections.soldiers && collections.soldiers.list().length) || 0, army: (collections.armies && collections.armies.list().length) || 0 };
+      const buttons = [{ label: 'Export my save', variant: 'primary', value: 'export' }];
+      if (counts.arena) buttons.push({ label: 'Delete oldest arena', variant: 'danger', value: 'arena' });
+      if (counts.soldier) buttons.push({ label: 'Delete oldest soldier', variant: 'danger', value: 'soldier' });
+      if (counts.army) buttons.push({ label: 'Delete oldest army', variant: 'danger', value: 'army' });
+      buttons.push({ label: 'Not now', variant: 'secondary', value: null });
+      const v = await nav.modal({ title: 'The storage shelf is full', body: 'Your browser says there is no room left. Nothing is lost: your latest changes are kept in memory for this session. Export your save to keep a copy, or delete something you no longer need and I will try again.', buttons });
+      if (v === 'export') await exportNow();
+      else if (v === 'arena' || v === 'soldier' || v === 'army') {
+        const col = collections[v + 's']; const list = col ? col.list() : []; const oldest = list[list.length - 1];
+        if (oldest) { col.remove(oldest.id); const left = store.flushPending(); toast(left ? 'Still full. Delete something else, or export your save.' : 'Made some room. Everything is saved.', left ? 'error' : 'success'); }
+      }
+      return true;
+    } finally { open = false; }
+  }
+  store.onStatus((st) => { if (st === 'full' && now() - last > 30000) { last = now(); show(); } });
+  return { show };
+}
+
 // ====================================================================================================== the meta object
 const LOG_FIELDS = { unit_spawn: ['id', 'team', 'def'], friendly_fire: ['src', 'dst', 'dmg'], charge_hit: ['id', 'dst', 'mul'], unit_brace: ['id', 'dst'], army_low: ['team', 'frac'], big_swing: ['team', 'ratio', 'flank'], hero_down: ['id', 'def', 'team'], unit_rout: ['id', 'team'], stalemate_warning: ['t'], trample: ['id', 'count'] };
 const LOG_MAX = 6000;

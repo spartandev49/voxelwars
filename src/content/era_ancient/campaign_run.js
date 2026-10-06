@@ -101,7 +101,14 @@ export function layoutGroups(groups, zone, enemyZone, defs, o = {}) {
 
 /** The enemy army of a mission: explicit groups (the first `t:0` wave) with deployment and orders. Returns {groups, placements, cost, count}. */
 export function enemyForces(m, arena, defs, seed = 1) {
-  const e = m.enemy, groups = (e.groups || []).map((g) => Object.assign({}, g));
+  const e = m.enemy;
+  if (e.placements) {                                    // a puzzle: the enemy is hand-placed, no generator
+    const placements = e.placements.map((p) => Object.assign({ heading: -PI / 2, order: 'advance' }, p));
+    const by = {}; for (const p of placements) by[p.defId] = (by[p.defId] || 0) + 1;
+    const groups = Object.keys(by).map((defId) => ({ defId, n: by[defId] }));
+    return { groups, placements, cost: groupsCost(groups, defs), count: placements.length };
+  }
+  const groups = (e.groups || []).map((g) => Object.assign({}, g));
   const placements = layoutGroups(groups, arena.zones.B, arena.zones.A, defs, { seed });
   let count = 0; for (const g of groups) count += g.n;
   return { groups, placements, cost: groupsCost(groups, defs), count };
@@ -204,18 +211,20 @@ export class MissionTracker {
     this.w = world; this.m = m; this.team = TEAM_PLAYER;
     this.startDefs = Object.create(null); this.lostDefs = Object.create(null); this.heroesLost = 0; this.friendlyHits = 0; this.friendlyDmg = 0;
     this.propT = Object.create(null); this.started = false; this.vip = null; this.friendlyKills = 0; this.kills = 0; this.killsByDef = Object.create(null); this.killsByCause = Object.create(null);
-    this.kicks = 0; this.trampleKills = 0;
+    this.kicks = 0; this.trampleKills = 0; this.enemyDownT = Object.create(null); this.stoned = new Set();
     const ev = world.events;
     this.off = [
       ev.on('battle_start', () => this._census()),
       ev.on('unit_kill', (p) => {
         if (p.dstTeam === this.team) this.lostDefs[p.dstDef] = (this.lostDefs[p.dstDef] || 0) + 1;
+        if (p.dstTeam !== this.team) (this.enemyDownT[p.dstDef] || (this.enemyDownT[p.dstDef] = [])).push(world.time);
         if (p.srcTeam === this.team) {
           if (p.friendly) this.friendlyKills++;
           else { this.kills++; this.killsByDef[p.srcDef] = (this.killsByDef[p.srcDef] || 0) + 1; this.killsByCause[p.cause] = (this.killsByCause[p.cause] || 0) + 1; if (p.cause === 'trample' && p.srcDef === 'war_elephant') this.trampleKills++; }
         }
       }),
       ev.on('ability_cast', (p) => { if (p.team === this.team && p.ability === 'kick') this.kicks++; }),
+      ev.on('status_apply', (p) => { if (p.status === 'stone') { const u = world.unitById(p.id); if (u && u.team === this.team) this.stoned.add(p.id); } }),
       ev.on('hero_down', (p) => { if (p.team === this.team) this.heroesLost++; }),
       ev.on('friendly_fire', (p) => { const u = world.unitById(p.src); if (u && u.team === this.team) { this.friendlyHits++; this.friendlyDmg += p.dmg; } }),
       ev.on('prop_destroyed', (p) => { (this.propT[p.type] || (this.propT[p.type] = [])).push(world.time); }),
@@ -232,7 +241,7 @@ export class MissionTracker {
     return {
       startDefs: Object.assign({}, this.startDefs), lostDefs: Object.assign({}, this.lostDefs), heroesLost: this.heroesLost, friendlyHits: this.friendlyHits,
       friendlyDmg: Math.round(this.friendlyDmg), friendlyKills: this.friendlyKills, killsByDef: Object.assign({}, this.killsByDef), killsByCause: Object.assign({}, this.killsByCause),
-      elephantTrampleKills: this.trampleKills, kicks: this.kicks, propDownT: Object.keys(this.propT).reduce((o, k) => { o[k] = this.propT[k].slice(); return o; }, {}),
+      elephantTrampleKills: this.trampleKills, kicks: this.kicks, stonedUnits: this.stoned.size, enemyDownT: Object.keys(this.enemyDownT).reduce((o, k) => { o[k] = this.enemyDownT[k].slice(); return o; }, {}), propDownT: Object.keys(this.propT).reduce((o, k) => { o[k] = this.propT[k].slice(); return o; }, {}),
       vipDamage: vip ? Math.max(0, Math.round((vip.hpMax - (vip.alive ? vip.hp : 0)) * 10) / 10) : 0,
     };
   }
@@ -325,9 +334,10 @@ export function battleSummary(world, m, tracker, team = TEAM_PLAYER) {
   const aliveDefs = {}; let alive = 0;
   for (const u of world.units) if (u.alive && u.team === team) { aliveDefs[u.def.id] = (aliveDefs[u.def.id] || 0) + 1; alive++; }
   const ex = tracker ? tracker.extras() : {};
+  const fixedCost = (m.fixed || []).reduce((a, f) => a + (world.defs[f.defId] ? world.defs[f.defId].cost : 0), 0);
   return Object.assign({
-    kind: 'battle_end', win: world.winner === team, draw: world.winner === -1, reason: world.endReason, t: world.time, playerTeam: team, arenaId: m.arena.recipe, mission: m.id,
+    kind: 'battle_end', spent: S.startCost - fixedCost, win: world.winner === team, draw: world.winner === -1, reason: world.endReason, t: world.time, playerTeam: team, arenaId: m.arena.recipe, mission: m.id,
     objective: m.objective ? m.objective.type : 'eliminate', vipDef: ex.vipDamage !== undefined && (m.fixed || []).some((f) => f.vip) ? (m.fixed.find((f) => f.vip).defId) : null,
-    unitsStart: S.startCount, unitsLost: S.dead, unitsAlive: alive, aliveDefs, playerCostStart: S.startCost, enemyCostStart: E.startCost, kills: S.kills, stonedUnits: 0, cyclopsMisses: 0, maxMeteorKills: 0, trojanRevealed: false, wineRain: false, takeCommandKills: 0,
+    unitsStart: S.startCount, unitsLost: S.dead, unitsAlive: alive, aliveDefs, playerCostStart: S.startCost, enemyCostStart: E.startCost, kills: S.kills, cyclopsMisses: 0, maxMeteorKills: 0, trojanRevealed: false, wineRain: false, takeCommandKills: 0,
   }, ex);
 }

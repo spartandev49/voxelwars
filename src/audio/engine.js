@@ -49,7 +49,8 @@ export class AudioEngine {
     this.setTmo = env.setTimeout || ((f, ms) => setTimeout(f, ms)); this.clrTmo = env.clearTimeout || ((h) => clearTimeout(h));
     const manifest = env.manifest !== undefined ? env.manifest : (win && win.__VW_MANIFEST__) || null;
     this.core = env.coreAudio !== undefined ? env.coreAudio : (win && win.__VW_CORE_AUDIO__) || {};
-    this.catalog = new Catalog(manifest);
+    const published = env.publishedFiles !== undefined ? env.publishedFiles : (win && win.__VW_FILES__) || null;
+    this.catalog = new Catalog(manifest, published);
     this.listener = new Listener(); this._lt = -1e9; this._sp = { dist: 0, gain: 1, pan: 0, cutoff: 18000, near: 1, cull: false };
     this.ctx = null; this.offline = false; this.unlocked = false; this.unlocking = false; this.hidden = false; this.muted = false;
     this.buses = null; this.masterIn = null; this.masterGain = null; this.masterAn = null; this.reverb = null; this.hasPanner = false;
@@ -189,6 +190,7 @@ export class AudioEngine {
   }
   _warm() {
     this._warmed = true;
+    this.preload();                                         // embedded core first (idempotent; usually already done before the gesture)
     const t = this.tier;
     this.bank.warm(t === 'potato' ? ['ui', 'combat'] : t === 'papyrus' ? ['ui', 'combat', 'voice'] : ['ui', 'combat', 'voice', 'siege', 'misc']);
   }
@@ -279,7 +281,8 @@ export class AudioEngine {
       inn.connect(duck); duck.connect(vol); vol.connect(masterIn); vol.connect(a);
       this.buses[b] = { name: b, in: inn, duck, vol, an: a, duckDb: 0, duckUntil: 0, buf: new Float32Array(1024) };
     }
-    this._buildReverb();
+    // the 1.5 s impulse response is generated right after the click handler returns (keeps the gesture task short); sends skip it until then
+    this.setTmo(() => { if (this.ctx === ctx && !this.reverb) this._buildReverb(); }, 20);
   }
   _buildReverb() {
     const ctx = this.ctx;
@@ -555,7 +558,8 @@ export class AudioEngine {
       loaded: this.loaded(), decoded: { bytes: s.decodedBytes + this.music.decodedBytes, sfxBytes: s.decodedBytes, musicBytes: this.music.decodedBytes, ceiling: s.ceiling, evictions: s.evictions, ready: s.ready, total: s.total, pending: s.loading },
       paths: this.bank.paths(), cueCounts: Object.assign({}, this.cueCounts),
       music: Object.assign(this.music.getState(), { decodedBytes: this.music.decodedBytes, loadErrors: this.music.loadErrors }),
-      manifest: { sfx: this.catalog.sfx.length, music: this.catalog.music.length, has: this.catalog.hasManifest, core: Object.keys(this.core).length },
+      manifest: { sfx: this.catalog.sfx.length, music: this.catalog.music.length, has: this.catalog.hasManifest, core: Object.keys(this.core).length, notPublished: this.catalog.missing.length, notPublishedIds: this.catalog.missing.slice(0, 20).map((m) => m.id) },
+      failedAssets: this.bank.failures(),
       masterRMS: this.masterRMS(), busRMS: this.busRMS(), volumes: Object.assign({}, this.vol), tts: { supported: this.speech.supported, enabled: this.speech.enabled, spoken: this.speech.spoken },
       codecs: { mp3 }, router: this.router ? this.router.stats : null, errors: this.errors.slice(),
     };

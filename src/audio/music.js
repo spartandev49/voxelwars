@@ -2,7 +2,7 @@
 // intensity (0..1) -> low-pass 1.8k..18k + gain -6..0 dB smoothed 1.5 s, loop handling (loopStart/loopEnd, or equal-power cross-fade
 // loop starting 3 s before the end), 1.5 s mood cross-fades, decode only current + next track, synthesized fallback bed.
 // Pure maths (intensity mapping, track choice, intensity-from-world) is exported separately for Node tests.
-import { clamp, db2lin, ShuffleBag, mulberry32, equalPowerCurve } from './util.js';
+import { clamp, db2lin, ShuffleBag, mulberry32, equalPowerCurve, makeYield, nowMs } from './util.js';
 import { renderMusicGen, synthMusicSpecFor, SYNTH_SR } from './synth.js';
 
 export const MOODS = ['menu', 'editor', 'battle', 'victory', 'defeat', 'comedy'];
@@ -151,7 +151,7 @@ export class MusicDirector {
     this.tracker = new IntensityTracker(); this.lastTrackId = ''; this.timer = null; this.bridgeMs = deps.bridgeMs === undefined ? 900 : deps.bridgeMs;
     this.world = null; this.startCount = 0; this.synthFlag = false; this.loadErrors = 0; this.history = [];
     this.setT = deps.setTimeout || ((f, ms) => setTimeout(f, ms)); this.clrT = deps.clearTimeout || ((h) => clearTimeout(h));
-    this.yieldFn = deps.yieldFn || (() => new Promise((r) => setTimeout(r, 0)));
+    this.yieldFn = deps.yieldFn || makeYield(); this.sliceMs = deps.sliceMs === undefined ? 10 : deps.sliceMs;
     this.decodedBytes = 0;
   }
   // ---------------------------------------------------------------- wiring
@@ -259,8 +259,8 @@ export class MusicDirector {
     if (emb) { try { const bin = (typeof atob === 'function' ? atob : (x) => Buffer.from(x, 'base64').toString('binary'))(String(emb).replace(/^data:[^,]*,/, '')); const u = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i); ab = u.buffer; via = 'embedded'; } catch (e) { ab = null; } }
     if (!ab && !this.d.fetch) throw new Error('no fetch');
     for (let a = 0; a < 2 && !ab; a++) {
-      try { const r = await this.d.fetch(entry.url); if (!r.ok) throw new Error('http ' + r.status); ab = await r.arrayBuffer(); }
-      catch (e) { if (a === 1) throw e; await new Promise((r) => this.setT(r, this.d.retryMs === undefined ? 400 : this.d.retryMs)); }
+      try { const r = await this.d.fetch(entry.url); if (!r.ok) { const er = new Error('http ' + r.status); er.permanent = r.status === 404 || r.status === 403 || r.status === 410; throw er; } ab = await r.arrayBuffer(); }
+      catch (e) { if (a === 1 || e.permanent) throw e; await new Promise((r) => this.setT(r, this.d.retryMs === undefined ? 400 : this.d.retryMs)); }
     }
     let buf = await this.d.decode(ab);
     const tier = this.d.quality ? this.d.quality() : 'marble';
@@ -293,7 +293,9 @@ export class MusicDirector {
     const key = synthMusicSpecFor(mood, theme) && (mood + ':' + (mood === 'battle' ? theme : ''));
     if (this.synthCache.has(key)) return this.synthCache.get(key);
     const g = renderMusicGen(mood, theme, SYNTH_SR); let r;
-    for (;;) { r = g.next(); if (r.done) break; await this.yieldFn(); }
+    // render in slices: the generator yields often, the main thread is only given back after ~10 ms of work (fast to first sound, never a long task)
+    let t0 = nowMs();
+    for (;;) { r = g.next(); if (r.done) break; if (nowMs() - t0 >= this.sliceMs) { await this.yieldFn(); t0 = nowMs(); } }
     const buf = this.d.makeStereo(r.value.L, r.value.R, r.value.sr);
     this.synthCache.set(key, buf);
     return buf;

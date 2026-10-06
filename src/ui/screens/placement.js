@@ -189,7 +189,7 @@ export function mount(root, ctx, params) {
   };
   const histBar = K.h('div', { class: 'vw-toolbar vw-pl__hist', role: 'toolbar', 'aria-label': 'History' }, undoBtn, redoBtn, clearBtn);
   const tools = K.h('aside', { class: 'vw-pl__tools vw-tablet vw-tablet--glass', 'aria-label': 'Placement tools', id: 'pl-tools' },
-    K.h('div', { class: 'vw-pl__pal-head' }, K.h('h2', { class: 'vw-tablet__title', text: T.brush }), K.h('button', { type: 'button', class: 'vw-pl__sheet-x', 'aria-label': T0.common.close, onclick: () => setSheet(null) }, K.icon('x'))),
+    K.h('div', { class: 'vw-pl__pal-head' }, K.h('h2', { class: 'vw-tablet__title', text: T.tools }), K.h('button', { type: 'button', class: 'vw-pl__sheet-x', 'aria-label': T0.common.close, onclick: () => setSheet(null) }, K.icon('x'))),
     K.h('div', { class: 'vw-pl__tools-pin' }, histBar, K.h('div', { class: 'vw-col vw-pl__top-ctl' }, K.h('div', { class: 'vw-label', text: T.team }), teamSeg, budgetBox)),
     K.h('div', { class: 'vw-pl__tools-scroll vw-scroll' },
       section('pl-sec-brush', T.brush, 'brush', true, modeGrid, formRow, countRow, K.field(T.order, orderSeg, { stack: true, class: 'vw-pl__row' }), K.field(T.mirror, mirrorTog, { class: 'vw-pl__row' })),
@@ -205,7 +205,7 @@ export function mount(root, ctx, params) {
   const fightBtn = K.button(T.fight, { id: 'pl-fight', variant: 'primary', size: 'xl', icon: 'sword', sound: 'ui_confirm', onClick: () => fight() });
   K.tooltip(fightBtn, () => (fightBtn.getAttribute('aria-disabled') === 'true' ? T.fightEmpty : T.fightTip));
   const palToggle = K.button(T.palette, { icon: 'users', id: 'pl-open-pal', class: 'vw-pl__tgl', onClick: () => setSheet(S.sheet === 'pal' ? null : 'pal') });
-  const toolToggle = K.button(T.brush, { icon: 'brush', id: 'pl-open-tools', class: 'vw-pl__tgl', onClick: () => setSheet(S.sheet === 'tools' ? null : 'tools') });
+  const toolToggle = K.button(T.tools, { icon: 'brush', id: 'pl-open-tools', class: 'vw-pl__tgl', onClick: () => setSheet(S.sheet === 'tools' ? null : 'tools') });
   const bottom = K.h('footer', { class: 'vw-pl__bottom' },
     K.h('div', { class: 'vw-pl__tgls' }, palToggle, toolToggle),
     K.h('div', { class: 'vw-pl__counts' }, K.h('div', { class: 'vw-pl__count' }, K.h('span', { class: 'vw-label', text: T.soldiersLabel }), capBar), K.h('div', { class: 'vw-pl__count' }, K.h('span', { class: 'vw-label', text: T.typesLabel }), typeBar)),
@@ -323,6 +323,7 @@ export function mount(root, ctx, params) {
 
   const screen = K.h('div', { class: 'vw-pl' }, top, palette, mid, tools, bottom, prevBox);
   root.appendChild(screen);
+  cleanups.push(K.toastInset(matchesPhone() ? 11.5 : 6.4));
   renderCards(); setMode('single'); refresh(true);
   setBrush({ team: 0, mode: 'single', formation: 'block', count: S.count, order: 'advance', mirror: false });
   K.enter(palette, 'left', 0); K.enter(tools, 'right', 1); K.enter(bottom, 'fade', 3);

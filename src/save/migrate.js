@@ -1,12 +1,12 @@
 // Schema versions and migrations for the versioned save documents (spec §11, verification P3 / B11).
 //   migrate(name, env) -> { ok, v, data, steps, side, error? }      env = { v, data } as stored by save/store.js (never mutated)
 // A migration upgrades ONE version step (n -> n+1) and is a pure function of the stored data. Documents never see another document's data, so when a
-// step moves a value into a sibling document (progress.survivalBest -> survival.best) it reports it in `side` and the caller (save/docs.js createDocs)
+// step moves a value into a sibling document (progress.survivalBest -> survival.bestWave) it reports it in `side` and the caller (save/docs.js createDocs)
 // merges it into the sibling when the sibling has nothing better. Nothing here touches storage, `window` or a clock.
 //
 // Layout history (v1 is what builds before the document layer wrote; the fixtures in tests/save/fixtures describe it):
 //   progress  v1: { stars: {mission:n} | [n...] (mission order), achievements: [id...] | {id: true|ms|{unlocked,at}}, codex: [defId...] | {seen:[...], locked:[...]},
-//                   survivalBest, dailyLast }
+//                   survivalBest (best wave), dailyLast }
 //             v2: { stars: {mission: 0..3}, achievements: {id: {at: ms}}, codex: {locked: [defId], seen: {defId: true}}, unlockedMutators: [], titles: [], parts: [] }
 //   survival  v1: [ {score, waves, date, arena} ... ]  or  { best, board }        v2: { best, bestWave, board: top 5 by score }
 //   daily     v1: { last, history:[{date: 'YYYY-MM-DD' | YYYYMMDD number, ...}] }  v2: { last: 'YYYY-MM-DD', streak, history: newest first, <= 14 }
@@ -80,7 +80,7 @@ function progress1to2(d) {
     titles: Array.isArray(d.titles) ? d.titles.filter((x) => typeof x === 'string').map((x) => x.slice(0, 60)).slice(0, 40) : [],
     parts: Array.isArray(d.parts) ? d.parts.filter((x) => typeof x === 'string' && ID_RE.test(x)).slice(0, 80) : [],
   };
-  if (d.survivalBest !== undefined && fin(+d.survivalBest) > 0) side.survival = { best: Math.floor(fin(+d.survivalBest)) };
+  if (d.survivalBest !== undefined && fin(+d.survivalBest) > 0) side.survival = { bestWave: Math.floor(fin(+d.survivalBest)) };       // v1 survivalBest was the best WAVE (the title tile prints "Best: wave N")
   const dl = normDate(d.dailyLast); if (dl) side.daily = { last: dl };
   return { data: out, side };
 }

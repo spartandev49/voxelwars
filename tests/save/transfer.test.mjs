@@ -43,7 +43,7 @@ console.log('export code', code.length, 'chars');
   assert.deepEqual(r.errors, [], 'errors'); assert.equal(r.ok, true); assert.deepEqual(r.applied, EXPORT_KEYS.filter((k) => A.store.getVersioned(k)));
   for (const k of EXPORT_KEYS) { const a = A.store.getVersioned(k), b = B.store.getVersioned(k); if (!a) { assert.equal(b, null); continue; } assert.equal(b.v, a.v, k + ' version'); assert.deepEqual(b.data, a.data, k + ' data'); }
   assert.equal(B.settings.get('quality'), 'papyrus'); assert.equal(B.settings.get('vol.music'), 0.25); assert.equal(B.settings.get('announcerVoice'), true, 'settings this build does not list survive');
-  assert.deepEqual(B.docs.progress.get('stars'), { marathon_sort_of: 3 }); assert.equal(B.docs.survival.get('best'), 12345); assert.equal(B.docs.progress.get('survivalBest'), 12345);
+  assert.deepEqual(B.docs.progress.get('stars'), { marathon_sort_of: 3 }); assert.equal(B.docs.survival.get('best'), 12345);
   assert.equal(B.stats.get().chickenTantrums, 1, 'live stats object reloaded'); assert.equal(B.collections.arenas.list().length, 1); assert.equal(B.collections.armies.get('army_1').records[0].defId, 'hoplite');
   // idempotent: importing the same code again changes nothing
   const before = snapshot(B.be); assert.equal((await B.T.importAll(code)).ok, true); assert.equal(snapshot(B.be), before);
@@ -60,9 +60,9 @@ console.log('export code', code.length, 'chars');
 {
   const payload = { f: 1, app: 'voxelwars', keys: { progress: V1.progress, survival: V1.survival, daily: V1.daily, seen: V1.seen } };
   const B = world(); const r = await B.T.importAll(JSON.stringify(payload)); assert.deepEqual(r.errors, []); assert.equal(r.ok, true);
-  assert.equal(B.store.getVersioned('progress').v, 2); assert.equal(B.docs.progress.get('stars').marathon_sort_of, 3); assert.equal(B.docs.survival.get('best'), 14230, 'progress.survivalBest (14230) beat the survival list best (9000)'); assert.equal(B.docs.daily.get('streak'), 2);
-  const only = world(); only.docs.survival.set('best', 100); const r3 = await only.T.importAll(JSON.stringify({ f: 1, keys: { progress: V1.progress } })); assert.equal(r3.ok, true);
-  assert.equal(only.docs.survival.get('best'), 14230, 'a v1 progress alone still delivers its survivalBest to the live survival document'); assert.ok(r3.warnings.some((w) => /Merged/.test(w)));
+  assert.equal(B.store.getVersioned('progress').v, 2); assert.equal(B.docs.progress.get('stars').marathon_sort_of, 3); assert.equal(B.docs.survival.get('best'), 9000); assert.equal(B.docs.survival.get('bestWave'), 14, 'progress.survivalBest (best wave 14) beat the survival list best wave (7)'); assert.equal(B.docs.daily.get('streak'), 2);
+  const only = world(); only.docs.survival.set('bestWave', 3); const r3 = await only.T.importAll(JSON.stringify({ f: 1, keys: { progress: V1.progress } })); assert.equal(r3.ok, true);
+  assert.equal(only.docs.survival.get('bestWave'), 14, 'a v1 progress alone still delivers its survivalBest (best wave) to the live survival document'); assert.ok(r3.warnings.some((w) => /Merged/.test(w)));
 }
 
 // ---------------------------------------------------------------- strict validation: each rejection leaves the device untouched

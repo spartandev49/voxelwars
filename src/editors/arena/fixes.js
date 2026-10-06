@@ -56,9 +56,13 @@ export function applyFix(sess, issue) {
       return true;
     }
     case 'level_zone': {
-      const zn = a.zones[p.zone]; if (!zn) return false;
+      let zn = a.zones[p.zone]; if (!zn) return false;
+      // a zone smaller than ~8 x 8 u cannot hold 30 walkable cells whatever the terrain does: grow it first
+      const grow = zn.w < 8 || zn.d < 8 ? fit(W, { x: zn.x, z: zn.z, w: Math.max(zn.w, 8), d: Math.max(zn.d, 8) }) : null;
+      sess.beginGesture();
+      if (grow) { sess.setZone(p.zone, grow); zn = a.zones[p.zone]; }
       const t = sess.tx('Level zone ' + p.zone), r = levelZone(a, t.rec, zn);
-      removeBlockers(t, r.blockers); return !!t.commit();
+      removeBlockers(t, r.blockers); const done = !!t.commit(); sess.endGesture(); return done || !!grow;
     }
     case 'raise_zone': {
       const zn = a.zones[p.zone]; if (!zn) return false;
