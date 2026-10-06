@@ -183,9 +183,38 @@ function lazyPreview(make) {
   return { turntable: (c, s) => get().turntable(c, s), arena: (canvas, arena, o) => { const url = get().arenaThumb(arena, o && o.key, o && o.w, o && o.h); if (canvas && url) { const im = new Image(); im.onload = () => { const g = canvas.getContext('2d'); g.drawImage(im, 0, 0, canvas.width, canvas.height); }; im.src = url; } return url; }, arenaThumb: (a, k, w, h) => get().arenaThumb(a, k, w, h) };
 }
 
+/**
+ * save(filename, data: string | Blob) -> Promise<boolean>. In the hosted Artifact the page may not start downloads itself: the viewer's `downloads` capability shows a
+ * confirmation and saves the file (declared at publish). In a plain browser tab (dist/voxelwars.html) an anchor download does the same job.
+ * Resolves false when the viewer declines; rejects only for real failures (callers fall back to showing the text to copy).
+ */
+function downloadsApi() {
+  const hosted = !!(window.claude && typeof window.claude.use === 'function');
+  let cap = null;
+  const capability = () => (cap || (cap = Promise.resolve(window.claude.use('downloads')).catch(() => null)));
+  return {
+    hosted,
+    async save(filename, data) {
+      if (hosted) {
+        // the viewer only saves an allowlisted extension: share files (.vwarena, .vwsoldier) travel as plain text
+        if (!/\.(gif|png|jpe?g|webp|mp4|webm|txt|json|md|csv|html|svg|pdf|zip)$/i.test(filename)) filename += '.txt';
+        const d = await capability();
+        if (!d) throw new Error('downloads are not available here');
+        try { await d.save({ filename, data }); return true; }
+        catch (e) { if (e && e.code === 'declined') return false; throw e; }
+      }
+      const blob = data instanceof Blob ? data : new Blob([String(data)], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = filename; a.style.display = 'none'; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      return true;
+    },
+  };
+}
+
 function platformApi() {
   return {
-    downloads: null,
+    downloads: downloadsApi(),
     clipboard: async (text) => { try { await navigator.clipboard.writeText(text); return true; } catch (e) { return false; } },
     pickFile: (accept) => new Promise((resolve) => { const i = document.createElement('input'); i.type = 'file'; if (accept) i.accept = accept; i.onchange = () => resolve(i.files && i.files[0] || null); i.click(); }),
     isTouch: matchMedia('(pointer: coarse)').matches, viewport: () => ({ w: innerWidth, h: innerHeight }), isPhone: () => Math.min(innerWidth, innerHeight) < 600,

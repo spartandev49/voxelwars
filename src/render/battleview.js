@@ -87,6 +87,10 @@ export class BattleView {
     }
     return r;
   }
+  /** Drop the cached skin of a unit def (an edited custom soldier keeps its id: the next battle must build the new model). Corpses of the old model go with it. */
+  forget(id) {
+    for (const key of [id, 'c:' + id]) { const r = this.skins.get(key); if (r) { r.skin.dispose(); this.skins.delete(key); this.corpses = this.corpses.filter((c) => c.key !== key); } }
+  }
   _palette(model) {
     const cols = [];
     for (const p of model.parts) {
