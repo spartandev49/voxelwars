@@ -29,7 +29,8 @@ if (!only) step('contracts', 'node', ['tools/contracts.mjs']);
 if (fs.existsSync(path.join(root, 'src/app/main.js')) && !only) {
   step('build', 'node', ['tools/build.mjs']);
   // full gate: boot the REAL build (and the packed artifact fragment) in Chromium under the artifact CSP; any console error/warning/CSP violation fails
-  if (!fast) { step('smoke (standalone)', 'node', ['tools/smoke.mjs', '--battle=6'], { timeout: 600000 }); step('smoke (artifact fragment)', 'node', ['tools/smoke.mjs', '--page=dist/artifact/index.html', '--battle=6'], { timeout: 600000 }); }
+  if (!fast) { step('smoke (standalone)', 'node', ['tools/smoke.mjs', '--battle=6'], { timeout: 600000 }); step('smoke (artifact fragment)', 'node', ['tools/smoke.mjs', '--page=dist/artifact/index.html', '--battle=6'], { timeout: 600000 });
+    step('tour (every menu and editor screen)', 'node', ['tools/tour.mjs'], { timeout: 900000 }); step('flow (title to results and rematch, by clicking)', 'node', ['tools/flow.mjs'], { timeout: 900000 }); step('modes (campaign, puzzle, survival, daily)', 'node', ['tools/modes.mjs'], { timeout: 1200000 }); }
 }
 console.log(fail ? `GATE FAILED (${fail})` : 'GATE PASSED');
 process.exit(fail ? 1 : 0);
