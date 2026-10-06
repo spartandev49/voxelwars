@@ -90,7 +90,7 @@ export class Metrics {
         if (t && t.alive && u.state !== ST.WINDUP && u.state !== ST.ROUT && u.state !== ST.STUN && u.state !== ST.SIT && u.state !== ST.CAST && u.state !== ST.CHEER) {
           const reach = u.def.ranged ? u.def.ranged.range : (u.def.melee ? u.def.melee.range : 1);
           const gap = Math.hypot(t.x - u.x, t.z - u.z) - u.radius - t.radius;
-          elig = gap > reach * 1.3 + 0.4 && !(u.squad && u.squad.order === 'hold');
+          elig = gap > reach * 1.3 + 0.4 && !u.engaged && !(u.squad && u.squad.order === 'hold');
         }
         const p = snap.get(u.id);
         if (p && p.elig && elig) { this.stuckElig++; if (Math.hypot(u.x - p.x, u.z - p.z) < 0.5) this.stuck++; }

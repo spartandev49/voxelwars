@@ -185,25 +185,6 @@
    "notes": "source file: oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.9.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "sword_hit_5",
-   "file": "sword_hit_5.mp3",
-   "path": "audio/sfx/sword_hit_5.mp3",
-   "category": "blade",
-   "tags": [
-    "sword",
-    "hit",
-    "slash"
-   ],
-   "duration": 0.57,
-   "author": "StarNinjas",
-   "title": "20 Sword Sound Effects (Attacks and Clashes)",
-   "source": "https://opengameart.org/content/20-sword-sound-effects-attacks-and-clashes",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.4.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "blade_clash_1",
    "file": "blade_clash_1.mp3",
    "path": "audio/sfx/blade_clash_1.mp3",
@@ -304,25 +285,6 @@
    "notes": "source file: oga-fantasy-weapons-and-apparel-sfx-library/files/weapons-apparel/sfx/sword-knife-clash-14.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "blade_clash_6",
-   "file": "blade_clash_6.mp3",
-   "path": "audio/sfx/blade_clash_6.mp3",
-   "category": "blade",
-   "tags": [
-    "metal",
-    "clash",
-    "parry"
-   ],
-   "duration": 0.6,
-   "author": "Vehicle",
-   "title": "Fantasy Weapons and Apparel SFX Library",
-   "source": "https://opengameart.org/content/fantasy-weapons-and-apparel-sfx-library",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-fantasy-weapons-and-apparel-sfx-library/files/weapons-apparel/sfx/sword-knife-clash-22.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "blade_parry_1",
    "file": "blade_parry_1.mp3",
    "path": "audio/sfx/blade_parry_1.mp3",
@@ -359,25 +321,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_2_of_2/Spear Sabre Blade on Blade.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "blade_parry_3",
-   "file": "blade_parry_3.mp3",
-   "path": "audio/sfx/blade_parry_3.mp3",
-   "category": "blade",
-   "tags": [
-    "metal",
-    "parry",
-    "ring"
-   ],
-   "duration": 1.44,
-   "author": "Ben Jaszczak & Brian Nelson",
-   "title": "Medieval sound effects - Weapon impacts",
-   "source": "https://opengameart.org/content/medieval-sound-effects-weapon-impacts",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_1_of_2/Dagger Katana Blade on Blade.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "sword_draw_1",
@@ -512,25 +455,6 @@
    "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-12.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "blade_swish_3",
-   "file": "blade_swish_3.mp3",
-   "path": "audio/sfx/blade_swish_3.mp3",
-   "category": "blade",
-   "tags": [
-    "whoosh",
-    "swing",
-    "weapon"
-   ],
-   "duration": 0.42,
-   "author": "qubodup",
-   "title": "Swish - bamboo stick weapon swhoshes",
-   "source": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-20.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "knife_slice_1",
    "file": "knife_slice_1.mp3",
    "path": "audio/sfx/knife_slice_1.mp3",
@@ -547,24 +471,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-rpg-audio/files/Audio/knifeSlice.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "knife_slice_2",
-   "file": "knife_slice_2.mp3",
-   "path": "audio/sfx/knife_slice_2.mp3",
-   "category": "blade",
-   "tags": [
-    "knife",
-    "slice"
-   ],
-   "duration": 0.47,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/rpg-audio",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-rpg-audio/files/Audio/knifeSlice2.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "shield_block_1",
@@ -680,25 +586,6 @@
    "notes": "source file: kenney-impact-sounds/files/Audio/impactPlate_heavy_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "shield_bash_3",
-   "file": "shield_bash_3.mp3",
-   "path": "audio/sfx/shield_bash_3.mp3",
-   "category": "shield",
-   "tags": [
-    "shield",
-    "bash",
-    "metal"
-   ],
-   "duration": 0.65,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-impact-sounds/files/Audio/impactPlate_medium_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "wood_thud_1",
    "file": "wood_thud_1.mp3",
    "path": "audio/sfx/wood_thud_1.mp3",
@@ -754,24 +641,6 @@
    "notes": "source file: kenney-impact-sounds/files/Audio/impactWood_medium_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "wood_thud_4",
-   "file": "wood_thud_4.mp3",
-   "path": "audio/sfx/wood_thud_4.mp3",
-   "category": "shield",
-   "tags": [
-    "wood",
-    "thud"
-   ],
-   "duration": 0.26,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "spear_swing_1",
    "file": "spear_swing_1.mp3",
    "path": "audio/sfx/spear_swing_1.mp3",
@@ -810,24 +679,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-impact-sounds/files/Audio/impactSoft_heavy_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "spear_stab_4",
-   "file": "spear_stab_4.mp3",
-   "path": "audio/sfx/spear_stab_4.mp3",
-   "category": "pierce",
-   "tags": [
-    "stab",
-    "knife"
-   ],
-   "duration": 0.42,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/rpg-audio",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-rpg-audio/files/Audio/drawKnife2.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "javelin_throw_1",
@@ -907,25 +758,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/English Longbow Shoot.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "bow_shot_3",
-   "file": "bow_shot_3.mp3",
-   "path": "audio/sfx/bow_shot_3.mp3",
-   "category": "bow",
-   "tags": [
-    "bow",
-    "arrow",
-    "shoot"
-   ],
-   "duration": 0.34,
-   "author": "artisticdude",
-   "title": "Battle Sound Effects",
-   "source": "https://opengameart.org/content/battle-sound-effects",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-battle-sound-effects/files/battle_sound_effects_0/battle_sound_effects/Bow.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "crossbow_shot_1",
@@ -1122,25 +954,6 @@
    "notes": "source file: kenney-impact-sounds/files/Audio/impactWood_light_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "arrow_hit_wood_3",
-   "file": "arrow_hit_wood_3.mp3",
-   "path": "audio/sfx/arrow_hit_wood_3.mp3",
-   "category": "bow",
-   "tags": [
-    "arrow",
-    "hit",
-    "wood"
-   ],
-   "duration": 0.18,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "flesh_hit_light_1",
    "file": "flesh_hit_light_1.mp3",
    "path": "audio/sfx/flesh_hit_light_1.mp3",
@@ -1221,25 +1034,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-impact-sounds/files/Audio/impactPunch_medium_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "flesh_hit_light_5",
-   "file": "flesh_hit_light_5.mp3",
-   "path": "audio/sfx/flesh_hit_light_5.mp3",
-   "category": "impact",
-   "tags": [
-    "flesh",
-    "hit",
-    "light"
-   ],
-   "duration": 0.47,
-   "author": "Independent.nu",
-   "title": "37 hits/punches",
-   "source": "https://opengameart.org/content/37-hitspunches",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit25.mp3.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "flesh_hit_heavy_1",
@@ -1519,25 +1313,6 @@
    "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_33.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "death_grunt_6",
-   "file": "death_grunt_6.mp3",
-   "path": "audio/sfx/death_grunt_6.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "grunt",
-    "male"
-   ],
-   "duration": 0.63,
-   "author": "mieki256",
-   "title": "Male dead voice",
-   "source": "https://opengameart.org/content/male-dead-voice",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_47.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "death_oof_1",
    "file": "death_oof_1.mp3",
    "path": "audio/sfx/death_oof_1.mp3",
@@ -1618,25 +1393,6 @@
    "notes": "source file: oga-aargh-male-screams/files/aargh/aargh6.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "death_scream_3",
-   "file": "death_scream_3.mp3",
-   "path": "audio/sfx/death_scream_3.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "scream",
-    "male"
-   ],
-   "duration": 0.68,
-   "author": "congusbongus",
-   "title": "Aargh! (male screams)",
-   "source": "https://opengameart.org/content/aargh-male-screams",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-aargh-male-screams/files/aargh/aargh1.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "death_dying_1",
    "file": "death_dying_1.mp3",
    "path": "audio/sfx/death_dying_1.mp3",
@@ -1675,25 +1431,6 @@
    "notes": "source file: oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/die2.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "death_dying_3",
-   "file": "death_dying_3.mp3",
-   "path": "audio/sfx/death_dying_3.mp3",
-   "category": "death",
-   "tags": [
-    "death",
-    "dying",
-    "male"
-   ],
-   "duration": 0.6,
-   "author": "Michel Baradari",
-   "title": "11 male human pain/death sounds",
-   "source": "https://opengameart.org/content/11-male-human-paindeath-sounds",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/deathh.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "death_hurt_1",
    "file": "death_hurt_1.mp3",
    "path": "audio/sfx/death_hurt_1.mp3",
@@ -1711,25 +1448,6 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
    "attributionRequired": true,
    "notes": "source file: oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain3.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "death_hurt_2",
-   "file": "death_hurt_2.mp3",
-   "path": "audio/sfx/death_hurt_2.mp3",
-   "category": "death",
-   "tags": [
-    "hurt",
-    "pain",
-    "male"
-   ],
-   "duration": 0.63,
-   "author": "Michel Baradari",
-   "title": "11 male human pain/death sounds",
-   "source": "https://opengameart.org/content/11-male-human-paindeath-sounds",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain5.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "death_comic_1",
@@ -1887,25 +1605,6 @@
    "notes": "source file: oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/2yell6.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "battle_cry_6",
-   "file": "battle_cry_6.mp3",
-   "path": "audio/sfx/battle_cry_6.mp3",
-   "category": "voice",
-   "tags": [
-    "battle cry",
-    "comic",
-    "tiny"
-   ],
-   "duration": 0.65,
-   "author": "fvcalderan",
-   "title": "Tiny creatures sounds",
-   "source": "https://opengameart.org/content/tiny-creatures-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-tiny-creatures-sounds/files/battlecry1/battlecry1.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "war_cry_1",
    "file": "war_cry_1.mp3",
    "path": "audio/sfx/war_cry_1.mp3",
@@ -1942,44 +1641,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-steampunk-fantasy-voices/files/Hero_Attack_001_0/Hero_Attack_001_0.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "war_cry_3",
-   "file": "war_cry_3.mp3",
-   "path": "audio/sfx/war_cry_3.mp3",
-   "category": "voice",
-   "tags": [
-    "war cry",
-    "pike",
-    "attack"
-   ],
-   "duration": 0.84,
-   "author": "xathien",
-   "title": "Steampunk Fantasy Voices",
-   "source": "https://opengameart.org/content/steampunk-fantasy-voices",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-steampunk-fantasy-voices/files/Pikeman_Attack_001/Pikeman_Attack_001.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "orc_roar_1",
-   "file": "orc_roar_1.mp3",
-   "path": "audio/sfx/orc_roar_1.mp3",
-   "category": "voice",
-   "tags": [
-    "roar",
-    "orc",
-    "war cry"
-   ],
-   "duration": 0.47,
-   "author": "Tim Rockk",
-   "title": "orc voice",
-   "source": "https://opengameart.org/content/orc-voice",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-orc-voice/files/all_orc_commander_audio_files_0/ORC FIGHT.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "orc_roar_2",
@@ -2039,25 +1700,6 @@
    "notes": "source file: oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt4.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "grunt_effort_3",
-   "file": "grunt_effort_3.mp3",
-   "path": "audio/sfx/grunt_effort_3.mp3",
-   "category": "voice",
-   "tags": [
-    "grunt",
-    "effort",
-    "male"
-   ],
-   "duration": 1.04,
-   "author": "HaelDB",
-   "title": "Male Grunt/Yelling sounds",
-   "source": "https://opengameart.org/content/male-gruntyelling-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt6.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "announcer_fight",
    "file": "announcer_fight.mp3",
    "path": "audio/sfx/announcer_fight.mp3",
@@ -2112,25 +1754,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-voiceover-pack-fighter/files/Audio/winner.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "announcer_flawless",
-   "file": "announcer_flawless.mp3",
-   "path": "audio/sfx/announcer_flawless.mp3",
-   "category": "voice",
-   "tags": [
-    "announcer",
-    "flawless",
-    "victory"
-   ],
-   "duration": 1.72,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Voiceover Pack: Fighter",
-   "source": "https://kenney.nl/assets/voiceover-pack-fighter",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-voiceover-pack-fighter/files/Audio/flawless_victory.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "announcer_game_over",
@@ -2373,7 +1996,7 @@
     "boom",
     "low"
    ],
-   "duration": 0.18,
+   "duration": 0.44,
    "author": "jobro",
    "title": "Taiko drums (seamless loop)",
    "source": "https://opengameart.org/content/taiko-drums-seamless-loop",
@@ -2394,7 +2017,7 @@
     "boom",
     "low"
    ],
-   "duration": 1.04,
+   "duration": 0.44,
    "author": "jobro",
    "title": "Taiko drums (seamless loop)",
    "source": "https://opengameart.org/content/taiko-drums-seamless-loop",
@@ -2413,7 +2036,7 @@
     "war drum",
     "boom"
    ],
-   "duration": 1.33,
+   "duration": 0.34,
    "author": "William Hector",
    "title": "Horde War Drums loop",
    "source": "https://opengameart.org/content/horde-war-drums-loop",
@@ -2432,7 +2055,7 @@
     "war drum",
     "boom"
    ],
-   "duration": 1.04,
+   "duration": 0.34,
    "author": "William Hector",
    "title": "Horde War Drums loop",
    "source": "https://opengameart.org/content/horde-war-drums-loop",
@@ -2440,6 +2063,46 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-horde-war-drums-loop/files/horde_war_drums_by_william_hector/horde_war_drums_by_william_hector.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "drum_boom_5",
+   "file": "drum_boom_5.mp3",
+   "path": "audio/sfx/drum_boom_5.mp3",
+   "category": "drum",
+   "tags": [
+    "drum",
+    "war drum",
+    "boom",
+    "low"
+   ],
+   "duration": 0.31,
+   "author": "Kenney (kenney.nl)",
+   "title": "Kenney Impact Sounds",
+   "source": "https://kenney.nl/assets/impact-sounds",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "attributionRequired": false,
+   "notes": "derived: pitched-down wood thud; source file: kenney-impact-sounds/files/Audio/impactWood_heavy_000.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "drum_boom_6",
+   "file": "drum_boom_6.mp3",
+   "path": "audio/sfx/drum_boom_6.mp3",
+   "category": "drum",
+   "tags": [
+    "drum",
+    "war drum",
+    "boom",
+    "low"
+   ],
+   "duration": 0.68,
+   "author": "Kenney (kenney.nl)",
+   "title": "Kenney Impact Sounds",
+   "source": "https://kenney.nl/assets/impact-sounds",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "attributionRequired": false,
+   "notes": "derived: pitched-down plate thud; source file: kenney-impact-sounds/files/Audio/impactPlate_heavy_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "gong_1",
@@ -2499,6 +2162,25 @@
    "notes": "source file: oga-gonk-gong/files/gong/gong.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
+   "id": "horse_neigh_1",
+   "file": "horse_neigh_1.mp3",
+   "path": "audio/sfx/horse_neigh_1.mp3",
+   "category": "animal",
+   "tags": [
+    "horse",
+    "neigh",
+    "whinny"
+   ],
+   "duration": 2.19,
+   "author": "Hü .",
+   "title": "Wiehern.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Wiehern.ogg",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-wiehern/Wiehern.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
    "id": "horse_gallop_1",
    "file": "horse_gallop_1.mp3",
    "path": "audio/sfx/horse_gallop_1.mp3",
@@ -2554,6 +2236,24 @@
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
    "notes": "source file: oga-horse-gallop-on-different-surfaces/files/archive_2/grass.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "elephant_trumpet_1",
+   "file": "elephant_trumpet_1.mp3",
+   "path": "audio/sfx/elephant_trumpet_1.mp3",
+   "category": "animal",
+   "tags": [
+    "elephant",
+    "trumpet"
+   ],
+   "duration": 1.33,
+   "author": "தகவலுழவன்",
+   "title": "Elephant voice - trumpeting.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Elephant_voice_-_trumpeting.ogg",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-elephant-voice-trumpeting/Elephant_voice_-_trumpeting.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "chicken_cluck_1",
@@ -2631,24 +2331,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-camel-groan/files/camel/flac/camel_01.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "camel_groan_2",
-   "file": "camel_groan_2.mp3",
-   "path": "audio/sfx/camel_groan_2.mp3",
-   "category": "animal",
-   "tags": [
-    "camel",
-    "groan"
-   ],
-   "duration": 1.67,
-   "author": "CaveboyTup",
-   "title": "Fantasy Desert Ride-able Camel",
-   "source": "https://opengameart.org/content/fantasy-desert-ride-able-camel",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-fantasy-desert-ride-able-camel/files/fantasy_desert_camel/fantasy_desert_camel.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "donkey_bray_1",
@@ -2744,6 +2426,25 @@
    "notes": "source file: oga-wolf-monster-sound/files/wolf_monster_6/wolf_monster_6.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
+   "id": "lion_roar_1",
+   "file": "lion_roar_1.mp3",
+   "path": "audio/sfx/lion_roar_1.mp3",
+   "category": "animal",
+   "tags": [
+    "lion",
+    "roar",
+    "beast"
+   ],
+   "duration": 2.25,
+   "author": "த*உழவன்",
+   "title": "Lion raring-sound1TamilNadu178.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Lion_raring-sound1TamilNadu178.ogg",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-lion-raring-sound1tamilnadu178/Lion_raring-sound1TamilNadu178.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
    "id": "monster_roar_1",
    "file": "monster_roar_1.mp3",
    "path": "audio/sfx/monster_roar_1.mp3",
@@ -2785,26 +2486,6 @@
    "notes": "source file: oga-80-cc0-creture-sfx-2/files/80-CC0-creature-sfx-2/roar_05.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "monster_roar_3",
-   "file": "monster_roar_3.mp3",
-   "path": "audio/sfx/monster_roar_3.mp3",
-   "category": "animal",
-   "tags": [
-    "monster",
-    "roar",
-    "minotaur",
-    "cyclops"
-   ],
-   "duration": 0.89,
-   "author": "rubberduck",
-   "title": "80 CC0 RPG SFX",
-   "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/creature_roar_03.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "monster_roar_4",
    "file": "monster_roar_4.mp3",
    "path": "audio/sfx/monster_roar_4.mp3",
@@ -2823,6 +2504,44 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-cc0-deep-monster-roar/files/monster_roar/monster_roar.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "bear_roar_1",
+   "file": "bear_roar_1.mp3",
+   "path": "audio/sfx/bear_roar_1.mp3",
+   "category": "animal",
+   "tags": [
+    "bear",
+    "roar",
+    "beast"
+   ],
+   "duration": 2.43,
+   "author": "NPS & MSU Acoustic Atlas / Jennifer Jerrett",
+   "title": "Yellowstone sound library - Grizzly Bears Roar - 001.mp3",
+   "source": "https://commons.wikimedia.org/wiki/File:Yellowstone_sound_library_-_Grizzly_Bears_Roar_-_001.mp3",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-yellowstone-sound-library-grizzly-bears-roar-001/Yellowstone_sound_library_-_Grizzly_Bears_Roar_-_001.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "snake_hiss_1",
+   "file": "snake_hiss_1.mp3",
+   "path": "audio/sfx/snake_hiss_1.mp3",
+   "category": "animal",
+   "tags": [
+    "snake",
+    "hiss",
+    "rattle"
+   ],
+   "duration": 1.83,
+   "author": "Unknown (Wikimedia Commons)",
+   "title": "Rattlesnake.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Rattlesnake.ogg",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-rattlesnake/Rattlesnake.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "minotaur_grunt_1",
@@ -2881,25 +2600,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-rpg-audio/files/Audio/creak2.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "catapult_creak_3",
-   "file": "catapult_creak_3.mp3",
-   "path": "audio/sfx/catapult_creak_3.mp3",
-   "category": "siege",
-   "tags": [
-    "trebuchet",
-    "creak",
-    "wood"
-   ],
-   "duration": 0.31,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/rpg-audio",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-rpg-audio/files/Audio/creak3.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "catapult_launch_1",
@@ -3097,22 +2797,41 @@
    "notes": "source file: oga-muffled-distant-explosion/files/NenadSimic - Muffled Distant Explosion/NenadSimic - Muffled Distant Explosion.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "explosion_rumble_3",
-   "file": "explosion_rumble_3.mp3",
-   "path": "audio/sfx/explosion_rumble_3.mp3",
+   "id": "explosion_rumble_4",
+   "file": "explosion_rumble_4.mp3",
+   "path": "audio/sfx/explosion_rumble_4.mp3",
    "category": "destruction",
    "tags": [
     "explosion",
     "boom"
    ],
-   "duration": 1.02,
-   "author": "TinyWorlds",
-   "title": "Explosion",
-   "source": "https://opengameart.org/content/explosion-0",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "duration": 2.25,
+   "author": "tcpp",
+   "title": "Explosion 10.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Explosion_10.ogg",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-explosion-0/files/explosion/explosion.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "source file: commons-explosion-10/Explosion_10.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "explosion_rumble_5",
+   "file": "explosion_rumble_5.mp3",
+   "path": "audio/sfx/explosion_rumble_5.mp3",
+   "category": "destruction",
+   "tags": [
+    "explosion",
+    "boom",
+    "heavy"
+   ],
+   "duration": 1.41,
+   "author": "Fg2",
+   "title": "Explosion-LS100155.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Explosion-LS100155.ogg",
+   "license": "Public Domain",
+   "licenseUrl": "https://creativecommons.org/publicdomain/mark/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-explosion-ls100155/Explosion-LS100155.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "rock_crumble_1",
@@ -3193,26 +2912,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_04.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "rock_fall_2",
-   "file": "rock_fall_2.mp3",
-   "path": "audio/sfx/rock_fall_2.mp3",
-   "category": "destruction",
-   "tags": [
-    "rock",
-    "debris",
-    "fall",
-    "big"
-   ],
-   "duration": 0.34,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_08.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "wood_crack_1",
@@ -3331,25 +3030,6 @@
    "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_falling_05.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "debris_big_2",
-   "file": "debris_big_2.mp3",
-   "path": "audio/sfx/debris_big_2.mp3",
-   "category": "destruction",
-   "tags": [
-    "debris",
-    "big",
-    "crash"
-   ],
-   "duration": 0.42,
-   "author": "rubberduck",
-   "title": "75 CC0 breaking / falling / hit sfx",
-   "source": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_misc_03.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "voxel_break_1",
    "file": "voxel_break_1.mp3",
    "path": "audio/sfx/voxel_break_1.mp3",
@@ -3410,26 +3090,6 @@
    "notes": "source file: kenney-impact-sounds/files/Audio/impactMining_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "voxel_break_4",
-   "file": "voxel_break_4.mp3",
-   "path": "audio/sfx/voxel_break_4.mp3",
-   "category": "destruction",
-   "tags": [
-    "voxel",
-    "block",
-    "break",
-    "mining"
-   ],
-   "duration": 0.65,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Impact Sounds",
-   "source": "https://kenney.nl/assets/impact-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-impact-sounds/files/Audio/impactMining_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "fire_whoosh_1",
    "file": "fire_whoosh_1.mp3",
    "path": "audio/sfx/fire_whoosh_1.mp3",
@@ -3487,25 +3147,6 @@
    "notes": "source file: oga-catching-fire/files/flame_0/flame_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "fire_ignite_2",
-   "file": "fire_ignite_2.mp3",
-   "path": "audio/sfx/fire_ignite_2.mp3",
-   "category": "fire",
-   "tags": [
-    "fire",
-    "ignite",
-    "flame"
-   ],
-   "duration": 0.89,
-   "author": "rubberduck",
-   "title": "80 CC0 RPG SFX",
-   "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/spell_fire_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "torch_crackle_1",
    "file": "torch_crackle_1.mp3",
    "path": "audio/sfx/torch_crackle_1.mp3",
@@ -3561,24 +3202,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-cure-magic/files/curemagic/Cure5.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "heal_chime_3",
-   "file": "heal_chime_3.mp3",
-   "path": "audio/sfx/heal_chime_3.mp3",
-   "category": "magic",
-   "tags": [
-    "heal",
-    "chime"
-   ],
-   "duration": 1.83,
-   "author": "DoKashiteru",
-   "title": "3 Heal Spells",
-   "source": "https://opengameart.org/content/3-heal-spells",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-3-heal-spells/files/3 heal spells/healspell2.aif; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "buff_powerup_1",
@@ -3732,25 +3355,6 @@
    "notes": "source file: oga-100-cc0-sfx-2/files/sfx_100_v2/sfx100v2_thunder_01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "thunder_crack_3",
-   "file": "thunder_crack_3.mp3",
-   "path": "audio/sfx/thunder_crack_3.mp3",
-   "category": "magic",
-   "tags": [
-    "thunder",
-    "lightning",
-    "zeus"
-   ],
-   "duration": 2.43,
-   "author": "Jerimee",
-   "title": "Thunder",
-   "source": "https://opengameart.org/content/thunder",
-   "license": "CC BY 3.0",
-   "licenseUrl": "https://creativecommons.org/licenses/by/3.0/",
-   "attributionRequired": true,
-   "notes": "source file: oga-thunder/files/thunderclap_0/thunderclap_0.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "lightning_zap_1",
    "file": "lightning_zap_1.mp3",
    "path": "audio/sfx/lightning_zap_1.mp3",
@@ -3805,24 +3409,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-gold-coin-6/files/coin/coin.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "coin_pickup_3",
-   "file": "coin_pickup_3.mp3",
-   "path": "audio/sfx/coin_pickup_3.mp3",
-   "category": "coin",
-   "tags": [
-    "coin",
-    "pickup"
-   ],
-   "duration": 0.6,
-   "author": "rubberduck",
-   "title": "80 CC0 RPG SFX",
-   "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/item_coins_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "coin_clink_1",
@@ -3898,24 +3484,6 @@
    "notes": "source file: oga-bell-dingschimes/files/bell_ding1/bell_ding1.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "bell_ding_2",
-   "file": "bell_ding_2.mp3",
-   "path": "audio/sfx/bell_ding_2.mp3",
-   "category": "coin",
-   "tags": [
-    "bell",
-    "ding"
-   ],
-   "duration": 1.41,
-   "author": "PWL",
-   "title": "Bell dings/chimes",
-   "source": "https://opengameart.org/content/bell-dingschimes",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-bell-dingschimes/files/bell_ding3/bell_ding3.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "bell_heavy_1",
    "file": "bell_heavy_1.mp3",
    "path": "audio/sfx/bell_heavy_1.mp3",
@@ -3973,25 +3541,6 @@
    "notes": "source file: oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL2.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "footstep_dirt_3",
-   "file": "footstep_dirt_3.mp3",
-   "path": "audio/sfx/footstep_dirt_3.mp3",
-   "category": "foley",
-   "tags": [
-    "footstep",
-    "dirt",
-    "sand"
-   ],
-   "duration": 0.37,
-   "author": "Fantozzi",
-   "title": "Fantozzi's Footsteps (Grass/Sand & Stone)",
-   "source": "https://opengameart.org/content/fantozzis-footsteps-grasssand-stone",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandR3.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "footstep_gravel_1",
    "file": "footstep_gravel_1.mp3",
    "path": "audio/sfx/footstep_gravel_1.mp3",
@@ -4027,25 +3576,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-different-steps-on-wood-stone-leaves-gravel-and-mud/files/[kdd]DifferentSteps_0/stone01.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "footstep_gravel_3",
-   "file": "footstep_gravel_3.mp3",
-   "path": "audio/sfx/footstep_gravel_3.mp3",
-   "category": "foley",
-   "tags": [
-    "footstep",
-    "stone",
-    "gravel"
-   ],
-   "duration": 0.39,
-   "author": "Fantozzi",
-   "title": "Fantozzi's Footsteps (Grass/Sand & Stone)",
-   "source": "https://opengameart.org/content/fantozzis-footsteps-grasssand-stone",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneL1.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "footstep_grass_1",
@@ -4140,44 +3670,6 @@
    "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_02.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "armor_rustle_3",
-   "file": "armor_rustle_3.mp3",
-   "path": "audio/sfx/armor_rustle_3.mp3",
-   "category": "foley",
-   "tags": [
-    "armor",
-    "chainmail",
-    "rustle"
-   ],
-   "duration": 0.78,
-   "author": "rubberduck",
-   "title": "80 CC0 RPG SFX",
-   "source": "https://opengameart.org/content/80-cc0-rpg-sfx",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_03.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "armor_step_1",
-   "file": "armor_step_1.mp3",
-   "path": "audio/sfx/armor_step_1.mp3",
-   "category": "foley",
-   "tags": [
-    "armor",
-    "step",
-    "metal"
-   ],
-   "duration": 0.29,
-   "author": "HaelDB",
-   "title": "Footsteps Leather, Cloth, Armor",
-   "source": "https://opengameart.org/content/footsteps-leather-cloth-armor",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-footsteps-leather-cloth-armor/files/footsteps/footsteps/step_metal.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "cloth_flap_1",
    "file": "cloth_flap_1.mp3",
    "path": "audio/sfx/cloth_flap_1.mp3",
@@ -4216,25 +3708,6 @@
    "notes": "source file: kenney-rpg-audio/files/Audio/cloth3.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "cloth_flap_3",
-   "file": "cloth_flap_3.mp3",
-   "path": "audio/sfx/cloth_flap_3.mp3",
-   "category": "foley",
-   "tags": [
-    "cloth",
-    "belt",
-    "rustle"
-   ],
-   "duration": 0.73,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney RPG Audio",
-   "source": "https://kenney.nl/assets/rpg-audio",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-rpg-audio/files/Audio/clothBelt.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "whoosh_camera_1",
    "file": "whoosh_camera_1.mp3",
    "path": "audio/sfx/whoosh_camera_1.mp3",
@@ -4252,24 +3725,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-air-whoosh/files/whoosh2_0/whoosh2_0.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "whoosh_camera_2",
-   "file": "whoosh_camera_2.mp3",
-   "path": "audio/sfx/whoosh_camera_2.mp3",
-   "category": "foley",
-   "tags": [
-    "whoosh",
-    "camera"
-   ],
-   "duration": 0.6,
-   "author": "qubodup",
-   "title": "Swish - bamboo stick weapon swhoshes",
-   "source": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-03.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "pop_place_1",
@@ -4310,25 +3765,6 @@
    "notes": "source file: oga-pop-sounds/files/pop4/pop4.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "pop_place_3",
-   "file": "pop_place_3.mp3",
-   "path": "audio/sfx/pop_place_3.mp3",
-   "category": "foley",
-   "tags": [
-    "pop",
-    "place",
-    "unit"
-   ],
-   "duration": 0.13,
-   "author": "cogitollc",
-   "title": "Pop sounds",
-   "source": "https://opengameart.org/content/pop-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-pop-sounds/files/pop7/pop7.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "confetti_pop_1",
    "file": "confetti_pop_1.mp3",
    "path": "audio/sfx/confetti_pop_1.mp3",
@@ -4365,25 +3801,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-squish-sounds-effects/files/squish_02/squish_02.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "splat_2",
-   "file": "splat_2.mp3",
-   "path": "audio/sfx/splat_2.mp3",
-   "category": "foley",
-   "tags": [
-    "splat",
-    "squish",
-    "comic"
-   ],
-   "duration": 0.73,
-   "author": "Independent.nu",
-   "title": "8 wet squish, slurp impacts",
-   "source": "https://opengameart.org/content/8-wet-squish-slurp-impacts",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-8-wet-squish-slurp-impacts/files/independent_nu_ljudbank-wet_squish_slurp_impacts/impsplat/impactsplat03.mp3.flac; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "ui_hover_1",
@@ -4458,25 +3875,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-interface-sounds/files/Audio/click_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_click_3",
-   "file": "ui_click_3.mp3",
-   "path": "audio/sfx/ui_click_3.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "click",
-    "mouse"
-   ],
-   "duration": 0.1,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney UI SFX Set",
-   "source": "https://kenney.nl/assets/ui-audio",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-ui-audio/files/Audio/mouseclick1.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "ui_confirm_1",
@@ -4612,25 +4010,6 @@
    "notes": "source file: kenney-interface-sounds/files/Audio/toggle_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "ui_toggle_off",
-   "file": "ui_toggle_off.mp3",
-   "path": "audio/sfx/ui_toggle_off.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "toggle",
-    "off"
-   ],
-   "duration": 0.13,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/toggle_003.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
    "id": "ui_slider_tick",
    "file": "ui_slider_tick.mp3",
    "path": "audio/sfx/ui_slider_tick.mp3",
@@ -4704,46 +4083,6 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: kenney-interface-sounds/files/Audio/close_001.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_maximize",
-   "file": "ui_maximize.mp3",
-   "path": "audio/sfx/ui_maximize.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "panel",
-    "open",
-    "expand"
-   ],
-   "duration": 0.44,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/maximize_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "ui_minimize",
-   "file": "ui_minimize.mp3",
-   "path": "audio/sfx/ui_minimize.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "panel",
-    "close",
-    "collapse"
-   ],
-   "duration": 0.44,
-   "author": "Kenney (kenney.nl)",
-   "title": "Kenney Interface Sounds",
-   "source": "https://kenney.nl/assets/interface-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: kenney-interface-sounds/files/Audio/minimize_004.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "ui_drop_1",
@@ -4822,70 +4161,15 @@
    "notes": "source file: oga-7-assorted-sound-effects-menu-level-up/files/UISoundEffects/Level Up.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
-   "id": "ui_notify_1",
-   "file": "ui_notify_1.mp3",
-   "path": "audio/sfx/ui_notify_1.mp3",
-   "category": "ui",
-   "tags": [
-    "ui",
-    "notify",
-    "chime"
-   ],
-   "duration": 1.2,
-   "author": "MouseBYTE",
-   "title": "Chimey UI Sounds",
-   "source": "https://opengameart.org/content/chimey-ui-sounds",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "source file: oga-chimey-ui-sounds/files/mousebyte_chimeyui/Chime_Confirm.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "countdown_beep_3",
-   "file": "countdown_beep_3.mp3",
-   "path": "audio/sfx/countdown_beep_3.mp3",
+   "id": "countdown_beep",
+   "file": "countdown_beep.mp3",
+   "path": "audio/sfx/countdown_beep.mp3",
    "category": "ui",
    "tags": [
     "countdown",
     "beep",
-    "3"
-   ],
-   "duration": 0.26,
-   "author": "VOXELWARS project (generated by tools/build_sfx.py)",
-   "title": "Synthesized UI beep",
-   "source": "tools/build_sfx.py",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "synthesized sine beep; source file: synthesized by tools/build_sfx.py (synth:beep); trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "countdown_beep_2",
-   "file": "countdown_beep_2.mp3",
-   "path": "audio/sfx/countdown_beep_2.mp3",
-   "category": "ui",
-   "tags": [
-    "countdown",
-    "beep",
-    "2"
-   ],
-   "duration": 0.26,
-   "author": "VOXELWARS project (generated by tools/build_sfx.py)",
-   "title": "Synthesized UI beep",
-   "source": "tools/build_sfx.py",
-   "license": "CC0 1.0",
-   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
-   "attributionRequired": false,
-   "notes": "synthesized sine beep; source file: synthesized by tools/build_sfx.py (synth:beep); trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
-  },
-  {
-   "id": "countdown_beep_1",
-   "file": "countdown_beep_1.mp3",
-   "path": "audio/sfx/countdown_beep_1.mp3",
-   "category": "ui",
-   "tags": [
-    "countdown",
-    "beep",
+    "3",
+    "2",
     "1"
    ],
    "duration": 0.26,
@@ -4895,7 +4179,7 @@
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "synthesized sine beep; source file: synthesized by tools/build_sfx.py (synth:beep); trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+   "notes": "synthesized sine beep; play once each for 3, 2, 1; source file: synthesized by tools/build_sfx.py (synth:beep); trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   },
   {
    "id": "countdown_go",
@@ -5247,6 +4531,123 @@
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
    "notes": "source file: oga-fireplace-sound-loop/files/fire/fire.wav; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "horse_neigh_2",
+   "file": "horse_neigh_2.mp3",
+   "path": "audio/sfx/horse_neigh_2.mp3",
+   "category": "animal",
+   "tags": [
+    "horse",
+    "neigh",
+    "whinny"
+   ],
+   "duration": 1.85,
+   "author": "Lemasson A, Remeuf K, Trabalon M, Cuir F, Hausberger M",
+   "title": "Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s001.oga",
+   "source": "https://commons.wikimedia.org/wiki/File:Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s001.oga",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "scientific recording of a horse vocalisation; source file: commons-mares-prefer-the-voices-of-highly-fertile-stallions-pone-0118468-s001/Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s001.oga; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "horse_neigh_3",
+   "file": "horse_neigh_3.mp3",
+   "path": "audio/sfx/horse_neigh_3.mp3",
+   "category": "animal",
+   "tags": [
+    "horse",
+    "neigh",
+    "whinny"
+   ],
+   "duration": 2.64,
+   "author": "Lemasson A, Remeuf K, Trabalon M, Cuir F, Hausberger M",
+   "title": "Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s003.oga",
+   "source": "https://commons.wikimedia.org/wiki/File:Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s003.oga",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "scientific recording of a horse vocalisation; source file: commons-mares-prefer-the-voices-of-highly-fertile-stallions-pone-0118468-s003/Mares-Prefer-the-Voices-of-Highly-Fertile-Stallions-pone.0118468.s003.oga; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "drum_roll_1",
+   "file": "drum_roll_1.mp3",
+   "path": "audio/sfx/drum_roll_1.mp3",
+   "category": "drum",
+   "tags": [
+    "drum",
+    "roll",
+    "snare"
+   ],
+   "duration": 2.85,
+   "author": "Iwan Sounds and DIY",
+   "title": "Drum Roll Intro.ogg",
+   "source": "https://commons.wikimedia.org/wiki/File:Drum_Roll_Intro.ogg",
+   "license": "CC0 1.0",
+   "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+   "attributionRequired": false,
+   "notes": "source file: commons-drum-roll-intro/Drum_Roll_Intro.ogg; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "fire_burst_1",
+   "file": "fire_burst_1.mp3",
+   "path": "audio/sfx/fire_burst_1.mp3",
+   "category": "fire",
+   "tags": [
+    "fire",
+    "whoosh",
+    "burst",
+    "sizzle"
+   ],
+   "duration": 2.01,
+   "author": "Gregor Quendel",
+   "title": "Free Cinematic Sound Effects",
+   "source": "https://opengameart.org/content/free-cinematic-sound-effects",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Short - Swoosh Burst Sizzling 01.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "fire_impact_1",
+   "file": "fire_impact_1.mp3",
+   "path": "audio/sfx/fire_impact_1.mp3",
+   "category": "fire",
+   "tags": [
+    "fire",
+    "impact",
+    "explosion",
+    "burst"
+   ],
+   "duration": 2.43,
+   "author": "Gregor Quendel",
+   "title": "Free Cinematic Sound Effects",
+   "source": "https://opengameart.org/content/free-cinematic-sound-effects",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Impacts - Complex 04.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
+  },
+  {
+   "id": "rock_crumble_4",
+   "file": "rock_crumble_4.mp3",
+   "path": "audio/sfx/rock_crumble_4.mp3",
+   "category": "destruction",
+   "tags": [
+    "rock",
+    "crumble",
+    "stone",
+    "debris"
+   ],
+   "duration": 2.25,
+   "author": "Gregor Quendel",
+   "title": "Free Cinematic Sound Effects",
+   "source": "https://opengameart.org/content/free-cinematic-sound-effects",
+   "license": "CC BY 4.0",
+   "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+   "attributionRequired": true,
+   "notes": "source file: oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Rocks - Free Sounds/Gregor Quendel - Designed Rocks - Elements 09.mp3; trimmed, loudness-lifted, peak-normalised to -3 dBFS, mono MP3"
   }
  ],
  "music": [
@@ -5255,7 +4656,12 @@
    "file": "menu_heroic_age.mp3",
    "path": "audio/music/menu_heroic_age.mp3",
    "mood": "menu",
-   "tags": [],
+   "tags": [
+    "epic",
+    "orchestral",
+    "heroic",
+    "fanfare"
+   ],
    "duration": 90.46,
    "loop": false,
    "loopStart": 0.0,
@@ -5278,7 +4684,12 @@
    "file": "battle_low_grim_league.mp3",
    "path": "audio/music/battle_low_grim_league.mp3",
    "mood": "battle_low",
-   "tags": [],
+   "tags": [
+    "tribal",
+    "war drums",
+    "percussion",
+    "somber"
+   ],
    "duration": 78.99,
    "loop": false,
    "loopStart": 0.0,
@@ -5294,14 +4705,20 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-grim-league/Grim League.mp3; leading silence trimmed 0.02s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB 1.71, zero-crossing ratio 0.33, seam jump 0.43, beat fraction 0.003); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-grim-league/Grim League.mp3; leading silence trimmed 0.02s; all-percussion ensemble; cut to 25 bars (78.95 s) at the original tempo and faded; loop seam metrics (end-vs-start RMS dB 1.71, zero-crossing ratio 0.33, seam jump 0.43, beat fraction 0.003); not seamless -> cross-fade 2-3 s when looping"
   },
   {
    "id": "battle_mid_epic_boss",
    "file": "battle_mid_epic_boss.mp3",
    "path": "audio/music/battle_mid_epic_boss.mp3",
    "mood": "battle_mid",
-   "tags": [],
+   "tags": [
+    "epic",
+    "boss",
+    "driving",
+    "orchestral",
+    "loop"
+   ],
    "duration": 123.45,
    "loop": true,
    "loopStart": 0.0,
@@ -5317,7 +4734,7 @@
    "license": "CC0 1.0",
    "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
    "attributionRequired": false,
-   "notes": "source file: oga-boss-battle-music/files/Juhani Junkala - Epic Boss Battle [Seamlessly Looping]/Juhani Junkala - Epic Boss Battle [Seamlessly Looping].wav; leading silence trimmed 0.00s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -0.6, zero-crossing ratio 0.68, seam jump 1.31, beat fraction 0.082)",
+   "notes": "source file: oga-boss-battle-music/files/Juhani Junkala - Epic Boss Battle [Seamlessly Looping]/Juhani Junkala - Epic Boss Battle [Seamlessly Looping].wav; leading silence trimmed 0.00s; author states it loops seamlessly (verified: end/start RMS and zero-crossing continuity); shipped at 80 kbps joint stereo as the embedded core track; loop seam metrics (end-vs-start RMS dB -0.6, zero-crossing ratio 0.68, seam jump 1.31, beat fraction 0.082)",
    "core": true
   },
   {
@@ -5325,7 +4742,13 @@
    "file": "battle_high_clenched_teeth.mp3",
    "path": "audio/music/battle_high_clenched_teeth.mp3",
    "mood": "battle_high",
-   "tags": [],
+   "tags": [
+    "timpani",
+    "strings",
+    "brass",
+    "intense",
+    "epic"
+   ],
    "duration": 89.13,
    "loop": false,
    "loopStart": 0.0,
@@ -5348,7 +4771,12 @@
    "file": "victory_dark_star.mp3",
    "path": "audio/music/victory_dark_star.mp3",
    "mood": "victory",
-   "tags": [],
+   "tags": [
+    "fanfare",
+    "brass",
+    "orchestral",
+    "triumphant"
+   ],
    "duration": 52.4,
    "loop": false,
    "loopStart": 0.0,
@@ -5371,7 +4799,12 @@
    "file": "defeat_gladiators_lament.mp3",
    "path": "audio/music/defeat_gladiators_lament.mp3",
    "mood": "defeat",
-   "tags": [],
+   "tags": [
+    "tragic",
+    "lament",
+    "ancient",
+    "somber"
+   ],
    "duration": 50.63,
    "loop": false,
    "loopStart": 0.0,
@@ -5394,7 +4827,13 @@
    "file": "editor_desert_city.mp3",
    "path": "audio/music/editor_desert_city.mp3",
    "mood": "editor",
-   "tags": [],
+   "tags": [
+    "middle eastern",
+    "dulcimer",
+    "calm",
+    "desert",
+    "ambient"
+   ],
    "duration": 89.34,
    "loop": false,
    "loopStart": 0.0,
@@ -5410,14 +4849,19 @@
    "license": "CC BY 4.0",
    "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
    "attributionRequired": true,
-   "notes": "source file: incompetech-desert-city/Desert City.mp3; leading silence trimmed 0.02s; normalised to -16 LUFS; loop seam metrics (end-vs-start RMS dB -10.15, zero-crossing ratio 0.71, seam jump 0.0, beat fraction 0.011); not seamless -> cross-fade 2-3 s when looping"
+   "notes": "source file: incompetech-desert-city/Desert City.mp3; leading silence trimmed 0.02s; composer describes it as easy to loop; end is a decay so treat as cross-fade loop; loop seam metrics (end-vs-start RMS dB -10.15, zero-crossing ratio 0.71, seam jump 0.0, beat fraction 0.011); not seamless -> cross-fade 2-3 s when looping"
   },
   {
    "id": "comedy_bumbly_march",
    "file": "comedy_bumbly_march.mp3",
    "path": "audio/music/comedy_bumbly_march.mp3",
    "mood": "comedy",
-   "tags": [],
+   "tags": [
+    "march",
+    "humorous",
+    "brass",
+    "silly"
+   ],
    "duration": 57.34,
    "loop": false,
    "loopStart": 0.0,

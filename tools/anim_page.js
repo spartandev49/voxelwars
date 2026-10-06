@@ -11,7 +11,7 @@ const THREE = window.THREE;
 const lin = (hex) => { const c = new THREE.Color(hex); c.convertSRGBToLinear(); return [c.r, c.g, c.b]; };
 const TEAM = { a: lin(0x2f6bff), b: lin(0xe23b3b) };
 
-registerAllClips(ClipLib, { humanoid: humanoidJson, onReport: (m) => console.log('boot: ' + m) });
+registerAllClips(ClipLib, { humanoid: humanoidJson, alternates: true, onReport: (m) => console.log('boot: ' + m) });
 Animator.warn = (m) => console.warn('ANIM: ' + m);
 
 let renderer = null, scene = null, cam = null;
@@ -57,17 +57,15 @@ function overlay(html) {
 /** Render one job (see tools/filmstrip.mjs for the format). */
 async function render(job) {
   const { ppu, cellW, rowH, cols, labelW, rows } = job;
-  const W = Math.round(labelW + cols * cellW * ppu), H = Math.round(rows.length * rowH * ppu + (job.title ? 22 : 4));
+  const topPad = job.title ? 22 : 4, botPad = 10;
+  const W = Math.round(labelW + cols * cellW * ppu), H = Math.round(rows.length * rowH * ppu + topPad + botPad);
   init(W, H);
   // camera: world z -> screen x, world y -> screen y (camera looks along +X from -X)
-  const topPad = job.title ? 22 : 4;
   const zMin = -cellW * 0.5 - labelW / ppu, zMax = cols * cellW - cellW * 0.5;
   const yTop = rowH * rows.length + topPad / ppu;
+  // camera looks along +X from -X: camera-space x = world +Z (screen right), y = world y
   cam = new THREE.OrthographicCamera(zMin, zMax, yTop, yTop - H / ppu, 0.1, 200);
-  cam.position.set(-60, 0, 0); cam.up.set(0, 1, 0); cam.lookAt(0, 0, 0);
-  // THREE ortho: left/right map to camera-space x; with the camera looking along +X, camera-space x = world +Z
-  cam.updateProjectionMatrix();
-  cam.position.set(-60, 0, 0); cam.lookAt(0, 0, 0); cam.updateMatrixWorld();
+  cam.position.set(-60, 0, 0); cam.up.set(0, 1, 0); cam.lookAt(0, 0, 0); cam.updateMatrixWorld();
   // clear ground slabs
   while (ground.children.length) { const c = ground.children.pop(); c.geometry.dispose(); c.material.dispose(); }
   const used = new Map();

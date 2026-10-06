@@ -34,7 +34,7 @@ export class Game {
     this.terrain = new TerrainRenderer(this.engine.scene);
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
     this.fx = new CubeFX(this.engine.scene, null, 24000);
-    const animator = ANIMATOR && ANIMATOR.Animator ? new ANIMATOR.Animator() : new TempAnimator();
+    const A = ANIMATOR && ANIMATOR.Animator; const animator = A ? (typeof A === 'function' ? new A() : A) : new TempAnimator();
     this.animator = animator;
     this.view = new BattleView({ engine: this.engine, fx: this.fx, animator, modelFor: (d, u) => this.content.modelFor(d, u), palette: this.settings.get('palette') || 'classic', gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay' });
     this.view.onShake = (a, x, z) => { this.rig.addTrauma(a); this.rig.kickFov(a * 3); };

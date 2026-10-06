@@ -23,6 +23,7 @@ import { mutatorMods } from './mutators.js';
 
 export { Squad };
 const TAU = Math.PI * 2;
+const DEFLECT = [0.6, -0.6, 1.2, -1.2, 1.9, -1.9, 2.6, -2.6];
 
 export const EVENT_NAMES = ['battle_countdown', 'battle_start', 'battle_end', 'unit_spawn', 'unit_hit', 'unit_block', 'unit_kill', 'unit_heal', 'unit_stagger', 'unit_rout', 'unit_rally', 'unit_revive', 'unit_convert',
   'ability_cast', 'ability_channel_start', 'ability_channel_end', 'telegraph', 'status_apply',
@@ -66,6 +67,7 @@ export class World {
     this.fields = [new FlowField(this.nav), new FlowField(this.nav)];
     this.fieldSrc = [new Int32Array(this.nav.n * this.nav.n), new Int32Array(this.nav.n * this.nav.n)];
     this.fieldStamp = new Uint32Array(this.nav.n * this.nav.n); this.stamp = 1;
+    this.crowd = [new Float32Array(this.nav.n * this.nav.n), new Float32Array(this.nav.n * this.nav.n)];   // per-team congestion cost (spreads armies over parallel routes)
     this.centroid = [{ x: 0, z: 0, n: 0 }, { x: 0, z: 0, n: 0 }];
     this.axis = new Float32Array(4); this.enemyExt = [12, 12]; this.enemyBack = [{ x: 0, z: 0, n: 0 }, { x: 0, z: 0, n: 0 }];
     this._sumD = new Float64Array(2); this._cntD = new Float64Array(2);
@@ -554,7 +556,10 @@ export class World {
         const cell = this.nav.cx(u.x) + this.nav.cz(u.z) * this.nav.n;
         if (this.fieldStamp[cell] !== this.stamp) { this.fieldStamp[cell] = this.stamp; src[n++] = cell; }
       }
-      if (n > 0) this.fields[team].compute(src, n); else this.fields[team].valid = false;
+      const crowd = this.crowd[team]; crowd.fill(0);
+      const nv = this.nav.n;
+      for (let i = 0; i < this.units.length; i++) { const u = this.units[i]; if (u.alive && u.team === team) { const c = this.nav.cx(u.x) + this.nav.cz(u.z) * nv; if (crowd[c] < 6) crowd[c] += 1.2; } }
+      if (n > 0) this.fields[team].compute(src, n, 1e9, crowd); else this.fields[team].valid = false;
     }
   }
 
@@ -562,6 +567,7 @@ export class World {
   _integrate(u, dt) {
     const def = u.def, st = u.state;
     if (st === ST.STUN || st === ST.SIT || st === ST.STAGGER || st === ST.CAST || st === ST.DOWN || st === ST.COWER || st === ST.GETUP || (st === ST.WINDUP && !(u.atkKind === 1 && def.ranged && def.ranged.whileMoving))) { u.dvx = 0; u.dvz = 0; }
+    if (st === ST.MOVE || st === ST.ROUT) this._deflect(u);
     // accelerate toward desired velocity
     const ax = u.dvx - u.vx, az = u.dvz - u.vz, am = def.accel * dt, al = Math.sqrt(ax * ax + az * az);
     if (al > am) { u.vx += ax / al * am; u.vz += az / al * am; } else { u.vx = u.dvx; u.vz = u.dvz; }
@@ -580,6 +586,8 @@ export class World {
       if (this._canMove(nav, ocx, ocz, nx, u.z)) nz = u.z; else if (this._canMove(nav, ocx, ocz, u.x, nz)) nx = u.x; else { nx = u.x; nz = u.z; u.vx *= 0.3; u.vz *= 0.3; u.kx = 0; u.kz = 0; }
     }
     u.speedNow = Math.sqrt(u.vx * u.vx + u.vz * u.vz);
+    const moved2 = (nx - u.x) * (nx - u.x) + (nz - u.z) * (nz - u.z), want2 = u.dvx * u.dvx + u.dvz * u.dvz;
+    if (want2 > 0.64 && moved2 < want2 * dt * dt * 0.1) u.blockT += dt; else if (u.blockT > 0) u.blockT = Math.max(0, u.blockT - dt * 2);
     u.x = nx; u.z = nz;
     // facing
     if (u.state !== ST.DOWN) {
@@ -597,6 +605,20 @@ export class World {
     u.gait += u.speedNow * dt;
     u.anim.t += dt * u.anim.rate;
     if (u.anim.blend < 1) u.anim.blend = Math.min(1, u.anim.blend + dt / 0.14);
+  }
+  /** Local obstacle avoidance: if the cell ahead is blocked, rotate the desired velocity to the first free direction (prefers the unit's side). */
+  _deflect(u) {
+    const sp2 = u.dvx * u.dvx + u.dvz * u.dvz;
+    if (sp2 < 0.01) return;
+    const nav = this.nav, ocx = nav.cx(u.x), ocz = nav.cz(u.z), sp = Math.sqrt(sp2), look = 0.9;
+    const nx = u.dvx / sp, nz = u.dvz / sp;
+    if (this._canMove(nav, ocx, ocz, u.x + nx * look, u.z + nz * look)) return;
+    const sg = u.sideSign;
+    for (let k = 0; k < DEFLECT.length; k++) {
+      const a = DEFLECT[k] * sg, c = Math.cos(a), s = Math.sin(a);
+      const rx = nx * c - nz * s, rz = nx * s + nz * c;
+      if (this._canMove(nav, ocx, ocz, u.x + rx * look, u.z + rz * look)) { u.dvx = rx * sp; u.dvz = rz * sp; return; }
+    }
   }
   _canMove(nav, ocx, ocz, px, pz) {
     if (!nav.inside(px, pz)) return false;
@@ -625,6 +647,7 @@ export class World {
         let nx = dx / d, nz = dz / d;
         if (d < 0.001) { nx = 1; nz = 0; }
         const ov = (minD - d);
+        a.press += ov; b.press += ov;
         // heavier units shove lighter ones; units that are attacking or standing in a stance hold their ground
         let wa = b.mass / (a.mass + b.mass), wb = 1 - wa;
         const aHold = a.state === ST.WINDUP || a.hold, bHold = b.state === ST.WINDUP || b.hold;
@@ -741,7 +764,6 @@ export class World {
     if (idle > G.stalemateAdvance && !this.forceAdvance) this.forceAdvance = true;
     if (idle > G.stalemateZeus && this.stalemateStage < 1) { this.stalemateStage = 1; this.zeusIntervene(); }
     if (idle > G.stalemateQuit && this.stalemateStage < 2) { this.stalemateStage = 2; const e = this.P.intervention; e.kind = 'ragequit'; this.emit('intervention', e); this.end(-1, 'intervention'); return; }
-    if (idle < 3 && this.stalemateStage === 1) this.stalemateStage = 0;
     // pacing governor: lopsided long battles collapse faster; even idle ones advance
     const ca = this.stats[0].aliveCost, cb = this.stats[1].aliveCost;
     if (this.time > 90) { const r = (ca + 1) / (cb + 1); this.collapseTeam = r > 4 ? 1 : r < 0.25 ? 0 : -1; }
@@ -749,7 +771,21 @@ export class World {
     if (a <= 0 || b <= 0) {
       if (!(this.objective && this.objective.blocksElimination)) { this.end(a > 0 ? 0 : b > 0 ? 1 : -1, 'elimination'); return; }
     }
+    if ((this.tickN % 15) === 0 && !(this.objective && this.objective.blocksElimination) && this._routCheck(a, b)) return;
     if (this.time >= this.rules.timeLimit) this.end(ca > cb * 1.02 ? 0 : cb > ca * 1.02 ? 1 : -1, 'time');
+  }
+  /** An army whose survivors are all routing for 3 s has lost ('rout' end). */
+  _routCheck(a, b) {
+    const rc = this._routCount || (this._routCount = [0, 0]), t0 = this._routT || (this._routT = [0, 0]);
+    rc[0] = rc[1] = 0;
+    for (let i = 0; i < this.units.length; i++) { const u = this.units[i]; if (u.alive && u.team < 2 && u.state === ST.ROUT) rc[u.team]++; }
+    const full = [a > 0 && rc[0] >= a, b > 0 && rc[1] >= b];
+    for (let t = 0; t < 2; t++) t0[t] = full[t] ? t0[t] + 0.5 : 0;
+    const l0 = t0[0] >= 3, l1 = t0[1] >= 3;
+    if (l0 && !l1) { this.end(1, 'rout'); return true; }
+    if (l1 && !l0) { this.end(0, 'rout'); return true; }
+    if (l0 && l1) { const ca = this.stats[0].aliveCost, cb = this.stats[1].aliveCost; this.end(ca > cb * 1.02 ? 0 : cb > ca * 1.02 ? 1 : -1, 'rout'); return true; }
+    return false;
   }
   _pulseEvents(a, b) {
     const s0 = this.stats[0], s1 = this.stats[1];
@@ -764,7 +800,9 @@ export class World {
     let best = null, bn = -1;
     for (let i = 0; i < this.units.length; i += 3) { const u = this.units[i]; if (!u.alive) continue; const n = this.hash.query(u.x, u.z, 5, this.qbuf2); if (n > bn) { bn = n; best = u; } }
     const e = this.P.intervention; e.kind = 'zeus'; this.emit('intervention', e);
+    const keepT = this.lastDamageT;
     if (best) this.lightning(best.x, best.z, 90, 3.5, null);
+    this.lastDamageT = keepT;                           // the intervention itself must not reset the watchdog
     const weaker = this.stats[0].aliveCost <= this.stats[1].aliveCost ? 0 : 1;
     const zone = this.arena.zones[weaker === 0 ? 'A' : 'B'];
     const g = this.addUnit('battle_goat', weaker, zone.x, zone.z, {});

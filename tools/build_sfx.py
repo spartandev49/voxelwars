@@ -168,5 +168,12 @@ if __name__ == '__main__':
             errs += 1; print('ERROR', s['id'], e)
         except Exception as e:
             errs += 1; print('EXC', s['id'], repr(e))
+    if not want:   # full build: drop stale outputs (variants removed from the spec)
+        ids = {x['id'] for x in m.SPEC}
+        for k in list(res):
+            if k not in ids: del res[k]
+        for d, ext in ((OUT, '.mp3'), (MASTERS, '.flac')):
+            for f in os.listdir(d):
+                if f.endswith(ext) and f[:-len(ext)] not in ids: os.remove(os.path.join(d, f)); print('removed stale', f)
     json.dump(res, open(mp, 'w'), indent=1)
     print('built', len(res), 'errors', errs)

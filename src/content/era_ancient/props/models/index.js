@@ -3,11 +3,13 @@
 //   stage 0 intact, 1 cracked (<= 60% hp), 2 collapsed rubble. Indestructible props return the intact model for every stage.
 // Deterministic: the default RNG is seeded from (type, stage, variant). The renderer (render/props.js) and the tests share this entry point.
 import * as nature from './nature.js';
+import * as architecture from './architecture.js';
+import * as camp from './camp.js';
 import * as crowd from './crowd.js';
 import { RNG, hashString, measure, colorHistogram } from './kit.js';
 
-const SPECS = Object.assign({}, nature.MODELS, crowd.MODELS);
-const BUILD = Object.assign({}, nature.BUILDERS, crowd.BUILDERS);
+const SPECS = Object.assign({}, nature.MODELS, architecture.MODELS, camp.MODELS, crowd.MODELS);
+const BUILD = Object.assign({}, nature.BUILDERS, architecture.BUILDERS, camp.BUILDERS, crowd.BUILDERS);
 
 export const PROP_MODEL_IDS = Object.keys(BUILD);
 

@@ -1,0 +1,29 @@
+// Scenario list shared by tools/shot_ui.mjs and the Playwright tests. Each: { name, screen, params?, settings?, reset?(app), setup?(ui) }.
+// `screen` is a meta.id; scenarios whose screen module does not exist yet are skipped by the runner when missing from the registry.
+const click = (ui, sel) => { const el = ui.q(sel); if (!el) throw new Error('missing ' + sel); el.click(); };
+
+export const SCENARIOS = [
+  { name: 'splash', screen: 'splash' },
+  { name: 'title', screen: 'title' },
+  { name: 'quick', screen: 'quick' },
+  { name: 'quick_advanced', screen: 'quick', setup: async (ui) => { const b = ui.q('[data-adv="advanced"]'); if (b) b.click(); await ui.sleep(250); } },
+  { name: 'placement', screen: 'placement', setup: async (ui) => { await ui.game.begin(ui.game.newSetup('quick')); ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes' }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians' }); } },
+  { name: 'settings_graphics', screen: 'settings', params: { tab: 'graphics' } },
+  { name: 'settings_gameplay', screen: 'settings', params: { tab: 'gameplay' } },
+  { name: 'settings_audio', screen: 'settings', params: { tab: 'audio' } },
+  { name: 'settings_access', screen: 'settings', params: { tab: 'access' } },
+  { name: 'settings_controls', screen: 'settings', params: { tab: 'controls' } },
+  { name: 'settings_data', screen: 'settings', params: { tab: 'data' } },
+  { name: 'settings_about', screen: 'settings', params: { tab: 'about' } },
+  { name: 'credits', screen: 'credits' },
+  { name: 'diagnostics', screen: 'diagnostics' },
+  { name: 'codex_units', screen: 'codex', params: { unit: 'spartan' } },
+  { name: 'codex_props', screen: 'codex', params: { tab: 'props' } },
+  { name: 'codex_arenas', screen: 'codex', params: { tab: 'arenas' } },
+  { name: 'achievements', screen: 'achievements' },
+  { name: 'stats', screen: 'stats' },
+  { name: 'phone_notice', screen: 'phone_notice', params: { editor: 'arena_builder' } },
+  { name: 'fatal', screen: 'fatal', params: { kind: 'webgl2', message: 'getContext("webgl2") returned null', diagnostics: 'ua: HeadlessChrome/131\nrenderer: none\nwebgl2: false\nbuild: 1.0.0 (2026-10-06)' } },
+  { name: 'modal_reset', screen: 'settings', params: { tab: 'data' }, setup: async (ui) => { click(ui, '#set-reset-progress'); await ui.sleep(450); } },
+  { name: 'toast_kit', screen: 'title', setup: async (ui) => { ui.K.toast('Hoplite placed. It looks smug.', { kind: 'success', ms: 600000 }); ui.K.toast('That square is underwater. Soldiers are not.', { kind: 'error', ms: 600000 }); await ui.sleep(450); } },
+];

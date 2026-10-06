@@ -33,6 +33,11 @@ export class Pen extends VoxelGrid {
   set(x, y, z, v) { return super.set(x, Math.round(y) + this.ground, z, v); }
   setIfEmpty(x, y, z, v) { return super.setIfEmpty(x, Math.round(y) + this.ground, z, v); }
   get(x, y, z) { return super.get(Math.round(x), Math.round(y) + this.ground, Math.round(z)); }
+  /** box(): a colour function (x,y,z) is also accepted for the colour argument. */
+  box(x, y, z, w, h, d, v) {
+    if (typeof v === 'function') return this.fill(x, y, z, w, h, d, (i, j, k, X, Y, Z) => v(X, Y, Z));
+    return super.box(x, y, z, w, h, d, v);
+  }
   /** Fill a box; colour comes from fn(i,j,k,x,y,z) (return 0 to skip a voxel) or a constant voxel value. */
   fill(x, y, z, w, h, d, fn) {
     const f = typeof fn === 'function' ? fn : () => fn;

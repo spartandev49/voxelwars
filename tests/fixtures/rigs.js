@@ -18,7 +18,7 @@ function weaponGrid(kind) {
     case 'sword':
       g.box(3, 6, 3, 2, 4, 2, V(LEATHER));                                // grip
       g.box(1, 10, 3, 6, 1, 2, V(GOLD));                                  // guard
-      g.box(2, 11, 3, 4, 26, 2, V(IRON)).box(3, 37, 3, 2, 3, 2, V(0xdfe3ea)); // blade, tip
+      g.box(2, 11, 3, 4, 17, 2, V(IRON)).box(3, 28, 3, 2, 3, 2, V(0xdfe3ea)); // blade, tip
       g.box(3, 4, 3, 2, 2, 2, V(GOLD));                                   // pommel
       break;
     case 'axe':

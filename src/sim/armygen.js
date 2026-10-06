@@ -71,7 +71,7 @@ export function layoutArmy(groups, zone, enemyZone, defs, opts = {}) {
   let u = 0.0;
   const place = (lineGroups, flankHalfWidth, rankMax, gapAfter, wantFormation, opts2 = {}) => {
     if (!lineGroups.length) return 0;
-    const sp = spacing0;
+    const sp = Math.max(spacing0, ...lineGroups.map((g) => g.def.radius * 2.25));
     const maxFiles = Math.max(2, Math.floor((2 * flankHalfWidth) / sp));
     const total = lineGroups.reduce((s, g) => s + g.n, 0);
     const ranks = Math.max(1, Math.min(rankMax, Math.ceil(total / maxFiles)));

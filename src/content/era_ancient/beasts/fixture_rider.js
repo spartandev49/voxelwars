@@ -10,6 +10,8 @@ const KINDS = {
   cataphract: { helm: 'conical', plume: 'none', armor: 'scale', weapon: 'kontos', skin: 0xc99770, shield: false, veil: true },
   camel: { helm: 'turban', plume: 'none', armor: 'robe', weapon: 'spear', skin: 0xa87850, shield: false },
   numidian: { helm: 'bare', plume: 'none', armor: 'bare', weapon: 'javelin', skin: 0x6e4a32, shield: false, braids: true },
+  centaur: { helm: 'bare', plume: 'none', armor: 'bare', weapon: 'bow', skin: 0xc9936a, shield: false, sash: true, hairLong: true, headband: true },
+  archer: { helm: 'cap', plume: 'none', armor: 'linen', weapon: 'bow', skin: 0xd9a47c, shield: false, sash: true },
   hannibal: { helm: 'crest', plume: 'team', armor: 'bronze', weapon: 'spear', skin: 0xb98660, shield: false, cloak: true, eyepatch: true },
 };
 
@@ -31,6 +33,7 @@ export function buildFixtureRider(kind = 'greek', o = {}) {
   else if (K.armor === 'bronze') { body.box(-5, 0, -2.5, 5, 9, 2.5, V(C.bronze)); body.box(-5, 0, -2.5, 5, 2, 2.5, cloth); body.box(-1, 2, 2.4, 1, 8, 2.5, V(shade(C.bronze, 0.8))); }
   else if (K.armor === 'robe') { body.box(-5, 0, -2.5, 5, 9, 2.5, cloth); body.box(-5, 3, -2.5, 5, 4, 2.5, V(C.gold)); }
   else { body.box(-5, 0, -2.5, 5, 9, 2.5, lin); body.box(-5, 0, -2.5, 5, 3, 2.5, cloth); body.box(-5, 6, -2.5, 5, 7, 2.5, cloth); }
+  if (K.sash) for (let y = 0; y < 9; y++) body.box(-5 + y * 0.9 - 1, y, 2.3, -5 + y * 0.9 + 1.4, y + 1, 2.7, cloth);   // diagonal team sash
   body.box(-5, 0, -2.5, 5, 1, 2.5, lea);                                        // belt
   body.box(-1, 0, 2.4, 1, 1, 2.6, V(C.gold));
   addLG(m, 'body', body, { origin: [0, 10, 0] });
@@ -51,7 +54,7 @@ export function buildFixtureRider(kind = 'greek', o = {}) {
   } else if (K.helm === 'turban') {
     head.box(-3.8, 4.4, -3.8, 3.8, 7.4, 3.8, cloth); head.box(-3.8, 5.4, -3.8, 3.8, 5.9, 3.8, clothDk); head.box(-1.5, 7.4, -1.5, 1.5, 8.2, 1.5, cloth); head.box(-3.4, 1, -3.4, 3.4, 4.4, -2.6, V(0x2a1c12));
   } else if (K.helm === 'crest') { head.box(-3.4, 3.8, -3.4, 3.4, 6.6, 3.4, bronze); head.box(-3.4, 1, -3.4, 3.4, 3.8, -2.4, bronze); head.box(-3.7, 0.5, 0, -2.9, 3.8, 3, bronze); head.box(2.9, 0.5, 0, 3.7, 3.8, 3, bronze); head.box(-1, 6.6, -2, 1, 8, 1, bronze); }
-  else if (!K.braids) { head.box(-3.4, 4.8, -3.4, 3.4, 6.6, 3.4, V(0x3a281c)); head.box(-3.4, 1, -3.4, 3.4, 4.8, -2.6, V(0x3a281c)); }
+  else if (!K.braids) { head.box(-3.4, 4.8, -3.4, 3.4, 6.6, 3.4, V(0x3a281c)); head.box(-3.4, 1, -3.4, 3.4, 4.8, -2.6, V(0x3a281c)); if (K.hairLong) head.box(-3.4, -3, -3.6, 3.4, 1, -2.6, V(0x3a281c)); if (K.headband) head.box(-3.5, 4.2, -3.5, 3.5, 5.2, 3.5, cloth); }
   addLG(m, 'head', head, { parent: 'body', origin: [0, 9, 0] });
 
   // ---- crest (10,8,12) pivot (5,0,6): plume volume (empty for helmets without one)
@@ -76,12 +79,16 @@ export function buildFixtureRider(kind = 'greek', o = {}) {
     wp.box(-0.5, -9, -0.5, 0.5, L, 0.5, shaft); wp.box(-1, -9, -1, 1, -3, 1, shaft);
     wp.box(-1, L, -1, 1, L + 1, 1, steel); wp.box(-0.5, L + 1, -0.5, 0.5, L + 4, 0.5, steel);
     wp.box(-1.5, L - 8, -1.5, 1.5, L - 7, 1.5, cloth);                          // pennant stub (team)
+  } else if (K.weapon === 'bow') {
+    const wood = V(0x8a5a2e);
+    for (let y = -10; y <= 14; y++) { const t = y >= 0 ? y / 14 : -y / 10, z = -Math.round(3.2 * t * t); wp.box(-0.5, y, z - 0.5, 0.5, y + 1, z + 0.5, wood); if (Math.abs(y) < 3) wp.box(-1, y, z - 0.5, 1, y + 1, z + 1, V(C.leather)); }
+    wp.line([0, 14, -3], [0, -10, -3], V(0xe8e0c8));                              // string (behind the limbs, toward the archer)
   } else if (K.weapon === 'javelin') {
     wp.box(-0.5, -4, -0.5, 0.5, 22, 0.5, shaft); wp.box(-0.5, 22, -0.5, 0.5, 26, 0.5, steel);
   } else {
     wp.box(-0.5, -9, -0.5, 0.5, 30, 0.5, shaft); wp.box(-1, 30, -1, 1, 31, 1, steel); wp.box(-0.5, 31, -0.5, 0.5, 35, 0.5, steel);
   }
-  addLG(m, 'weapon', wp, { parent: 'armLR', origin: [0, -4, 0.5], rest: [-1.35, 0, 0] });
+  addLG(m, 'weapon', wp, { parent: 'armLR', origin: [0, -4, 0.5], rest: K.weapon === 'bow' ? [0, 0, 0] : [-1.35, 0, 0] });
   m.addAttach('grip_main', 'weapon', [4, 10, 4]);
   m.addAttach('muzzle', 'weapon', [4, 40, 4]);
 
@@ -105,6 +112,10 @@ export function buildFixtureRider(kind = 'greek', o = {}) {
     addLG(m, 'cape', cape, { parent: 'body', origin: [0, 8, -3] });
     const cape2 = new LG(10, 10, 2, 5, 10, 1); cape2.box(-5, 0, -1, 5, 10, 1, clothDk); cape2.box(-5, 0, -1, 5, 1, 1, V(C.gold));
     addLG(m, 'cape2', cape2, { parent: 'cape', origin: [0, -14, 0] });
+  }
+  if (K.weapon === 'bow') {
+    const back = new LG(12, 14, 8, 6, 7, 8); back.box(-1.5, -5, -5, 1.5, 6, -1.2, V(C.leather)); for (let i = -1; i <= 1; i++) back.box(i - 0.4, 6, -4.5, i + 0.4, 10, -3.5, V(C.linen)); back.box(-1.5, 5.5, -5, 1.5, 6.2, -1.2, cloth);
+    addLG(m, 'back', back, { parent: 'body', origin: [0, 7, -2.5] });
   }
   if (K.weapon === 'javelin') {
     const back = new LG(12, 14, 8, 6, 7, 8); back.box(-1, -6, -5, 1, 6, -1, V(C.leather)); for (let i = -3; i <= 3; i += 3) back.box(i - 0.5, 6, -4.5, i + 0.5, 12, -3.5, V(C.wood));

@@ -53,8 +53,8 @@ export function mount(parent, ctx, layers) {
     const s = slots[armed];
     const gm = ctx.game; if (!gm) return;
     let p = null;
-    try { p = gm.camera && gm.camera.pick ? gm.camera.pick(e.clientX, e.clientY) : null; } catch (err) { p = null; }
-    if (!p && lastHud && lastHud.cam) p = { x: lastHud.cam.x || 0, z: lastHud.cam.z || 0 };
+    try { p = gm.groundAt ? gm.groundAt(e.clientX, e.clientY) : (gm.camera && gm.camera.pick ? gm.camera.pick(e.clientX, e.clientY) : null); } catch (err) { p = null; }
+    if (!p && lastHud && lastHud.cam && typeof lastHud.cam === 'object') p = { x: lastHud.cam.x || 0, z: lastHud.cam.z || 0 };
     if (!p) return;
     try { gm.cast(s.id, p.x, p.z); } catch (err) { /* not ready */ }
     sfx(ctx, 'ui_confirm', { vol: 0.6 });

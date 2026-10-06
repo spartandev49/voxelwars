@@ -1,5 +1,5 @@
 // cameramodes.js: Orbit / Follow / Command / Top-down / Cinematic / Photo buttons (hotkeys routed by the battle screen).
-import { h, setCls, setAttr, sfx } from './_dom.js';
+import { h, setCls, setAttr, sfx, camMode } from './_dom.js';
 import { icon } from './_icons.js';
 import { keyOf } from './_bindings.js';
 
@@ -42,7 +42,7 @@ export function mount(parent, ctx) {
     el, set,
     update(hud) {
       selId = hud.selection ? hud.selection.id : null;
-      const m = (hud.cam && hud.cam.mode) || 'orbit';
+      const m = camMode(hud);
       if (m !== mode) { mode = m; paint(); }
     },
     destroy() { el.remove(); },

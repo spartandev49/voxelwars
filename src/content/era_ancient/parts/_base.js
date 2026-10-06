@@ -22,9 +22,11 @@ export function baseGrids(ctx) {
   P(head, 4, 2, 8, sk(0.96)); P(head, 5, 2, 8, sk(0.96)); P(head, 4, 1, 8, sk(0.88)); P(head, 5, 1, 8, sk(0.88));           // nose
   // eyes: dark pupil with a white outer corner, slightly recessed look through the brow shadow
   const eye = V(ctx.c.eyes), white = V(0xf4f4ee);
-  P(head, 3, 3, 7, eye); P(head, 6, 3, 7, eye);
-  P(head, 2, 3, 7, white); P(head, 7, 3, 7, white);
-  B(head, 3, 4, 7, 6, 4, 7, sk(0.82));                                                                                         // brow shadow
+  if (!ctx.noEyes) {
+    P(head, 3, 3, 7, eye); P(head, 6, 3, 7, eye);
+    P(head, 2, 3, 7, white); P(head, 7, 3, 7, white);
+    B(head, 3, 4, 7, 6, 4, 7, sk(0.82));                                                                                       // brow shadow
+  }
   B(head, 3, 1, 7, 6, 1, 7, V(shade(skin, 0.62)));                                                                              // mouth line
   G.head = head;
 

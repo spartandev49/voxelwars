@@ -110,6 +110,24 @@ function steer(w, u, tx, tz, speed) {
   setFace(u, Math.atan2(nx, nz));
 }
 
+/** True when the point just ahead of u is already crowded by slow/blocked friends (queue instead of shoving). */
+function crowdAhead(w, u, vx, vz) {
+  const l = hyp(vx, vz); if (l < 0.3) return false;
+  if (u.waitT > 0) { u.waitT -= 1 / 30; return true; }
+  if (((w.tickN + u.id) & 1) !== 0) return false;
+  const px = u.x + vx / l * 1.0, pz = u.z + vz / l * 1.0;
+  const n = w.hash.query(px, pz, 1.2, w.qbuf2);
+  let cnt = 0;
+  for (let k = 0; k < n; k++) {
+    const o = w.units[w.qbuf2[k]];
+    if (!o || o === u || !o.alive || o.team !== u.team) continue;
+    const dx = o.x - px, dz = o.z - pz;
+    if (dx * dx + dz * dz < 1.0 && o.speedNow < 0.45 * l) cnt++;
+  }
+  if (cnt >= 2) { u.waitT = 0.3; return true; }
+  return false;
+}
+
 /** Face update with hysteresis: tiny direction changes while moving don't re-aim the unit (fewer heading flips). */
 function setFace(u, a) {
   if (Math.abs(angleDiff(u.face, a)) > 0.12 || u.state !== ST.MOVE) u.face = a;
@@ -231,21 +249,26 @@ function meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq) {
   }
   u.hold = false;
   // approach (with a token) or queue behind the front rank (reserve)
-  if (!u.claim && !info.spear && gap > reach + 2.6) {
-    // reserve: close up behind friends, re-scan quickly so a freed slot is taken within a few ticks
+  if (!u.claim) {
+    const standoff = info.spear ? reach + 0.3 : reach + 1.9;
+    if (gap <= standoff) {
+      // reserve: wait behind the front rank, re-scan quickly so a freed slot is taken within a few ticks
+      u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.engaged = true; if (u.targetT > 4) u.targetT = 4;
+      playIdle(u, true);
+      return true;
+    }
     u.state = ST.MOVE; u.engaged = false;
-    if (u.targetT > 4) u.targetT = 4;
-    steer(w, u, t.x, t.z, speedBase * 0.9); u.blockT = u.speedNow < 0.3 * speedBase ? u.blockT + dt : 0;
-    playMove(u, speedBase * 0.9);
+    if (u.targetT > 6) u.targetT = 6;
+    steer(w, u, t.x, t.z, speedBase * 0.95);
+    if (u.blockT > 0.4 && crowdAhead(w, u, u.dvx, u.dvz)) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
+    playMove(u, speedBase * 0.95);
     return true;
   }
-  if (!u.claim && info.spear && gap <= reach + 1.2) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, true); return true; }
   let sp = speedBase;
   if (def.runMul > 1.2 && (info.cav || def.role === 'beast' || def.tags.includes('large'))) sp = speedBase * (gap > 7 ? def.runMul : 1.25);
   else if (gap > 5) sp = speedBase * 1.2;
   u.state = ST.MOVE; u.engaged = gap < 5;
   steer(w, u, t.x, t.z, sp);
-  u.blockT = u.speedNow < 0.25 * sp ? u.blockT + dt : 0;
   playMove(u, sp);
   // melee units with a ranged side-arm (elephant archers, cyclops boulders, pharaoh's scepter) throw while closing in
   if (def.ranged && u.cdR <= 0 && gap > reach + 2 && gap > (def.ranged.minRange || 0) && gap <= def.ranged.range * 0.95 && fdiffOk(u, want)) { startRanged(w, u); }
@@ -327,7 +350,7 @@ function followFormation(w, u, sq, speedBase, info) {
     const ex = gx - u.x, ez = gz - u.z, ed = hyp(ex, ez);
     if (sq.speed < 0.05 && ed < 0.2) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; u.face = sq.facing; playIdle(u, false); u.hold = false; return; }
     let vx = sq.vx + ex * 2.5, vz = sq.vz + ez * 2.5;
-    const cap = speedBase * (ed > 5 ? 1.7 : 1.35);
+    const cap = Math.max(speedBase * (ed > 5 ? 1.7 : 1.35), sq.speed * (ed > 2.5 ? 1.3 : 1.15));
     const l = hyp(vx, vz);
     if (l > cap) { vx = vx / l * cap; vz = vz / l * cap; }
     if (l < 0.12) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false); return; }
@@ -336,6 +359,7 @@ function followFormation(w, u, sq, speedBase, info) {
       if (u.lineT <= 0) { u.lineOk = w.nav.clearLine(u.x, u.z, gx, gz); u.lineT = 0.5 + (u.id % 5) * 0.05; }
       if (!u.lineOk && enemyDir(w, u, _d)) { vx = _d[0] * Math.min(l, cap); vz = _d[1] * Math.min(l, cap); }
     }
+    if (u.blockT > 0.4 && crowdAhead(w, u, vx, vz)) { u.dvx = 0; u.dvz = 0; u.state = ST.IDLE; playIdle(u, false); return; }
     u.dvx = vx; u.dvz = vz; u.state = ST.MOVE;
     const fa = l > 0.3 ? Math.atan2(vx, vz) : sq.facing;
     setFace(u, ed < 1.5 && sq.speed < 0.3 ? sq.facing : fa);

@@ -61,7 +61,7 @@ export class Unit {
     this.controlled = false;                       // player-possessed (Take Command)
     this.altitude = 0;
     this.tauntSrc = null; this.lastHitT = -99; this.lastFlankT = -99;
-    this.claims = 0; this.engaged = false; this.hold = false; this.oppT = 0; this.kiteT = 0; this.mEnv = 1; this.rank = 0; this.focusT = 0;
+    this.press = 0; this.claims = 0; this.engaged = false; this.hold = false; this.oppT = 0; this.kiteT = 0; this.mEnv = 1; this.rank = 0; this.focusT = 0;
     this.fleeX = 0; this.fleeZ = 0;
     this.routFrom = null;
     this.mutScale = 1;

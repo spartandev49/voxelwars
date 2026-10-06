@@ -57,13 +57,13 @@ try {
   await page.waitForTimeout(500); await shot('04_countdown');
   await page.evaluate(() => window.__vw.game.setSpeed(4));
   const t0 = Date.now(); let n = 0;
-  while ((Date.now() - t0) / 1000 < battleSecs) { await page.waitForTimeout(2000); n++; if (n === 2) await shot('05_battle_a'); if (n === 4) await shot('06_battle_b'); const s = await page.evaluate(() => window.__vw.game.state); if (s === 'ended') break; }
+  while ((Date.now() - t0) / 1000 < battleSecs) { await page.waitForTimeout(2000); n++; if (n === 2) await shot('05_battle_a'); if (n === 4) await shot('06_battle_b'); const s = await page.evaluate(() => window.__vw.game.state); step('t+' + Math.round((Date.now() - t0) / 1000) + 's state=' + s); if (s === 'ended' || s === 'idle') break; }
   const m = await page.evaluate(() => { const w = window.__vw.world; return { state: window.__vw.game.state, tick: w.tickN, alive: [w.stats[0].alive, w.stats[1].alive], metrics: window.__vw.metrics() }; });
   step('battle: ' + JSON.stringify({ state: m.state, tick: m.tick, alive: m.alive, units: m.metrics.units, fps: m.metrics.fps, draws: m.metrics.drawCalls, tris: m.metrics.triangles }));
   await shot('07_battle_end'); await page.waitForTimeout(2500); await shot('08_results');
 } catch (e) { problems.push('driver: ' + e.message); }
 await browser.close();
 if (problems.length) { ok = false; console.log('SMOKE FAILED:\n' + problems.slice(0, 25).join('\n')); }
-if (arg('logs', false)) console.log(logs.slice(-30).join('\n'));
+if (arg('logs', false) || problems.length) console.log('--- last console lines ---\n' + logs.slice(-30).join('\n'));
 if (!problems.length) console.log('SMOKE PASSED (' + logs.length + ' console lines, 0 errors/warnings)');
 process.exit(ok ? 0 : 1);

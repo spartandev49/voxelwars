@@ -46,7 +46,7 @@ export async function runJobs(jobs, opts = {}) {
   await page.waitForFunction('window.__film && window.__film.ready', null, { timeout: 30000 });
   const results = [];
   for (const job of jobs) {
-    const W = Math.round(job.labelW + job.cols * job.cellW * job.ppu), H = Math.round(job.rows.length * job.rowH * job.ppu + (job.title ? 22 : 4));
+    const W = Math.round(job.labelW + job.cols * job.cellW * job.ppu), H = Math.round(job.rows.length * job.rowH * job.ppu + (job.title ? 22 : 4) + 10);
     await page.setViewportSize({ width: W, height: H });
     const info = await page.evaluate((j) => window.__film.render(j), job);
     await page.waitForTimeout(opts.waitMs || 120);

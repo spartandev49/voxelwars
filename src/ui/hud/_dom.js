@@ -73,6 +73,7 @@ export function sfx(ctx, cue, opts) { try { if (ctx && ctx.audio && ctx.audio.pl
 
 export function reduced(ctx) {
   try { if (ctx && ctx.settings && ctx.settings.get('reduceMotion')) return true; } catch (e) { /* settings optional */ }
+  try { if (document.documentElement.classList.contains('vw-reduce-motion')) return true; } catch (e) { /* no document */ }
   try { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; }
 }
 
@@ -122,8 +123,12 @@ export function disposer() {
 export function andList(a) { return a.length < 2 ? a.join('') : a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1]; }
 
 /** Unit display helpers (content is optional in tools). */
-export function unitName(ctx, defId) { const u = ctx && ctx.content && ctx.content.units && ctx.content.units[defId]; return (u && u.name) || String(defId || '?').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()); }
-export function unitRole(ctx, defId) { const u = ctx && ctx.content && ctx.content.units && ctx.content.units[defId]; return (u && u.role) || ''; }
+/** UnitDef lookup that works with the contract (`content.units`) and COORD's current content object (`content.defs`). */
+export function unitDef(ctx, defId) { const c = ctx && ctx.content; return (c && ((c.units && c.units[defId]) || (c.defs && c.defs[defId]))) || null; }
+export function unitName(ctx, defId) { const u = unitDef(ctx, defId); return (u && u.name) || String(defId || '?').replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()); }
+export function unitRole(ctx, defId) { const u = unitDef(ctx, defId); return (u && u.role) || ''; }
+/** hud.cam is either a mode string (COORD today) or {mode, x, z}. */
+export const camMode = (hud) => { const c = hud && hud.cam; return (typeof c === 'string' ? c : c && c.mode) || 'orbit'; };
 export const ROLE_ICON = { melee: 'sword', ranged: 'bow', cavalry: 'horse', siege: 'siege', support: 'heart', hero: 'crown', monster: 'skull', swarm: 'swarm', beast: 'paw' };
 
 /** Key-capture friendly: is the event aimed at a text field? (hotkeys must not fire while typing). */

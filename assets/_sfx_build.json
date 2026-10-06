@@ -10,7 +10,8 @@
    "crest": 10.7,
    "centroid": 868,
    "low": 0.0,
-   "flat": 0.003
+   "flat": 0.003,
+   "n_on": 0
   },
   "cut": false
  },
@@ -25,7 +26,8 @@
    "crest": 13.3,
    "centroid": 1010,
    "low": 0.0,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 1
   },
   "cut": false
  },
@@ -40,7 +42,8 @@
    "crest": 16.1,
    "centroid": 1107,
    "low": 0.4,
-   "flat": 0.053
+   "flat": 0.053,
+   "n_on": 1
   },
   "cut": false
  },
@@ -55,7 +58,8 @@
    "crest": 18.5,
    "centroid": 2076,
    "low": 0.01,
-   "flat": 0.06
+   "flat": 0.06,
+   "n_on": 1
   },
   "cut": false
  },
@@ -70,7 +74,8 @@
    "crest": 23.2,
    "centroid": 2443,
    "low": 0.21,
-   "flat": 0.077
+   "flat": 0.077,
+   "n_on": 3
   },
   "cut": false
  },
@@ -85,7 +90,8 @@
    "crest": 5.9,
    "centroid": 9010,
    "low": 0.0,
-   "flat": 0.057
+   "flat": 0.057,
+   "n_on": 1
   },
   "cut": false
  },
@@ -100,7 +106,8 @@
    "crest": 6.7,
    "centroid": 10530,
    "low": 0.0,
-   "flat": 0.099
+   "flat": 0.099,
+   "n_on": 1
   },
   "cut": false
  },
@@ -115,7 +122,8 @@
    "crest": 6.0,
    "centroid": 8476,
    "low": 0.0,
-   "flat": 0.031
+   "flat": 0.031,
+   "n_on": 1
   },
   "cut": false
  },
@@ -130,22 +138,8 @@
    "crest": 6.8,
    "centroid": 7011,
    "low": 0.0,
-   "flat": 0.032
-  },
-  "cut": false
- },
- "sword_hit_5": {
-  "srcfile": "oga-20-sword-sound-effects-attacks-and-clashes/files/sword_-_starninjas_1/sword - StarNinjas/sword.4.ogg",
-  "duration": 0.575,
-  "size": 6008,
-  "desc": {
-   "dur": 0.54,
-   "peak_db": -3.0,
-   "rms_db": -16.5,
-   "crest": 4.7,
-   "centroid": 7679,
-   "low": 0.0,
-   "flat": 0.058
+   "flat": 0.032,
+   "n_on": 1
   },
   "cut": false
  },
@@ -160,7 +154,8 @@
    "crest": 4.8,
    "centroid": 6497,
    "low": 0.0,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 1
   },
   "cut": false
  },
@@ -175,7 +170,8 @@
    "crest": 6.3,
    "centroid": 6170,
    "low": 0.0,
-   "flat": 0.026
+   "flat": 0.026,
+   "n_on": 1
   },
   "cut": false
  },
@@ -190,7 +186,8 @@
    "crest": 5.3,
    "centroid": 8292,
    "low": 0.0,
-   "flat": 0.07
+   "flat": 0.07,
+   "n_on": 1
   },
   "cut": false
  },
@@ -205,7 +202,8 @@
    "crest": 9.8,
    "centroid": 9068,
    "low": 0.0,
-   "flat": 0.014
+   "flat": 0.014,
+   "n_on": 1
   },
   "cut": false
  },
@@ -220,22 +218,8 @@
    "crest": 10.0,
    "centroid": 7200,
    "low": 0.0,
-   "flat": 0.06
-  },
-  "cut": false
- },
- "blade_clash_6": {
-  "srcfile": "oga-fantasy-weapons-and-apparel-sfx-library/files/weapons-apparel/sfx/sword-knife-clash-22.wav",
-  "duration": 0.601,
-  "size": 6269,
-  "desc": {
-   "dur": 0.55,
-   "peak_db": -3.0,
-   "rms_db": -17.4,
-   "crest": 5.2,
-   "centroid": 6983,
-   "low": 0.0,
-   "flat": 0.044
+   "flat": 0.06,
+   "n_on": 1
   },
   "cut": false
  },
@@ -250,7 +234,8 @@
    "crest": 17.6,
    "centroid": 4917,
    "low": 0.0,
-   "flat": 0.076
+   "flat": 0.076,
+   "n_on": 2
   },
   "cut": true
  },
@@ -265,22 +250,8 @@
    "crest": 15.4,
    "centroid": 4529,
    "low": 0.0,
-   "flat": 0.05
-  },
-  "cut": true
- },
- "blade_parry_3": {
-  "srcfile": "oga-medieval-sound-effects-weapon-impacts/files/medieval_sfx_weapon_on_weapon_1_of_2/Dagger Katana Blade on Blade.wav",
-  "duration": 1.437,
-  "size": 14629,
-  "desc": {
-   "dur": 1.4,
-   "peak_db": -3.0,
-   "rms_db": -29.6,
-   "crest": 21.3,
-   "centroid": 4958,
-   "low": 0.0,
-   "flat": 0.051
+   "flat": 0.05,
+   "n_on": 1
   },
   "cut": true
  },
@@ -295,7 +266,8 @@
    "crest": 13.1,
    "centroid": 4644,
    "low": 0.0,
-   "flat": 0.032
+   "flat": 0.032,
+   "n_on": 4
   },
   "cut": true
  },
@@ -310,7 +282,8 @@
    "crest": 15.6,
    "centroid": 4302,
    "low": 0.26,
-   "flat": 0.213
+   "flat": 0.213,
+   "n_on": 2
   },
   "cut": true
  },
@@ -325,7 +298,8 @@
    "crest": 20.1,
    "centroid": 2080,
    "low": 0.02,
-   "flat": 0.022
+   "flat": 0.022,
+   "n_on": 5
   },
   "cut": true
  },
@@ -340,7 +314,8 @@
    "crest": 6.6,
    "centroid": 1574,
    "low": 0.0,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 1
   },
   "cut": false
  },
@@ -355,7 +330,8 @@
    "crest": 7.0,
    "centroid": 6594,
    "low": 0.16,
-   "flat": 0.355
+   "flat": 0.355,
+   "n_on": 4
   },
   "cut": true
  },
@@ -370,7 +346,8 @@
    "crest": 7.8,
    "centroid": 264,
    "low": 0.39,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -385,22 +362,8 @@
    "crest": 7.0,
    "centroid": 400,
    "low": 0.14,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "blade_swish_3": {
-  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-20.flac",
-  "duration": 0.418,
-  "size": 4441,
-  "desc": {
-   "dur": 0.37,
-   "peak_db": -3.0,
-   "rms_db": -19.8,
-   "crest": 7.0,
-   "centroid": 428,
-   "low": 0.08,
-   "flat": 0.001
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -415,22 +378,8 @@
    "crest": 6.2,
    "centroid": 5128,
    "low": 0.0,
-   "flat": 0.064
-  },
-  "cut": false
- },
- "knife_slice_2": {
-  "srcfile": "kenney-rpg-audio/files/Audio/knifeSlice2.ogg",
-  "duration": 0.47,
-  "size": 4963,
-  "desc": {
-   "dur": 0.44,
-   "peak_db": -3.0,
-   "rms_db": -18.5,
-   "crest": 5.9,
-   "centroid": 6150,
-   "low": 0.0,
-   "flat": 0.106
+   "flat": 0.064,
+   "n_on": 0
   },
   "cut": false
  },
@@ -445,7 +394,8 @@
    "crest": 9.4,
    "centroid": 1691,
    "low": 0.2,
-   "flat": 0.019
+   "flat": 0.019,
+   "n_on": 1
   },
   "cut": false
  },
@@ -460,7 +410,8 @@
    "crest": 5.8,
    "centroid": 1480,
    "low": 0.26,
-   "flat": 0.031
+   "flat": 0.031,
+   "n_on": 2
   },
   "cut": false
  },
@@ -475,7 +426,8 @@
    "crest": 4.5,
    "centroid": 1196,
    "low": 0.04,
-   "flat": 0.01
+   "flat": 0.01,
+   "n_on": 1
   },
   "cut": false
  },
@@ -490,7 +442,8 @@
    "crest": 4.6,
    "centroid": 1248,
    "low": 0.07,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 1
   },
   "cut": false
  },
@@ -505,7 +458,8 @@
    "crest": 8.5,
    "centroid": 132,
    "low": 0.93,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -520,22 +474,8 @@
    "crest": 5.7,
    "centroid": 134,
    "low": 0.82,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "shield_bash_3": {
-  "srcfile": "kenney-impact-sounds/files/Audio/impactPlate_medium_001.ogg",
-  "duration": 0.653,
-  "size": 6792,
-  "desc": {
-   "dur": 0.6,
-   "peak_db": -3.0,
-   "rms_db": -24.4,
-   "crest": 11.8,
-   "centroid": 177,
-   "low": 0.9,
-   "flat": 0.004
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -550,7 +490,8 @@
    "crest": 5.4,
    "centroid": 108,
    "low": 1.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -565,7 +506,8 @@
    "crest": 5.5,
    "centroid": 86,
    "low": 1.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -580,22 +522,8 @@
    "crest": 6.3,
    "centroid": 219,
    "low": 0.53,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "wood_thud_4": {
-  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_02.ogg",
-  "duration": 0.261,
-  "size": 2874,
-  "desc": {
-   "dur": 0.21,
-   "peak_db": -3.0,
-   "rms_db": -16.7,
-   "crest": 4.8,
-   "centroid": 217,
-   "low": 0.73,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -610,7 +538,8 @@
    "crest": 12.9,
    "centroid": 2544,
    "low": 0.04,
-   "flat": 0.087
+   "flat": 0.087,
+   "n_on": 1
   },
   "cut": false
  },
@@ -625,22 +554,8 @@
    "crest": 4.9,
    "centroid": 94,
    "low": 1.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "spear_stab_4": {
-  "srcfile": "kenney-rpg-audio/files/Audio/drawKnife2.ogg",
-  "duration": 0.418,
-  "size": 4441,
-  "desc": {
-   "dur": 0.37,
-   "peak_db": -3.0,
-   "rms_db": -19.8,
-   "crest": 6.9,
-   "centroid": 4587,
-   "low": 0.0,
-   "flat": 0.034
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -655,7 +570,8 @@
    "crest": 7.8,
    "centroid": 252,
    "low": 0.69,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": true
  },
@@ -670,7 +586,8 @@
    "crest": 9.2,
    "centroid": 327,
    "low": 0.15,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -685,7 +602,8 @@
    "crest": 20.7,
    "centroid": 574,
    "low": 0.8,
-   "flat": 0.066
+   "flat": 0.066,
+   "n_on": 1
   },
   "cut": true
  },
@@ -700,24 +618,10 @@
    "crest": 17.3,
    "centroid": 3297,
    "low": 0.07,
-   "flat": 0.035
+   "flat": 0.035,
+   "n_on": 2
   },
   "cut": true
- },
- "bow_shot_3": {
-  "srcfile": "oga-battle-sound-effects/files/battle_sound_effects_0/battle_sound_effects/Bow.wav",
-  "duration": 0.34,
-  "size": 3657,
-  "desc": {
-   "dur": 0.31,
-   "peak_db": -3.0,
-   "rms_db": -23.9,
-   "crest": 11.1,
-   "centroid": 1797,
-   "low": 0.1,
-   "flat": 0.009
-  },
-  "cut": false
  },
  "crossbow_shot_1": {
   "srcfile": "oga-medieval-sound-effects-weapon-textures/files/medieval_sfx_textures_1_of_2/Crossbow Shoot.wav",
@@ -730,7 +634,8 @@
    "crest": 17.7,
    "centroid": 4037,
    "low": 0.01,
-   "flat": 0.139
+   "flat": 0.139,
+   "n_on": 1
   },
   "cut": true
  },
@@ -745,7 +650,8 @@
    "crest": 19.6,
    "centroid": 2911,
    "low": 0.4,
-   "flat": 0.202
+   "flat": 0.202,
+   "n_on": 11
   },
   "cut": true
  },
@@ -760,7 +666,8 @@
    "crest": 15.1,
    "centroid": 1081,
    "low": 0.71,
-   "flat": 0.123
+   "flat": 0.123,
+   "n_on": 3
   },
   "cut": true
  },
@@ -775,7 +682,8 @@
    "crest": 11.1,
    "centroid": 2148,
    "low": 0.15,
-   "flat": 0.069
+   "flat": 0.069,
+   "n_on": 1
   },
   "cut": false
  },
@@ -790,7 +698,8 @@
    "crest": 14.0,
    "centroid": 3367,
    "low": 0.09,
-   "flat": 0.123
+   "flat": 0.123,
+   "n_on": 2
   },
   "cut": false
  },
@@ -805,7 +714,8 @@
    "crest": 13.1,
    "centroid": 2792,
    "low": 0.21,
-   "flat": 0.106
+   "flat": 0.106,
+   "n_on": 1
   },
   "cut": false
  },
@@ -820,7 +730,8 @@
    "crest": 3.6,
    "centroid": 91,
    "low": 1.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -835,7 +746,8 @@
    "crest": 3.5,
    "centroid": 94,
    "low": 1.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -850,7 +762,8 @@
    "crest": 6.4,
    "centroid": 347,
    "low": 0.19,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -865,22 +778,8 @@
    "crest": 7.1,
    "centroid": 316,
    "low": 0.28,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "arrow_hit_wood_3": {
-  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_wood_hit_01.ogg",
-  "duration": 0.183,
-  "size": 2090,
-  "desc": {
-   "dur": 0.14,
-   "peak_db": -3.0,
-   "rms_db": -18.9,
-   "crest": 6.3,
-   "centroid": 348,
-   "low": 0.28,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -895,7 +794,8 @@
    "crest": 6.1,
    "centroid": 1056,
    "low": 0.68,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 2
   },
   "cut": false
  },
@@ -910,7 +810,8 @@
    "crest": 5.8,
    "centroid": 1862,
    "low": 0.48,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 1
   },
   "cut": false
  },
@@ -925,7 +826,8 @@
    "crest": 4.5,
    "centroid": 176,
    "low": 0.61,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -940,22 +842,8 @@
    "crest": 4.9,
    "centroid": 225,
    "low": 0.48,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "flesh_hit_light_5": {
-  "srcfile": "oga-37-hitspunches/files/independent_nu_ljudbank-hits_and_punches/hits/hit25.mp3.flac",
-  "duration": 0.47,
-  "size": 4963,
-  "desc": {
-   "dur": 0.44,
-   "peak_db": -3.0,
-   "rms_db": -12.2,
-   "crest": 2.9,
-   "centroid": 505,
-   "low": 0.87,
-   "flat": 0.02
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -970,7 +858,8 @@
    "crest": 5.2,
    "centroid": 93,
    "low": 0.96,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -985,7 +874,8 @@
    "crest": 4.4,
    "centroid": 111,
    "low": 0.94,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1000,7 +890,8 @@
    "crest": 4.9,
    "centroid": 102,
    "low": 0.94,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1015,7 +906,8 @@
    "crest": 7.8,
    "centroid": 1889,
    "low": 0.14,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1030,7 +922,8 @@
    "crest": 5.5,
    "centroid": 1362,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1045,7 +938,8 @@
    "crest": 5.9,
    "centroid": 123,
    "low": 1.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1060,7 +954,8 @@
    "crest": 6.3,
    "centroid": 246,
    "low": 0.43,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1075,7 +970,8 @@
    "crest": 6.4,
    "centroid": 626,
    "low": 0.07,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1090,7 +986,8 @@
    "crest": 3.5,
    "centroid": 193,
    "low": 0.91,
-   "flat": 0.018
+   "flat": 0.018,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1105,7 +1002,8 @@
    "crest": 3.2,
    "centroid": 583,
    "low": 0.05,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1120,7 +1018,8 @@
    "crest": 2.6,
    "centroid": 875,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1135,7 +1034,8 @@
    "crest": 2.7,
    "centroid": 902,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1150,7 +1050,8 @@
    "crest": 2.1,
    "centroid": 140,
    "low": 0.9,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1165,22 +1066,8 @@
    "crest": 1.9,
    "centroid": 205,
    "low": 0.65,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "death_grunt_6": {
-  "srcfile": "oga-male-dead-voice/files/enemy_dead_20150802/enemy_dead/enemy_dead_47.wav",
-  "duration": 0.627,
-  "size": 6531,
-  "desc": {
-   "dur": 0.58,
-   "peak_db": -3.0,
-   "rms_db": -9.8,
-   "crest": 2.2,
-   "centroid": 139,
-   "low": 0.87,
-   "flat": 0.001
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1195,7 +1082,8 @@
    "crest": 3.8,
    "centroid": 344,
    "low": 0.02,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1210,7 +1098,8 @@
    "crest": 4.3,
    "centroid": 1275,
    "low": 0.0,
-   "flat": 0.003
+   "flat": 0.003,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1225,7 +1114,8 @@
    "crest": 3.5,
    "centroid": 1258,
    "low": 0.0,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1240,22 +1130,8 @@
    "crest": 3.0,
    "centroid": 1341,
    "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "death_scream_3": {
-  "srcfile": "oga-aargh-male-screams/files/aargh/aargh1.ogg",
-  "duration": 0.679,
-  "size": 7053,
-  "desc": {
-   "dur": 0.63,
-   "peak_db": -3.0,
-   "rms_db": -11.5,
-   "crest": 2.7,
-   "centroid": 1134,
-   "low": 0.0,
-   "flat": 0.001
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1270,7 +1146,8 @@
    "crest": 6.3,
    "centroid": 951,
    "low": 0.1,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1285,22 +1162,8 @@
    "crest": 6.3,
    "centroid": 877,
    "low": 0.12,
-   "flat": 0.001
-  },
-  "cut": false
- },
- "death_dying_3": {
-  "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/deathh.wav",
-  "duration": 0.601,
-  "size": 6269,
-  "desc": {
-   "dur": 0.57,
-   "peak_db": -3.0,
-   "rms_db": -18.4,
-   "crest": 5.9,
-   "centroid": 1294,
-   "low": 0.03,
-   "flat": 0.005
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1315,22 +1178,8 @@
    "crest": 5.6,
    "centroid": 1124,
    "low": 0.07,
-   "flat": 0.002
-  },
-  "cut": false
- },
- "death_hurt_2": {
-  "srcfile": "oga-11-male-human-paindeath-sounds/files/michelbaradari-human/player/pain5.wav",
-  "duration": 0.627,
-  "size": 6531,
-  "desc": {
-   "dur": 0.58,
-   "peak_db": -3.0,
-   "rms_db": -19.3,
-   "crest": 6.5,
-   "centroid": 997,
-   "low": 0.02,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1345,7 +1194,8 @@
    "crest": 6.0,
    "centroid": 1003,
    "low": 0.28,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1360,7 +1210,8 @@
    "crest": 5.9,
    "centroid": 1522,
    "low": 0.24,
-   "flat": 0.007
+   "flat": 0.007,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1375,7 +1226,8 @@
    "crest": 7.1,
    "centroid": 1267,
    "low": 0.06,
-   "flat": 0.003
+   "flat": 0.003,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1390,7 +1242,8 @@
    "crest": 3.8,
    "centroid": 1061,
    "low": 0.0,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1405,39 +1258,10 @@
    "crest": 7.6,
    "centroid": 459,
    "low": 0.23,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 4
   },
   "cut": true
- },
- "battle_cry_6": {
-  "srcfile": "oga-tiny-creatures-sounds/files/battlecry1/battlecry1.ogg",
-  "duration": 0.653,
-  "size": 6792,
-  "desc": {
-   "dur": 0.61,
-   "peak_db": -3.0,
-   "rms_db": -21.4,
-   "crest": 8.4,
-   "centroid": 3189,
-   "low": 0.0,
-   "flat": 0.005
-  },
-  "cut": false
- },
- "orc_roar_1": {
-  "srcfile": "oga-orc-voice/files/all_orc_commander_audio_files_0/ORC FIGHT.wav",
-  "duration": 0.47,
-  "size": 4963,
-  "desc": {
-   "dur": 0.43,
-   "peak_db": -3.0,
-   "rms_db": -12.5,
-   "crest": 3.0,
-   "centroid": 634,
-   "low": 0.01,
-   "flat": 0.0
-  },
-  "cut": false
  },
  "orc_roar_2": {
   "srcfile": "oga-orc-voice/files/all_orc_commander_audio_files_0/ORC GROWL 2.wav",
@@ -1450,7 +1274,8 @@
    "crest": 5.4,
    "centroid": 227,
    "low": 0.93,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 10
   },
   "cut": false
  },
@@ -1465,7 +1290,8 @@
    "crest": 2.9,
    "centroid": 577,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1480,24 +1306,10 @@
    "crest": 4.6,
    "centroid": 718,
    "low": 0.01,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 0
   },
   "cut": false
- },
- "grunt_effort_3": {
-  "srcfile": "oga-male-gruntyelling-sounds/files/yelling sounds/yelling sounds/3grunt6.wav",
-  "duration": 1.045,
-  "size": 10710,
-  "desc": {
-   "dur": 1.0,
-   "peak_db": -3.0,
-   "rms_db": -21.1,
-   "crest": 8.0,
-   "centroid": 768,
-   "low": 0.08,
-   "flat": 0.002
-  },
-  "cut": true
  },
  "announcer_fight": {
   "srcfile": "kenney-voiceover-pack-fighter/files/Audio/fight.ogg",
@@ -1510,7 +1322,8 @@
    "crest": 4.3,
    "centroid": 5992,
    "low": 0.39,
-   "flat": 0.07
+   "flat": 0.07,
+   "n_on": 2
   },
   "cut": false
  },
@@ -1525,7 +1338,8 @@
    "crest": 3.2,
    "centroid": 569,
    "low": 0.88,
-   "flat": 0.033
+   "flat": 0.033,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1540,22 +1354,8 @@
    "crest": 4.0,
    "centroid": 2324,
    "low": 0.39,
-   "flat": 0.026
-  },
-  "cut": false
- },
- "announcer_flawless": {
-  "srcfile": "kenney-voiceover-pack-fighter/files/Audio/flawless_victory.ogg",
-  "duration": 1.724,
-  "size": 17502,
-  "desc": {
-   "dur": 1.67,
-   "peak_db": -3.0,
-   "rms_db": -15.6,
-   "crest": 4.3,
-   "centroid": 2688,
-   "low": 0.66,
-   "flat": 0.056
+   "flat": 0.026,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1570,7 +1370,8 @@
    "crest": 4.2,
    "centroid": 675,
    "low": 0.86,
-   "flat": 0.008
+   "flat": 0.008,
+   "n_on": 2
   },
   "cut": true
  },
@@ -1585,7 +1386,8 @@
    "crest": 3.8,
    "centroid": 344,
    "low": 0.9,
-   "flat": 0.017
+   "flat": 0.017,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1600,7 +1402,8 @@
    "crest": 5.2,
    "centroid": 941,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1615,7 +1418,8 @@
    "crest": 4.6,
    "centroid": 741,
    "low": 0.13,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1630,7 +1434,8 @@
    "crest": 4.8,
    "centroid": 918,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1645,7 +1450,8 @@
    "crest": 4.4,
    "centroid": 940,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1660,7 +1466,8 @@
    "crest": 3.6,
    "centroid": 1013,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1675,7 +1482,8 @@
    "crest": 5.0,
    "centroid": 1058,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1690,7 +1498,8 @@
    "crest": 7.8,
    "centroid": 2070,
    "low": 0.0,
-   "flat": 0.015
+   "flat": 0.015,
+   "n_on": 6
   },
   "cut": true
  },
@@ -1705,7 +1514,8 @@
    "crest": 3.0,
    "centroid": 249,
    "low": 0.81,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1720,7 +1530,8 @@
    "crest": 3.3,
    "centroid": 127,
    "low": 0.93,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
  },
@@ -1735,7 +1546,8 @@
    "crest": 4.6,
    "centroid": 617,
    "low": 0.41,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -1814,7 +1626,8 @@
    "crest": 7.3,
    "centroid": 1079,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1829,7 +1642,8 @@
    "crest": 7.4,
    "centroid": 539,
    "low": 0.31,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1844,7 +1658,8 @@
    "crest": 5.4,
    "centroid": 135,
    "low": 0.95,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -1859,7 +1674,8 @@
    "crest": 15.0,
    "centroid": 627,
    "low": 0.22,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 16
   },
   "cut": true
  },
@@ -1874,7 +1690,8 @@
    "crest": 6.1,
    "centroid": 627,
    "low": 0.57,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 2
   },
   "cut": false
  },
@@ -1889,7 +1706,8 @@
    "crest": 9.3,
    "centroid": 1676,
    "low": 0.72,
-   "flat": 0.02
+   "flat": 0.02,
+   "n_on": 3
   },
   "cut": false
  },
@@ -1904,7 +1722,8 @@
    "crest": 8.3,
    "centroid": 1034,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": false
  },
@@ -1919,7 +1738,8 @@
    "crest": 8.4,
    "centroid": 1027,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 5
   },
   "cut": true
  },
@@ -1934,22 +1754,8 @@
    "crest": 5.9,
    "centroid": 1066,
    "low": 0.1,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "camel_groan_2": {
-  "srcfile": "oga-fantasy-desert-ride-able-camel/files/fantasy_desert_camel/fantasy_desert_camel.mp3",
-  "duration": 1.672,
-  "size": 16980,
-  "desc": {
-   "dur": 1.64,
-   "peak_db": -3.0,
-   "rms_db": -17.8,
-   "crest": 5.5,
-   "centroid": 888,
-   "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": false
  },
@@ -1964,7 +1770,8 @@
    "crest": 9.9,
    "centroid": 1188,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 5
   },
   "cut": false
  },
@@ -1979,7 +1786,8 @@
    "crest": 4.8,
    "centroid": 680,
    "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -1994,7 +1802,8 @@
    "crest": 6.0,
    "centroid": 1743,
    "low": 0.03,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2009,7 +1818,8 @@
    "crest": 4.5,
    "centroid": 237,
    "low": 0.68,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2024,7 +1834,8 @@
    "crest": 4.9,
    "centroid": 135,
    "low": 0.99,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2039,22 +1850,8 @@
    "crest": 5.5,
    "centroid": 280,
    "low": 0.51,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "monster_roar_3": {
-  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/creature_roar_03.ogg",
-  "duration": 0.888,
-  "size": 9143,
-  "desc": {
-   "dur": 0.86,
-   "peak_db": -3.0,
-   "rms_db": -14.5,
-   "crest": 3.7,
-   "centroid": 228,
-   "low": 0.93,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2069,7 +1866,8 @@
    "crest": 3.5,
    "centroid": 116,
    "low": 0.84,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 6
   },
   "cut": true
  },
@@ -2084,7 +1882,8 @@
    "crest": 7.0,
    "centroid": 95,
    "low": 0.97,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": true
  },
@@ -2099,22 +1898,8 @@
    "crest": 4.8,
    "centroid": 2927,
    "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "catapult_creak_3": {
-  "srcfile": "kenney-rpg-audio/files/Audio/creak3.ogg",
-  "duration": 0.313,
-  "size": 3396,
-  "desc": {
-   "dur": 0.28,
-   "peak_db": -3.0,
-   "rms_db": -16.2,
-   "crest": 4.5,
-   "centroid": 1118,
-   "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": false
  },
@@ -2129,7 +1914,8 @@
    "crest": 12.4,
    "centroid": 601,
    "low": 0.27,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2144,7 +1930,8 @@
    "crest": 10.8,
    "centroid": 312,
    "low": 0.39,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2159,7 +1946,8 @@
    "crest": 17.2,
    "centroid": 3995,
    "low": 0.03,
-   "flat": 0.142
+   "flat": 0.142,
+   "n_on": 2
   },
   "cut": true
  },
@@ -2174,7 +1962,8 @@
    "crest": 8.1,
    "centroid": 308,
    "low": 0.19,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2189,7 +1978,8 @@
    "crest": 4.1,
    "centroid": 174,
    "low": 0.93,
-   "flat": 0.01
+   "flat": 0.01,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2204,7 +1994,8 @@
    "crest": 7.5,
    "centroid": 870,
    "low": 0.63,
-   "flat": 0.047
+   "flat": 0.047,
+   "n_on": 3
   },
   "cut": false
  },
@@ -2219,7 +2010,8 @@
    "crest": 10.8,
    "centroid": 3505,
    "low": 0.0,
-   "flat": 0.009
+   "flat": 0.009,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2234,7 +2026,8 @@
    "crest": 5.9,
    "centroid": 1510,
    "low": 0.03,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
  },
@@ -2249,7 +2042,8 @@
    "crest": 5.8,
    "centroid": 323,
    "low": 0.66,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
  },
@@ -2264,22 +2058,8 @@
    "crest": 7.4,
    "centroid": 30,
    "low": 1.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "explosion_rumble_3": {
-  "srcfile": "oga-explosion-0/files/explosion/explosion.wav",
-  "duration": 1.019,
-  "size": 10449,
-  "desc": {
-   "dur": 0.98,
-   "peak_db": -3.0,
-   "rms_db": -14.9,
-   "crest": 3.9,
-   "centroid": 1146,
-   "low": 0.2,
-   "flat": 0.031
+   "flat": 0.0,
+   "n_on": 8
   },
   "cut": false
  },
@@ -2294,7 +2074,8 @@
    "crest": 16.0,
    "centroid": 5216,
    "low": 0.02,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2309,7 +2090,8 @@
    "crest": 17.4,
    "centroid": 4584,
    "low": 0.0,
-   "flat": 0.018
+   "flat": 0.018,
+   "n_on": 3
   },
   "cut": false
  },
@@ -2324,7 +2106,8 @@
    "crest": 6.2,
    "centroid": 1854,
    "low": 0.62,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2339,22 +2122,8 @@
    "crest": 15.4,
    "centroid": 5715,
    "low": 0.0,
-   "flat": 0.003
-  },
-  "cut": false
- },
- "rock_fall_2": {
-  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_rock_falling_08.ogg",
-  "duration": 0.34,
-  "size": 3657,
-  "desc": {
-   "dur": 0.29,
-   "peak_db": -3.0,
-   "rms_db": -28.0,
-   "crest": 17.7,
-   "centroid": 2893,
-   "low": 0.07,
-   "flat": 0.005
+   "flat": 0.003,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2369,7 +2138,8 @@
    "crest": 18.5,
    "centroid": 5379,
    "low": 0.0,
-   "flat": 0.071
+   "flat": 0.071,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2384,7 +2154,8 @@
    "crest": 8.6,
    "centroid": 4608,
    "low": 0.01,
-   "flat": 0.02
+   "flat": 0.02,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2399,7 +2170,8 @@
    "crest": 7.5,
    "centroid": 2776,
    "low": 0.08,
-   "flat": 0.034
+   "flat": 0.034,
+   "n_on": 14
   },
   "cut": true
  },
@@ -2414,7 +2186,8 @@
    "crest": 9.7,
    "centroid": 3039,
    "low": 0.11,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 6
   },
   "cut": false
  },
@@ -2429,7 +2202,8 @@
    "crest": 5.5,
    "centroid": 1000,
    "low": 0.03,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
  },
@@ -2444,22 +2218,8 @@
    "crest": 8.6,
    "centroid": 3901,
    "low": 0.06,
-   "flat": 0.015
-  },
-  "cut": false
- },
- "debris_big_2": {
-  "srcfile": "oga-75-cc0-breaking-falling-hit-sfx/files/sfx_breaking_and_falling/bfh1_misc_03.ogg",
-  "duration": 0.418,
-  "size": 4441,
-  "desc": {
-   "dur": 0.38,
-   "peak_db": -3.0,
-   "rms_db": -24.7,
-   "crest": 12.1,
-   "centroid": 1471,
-   "low": 0.39,
-   "flat": 0.004
+   "flat": 0.015,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2474,7 +2234,8 @@
    "crest": 7.5,
    "centroid": 3078,
    "low": 0.01,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2489,7 +2250,8 @@
    "crest": 5.1,
    "centroid": 2752,
    "low": 0.02,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 4
   },
   "cut": false
  },
@@ -2504,22 +2266,8 @@
    "crest": 6.6,
    "centroid": 148,
    "low": 0.99,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "voxel_break_4": {
-  "srcfile": "kenney-impact-sounds/files/Audio/impactMining_003.ogg",
-  "duration": 0.653,
-  "size": 6792,
-  "desc": {
-   "dur": 0.61,
-   "peak_db": -3.0,
-   "rms_db": -21.4,
-   "crest": 8.3,
-   "centroid": 124,
-   "low": 0.99,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 4
   },
   "cut": false
  },
@@ -2534,7 +2282,8 @@
    "crest": 12.8,
    "centroid": 4445,
    "low": 0.06,
-   "flat": 0.009
+   "flat": 0.009,
+   "n_on": 5
   },
   "cut": false
  },
@@ -2549,7 +2298,8 @@
    "crest": 7.3,
    "centroid": 2680,
    "low": 0.16,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2564,22 +2314,8 @@
    "crest": 4.9,
    "centroid": 176,
    "low": 0.82,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "fire_ignite_2": {
-  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/spell_fire_01.ogg",
-  "duration": 0.888,
-  "size": 9143,
-  "desc": {
-   "dur": 0.85,
-   "peak_db": -3.0,
-   "rms_db": -24.9,
-   "crest": 12.4,
-   "centroid": 4394,
-   "low": 0.04,
-   "flat": 0.002
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2594,7 +2330,8 @@
    "crest": 4.6,
    "centroid": 2280,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2609,24 +2346,10 @@
    "crest": 6.2,
    "centroid": 2522,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
- },
- "heal_chime_3": {
-  "srcfile": "oga-3-heal-spells/files/3 heal spells/healspell2.aif",
-  "duration": 1.829,
-  "size": 18547,
-  "desc": {
-   "dur": 1.8,
-   "peak_db": -3.0,
-   "rms_db": -16.7,
-   "crest": 4.9,
-   "centroid": 142,
-   "low": 0.99,
-   "flat": 0.0
-  },
-  "cut": true
  },
  "buff_powerup_1": {
   "srcfile": "oga-power-up-sound-effects/files/power_up_sound_v1_0/power_up_sound_v1_0.ogg",
@@ -2639,7 +2362,8 @@
    "crest": 6.5,
    "centroid": 997,
    "low": 0.15,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 3
   },
   "cut": true
  },
@@ -2654,7 +2378,8 @@
    "crest": 5.1,
    "centroid": 936,
    "low": 0.24,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2669,7 +2394,8 @@
    "crest": 3.9,
    "centroid": 2884,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": true
  },
@@ -2684,7 +2410,8 @@
    "crest": 5.7,
    "centroid": 238,
    "low": 0.61,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": true
  },
@@ -2699,7 +2426,8 @@
    "crest": 6.4,
    "centroid": 167,
    "low": 0.91,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": false
  },
@@ -2714,7 +2442,8 @@
    "crest": 4.3,
    "centroid": 3604,
    "low": 0.0,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 0
   },
   "cut": true
  },
@@ -2729,7 +2458,8 @@
    "crest": 5.7,
    "centroid": 3912,
    "low": 0.2,
-   "flat": 0.095
+   "flat": 0.095,
+   "n_on": 3
   },
   "cut": true
  },
@@ -2744,22 +2474,8 @@
    "crest": 8.5,
    "centroid": 211,
    "low": 0.81,
-   "flat": 0.0
-  },
-  "cut": true
- },
- "thunder_crack_3": {
-  "srcfile": "oga-thunder/files/thunderclap_0/thunderclap_0.ogg",
-  "duration": 2.429,
-  "size": 24555,
-  "desc": {
-   "dur": 2.4,
-   "peak_db": -3.0,
-   "rms_db": -17.6,
-   "crest": 5.4,
-   "centroid": 110,
-   "low": 0.98,
-   "flat": 0.002
+   "flat": 0.0,
+   "n_on": 4
   },
   "cut": true
  },
@@ -2774,7 +2490,8 @@
    "crest": 3.3,
    "centroid": 995,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2789,24 +2506,10 @@
    "crest": 2.6,
    "centroid": 1796,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
- },
- "coin_pickup_3": {
-  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/item_coins_02.ogg",
-  "duration": 0.601,
-  "size": 6269,
-  "desc": {
-   "dur": 0.55,
-   "peak_db": -3.0,
-   "rms_db": -26.2,
-   "crest": 14.4,
-   "centroid": 2849,
-   "low": 0.0,
-   "flat": 0.001
-  },
-  "cut": false
  },
  "coin_clink_1": {
   "srcfile": "kenney-rpg-audio/files/Audio/handleCoins.ogg",
@@ -2819,7 +2522,8 @@
    "crest": 17.0,
    "centroid": 7550,
    "low": 0.0,
-   "flat": 0.114
+   "flat": 0.114,
+   "n_on": 6
   },
   "cut": false
  },
@@ -2834,7 +2538,8 @@
    "crest": 11.5,
    "centroid": 5670,
    "low": 0.0,
-   "flat": 0.077
+   "flat": 0.077,
+   "n_on": 3
   },
   "cut": false
  },
@@ -2849,7 +2554,8 @@
    "crest": 8.5,
    "centroid": 9892,
    "low": 0.0,
-   "flat": 0.056
+   "flat": 0.056,
+   "n_on": 7
   },
   "cut": true
  },
@@ -2864,22 +2570,8 @@
    "crest": 16.7,
    "centroid": 758,
    "low": 0.01,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "bell_ding_2": {
-  "srcfile": "oga-bell-dingschimes/files/bell_ding3/bell_ding3.wav",
-  "duration": 1.411,
-  "size": 14367,
-  "desc": {
-   "dur": 1.36,
-   "peak_db": -3.0,
-   "rms_db": -20.5,
-   "crest": 7.5,
-   "centroid": 434,
-   "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2894,7 +2586,8 @@
    "crest": 9.4,
    "centroid": 359,
    "low": 0.54,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2909,7 +2602,8 @@
    "crest": 15.7,
    "centroid": 2716,
    "low": 0.13,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 2
   },
   "cut": false
  },
@@ -2924,7 +2618,8 @@
    "crest": 24.2,
    "centroid": 2686,
    "low": 0.04,
-   "flat": 0.012
+   "flat": 0.012,
+   "n_on": 5
   },
   "cut": true
  },
@@ -2939,7 +2634,8 @@
    "crest": 17.0,
    "centroid": 1473,
    "low": 0.14,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": false
  },
@@ -2954,7 +2650,8 @@
    "crest": 7.8,
    "centroid": 505,
    "low": 0.54,
-   "flat": 0.003
+   "flat": 0.003,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2969,7 +2666,8 @@
    "crest": 8.5,
    "centroid": 849,
    "low": 0.5,
-   "flat": 0.018
+   "flat": 0.018,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2984,7 +2682,8 @@
    "crest": 7.6,
    "centroid": 573,
    "low": 0.5,
-   "flat": 0.012
+   "flat": 0.012,
+   "n_on": 0
   },
   "cut": false
  },
@@ -2999,7 +2698,8 @@
    "crest": 5.2,
    "centroid": 9972,
    "low": 0.0,
-   "flat": 0.016
+   "flat": 0.016,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3014,37 +2714,8 @@
    "crest": 5.6,
    "centroid": 10074,
    "low": 0.0,
-   "flat": 0.013
-  },
-  "cut": false
- },
- "armor_rustle_3": {
-  "srcfile": "oga-80-cc0-rpg-sfx/files/80-CC0-RPG-SFX_0/chain_03.ogg",
-  "duration": 0.784,
-  "size": 8098,
-  "desc": {
-   "dur": 0.75,
-   "peak_db": -3.0,
-   "rms_db": -21.2,
-   "crest": 8.1,
-   "centroid": 9544,
-   "low": 0.0,
-   "flat": 0.003
-  },
-  "cut": false
- },
- "armor_step_1": {
-  "srcfile": "oga-footsteps-leather-cloth-armor/files/footsteps/footsteps/step_metal.ogg",
-  "duration": 0.287,
-  "size": 3135,
-  "desc": {
-   "dur": 0.25,
-   "peak_db": -3.0,
-   "rms_db": -18.1,
-   "crest": 5.7,
-   "centroid": 3558,
-   "low": 0.46,
-   "flat": 0.009
+   "flat": 0.013,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3059,7 +2730,8 @@
    "crest": 10.6,
    "centroid": 332,
    "low": 0.7,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 3
   },
   "cut": false
  },
@@ -3074,22 +2746,8 @@
    "crest": 9.5,
    "centroid": 294,
    "low": 0.67,
-   "flat": 0.001
-  },
-  "cut": false
- },
- "cloth_flap_3": {
-  "srcfile": "kenney-rpg-audio/files/Audio/clothBelt.ogg",
-  "duration": 0.731,
-  "size": 7576,
-  "desc": {
-   "dur": 0.7,
-   "peak_db": -3.0,
-   "rms_db": -26.7,
-   "crest": 15.2,
-   "centroid": 6345,
-   "low": 0.03,
-   "flat": 0.123
+   "flat": 0.001,
+   "n_on": 3
   },
   "cut": false
  },
@@ -3104,24 +2762,10 @@
    "crest": 5.1,
    "centroid": 1924,
    "low": 0.37,
-   "flat": 0.08
+   "flat": 0.08,
+   "n_on": 0
   },
   "cut": true
- },
- "whoosh_camera_2": {
-  "srcfile": "oga-swish-bamboo-stick-weapon-swhoshes/files/swoshes/swosh-03.flac",
-  "duration": 0.601,
-  "size": 6269,
-  "desc": {
-   "dur": 0.57,
-   "peak_db": -3.0,
-   "rms_db": -20.8,
-   "crest": 7.8,
-   "centroid": 127,
-   "low": 0.81,
-   "flat": 0.001
-  },
-  "cut": false
  },
  "pop_place_1": {
   "srcfile": "oga-pop-sounds/files/pop1/pop1.ogg",
@@ -3134,7 +2778,8 @@
    "crest": 5.3,
    "centroid": 911,
    "low": 0.03,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -3149,22 +2794,8 @@
    "crest": 3.3,
    "centroid": 811,
    "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "pop_place_3": {
-  "srcfile": "oga-pop-sounds/files/pop7/pop7.ogg",
-  "duration": 0.131,
-  "size": 1567,
-  "desc": {
-   "dur": 0.09,
-   "peak_db": -3.0,
-   "rms_db": -13.7,
-   "crest": 3.4,
-   "centroid": 904,
-   "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3179,7 +2810,8 @@
    "crest": 11.4,
    "centroid": 3080,
    "low": 0.0,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3194,7 +2826,8 @@
    "crest": 7.2,
    "centroid": 1046,
    "low": 0.11,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3209,7 +2842,8 @@
    "crest": 9.3,
    "centroid": 801,
    "low": 0.01,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 2
   },
   "cut": false
  },
@@ -3224,7 +2858,8 @@
    "crest": 4.8,
    "centroid": 1165,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3239,7 +2874,8 @@
    "crest": 6.0,
    "centroid": 856,
    "low": 0.03,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 2
   },
   "cut": false
  },
@@ -3254,22 +2890,8 @@
    "crest": 8.1,
    "centroid": 1422,
    "low": 0.08,
-   "flat": 0.013
-  },
-  "cut": false
- },
- "war_cry_3": {
-  "srcfile": "oga-steampunk-fantasy-voices/files/Pikeman_Attack_001/Pikeman_Attack_001.wav",
-  "duration": 0.836,
-  "size": 8620,
-  "desc": {
-   "dur": 0.8,
-   "peak_db": -3.0,
-   "rms_db": -16.5,
-   "crest": 4.8,
-   "centroid": 974,
-   "low": 0.04,
-   "flat": 0.001
+   "flat": 0.013,
+   "n_on": 3
   },
   "cut": false
  },
@@ -3284,7 +2906,8 @@
    "crest": 2.6,
    "centroid": 465,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -3299,7 +2922,8 @@
    "crest": 8.6,
    "centroid": 1865,
    "low": 0.01,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 4
   },
   "cut": false
  },
@@ -3314,7 +2938,8 @@
    "crest": 16.8,
    "centroid": 1992,
    "low": 0.06,
-   "flat": 0.011
+   "flat": 0.011,
+   "n_on": 12
   },
   "cut": true
  },
@@ -3329,7 +2954,8 @@
    "crest": 10.6,
    "centroid": 283,
    "low": 0.9,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 10
   },
   "cut": false
  },
@@ -3344,37 +2970,8 @@
    "crest": 10.8,
    "centroid": 3555,
    "low": 0.01,
-   "flat": 0.013
-  },
-  "cut": false
- },
- "footstep_dirt_3": {
-  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-SandR3.flac",
-  "duration": 0.366,
-  "size": 3918,
-  "desc": {
-   "dur": 0.33,
-   "peak_db": -3.0,
-   "rms_db": -22.1,
-   "crest": 9.0,
-   "centroid": 3350,
-   "low": 0.02,
-   "flat": 0.016
-  },
-  "cut": false
- },
- "footstep_gravel_3": {
-  "srcfile": "oga-fantozzis-footsteps-grasssand-stone/files/Fantozzi-footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneL1.flac",
-  "duration": 0.392,
-  "size": 4180,
-  "desc": {
-   "dur": 0.36,
-   "peak_db": -3.0,
-   "rms_db": -20.1,
-   "crest": 7.2,
-   "centroid": 2785,
-   "low": 0.01,
-   "flat": 0.006
+   "flat": 0.013,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3389,22 +2986,8 @@
    "crest": 4.5,
    "centroid": 724,
    "low": 0.07,
-   "flat": 0.002
-  },
-  "cut": false
- },
- "splat_2": {
-  "srcfile": "oga-8-wet-squish-slurp-impacts/files/independent_nu_ljudbank-wet_squish_slurp_impacts/impsplat/impactsplat03.mp3.flac",
-  "duration": 0.731,
-  "size": 7576,
-  "desc": {
-   "dur": 0.69,
-   "peak_db": -3.0,
-   "rms_db": -16.6,
-   "crest": 4.8,
-   "centroid": 1453,
-   "low": 0.28,
-   "flat": 0.003
+   "flat": 0.002,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3419,7 +3002,8 @@
    "crest": 16.9,
    "centroid": 6881,
    "low": 0.0,
-   "flat": 0.199
+   "flat": 0.199,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3434,7 +3018,8 @@
    "crest": 13.1,
    "centroid": 3869,
    "low": 0.0,
-   "flat": 0.026
+   "flat": 0.026,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3449,7 +3034,8 @@
    "crest": 5.4,
    "centroid": 7379,
    "low": 0.0,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3464,7 +3050,8 @@
    "crest": 5.6,
    "centroid": 392,
    "low": 0.81,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3479,22 +3066,8 @@
    "crest": 2.5,
    "centroid": 1941,
    "low": 0.14,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "ui_click_3": {
-  "srcfile": "kenney-ui-audio/files/Audio/mouseclick1.ogg",
-  "duration": 0.104,
-  "size": 1306,
-  "desc": {
-   "dur": 0.06,
-   "peak_db": -3.0,
-   "rms_db": -24.4,
-   "crest": 11.7,
-   "centroid": 8777,
-   "low": 0.0,
-   "flat": 0.004
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3509,7 +3082,8 @@
    "crest": 3.2,
    "centroid": 551,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3524,7 +3098,8 @@
    "crest": 4.8,
    "centroid": 2832,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3539,7 +3114,8 @@
    "crest": 15.0,
    "centroid": 1742,
    "low": 0.09,
-   "flat": 0.003
+   "flat": 0.003,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3554,7 +3130,8 @@
    "crest": 7.7,
    "centroid": 1293,
    "low": 0.16,
-   "flat": 0.005
+   "flat": 0.005,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3569,7 +3146,8 @@
    "crest": 6.4,
    "centroid": 4257,
    "low": 0.0,
-   "flat": 0.147
+   "flat": 0.147,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3584,7 +3162,8 @@
    "crest": 3.3,
    "centroid": 82,
    "low": 0.97,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3599,22 +3178,8 @@
    "crest": 3.9,
    "centroid": 2526,
    "low": 0.0,
-   "flat": 0.002
-  },
-  "cut": false
- },
- "ui_toggle_off": {
-  "srcfile": "kenney-interface-sounds/files/Audio/toggle_003.ogg",
-  "duration": 0.131,
-  "size": 1567,
-  "desc": {
-   "dur": 0.1,
-   "peak_db": -3.0,
-   "rms_db": -14.7,
-   "crest": 3.8,
-   "centroid": 7528,
-   "low": 0.0,
-   "flat": 0.228
+   "flat": 0.002,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3629,7 +3194,8 @@
    "crest": 5.1,
    "centroid": 4489,
    "low": 0.0,
-   "flat": 0.035
+   "flat": 0.035,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3644,7 +3210,8 @@
    "crest": 5.5,
    "centroid": 4515,
    "low": 0.01,
-   "flat": 0.002
+   "flat": 0.002,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3659,7 +3226,8 @@
    "crest": 4.0,
    "centroid": 11387,
    "low": 0.0,
-   "flat": 0.345
+   "flat": 0.345,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3674,37 +3242,8 @@
    "crest": 4.4,
    "centroid": 12847,
    "low": 0.0,
-   "flat": 0.401
-  },
-  "cut": false
- },
- "ui_maximize": {
-  "srcfile": "kenney-interface-sounds/files/Audio/maximize_004.ogg",
-  "duration": 0.444,
-  "size": 4702,
-  "desc": {
-   "dur": 0.4,
-   "peak_db": -3.0,
-   "rms_db": -17.1,
-   "crest": 5.1,
-   "centroid": 5806,
-   "low": 0.0,
-   "flat": 0.022
-  },
-  "cut": false
- },
- "ui_minimize": {
-  "srcfile": "kenney-interface-sounds/files/Audio/minimize_004.ogg",
-  "duration": 0.444,
-  "size": 4702,
-  "desc": {
-   "dur": 0.4,
-   "peak_db": -3.0,
-   "rms_db": -16.4,
-   "crest": 4.7,
-   "centroid": 6119,
-   "low": 0.0,
-   "flat": 0.053
+   "flat": 0.401,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3719,7 +3258,8 @@
    "crest": 4.4,
    "centroid": 820,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3734,7 +3274,8 @@
    "crest": 5.2,
    "centroid": 830,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3749,7 +3290,8 @@
    "crest": 4.6,
    "centroid": 1921,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -3764,69 +3306,10 @@
    "crest": 5.3,
    "centroid": 488,
    "low": 0.06,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
- },
- "ui_notify_1": {
-  "srcfile": "oga-chimey-ui-sounds/files/mousebyte_chimeyui/Chime_Confirm.mp3",
-  "duration": 1.202,
-  "size": 12278,
-  "desc": {
-   "dur": 1.16,
-   "peak_db": -3.0,
-   "rms_db": -17.5,
-   "crest": 5.3,
-   "centroid": 1175,
-   "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "countdown_beep_3": {
-  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
-  "duration": 0.261,
-  "size": 2874,
-  "desc": {
-   "dur": 0.22,
-   "peak_db": -3.0,
-   "rms_db": -12.1,
-   "crest": 2.8,
-   "centroid": 731,
-   "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "countdown_beep_2": {
-  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
-  "duration": 0.261,
-  "size": 2874,
-  "desc": {
-   "dur": 0.22,
-   "peak_db": -3.0,
-   "rms_db": -12.1,
-   "crest": 2.8,
-   "centroid": 731,
-   "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
- },
- "countdown_beep_1": {
-  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
-  "duration": 0.261,
-  "size": 2874,
-  "desc": {
-   "dur": 0.22,
-   "peak_db": -3.0,
-   "rms_db": -12.1,
-   "crest": 2.8,
-   "centroid": 731,
-   "low": 0.0,
-   "flat": 0.0
-  },
-  "cut": false
  },
  "countdown_go": {
   "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
@@ -3839,7 +3322,8 @@
    "crest": 2.5,
    "centroid": 1462,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3854,7 +3338,8 @@
    "crest": 4.6,
    "centroid": 1230,
    "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3869,7 +3354,8 @@
    "crest": 4.9,
    "centroid": 817,
    "low": 0.01,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3884,7 +3370,8 @@
    "crest": 4.1,
    "centroid": 878,
    "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3899,7 +3386,8 @@
    "crest": 4.2,
    "centroid": 1018,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3914,7 +3402,8 @@
    "crest": 5.7,
    "centroid": 585,
    "low": 0.13,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -3929,7 +3418,8 @@
    "crest": 5.2,
    "centroid": 388,
    "low": 0.29,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -3944,7 +3434,8 @@
    "crest": 6.7,
    "centroid": 863,
    "low": 0.72,
-   "flat": 0.011
+   "flat": 0.011,
+   "n_on": 3
   },
   "cut": false
  },
@@ -3959,7 +3450,8 @@
    "crest": 6.3,
    "centroid": 1424,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -3974,7 +3466,8 @@
    "crest": 3.7,
    "centroid": 802,
    "low": 0.34,
-   "flat": 0.007
+   "flat": 0.007,
+   "n_on": 9
   },
   "cut": true
  },
@@ -3989,7 +3482,8 @@
    "crest": 4.0,
    "centroid": 268,
    "low": 0.68,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": true
  },
@@ -4004,7 +3498,8 @@
    "crest": 3.4,
    "centroid": 244,
    "low": 0.82,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -4019,7 +3514,8 @@
    "crest": 2.5,
    "centroid": 638,
    "low": 0.16,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -4034,7 +3530,8 @@
    "crest": 4.2,
    "centroid": 963,
    "low": 0.22,
-   "flat": 0.006
+   "flat": 0.006,
+   "n_on": 1
   },
   "cut": false
  },
@@ -4049,7 +3546,8 @@
    "crest": 7.3,
    "centroid": 807,
    "low": 0.46,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -4064,7 +3562,8 @@
    "crest": 6.0,
    "centroid": 783,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 3
   },
   "cut": true
  },
@@ -4079,7 +3578,8 @@
    "crest": 6.1,
    "centroid": 927,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": true
  },
@@ -4094,7 +3594,8 @@
    "crest": 6.0,
    "centroid": 178,
    "low": 0.96,
-   "flat": 0.004
+   "flat": 0.004,
+   "n_on": 26
   },
   "cut": true
  },
@@ -4109,7 +3610,8 @@
    "crest": 6.2,
    "centroid": 1830,
    "low": 0.01,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 1
   },
   "cut": false
  },
@@ -4124,7 +3626,8 @@
    "crest": 6.2,
    "centroid": 2289,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -4139,7 +3642,8 @@
    "crest": 2.4,
    "centroid": 628,
    "low": 0.06,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": true
  },
@@ -4154,7 +3658,8 @@
    "crest": 14.6,
    "centroid": 1415,
    "low": 0.32,
-   "flat": 0.007
+   "flat": 0.007,
+   "n_on": 13
   },
   "cut": true
  },
@@ -4169,7 +3674,8 @@
    "crest": 3.9,
    "centroid": 5130,
    "low": 0.0,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": true
  },
@@ -4184,7 +3690,8 @@
    "crest": 4.5,
    "centroid": 360,
    "low": 0.5,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": true
  },
@@ -4199,7 +3706,8 @@
    "crest": 7.1,
    "centroid": 220,
    "low": 0.88,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 2
   },
   "cut": false
  },
@@ -4214,7 +3722,8 @@
    "crest": 5.4,
    "centroid": 1850,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  },
@@ -4229,7 +3738,8 @@
    "crest": 5.3,
    "centroid": 945,
    "low": 0.0,
-   "flat": 0.0
+   "flat": 0.0,
+   "n_on": 4
   },
   "cut": true
  },
@@ -4244,7 +3754,8 @@
    "crest": 6.9,
    "centroid": 3022,
    "low": 0.08,
-   "flat": 0.001
+   "flat": 0.001,
+   "n_on": 1
   },
   "cut": true
  },
@@ -4277,6 +3788,70 @@
    "low": 0.98,
    "flat": 0.0,
    "n_on": 4
+  },
+  "cut": false
+ },
+ "fire_burst_1": {
+  "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Short - Swoosh Burst Sizzling 01.mp3",
+  "duration": 2.011,
+  "size": 20376,
+  "desc": {
+   "dur": 1.97,
+   "peak_db": -3.0,
+   "rms_db": -19.5,
+   "crest": 6.7,
+   "centroid": 1109,
+   "low": 0.67,
+   "flat": 0.058,
+   "n_on": 3
+  },
+  "cut": false
+ },
+ "fire_impact_1": {
+  "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Fire - Free Sounds/Gregor Quendel - Designed Fire - Impacts - Complex 04.mp3",
+  "duration": 2.429,
+  "size": 24555,
+  "desc": {
+   "dur": 2.4,
+   "peak_db": -3.0,
+   "rms_db": -15.3,
+   "crest": 4.1,
+   "centroid": 410,
+   "low": 0.86,
+   "flat": 0.057,
+   "n_on": 4
+  },
+  "cut": true
+ },
+ "rock_crumble_4": {
+  "srcfile": "oga-free-cinematic-sound-effects/files/gregor_quendel_-_free_cinematic_sound_effects_-_mp3/Gregor Quendel - Designed Series - Free Downloads/Gregor Quendel - Designed Rocks - Free Sounds/Gregor Quendel - Designed Rocks - Elements 09.mp3",
+  "duration": 2.247,
+  "size": 22727,
+  "desc": {
+   "dur": 2.2,
+   "peak_db": -3.0,
+   "rms_db": -20.2,
+   "crest": 7.2,
+   "centroid": 410,
+   "low": 0.73,
+   "flat": 0.002,
+   "n_on": 5
+  },
+  "cut": true
+ },
+ "countdown_beep": {
+  "srcfile": "synthesized by tools/build_sfx.py (synth:beep)",
+  "duration": 0.261,
+  "size": 2874,
+  "desc": {
+   "dur": 0.22,
+   "peak_db": -3.0,
+   "rms_db": -12.1,
+   "crest": 2.8,
+   "centroid": 731,
+   "low": 0.0,
+   "flat": 0.0,
+   "n_on": 0
   },
   "cut": false
  }

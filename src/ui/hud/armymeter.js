@@ -23,7 +23,7 @@ export function mount(parent, ctx) {
   const A = side(0), B = side(1);
   const lead = h('span', { class: 'hud-lead', 'aria-hidden': 'true' });
   const mid = h('div', { class: 'hud-army-mid' }, lead);
-  const sr = h('span', { class: 'sr-only', 'aria-live': 'polite' });
+  const sr = h('span', { class: 'vw-sr', 'aria-live': 'polite' });
   const el = h('div', { class: 'hud-army hud-panel', 'data-hud': 'army', role: 'group', 'aria-label': 'Army strength' }, A.el, mid, B.el, sr);
   parent.appendChild(el);
 

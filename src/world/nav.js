@@ -168,7 +168,7 @@ export class FlowField {
     return top;
   }
   /** sources: Int32Array/array of nav cell indices; count: number of valid entries. maxDist optional cutoff. */
-  compute(sources, count, maxDist = 1e9) {
+  compute(sources, count, maxDist = 1e9, extra = null) {
     const nav = this.nav, n = nav.n, dist = this.dist, walk = nav.walk, block = nav.block, soft = nav.soft, cost = nav.cost;
     dist.fill(1e9); this.hn = 0;
     for (let s = 0; s < count; s++) { const i = sources[s]; if (dist[i] > 0) { dist[i] = 0; this._push(i, 0); } }
@@ -185,7 +185,7 @@ export class FlowField {
         if (!walk[j] || block[j]) { /* allow sources to start inside blocked cells but never traverse them */ continue; }
         if (Math.abs(nav.hs[j] - nav.hs[i]) > 1.0) continue;
         if (nb[0] !== 0 && nb[1] !== 0) { const k1 = bx + cz * n, k2 = cx + bz * n; if (!walk[k1] || block[k1] || !walk[k2] || block[k2]) continue; }
-        const nd = Math.fround(d0 + nb[2] * (cost[j] + (nav.hazard[j] ? 8 : 0) + (soft[j] ? 30 : 0)));
+        const nd = Math.fround(d0 + nb[2] * (cost[j] + (nav.hazard[j] ? 8 : 0) + (soft[j] ? 30 : 0) + (extra ? extra[j] : 0)));
         if (nd < dist[j]) { dist[j] = nd; this._push(j, nd); }
       }
     }

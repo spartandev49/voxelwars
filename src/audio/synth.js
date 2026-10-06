@@ -286,6 +286,10 @@ export const RECIPES = {
   stinger_hero_down: (k) => mix(k, 2.4, [[partials(k, 98, [[1, 1, 1.6], [1.5, 0.6, 1.2], [2.3, 0.4, 0.8]], 2.4), 0, 1], [thump(k, { f0: 70, f1: 30, dur: 0.9, amp: 1 }), 0, 1], [brass(k, { f: 110, dur: 1.2, a: 0.1, r: 0.6, bright: 0.2, amp: 0.6 }), 0.1, 1]]),
   stinger_epic: (k) => mix(k, 1.8, [[brass(k, { f: 196, dur: 0.9, a: 0.03, r: 0.4, bright: 1 }), 0, 1], [brass(k, { f: 294, dur: 0.9, a: 0.03, r: 0.4, bright: 1, amp: 0.7 }), 0, 1], [thump(k, { f0: 100, f1: 38, dur: 0.9, amp: 1 }), 0, 1], [partials(k, 150, [[1, 1, 1.0], [2.1, 0.5, 0.6]], 1.6), 0, 0.4]]),
   stinger_funny: (k) => mix(k, 1.4, [[tone(k, { f0: 330, f1: 247, dur: 0.4, wave: 'saw', d: 0.3, vib: [6, 0.04], amp: 0.5 }), 0, 1], [tone(k, { f0: 294, f1: 196, dur: 0.6, wave: 'saw', d: 0.4, vib: [6, 0.05], amp: 0.5 }), 0.4, 1], [chime(k, [88], { len: 0.8, dec: 0.4 }), 1.0, 0.6]]),
+  // ---- announcer voice clips (synth stand-ins: short formant shouts)
+  announce_ready: (k) => mix(k, 0.8, [[voice(k, { f0: 150, f1: 140, dur: 0.22, vowel: 'e', a: 0.01, r: 0.05, breath: 0.1 }), 0, 1], [voice(k, { f0: 140, f1: 125, dur: 0.3, vowel: 'e', a: 0.01, r: 0.1, breath: 0.1 }), 0.28, 1]]),
+  announce_go: (k) => voice(k, { f0: 190, f1: 150, v1: 230, dur: 0.55, vowel: 'o', vib: [5, 0.01], a: 0.02, r: 0.2, breath: 0.1 }),
+  announce_winner: (k) => mix(k, 1.1, [[voice(k, { f0: 140, f1: 150, dur: 0.25, vowel: 'i', a: 0.01, r: 0.06 }), 0, 1], [voice(k, { f0: 155, f1: 105, dur: 0.5, vowel: 'e', a: 0.02, r: 0.2 }), 0.3, 1]]),
   // ---- foley
   step_dirt: (k) => step(k, 'dirt'), step_grass: (k) => step(k, 'grass'), step_stone: (k) => step(k, 'stone'), step_sand: (k) => step(k, 'sand'),
   step_snow: (k) => step(k, 'snow'), step_mud: (k) => step(k, 'mud'), step_wood: (k) => step(k, 'wood'), step_water: (k) => step(k, 'water'),
@@ -379,10 +383,16 @@ function choirChord(L, R, t0, dur, freqs, amp, sr, rng) {
 }
 
 /**
- * Render a looping stereo music bed. Returns {L, R, sr, dur}. `chunk(i, n)` (optional) is called between phases so an async
- * caller can yield. Notes whose tails pass the end are folded onto the start so the loop is seamless.
+ * Render a looping stereo music bed. Returns {L, R, sr, dur}. Notes whose tails pass the end are folded onto the start so the
+ * loop is seamless.
  */
-export function renderMusic(mood, theme, sr = SYNTH_SR, chunk = null) {
+export function renderMusic(mood, theme, sr = SYNTH_SR) {
+  const g = renderMusicGen(mood, theme, sr); let r;
+  while (!(r = g.next()).done);
+  return r.value;
+}
+/** generator form: yields once per bar so an async caller can give the main thread back between slices */
+export function* renderMusicGen(mood, theme, sr = SYNTH_SR) {
   const sp = synthMusicSpecFor(mood, theme), rng = mulberry32(hashStr(mood + ':' + (theme || '')) + 12345);
   const spb = 60 / sp.bpm, bar = 4 * spb, s16 = spb / 4, total = sp.bars * bar, tail = 1.2;
   const n = Math.round((total + tail) * sr), L = new Float32Array(n), R = new Float32Array(n);
@@ -405,7 +415,7 @@ export function renderMusic(mood, theme, sr = SYNTH_SR, chunk = null) {
     // drums
     const dr = sp.drums;
     for (const kind of Object.keys(dr)) for (let i = 0; i < 16; i++) if (dr[kind][i] === 'x') drumHit(L, R, t0 + i * s16 + (kind === 'tak' ? 0 : 0), kind, kind === 'kick' ? 0.8 : kind === 'tom' ? 0.6 : 0.4, sr, rng, kind === 'tom' ? ((i % 4) - 1.5) * 0.25 : 0);
-    if (chunk) chunk(b, sp.bars);
+    yield b / sp.bars;
   }
   // fold the tail onto the head so the loop is seamless
   const loopN = Math.round(total * sr);

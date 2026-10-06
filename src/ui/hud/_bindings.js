@@ -3,14 +3,14 @@
 
 /** Rebindable battle actions (ids are shared with the Settings > Controls tab). */
 export const ACTIONS = [
-  { id: 'panUp', def: 'KeyW', label: 'Pan forward', ctx: 'camera' },
-  { id: 'panLeft', def: 'KeyA', label: 'Pan left', ctx: 'camera' },
-  { id: 'panDown', def: 'KeyS', label: 'Pan back', ctx: 'camera' },
-  { id: 'panRight', def: 'KeyD', label: 'Pan right', ctx: 'camera' },
-  { id: 'rotateLeft', def: 'KeyQ', label: 'Rotate left', ctx: 'camera' },
-  { id: 'rotateRight', def: 'KeyE', label: 'Rotate right', ctx: 'camera' },
-  { id: 'tiltUp', def: 'KeyZ', label: 'Tilt up', ctx: 'camera' },
-  { id: 'tiltDown', def: 'KeyX', label: 'Tilt down', ctx: 'camera' },
+  { id: 'pan_up', def: 'KeyW', label: 'Pan forward', ctx: 'camera' },
+  { id: 'pan_left', def: 'KeyA', label: 'Pan left', ctx: 'camera' },
+  { id: 'pan_down', def: 'KeyS', label: 'Pan back', ctx: 'camera' },
+  { id: 'pan_right', def: 'KeyD', label: 'Pan right', ctx: 'camera' },
+  { id: 'rot_left', def: 'KeyQ', label: 'Rotate left', ctx: 'camera' },
+  { id: 'rot_right', def: 'KeyE', label: 'Rotate right', ctx: 'camera' },
+  { id: 'tilt_up', def: 'KeyZ', label: 'Tilt up', ctx: 'camera' },
+  { id: 'tilt_down', def: 'KeyX', label: 'Tilt down', ctx: 'camera' },
   { id: 'follow', def: 'KeyF', label: 'Follow selected', ctx: 'camera' },
   { id: 'topdown', def: 'KeyT', label: 'Top-down camera', ctx: 'camera' },
   { id: 'cinematic', def: 'KeyC', label: 'Cinematic camera', ctx: 'camera' },
@@ -22,9 +22,9 @@ export const ACTIONS = [
 
 /** Fixed (non-rebindable) battle keys. */
 export const FIXED = {
-  hideHud: 'Tab', help: 'KeyH', minimap: 'KeyM', takeCommand: 'Enter', menu: 'Escape',
-  advance: 'KeyO', hold: 'KeyL',
-  power1: 'Digit1', power2: 'Digit2', power3: 'Digit3', power4: 'Digit4', power5: 'Digit5', power6: 'Digit6',
+  hide_hud: 'Tab', help: 'KeyH', minimap: 'KeyM', command: 'Enter', menu: 'Escape',
+  order_advance: 'KeyO', order_hold: 'KeyL',
+  power_1: 'Digit1', power_2: 'Digit2', power_3: 'Digit3', power_4: 'Digit4', power_5: 'Digit5', power_6: 'Digit6',
 };
 
 const DEF = Object.fromEntries(ACTIONS.map((a) => [a.id, a.def]));
@@ -54,9 +54,9 @@ export function contextTables(settings) {
   const k = (id) => keyOf(settings, id);
   return [
     { id: 'camera', title: 'Battle camera', rows: [
-      ['Pan', [k('panUp'), k('panLeft'), k('panDown'), k('panRight'), 'or arrows'], true],
-      ['Rotate', [k('rotateLeft'), k('rotateRight')], true],
-      ['Tilt', [k('tiltUp'), k('tiltDown')], true],
+      ['Pan', [k('pan_up'), k('pan_left'), k('pan_down'), k('pan_right'), 'or arrows'], true],
+      ['Rotate', [k('rot_left'), k('rot_right')], true],
+      ['Tilt', [k('tilt_up'), k('tilt_down')], true],
       ['Fast camera', ['Shift']],
       ['Zoom', ['Wheel']],
       ['Orbit / pan', ['Right-drag', 'Middle-drag']],

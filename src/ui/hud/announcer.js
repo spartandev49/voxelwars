@@ -24,7 +24,7 @@ export function mount(parent, ctx) {
   const ghost = h('span', { class: 'ghost' });
   const off = h('span', { class: 'hud-ann-off', hidden: true });
   const text = h('p', { class: 'hud-ann-text', 'aria-hidden': 'true' }, shown, ghost, off);
-  const sr = h('span', { class: 'sr-only', 'aria-live': 'polite' });
+  const sr = h('span', { class: 'vw-sr', 'aria-live': 'polite' });
   const el = h('div', { class: 'hud-ann hud-panel is-quiet', 'data-hud': 'announcer', 'data-who': 'brutus', role: 'region', 'aria-label': 'Announcers' }, face,
     h('div', { class: 'hud-ann-body' }, h('div', { class: 'hud-ann-head' }, nameEl, roleEl, cc), text), sr);
   parent.appendChild(el);

@@ -26,7 +26,7 @@ export class Squad {
     this.moveTo = null; this.focus = 0;
     this.flankStage = 0; this.flankT = 0; this.flankX = 0; this.flankZ = 0; this.flankSide = 0; this.holdX = 0; this.holdZ = 0; this.holdSet = false;
     this.mode = 'form';                        // kept for render/debug compatibility
-    this.minSpeed = 2.5; this.lineT = 0; this.lineOk = true;
+    this.minSpeed = 2.5; this.press = 0; this.lineT = 0; this.lineOk = true;
   }
 }
 
@@ -41,7 +41,7 @@ export function updateSquads(w, dt) {
   for (let i = sqs.length - 1; i >= 0; i--) {
     const sq = sqs[i];
     const us = sq.units;
-    let n = 0, cx = 0, cz = 0, eng = 0, minSp = 99, hw = 0;
+    let n = 0, cx = 0, cz = 0, eng = 0, minSp = 99, hw = 0, press = 0;
     for (let k = 0, m = us.length; k < m; k++) {
       const u = us[k];
       if (!u.alive || u.squad !== sq) continue;
@@ -49,9 +49,11 @@ export function updateSquads(w, dt) {
       cx += u.x; cz += u.z; if (u.engaged) eng++;
       const sp = u.speedBase * u.mSpeed; if (sp < minSp) minSp = sp;
       const a = Math.abs(u.sox); if (a > hw) hw = a;
+      press += u.press; u.press = 0;
     }
     us.length = n;
     if (n === 0) { sq.alive = false; sqs.splice(i, 1); continue; }
+    sq.press += (press / n - sq.press) * 0.15;
     sq.n = n; sq.cx = cx / n; sq.cz = cz / n; sq.engF = eng / n; sq.minSpeed = minSp; sq.halfW = hw + 0.6;
   }
   const forceAdv = w.forceAdvance;
@@ -107,13 +109,19 @@ export function updateSquads(w, dt) {
         // march along the army's attack axis (parallel lines meet head-on); the flow field only takes over when the way is blocked
         const axx = w.axis[team * 2], axz = w.axis[team * 2 + 1];
         sq.lineT -= dt;
-        if (sq.lineT <= 0) { sq.lineOk = nav.clearLine(sq.ax, sq.az, sq.ax + axx * 9, sq.az + axz * 9); sq.lineT = 0.5; }
+        if (sq.lineT <= 0) {
+          // straight is fine while the flow-field distance keeps dropping at about the walking rate (trees add small detours; walls/rivers add big ones)
+          const here = f.distAt(sq.ax, sq.az), px = sq.ax + axx * 8, pz = sq.az + axz * 8;
+          sq.lineOk = nav.walkable(px, pz) && f.distAt(px, pz) <= here - 4.5;
+          sq.lineT = 0.4;
+        }
         if (sq.lineOk && (axx !== 0 || axz !== 0)) { dx = axx; dz = axz; move = true; }
         else if (f.dir(sq.ax, sq.az, _t) || f.dir(sq.cx, sq.cz, _t)) { dx = _t[0]; dz = _t[1]; move = true; }
         want = Math.atan2(dx, dz);
         let j = (sq.d - c.engageNear) / (c.engageFar - c.engageNear); j = j < 0 ? 0 : j > 1 ? 1 : j;
         sp = sq.minSpeed * (1 + (c.jogMul - 1) * j) * lagF;
         if (sq.cls === CLS.CAV) sp *= 1.1;
+        sp /= 1 + 5 * sq.press;                    // crowd pressure feedback: a squad being squeezed stops pushing forward
         // line alignment: squads ahead of the line mean wait, squads behind catch up; support/ranged stay behind the line
         const D = w._cntD[team] > 0 ? w._sumD[team] / w._cntD[team] : sq.d;
         if (sq.d < 1e8) {

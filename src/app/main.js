@@ -38,7 +38,7 @@ async function start() {
   // content + optional integrations
   const content = buildContent();
   if (BLUEPRINTS && BLUEPRINTS.compileSoldier) content.setCompiler(BLUEPRINTS.compileSoldier);
-  try { if (ANIM_BOOT && ANIM_BOOT.registerAllClips) ANIM_BOOT.registerAllClips(ClipLib, () => window.__VW_UAL_CLIPS__ || null); } catch (e) { diag.error('anim', e && e.message); }
+  try { if (ANIM_BOOT && ANIM_BOOT.registerAllClips) { const r = ANIM_BOOT.registerAllClips(ClipLib, { humanoid: window.__VW_UAL_CLIPS__ || null, onReport: (m) => diag.note(m) }); diag.extra.clips = r; } } catch (e) { diag.error('anim', e && e.message); }
   const audio = (AUDIO && AUDIO.createAudio) ? AUDIO.createAudio({ settings, getListener: () => game.rig.listener, quality: () => engine.qualityKey }) : createNullAudio();
 
   const game = new Game({ engine, content, settings, audio, bus });
@@ -127,8 +127,13 @@ function startDiorama(game, content) {
 
 function installHook(app, input) {
   const hook = window.__vw = window.__vw || {};
+  // live accessors must be defined, not Object.assign'ed (assign would copy the getter's value at install time)
+  Object.defineProperties(hook, {
+    game: { get: () => app.game, configurable: true }, world: { get: () => app.game.world, configurable: true },
+    engine: { get: () => app.engine, configurable: true }, state: { get: () => app.game.state, configurable: true },
+  });
   Object.assign(hook, {
-    app, get game() { return app.game; }, get world() { return app.game.world; }, get engine() { return app.engine; }, get state() { return app.game.state; },
+    app,
     clock: { now: () => performance.now() }, metrics: () => app.diag.snapshot(app),
     step(n = 1) { const w = app.game.world; if (w) w.step(n); app.game.view.update(1, 0.0, app.engine.camera); app.engine.render(0.0); return w ? w.tickN : 0; },
     goto(id, p) { return app.router.goto(id, p); }, audio: app.audio,

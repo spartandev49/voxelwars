@@ -274,9 +274,10 @@ export function buildPartGrids(bpIn, opts = {}) {
   const bp = v.bp, warnings = v.warnings.slice();
   const ctx = makeCtx(bp, opts);
   const base = new RNG(hashString(bp.id));
+  const helmE = PART_REGISTRY.helms[bp.head.helm];
+  ctx.noEyes = !!helmE.meta.noEyes;
   const G = baseGrids(ctx);
   for (const k of PART_ORDER) if (!G[k]) G[k] = newGrid(k);
-  const helmE = PART_REGISTRY.helms[bp.head.helm];
   const hairMode = helmE.meta.hair || 'none';
   const mainE = PART_REGISTRY.mains[bp.main];
   // layer order: legs, skirt, tunic, armour, shoulders, face, hair, cape, back, helm, weapon, offhand
@@ -320,15 +321,16 @@ const mmul = (a, b) => [
   a[0] * b[0] + a[1] * b[3] + a[2] * b[6], a[0] * b[1] + a[1] * b[4] + a[2] * b[7], a[0] * b[2] + a[1] * b[5] + a[2] * b[8],
   a[3] * b[0] + a[4] * b[3] + a[5] * b[6], a[3] * b[1] + a[4] * b[4] + a[5] * b[7], a[3] * b[2] + a[4] * b[5] + a[5] * b[8],
   a[6] * b[0] + a[7] * b[3] + a[8] * b[6], a[6] * b[1] + a[7] * b[4] + a[8] * b[7], a[6] * b[2] + a[7] * b[5] + a[8] * b[8]];
-/** world (root-relative) rest transform of every part: {R:[9], t:[3]} by part id */
-export function restTransforms(model) {
+/** world (root-relative) transform of every part: {R:[9], t:[3]} by part id. pose = optional Float32Array (9 floats per part, VoxSkin layout), else the static rest pose. */
+export function restTransforms(model, pose) {
   const out = {};
   for (const p of model.parts) {
     const par = p.parent ? out[p.parent] : null;
-    const Rl = rotMat(p.rest[0], p.rest[1], p.rest[2]);
+    let Rl = rotMat(p.rest[0], p.rest[1], p.rest[2]);
+    const o = p.origin.slice();
+    if (pose) { const q = p.index * 9; Rl = mmul(rotMat(pose[q + 3], pose[q + 4], pose[q + 5]), Rl); o[0] += pose[q]; o[1] += pose[q + 1]; o[2] += pose[q + 2]; }
     const R = par ? mmul(par.R, Rl) : Rl;
-    const o = p.origin;
-    const t = par ? [par.R[0] * o[0] + par.R[1] * o[1] + par.R[2] * o[2] + par.t[0], par.R[3] * o[0] + par.R[4] * o[1] + par.R[5] * o[2] + par.t[1], par.R[6] * o[0] + par.R[7] * o[1] + par.R[8] * o[2] + par.t[2]] : o.slice();
+    const t = par ? [par.R[0] * o[0] + par.R[1] * o[1] + par.R[2] * o[2] + par.t[0], par.R[3] * o[0] + par.R[4] * o[1] + par.R[5] * o[2] + par.t[1], par.R[6] * o[0] + par.R[7] * o[1] + par.R[8] * o[2] + par.t[2]] : o;
     out[p.id] = { R, t };
   }
   return out;
