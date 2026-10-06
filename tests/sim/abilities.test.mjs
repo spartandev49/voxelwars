@@ -328,9 +328,9 @@ await test('tantrum: a chicken hurt by 30% rages (x3 damage, x1.5 speed) for 5 s
   const w = world({ rules: noMorale }); const log = record(w);
   const c = pin(add(w, 'sacred_chicken', 0, 0, 0)); c.se[SE.ROOT] = 1e9;
   add(w, 'hoplite', 1, 30, 0);
-  hit(w, null, c, 5, (h) => { h.noBlock = true; h.fixed = true; h.kb = 0; });     // 25 -> ~20: not yet
+  hit(w, null, c, c.hpMax * 0.2, (h) => { h.noBlock = true; h.fixed = true; h.kb = 0; });     // -20%: not yet
   assert.equal(count(log, 'chicken_tantrum'), 0);
-  hit(w, null, c, 4, (h) => { h.noBlock = true; h.fixed = true; h.kb = 0; });
+  hit(w, null, c, c.hpMax * 0.12, (h) => { h.noBlock = true; h.fixed = true; h.kb = 0; });
   assert.equal(count(log, 'chicken_tantrum'), 1); run(w, 0.1);
   assert.ok(c.se[SE.RAGE] > 4 && Math.abs(c.mDmg - 3) < 1e-3 && Math.abs(c.mSpeed - 1.5) < 1e-3 || c.se[SE.ROOT] > 0, 'tantrum multipliers ' + c.mDmg);
   hit(w, null, c, 1, (h) => { h.noBlock = true; h.fixed = true; h.kb = 0; }); assert.equal(count(log, 'chicken_tantrum'), 1, 'locked');

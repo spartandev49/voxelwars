@@ -293,9 +293,9 @@ function meleeBehaviour(w, u, t, dt, gap, dist, want, speedBase, info, sq) {
   const def = u.def, m = def.melee, reach = m.range + u.mReach;
   const fdiff = Math.abs(angleDiff(u.heading, want));
   // opportunity attack: anything in reach beats walking around (no in-contact idling)
-  if (gap > reach + 0.15 && !u.claim) {
+  if (gap > reach + 0.15 && (!u.claim || u.speedNow < 0.5)) {                 // a blocked unit with a claim on a far target also takes what is in reach
     u.oppT--;
-    if (u.oppT <= 0) { u.oppT = 4; const o = nearestInReach(w, u, reach + 0.15); if (o) { u.target = t = o; gap = hyp(o.x - u.x, o.z - u.z) - u.radius - o.radius; want = Math.atan2(o.x - u.x, o.z - u.z); } }
+    if (u.oppT <= 0) { u.oppT = 4; const o = nearestInReach(w, u, reach + 0.15); if (o) { if (u.claim) releaseClaim(u); u.target = t = o; gap = hyp(o.x - u.x, o.z - u.z) - u.radius - o.radius; want = Math.atan2(o.x - u.x, o.z - u.z); } }
   }
   u.face = want;
   const inReach = gap <= reach + 0.15;

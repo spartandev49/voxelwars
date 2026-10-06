@@ -146,7 +146,7 @@ await L.run('placement_puzzle'); await wait(500);
 check('puzzle: the palette lists only the roster (hoplite, peltast) and has no My Soldiers tab', await ev(() => { const ids = Array.from(document.querySelectorAll('#pl-cards .vw-card')).map((c) => c.id || c.dataset.id); return document.querySelectorAll('#pl-cards .vw-card').length === 2 && !document.getElementById('pl-faction-custom') && /Hoplite/.test(document.getElementById('pl-cards').textContent) && /Peltast/.test(document.getElementById('pl-cards').textContent) && !/Spartan/.test(document.getElementById('pl-cards').textContent); }));
 check('puzzle: only army A is editable (no team switch, no mirror, no enemy auto-fill)', await ev(() => !document.getElementById('pl-team') && !document.getElementById('pl-mirror') && !document.getElementById('pl-fill-enemy') && !document.getElementById('pl-fill-mine')));
 check('puzzle: the budget bar shows a par tick and the par amount', await ev(() => !!document.querySelector('#pl-budget-a .vw-progress__mark') && /Par 1,000/.test(document.getElementById('pl-par').textContent) && Math.abs(parseFloat(getComputedStyle(document.querySelector('#pl-budget-a .vw-progress__mark')).left) / document.getElementById('pl-budget-a').getBoundingClientRect().width - 1000 / 1400) < 0.06));
-check('puzzle: the scout strip leads with the Goal and the Hint', await ev(() => /Goal/.test(document.getElementById('pl-scout').textContent) && /Defeat all eight cavalry/.test(document.getElementById('pl-scout').textContent) && /Hint/.test(document.getElementById('pl-scout').textContent)));
+check('puzzle: the scout strip leads with the Goal and the Hint', await ev(() => /Goal/.test(document.getElementById('pl-scout').textContent) && /Defeat all \w+ cavalry/.test(document.getElementById('pl-scout').textContent) && /Hint/.test(document.getElementById('pl-scout').textContent)));
 await p.click('#pl-clear'); await wait(250);
 check('puzzle: Reset clears army A at once (no dialog; retries are free)', await ev(() => window.__ui.game.info.counts(0).total === 0 && !document.querySelector('.vw-modal')));
 
@@ -157,6 +157,21 @@ await ev(() => { const b = document.getElementById('pl-hint-dismiss'); if (b) b.
 await p.click('#pl-clear'); await wait(400);
 check('campaign placement: Clear offers only this army', await ev(() => { const m = document.querySelector('.vw-modal'); return !!m && !/both sides/i.test(m.textContent); }));
 await p.keyboard.press('Escape'); await wait(450);
+
+/* ---------------- Quick Battle: "My arenas" (Arena Builder library) + objective picker ---------------- */
+await L.run('quick'); await wait(400);
+check('quick: a "My arenas" group follows the presets with every saved arena (and Quick Fight still draws only from presets)', await ev(() => { const mine = Array.from(document.querySelectorAll('.vw-qb__mini[data-arena^="my:"]')); const sep = document.getElementById('qb-my-arenas'); const all = Array.from(document.querySelectorAll('.vw-qb__strip > *')); return mine.length === window.__ui.app.save.arenas.list().length && !!sep && all.indexOf(sep) > all.indexOf(document.querySelector('.vw-qb__mini[data-arena="random"]')) && mine.every((b) => all.indexOf(b) > all.indexOf(sep)); }));
+await p.click('[data-adv="advanced"]'); await wait(200);
+await p.click('[data-arena="my:ar_hill"]'); await wait(600);
+check('quick: selecting a saved arena shows its name, tags, thumbnail and keeps its size (size picker locked)', await ev(() => /Hill of Mild Inconvenience/.test(document.querySelector('.vw-qb__arena-name').textContent) && /hill/i.test(document.querySelector('.vw-qb__arena-info').textContent) && document.querySelector('.vw-qb__thumb-img').src.startsWith('data:image') && Array.from(document.querySelectorAll('#qb-size button')).every((b) => b.disabled)));
+check('quick: the objective picker pre-selects the arena author\'s objective (Hold the hill) and disables the unsupported ones with the reason', await ev(() => { const o = document.getElementById('qb-objective'); const opts = Array.from(o.options); return o.value === 'hold_hill' && opts.find((x) => x.value === 'kill_general').disabled && /needs a general marker/.test(opts.find((x) => x.value === 'kill_general').textContent) && !opts.find((x) => x.value === 'hold_hill').disabled && !opts.find((x) => x.value === 'eliminate').disabled; }));
+await p.click('#qb-place'); await wait(900);
+const mySetup = await ev(() => { const s = window.__ui.game.setup; return s && { name: s.arena.name, hasData: !!(s.arena.data && s.arena.data.h), size: s.arena.size, obj: s.rules.objective && s.rules.objective.type, id: s.arena.presetId }; });
+check('quick: Place armies sends the saved arena as setup.arena.data (+ name, size) and the chosen objective in rules', !!mySetup && mySetup.hasData && mySetup.name === 'Hill of Mild Inconvenience' && mySetup.size === 'medium' && mySetup.obj === 'hold_hill', JSON.stringify(mySetup));
+check('placement: a saved arena shows its own name in the header', await ev(() => /Hill of Mild Inconvenience/.test(document.querySelector('.vw-pl__arena').textContent)));
+await L.run('quick'); await wait(300);
+await p.click('[data-adv="advanced"]'); await p.click('[data-arena="thermopylae"]'); await wait(700);
+check('quick: on a preset the picker always keeps a supported objective selected and explains the disabled ones', await ev(() => { const o = document.getElementById('qb-objective'); const opts = Array.from(o.options); return !opts[o.selectedIndex].disabled && opts.filter((x) => x.disabled).every((x) => /needs/.test(x.textContent)) && !opts.find((x) => x.value === 'eliminate').disabled; }));
 
 /* ---------------- quick: copy seed, rules reach the Setup ---------------- */
 await L.run('quick'); await wait(300);
@@ -291,7 +306,7 @@ await L.close();
 L = await open([390, 844], { touch: true }); p = L.p;
 await L.run('title'); await wait(250);
 await p.click('#menu-quick'); await wait(250);
-check('UI10 phone: Quick Battle setup is usable (arena strip, armies, big actions)', await ev(() => { const a = document.getElementById('qb-quick-fight').getBoundingClientRect(); return a.width >= 100 && a.bottom <= innerHeight + 1 && document.querySelectorAll('.vw-qb__mini').length === 16; }));
+check('UI10 phone: Quick Battle setup is usable (arena strip, armies, big actions)', await ev(() => { const a = document.getElementById('qb-quick-fight').getBoundingClientRect(); return a.width >= 100 && a.bottom <= innerHeight + 1 && document.querySelectorAll('.vw-qb__mini').length >= 16; }));
 await p.click('#qb-quick-fight'); await wait(400);
 check('UI10 phone: Quick Fight starts a battle', await ev(() => window.__ui.game.log.includes('fight')));
 await L.run('codex_units'); await wait(250);

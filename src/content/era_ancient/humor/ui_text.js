@@ -128,13 +128,13 @@ export const MODALS = {
 export const LOADING_LINES = [
   'Sharpening spears...',
   'Teaching goats to salute...',
-  'Inflating the Trojan horse...',
+  'Oiling the hinges on the Trojan horse...',
   'Calibrating catapults to four percent regret...',
   'Asking Plato to define loading...',
-  'Hiding the grapes...',
+  'Teaching Brutus an indoor voice. Retrying...',
   'Laminating the Terms of Conquest...',
   'Rehearsing the Spartan kick...',
-  'Convincing the elephants it is only a drill...',
+  'Politely asking the Cyclops to aim at something...',
   'Waking up Zeus. He is not a morning god...',
   'Persuading chickens to be sacred...',
   'Unwrapping the mummies carefully...',
@@ -142,9 +142,9 @@ export const LOADING_LINES = [
   'Sorting soldiers by team colour and personal grudge...',
   'Feeding the warhounds sausages in advance...',
   'Placing the grape seller in a safe spot...',
-  'Stuffing the Trojan horse. Tightly...',
-  'Checking that the grapes are still there...',
-  'Training the chickens to look sacred...',
+  'Hiring six hoplites to sit very quietly...',
+  'Asking Cassandra how this goes. She sighed...',
+  'Untangling the chickens from the tent ropes...',
   'Explaining the torch situation to the elephants...',
 ];
 
@@ -195,12 +195,9 @@ export const PLACEMENT_REASONS = {
 };
 
 // ---------- survival ----------
-export const WAVE_NAMES = [
-  'The Tax Collectors', 'Mildly Annoyed Titans', 'The Cousins', 'Unscheduled Visitors', 'The Overdue Reinforcements',
-  'Everybody Who Heard There Was a Fight', 'The Polite Ones', 'The Rather Large Ones', 'The Auditors',
-  'Brutus\'s Favourite', 'Cassandra Warned You About This One', 'The Entire Opposing Family', 'Slightly Fewer Goats',
-];
-export function waveName(n) { return WAVE_NAMES[(Math.max(1, n) - 1) % WAVE_NAMES.length]; }
+export { WAVE_NAMES } from '../wave_names.js';
+import { WAVE_NAMES as WAVES } from '../wave_names.js';
+export function waveName(n) { return WAVES[(Math.max(1, n) - 1) % WAVES.length]; }
 
 export const SURVIVAL = {
   intermission: 'Catch your breath. Place reinforcements, then press Ready.',

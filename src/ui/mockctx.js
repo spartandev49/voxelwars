@@ -249,7 +249,11 @@ export function buildSave(content, opts) {
     get() { return stats.totals; },
   };
   const REAL = !!opts.real;
-  const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', size: 'medium', thumb: content.arenaThumbSync('marathon') }, { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', size: 'small', thumb: content.arenaThumbSync('oasis') }]);
+  // library items (editors/arena/library.js): {id,name,author,desc,tags,size,updated,objective,thumb,code}; the mock keeps the Arena JSON in `data` (real ones carry a share `code`)
+  const hill = generateArena('marathon', 'medium', 42); hill.markers = [{ id: 'hill1', type: 'hill', x: 0, z: 0, r: 7 }]; hill.objective = 'hold_hill'; hill.name = 'Hill of Mild Inconvenience';
+  const lake = generateArena('oasis', 'small', 7); lake.name = 'Lake Lemon';
+  const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', tags: ['hill', 'olives'], size: 'medium', objective: 'hold_hill', updated: Date.UTC(2026, 9, 4), thumb: content.arenaThumbSync('marathon'), data: hill.toJSON() },
+    { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', tags: ['water'], size: 'small', objective: 'eliminate', updated: Date.UTC(2026, 9, 3), thumb: content.arenaThumbSync('oasis'), data: lake.toJSON() }]);
   const soldiers = collection([{ id: 'cs_chad', name: 'Sir Chadius the Mildly Concerned', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 140 }, { id: 'cs_pan', name: 'Frying Pan Dave', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 95 }, { id: 'cs_olive', name: 'Olive Branch Olga', blueprint: { v: 1 }, stats: {}, role: 'support', cost: 120 }]);
   const armies = collection(REAL
     ? [{ id: 'army_phalanx', name: 'Big Phalanx Energy', v: 1, team: 0, records: [rec(0, 'hoplite', 24, -30, -6), rec(0, 'spartan', 8, -26, -6), rec(0, 'cretan_archer', 6, -34, 4)], n: 38, cost: 3900, saved: Date.UTC(2026, 9, 3) },
@@ -469,7 +473,7 @@ export function createMockApp(opts) {
     downloads: opts.noDownloads ? null : { save: async (filename, data) => { calls.downloads.push({ filename, size: String(data).length }); return true; } },
     clipboard: async (text) => { calls.clipboard.push(text); return opts.clipboardFails ? false : true; },
     pickFile: async () => { const f = new File(['{"v":1}'], 'save.json', { type: 'application/json' }); return f; },
-    isTouch: !!opts.touch, viewport: () => ({ w: window.innerWidth, h: window.innerHeight }), isPhone: () => (opts.phone !== undefined ? !!opts.phone : window.innerWidth < 640),
+    isTouch: !!opts.touch, viewport: () => ({ w: window.innerWidth, h: window.innerHeight }), isPhone: () => (opts.phone !== undefined ? !!opts.phone : (window.innerWidth < 768 || window.innerHeight < 480)),   // same rule as main.js platformApi
   };
   // the REAL snapshot is flat (src/app/diagnostics.js + audio/engine.js diagnostics()); ctx.diag.log is [{t (ms), msg}]
   const audioPaths = { hit_blade_1: 'embedded', hit_blade_2: 'embedded', ui_click: 'embedded', ui_confirm: 'embedded', horn_war_1: 'fetched', crowd_cheer_1: 'fetched', thunder_1: 'fetched', 'synth:fanfare': 'synth', pickup_coin: 'failed' };

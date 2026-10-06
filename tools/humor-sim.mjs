@@ -57,7 +57,9 @@ export function makeScript(rng, kind, opts) {
   const events = [];
   const E = (t, type, p) => events.push({ t, type, p: p || {} });
   const dur = kind === 'stalemate' ? 50 : kind === 'blowout' ? rng.range(25, 40) : kind === 'comeback' ? rng.range(120, 170) : kind === 'siege' ? rng.range(100, 150) : rng.range(60, 120);
-  E(0, 'battle_start', { teams: 2 });
+  // army sizes like the real sim's battle_start: [{team, count, cost}, ...]; the blowout is lopsided, the stalemate a small one
+  const nA = kind === 'blowout' ? 14 : kind === 'stalemate' ? 6 : rng.int(16, 44), nB = kind === 'blowout' ? 42 : kind === 'stalemate' ? 6 : rng.int(16, 44);
+  E(0, 'battle_start', { teams: [{ team: 0, count: nA, cost: nA * 120 }, { team: 1, count: nB, cost: nB * 120 }] });
   const winnerRoll = rng.next();
   const winner = kind === 'stalemate' ? -1 : winnerRoll < (kind === 'blowout' ? 0.9 : 0.55) ? 0 : 1;
   // ---- kills ----
@@ -88,12 +90,12 @@ export function makeScript(rng, kind, opts) {
   const side = ['left', 'right', 'center'];
   for (let i = 0; i < swingN; i++) {
     const t = rng.range(0.2, 0.85) * dur;
-    const ratio = Math.exp(rng.range(-1.3, 1.3));
-    E(t, 'big_swing', { team: rng.int(0, 1), ratio, flank: rng.pick(side), cluster: { x: 0, z: 0 } });
+    const ratio = Math.exp(rng.range(-1.3, 1.3));          // team 0's power over team 1's, as sent by sim/power.js
+    E(t, 'big_swing', { team: ratio > 1 ? 0 : 1, ratio, flank: rng.chance(0.6) ? 'center' : rng.pick(side), cluster: { x: 0, z: 0 } });
   }
   if (kind === 'comeback') {
-    E(dur * 0.2, 'big_swing', { team: 1, ratio: 2.6, flank: 'left', cluster: { x: 0, z: 0 } });
-    E(dur * 0.35, 'lead_change', { team: 1, ratio: 1.8 });
+    E(dur * 0.2, 'big_swing', { team: 1, ratio: 1 / 2.6, flank: 'left', cluster: { x: 0, z: 0 } });
+    E(dur * 0.35, 'lead_change', { team: 1, ratio: 1 / 1.8 });
     E(dur * 0.6, 'big_swing', { team: 0, ratio: 2.4, flank: 'right', cluster: { x: 0, z: 0 } });
     E(dur * 0.62, 'lead_change', { team: 0, ratio: 1.6 });
   } else if (kind !== 'stalemate' && rng.chance(0.6)) E(rng.range(0.3, 0.8) * dur, 'lead_change', { team: rng.int(0, 1), ratio: rng.range(1.1, 2.2) });
@@ -146,6 +148,13 @@ export function makeScript(rng, kind, opts) {
   if (kind === 'hazards') {
     for (let i = 0; i < 5; i++) E(rng.range(0.2, 0.9) * dur, 'ability_cast', { id: 90 + i, ability: 'kick', x: 0, z: 0, team: 0 });
   }
+  // ---- ability moments (the booth reacts to the rare, readable casts) ----
+  if (kind !== 'stalemate') {
+    const abil = ['dot_cloud', 'war_horn', 'execute', 'net', 'chain_lightning'];
+    for (const a of abil) if (rng.chance(0.3)) E(rng.range(0.2, 0.9) * dur, 'ability_cast', { id: 95, ability: a, x: 0, z: 0, team: rng.int(0, 1) });
+    if (rng.chance(0.25)) E(rng.range(0.2, 0.9) * dur, 'crowd_roar', { x: 0, z: 0 });
+    if (rng.chance(0.3)) { const t = rng.range(0.5, 0.9) * dur; for (let i = 0; i < 5; i++) E(t + i * 0.4, 'unit_rally', { id: 200 + i }); }
+  }
   // ---- cross-kind gags: real battles mix mechanics, so any archetype can contain a few ----
   if (kind !== 'stalemate' && kind !== 'chaos' && rng.chance(0.25)) E(rng.range(0.2, 0.8) * dur, 'chicken_tantrum');
   if (kind !== 'stalemate' && kind !== 'chaos' && rng.chance(0.25)) E(rng.range(0.2, 0.8) * dur, 'philosopher_monologue');
@@ -160,7 +169,7 @@ export function makeScript(rng, kind, opts) {
   if (kind !== 'mythic' && kind !== 'stalemate' && rng.chance(0.1)) E(rng.range(0.2, 0.8) * dur, 'throne_sit');
   if (kind !== 'stalemate' && rng.chance(0.15)) { const t = rng.range(0.2, 0.8) * dur; for (let i = 0; i < 4; i++) E(t + i * 0.1, 'unit_kill', { src: 70, dst: 90 + i, srcDef: 'hoplite', dstDef: 'legionary', srcTeam: 0, dstTeam: 1, friendly: false, byPlayer: false, revived: false, cause: 'melee', x: 0, y: 0, z: 0 }); }
   // ---- ending ----
-  const reason = kind === 'stalemate' ? 'intervention' : rng.chance(0.2) ? 'time' : 'elimination';
+  const reason = kind === 'stalemate' ? 'intervention' : kind === 'cavalry_clash' ? 'time' : 'elimination';      // one archetype ends on the clock, the rest on the last soldier (so wins AND defeats are always heard)
   const perDef = { 0: {}, 1: {} };
   const wTeam = winner < 0 ? 0 : winner;
   const wRoster = wTeam ? rB : rA;
@@ -168,7 +177,9 @@ export function makeScript(rng, kind, opts) {
   perDef[wTeam][wRoster[0]] = Math.max(1, perDef[wTeam][wRoster[0]] || 1);
   if (kind === 'chaos' && winner === 1 && rng.chance(0.5)) perDef[1].sacred_chicken = rng.int(1, 4);
   if (kind === 'chaos' && winner === 0) perDef[0].sacred_chicken = rng.int(1, 4);
-  E(dur + 0.5, 'battle_end', { winner, reason, t: dur, stats: {}, perDef: winner < 0 ? { 0: {}, 1: {} } : perDef });
+  const aliveOf = (t) => Object.values(perDef[t] || {}).reduce((a, b2) => a + b2, 0);
+  const endStats = [{ startCount: nA, startCost: nA * 120, alive: winner === 0 ? aliveOf(0) : 0, aliveCost: (winner === 0 ? aliveOf(0) : 0) * 120 }, { startCount: nB, startCost: nB * 120, alive: winner === 1 ? aliveOf(1) : 0, aliveCost: (winner === 1 ? aliveOf(1) : 0) * 120 }];
+  E(dur + 0.5, 'battle_end', { winner, reason, t: dur, stats: endStats, perDef: winner < 0 ? { 0: {}, 1: {} } : perDef });
   if (mission && rng.chance(0.5)) E(dur * 0.5, 'objective_update', { id: 'main', state: 'running', progress: 0.5 });
   for (const e of events) if (e.type !== 'battle_end') e.t = Math.min(e.t, dur);
   events.sort((a, b) => a.t - b.t);

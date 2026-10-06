@@ -67,7 +67,7 @@ export function layoutArmy(groups, zone, enemyZone, defs, opts = {}) {
   let u = 0;                                        // depth cursor measured back from the front edge
   const place = (lineGroups, halfWidth, rankMax, gapAfter, formation, latShift, keepDepth) => {
     if (!lineGroups.length) return 0;
-    const sp = Math.max(opts.spacing || 1.15, ...lineGroups.map((g) => g.def.radius * 1.77));
+    const sp = Math.max(opts.spacing || 1.15, ...lineGroups.map((g) => g.def.radius * 2.05));
     const groupGap = 0.5, G = lineGroups.length;
     const total = lineGroups.reduce((s, g) => s + g.n, 0);
     // as wide as needed for rankMax ranks (never wider than the zone), files shared between the groups in proportion to their size

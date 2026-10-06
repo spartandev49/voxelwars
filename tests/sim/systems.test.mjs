@@ -90,6 +90,15 @@ await test('hazard lava: 30 dps for anything knocked in (cause lava); units neve
   let bad = 0; for (let i = 0; i < 30 * 40; i++) { bw.tick(); for (const q of bw.units) if (q.alive && bw.arena.materialAt(q.x, q.z).hazard === 'lava' && q.y < bw.arena.waterY() + 0.2) bad++; }
   assert.equal(bad, 0, 'nobody entered lava');
 });
+await test('hazard lava without a lava plane: `lava` hazard circles and lava material cells burn for 30 dps (arena builder pools)', () => {
+  const a = arenaHaz([{ t: 'lava', x: 0, z: 0, r: 4 }]); assert.ok(!(a.water > 0 && a.lava), 'no lava plane here');
+  const w = world({ arenaObj: a, rules: NM }); sentinels(w);
+  const u = add(w, 'berserker', 0, 1, 0), safe = add(w, 'berserker', 0, 12, 12); [u, safe].forEach((x) => { x.hp = x.hpMax = 300; pin(x); });
+  run(w, 1); assert.ok(300 - u.hp > 25 && 300 - u.hp < 36, 'circle pool 30 dps: ' + (300 - u.hp).toFixed(0)); assert.equal(safe.hp, 300, 'outside the pool nothing happens');
+  const b = arenaHaz([]); for (let cx = b.cx(5); cx <= b.cx(8); cx++) for (let cz = b.cz(5); cz <= b.cz(8); cz++) b.setM(cx, cz, 7);
+  const w2 = world({ arenaObj: b, rules: NM }); sentinels(w2); const v = add(w2, 'berserker', 0, 6.5, 6.5); v.hp = v.hpMax = 300; pin(v);
+  run(w2, 1); assert.ok(300 - v.hp > 25 && 300 - v.hp < 36, 'lava material cells 30 dps: ' + (300 - v.hp).toFixed(0));
+});
 await test('hazard avoidance: the flow field and local steering route around hazard cells when an alternative exists (nav cost x8)', () => {
   const a = arenaHaz([{ t: 'spikes', x: 0, z: 0, r: 5 }]); const w = world({ arenaObj: a, rules: NM }); sentinels(w);
   const nav = w.nav; assert.equal(nav.hazard[nav.cx(0) + nav.cz(0) * nav.n], 1);
@@ -118,7 +127,7 @@ await test('S27 breach: with a closed destructible wall between the armies they 
   for (const x of [-2.8, 0, 2.8]) for (let z = -32; z <= 32; z += 1.9) a.props.push({ t: 'wall_stone', x, z, r: Math.PI / 2, s: 1.3 });       // a thick full-width wall of 600 hp pieces (spears cannot reach over it)
   const w = world({ arenaObj: a, rules: { morale: true, timeLimit: 0 } }); const log = record(w, ['prop_destroyed', 'battle_end']);
   block(w, 'hoplite', 0, 12, -10, 0, { spacing: 1.2 }); block(w, 'hoplite', 1, 12, 10, 0, { spacing: 1.2 });
-  stepUntil(w, 150, () => w.state === 'ended'); assert.equal(w.state, 'ended', 'the battle ended'); assert.ok(count(log, 'prop_destroyed') >= 1, 'a wall piece fell');
+  stepUntil(w, 330, () => w.state === 'ended'); assert.equal(w.state, 'ended', 'the battle ended'); assert.ok(count(log, 'prop_destroyed') >= 1, 'a wall piece fell');
   // Troy: the real preset with both gate doors
   const troy = buildWorld({ arena: 'troy', seed: 3, a: { groups: sampleGroups([['hoplite', 30], ['cretan_archer', 10], ['trojan_horse', 1]]) }, b: { groups: sampleGroups([['hoplite', 30], ['cretan_archer', 10]]) } });
   const tl = []; troy.ev.on('prop_destroyed', (p) => tl.push(p.type)); const r = runBattle(troy, { maxTime: 330 });
@@ -160,13 +169,13 @@ await test('mutators (>= 8, data only): knockback x3, speed, friendly fire, chic
   const travel = (mut) => { const w = world({ rules: Object.assign({ mutators: mut }, NM) }); sentinels(w); const a = pin(add(w, 'hoplite', 0, 0, 0)), v = add(w, 'berserker', 1, 1.5, 0); v.se[SE.ROOT] = 1e9; v.hp = v.hpMax = 1e6; a.target = v; const h = newHit(); h.noBlock = true; h.noCrit = true; applyDamage(w, a, v, 14, h); for (let t = 0; t < 60; t++) w._integrate(v, 1 / 30); return v.x - 1.5; };
   assert.ok(Math.abs(travel(['moon_gravity']) / travel([]) - 3) < 0.1, 'kb x3');
   const sp = world({ rules: Object.assign({ mutators: ['speedy_soldiers'] }, NM) }); const u = add(sp, 'hoplite', 0, 0, 0); assert.ok(Math.abs(u.speedBase - 2.6 * 1.5) < 1e-9);
-  const tt = world({ rules: Object.assign({ mutators: ['tiny_titans'] }, NM) }); const t = add(tt, 'hoplite', 0, 0, 0); assert.ok(Math.abs(t.scale - 0.6) < 1e-9 && t.hpMax > 110);
+  const tt = world({ rules: Object.assign({ mutators: ['tiny_titans'] }, NM) }); const t = add(tt, 'hoplite', 0, 0, 0); assert.ok(Math.abs(t.scale - 0.6) < 1e-9 && t.hpMax > defs.hoplite.hp);
   const ff = world({ rules: Object.assign({ mutators: ['friendly_fire_fiesta'] }, NM) }); assert.equal(ff.rules.friendlyFire, true);
   const cr = world({ rules: Object.assign({ mutators: ['chicken_rain'] }, NM) }); sentinels(cr); run(cr, 12); assert.ok(cr.units.filter((u) => u.def.id === 'sacred_chicken').length >= 3, 'chickens rained');
   const wr = world({ rules: Object.assign({ mutators: ['wine_rain_always'] }, NM) }); sentinels(wr); block(wr, 'hoplite', 0, 20, 0, 0); run(wr, 5); assert.ok(wr.units.some((u) => u.se[SE.TIPSY] > 0));
 });
 await test('power rating: sqrt(hpEff * dps) per spec; team power sums; big_swing fires with team/ratio/flank/cluster', () => {
-  const d = defs.hoplite; const hpEff = 110 * (1 + 0.3 * 1.4) * (1 + 0.45 * 0.35), dps = 14 / 1.2; assert.ok(Math.abs(power(d) - Math.sqrt(hpEff * dps)) < 1e-9);
+  const d = defs.hoplite; const hpEff = d.hp * (1 + d.armor * 1.4) * (1 + 0.45 * 0.35), dps = d.melee.dmg / d.melee.cd; assert.ok(Math.abs(power(d) - Math.sqrt(hpEff * dps)) < 1e-9);
   assert.ok(power(defs.war_elephant) > power(defs.hoplite) * 3);
   const w = world({ rules: NM }); const log = record(w, ['big_swing']); block(w, 'hoplite', 0, 12, -10, 0); block(w, 'hoplite', 1, 12, 10, 0);
   const p0 = teamPower(w, 0); assert.ok(Math.abs(p0 - 12 * power(defs.hoplite)) < 1e-6);

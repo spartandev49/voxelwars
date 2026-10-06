@@ -10,6 +10,8 @@ export const STAT_CAPS = { hp: 30, damage: 30, attackSpeed: 20, speed: 20, armor
 export const STAT_POINTS = 100;
 export const MAX_ABILITIES = 2;
 export const EFFICIENCY_CAP = 1.35;
+/** The balance pass scaled every shipped unit's hp by this factor (battle length, S12); custom soldiers use the same scale so a 100-point soldier stays comparable. */
+export const HP_SCALE = 1.7;
 
 /** Weapon class table by blueprint weapon style (parts meta.style): base numbers for an average body. */
 export const WEAPON_CLASSES = {
@@ -52,16 +54,16 @@ const ABILITY_COST_FACTOR = { kick: 1, rage: 1, net: 1, execute: 1, heal_pulse: 
 export const legalAbilities = (weaponStyle) => Object.keys(ABILITY_PRESETS).filter((k) => ABILITY_PRESETS[k].classes.includes(weaponStyle));
 
 // ---------------------------------------------------------------------------------------------------------------- cost formula
-// cost = K * P^0.626 * (speed/2.6)^0.3 * exp(role + 0.074 * activeAbilities + 0.095 * mounted + 0.200 * fearless); coefficients are a least-squares fit of log(cost) on the
-// 43 shipped units after the balance pass (speed exponent fixed at 0.3 so cost stays monotonic in speed; worst residual 30%, docs/balance_report.md); K is calibrated so a
+// cost = K * P^0.640 * (speed/2.6)^0.3 * exp(role + 0.087 * activeAbilities + 0.002 * mounted + 0.205 * fearless); coefficients are a least-squares fit of log(cost) on the
+// 43 shipped units after the balance pass (speed exponent fixed at 0.3 so cost stays monotonic in speed; worst residual 40%, docs/balance_report.md); K is calibrated so a
 // shipped hoplite costs exactly 100. Monotonic in every stat that feeds power or speed.
-const COST_ROLE = { melee: 0, ranged: 0.262, cavalry: 0.150, support: 0.980, hero: 0.579, monster: 0.857, siege: 1.085, beast: -0.537, swarm: -0.937 };
+const COST_ROLE = { melee: 0, ranged: 0.273, cavalry: 0.144, support: 0.955, hero: 0.514, monster: 0.740, siege: 1.226, beast: -0.421, swarm: -0.986 };
 const PASSIVE_MODS = new Set(['stance', 'hook', 'breaks_shield', 'fire_every', 'poison', 'misfire', 'misaim', 'fire_panic', 'bribe']);
 function rawCost(def) {
   const sp = def.speed * ((def.runMul || 1.5) > 1.5 ? Math.sqrt((def.runMul || 1.5) / 1.5) : 1);
   const nab = (def.abilities || []).filter((a) => !PASSIVE_MODS.has(a.id)).length;
   const tags = def.tags || [];
-  return Math.pow(power(def), 0.626) * Math.pow(sp / 2.6, 0.3) * Math.exp((COST_ROLE[def.role] || 0) + 0.074 * nab + (tags.includes('cavalry') ? 0.095 : 0) + (tags.includes('fearless') ? 0.200 : 0));
+  return Math.pow(power(def), 0.640) * Math.pow(sp / 2.6, 0.3) * Math.exp((COST_ROLE[def.role] || 0) + 0.087 * nab + (tags.includes('cavalry') ? 0.002 : 0) + (tags.includes('fearless') ? 0.205 : 0));
 }
 let _K = 0;
 function K() { if (!_K) _K = 100 / rawCost(normalizeDef('hoplite', STAT_TABLE.hoplite)); return _K; }
@@ -126,7 +128,7 @@ export function statsToUnitDef(cs, opts = {}) {
   const def = {
     id: cs.id || 'custom', name: cs.name || 'Custom', faction: 'custom', role: wc.role, custom: true,
     tags: ['custom'].concat(wc.tags),
-    hp: Math.round((90 + st.hp * 2.5) * body.hp), armor: clampn(0.1 + st.armor * 0.012 + (opts.armorBase || 0), 0, 0.5), speed: +(2.5 + body.speed + st.speed * 0.04).toFixed(2),
+    hp: Math.round((90 + st.hp * 2.5) * body.hp * HP_SCALE), armor: clampn(0.1 + st.armor * 0.012 + (opts.armorBase || 0), 0, 0.5), speed: +(2.5 + body.speed + st.speed * 0.04).toFixed(2),
     mass: body.mass, radius, scale: 1, runMul: 1.5, moraleBonus: st.morale * 5,
     abilities: [], ai: { style: ['charge', 'hold', 'skirmish', 'flank', 'guard', 'support'].includes(cs.ai) ? cs.ai : (wc.role === 'ranged' ? 'skirmish' : 'charge') },
     text: cs.text || {},

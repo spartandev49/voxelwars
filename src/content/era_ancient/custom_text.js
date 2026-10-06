@@ -10,7 +10,7 @@ export const DEATH_QUOTES = [
   'Cassandra warned me. Everyone did.', "Don't let them have my sandals!", 'Who parked this boulder here?', 'I blame the sun disc.',
   "Rematch? I'll bring a bigger hat.", 'Hold my... oh no.', 'This is fine. This is... fine.', "File my paperwork under 'brave'.",
   'Tell my mother I was a philosopher.', "I've seen the ending. It's soup.", 'Not the face! ...Oh. The face.', 'That is what I get for volunteering.',
-  'I felt that in my pension.', 'Somebody count the chickens for me.', 'I was only here for the free grapes.', 'Tactical lying down!',
+  'My pension did not cover this.', 'Somebody count the chickens for me.', 'I was only here for the free grapes.', 'Tactical lying down!',
 ];
 
 /** Spawn lines (<= 40 characters). */

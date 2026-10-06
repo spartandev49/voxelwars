@@ -63,7 +63,7 @@ export class Metrics {
       if (h.filled >= 15 && h.cool === 0 && u.state !== ST.STAGGER && u.state !== ST.STUN && Math.abs(adiff(old, u.heading)) > Math.PI / 2) { this.flips++; h.cool = 15; }
       h.a[h.k] = u.heading; h.k = (h.k + 1) % 15; if (h.filled < 15) h.filled++;
       // ---- overlap (sampled every 3rd tick)
-      const r0 = u.def.role, reach = u.def.melee && r0 !== 'ranged' && r0 !== 'support' && r0 !== 'siege' ? u.def.melee.range + 0.15 : 0;
+      const r0 = u.def.role, shooter = !!u.def.ranged && u.def.ai && (u.def.ai.style === 'skirmish' || u.def.ai.style === 'siege' || u.def.ai.style === 'support'), reach = u.def.melee && r0 !== 'ranged' && r0 !== 'support' && r0 !== 'siege' && !shooter ? u.def.melee.range + 0.15 : 0;
       let contact = false;
       if (sampleOv || (reach > 0 && u.cd <= 0)) {
         const q = w.qbuf; const nq = hash.query(u.x, u.z, 3.2, q);

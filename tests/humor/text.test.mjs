@@ -161,6 +161,35 @@ ok(campaign.TEACHING_BEATS.length >= 4 && campaign.TEACHING_BEATS.every((b) => b
 ok(Object.keys(campaign.REWARD_PARTS).length === 13 && ['silly_helms', 'silly_weapons', 'wings'].every((k) => campaign.REWARD_PARTS[k]), '10 silly reward parts plus the 3 unlock packs');
 for (const id of M9) ok(announcer.CATEGORIES.includes('campaign_' + id), 'announcer has campaign category for ' + id);
 
+// ---------- comedy editor pass: moment barks (the bubbles the sim really emits), proper names, kill-feed width, tips that are checkable ----------
+{
+  const MOMENT_KEYS = ['kick', 'rage', 'horn', 'revive', 'misfire', 'elephant_panic', 'throne_retreat', 'tantrum', 'cluck', 'monologue', 'filibuster', 'bribe', 'taunt', 'engage', 'hurt', 'rout', 'cheer'];
+  let n = 0;
+  for (const [id, t] of Object.entries(unitsText.UNIT_TEXT)) for (const k of MOMENT_KEYS) if (t[k] !== undefined) { n++; ok(Array.isArray(t[k]) && t[k].length >= 2 && t[k].every((x) => typeof x === 'string' && words(x) <= 12), `${id}.${k} is a list of >= 2 bubbles <= 12 words`); }
+  ok(n >= 14, 'units answer the sim\'s ability moments with their own voice: ' + n);
+  const simText = await import('../../src/content/era_ancient/sim_text.js');
+  for (const k of ['kick', 'rage', 'horn', 'revive', 'misfire', 'elephant_panic', 'throne_retreat', 'tantrum', 'cluck', 'monologue', 'filibuster', 'bribe', 'taunt', 'deaths', 'taunts']) ok(Array.isArray(simText.SIM_BARKS[k]) && simText.SIM_BARKS[k].length >= 2, 'SIM_BARKS has a fallback for ' + k);
+  for (const role of barks.ROLES) for (const st of barks.STATES) ok(simText.SIM_BARKS[st + ':' + role] === barks.BARKS[role][st], `SIM_BARKS['${st}:${role}'] is the class bark`);
+  for (const [k, arr] of Object.entries(simText.SIM_BARKS)) for (const b of arr) ok(words(b) <= 12, `bubble <= 12 words (${k}): ${b}`);
+  ok(!/plunder/i.test(JSON.stringify(simText.SIM_BARKS)), 'the barbarians are well organised, not plunderers');
+  ok(unitsText.isProper('hannibal') && unitsText.isProper('xerxes') && unitsText.isProper('medusa') && unitsText.isProper('cs_sir_chadius') && !unitsText.isProper('hoplite') && !unitsText.isProper('pharaoh'), 'proper names: Hannibal, Xerxes, Medusa and custom soldiers; not job titles');
+  // two units never end on the same last words, and the "Tell the ..." formula is a minority, not a house style
+  const deaths = Object.values(unitsText.UNIT_TEXT).flatMap((t) => t.deaths);
+  ok(new Set(deaths).size === deaths.length, 'no two units share last words');
+  ok(deaths.filter((d) => /^Tell /.test(d)).length <= 8, '"Tell the ..." last words stay a minority: ' + deaths.filter((d) => /^Tell /.test(d)).length);
+  // kill-feed rows are 15 rem wide: the verb is the joke, so the everyday causes stay short
+  for (const c of ['melee', 'ranged']) ok(verbs.KILL_VERBS[c].by.length >= 12 && verbs.KILL_VERBS[c].by.every((v) => v.length <= 31), c + ' verbs: at least a dozen, none longer than the feed can show');
+  for (const c of Object.keys(verbs.KILL_VERBS)) for (const v of [...verbs.KILL_VERBS[c].by, ...(verbs.KILL_VERBS[c].solo || [])]) ok(!/\b(himself|herself|his|her)\b/.test(v), 'kill verbs are gender-neutral (chickens and goats die too): ' + v);
+  // the three checkable numbers in tips and codex jokes stay true
+  const stats = (await import('../../src/content/era_ancient/stats.js')).STAT_TABLE;
+  ok(/6 dps/.test(unitsText.UNIT_TEXT.pharaoh.codexJoke) && stats.pharaoh.abilities.find((a) => a.id === 'dot_cloud').dps === 6, 'pharaoh codex joke quotes the real dps');
+  ok(stats.hoplite.armor === 0.3 && /30%/.test(unitsText.UNIT_TEXT.hoplite.codexJoke), 'hoplite armour joke is true');
+  ok(stats.cataphract.armor === 0.6 && tips.TIPS.some((t) => /60%/.test(t.text) && /cataphract/i.test(t.text)), 'cataphract armour tip is true');
+  ok(stats.catapult.ranged.minRange === 15 && tips.TIPS.some((t) => /15 units/.test(t.text)), 'catapult minimum range tip is true');
+  ok(stats.ballista.ranged.minRange === 8 && stats.ballista.ranged.pierceN === 3 && tips.TIPS.some((t) => /ballista/i.test(t.text) && /eight units/.test(t.text) && /three/.test(t.text)), 'ballista tip is true');
+  ok(tips.TIPS.length >= 40 && tips.TIPS.length <= 70, 'tip count: ' + tips.TIPS.length);
+}
+
 // ---------- H4: banned-term sweep over EVERY user-visible string in the humor modules ----------
 const rot13 = (s) => s.replace(/[a-z]/g, (c) => String.fromCharCode(((c.charCodeAt(0) - 97 + 13) % 26) + 97));
 const SLURS_ROT13 = ['avttre', 'avttn', 'snttbg', 'xvxr', 'puvax', 'tbbx', 'jrgonpx', 'fcvp', 'ornare', 'gbjryurnq', 'enturnq', 'cnxv', 'erqfxva', 'fdhnj', 'genaal', 'qlxr', 'pbba', 'arteb', 'jbc', 'qntb', 'tlcfl', 'wnc', 'ergneq', 'fcnm', 'pevccyr', 'fnaqavttre', 'pnzry wbpxrl'];

@@ -2,10 +2,27 @@
 import * as K from '../kit.js';
 import { getT } from '../strings.js';
 import { generateArena } from '../../world/gen.js';
+import { Arena } from '../../world/arena.js';
+import { importShare } from '../../save/share.js';
 import { BUDGETS, AI_STYLES, qualityCaps, totalStars, factionIds, timeName, setThumb, showThumb, safe, seenHint, setSeenHint } from './_shared.js';
 import { factionColor, factionName } from '../unitinfo.js';
 
 export const meta = { id: 'quick', layer: 'menu', music: 'menu', canvas: 'none' };
+
+const SIZE_BUDGET = { small: 3000, medium: 8000, large: 12000 };
+const OBJECTIVES = ['eliminate', 'kill_general', 'hold_hill', 'protect_vip', 'destroy'];
+const OBJ_PARAMS = { kill_general: {}, hold_hill: { time: 60 }, protect_vip: { time: 100 }, destroy: { props: ['gate_door'], eliminate: false } };
+/** A saved arena (ctx.save.arenas item {id,name,author,desc,tags,size,objective,thumb,code|data}) as a carousel entry after the presets. */
+function arenaFromItem(it) {
+  return { id: 'my:' + it.id, name: it.name || 'Untitled Arena', mine: true, item: it, size: it.size || 'medium', blurb: it.desc || '', tactics: (it.tags || []).slice(0, 4), recommendedBudget: SIZE_BUDGET[it.size] || 8000, seed: 0, objective: it.objective || 'eliminate' };
+}
+const typeOf = (p) => (Array.isArray(p) ? p[0] : p && p.t);
+/** Which objectives an Arena supports (world.md section 4/5 markers): eliminate always; the rest need their markers or gate doors. */
+function supportOf(arena) {
+  const mk = new Set(((arena && arena.markers) || []).map((m) => m && m.type));
+  const gates = ((arena && arena.props) || []).some((p) => typeOf(p) === 'gate_door');
+  return { eliminate: true, kill_general: mk.has('general_spawn'), hold_hill: mk.has('hill'), protect_vip: mk.has('vip_start') && mk.has('exit'), destroy: gates };
+}
 
 let LAST = null;   // survives screen remounts within a session (back from placement keeps your choices)
 
@@ -16,7 +33,7 @@ function defaults(ctx) {
   if (b === a) b = ids[(ids.indexOf(a) + 1) % ids.length];
   return {
     arena: 'marathon', size: 'medium', seed: 1337, weather: 'default', timeAuto: true, time: 12,
-    budget: 'battle', custom: 8000, difficulty: 'normal', friendlyFire: false, morale: true, speed: 1, freePlacement: false,
+    objective: 'eliminate', budget: 'battle', custom: 8000, difficulty: 'normal', friendlyFire: false, morale: true, speed: 1, freePlacement: false,
     gore: safe(() => ctx.settings.get('gore'), 'red'), corpses: safe(() => ctx.settings.get('corpses'), 'fade'), formation: 'block', mirror: false, timeLimit: 0, mood: 'auto', mutators: [],
     A: { faction: a, style: 'balanced' }, B: { faction: b, style: 'balanced' }, adv: seenHint(ctx, 'quickAdvanced'),
   };
@@ -27,7 +44,10 @@ export function mount(root, ctx, params) {
   const T0 = getT(ctx), T = T0.quick;
   const cleanups = [];
   const S = LAST || (LAST = defaults(ctx));
-  const arenas = ctx.content.arenas;
+  if (!(ctx.content.arenas.concat((safe(() => ctx.save.arenas.list(), []) || []).map((it) => ({ id: 'my:' + it.id })))).some((a) => a.id === S.arena)) S.arena = 'marathon';   // a saved arena that was deleted meanwhile
+  const presets = ctx.content.arenas;
+  const mine = (safe(() => ctx.save.arenas.list(), []) || []).filter((it) => it && it.id).map(arenaFromItem);   // "My arenas" from the Arena Builder library, after the presets
+  const arenas = presets.concat(mine);
   if (params && params.arena && arenas.some((a) => a.id === params.arena)) { S.arena = params.arena; const pa = arenas.find((a) => a.id === params.arena); if (pa.size && pa.id !== 'random') S.size = pa.size; }
   const caps = () => qualityCaps(ctx);
   const stars = totalStars(ctx);
@@ -56,11 +76,13 @@ export function mount(root, ctx, params) {
   // the thumbnail queue draws one arena per idle slice (50-150 ms each): ask for the SELECTED arena first so it is never the one left blank
   safe(() => ctx.content.arenaThumb(curArena().id));
   const strip = K.h('div', { class: 'vw-qb__strip vw-scroll', role: 'radiogroup', 'aria-label': T.arena });
+  let sepDone = false;
   const stripBtns = arenas.map((a, i) => {
+    if (a.mine && !sepDone) { sepDone = true; strip.appendChild(K.h('span', { class: 'vw-qb__strip-sep', role: 'presentation', id: 'qb-my-arenas', text: T.myArenas })); }
     const im = K.h('img', { class: 'vw-qb__mini-img', alt: '', width: 96, height: 54, loading: 'lazy' });
     const fb = K.h('span', { class: 'vw-qb__mini-fb vw-hide', 'aria-hidden': 'true' });
     const b = K.h('button', { type: 'button', class: 'vw-qb__mini', role: 'radio', 'aria-checked': 'false', tabindex: '-1', id: 'qb-arena-' + a.id, dataset: { arena: a.id } }, K.h('span', { class: 'vw-qb__mini-art' }, im, fb), K.h('span', { class: 'vw-qb__mini-name', text: a.id === 'random' ? T.random.name : a.name }));
-    setThumb(im, ctx, a.id, fb);
+    if (a.mine) showThumb(im, a.item.thumb || '', fb); else setThumb(im, ctx, a.id, fb);
     b.addEventListener('click', () => { K.sfx('ui_click'); setArena(a.id); });
     b.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') K.sfx('ui_hover'); });
     strip.appendChild(b);
@@ -78,7 +100,7 @@ export function mount(root, ctx, params) {
     K.h('div', { class: 'vw-qb__thumb' }, img, thumbBox, K.h('div', { class: 'vw-qb__nav vw-qb__nav--l' }, prev), K.h('div', { class: 'vw-qb__nav vw-qb__nav--r' }, next)),
     K.h('div', { class: 'vw-qb__arena-info' }, nameEl, blurbEl, K.h('div', { class: 'vw-row vw-wrapflex' }, tacticsEl, recEl)));
   function step(d) { const i = (arenaIdx() + d + arenas.length) % arenas.length; K.sfx('ui_tick'); setArena(arenas[i].id); }
-  function setArena(id) { S.arena = id; const a = curArena(); if (a.size && S.arena !== 'random') S.size = a.size; paintArena(); paintSummary(); sizeSeg.set(S.size, true); }
+  function setArena(id) { S.arena = id; const a = curArena(); if (a.size && S.arena !== 'random') S.size = a.size; paintArena(); paintSummary(); sizeSeg.set(S.size, true); loadObjectives(true); }
   function applyRecommended() {
     const want = curArena().recommendedBudget || 8000;
     const presets = Object.keys(BUDGETS);
@@ -90,7 +112,8 @@ export function mount(root, ctx, params) {
     const a = curArena();
     nameEl.textContent = a.id === 'random' ? T.random.name : a.name;
     fbName.textContent = (a.id === 'random' ? T.random.name : a.name) + ' ' + T.thumbWait;
-    blurbEl.textContent = a.id === 'random' ? T.random.blurb : a.blurb;
+    blurbEl.textContent = a.id === 'random' ? T.random.blurb : (a.blurb || (a.mine ? T.mineBlurb : ''));
+    sizeSeg.querySelectorAll('button').forEach((b) => { b.disabled = !!a.mine; });   // a saved arena keeps the size it was built at
     tacticsEl.replaceChildren(...(a.tactics || []).map((t) => K.chip(t, { variant: 'sky' })));
     recLabel.textContent = T.recommended(a.recommendedBudget || 8000);
     seedRow.classList.toggle('vw-hide', a.id !== 'random');
@@ -99,13 +122,14 @@ export function mount(root, ctx, params) {
       let url = '';
       try { const ar = generateArena('random', 'small', S.seed); const cv = document.createElement('canvas'); cv.width = 384; cv.height = 216; url = (ctx.preview && ctx.preview.arena) ? ctx.preview.arena(cv, ar, { w: 384, h: 216 }) : ''; } catch (e) { url = ''; }
       if (url && typeof url === 'string') showThumb(img, url, thumbBox); else setThumb(img, ctx, a.id, thumbBox);
-    } else setThumb(img, ctx, a.id, thumbBox);
+    } else if (a.mine) showThumb(img, a.item.thumb || '', thumbBox);
+    else setThumb(img, ctx, a.id, thumbBox);
     const cur = stripBtns[arenaIdx()];
     if (cur && cur.scrollIntoView) { try { cur.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) { /* ignore */ } }
   }
 
   /* ---------------------------------------------------------------- conditions */
-  const sizeSeg = K.segmented({ id: 'qb-size', label: T.size, value: S.size, options: ['small', 'medium', 'large'].map((k) => ({ value: k, label: T.sizes[k], sub: T.sizeSub[k] })), onChange: (v) => { S.size = v; paintSummary(); } });
+  const sizeSeg = K.segmented({ id: 'qb-size', label: T.size, value: S.size, options: ['small', 'medium', 'large'].map((k) => ({ value: k, label: T.sizes[k], sub: T.sizeSub[k] })), onChange: (v) => { S.size = v; paintSummary(); loadObjectives(false); } });
   const weatherSel = K.select({ id: 'qb-weather', label: T.weather, value: S.weather, options: Object.keys(T.weathers).map((k) => ({ value: k, label: T.weathers[k] })), onChange: (v) => { S.weather = v; weatherTip.textContent = T.weatherTip[v] || ''; paintSummary(); } });
   const weatherTip = K.h('p', { class: 'vw-field__hint vw-qb__wtip', text: T.weatherTip[S.weather] || '' });
   const timeOut = K.h('span', { class: 'vw-qb__time-name', 'aria-live': 'polite' });
@@ -145,7 +169,39 @@ export function mount(root, ctx, params) {
     K.tooltip(c, locked ? (m.locked || T.mutatorLocked(m.stars)) : (m.desc || m.blurb));
     mutBox.appendChild(c);
   }
+  /* ---- objective picker (world.md rules table): lists only what the chosen arena supports; the arena author's default (Arena.objective) is pre-selected */
+  const objHint = K.h('p', { class: 'vw-field__hint', id: 'qb-objective-hint', text: T.objectiveTips[S.objective] || '' });
+  const objSel = K.select({ id: 'qb-objective', label: T.objective, value: S.objective, options: OBJECTIVES.map((k) => ({ value: k, label: T.objectives[k] })), onChange: (v) => { S.objective = v; objHint.textContent = T.objectiveTips[v] || ''; paintSummary(); } });
+  const arenaCache = new Map(), mineJson = new Map();
+  let objTok = 0;
+  /** The Arena behind a carousel entry (a generated preset, or a saved one decoded from its share code / data), cached; null when it cannot be read. */
+  function arenaOf(a) {
+    const key = a.mine ? a.id : `${a.id}|${S.size}|${a.id === 'random' ? S.seed : a.seed}`;
+    if (!arenaCache.has(key)) {
+      arenaCache.set(key, (async () => {
+        if (a.mine) {
+          if (a.item.data) return Arena.fromJSON(a.item.data);
+          const propTypes = new Set(Object.keys(safe(() => ctx.content.props, {}) || {}));
+          const r = await importShare(a.item.code || '', 'arena', propTypes.size ? { propTypes } : {});
+          return r.value;
+        }
+        return generateArena(a.id, S.size, a.id === 'random' ? S.seed : (a.seed || S.seed));
+      })().catch(() => null));
+    }
+    return arenaCache.get(key);
+  }
+  async function loadObjectives(reset) {
+    const a = curArena(), tok = ++objTok;
+    const ar = await arenaOf(a);
+    if (tok !== objTok) return;
+    const sup = supportOf(ar);
+    OBJECTIVES.forEach((k, i) => { const o = objSel.select.options[i]; if (!o) return; o.disabled = !sup[k]; o.textContent = sup[k] ? T.objectives[k] : `${T.objectives[k]} (${T.objectiveNeeds[k]})`; });
+    if (reset) { const d = (ar && ar.objective) || a.objective; S.objective = d && sup[d] ? d : 'eliminate'; }
+    else if (!sup[S.objective]) S.objective = 'eliminate';
+    objSel.select.value = S.objective; objHint.textContent = T.objectiveTips[S.objective] || ''; paintSummary();
+  }
   const advRules = K.h('div', { class: 'vw-col', 'data-adv-only': '' },
+    K.field(T.objective, K.h('div', { class: 'vw-col vw-grow' }, objSel, objHint), { stack: true }),
     K.field(T.friendlyFire, K.toggle({ id: 'qb-ff', label: T.friendlyFire, value: S.friendlyFire, onChange: (v) => { S.friendlyFire = v; } }), { info: T.friendlyFireTip }),
     K.field(T.morale, K.toggle({ id: 'qb-morale', label: T.morale, value: S.morale, onChange: (v) => { S.morale = v; } }), { info: T.moraleTip }),
     K.field(T.speed, speedSeg, { info: T.speedTip, stack: true }),
@@ -199,6 +255,7 @@ export function mount(root, ctx, params) {
     const bits = [a.id === 'random' ? T.random.name : a.name, T.sizes[S.size], T.budgets[S.budget] + ' ' + K.fmtNum(budgetValue()), T.difficulties[S.difficulty]];
     if (wx) bits.push(wx);
     if (!S.timeAuto) bits.push(K.fmtClock(S.time));
+    if (S.objective && S.objective !== 'eliminate') bits.push(T.objectives[S.objective]);
     summary.textContent = bits.join(' · ');
   }
   const quickBtn = K.button(T.quickFight, { id: 'qb-quick-fight', variant: 'primary', size: 'lg', icon: 'dice', sub: T.quickFightSub, onClick: () => quickFight() });
@@ -211,9 +268,15 @@ export function mount(root, ctx, params) {
     const g = ctx.game;
     const setup = g.newSetup('quick');
     setup.arena = { presetId: a.id, size: S.size, seed: a.id === 'random' ? S.seed : (a.seed || S.seed), env: Object.assign({}, S.timeAuto ? {} : { time: S.time }) };
+    if (a.mine && mineJson.has(a.id)) {   // a saved arena: the game builds it from setup.arena.data (Arena JSON); weather/time overrides go into its env
+      const json = JSON.parse(JSON.stringify(mineJson.get(a.id)));
+      json.env = Object.assign({}, json.env, S.weather === 'default' ? {} : { weather: S.weather }, S.timeAuto ? {} : { time: S.time });
+      setup.arena = { presetId: a.id, name: a.name, data: json, size: a.size, seed: json.seed | 0, env: {} };
+    }
     setup.rules = Object.assign({}, setup.rules, {
       budget: budgetValue(), difficulty: S.difficulty, friendlyFire: S.friendlyFire, morale: S.morale, speed: S.speed, gore: S.gore, corpses: S.corpses, freePlacement: S.freePlacement, mirror: S.mirror,
       timeLimit: S.timeLimit * 60, weather: S.weather === 'default' ? null : S.weather, mood: S.mood, mutators: S.mutators.slice(), formation: S.formation,
+      objective: S.objective && S.objective !== 'eliminate' ? { type: S.objective, params: Object.assign({}, OBJ_PARAMS[S.objective]), markerIds: [] } : null,
     });
     setup.armies = { A: { faction: S.A.faction, style: S.A.style, placements: [], budget: budgetValue() }, B: { faction: S.B.faction, style: S.B.style, placements: [], budget: budgetValue() } };
     return setup;
@@ -222,17 +285,21 @@ export function mount(root, ctx, params) {
   async function placeArmies() {
     if (busy) return;
     lock(true); K.toast(T.starting, { kind: 'info', ms: 1500 });
-    try { const setup = toSetup(); await ctx.game.begin(setup); if (ctx.nav.current() !== 'placement') ctx.nav.goto('placement', { from: 'quick', setup }); }
+    try {
+      const a = curArena();
+      if (a.mine) { const ar = await arenaOf(a); if (!ar) { K.toast(T.mineBroken, { kind: 'error' }); lock(false); return; } mineJson.set(a.id, ar.toJSON()); }
+      const setup = toSetup(); await ctx.game.begin(setup); if (ctx.nav.current() !== 'placement') ctx.nav.goto('placement', { from: 'quick', setup }); }
     catch (e) { K.toast(T.failed, { kind: 'error' }); lock(false); }
   }
   async function quickFight() {
     if (busy) return;
     lock(true); K.toast(T.starting, { kind: 'info', ms: 1500 });
     try {
-      const pool = arenas.filter((x) => x.id !== 'arenalab');
+      const pool = presets.filter((x) => x.id !== 'arenalab');
       const pick = pool[Math.floor(Math.random() * pool.length)];
       const keep = S.arena; S.arena = pick.id; if (pick.size && pick.id !== 'random') S.size = pick.size;
       const setup = toSetup(); S.arena = keep;
+      setup.rules.objective = null;   // Quick Fight is plain elimination on a random preset
       const g = ctx.game;
       await g.begin(setup);
       const b = budgetValue();
@@ -256,6 +323,7 @@ export function mount(root, ctx, params) {
   frame.mount(root);
   function paintMode() { grid.classList.toggle('is-simple', !S.adv); }
   paintMode(); paintArena(); paintTime(); paintCap(); paintSummary();
+  loadObjectives(!!(params && params.arena));
   K.enter(Array.from(grid.querySelectorAll('.vw-tablet')), 'pop', 0);
   K.enter(actions, 'fade', 4);
   const offSet = ctx.settings.on ? ctx.settings.on(paintCap) : null;

@@ -1,5 +1,6 @@
-// Loading tips: half real hints about counters and controls ('hint'), half jokes that also teach ('joke'). Each <= 18 words.
-// Shape: { id, kind: 'hint'|'joke', topic, text }. Every tip is true of the current rules (spec 8.1 / units.md).
+// Loading and title tips: half real hints about counters and controls ('hint'), half jokes that also teach ('joke'). Each <= 18 words.
+// Shape: { id, kind: 'hint'|'joke', topic, text }. Every tip is true of the current rules (stats.js, sim/consts.js, sim/abilities/*): the numbers were checked against them
+// in the comedy editor pass (docs/comedy_report.md). Change a rule, change the tip.
 
 const H = (id, topic, text) => ({ id: 'tip_' + id, kind: 'hint', topic, text });
 const J = (id, topic, text) => ({ id: 'tip_' + id, kind: 'joke', topic, text });
@@ -10,7 +11,7 @@ export const TIPS = [
   H('cav_archers', 'counter', 'Cavalry catches archers; spearmen do not. Send horses after the bows.'),
   H('backstab', 'tactics', 'Hits from behind do 35% more damage. Shields only protect the front.'),
   H('fire_targets', 'counter', 'Fire beats elephants, mummies and wooden horses. Bring Nubian archers.'),
-  H('rain_fire', 'weather', 'Rain halves burn damage and switches off fire arrows. Check the weather before you pack torches.'),
+  H('rain_fire', 'weather', 'Rain halves burn time and switches off fire arrows. Check the weather before you pack torches.'),
   H('stone_blunt', 'counter', 'Stoned units take double damage from blunt weapons. Medusa plus a club is a plan.'),
   H('senator_sleep', 'counter', 'Sleeping enemies take 1.5x damage. Let the Senator talk, then hit them while they snore.'),
   H('catapult_min', 'siege', 'Catapults cannot hit anything closer than 15 units. Protect them with something that is closer.'),
@@ -22,14 +23,25 @@ export const TIPS = [
   H('phalanx', 'tactics', 'Hoplites standing still in a tight group get the phalanx bonus. Walking spoils it.'),
   H('type_cap', 'rules', 'You can field 16 different unit types in a battle. Chickens count as a type.'),
   H('wine_rain', 'rules', 'Wine rain makes soldiers wander and deal 40% less damage. Time it for when you are losing.'),
+  H('sandstorm', 'weather', 'Sandstorms scatter ranged attacks by half again. Pick spears and cavalry for dusty days.'),
+  H('flanks', 'morale', 'Soldiers hit from the side or behind lose morale faster. Flank, and watch them wobble.'),
+  H('hold_brace', 'tactics', 'The Hold order keeps a squad standing still. Spearmen that stand still brace against cavalry.'),
+  H('focus', 'tactics', 'The Focus order makes a squad attack one target. Use it on a hero or a monster.'),
+  H('lightning', 'powers', 'Zeus Lightning recharges in six seconds and jumps to four more targets. Aim it at clumps.'),
+  H('meteor', 'powers', 'A meteor takes two seconds to land. Aim at a clump, not at somebody who is running.'),
+  H('heal_wave', 'powers', 'Heal Wave restores 60 health to every nearby ally. Save it for after the clash.'),
+  H('scout', 'placement', 'The Scout report speaks up once you have placed three soldiers. It is free. Read it.'),
+  H('fear_speed', 'speed', 'Above 2x speed the announcers only comment on the big moments. Brutus takes it personally.'),
   // ---- real hints: controls ----
   H('pause', 'controls', 'Space pauses. The speed keys go down to 0.25x, which is excellent for watching a goat.'),
   H('rematch', 'controls', 'R rematches instantly. Cassandra recommends changing something first.'),
   H('command', 'controls', 'Select a unit and press Enter to take command. WASD moves, a click attacks.'),
   H('budget', 'rules', 'Spend your whole budget. Unspent drachmae have never won a battle.'),
+  H('photo', 'controls', 'P is photo mode and Tab hides the HUD. Soldiers look better when nobody is explaining them.'),
+  H('killcam', 'controls', 'When a hero or boss falls, the results screen offers a kill-cam. Press K.'),
   // ---- jokes that teach ----
   J('trojan', 'counter', 'A suspicious horse is a wooden hint. Destroy it before it opens, or meet six hoplites.'),
-  J('goat', 'units', 'The goat has no rank, no armour and the best kill record. Notice the goat.'),
+  J('goat', 'units', 'The goat has no rank, a tiny helmet and a charge that hits twice as hard. Respect it.'),
   J('elephant_mouse', 'counter', 'Elephants fear fire. Rumours about mice are unconfirmed. Torches are not.'),
   J('spartan_kick', 'units', 'A Spartan kick launches enemies eight units. Do not stand behind the target.'),
   J('catapult_misfire', 'units', 'Never stand next to a catapult you love. It misfires four percent of the time.'),
@@ -38,7 +50,7 @@ export const TIPS = [
   J('chicken_rage', 'units', 'A hurt sacred chicken may throw a tantrum: five seconds of triple damage. Finish it fast.'),
   J('mummy', 'counter', 'Do not insult a mummy. Do not light it either. These are two different problems.'),
   J('sparabara', 'units', 'A Sparabara wall stops arrows. It does not stop cavalry. Nothing stops cavalry, except spears.'),
-  J('cataphract', 'counter', 'Cataphracts have 60% armour. Do not poke them with sticks. Use blunt weapons, fire or Zeus.'),
+  J('cataphract', 'counter', 'Cataphracts have 60% armour. Fire and magic ignore it. Sticks, regrettably, do not.'),
   J('big_army', 'tactics', 'A big army is impressive. A big army in a bad spot is a very large lesson.'),
   J('choke', 'arena', 'Thermopylae is eight units wide. Spears adore it. Cavalry files a complaint.'),
   J('berserker', 'units', 'Berserkers hit harder below half health. Kill them fast; wounding them only helps.'),
@@ -47,5 +59,17 @@ export const TIPS = [
   J('chariot', 'units', 'Chariot archers shoot while moving. Parking is not their strong suit.'),
   J('druid', 'counter', 'Do not stand in a clump near a druid. His lightning is on a group discount.'),
   J('cassandra', 'meta', 'Cassandra is always right and never believed. Read the lessons screen. Be the exception.'),
-  J('peltast', 'units', 'Peltasts kite at 85% of their range. Chase them with horses, not with dignity.'),
+  J('peltast', 'units', 'Peltasts back away when enemies come within five units. Horses outrun them. Dignity does not.'),
+  J('pharaoh', 'units', 'The Pharaoh\'s locusts chew a seven-unit circle for six seconds. Do not clump near the hat.'),
+  J('anubis', 'units', 'Anubis Guards finish anyone below twenty percent health. Wound first, then send the jackal.'),
+  J('chieftain', 'units', 'A war horn works once per battle: eight seconds of speed and damage. He saves it for drama.'),
+  J('minotaur', 'units', 'A minotaur charges twelve units in a straight line. Step sideways. Corners remain his weakness.'),
+  J('gladiator', 'units', 'Gladiators fight harder with five enemies close. Surrounding one is exactly what he hoped for.'),
+  J('camel', 'units', 'Camels slow enemy cavalry by 35%. Horses hate the smell. This is the entire doctrine.'),
+  J('warhound', 'units', 'Warhounds gain eight percent damage per nearby hound, up to forty. Bring a lot of dogs.'),
+  J('ballista', 'units', 'A ballista skewers three enemies per bolt but ignores anything within eight units. Guard it.'),
+  J('centurion', 'units', 'A Centurion cuts nearby morale loss by 40%. Praise is not included.'),
+  J('zeus_goat', 'units', 'When Zeus steps in, he sends a goat to the weaker side. Do not argue with the goat.'),
+  J('xerxes', 'units', 'While Xerxes sits, allies within twelve units hit 20% harder. Do not touch the chair.'),
+  J('chicken_six', 'powers', 'Power six drops eight chickens. They are cheap, loud and very good at distracting enemies.'),
 ];

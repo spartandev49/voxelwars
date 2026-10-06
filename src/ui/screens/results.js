@@ -15,7 +15,7 @@ export const meta = { id: 'results', layer: 'battle', music: 'none', canvas: 'sc
 
 const WIN_SUB = { elimination: 'Last unit standing: yours.', time: 'Time ran out and you were ahead. Technically a win.', objective: 'Objective complete. Paperwork pending.', rout: 'They ran away. Technically you won.', intervention: 'Zeus left the chat. You won the argument.' };
 const LOSE_SUB = { elimination: 'Your army has been politely removed.', time: 'Time ran out and you were behind. Rude.', objective: 'The objective was not achieved. Neither was lunch.', rout: 'Your army chose cardio.', intervention: 'Zeus left. You lost anyway.' };
-const DRAW_SUB = 'Zeus stormed off. Nobody wins. Everyone is cross.';
+const DRAW_SUB = { intervention: 'Zeus stormed off. Nobody wins. Everyone is cross.', time: 'The clock ran out with both armies level. Nobody won. Both claim moral victory.' };
 const NO_QUOTE = ['Survived. Smugly.', 'Still standing. Has opinions.', 'Lived. Took notes.'];
 
 export function normalize(r, ctx) {
@@ -31,11 +31,19 @@ export function normalize(r, ctx) {
   return Object.assign({}, r, { teams: t, mvp, lessons: Array.isArray(r.lessons) ? r.lessons.slice(0, 3) : [], funnyStats: Array.isArray(r.funnyStats) ? r.funnyStats.slice(0, 4) : [], winner: r.winner === undefined ? -1 : r.winner });
 }
 
-function banner(r) {
+/** A campaign mission has its own voiced victory / defeat line (CAMPAIGN_TEXT, copied onto the mission): it replaces the generic sub-line. */
+function missionLine(r, ctx, win) {
+  if (!r.mission || r.mission.kind === 'puzzle' || !r.mission.id) return null;
+  const list = (ctx && ctx.content && ctx.content.campaign && ctx.content.campaign.missions) || [];
+  const m = list.find((x) => x && x.id === r.mission.id), l = m && (win ? m.victory : m.defeat);
+  return l && l.text ? l.text : null;
+}
+
+function banner(r, ctx) {
   const win = r.winner === 0, draw = r.winner === -1 || r.winner === undefined || r.winner > 1;
   const kind = draw ? 'draw' : win ? 'win' : 'lose';
   const title = draw ? 'DRAW' : win ? 'VICTORY!' : 'DEFEAT';
-  const sub = draw ? DRAW_SUB : (win ? WIN_SUB : LOSE_SUB)[r.reason] || (win ? WIN_SUB.elimination : LOSE_SUB.elimination);
+  const sub = draw ? (DRAW_SUB[r.reason] || DRAW_SUB.intervention) : missionLine(r, ctx, win) || (win ? WIN_SUB : LOSE_SUB)[r.reason] || (win ? WIN_SUB.elimination : LOSE_SUB.elimination);
   return { kind, title, sub };
 }
 
@@ -49,7 +57,7 @@ export function mount(root, ctx, params) {
   let raw = p.results || null;
   try { if (!raw && ctx.game && ctx.game.results) raw = ctx.game.results(); } catch (e) { raw = null; }
   const r = normalize(raw, ctx);
-  const b = banner(r);
+  const b = banner(r, ctx);
   const rm = reduced(ctx);
   const isMission = !!(r.mission && r.mission.id);
   const isPuzzle = r.kind === 'puzzle' || !!r.puzzle || !!(r.mission && r.mission.kind === 'puzzle');       // puzzles: the same stars box, but Retry / Next puzzle / Puzzles

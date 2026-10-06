@@ -4,6 +4,7 @@
 //   on `wave_intermission` and calls waves.next() when the player is done; headless runs auto-advance after 40 s).
 // Events: wave_spawn{n,count}, wave_intermission{n,budget,name,boss}. Score = cleared*1000 + kills*10 + remaining cost of the player's army.
 import { generateArmy, layoutArmy, STYLES, groupsCost } from './armygen.js';
+import { ST } from './consts.js';
 import { WAVE_NAMES, BOSS_NAMES, BOSS_CYCLE } from '../content/era_ancient/wave_names.js';
 
 export const waveBudget = (n) => 2400 + 900 * n;
@@ -21,7 +22,7 @@ export class WaveSystem {
   constructor(w, opts = {}) {
     this.w = w; this.enemy = opts.enemyTeam === 0 ? 0 : 1; this.player = 1 - this.enemy; this.faction = opts.faction || 'mixed';
     this.interval = opts.interval || 40; this.autoAdvance = opts.autoAdvance !== false; this.maxWaves = opts.maxWaves || 0;
-    this.n = 0; this.cleared = 0; this.state = 'idle'; this.timer = 0; this.inter = 0; this.kills0 = 0; this.lastArmy = null;
+    this.n = 0; this.cleared = 0; this.state = 'idle'; this.timer = 0; this.inter = 0; this.kills0 = 0; this.lastArmy = null; this.lowT = 0; this.routT = 0; this.startAlive = 0;
     w.waves = this;
   }
   /** Composition of wave n (also used by tests): {budget, style, boss, army}. */
@@ -42,7 +43,7 @@ export class WaveSystem {
     w.addPlacements(this.enemy, pl);
     let count = 0; for (const g of c.groups) count += g.n;
     const e = w.P.wave_spawn; e.n = n; e.count = count; w.emit('wave_spawn', e);
-    this.state = 'fighting'; this.timer = 0; this.lastArmy = c;
+    this.state = 'fighting'; this.timer = 0; this.lastArmy = c; this.lowT = 0; this.routT = 0; this.startAlive = w.stats[this.enemy].alive;
     return c;
   }
   /** Called by the Game when the player finished placing reinforcements (or by update() after the auto-advance delay). */
@@ -56,7 +57,13 @@ export class WaveSystem {
     if (this.state === 'fighting') {
       this.timer += dt;
       const enemyAlive = w.stats[this.enemy].alive;
-      if (enemyAlive <= 0) {
+      // the field counts as clear when the wave is wiped, or only stragglers are left: <= 10% of the wave's start count for 5 s, or nothing but routed units for 3 s
+      if (enemyAlive > 0) {
+        this.lowT = enemyAlive <= Math.max(1, Math.ceil(this.startAlive * 0.1)) ? this.lowT + dt : 0;
+        let allRout = true; for (let i = 0; i < w.units.length; i++) { const u = w.units[i]; if (u.alive && u.team === this.enemy && u.state !== ST.ROUT) { allRout = false; break; } }
+        this.routT = allRout ? this.routT + dt : 0;
+      }
+      if (enemyAlive <= 0 || this.lowT >= 5 || this.routT >= 3) {
         this.cleared = this.n; this.state = 'intermission'; this.inter = 0;
         const nn = this.n + 1, e = w.P.wave_intermission; e.n = nn; e.budget = reinforceBudget(this.n); e.name = waveName(nn); e.boss = isBossWave(nn) ? bossOf(nn) : ''; w.emit('wave_intermission', e);
       } else if (this.timer >= this.interval && !(this.maxWaves && this.n >= this.maxWaves)) {

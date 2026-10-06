@@ -53,8 +53,9 @@ export class WorldLabels {
     const bubbles = [], tags = [], pt = { x: 0, y: 0 };
     for (let i = this.bubbles.length - 1; i >= 0; i--) {
       const b = this.bubbles[i], u = w.unitById(b.unit);
-      if (!u || u.dead || now > b.until) { this.bubbles.splice(i, 1); continue; }
-      if (this._project(u.x, u.y + 3.1 * u.scale, u.z, camera, W, H, pt)) bubbles.push({ id: b.id, text: b.text, x: pt.x, y: pt.y, kind: b.kind, a: Math.min(1, (b.until - now) / 0.4) });
+      if (u) { b.x = u.x; b.y = u.y + 3.1 * u.scale; b.z = u.z; }               // a bubble outlives its speaker: last words stay where the soldier fell until the line has been read
+      if (b.x === undefined || now > b.until) { this.bubbles.splice(i, 1); continue; }
+      if (this._project(b.x, b.y, b.z, camera, W, H, pt)) bubbles.push({ id: b.id, text: b.text, x: pt.x, y: pt.y, kind: b.kind, a: Math.min(1, (b.until - now) / 0.4) });
     }
     for (let i = this.tags.length - 1; i >= 0; i--) {
       const g = this.tags[i], age = now - g.born;

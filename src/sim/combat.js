@@ -263,6 +263,7 @@ export function resolveMelee(w, u) {
     // breaching: damage the obstacle (blunt/heavy weapons are better at it)
     const p = u.breach, mul = (m.type === 'blunt' ? 1.5 : m.type === 'slash' ? 1.0 : 0.7) * (u.mass >= 6 ? 2.0 : 1.0);
     w.hurtProp(p, m.dmg * mul * u.mDmg);
+    w.lastDamageT = w.time;                                    // chewing through the wall is progress, not a stalemate
     return;
   }
   if (!t || !t.alive) return;

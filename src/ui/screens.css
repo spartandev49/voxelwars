@@ -391,3 +391,6 @@
 /* tap targets: credit links are full-size targets (inline ledger links get their hit area from vertical padding) */
 .vw-credit-link { display: inline-flex; align-items: center; min-height: var(--tap); }
 .vw-md a { padding-block: 14px; margin-block: -14px; }
+
+/* "My arenas" group in the Quick Battle carousel */
+.vw-qb__strip-sep { flex: 0 0 auto; align-self: center; display: flex; align-items: center; min-height: var(--tap); padding: 0 .35rem 0 .7rem; margin-left: .2rem; border-left: 3px dashed var(--line); font: 400 .78rem/1.1 var(--font-display); text-transform: uppercase; letter-spacing: .05em; color: var(--gold); writing-mode: horizontal-tb; white-space: nowrap; }

@@ -37,6 +37,7 @@ export function mount(root, ctx, params) {
 
   /* ------------------------------------------------------------ helpers */
   const arenaName = () => {
+    const sn = safe(() => setup.arena.name, null); if (sn && !(params && params.arenaName)) return String(sn);   // a saved arena (setup.arena.data) carries its own name
     if (puzzle && puzzle.arena && (params && params.arenaName) == null) { const pa = (ctx.content.arenas || []).find((x) => x.id === puzzle.arena.recipe); if (pa) return pa.name; }
     const id = safe(() => setup.arena.presetId, null);
     const a = id && (ctx.content.arenas || []).find((x) => x.id === id);

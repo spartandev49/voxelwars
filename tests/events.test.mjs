@@ -30,6 +30,7 @@ const army = (seed, style) => generateArmy({ faction: 'mixed', budget: 9000, sty
 const w = buildWorld({ arena: 'colosseum', seed: 5, rules: { godPowers: true }, start: false, a: { groups: army(1, 'chaos') }, b: { groups: army(2, 'chaos') } });
 const seen = new Set(); let bad = 0;
 w.ev.onAny((t, p) => { seen.add(t); const allowed = EVENTS[t]; if (!allowed) { bad++; return; } for (const k of Object.keys(p)) if (!allowed.includes(k)) { bad++; console.log('undeclared field', t, k); } });
+w.addUnit('sacred_chicken', 0, -20, 20);                      // spawned after the listener: unit_spawn (the armies were placed before it)
 w.start();
 for (let i = 0; i < 30 * 150 && w.state !== 'ended'; i++) { if (i === 200) w.godpowers.cast('zeus_lightning', 0, 0, 0); if (i === 300) w.godpowers.cast('meteor', 5, 5, 1); w.tick(); }
 assert.equal(bad, 0, 'payload fields outside the table');

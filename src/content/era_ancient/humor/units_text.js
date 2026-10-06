@@ -47,7 +47,7 @@ export const UNIT_TEXT = {
       'Catch me! (Please do not.)',
       'Over here! No, over here! No, now I am gone!',
     ],
-    codexJoke: 'Kites at 85% of range. Courage at 85% of that.',
+    codexJoke: 'Backs away from any enemy within 5 u and calls it range management.',
   },
   cretan_archer: {
     name: 'Cretan Archer', plural: 'Cretan Archers',
@@ -62,7 +62,7 @@ export const UNIT_TEXT = {
       'Every arrow finds someone. Statistically.',
       'I am not missing. I am exploring.',
     ],
-    codexJoke: 'Accuracy: aspirational. Volume: reliable.',
+    codexJoke: 'Range 34 u. Accuracy is handled by a different department.',
   },
   companion_cavalry: {
     name: 'Companion Cavalry', plural: 'Companion Cavalry',
@@ -178,7 +178,7 @@ export const UNIT_TEXT = {
     deaths: [
       'Someone really should invent stirrups.',
       'My horse had a plan. I had a hat.',
-      'Tell the legion I was flanking. Left-ish.',
+      'I was flanking. The horse was freelancing.',
     ],
     taunts: [
       'Flank incoming! Left-ish!',
@@ -193,7 +193,7 @@ export const UNIT_TEXT = {
     deaths: [
       'Nobody mentioned the minimum range!',
       'We just reloaded. We JUST reloaded.',
-      'Tell the next crew: line them up.',
+      'Oil the winch. It was the winch. It is always the winch.',
     ],
     taunts: [
       'Line up! It saves time.',
@@ -223,7 +223,7 @@ export const UNIT_TEXT = {
     blurb: 'Desert police turned soldiers. Politely asks you to leave, then insists.',
     lore: 'Began as desert scouts, became the pharaoh\'s police, and now fights in the army. Still asks civilians to step away from the pyramid and still checks whether you have a permit.',
     deaths: [
-      'Move along. Nothing to see. Just dying.',
+      'Write me up as "resisted arrest". By me.',
       'Please do not leave the scene of the crime.',
       'I only wanted to ask some questions.',
     ],
@@ -240,7 +240,7 @@ export const UNIT_TEXT = {
     deaths: [
       'I lost count. Was that the sixth?',
       'It is raining. Of course it is raining.',
-      'Tell the quartermaster: fire was worth it.',
+      'Put "fire" on my headstone. The quartermaster will sulk.',
     ],
     taunts: [
       'Count with me: one, two, three, four, five, BURN.',
@@ -261,7 +261,7 @@ export const UNIT_TEXT = {
       'Nice shield. Shame if someone hooked it.',
       'Lower your shield. I only want to borrow it.',
     ],
-    codexJoke: 'Shield pull: 15%. Farm tool: 100%.',
+    codexJoke: 'A 15% chance to hook your shield away. A 100% chance it started life on a farm.',
   },
   chariot_archer: {
     name: 'Chariot Archer', plural: 'Chariot Archers',
@@ -270,7 +270,7 @@ export const UNIT_TEXT = {
     deaths: [
       'I said LEFT!',
       'Who was driving?',
-      'Tell the horses they were excellent.',
+      'The horses were excellent. The brakes were fictional.',
     ],
     taunts: [
       'Mind the wheels! (We are not stopping.)',
@@ -313,7 +313,7 @@ export const UNIT_TEXT = {
     blurb: 'Heals friends, sunburns enemies. Bring sunscreen for both.',
     lore: 'Part healer, part magnifying glass. Operates the only solar-powered heal pulse in the ancient world and insists, to everyone, that you drink water. Wears a leopard pelt in summer, which nobody questions.',
     deaths: [
-      'Tell the clouds they win.',
+      'Clouds. Of course. It was always going to be clouds.',
       'Drink water, everyone. That is my last order.',
       'I healed everyone but me. Typical.',
     ],
@@ -336,7 +336,7 @@ export const UNIT_TEXT = {
       'Locusts! Dinner is served. For them.',
       'I do not dismount. I do not queue. I do not lose.',
     ],
-    codexJoke: 'Locust swarm: 6 s, 8 dps. Ego: not measurable.',
+    codexJoke: 'Locust swarm: 6 s, 6 dps. Ego: not measurable.',
   },
 
   // ---------------- Persians ----------------
@@ -439,14 +439,14 @@ export const UNIT_TEXT = {
     lore: 'Light cavalry who steer with a stick and a suggestion. Throws javelins, retreats, throws more javelins, and has never once been invited to a parade. The horse chooses where they go.',
     deaths: [
       'Horse, which way did you go?',
-      'Tell the horse it can keep the javelins.',
+      'Horse, you may keep the javelins. Horse? Horse?',
       'I should have bought a bridle.',
     ],
     taunts: [
       'Catch me! The horse decides.',
       'Hit and run. Mostly run.',
     ],
-    codexJoke: 'Steering: advisory. Accuracy: also advisory.',
+    codexJoke: 'Javelin 18 damage at 16 u. The horse has the final say on direction.',
   },
   catapult: {
     name: 'Catapult', plural: 'Catapults',
@@ -610,7 +610,7 @@ export const UNIT_TEXT = {
     lore: 'A literal combined-arms unit: a horse that shoots, an archer that gallops, and a tailor who has never once got the trousers right. Buys one ticket, eats two lunches.',
     deaths: [
       'Which half of me is dying first?',
-      'Tell the horse half I loved it too.',
+      'Horse half: it was an honour. Human half: keep the bow.',
       'Half of me is galloping away. The other half is staying.',
     ],
     taunts: [
@@ -662,9 +662,38 @@ export const UNIT_TEXT = {
       'BAAAH! (Not a threat. A review.)',
       'Maa! (Behind you.)',
     ],
-    codexJoke: 'Knockback 12. Rank: none. Credit: none. Hat: yes.',
+    codexJoke: 'Charge: 8 u, double damage. Rank: none. Credit: none. Hat: yes.',
   },
 };
+
+// ---------------- moment barks ----------------
+// The speech bubbles the sim emits for ability moments (sim/world.js bark(): `u.def.text[key]` first, then the generic list in content/sim_text.js).
+// Keys are the sim's moment names; each unit answers only the moments it can actually have. Every line is <= 12 words and fits a bubble.
+const MOMENTS = {
+  spartan: { kick: ['If.', 'THIS IS SPARTA!', 'Have a nice flight!', 'Calf day. Every day.'] },
+  berserker: { rage: ['RAAAGH!', 'Now I am cross!', 'Excuse me. AAAARGH. Thank you.', 'I would like to be extremely angry now.'] },
+  chieftain: { horn: ['FOR POTTERY AND PROCEDURE!', 'HORN! HORN! HORN!', 'The motion is carried!', 'By a show of horns!'] },
+  immortal: { revive: ['Plot twist.', 'I did say once.', 'Back. Do not get used to it.', 'Ten thousand. This week.'] },
+  catapult: { misfire: ['Not Gaius!', 'Oh no, Gaius.', 'The four percent!', 'He said he was fine with heights!'] },
+  war_elephant: { elephant_panic: ['TRUMPET!', 'Fire! Fire! Everyone move!', 'Torches! Why always torches?!'] },
+  xerxes: { throne_retreat: ['Retreat!', 'Retreat! Tell no one I said that.', 'Retreat! The chair is not insured!', 'Carry the throne! CARRY IT!'] },
+  sacred_chicken: {
+    tantrum: ['BWAAAK!', 'Bawk. BAWK. BAWK!!', 'Absolutely not! Bawk!', 'You will regret this. Bawk!'],
+    cluck: ['BAWK!', 'Bawk bawk BAWK!', 'Bawk! (Look at me.)', 'Bawk! (Hello. I am sacred.)'],
+  },
+  philosopher: { monologue: ['But what IS a spear, truly?', 'If a sword falls in a forest and nobody dodges it...', 'Define "enemy".', 'Consider: the unexamined charge.', 'What is courage but fear with good posture?'] },
+  senator: {
+    filibuster: ['As I was saying...', 'Point of order!', 'Let the record show...', 'I yield... to no one.'],
+    bribe: ['Pleasure doing business.', 'A small gift, citizen.', 'This is totally legal.', 'It is recorded as a donation.'],
+  },
+  battle_goat: {
+    taunt: ['BAAAH!', 'Maa! (Behind you.)', 'BAAAH! (Not a threat. A review.)'],
+    engage: ['Baaah!', 'MAAA!'], hurt: ['Baa-aah!', 'Maa?!'], rout: ['Maaa, maaa, maaa!', 'Baa! (Tactical.)'], cheer: ['Baaah! (Called it.)', 'Maa. (Hay now.)'],
+  },
+  warhound: { engage: ['WOOF!', 'Bark bark bark!'], hurt: ['Yip!', 'Yelp! (Rude.)'], rout: ['Awoooo. (Going home.)', 'Whimper. (Sausage?)'], cheer: ['Woof! (Who is a good boy?)', 'Arf! (Sausage now.)'] },
+  minotaur: { taunt: ['No more maze! Straight line!', 'Left turns are for cowards. And architects.', 'STRAIGHT LINE!'] },
+};
+for (const id of Object.keys(MOMENTS)) Object.assign(UNIT_TEXT[id], MOMENTS[id]);
 
 // ---------------- helpers (pure) ----------------
 export const UNIT_IDS = Object.keys(UNIT_TEXT);

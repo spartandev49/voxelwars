@@ -10,10 +10,12 @@ export const BARKS = {
     engage: [
       'Contact! Mostly contact!',
       'I was told there would be lunch.',
+      'Remember: pointy end forward.',
     ],
     hurt: [
       'That was my good shield arm.',
       'I felt that in my pension.',
+      'Ow. Duly noted.',
     ],
     rout: [
       'Tactical walking!',
@@ -117,7 +119,7 @@ export const BARKS = {
   },
   monster: {
     engage: [
-      'RAWR. (Polite.)',
+      'Ahem. SMASH.',
       'Smash first, introductions later.',
     ],
     hurt: [
@@ -205,7 +207,7 @@ export const STATUS_BARKS = {
   ],
   panic: [
     'Everything is on fire!',
-    'Not the fire! Never the fire!',
+    'Run! Run! Everybody run!',
   ],
   burn: [
     'Hot! Hot! Hot!',

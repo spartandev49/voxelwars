@@ -7,6 +7,7 @@ export const SCENARIOS = [
   { name: 'title', screen: 'title' },
   { name: 'quick', screen: 'quick' },
   { name: 'quick_advanced', screen: 'quick', setup: async (ui) => { const b = ui.q('[data-adv="advanced"]'); if (b) b.click(); await ui.sleep(250); } },
+  { name: 'quick_my_arena', screen: 'quick', setup: async (ui) => { const b = ui.q('[data-arena="my:ar_hill"]'); if (b) b.click(); const adv = ui.q('[data-adv="advanced"]'); if (adv) adv.click(); await ui.sleep(500); } },
   { name: 'placement', screen: 'placement', reset: (app) => { app.game.begin(app.game.newSetup('quick')); }, setup: async (ui) => { await ui.game.begin(ui.game.newSetup('quick')); ui.game.tools.autoFill(0, { style: 'balanced', faction: 'hellenes', budget: 3800 }); ui.game.tools.autoFill(1, { style: 'balanced', faction: 'persians', budget: 2600 }); await ui.sleep(40); } },
   { name: 'placement_puzzle', screen: 'placement', reset: (app) => { app.game.begin(app.game.newSetup('puzzle', { puzzle: 'spear_wall', mission: 'spear_wall', arena: { presetId: 'marathon', size: 'medium', seed: 11, env: {} }, rules: { budget: 1400, par: 1000 }, armies: { A: { faction: 'hellenes', placements: [], budget: 1400, roster: ['hoplite', 'peltast'] }, B: { faction: 'hellenes', placements: [], budget: null } } })); },
     setup: async (ui) => { ui.game.tools.place(0, 'hoplite', 8); ui.game.tools.place(0, 'peltast', 3); await ui.sleep(750); const b = document.getElementById('pl-hint-dismiss'); if (b) b.click(); await ui.sleep(250); } },

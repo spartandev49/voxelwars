@@ -46,6 +46,22 @@ await test('protect_vip: VIP death loses; surviving T seconds wins; reaching the
   [w, g] = mk({ markerIds: ['exit'] }); pin(g); g.x = 9; g.z = 0; run(w, 0.3); assert.equal(w.winner, 0, 'reached the exit');
   assert.ok(w.objective.vip === g);
 });
+await test('survive_waves: stragglers do not hold the intermission hostage (<= 10% of the wave for 5 s, or only routed units for 3 s); removeUnit works during an intermission', () => {
+  const w = world({ rules: { morale: false, timeLimit: 0, objective: { type: 'survive_waves', params: { waves: 3 } }, waves: { autoAdvance: false } }, size: 'medium' }); const log = record(w, ['wave_spawn', 'wave_intermission']);
+  block(w, 'hoplite', 0, 4, -30, 25); w.units.forEach((u) => { u.hp = u.hpMax = 1e9; pin(u); });                  // the player's army is far away and harmless: only the wave rules are tested
+  run(w, 1); assert.equal(w.waves.state, 'fighting'); const wave = w.units.filter((u) => u.team === 1); assert.ok(wave.length >= 10);
+  // kill all but ceil(10%) of the wave and pin the survivors: they never die, never move
+  const keep = Math.max(1, Math.ceil(wave.length * 0.1));
+  for (let i = keep; i < wave.length; i++) { const u = wave[i]; if (u.alive) w.lightning(u.x, u.z, 9999, 0.5, null); }
+  run(w, 1);
+  const left = w.units.filter((u) => u.alive && u.team === 1); assert.ok(left.length <= keep + 1, 'stragglers left ' + left.length + ' of ' + keep);
+  left.forEach((u) => { pin(u); u.hp = u.hpMax = 1e9; });
+  stepUntil(w, 8, () => w.waves.state === 'intermission'); assert.equal(w.waves.state, 'intermission', 'a handful of stragglers is a cleared wave after 5 s');
+  assert.equal(count(log, 'wave_intermission'), 1); assert.ok(w.waves.timer < 20);
+  // the Game removes units while the world is in the intermission
+  const u = w.units.find((x) => x.team === 0); assert.equal(w.removeUnit(u), true, 'removeUnit is allowed in a survival intermission'); assert.ok(!w.units.includes(u));
+  w.waves.next(); run(w, 1); assert.equal(w.removeUnit(w.units[0]), false, 'but not while the wave is fighting');
+});
 await test('survive_waves (W7): wave n budget 2400+900n, style rotation, boss every 5th, intermission budget 1600+240n, win after N cleared, defeat when the army dies', () => {
   assert.deepEqual([1, 2, 3, 10].map(waveBudget), [3300, 4200, 5100, 11400]); assert.equal(reinforceBudget(3), 2320);
   assert.deepEqual([1, 2, 3, 4, 5, 6, 7].map(waveStyle), ['balanced', 'rush', 'ranged', 'elite', 'chaos', 'counter', 'balanced']);

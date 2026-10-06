@@ -320,7 +320,7 @@ export class World {
 
   /** Placement-phase: remove a unit (adjusts stats and squads). */
   removeUnit(u) {
-    if (this.state !== 'placing') return false;
+    if (this.state !== 'placing' && !(this.waves && this.waves.state === 'intermission')) return false;     // placement phase, or a survival intermission (running but not ticking)
     const i = this.units.indexOf(u); if (i < 0) return false;
     this.units.splice(i, 1); this.byId.delete(u.id);
     const st = this.stats[u.team]; st.alive--; st.aliveCost -= u.def.cost; st.startCount--; st.startCost -= u.def.cost;
@@ -636,13 +636,18 @@ export class World {
     const nx = u.dvx / sp, nz = u.dvz / sp;
     const ax = u.x + nx * look, az = u.z + nz * look;
     if (this._canMove(nav, ocx, ocz, ax, az)) { if (u.blockSoft > 0) u.blockSoft = Math.max(0, u.blockSoft - 0.07); return; }
-    if (nav.inside(ax, az) && nav.soft[nav.cx(ax) + nav.cz(az) * nav.n] > 0) u.blockSoft += 1 / 30;       // pressing on a destructible prop: breach candidate
     const sg = u.sideSign;
     for (let k = 0; k < DEFLECT.length; k++) {
       const a = DEFLECT[k] * sg, c = Math.cos(a), s = Math.sin(a);
       const rx = nx * c - nz * s, rz = nx * s + nz * c;
-      if (this._canMove(nav, ocx, ocz, u.x + rx * look, u.z + rz * look)) { u.dvx = rx * sp; u.dvz = rz * sp; return; }
+      if (this._canMove(nav, ocx, ocz, u.x + rx * look, u.z + rz * look)) {
+        u.dvx = rx * sp; u.dvz = rz * sp;
+        if (Math.abs(DEFLECT[k]) < 1.0) { if (u.blockSoft > 0) u.blockSoft = Math.max(0, u.blockSoft - 0.07); return; }    // a small detour around the scenery: walk it, do not chop it
+        break;                                                                                                              // only a sideways slide along a wall remains: that is still pressing on it
+      }
     }
+    // pressing on a destructible prop (no real way around) makes the unit a breach candidate
+    if (nav.inside(ax, az) && nav.soft[nav.cx(ax) + nav.cz(az) * nav.n] > 0) u.blockSoft += 1 / 30;
   }
   _canMove(nav, ocx, ocz, px, pz) {
     if (!nav.inside(px, pz)) return false;
@@ -656,7 +661,8 @@ export class World {
   _separate(dt) {
     const units = this.units, nav = this.nav, hash = this.hash, q = this.qbuf2;
     const f = Math.min(1, 0.55 + dt * 4);
-    for (let i = 0; i < units.length; i++) {
+    // two relaxation passes: one pass leaves ranks that are pushed from behind overlapping by 10-25% (S5)
+    for (let pass = 0; pass < 2; pass++) for (let i = 0; i < units.length; i++) {
       const a = units[i]; if (!a.alive) continue;
       const n = hash.query(a.x, a.z, a.radius + 1.8, q);
       for (let k = 0; k < n; k++) {
@@ -664,14 +670,14 @@ export class World {
         const b = units[j]; if (!b || !b.alive) continue;
         const dx = b.x - a.x, dz = b.z - a.z;
         const same = a.team === b.team;
-        const minD = (a.radius + b.radius) * (same ? 0.88 : 1.0);
+        const minD = (a.radius + b.radius) * (same ? 0.96 : 1.0);
         const d2 = dx * dx + dz * dz;
         if (d2 >= minD * minD) continue;
         const d = Math.sqrt(d2) || 0.001;
         let nx = dx / d, nz = dz / d;
         if (d < 0.001) { nx = 1; nz = 0; }
         const ov = (minD - d);
-        a.press += ov; b.press += ov;
+        if (pass === 0) { a.press += ov; b.press += ov; }
         // heavier units shove lighter ones; units that are attacking or standing in a stance hold their ground
         let wa = b.mass / (a.mass + b.mass), wb = 1 - wa;
         const aHold = a.state === ST.WINDUP || a.hold, bHold = b.state === ST.WINDUP || b.hold;
@@ -682,6 +688,7 @@ export class World {
         if (nav.walkable(ax, az)) { a.x = ax; a.z = az; }
         if (nav.walkable(bx, bz)) { b.x = bx; b.z = bz; }
         // trample: large moving units flatten small ones (also their own when panicking)
+        if (pass !== 0) continue;
         if (a.mass >= G.trampleMassMin && a.speedNow > G.trampleSpeed && b.mass < G.trampleMassMax && (!same || a.se[SE.SCARE] > 0)) this._trample(a, b, dt);
         else if (b.mass >= G.trampleMassMin && b.speedNow > G.trampleSpeed && a.mass < G.trampleMassMax && (!same || b.se[SE.SCARE] > 0)) this._trample(b, a, dt);
       }
@@ -803,8 +810,12 @@ export class World {
     if (this.time > 45 && !this.forceAdvance && idle > 6) { const r = (ca + 1) / (cb + 1); if (r > 0.9 && r < 1.1) this.forceAdvance = true; }
     const obj = this.objective, blk = obj && obj.blocksElimination ? obj.enemy : -1;      // an objective may keep the battle going after the enemy is wiped out (waves, destroy+eliminate)
     if (a <= 0 || b <= 0) {
-      const gone = a <= 0 && b <= 0 ? -2 : a <= 0 ? 0 : 1;
-      if (gone === -2 || gone !== blk) { this.end(a > 0 ? 0 : b > 0 ? 1 : -1, 'elimination'); return; }
+      // a bribed unit (convertT > 0) still belongs to its owner: an army whose last soldiers are on loan has not been eliminated
+      let a2 = a, b2 = b; for (let i = 0; i < this.units.length; i++) { const u = this.units[i]; if (u.alive && u.convertT > 0) { if (u.origTeam === 0) a2++; else b2++; } }
+      if (a2 > 0 && b2 > 0) { /* both armies still exist */ } else {
+        const gone = a2 <= 0 && b2 <= 0 ? -2 : a2 <= 0 ? 0 : 1;
+        if (gone === -2 || gone !== blk) { this.end(a2 > 0 ? 0 : b2 > 0 ? 1 : -1, 'elimination'); return; }
+      }
     }
     if ((this.tickN % 15) === 0 && blk < 0 && this._routCheck(a, b)) return;
     if (this.rules.timeLimit > 0 && this.time >= this.rules.timeLimit) this.end(ca > cb * 1.02 ? 0 : cb > ca * 1.02 ? 1 : -1, 'time');

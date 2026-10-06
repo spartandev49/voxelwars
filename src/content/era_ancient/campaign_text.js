@@ -27,7 +27,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('Marathon is lost. Persians in Athens by dinner. I said so in the original, too.'),
     stars: [
       { id: 'win', text: 'Win the battle. Running is optional.' },
-            { id: 'half', text: 'Win with at least half your army (by cost) still standing.' },
+      { id: 'half', text: 'Win with at least half your army (by cost) still standing.' },
       { id: 'thrift', text: 'Win while spending under 2,250 drachmae. Frugal is the new fearless.' },
     ],
     reward: { title: 'Marathoner', blurb: 'Ran a little. Fought a lot. Sat down afterwards.' },
@@ -63,7 +63,7 @@ export const CAMPAIGN_TEXT = {
     defeat: P('The Pharaoh lives. He will build something larger, probably from your mistakes.'),
     stars: [
       { id: 'win', text: 'Kill the Pharaoh.' },
-            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
+      { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'quick', text: 'Kill the Pharaoh in under 90 seconds. He keeps a schedule.' },
     ],
     reward: { title: 'Pyramid Schemer', blurb: 'Toppled the top of the pyramid. Technically a promotion.' },
@@ -96,7 +96,7 @@ export const CAMPAIGN_TEXT = {
       B('Win with at least one elephant standing for the third star! It needs snacks! The ELEPHANT does!'),
     ],
     victory: B('ROME BLINKS! The elephants are cold, tired and a little smug. So is Hannibal. He hides it badly.'),
-    defeat: C('The elephants panicked. I said fire. Rome brought more fire. They brought it twice.'),
+    defeat: P('Rome holds. The elephants go home over the Alps, and the Alps, it must be said, are not impressed.'),
     stars: [
       { id: 'win', text: 'Defeat the Romans in the snow.' },
       { id: 'half', text: 'Win with at least half your army alive. Count elephants twice.' },
@@ -117,7 +117,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('They saw you. The trees were not that thick. I said hide behind the thick ones.'),
     stars: [
       { id: 'win', text: 'Defeat the centurion.' },
-            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
+      { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'fast', text: 'Win in 75 seconds. Politeness does not mean slowness.' },
     ],
     reward: { title: 'Forest Phantom', blurb: 'Was somewhere. Was suddenly everywhere. Vanished. Had tea.' },
@@ -128,7 +128,7 @@ export const CAMPAIGN_TEXT = {
     briefing: [
       B('TROY! A great wall, a great gate, and a great big horse! Surprise! It is full of hoplites!'),
       P('We wait outside, offering a gift. Will they accept it? Do they ever learn?'),
-      C('The gate will fall. Wood burns 1.6 times better than anyone expects. I measured it.'),
+      C('The defenders will not open the gate. They will open the horse. History is very consistent about this.'),
       B('Bring the gate down inside a hundred seconds for the third star! The gift shop opens at DAWN!'),
     ],
     victory: C('The horse worked. The gate fell. They gave me no gift shop discount.'),
@@ -153,7 +153,7 @@ export const CAMPAIGN_TEXT = {
     defeat: P('The Cyclops won. He missed a dozen times and still won. Was that skill, or volume?'),
     stars: [
       { id: 'win', text: 'Defeat the Cyclops.' },
-            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
+      { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'no_ff', text: 'Cause no friendly fire. Aim at the giant, not the friend.' },
     ],
     reward: { title: 'Cyclops Whisperer', blurb: 'Talked a ten-ton monster into a nap. Mostly with a club.' },
@@ -171,7 +171,7 @@ export const CAMPAIGN_TEXT = {
     defeat: C('Zeus had a bad day, and you were in it. I said you would be.'),
     stars: [
       { id: 'win', text: 'Survive four waves of monsters.' },
-            { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
+      { id: 'half', text: 'Win with at least half your army (by cost) alive.' },
       { id: 'heroes_alive', text: 'Survive without losing a hero. Statues are expensive.' },
     ],
     reward: { title: 'Zeus\' Therapist', blurb: 'Listened to a god complain about his week. Billed him for the hour.' },

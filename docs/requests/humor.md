@@ -20,7 +20,7 @@ Contract details live in `docs/lifetime_stats.md` (stats keys, BattleSummary, an
 `battle_start, battle_end{winner,reason,t,perDef}, first_blood (adjacent to its unit_kill, either order), unit_kill{srcDef,dstDef,srcTeam,dstTeam,friendly,cause,revived}, kill_streak{id,count,def}, hero_down{def,team}, friendly_fire, unit_rout{team}, army_low{team,frac}, lead_change{team,ratio}, big_swing{team,ratio,flank,cluster}, stalemate_warning{t}, intervention{kind: zeus|goat|ragequit}, god_power{kind,team}, wave_spawn{n}, chicken_tantrum, philosopher_monologue, trojan_reveal, stone_gaze{count}, throne_sit, unit_revive, unit_convert, trample{count}, charge_hit{mul}, unit_brace, projectile_launch{kind}, explosion{kind}, catapult_misfire, cyclops_misaim, prop_destroyed{type}, ability_cast{ability}, status_apply{status}`.
 - `status_apply.status` values the announcer reacts to: `sleep` (senator), `fire_panic` or `panic` (elephant).
 - `ability_cast{ability:'kick'}` is used for the Spartan kick line and for the lifetime `kicks` stat.
-- `big_swing.team` = the team that gained, `ratio` = that team's power over the other (< 1 means the swing went against it); `lead_change.team` = new leader.
+- `big_swing.team` = the team that gained; `ratio` = **team 0's power over team 1's** (what `sim/power.js` really sends; corrected in the comedy editor pass, see `comedy_sim_events.md`); `lead_change.team` = new leader.
 - `prop_destroyed.type` ids the announcer words: `wall_stone, tower, arch_gate, gate_door, column_marble, ruin_wall, tent, statue_lion, ship, temple, throne, obelisk`.
 - `battle_end.perDef` is `{team: {defId: alive}}`; the announcer reads the winner's entry (survivors, top unit, whether chickens are still alive).
 

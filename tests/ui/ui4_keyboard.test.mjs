@@ -9,7 +9,7 @@ const press = async (k, n = 1) => { for (let i = 0; i < n; i++) { await p.keyboa
 
 /* ---------------- first Tab (QA round 1): lands on the first control of the page, not on <body> ---------------- */
 for (const scr of ['quick', 'settings', 'codex', 'credits']) {
-  await L.ev((id) => window.__ui.goto(id), scr); await p.waitForTimeout(350);
+  await L.ev((id) => window.__ui.goto(id), scr); await p.waitForTimeout(800);   // Quick Battle moves focus to its big button after 80 ms: let that happen, then clear focus
   await p.evaluate(() => { const a = document.activeElement; if (a && a !== document.body && a.blur) a.blur(); });
   await press('Tab');
   const t = await p.evaluate(() => { const a = document.activeElement; const sc = document.querySelector('.vw-screen'); return { onBody: !a || a === document.body, inside: !!(sc && a && sc.contains(a)) }; });

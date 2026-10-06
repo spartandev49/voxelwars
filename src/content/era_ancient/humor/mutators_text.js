@@ -17,7 +17,7 @@ export const MUTATORS_TEXT = [
   },
   {
     id: 'moon_gravity', name: 'Moon Gravity',
-    desc: 'Knockback is tripled. Hits send soldiers flying, and they land slowly, with dignity.',
+    desc: 'Knockback is tripled. Hits send soldiers flying, and nobody is sure where they will land.',
     short: 'Knockback x3',
     locked: 'Locked. Earn stars to leave the ground.',
   },

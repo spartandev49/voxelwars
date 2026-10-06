@@ -8,13 +8,18 @@ const H = newHit(), HB = newHit();
 const CYCLE = { spikes: 3, geyser: 8, boulders: 12 };
 
 export class HazardSystem {
-  constructor(w) { this.w = w; this.t = 0; this.hitIds = new Int32Array(64); this.hitN = 0; this.hasLava = w.arena.water > 0 && w.arena.lava; this.hasWater = w.arena.water > 0 && !w.arena.lava; this.sinkMask = 0; }
+  constructor(w) { this.w = w; this.t = 0; this.hitIds = new Int32Array(64); this.hitN = 0; this.hasLava = w.arena.water > 0 && w.arena.lava; this.hasWater = w.arena.water > 0 && !w.arena.lava; this.sinkMask = 0;
+    // lava without a lava plane (builder pools: lava material cells and `lava` hazard circles) burns too
+    this.lavaCells = false; const m = w.arena.m; if (m) for (let i = 0; i < m.length; i++) if (m[i] === 7) { this.lavaCells = true; break; }
+    this.lavaCircles = []; for (const h of w.hazards) if (h.kind === 'lava') this.lavaCircles.push(h);
+    this.anyLava = this.hasLava || this.lavaCells || this.lavaCircles.length > 0;
+  }
 
   tick(dt) {
     const w = this.w, hz = w.hazards, units = w.units;
     // reset the per-tick environment slow
     for (let i = 0; i < hz.length; i++) hz[i].tm += dt;
-    if (hz.length || this.hasLava) for (let i = 0; i < units.length; i++) units[i].mEnv = 1;
+    if (hz.length || this.anyLava) for (let i = 0; i < units.length; i++) units[i].mEnv = 1;
     for (let i = 0; i < hz.length; i++) {
       const h = hz[i];
       switch (h.kind) {
@@ -26,7 +31,7 @@ export class HazardSystem {
         default: break;
       }
     }
-    if (this.hasLava || this.hasWater) this._liquid(dt);
+    if (this.anyLava || this.hasWater) this._liquid(dt);
   }
 
   _inside(h, u, pad) { const dx = u.x - h.x, dz = u.z - h.z; const r = h.r + (pad || 0); return dx * dx + dz * dz <= r * r; }
@@ -116,12 +121,16 @@ export class HazardSystem {
 
   /** Lava burns (30 dps), deep water drowns after 3 s: only reachable by knockback/launches since the nav grid forbids walking in. */
   _liquid(dt) {
-    const w = this.w, a = w.arena, units = w.units, wy = a.waterY();
+    const w = this.w, a = w.arena, units = w.units, wy = a.waterY(), circles = this.lavaCircles;
     for (let i = 0; i < units.length; i++) {
       const u = units[i]; if (!u.alive || u.ky > 0 || u.state === ST.FLY) continue;
       const ch = a.cellHeight(u.x, u.z);
-      const mat = a.materialAt(u.x, u.z);
-      if (this.hasLava && (ch < wy || mat.hazard === 'lava') && u.y <= Math.max(wy, ch) + 0.4) { dotDamage(w, u, 30 * dt, 'lava', null); u.mEnv = Math.min(u.mEnv, 0.6); }
+      const grounded = u.y <= ch + 0.4;
+      let lava = false;
+      if (this.hasLava && ch < wy && u.y <= Math.max(wy, ch) + 0.4) lava = true;                 // the lava plane
+      else if (grounded && (this.lavaCells && a.materialAt(u.x, u.z).hazard === 'lava')) lava = true;   // lava material cells (with or without a plane)
+      else if (grounded) for (let k = 0; k < circles.length; k++) if (this._inside(circles[k], u, 0)) { lava = true; break; }   // `lava` hazard circles
+      if (lava) { dotDamage(w, u, 30 * dt, 'lava', null); u.mEnv = Math.min(u.mEnv, 0.6); }
       else if (this.hasWater && wy - ch > 0.8 && u.y <= wy) { u.drown = (u.drown || 0) + dt; if (u.drown >= 3) killUnit(w, u, null, 'drown', H.reset()); } else if (u.drown) u.drown = 0;
     }
   }

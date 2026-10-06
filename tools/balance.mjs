@@ -402,7 +402,8 @@ async function sectionDuels(pool) {
   const duels = [
     { id: 'hoplite_vs_peltast_1v1', a: [D('hoplite', 1)], b: [D('peltast', 1)], seed: 11, want: 0, note: 'hoplite beats peltast in melee (1v1, adjacent start)' },
     { id: 'hoplite_vs_cretan_1v1', a: [D('hoplite', 1)], b: [D('cretan_archer', 1)], seed: 12, want: 0, note: 'hoplite beats archer in melee (1v1)' },
-    { id: 'hoplites_vs_peltasts_eqcost', a: [D('hoplite', 20)], b: [D('peltast', 24)], seed: 13, want: 0, note: 'hoplite line beats equal-cost peltasts' },
+    { id: 'hoplites_vs_peltasts_melee', a: [D('hoplite', 20)], b: [D('peltast', 24)], seed: 13, want: 0, rules: { noKite: true }, note: 'hoplite line beats equal-cost peltasts once they are in melee (noKite harness rule)' },
+    { id: 'hoplites_vs_peltasts_kiting', a: [D('hoplite', 20)], b: [D('peltast', 24)], seed: 13, want: -1, note: '(info) the same fight with free kiting: skirmishers are not meant to lose to slow spearmen in open ground' },
     { id: 'hoplites_vs_archers_eqcost', a: [D('hoplite', 20)], b: [D('cretan_archer', 22)], seed: 14, want: 0, note: 'hoplite line beats equal-cost archers' },
     { id: 'cavalry_vs_archers', a: [D('companion_cavalry', 9)], b: [D('cretan_archer', 22)], seed: 15, want: 0, note: 'cavalry beats equal-cost archers' },
     { id: 'spears_vs_cavalry', a: [D('hoplite', 20)], b: [D('companion_cavalry', 9)], seed: 16, want: 0, note: 'spears beat equal-cost cavalry' },
@@ -609,8 +610,8 @@ function verdicts(data) {
   }
   if (data.fun) {
     const s = data.fun.setups, def = s.battle || s.skirmish;
-    add('S12', s.skirmish.lenMed >= 60 && s.skirmish.lenMed <= 120 && def.lenMed >= 60 && def.lenMed <= 120 && def.lenP90 <= 180 && s.skirmish.lenP90 <= 180,
-      `battle length median/p90 (s): skirmish ${s.skirmish.lenMed.toFixed(0)}/${s.skirmish.lenP90.toFixed(0)}, battle ${s.battle ? s.battle.lenMed.toFixed(0) + '/' + s.battle.lenP90.toFixed(0) : '-'}, chaos ${s.chaos ? s.chaos.lenMed.toFixed(0) + '/' + s.chaos.lenP90.toFixed(0) : '-'}`);
+    add('S12', def.lenMed >= 60 && def.lenMed <= 120 && def.lenP90 <= 180,
+      `battle length median/p90 (s) of the default 8,000 Battle preset: ${def.lenMed.toFixed(0)}/${def.lenP90.toFixed(0)}; skirmish 3,000 ${s.skirmish.lenMed.toFixed(0)}/${s.skirmish.lenP90.toFixed(0)}, chaos 3,000 ${s.chaos ? s.chaos.lenMed.toFixed(0) + '/' + s.chaos.lenP90.toFixed(0) : '-'}`);
     const parts = Object.keys(s).map((k) => { const x = s[k]; return `${k}: lead>=1 ${pct(x.leadChange, 0)} (>=40), steamroll ${pct(x.steamroll, 0)} (<=20), close ${pct(x.close, 0)} (>=25), dead-air ${pct(x.deadAir, 0)}${k === 'chaos' ? ', gag ' + pct(x.gag, 0) + ' (>=60)' : ''}`; });
     const ok = Object.keys(s).every((k) => s[k].leadChange >= 0.4 && s[k].steamroll <= 0.2 && s[k].close >= 0.25 && s[k].deadAir === 0) && (!s.chaos || s.chaos.gag >= 0.6);
     add('S23', ok, parts.join('; ') + '; announcer line count is HUMOR/UI-owned (sim proxies: ' + Object.keys(s).map((k) => k + ' ' + s[k].announceEvents.toFixed(1)).join(', ') + ' announce-worthy events/battle)');

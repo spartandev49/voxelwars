@@ -22,6 +22,7 @@ import { EventBus } from '../core/events.js';
 import { PROP_RENDERER, ARMYGEN, ANIMATOR, LESSONS, POWER, MUTATORS } from '../_generated/registry.optional.js';
 import { TempAnimator } from '../render/tempanimator.js';
 import { waveName, waveStyle } from '../sim/waves.js';
+import { scoutText } from '../content/era_ancient/humor/scout_text.js';
 import { resolveMode, applyModeRules, dailySeed } from './modes.js';
 
 const T = () => window.THREE;
@@ -390,10 +391,12 @@ export class Game {
     const defs = this.content.defs, mine = {}, theirs = this._enemyComposition(team);
     for (const t of this.info.counts(team).byType) mine[t.defId] = t.n;
     if (!Object.keys(mine).length || !ARMYGEN || !ARMYGEN.scoutReport) return [];
-    const words = (this.content.humor && this.content.humor.scout) || {};
+    const words = (this.content.humor && this.content.humor.scout) || {}, total = Object.values(mine).reduce((x, n) => x + n, 0);
+    // three voices word every code: pick one by a hash of the code and the army size, so a line stays put while the player places the same army but changes as it grows
+    const pick = (code) => { let h = 2166136261; for (const ch of code + ':' + total) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); return ((h >>> 0) % 1000) / 1000; };
     return ARMYGEN.scoutReport(defs, mine, theirs).map((a) => {
-      const w = words[a.code] || {};
-      return { code: a.code, severity: a.severity > 0.35 ? 'weak' : 'tip', kind: a.severity > 0.35 ? 'warn' : 'tip', text: w.text || DEFAULT_SCOUT[a.code] || a.code, counters: a.ids || [], share: a.share };
+      const w = scoutText(a.code, pick(a.code)) || words[a.code] || {};
+      return { code: a.code, severity: a.severity > 0.35 ? 'weak' : 'tip', kind: a.severity > 0.35 ? 'warn' : 'tip', text: w.text || DEFAULT_SCOUT[a.code] || a.code, who: w.who, counters: a.ids || [], share: a.share };
     });
   }
 
