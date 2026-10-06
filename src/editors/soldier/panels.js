@@ -48,7 +48,7 @@ export function statsPanel(env) {
   const powerTag = h('div', { class: 'ws-power vw-display', id: 'ws-power' });
   // body
   const typeSeg = K.segmented({ id: 'ws-body-type', label: WS.body, value: doc.cs.blueprint.body.type, options: Object.keys(BODY_TYPES).map((t) => ({ value: t, label: WS.bodyType[t] })), onChange: (v) => doc.setBodyType(v), fill: true });
-  const heightSlider = K.slider({ min: C.HEIGHT_MIN, max: C.HEIGHT_MAX, step: 0.01, value: doc.cs.height, label: WS.height, id: 'ws-height', valueWidth: '3.6rem', format: (v) => v.toFixed(2), onInput: (v) => doc.setHeight(v), ticks: [{ v: 1, label: '1' }] });
+  const heightSlider = K.slider({ min: C.HEIGHT_MIN, max: C.HEIGHT_MAX, step: 0.01, value: doc.cs.height, label: WS.height, id: 'ws-height', valueWidth: '3.6rem', format: (v) => v.toFixed(2), onInput: (v) => doc.setHeight(v) });
   K.tooltip(heightSlider, WS.heightTip);
   const sizeNote = h('div', { class: 'vw-small vw-dim', id: 'ws-size-note' });
   const el = h('div', { class: 'vw-col ws-panel', id: 'ws-panel-stats' },
@@ -193,7 +193,7 @@ export function personalityPanel(env) {
   };
   const catchF = mk('ws-catch', WS.catchphrase, () => doc.cs.text.catch || '', (v) => doc.setCatch(v));
   const deathF = [0, 1, 2].map((i) => mk('ws-death-' + i, WS.lastWord(i), () => (doc.cs.text.deaths || [])[i] || '', (v) => doc.setDeath(i, v)));
-  const pitch = K.slider({ min: C.PITCH_MIN, max: C.PITCH_MAX, step: 0.01, value: doc.cs.text.pitch, label: WS.pitch, id: 'ws-pitch', valueWidth: '3.6rem', format: (v) => v.toFixed(2), onInput: (v) => doc.setPitch(v), ticks: [{ v: 1, label: '1' }] });
+  const pitch = K.slider({ min: C.PITCH_MIN, max: C.PITCH_MAX, step: 0.01, value: doc.cs.text.pitch, label: WS.pitch, id: 'ws-pitch', valueWidth: '3.6rem', format: (v) => v.toFixed(2), onInput: (v) => doc.setPitch(v) });
   const hear = K.button(WS.hearIt, { icon: 'volume', size: 'sm', variant: 'secondary', id: 'ws-hear', sound: false, onClick: () => K.sfx('ui_confirm', { pitch: doc.cs.text.pitch }) });
   const surprise = K.button(WS.surprise, { icon: 'dice', size: 'sm', variant: 'secondary', id: 'ws-quotes-dice', onClick: () => doc.surpriseQuotes() });
   const el = h('div', { class: 'vw-col ws-panel', id: 'ws-panel-personality' }, h('div', { class: 'vw-row vw-between' }, h('span', { class: 'vw-label', text: WS.personality }), surprise), catchF.row, ...deathF.map((d) => d.row), K.divider(), pitch, hear);

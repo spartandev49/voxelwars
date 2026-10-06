@@ -1,7 +1,8 @@
 # UNITS-B -> COORD / BEASTS / SIM / ANIM / DOCS : integration notes and requests
 
 Owner: UNITS-B. Code: `src/content/era_ancient/units/units_b.js`, `parts/units_b_{persians,barbarians,mythic}.js` (+ helper `parts/_units_b_kit.js`), `tests/units/units_b.test.mjs`,
-look-dev copies `tools/contact_ub.mjs` (+ `contact_ub_entry.js`) and `tools/shot_ub.mjs` (+ `shot_ub_entry.js`). Sheets: `docs/sheets/ub_*.png`.
+look-dev copies `tools/contact_ub.mjs` (+ `contact_ub_entry.js`: loads the units_b parts, applies the unit scale), `tools/shot_ub.mjs` (+ `shot_ub_entry.js`: riders and crews seated on the BEASTS mounts) and
+`tools/look_ub.mjs` (a showcase battle of my units in the built game). Sheets: `docs/sheets/units_b_{roster,roster_2,roster_3,full_1..6,mounted,ingame_1}.png`.
 
 ## What `units/units_b.js` exports
 - `MODELS[id] = {kind:'humanoid', blueprint}` for: the nine humanoid/monster units `immortal sparabara xerxes axe_thrower druid chieftain minotaur cyclops medusa`, the riders
@@ -35,4 +36,8 @@ look-dev copies `tools/contact_ub.mjs` (+ `contact_ub_entry.js`) and `tools/shot
 - New part ids (all selectable in the Workshop, no unlock keys: the specs name none):
   helms `persian_fez royal_tiara cataphract_helm turban horned_fur_cap horned_giant druid_hood brow_band minotaur_head cyclops_face gorgon_hair`; faces `beard_ringlets beard_two_braids`;
   tunics `royal_robe thrower_tunic druid_robe clan_tunic minotaur_fur cyclops_tunic gorgon_gown`; armors `immortal_scale scale_hauberk horn_baldric minotaur_harness`; shoulders `gorgon_stole`; legs `persian_trousers`;
-  capes `bearskin_short`; backs `scimitar_back axe_rack`; mains `sparabara_bow kontos_pennon war_club tree_club`; offs `gerron pavise_wall throwing_axe golden_sickle boulder`.
+  capes `bearskin_short`; backs `scimitar_back travel_throne axe_rack`; mains `sparabara_bow kontos_pennon war_club tree_club`; offs `gerron pavise_wall throwing_axe golden_sickle boulder`.
+
+## Humor cues carried by the models (docs/spec/units.md briefs + humor/units_text.js)
+Immortal: a gold asterisk on the wicker shield (revives once*). Xerxes: a little gold throne strapped to his back. Druid: the golden sickle doubles as the hedge trimmer. Axe thrower: axes in the belt, in both hands and on the back
+(and the horns are small, the lore asks us to stop mentioning them). Cyclops: carries the boulder in a team-colour rope net like shopping. Minotaur: the nose ring. Hannibal: the eyepatch.

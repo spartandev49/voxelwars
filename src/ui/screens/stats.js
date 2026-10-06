@@ -7,7 +7,9 @@ export const meta = { id: 'stats', layer: 'menu', music: 'menu', canvas: 'none' 
 
 const SECONDS = ['playSeconds'];
 const HEADLINE = ['battles', 'wins', 'kills', 'playSeconds'];
-const humanize = (k) => k.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^./, (c) => c.toUpperCase());
+const humanize = (k) => { const t = k.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').trim().toLowerCase(); return t.charAt(0).toUpperCase() + t.slice(1); };
+// save/stats.js stores both spellings of three stats and keeps them equal (ALIASES): show each once, under the label we have
+const ALIAS_TWINS = { unitsLost: 'deaths', zeusRagequits: 'zeusRageQuits', takeCommandKills: 'commandKills' };
 function dur(sec) {
   sec = Math.max(0, Math.round(sec || 0));
   const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
@@ -21,7 +23,7 @@ export function mount(root, ctx, params) {
   const tot = safe(() => ctx.save.stats.get(), {}) || safe(() => ctx.save.stats.totals, {}) || {};
   const label = (k) => T.labels[k] || humanize(k);
   const val = (k, v) => (SECONDS.indexOf(k) >= 0 ? dur(v) : K.fmtNum(v));
-  const keys = Object.keys(tot).filter((k) => typeof tot[k] === 'number');
+  const keys = Object.keys(tot).filter((k) => typeof tot[k] === 'number' && !(ALIAS_TWINS[k] && typeof tot[ALIAS_TWINS[k]] === 'number'));
   const g = (k) => +tot[k] || 0;
   const tile = (name, value, sub) => K.h('div', { class: 'vw-statile' }, K.h('div', { class: 'vw-statile__v vw-display', text: value }), K.h('div', { class: 'vw-statile__l', text: name }), sub ? K.h('div', { class: 'vw-statile__s vw-micro', text: sub }) : null);
   const winRate = g('battles') ? Math.round((g('wins') / g('battles')) * 100) + '%' : '–';

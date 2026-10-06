@@ -20,7 +20,10 @@ const page = await ctx.newPage();
 const problems = [], logs = [];
 page.on('console', (m) => { const t = m.type(), txt = m.text(); logs.push(t + ': ' + txt); if (t === 'error' || t === 'warning') problems.push(`console.${t}: ${txt}`); });
 page.on('pageerror', (e) => problems.push('pageerror: ' + e.message + ' | ' + String(e.stack || '').split('\n').slice(1, 5).map((x) => x.trim()).join(' <- ')));
-page.on('requestfailed', (r) => { const u = r.url(); if (/fonts\.(googleapis|gstatic)\.com/.test(u)) return; problems.push('requestfailed: ' + u + ' ' + (r.failure() && r.failure().errorText)); });
+page.on('requestfailed', (r) => { const u = r.url(); if (/fonts\.(googleapis|gstatic)\.com/.test(u)) return;
+  // a reload cancels in-flight audio fetches
+  if (/ERR_ABORTED/.test(String(r.failure() && r.failure().errorText)) && /\/assets\/audio\//.test(u)) return;
+  problems.push('requestfailed: ' + u + ' ' + (r.failure() && r.failure().errorText)); });
 await page.exposeFunction('__vwCsp', (v) => problems.push('CSP violation: ' + v));
 await page.addInitScript(() => { document.addEventListener('securitypolicyviolation', (e) => window.__vwCsp(e.violatedDirective + ' blocked ' + e.blockedURI)); });
 await page.route('**/*', (route) => {

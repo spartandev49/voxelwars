@@ -425,6 +425,7 @@ export function createController(app) {
       return false;
     }
     if (e.altKey) return false;
+    if (e.key === '?') { app.showShortcuts(); return true; }   // '?' lives on different physical keys on different layouts
     if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight'].includes(code)) {
       ctl.keys.add(code); ctl.pointer.shift = e.shiftKey;
       if (code.startsWith('Arrow') || code === 'KeyW' || code === 'KeyA' || code === 'KeyS' || code === 'KeyD' || code === 'KeyQ' || code === 'KeyE') return true;
@@ -453,7 +454,6 @@ export function createController(app) {
         if (st.tool === 'markers' && st.marker.selected) { ctl.deleteSelectedMarker(); return true; }
         return false;
       }
-      case 'Slash': if (e.shiftKey) { app.showShortcuts(); return true; } return false;
       default: return false;
     }
   };

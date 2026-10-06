@@ -4,7 +4,7 @@
 import * as K from '../kit.js';
 import { getT } from '../strings.js';
 import { safe, unitsOf, factionIds, setThumb } from './_shared.js';
-import { factionColor, factionName, ROLE_ICON, ROLE_LABEL, ROLE_CHIP, counterHints, statRows, abilityInfo, clipOptions } from '../unitinfo.js';
+import { factionColor, factionName, ROLE_ICON, ROLE_LABEL, ROLE_CHIP, counterHints, matchups, statRows, abilityInfo, clipOptions } from '../unitinfo.js';
 
 export const meta = { id: 'codex', layer: 'menu', music: 'menu', canvas: 'preview' };
 
@@ -89,9 +89,10 @@ export function mount(root, ctx, params) {
       const abilEl = abil.length
         ? K.h('ul', { class: 'vw-list vw-cx__abil' }, ...abil.map((a) => { const info = abilityInfo(a, ctx.content.glossary); return K.h('li', { class: 'vw-cx__ab' }, K.h('span', { class: 'vw-card__art vw-cx__ab-ico', style: { '--fc': fc } }, K.icon(info.icon)), K.h('div', { class: 'vw-grow' }, K.h('div', { class: 'vw-card__name', text: info.name + (a.cd ? ` · ${a.cd}s` : '') }), K.h('div', { class: 'vw-small vw-dim', text: info.text }))); }))
         : K.h('p', { class: 'vw-note', text: T.noAbilities });
-      const cnt = counterHints(d);
-      // matchups from the real counter table are unit ids: each chip opens that unit's page (heuristic hints are plain labels)
-      const mk = (arr, variant, ids) => (arr.length ? K.h('div', { class: 'vw-chips' }, ...arr.map((x, i) => (ids && units[ids[i]] ? K.chip(x, { variant, id: 'cx-vs-' + ids[i], onClick: () => openUnit(ids[i]) }) : K.chip(x, { variant })))) : K.h('span', { class: 'vw-small vw-dim', text: T.none }));
+      const cnt = counterHints(d), mu = matchups(d);
+      // class hints are plain chips; the real matchup table (best/worst equal-cost opponents) gives unit chips that open that unit's page
+      const chips = (arr, variant, ids) => [...arr.map((x) => K.chip(x, { variant })), ...(ids || []).map((id) => K.chip(units[id].name, { variant, icon: 'users', id: 'cx-vs-' + id, onClick: () => openUnit(id) }))];
+      const mk = (arr, variant, ids) => { const c = chips(arr, variant, ids); return c.length ? K.h('div', { class: 'vw-chips' }, ...c) : K.h('span', { class: 'vw-small vw-dim', text: T.none }); };
       const txt = d.text || {};
       detail.replaceChildren(
         K.h('div', { class: 'vw-row vw-cx__head' }, back,
@@ -101,7 +102,7 @@ export function mount(root, ctx, params) {
         K.tablet(T.stats, stats, { tight: true, id: 'cx-stats', icon: 'target' }),
         K.tablet(T.abilities, abilEl, { tight: true, id: 'cx-abilities', icon: 'sparkle' }),
         K.tablet(T.lore, K.h('div', { class: 'vw-col' }, K.h('p', { class: 'vw-epigraph vw-cx__lore', text: txt.lore || '' }), txt.codexJoke ? K.h('p', { class: 'vw-cx__joke' }, K.h('span', { class: 'vw-label', text: T.joke + ' ' }), txt.codexJoke) : null), { tight: true, id: 'cx-lore', icon: 'scroll' }),
-        K.tablet(T.counters, K.h('div', { class: 'vw-col' }, K.h('div', { class: 'vw-label', text: T.beats }), mk(cnt.beats, 'olive', cnt.beatIds), K.h('div', { class: 'vw-label', text: T.weak }), mk(cnt.weak, 'danger', cnt.weakIds), (d.tags && d.tags.length) ? K.h('div', { class: 'vw-label', text: T.tags }) : null, (d.tags && d.tags.length) ? K.h('div', { class: 'vw-chips' }, ...d.tags.map((x) => K.chip(x, { variant: 'dash' }))) : null), { tight: true, id: 'cx-counters', icon: 'shield' }));
+        K.tablet(T.counters, K.h('div', { class: 'vw-col' }, K.h('div', { class: 'vw-label', text: T.beats }), mk(cnt.beats, 'olive', mu && mu.beatIds), K.h('div', { class: 'vw-label', text: T.weak }), mk(cnt.weak, 'danger', mu && mu.weakIds), (d.tags && d.tags.length) ? K.h('div', { class: 'vw-label', text: T.tags }) : null, (d.tags && d.tags.length) ? K.h('div', { class: 'vw-chips' }, ...d.tags.map((x) => K.chip(x, { variant: 'dash' }))) : null), { tight: true, id: 'cx-counters', icon: 'shield' }));
     }
     renderGrid();
     return layout;

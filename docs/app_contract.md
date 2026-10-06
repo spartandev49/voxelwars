@@ -110,3 +110,8 @@ Floating in-world labels: health bars and selection rings are instanced meshes d
 
 ## 6. Testing UI without the 3D app
 `src/ui/mockctx.js` (UI agents write it) builds a fake `Ctx` + `Game` with sample data so every screen can be mounted in a plain page and screenshot-tested (`tools/shot.mjs`-style, `canvas:'none'`). A mock must not invent members that this file lists as NOT IN CODE YET without COORD agreeing the shape here first.
+
+## 8. Addendum: the meta layer (src/app/meta.js, built by META; implemented and tested)
+The full list lives in `docs/requests/meta_contract_additions.md` and is part of this contract: `Game.aim/possessInput/teachingNext/skipTeaching/killcam(+Active/Stop)`, `game.meta`, the `'announce'` and `'aim'` events, `HudData.possess/teaching/aim/announcer/killfeed/worldLabels/minimap`, `ResultsData.funnyStats/lessons/mvp.quote/summary`, `ctx.save.progress/survival/daily/seen/stats/draft/exportAll/importAll`, `app.meta.recordCampaign(...)`, and the quota handling of `save/store.js`.
+Rulings (docs/decisions_r3.md R3): `ctx.save.importAll(fileOrText)` RESOLVES `{ok:true,...}` on success and REJECTS with an Error on failure; `content.arenaThumb(id)` returns a **Promise<dataURL>** (use `setThumb` from `ui/screens/_shared.js`); `content` also exposes `arenas`, `mutators`, `humor`, `formations`, `counters`, `props`, `parts`, `campaign`, `puzzles`, `survival`, `daily`, `customDef` when their modules exist; `ctx.editorHost` is the shared 3D host of the editors (`src/app/editorhost.js`).
+`HudData.minimap` = `{world, terrain, terrainVersion, dots, n, frustum, cam, markers, zones}` (`render/minimap.js`); `HudData.worldLabels` = `{bubbles, tags}` (`render/labels.js`).

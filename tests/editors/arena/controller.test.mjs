@@ -126,7 +126,7 @@ const hsum = (a) => { let s = 0; for (const v of a.h) s += v; return s; };
   r.key('BracketRight', { shiftKey: true }); ok(r.st.strengths.raise > 0.4, 'Shift+] strengthens'); const f0 = r.st.brush.falloff; r.key('KeyB'); ok(r.st.brush.shape === 'circle' && r.st.brush.falloff !== f0, 'B cycles the brush');
   r.key('KeyY'); r.key('KeyY'); ok(r.session.symmetry !== 'off', 'Y again cycles symmetry'); r.key('KeyY'); r.key('KeyY'); r.key('KeyY'); ok(r.session.symmetry === 'off' || true);
   ok(r.key('KeyZ', { ctrlKey: true }) && r.calls.undo === 1, 'Ctrl+Z'); ok(r.key('KeyZ', { ctrlKey: true, shiftKey: true }) && r.calls.redo === 1, 'Ctrl+Shift+Z'); ok(r.key('KeyY', { ctrlKey: true }) && r.calls.redo === 2, 'Ctrl+Y'); ok(r.key('KeyS', { ctrlKey: true }) && r.calls.save === 1, 'Ctrl+S'); ok(r.key('Enter', { ctrlKey: true }) && r.calls.playtest === 1, 'Ctrl+Enter');
-  ok(r.key('KeyT') && r.calls.top === 1, 'T top-down'); ok(r.key('KeyF') && r.calls.frame === 1, 'F frames'); ok(r.key('Slash', { shiftKey: true }) && r.calls.shortcuts === 1, '? shortcuts');
+  ok(r.key('KeyT') && r.calls.top === 1, 'T top-down'); ok(r.key('KeyF') && r.calls.frame === 1, 'F frames'); ok(r.key('Slash', { shiftKey: true, key: '?' }) && r.calls.shortcuts === 1, '? shortcuts');
   for (const c of ['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ArrowUp']) ok(r.key(c), c + ' drives the camera'); r.ctl.onKeyUp({ code: 'KeyW' }); r.ctl.clearKeys();
   // props rotation via key with no props tool does nothing
   r.ctl.setTool('smooth'); ok(!r.key('KeyR'), 'R only acts on props and stamps');

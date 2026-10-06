@@ -175,7 +175,7 @@ export async function run(name, h) {
     await page.fill('#ed-name', 'Draft Hill'); await sleep(200);
     const p0 = (await counts()).props; expect(p0 === 3, 'three props placed before the reload');
     step('waiting for the 20 s autosave...'); await sleep(21500);
-    const draft = await A(() => { try { const o = JSON.parse(localStorage.getItem('vw.draft.arena')); return o && o.data ? { name: o.data.name, parts: (o.data.parts || []).length } : null; } catch (e) { return null; } });
+    const draft = await A(() => { try { const o = JSON.parse(localStorage.getItem('vw.draft.arena')), d = o && o.data && o.data.data; return d ? { name: d.name, parts: (d.parts || []).length } : null; } catch (e) { return null; } });
     expect(draft && draft.name === 'Draft Hill' && draft.parts >= 1, 'autosave wrote vw.draft.arena after 20 s ' + JSON.stringify(draft));
     await page.reload(); await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 90000 }); await sleep(700); await page.keyboard.press('Space'); await sleep(800);
     await ev(() => window.__vw.goto('arena_builder')); await page.waitForSelector('#ed-root'); await sleep(900); await shot('17_draft_offer');
@@ -198,8 +198,14 @@ export async function run(name, h) {
     await page.focus('#ed-back');
     for (let i = 0; i < 40; i++) { await page.keyboard.press('Tab'); const info = await A(() => { const e = document.activeElement, r = e.getBoundingClientRect(), cs = getComputedStyle(e); return { id: e.id || e.className.toString().slice(0, 30), vis: r.width > 0 && r.height > 0, ring: cs.outlineStyle !== 'none' && parseFloat(cs.outlineWidth) >= 2 }; }); seq.push(info); }
     step('tab order: ' + seq.map((s) => s.id).join(' > '));
-    expect(seq.every((s) => s.vis), 'every tab stop is visible'); expect(seq.filter((s) => !s.ring).length === 0, 'every tab stop shows the gold focus ring (' + seq.filter((s) => !s.ring).map((s) => s.id).join(',') + ')');
-    await page.focus('#ed-tool-raise'); await page.keyboard.press('ArrowRight'); await sleep(100); expect((await A(() => document.activeElement.id)) === 'ed-tool-smooth', 'arrow keys rove inside the toolbar');
+    const stops = seq.filter((s) => s.id && s.id !== 'vw-canvas');   // the wrap-around passes the page body and the shell's own canvas
+    const tools = ['raise', 'smooth', 'flatten', 'paint', 'water', 'noise', 'ramp', 'stamp', 'props', 'hazards', 'zones', 'symmetry', 'generate', 'environment', 'info', 'markers'];
+    expect(tools.every((t) => stops.some((s) => s.id === 'ed-tool-' + t)), 'all 16 tools are reachable with Tab');
+    expect(stops.every((s) => s.vis), 'every tab stop is visible'); expect(stops.filter((s) => !s.ring).length === 0, 'every tab stop shows the gold focus ring (' + stops.filter((s) => !s.ring).map((s) => s.id).join(',') + ')');
+    await page.focus('#ed-tool-raise'); const p0 = await A(() => { const r = window.__vw.arenaBuilder.host.rig; return [r.tx, r.tz]; });
+    await page.keyboard.down('ArrowRight'); await sleep(700); await page.keyboard.up('ArrowRight'); await sleep(200);
+    const p1 = await A(() => { const r = window.__vw.arenaBuilder.host.rig; return [r.tx, r.tz]; });
+    expect(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) > 0.3, 'arrow keys pan the camera even while a toolbar button has focus ' + JSON.stringify([p0, p1]));
     await page.keyboard.press('?'); await sleep(500); expect(!!(await page.$('#ed-sc-close')), '? opens the shortcuts overlay'); await shot('19_shortcuts'); await page.keyboard.press('Escape'); await sleep(400);
     return;
   }

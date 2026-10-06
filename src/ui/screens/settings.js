@@ -168,7 +168,7 @@ export function mount(root, ctx, params) {
       const st = safe(() => ctx.save.status(), 'ok'); lastSt = st;
       const chipEl = st === 'ok' ? K.chip(T.data.storageOk, { variant: 'olive', icon: 'check' }) : st === 'full' ? K.chip(T.data.storageFullChip, { variant: 'gold', icon: 'warning' }) : K.chip(T.data.storageMemoryChip, { variant: 'danger', icon: 'warning' });
       const msg = st === 'ok' ? T.data.storageHint : st === 'full' ? T.data.storageFull : T.data.storageMemory;
-      statusEl.replaceChildren(K.h('div', { class: 'vw-row vw-wrapflex', role: 'status' }, chipEl), K.h('p', { class: st === 'ok' ? 'vw-small vw-dim' : 'vw-note vw-note--' + (st === 'full' ? 'warn' : 'bad'), text: msg }), st === 'full' ? K.h('div', { class: 'vw-row' }, retry) : null);
+      statusEl.replaceChildren(...[K.h('div', { class: 'vw-row vw-wrapflex', role: 'status' }, chipEl), K.h('p', { class: st === 'ok' ? 'vw-small vw-dim' : 'vw-note vw-note--' + (st === 'full' ? 'warn' : 'bad'), text: msg }), st === 'full' ? K.h('div', { class: 'vw-row' }, retry) : null].filter(Boolean));
     };
     const iv = setInterval(() => { if (safe(() => ctx.save.status(), 'ok') !== lastSt) paintStatus(); }, 1000);
     cleanups.push(() => clearInterval(iv));

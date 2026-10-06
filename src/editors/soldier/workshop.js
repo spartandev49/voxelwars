@@ -85,8 +85,6 @@ export function mount(root, ctx, params = {}) {
     catBtns[t.id] = b; catBar.appendChild(b);
   }
   K.roving(catBar, { selector: '.ws-cat', orientation: 'both' });
-  catBar.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { const b = e.target.closest && e.target.closest('.ws-cat'); if (b) { e.preventDefault(); selectTab(b.dataset.tab); } } });
-  catBar.addEventListener('focusin', (e) => { const b = e.target.closest && e.target.closest('.ws-cat'); if (b && b.dataset.tab !== cur.tab && catBar.matches(':focus-within')) { /* roving only moves focus; Enter selects */ } });
   const slotSeg = h('div', { class: 'ws-slots', role: 'tablist', 'aria-label': 'Slot' });
   const search = K.searchBox({ id: 'ws-search', label: WS.searchParts, placeholder: WS.searchParts, onInput: (v) => { cur.search = v.trim().toLowerCase(); renderList(); } });
   const sillyChip = K.chip(WS.onlySilly, { pressed: false, id: 'ws-silly', onClick: () => { cur.silly = !cur.silly; sillyChip.setPressed(cur.silly); renderList(); } });

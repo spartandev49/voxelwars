@@ -27,12 +27,16 @@ let CONTENT = null;
 export function bindContent(content) { CONTENT = content || null; }
 const nameOf = (id) => { const u = CONTENT && CONTENT.units && CONTENT.units[id]; return (u && u.name) || id; };
 
-/** {beats:[names], weak:[names]}: the real matchup table when the content provides one, else a tag/role heuristic. */
-export function counterHints(def) {
+/** Plain-language class hints (`Cavalry`, `Archers`, ...) from tags and role: what a player can act on while picking soldiers. */
+export function counterHints(def) { return counterHeuristic(def); }
+/** The real matchup table (content.counters[id] = {counters:[ids], prey:[ids], strong}) as unit ids + names; null when the content has none. Used by the Codex. */
+export function matchups(def) {
   let t = null;
   try { t = CONTENT && CONTENT.counters ? CONTENT.counters[def.id] : null; } catch (e) { t = null; }
-  if (t && Array.isArray(t.prey) && Array.isArray(t.counters)) return { beats: t.prey.slice(0, 3).map(nameOf), weak: t.counters.slice(0, 3).map(nameOf), beatIds: t.prey.slice(0, 3), weakIds: t.counters.slice(0, 3), strong: !!t.strong, table: true };
-  return counterHeuristic(def);
+  if (!t || !Array.isArray(t.prey) || !Array.isArray(t.counters)) return null;
+  const ok = (id) => !!(CONTENT.units && CONTENT.units[id]);
+  const beatIds = t.prey.filter(ok).slice(0, 3), weakIds = t.counters.filter(ok).slice(0, 3);
+  return { beatIds, weakIds, beats: beatIds.map(nameOf), weak: weakIds.map(nameOf), strong: !!t.strong };
 }
 function counterHeuristic(def) {
   const beats = [], weak = [];
