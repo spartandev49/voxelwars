@@ -8,6 +8,7 @@ export const CONTEXTS = [
   { id: 'control', label: 'Battle control', domain: 'battle' },
   { id: 'placement', label: 'Placement', domain: 'placement' },
   { id: 'command', label: 'Take Command', domain: 'command' },
+  { id: 'results', label: 'Results screen', domain: 'results' },
 ];
 
 /** Rebindable actions. `alt` = an extra fixed alias (shown, not rebindable). */
@@ -27,6 +28,11 @@ export const KEY_ACTIONS = [
   { id: 'pause', ctx: 'control', label: 'Pause', def: 'Space' },
   { id: 'slower', ctx: 'control', label: 'Slower', def: 'BracketLeft' },
   { id: 'faster', ctx: 'control', label: 'Faster', def: 'BracketRight' },
+  { id: 'erase', ctx: 'placement', label: 'Erase brush', def: 'Delete', alt: ['Backspace'] },
+  { id: 'brush', ctx: 'placement', label: 'Cycle brush', def: 'KeyB' },
+  { id: 'rematch', ctx: 'results', label: 'Rematch', def: 'KeyR' },
+  { id: 'tweak', ctx: 'results', label: 'Tweak the army', def: 'KeyT' },
+  { id: 'killcam', ctx: 'results', label: 'Kill-cam', def: 'KeyK' },
 ];
 
 /** Fixed keys per context (read-only reference, also used for conflict detection). */
@@ -40,7 +46,7 @@ export const FIXED_KEYS = {
   ],
   placement: [
     { label: 'Place / paint', keys: [], text: 'Left click' }, { label: 'Orbit camera', keys: [], text: 'Right drag' }, { label: 'Undo', keys: [], text: 'Ctrl/Cmd + Z' }, { label: 'Redo', keys: [], text: 'Ctrl/Cmd + Shift + Z' },
-    { label: 'Erase', keys: ['Delete'] }, { label: 'Cycle brush', keys: ['KeyB'] }, { label: 'Rotate formation', keys: ['KeyQ', 'KeyE'] }, { label: 'Focus FIGHT', keys: ['Space'] },
+    { label: 'Rotate camera', keys: ['KeyQ', 'KeyE'] }, { label: 'Focus FIGHT', keys: ['Space'] },
   ],
   command: [
     { label: 'Move', keys: ['KeyW', 'KeyA', 'KeyS', 'KeyD'] }, { label: 'Attack nearest', keys: [], text: 'Click or tap' }, { label: 'Abilities 1 to 3', keys: ['Digit1', 'Digit2', 'Digit3'] }, { label: 'Sprint', keys: ['ShiftLeft'] }, { label: 'Exit Take Command', keys: ['Escape'] },

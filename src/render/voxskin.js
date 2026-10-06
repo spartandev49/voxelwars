@@ -4,7 +4,7 @@
 //  * Per-instance part transforms (3x4 affine, rows) live in a RGBA32F DataTexture: texel (3*part + k, instance) = row k.
 //    The vertex shader fetches them with texelFetch (WebGL2) and skins the vertex, then three's normal
 //    instancing applies the unit's world matrix (instanceMatrix).
-//  * Per-instance attributes: instanceColor (team tint rgb, linear), aFx (flash, stone, glow, texture row).
+//  * Per-instance attributes: instanceColor (team tint rgb, linear), aFx (flash, stone, glow + 4*statusTintMode, texture row).
 //  * Optional far LOD ({lod:true}): a second InstancedMesh with half-resolution part geometry (~1/4 of the triangles, no shadow) sharing the same
 //    material and texture; add(..., lod=1) puts a unit there. Rows are handed out by one counter, so both meshes address the same texture.
 //  * Shadows use a matching customDepthMaterial so shadows follow the posed model.
@@ -74,8 +74,15 @@ varying vec4 vFx;
 varying float vGlow;`)
       .replace('#include <tonemapping_fragment>', `
   float vsLum = dot(gl_FragColor.rgb, vec3(0.299, 0.587, 0.114));
+  float vsMode = floor(vFx.z * 0.25 + 0.001);                    // status tint mode rides on the glow channel: glow + 4 * mode
+  float vsGlow = vFx.z - vsMode * 4.0;
   gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(vsLum * 0.85 + 0.08), vFx.y);                 // stone
-  gl_FragColor.rgb = mix(gl_FragColor.rgb, diffuseColor.rgb * (1.35 + vFx.z), vGlow * (1.0 - vFx.y));   // glow voxels
+  gl_FragColor.rgb = mix(gl_FragColor.rgb, diffuseColor.rgb * (1.35 + vsGlow), vGlow * (1.0 - vFx.y));   // glow voxels
+  if (vsMode > 0.5) {                                                                          // status tint: 1 burn, 2 poison, 3 frozen/rooted, 4 asleep, 5 rage, 6 tipsy/confused, 7 cursed
+    vec3 vsT = vsMode < 1.5 ? vec3(1.0, 0.5, 0.12) : vsMode < 2.5 ? vec3(0.38, 0.95, 0.28) : vsMode < 3.5 ? vec3(0.5, 0.85, 1.0) : vsMode < 4.5 ? vec3(0.28, 0.34, 0.7) : vsMode < 5.5 ? vec3(1.0, 0.22, 0.16) : vsMode < 6.5 ? vec3(0.85, 0.4, 0.9) : vec3(0.5, 0.22, 0.6);
+    float vsK = vsMode < 1.5 ? 0.42 : 0.34;
+    gl_FragColor.rgb = mix(gl_FragColor.rgb, vsT * (vsLum * 0.75 + (vsMode < 1.5 ? 0.55 : 0.3)), vsK * (1.0 - vFx.y));
+  }
   gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0, 0.93, 0.78), vFx.x * 0.8);                // hit flash
 #include <tonemapping_fragment>`);
   };

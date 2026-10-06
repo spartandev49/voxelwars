@@ -17,6 +17,19 @@ const PROJ_VIS = {
   boulder: [0.9, 0.9, 0x8d8d92, 0], coin: [0.22, 0.22, 0xffd23a, 0.6], sunbeam: [1.2, 0.14, 0xfff2a0, 1], scepter: [0.7, 0.4, 0x60ffb0, 1], thunderbolt: [1.4, 0.14, 0x9fd0ff, 1],
 };
 
+/** status tint mode for the shader (voxskin.js): 0 none, 1 burn, 2 poison, 3 frozen/rooted, 4 asleep, 5 rage, 6 tipsy/confused, 7 cursed. SE indices from sim/consts.js. */
+function statusMode(se) {
+  if (!se) return 0;
+  if (se[0] > 0) return 1;            // BURN
+  if (se[13] > 0) return 2;           // POISON
+  if (se[5] > 0) return 4;            // SLEEP
+  if (se[3] > 0) return 3;            // ROOT
+  if (se[7] > 0) return 5;            // RAGE
+  if (se[4] > 0 || se[12] > 0) return 6;   // CONFUSE, TIPSY
+  if (se[10] > 0) return 7;           // CURSE
+  return 0;
+}
+
 export class BattleView {
   /**
    * @param {object} o {engine, fx, animator, modelFor(def, unit)->{model, scale?:[x,y,z]}, palette?, gore?}
@@ -108,7 +121,7 @@ export class BattleView {
       let st = u.anim;
       if (this._hs.size) { const hs = this._hs.get(u.id); if (hs) { if (this.time >= hs.until) this._hs.delete(u.id); else { const a = this._hsAnim; a.clip = st.clip; a.t = hs.t; a.rate = st.rate; a.flinch = st.flinch; a.dir = st.dir; a.prev = st.prev; a.blend = st.blend; st = a; } } }
       this.animator.pose(r.model, st, ex, r.pose);
-      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow, (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll, d2 > this.lodDist * this.lodDist ? 1 : 0);
+      r.skin.add(x + rt.x, y + rt.y, z + rt.z, h + rt.yaw, s * sv[0], s * sv[1], s * sv[2], r.pose, this._team(u.team), u.flash, u.stone, r.glow + 4 * statusMode(u.se), (u.pitch || 0) + rt.pitch, (u.roll || 0) + rt.roll, d2 > this.lodDist * this.lodDist ? 1 : 0);
       this.drawn++;
     };
     const U = w.units;

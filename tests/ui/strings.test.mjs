@@ -22,7 +22,8 @@ assert.equal(T.quick.recommended(3000), 'Recommended budget: 3,000 drachmae');
 assert.equal(T.placement.count_(37, 300), '37 / 300');
 assert.match(T.title.badgeStars(6, 27), /6\/27/);
 assert.equal(T.splash.prompt, 'PRESS ANY KEY TO ENTER THE ARENA');
-assert.match(T.title.roadmap, /Medieval Era \(coming later\)/);
+assert.match(T.title.roadmap, /Medieval Era/);
+assert.match(T.title.roadmap, /Not in this build/i, 'the roadmap tag must say it is not a feature (HUMOR ROADMAP_TAG)');
 // getT
 assert.equal(getT({}), T, 'no overrides: same object');
 const merged = getT({ content: { humor: { ui: { splash: { tag: 'Custom tag' } }, settingsJokes: { graphics: { quality: 'Fancy preset' } } } } });
@@ -33,5 +34,9 @@ assert.equal(T.splash.tag, 'A voxel battle simulator of questionable historical 
 // humour quota sanity: the headline jokes exist
 for (const k of ['potato', 'papyrus', 'marble', 'olympian']) assert.ok(T.settings.graphics.presetSub[k]);
 assert.equal(T.quick.corpsesOpts.none, "Pretend they're napping");
-assert.equal(T.quick.difficulties.easy, 'Peasant Mode');
+assert.equal(T.quick.difficulties.easy, 'Easy: Peasant Mode', 'difficulty names come from HUMOR ui_text.js');
+assert.match(T.settings.graphics.shadowsHint, /shadow/i);
+assert.ok(T.settings.graphics.presetTip.marble, 'quality tooltips from HUMOR QUALITY');
+assert.equal(T.credits.studio.length, 16, 'studio departments from HUMOR credits_text.js');
+assert.ok(T.fatal.webgl2.body && T.fatal.webgl2.joke, 'fatal copy carries HUMOR body + one joke');
 console.log(`strings: ${leaves.length} strings checked, all passed`);

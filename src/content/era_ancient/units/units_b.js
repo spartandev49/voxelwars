@@ -16,7 +16,7 @@ export const BLUEPRINTS = {
     shoulders: 'none', cape: 'none', back: 'quiver', main: 'sparabara_bow', off: 'pavise_wall', colors: PERSIAN, emblem: 'none', paint: {} }),
   xerxes: bp({ v: 1, id: 'xerxes', name: 'Xerxes', body: { type: 'average', skin: '#cf9a6c', hair: '#6e4c32' },
     head: { helm: 'royal_tiara', hair: 'short', face: 'beard_ringlets', eyes: '#222222' }, torso: { armor: 'none', tunic: 'royal_robe' }, legs: { armor: 'bare', skirt: 'none' },
-    shoulders: 'none', cape: 'long', back: 'none', main: 'scimitar', off: 'parma', colors: Object.assign({}, PERSIAN, { metal: 'gold' }), emblem: 'sun', paint: {} }),
+    shoulders: 'none', cape: 'long', back: 'travel_throne', main: 'scimitar', off: 'parma', colors: Object.assign({}, PERSIAN, { metal: 'gold' }), emblem: 'sun', paint: {} }),
   rider_cataphract: bp({ v: 1, id: 'rider_cataphract', name: 'Cataphract', body: { type: 'average', skin: '#cf9a6c', hair: '#2a1a10' },
     head: { helm: 'cataphract_helm', hair: 'short', face: 'none', eyes: '#222222' }, torso: { armor: 'scale_hauberk', tunic: 'none' }, legs: { armor: 'persian_trousers', skirt: 'none' },
     shoulders: 'none', cape: 'long', back: 'none', main: 'kontos_pennon', off: 'buckler', colors: PERSIAN, emblem: 'none', paint: {} }),

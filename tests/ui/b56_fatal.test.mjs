@@ -8,7 +8,7 @@ await L.ev(() => { const d = document.createElement('div'); d.id = 'fatal-host';
 // 1. WebGL2 missing
 await L.ev(() => window.__ui.registry.fatal.renderFatal(document.getElementById('fatal-host'), { kind: 'webgl2', message: 'getContext("webgl2") returned null', diagnostics: { gl: null, ua: 'x' } }));
 const t1 = await L.ev(() => document.getElementById('vw-fatal').textContent);
-check('B6: panel names WebGL 2 as the cause', /WebGL 2 is not available/i.test(t1));
+check('B6: panel names WebGL 2 as the cause', /cannot draw the game/i.test(t1) && /WebGL 2/.test(t1));
 check('B6: panel offers Safe mode instructions (and explains it needs WebGL 2)', /safe mode/i.test(t1) && /hardware acceleration/i.test(t1));
 check('B6: no useless Safe-mode button when WebGL 2 is the cause', await L.ev(() => !document.getElementById('fatal-safe')));
 check('B5/B6: the panel is a full-screen alertdialog, not a white screen', await L.ev(() => { const e = document.getElementById('vw-fatal'); const r = e.getBoundingClientRect(); return e.getAttribute('role') === 'alertdialog' && r.width >= innerWidth - 1 && r.height >= innerHeight - 1; }));
@@ -24,7 +24,7 @@ await p.click('#fatal-copy'); await p.waitForTimeout(200);
 check('Copy fallback: text selected + instruction shown', await L.ev(() => { const ta = document.getElementById('fatal-diag'); return ta.selectionEnd - ta.selectionStart === ta.value.length && /Ctrl\/Cmd\+C/.test(document.querySelector('.vw-fatal__status').textContent); }));
 // 3. CDN failure: safe mode button
 await L.ev(() => { document.getElementById('vw-fatal').remove(); window.__calls = []; window.__ui.registry.fatal.renderFatal(document.getElementById('fatal-host'), { kind: 'cdn', message: 'three.min.js failed on cdnjs, jsDelivr, unpkg', onSafeMode: () => window.__calls.push('safe'), onReload: () => window.__calls.push('reload') }); });
-check('B5: CDN failure shows its cause and steps', await L.ev(() => /required library failed to load/i.test(document.getElementById('vw-fatal').textContent)));
+check('B5: CDN failure shows its cause and steps', await L.ev(() => /required file did not load/i.test(document.getElementById('vw-fatal').textContent)));
 await p.click('#fatal-safe'); await p.click('#fatal-reload');
 check('safe-mode and reload buttons call their handlers', (await L.ev(() => window.__calls)).join() === 'safe,reload');
 // 4. unknown kind with a custom cause, ctx-free call (boot-time)

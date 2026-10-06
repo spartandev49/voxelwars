@@ -37,4 +37,11 @@ setKey(s, 'pan_up', 'KeyI'); resetKeys(s);
 assert.deepEqual(s.get('keys'), {});
 for (const code of ['Escape', 'Tab', 'Enter']) assert.ok(RESERVED.includes(code));
 assert.deepEqual(currentKeys({ get: () => { throw new Error('storage broke'); } }), DEFAULT_KEYS, 'broken settings fall back to defaults');
+// parity with the game's own input layer (src/app/input.js): same action ids, same defaults, so a rebinding made here is honoured there
+const { DEFAULT_KEYS: GAME_KEYS } = await import('../../src/app/input.js');
+for (const a of KEY_ACTIONS) { assert.ok(a.id in GAME_KEYS, `input.js has no action "${a.id}" (rebinding it here would do nothing)`); assert.equal(a.def, GAME_KEYS[a.id], `default for ${a.id} differs from input.js`); }
+assert.ok(CONTEXTS.some((c) => c.id === 'results'), 'results context (R / T / K) is listed');
+assert.equal(domainOf('results'), 'results');
+assert.equal(findConflict(mk(), 'tweak', 'KeyT'), null, 'T is Top-down in battle but Tweak on the results screen: different domains');
+assert.equal(findConflict(mk(), 'rematch', 'KeyK').id, 'killcam', 'results keys conflict with each other');
 console.log('keymap: all passed');

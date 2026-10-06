@@ -45,10 +45,24 @@ export function mount(root, ctx, params) {
   ];
   const absurdEl = K.h('div', { class: 'vw-stats__absurd' }, ...absurd.map(([n, v, s]) => K.h('div', { class: 'vw-ab' }, K.h('div', { class: 'vw-ab__v vw-display', text: v }), K.h('div', { class: 'vw-ab__n', text: n }), K.h('div', { class: 'vw-ab__s vw-small vw-dim', text: s }))));
 
+  // hall of fame from the nested maps (byDef: {id:{spawned,kills,deaths}}, arenasPlayed: {arenaId:n}); both are optional
+  const nameOfUnit = (id) => safe(() => ctx.content.units[id].name, id);
+  const nameOfArena = (id) => safe(() => ctx.content.arenas.find((a) => a.id === id).name, id);
+  const byDef = tot.byDef && typeof tot.byDef === 'object' ? tot.byDef : {};
+  const topUnits = Object.keys(byDef).map((id) => ({ id, k: +(byDef[id] || {}).kills || 0, s: +(byDef[id] || {}).spawned || 0 })).filter((x) => x.k > 0).sort((a, b) => b.k - a.k).slice(0, 5);
+  const ap = tot.arenasPlayed && typeof tot.arenasPlayed === 'object' ? tot.arenasPlayed : {};
+  const topArenas = Object.keys(ap).map((id) => ({ id, n: +ap[id] || 0 })).filter((x) => x.n > 0).sort((a, b) => b.n - a.n).slice(0, 3);
+  const fameBody = (topUnits.length || topArenas.length)
+    ? K.h('div', { class: 'vw-col' },
+      topUnits.length ? K.h('div', { class: 'vw-label', text: T.topUnits }) : null,
+      ...topUnits.map((x) => K.statBar(nameOfUnit(x.id), x.k, topUnits[0].k, { tone: 'olive', text: `${K.fmtNum(x.k)} ${T.kills}` })),
+      topArenas.length ? K.h('div', { class: 'vw-label', text: T.topArenas }) : null,
+      ...topArenas.map((x) => K.statBar(nameOfArena(x.id), x.n, topArenas[0].n, { tone: 'sky', text: T.battlesN(x.n) })))
+    : null;
   const empty = !keys.length || !g('battles');
   const frame = K.pageFrame({ id: 'st', title: T.title, sub: T.sub, onBack: () => ctx.nav.back() });
-  if (empty && !keys.length) frame.content.appendChild(K.tablet(T.title, K.emptyState({ icon: 'target', title: T.title, text: T.empty }), { id: 'st-empty' }));
-  else frame.content.appendChild(K.h('div', { class: 'vw-col' }, headline, K.h('div', { class: 'vw-stats__cols' }, K.tablet(T.serious, table, { id: 'st-serious', icon: 'list' }), K.tablet(T.absurd, absurdEl, { id: 'st-absurd', icon: 'dice' }))));
+  if (empty && !keys.length) frame.content.appendChild(K.tablet(T.title, K.emptyState({ icon: 'target', title: T.emptyTitle || T.title, text: T.empty }), { id: 'st-empty' }));
+  else frame.content.appendChild(K.h('div', { class: 'vw-col' }, headline, K.h('div', { class: 'vw-stats__cols' }, K.h('div', { class: 'vw-col' }, K.tablet(T.serious, table, { id: 'st-serious', icon: 'list' }), fameBody ? K.tablet(T.fame, fameBody, { id: 'st-fame', icon: 'trophy' }) : null), K.tablet(T.absurd, absurdEl, { id: 'st-absurd', icon: 'dice' }))));
   frame.mount(root);
   K.enter(Array.from(frame.content.querySelectorAll('.vw-tablet, .vw-statile')), 'pop', 0);
   cleanups.push(frame.destroy);

@@ -90,11 +90,11 @@ const RAW = [
   {
     id: 'nile_crossing', unitsA: 50, act: 2, mood: 'tense',
     arena: { recipe: 'nile', size: 'medium', seed: 4, env: {}, markers: [{ id: 'goat_start', type: 'vip_start', x: -24, z: -22, r: 3 }, { id: 'far_bank', type: 'exit', x: 8, z: 12, r: 4 }] },
-    playerFaction: 'egyptians', roster: ['medjay', 'nubian_archer', 'khopesh_warrior', 'chariot_archer', 'anubis_guard', 'priest_of_ra'], budget: 6500, par: 0,
+    playerFaction: 'egyptians', roster: ['medjay', 'khopesh_warrior', 'mummy', 'chariot_archer', 'anubis_guard', 'priest_of_ra'], budget: 6500, par: 0,
     fixed: [{ defId: 'battle_goat', marker: 'goat_start', vip: true, heading: Math.PI / 2, name: 'The Goat', def: { melee: null, abilities: [], ai: { style: 'hold' } } }],
     enemy: { faction: 'barbarians', style: 'ford ambush', difficulty: 'normal', special: 'goes for the goat',
       groups: [{ defId: 'berserker', n: 12, at: { x: 4, z: 17 }, order: 'hold', squad: 6 }, { defId: 'axe_thrower', n: 8, at: { x: 10, z: 20 }, order: 'hold', squad: 8 }, { defId: 'druid', n: 10, at: { x: 12, z: 24 }, order: 'hold', squad: 5 }, { defId: 'chieftain', n: 4, at: { x: 8, z: 18 }, order: 'hold' }, { defId: 'warhound', n: 20 }] },
-    objective: { type: 'protect_vip', params: { time: 150, reachOnly: true }, markerIds: ['goat_start', 'far_bank'], binding: true }, timeLimit: 200,
+    objective: { type: 'protect_vip', params: { time: 150, reachOnly: true }, markerIds: ['goat_start', 'far_bank'], binding: true }, timeLimit: 150,
     script: { vipMarch: { to: 'far_bank', delay: 12, clear: 14 } },
     rules: ['The Goat is a free extra unit. It waits at its start and walks to the far bank by itself once nothing hostile stands near the way (never before twelve seconds): clear the road.', 'Win by getting the Goat inside the exit marker. If it falls, you lose.', 'Star 3: the Goat takes no damage at all.'],
     starTests: [null, null, T.goatUntouched],
@@ -103,7 +103,7 @@ const RAW = [
   {
     id: 'alps_elephant', unitsA: 83, act: 2, mood: 'ominous',
     arena: { recipe: 'alpine', size: 'medium', seed: 9, env: {}, markers: [] },
-    playerFaction: 'carthage', roster: ['war_elephant', 'numidian', 'catapult', 'hannibal', 'berserker', 'axe_thrower', 'warhound'], budget: 11000, par: 0,
+    playerFaction: 'carthage', roster: ['war_elephant', 'numidian', 'catapult', 'hannibal', 'berserker', 'axe_thrower', 'warhound', 'druid', 'chieftain', 'hoplite', 'peltast', 'cretan_archer', 'nubian_archer', 'medjay'], budget: 11000, par: 0,
     core: [{ defId: 'war_elephant', n: 2 }],
     enemy: { faction: 'romans', style: 'legion with fire', difficulty: 'normal', special: 'auxiliary archers with fire arrows',
       groups: [{ defId: 'legionary', n: 34 }, { defId: 'pilum_thrower', n: 14 }, { defId: 'nubian_archer', n: 17 }, { defId: 'equites', n: 7 }, { defId: 'ballista', n: 2 }, { defId: 'centurion', n: 2 }] },

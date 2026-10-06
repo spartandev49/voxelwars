@@ -49,7 +49,7 @@ async function boot() {
 }
 async function openBuilder(opts = {}) {
   await ev(() => window.__vw.goto('arena_builder'));
-  await page.waitForSelector('#ed-root', { timeout: 20000 });
+  await page.waitForSelector('#ed-root', { timeout: 90000 });
   await sleep(600);
   if (opts.closeModal !== false) { for (let i = 0; i < 3; i++) { if (await page.$('.vw-modal-wrap')) { await page.keyboard.press('Escape'); await page.waitForSelector('.vw-modal-wrap', { state: 'detached', timeout: 3000 }).catch(() => {}); await sleep(250); } } }
   await sleep(opts.wait || 1200);

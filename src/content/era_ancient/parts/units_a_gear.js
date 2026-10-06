@@ -74,7 +74,7 @@ M.khopesh_spear_pennon = {
 /** The strategos' standard, trimmed to the height budget: the same swung-staff banner as the core `standard` but the pole top stays under y 34 (3.4 u) at rest, so the whole
  *  unit (cloth >= 9x10 voxels, team colour, emblem and fringe) stays inside U2's height ceiling. The pole leans a little outward so the cloth clears the crest. */
 M.standard_general = {
-  name: 'General\'s standard (banner)', meta: { style: 'bash', ready: 84, len: 24, back: 6, rest: [R_UP, 0, 0.14], grip: [4, 10, 4], minLen: 20, kind: 'melee', noClamp: true, faction: 'hellenes' },
+  name: 'General\'s standard (banner)', meta: { style: 'slash', ready: 84, len: 24, back: 6, rest: [R_UP, 0, 0.24], grip: [4, 10, 4], minLen: 20, kind: 'melee', noClamp: true, faction: 'hellenes' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len, y0 = 10 - ctx.back;
     for (let y = y0 + 1; y <= yt - 2; y++) B(g, 4, y, 4, 4, y, 4, wood(y, 1, 0x7a5030));

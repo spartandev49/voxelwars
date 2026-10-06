@@ -27,7 +27,7 @@ anubis_guard, priest_of_ra, pharaoh + the compact chariot crew (`crew_chariot_dr
 
 ## ANIM
 - `strategos` carries `standard_general` instead of the core `standard`: the core pole reaches 3.86 u at rest, the brief (units.md, strategos) wants the pole top <= y 34. The new one is 24 voxels long
-  and its rest rotation is `[0.3, 0, 0.14]`: **rz 0.14** leans the pole outward so the cloth clears the crest. Derive the axis from the full `R_rest*(0,1,0)` as units_lib.md says.
+  and its rest rotation is `[0.3, 0, 0.24]`: **rz 0.24** leans the pole outward so the cloth clears the crest. Derive the axis from the full `R_rest*(0,1,0)` as units_lib.md says.
 - `coin_bag` (senator) is carried like a sword (`rest [2.44,0,0]`: hangs down-forward at the hip, bag at the end); `scroll` (philosopher) `rest [0.7,0,0]`, both style `throw`/`bash` with small `ready` values.
 - Capes with sway: `bandage_trail` (mummy: six loose strips of different length, ragged tips, shawl at the top), `royal_cape` (pharaoh), `striped_cloak` is registered but unused (the peltast wears the mantle).
 - The philosopher's mouth is a dark 2x1 voxel gap at head (x4..5, y0, z8..9) under the moustache: speech bubbles can start at the `eyes`/`head` attach; mummy and priest carry GLOW voxels (eyes, sun disc, staff).

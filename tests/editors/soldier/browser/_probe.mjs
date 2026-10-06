@@ -1,7 +1,10 @@
+import { noAuto, openWorkshop, wsState } from './_util.mjs';
 export async function run({ page, shot, step, check, sleep }) {
-  await page.evaluate(() => window.__vw.goto('workshop'));
-  await page.waitForSelector('#ws-stage canvas', { timeout: 20000 });
-  await sleep(800);
-  const r = await page.evaluate(() => { const o = {}; for (const el of document.querySelector('.ws-bottom').children) { const b = el.getBoundingClientRect(); o[el.className.split(' ')[0] + ':' + el.id] = [Math.round(b.left), Math.round(b.width)]; } for (const el of document.querySelectorAll('.ws-bottom .vw-btn, .ws-bottom__name > *, .ws-bottom__chips > *')) { const b = el.getBoundingClientRect(); o[el.id] = [Math.round(b.left), Math.round(b.width)]; } return o; });
-  console.log(JSON.stringify(r));
+  await noAuto(page); await openWorkshop(page);
+  const tiles = await page.$$('#ws-parts .ws-part:not(.is-locked)'); console.log('tiles', tiles.length);
+  const before = await wsState(page); console.log(before.helm, before.rev);
+  const sel1 = await tiles[1].getAttribute('aria-selected'); console.log('sel', sel1, await tiles[1].getAttribute('id'));
+  await tiles[1].click(); await sleep(400);
+  const after = await wsState(page); console.log(after.helm, after.rev, await page.evaluate(() => window.__ws.doc.cs.blueprint.head.helm));
+  await page.keyboard.press('Control+z'); await sleep(300); console.log('undo ->', (await wsState(page)).helm);
 }

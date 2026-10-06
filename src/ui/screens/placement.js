@@ -6,6 +6,7 @@ import { getT } from '../strings.js';
 import { safe, unitsOf, factionIds, AI_STYLES, seenHint, setSeenHint } from './_shared.js';
 import { factionColor, factionName, ROLES, ROLE_LABEL, ROLE_ICON } from '../unitinfo.js';
 import { encodeShare, importShare } from '../../save/share.js';
+import { currentKeys } from '../keymap.js';
 
 export const meta = { id: 'placement', layer: 'battle', music: 'battle', canvas: 'scene' };
 
@@ -421,8 +422,9 @@ export function mount(root, ctx, params) {
       if (mod && e.code === 'KeyZ') { e.preventDefault(); if (e.shiftKey) G.tools.redo(); else G.tools.undo(); lastSig = ''; refresh(true); return true; }
       if (mod && e.code === 'KeyY') { e.preventDefault(); G.tools.redo(); lastSig = ''; refresh(true); return true; }
       if (mod || e.altKey) return false;
-      if (e.code === 'KeyB') { setMode(MODES[(MODES.indexOf(S.mode) + 1) % MODES.length]); K.sfx('ui_tick'); return true; }
-      if (e.key === 'Delete' || e.key === 'Backspace') { setMode('erase'); return true; }
+      const keys = currentKeys(ctx.settings);   // rebindable in Settings > Controls; the game's input layer uses the same ids (settings.keys[id] || default)
+      if (e.code === keys.brush) { setMode(MODES[(MODES.indexOf(S.mode) + 1) % MODES.length]); K.sfx('ui_tick'); return true; }
+      if (e.code === keys.erase || e.code === 'Backspace') { setMode('erase'); return true; }
       if (e.code === 'Space') { if (document.activeElement === fightBtn) return false; e.preventDefault(); fightBtn.focus(); return true; }
       if (e.key === '?' || e.code === 'KeyH') { showHints(0); return true; }
       return false;

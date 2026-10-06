@@ -224,6 +224,23 @@ BK.scimitar_back = {
   },
 };
 
+// Xerxes brings a throne to battle: a little gold folding throne strapped to his back, facing backwards (the viewer behind him gets the seat and the cushion)
+BK.travel_throne = {
+  name: 'Pocket throne',
+  build(ctx) {
+    const g = newGrid('back');
+    const gold = (x, y, z, f = 1) => V(shade(ctx.m[2], f * (0.88 + 0.2 * hash3(x, y, z, 31))));
+    B(g, 3, 5, 6, 8, 13, 7, (x, y, z) => ((x === 3 || x === 8 || y === 13) ? V(ctx.m[3]) : gold(x, y, z)));     // backrest
+    B(g, 4, 7, 6, 7, 11, 6, (x, y, z) => V(shade(ctx.c.primary, 0.85 + 0.15 * ((x + y) % 2))));                  // purple panel
+    P(g, 5, 9, 6, V(ctx.m[4])); P(g, 6, 9, 6, V(ctx.m[4])); P(g, 5, 10, 6, V(ctx.m[4])); P(g, 6, 8, 6, V(ctx.m[4]));       // sun in the panel
+    P(g, 3, 13, 6, V(ctx.m[4])); P(g, 8, 13, 6, V(ctx.m[4]));                                                       // finials
+    B(g, 3, 4, 2, 8, 5, 5, (x, y, z) => (y === 5 ? ((x > 3 && x < 8 && z > 2) ? V(shade(ctx.c.primary, 1.0)) : V(ctx.m[3])) : gold(x, y, z, 0.9)));   // seat with a cushion
+    for (const [x, z] of [[3, 2], [8, 2], [3, 5], [8, 5]]) B(g, x, 0, z, x, 3, z, gold(x, 1, z, 0.85));            // legs
+    B(g, 3, 6, 3, 3, 6, 5, V(ctx.m[3])); B(g, 8, 6, 3, 8, 6, 5, V(ctx.m[3]));                                    // arm rests
+    return g;
+  },
+};
+
 // ---------------------------------------------------------------------------------------------------------------- weapons
 /** one-handed bow (the sparabara holds it in the right hand behind his pavise): a copy of the library bow without the two-handed flag */
 function oneHandBow(name, o) {
@@ -289,8 +306,9 @@ O.gerron = {
     }
     B(g, 3, 7, 5, 12, 7, 5, V(shade(0x6a4a2a, 0.95)));                                // lashing
     B(g, 7, 3, 5, 8, 11, 5, V(shade(0x6a4a2a, 0.95)));
-    B(g, 6, 6, 5, 9, 8, 5, (x, y) => V(ctx.m[(x + y) % 2 ? 3 : 4]));                  // boss
-    P(g, 7, 7, 5, V(ctx.m[4]));
+    // the boss is a gold asterisk on a dark patch: the Immortal revives once*
+    B(g, 5, 5, 5, 9, 9, 5, V(shade(0x4a2e18, 0.9)));
+    sprite(g, ['..#..', '#.#.#', '.###.', '#.#.#', '..#..'], 5, 9, 5, { '#': V(ctx.m[4]) });
     return g;
   },
 };
