@@ -1,0 +1,15 @@
+import { Engine } from '../../src/render/engine.js';
+import { generateArena } from '../../src/world/gen.js';
+import { TerrainRenderer } from '../../src/render/terrain.js';
+const q = new URLSearchParams(location.search);
+const eng = new Engine(document.body);
+const rec = (q.get('a') || 'marathon');
+const arena = generateArena(rec, 'medium', 3);
+if (q.get('t')) arena.env.time = +q.get('t');
+if (q.get('w')) arena.env.weather = q.get('w');
+const tr = new TerrainRenderer(eng.scene); tr.setArena(arena);
+const f = eng.setEnvironment(arena.env, arena); tr.setFog(f.color, f.near, f.far);
+eng.setQuality(q.get('q') || 'marble');
+eng.camera.position.set(-48, 34, 44); eng.camera.lookAt(0, 6, 0); eng.focus.set(0, 8, 0);
+eng.render(0.016); eng.render(0.016);
+console.log('ok', rec, eng.composer ? 'post' : 'nopost');

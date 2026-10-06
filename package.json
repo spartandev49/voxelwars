@@ -1,0 +1,16 @@
+{
+  "name": "voxelwars",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VOXELWARS: a voxel 3D battle simulator (Ancient era)",
+  "type": "module",
+  "scripts": {
+    "build": "node tools/build.mjs",
+    "balance": "node tools/balance.mjs",
+    "smoke": "node tools/smoke.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "playwright-core": "^1.63.0"
+  }
+}
