@@ -29,6 +29,8 @@ node tools/build.mjs --minify
 node tools/gate.mjs --fast  # lint, syntax, unit tests, contract validators, build
 node tools/gate.mjs         # + browser smoke tests of the standalone page and the artifact fragment under the Artifact CSP
 node tools/look.mjs --arenas=marathon,olympus   # screenshots of the real game (look-dev)
+node tools/modes.mjs                            # plays campaign, puzzles, survival, daily, navigation and the camera in the real build
+node tools/tour.mjs                             # visits every menu and editor screen and screenshots it
 node tools/perf.mjs --budget=40000 --profile    # CPU profile of a 600-unit battle
 node tools/simperf.mjs 40000                    # headless sim cost per tick
 ```
