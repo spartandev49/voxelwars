@@ -2,7 +2,7 @@
 // `node tests/campaign/run_feasibility.mjs --report` after the long run) and this fast test checks them against the CURRENT mission data:
 //   - every mission has a record for counter (>= 20 seeds), greedy (>= 20) and turtle (>= 10) made on the same data (hash match; a changed mission fails
 //     here until the feasibility run is repeated),
-//   - counter wins 60-90% (a reference deployment wins >= 60%), greedy 25-70% (the naive deployment wins <= 70%), turtle 10-60%,
+//   - counter wins 60-100% (a reference deployment wins >= 60%; for missions 4-7 it is an authored deployment, mission.reference), greedy 25-70% (the naive deployment wins <= 70%), turtle 10-60%, per mission.bots,
 //   - star 3 is reachable (some recorded battle earned it) for every mission, and the thrifty bot proves star 3 of mission 1,
 //   - one stored battle is replayed now and must reproduce exactly (the sim is deterministic: an unrecorded sim change shows up here).
 // docs/campaign_report.md is generated from the same file.
@@ -22,7 +22,7 @@ await test('records exist for every mission and bot, made on the current mission
   }
 });
 
-await test('bands: counter 60-90%, greedy 25-70%, turtle 10-60% on every mission (the reference deployment wins, the naive one does not walk it, the counter-pick pays off)', () => {
+await test('bands (mission.bots): by default counter 60-100% (the reference deployment wins), greedy 25-70% (the naive one does not walk it), turtle 10-60%; exceptions are data with a stated reason (mission 8 greedy)', () => {
   const bad = [];
   for (const m of MISSIONS) for (const bot of ['counter', 'greedy', 'turtle']) {
     const b = rec.runs[m.id].bots[bot], [lo, hi] = m.bots[bot];

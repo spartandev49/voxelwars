@@ -204,7 +204,7 @@ export function mount(root, ctx) {
     if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || !['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End'].includes(e.key)) return;
     const picks = Array.from(grid.querySelectorAll('.bs-pz-pick')), i = picks.indexOf(document.activeElement);
     if (i < 0) return;
-    const top0 = picks[0].getBoundingClientRect().top, cols = Math.max(1, picks.filter((b) => Math.abs(b.getBoundingClientRect().top - top0) < 4).length);
+    const cardEls = Array.from(grid.querySelectorAll('.bs-pz')), top0 = cardEls[0].offsetTop, cols = Math.max(1, cardEls.filter((c) => Math.abs(c.offsetTop - top0) < 4).length);       // offsetTop: unaffected by the entrance transform
     const step = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowDown' ? cols : e.key === 'ArrowUp' ? -cols : 0;
     let n = e.key === 'Home' ? 0 : e.key === 'End' ? picks.length - 1 : i + step;
     if (n < 0 || n >= picks.length) n = Math.max(0, Math.min(picks.length - 1, i));

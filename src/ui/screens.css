@@ -222,7 +222,7 @@
   #pl-open-pal { grid-area: t1; } #pl-open-tools { grid-area: t2; }
   .vw-pl__bottom > #pl-fight { grid-area: fight; }
   .vw-pl__tgls .vw-btn, .vw-pl__bottom > .vw-btn { width: 100%; }
-  .vw-pl__tgls .vw-btn__face { padding: .4rem .3rem; font-size: .72rem; gap: .3rem; }
+  .vw-pl__tgls .vw-btn__face { padding: .4rem .3rem; font-size: .72rem; gap: .3rem; white-space: nowrap; overflow-wrap: normal; word-break: keep-all; }
   .vw-pl__bottom > .vw-btn--xl .vw-btn__face { min-height: var(--tap); padding: .4rem .8rem; font-size: 1.05rem; }
   .vw-pl__pal, .vw-pl__tools { grid-area: mid; align-self: end; position: relative; z-index: 5; margin: 0 0 .5rem; height: min(100%, 30rem); border-radius: var(--r-lg); visibility: hidden; transform: translateY(110%); transition: transform .3s var(--ease-out), visibility 0s .3s; }
   .is-sheet-pal .vw-pl__pal, .is-sheet-tools .vw-pl__tools { visibility: visible; transform: none; transition: transform .3s var(--ease-out), visibility 0s; }
@@ -383,3 +383,5 @@
 .vw-diag__assets-d { margin-top: .25rem; }
 .vw-diag__assets-d > summary { display: flex; align-items: center; min-height: var(--tap); cursor: pointer; color: var(--gold); font-weight: 700; }
 .vw-diag__assets { list-style: none; margin: .25rem 0 0; padding: 0; max-height: 14rem; overflow: auto; }
+
+@media (max-width: 420px) { .vw-pl__tgls .vw-btn__face .vw-icon { display: none; } }

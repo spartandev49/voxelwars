@@ -124,7 +124,7 @@ export class EditorHost {
     this.terrain.setArena(arena);
     this.props.setArena(arena);
     this.rig.setWorld(null); this.rig.setArena(arena);
-    this.rig.limits.maxDist = Math.max(120, arena.worldSize() * 1.6);
+    this.rig.limits.maxDist = Math.max(160, arena.worldSize() * 2.2);   // room to fit the whole arena in a small window
     this.setEnvironment(arena.env);
     return this;
   }
@@ -150,14 +150,27 @@ export class EditorHost {
     cam.setViewOffset(W, H, -dx, -dy, W, H);
   }
 
+  /** Distance at which the whole arena (W units wide) fits the free area between the panels with a margin; never closer than `min`. */
+  _fitDist(W, yaw, pitch, min) {
+    try {
+      const el = this.engine.renderer.domElement, cam = this.engine.camera, i = this.insets;
+      const vw = el.clientWidth || window.innerWidth, vh = el.clientHeight || window.innerHeight;
+      const fw = Math.max(240, vw - i.left - i.right), fh = Math.max(180, vh - i.top - i.bottom);
+      const k = 2 * Math.tan(((cam.fov || 48) * Math.PI) / 360) * 0.9;           // world units per pixel-of-height at distance 1, with a 10% margin
+      const extH = W * (Math.abs(Math.cos(yaw)) + Math.abs(Math.sin(yaw))), extV = extH * Math.sin(pitch) + 10;
+      const d = Math.max(extH / (k * fw / vh), extV / (k * fh / vh));
+      return isFinite(d) ? Math.max(min, d) : min;
+    } catch (e) { return min; }
+  }
+
   /** Re-aim the camera and snap: 'oblique' (default view), 'top' (plan view) or 'keep' (only the distance). */
   frame(o = {}) {
     const a = this.arena, rig = this.rig; if (!a) return;
     const W = a.worldSize(), x = o.x === undefined ? 0 : o.x, z = o.z === undefined ? 0 : o.z;
     rig.tx = x; rig.tz = z; rig.ty = a.heightAt(x, z) + 1;
     const mode = o.mode || 'oblique';
-    if (mode === 'top') { rig.setMode('topdown'); rig.pitch = 1.38; rig.yaw = 0; rig.dist = o.dist || W * 1.05; }
-    else if (mode === 'oblique') { rig.setMode('orbit'); rig.yaw = -0.7; rig.pitch = 0.62; rig.dist = o.dist || W * 1.5; }
+    if (mode === 'top') { rig.setMode('topdown'); rig.pitch = 1.38; rig.yaw = 0; rig.dist = o.dist || this._fitDist(W, 0, 1.38, W * 1.05); }
+    else if (mode === 'oblique') { rig.setMode('orbit'); rig.yaw = -0.7; rig.pitch = 0.62; rig.dist = o.dist || this._fitDist(W, -0.7, 0.62, W * 1.5); }
     else if (o.dist) rig.dist = o.dist;
     rig.dist = clamp(rig.dist, rig.limits.minDist, rig.limits.maxDist);
     rig.snap();

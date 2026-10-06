@@ -123,15 +123,19 @@ export function mount(root, ctx, params) {
   app.view = new EditorView(host, session);
   app.thumbs.onReady(() => {});
   app.ctl = createController(app);
-  if (resume && LIVE.cam) { const r = host.rig; Object.assign(r, LIVE.cam); r.snap(); } else host.frame({ mode: 'oblique' });
   cleanups.push(host.onFrame((dt) => app.ctl.frame(dt)));
+  let fitPending = !(resume && LIVE.cam);
   function insets() {
     const r = root.getBoundingClientRect(), v = viewEl.getBoundingClientRect();
-    host.setInsets({ left: Math.max(0, v.left - r.left), right: Math.max(0, r.right - v.right), top: Math.max(0, v.top - r.top), bottom: Math.max(0, r.bottom - v.bottom) });
+    const ins = { left: Math.max(0, v.left - r.left), right: Math.max(0, r.right - v.right), top: Math.max(0, v.top - r.top), bottom: Math.max(0, r.bottom - v.bottom) };
+    host.setInsets(ins);
+    // the first real measurement arrives after layout: fit the arena to the free area once (a manual camera move is never overridden)
+    if (fitPending && ins.left + ins.right > 40 && ins.top + ins.bottom > 20) { fitPending = false; host.frame({ mode: host.rig.mode === 'topdown' ? 'top' : 'oblique' }); }
   }
   const ro = typeof ResizeObserver === 'function' ? new ResizeObserver(() => insets()) : null; if (ro) ro.observe(viewEl);
   window.addEventListener('resize', insets); cleanups.push(() => { window.removeEventListener('resize', insets); if (ro) ro.disconnect(); });
   setTimeout(insets, 0); insets();
+  if (resume && LIVE.cam) { const r = host.rig; Object.assign(r, LIVE.cam); r.snap(); } else host.frame({ mode: 'oblique' });   // after the insets, so the arena fits the free area
 
   // pointer events
   viewEl.addEventListener('pointerdown', (e) => { if (K.hasModal()) return; try { viewEl.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ } viewEl.focus({ preventScroll: true }); app.ctl.onDown(e); });

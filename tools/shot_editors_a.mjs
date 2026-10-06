@@ -15,7 +15,7 @@ const CDN = { 'three.min.js': '.cache/cdn/three.min.js', 'gsap.min.js': '.cache/
 const MIME = { '.mp3': 'audio/mpeg', '.png': 'image/png', '.json': 'application/json', '.ogg': 'audio/ogg' };
 const exe = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 const browser = await chromium.launch({ executablePath: exe, args: ['--use-angle=swiftshader', '--use-gl=angle', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
-const ctx = await browser.newContext({ viewport: { width: W, height: H }, hasTouch: !!arg('touch', false), acceptDownloads: true });
+const ctx = await browser.newContext({ viewport: { width: W, height: H }, hasTouch: !!arg('touch', false), isMobile: !!arg('touch', false), acceptDownloads: true });
 const page = await ctx.newPage();
 const problems = [], logs = [];
 page.on('console', (m) => { const t = m.type(), txt = m.text(); logs.push(t + ': ' + txt); if (t === 'error' || t === 'warning') problems.push(`console.${t}: ${txt}`); });

@@ -13,6 +13,7 @@ import { generateArena } from '../../world/gen.js';
 import { generateArmy, layoutArmy, zoneFrame, groupsCost } from '../../sim/armygen.js';
 import { formationOffsets, placeOffsets } from '../../sim/formations.js';
 import { WaveSystem } from '../../sim/waves.js';
+import { ST } from '../../sim/consts.js';
 import { FlowField } from '../../world/nav.js';
 import { RNG } from '../../core/rng.js';
 
@@ -154,6 +155,8 @@ export class ScriptedWaves extends WaveSystem {
     this.state = 'fighting'; this.timer = 0; this.lastArmy = c; this.lastWave = wv;
     return c;
   }
+  /** Enemy units still in the fight: alive and not running away (a routed monster that flees to the map corner no longer holds the wave open: the wave counts as beaten once everything left is routed). */
+  active(w) { let n = 0; const us = w.units; for (let i = 0; i < us.length; i++) { const u = us[i]; if (u.alive && u.team === TEAM_ENEMY && u.state !== ST.ROUT) n++; } return n; }
   /** True while waves are still to come (the objective must not let an empty field end the battle). */
   get pending() { return this.n < this.total; }
   update(w, dt) {
@@ -167,7 +170,7 @@ export class ScriptedWaves extends WaveSystem {
     }
     if (this.state === 'fighting') {
       this.timer += dt;
-      if (w.stats[TEAM_ENEMY].alive <= 0) { this.cleared = this.n; this.state = 'idle'; this.cool = this.breather; return; }
+      if (this.active(w) <= 0) { this.cleared = this.n; this.state = 'idle'; this.cool = this.breather; return; }
       const gap = (this.lastWave && this.lastWave.after) || this.interval;
       if (this.n < this.total && this.timer >= gap) this.spawn();
     }

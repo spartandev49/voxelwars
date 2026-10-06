@@ -17,6 +17,7 @@ function reveal(u, ab, w) {
   const sq = w.addSquad(p.spawn || 'hoplite', u.team, n, cx, cz, { formation: 'circle', heading: u.heading, spacing: 1.2 });
   for (let i = 0; i < sq.units.length; i++) {
     const s = sq.units[i];
+    if (p.hpFrac > 0 && p.hpFrac < 1) s.hp = s.hpMax * p.hpFrac;                 // the stowaways tumble out winded (balance: they are part of the horse's price)
     const a = (i / n) * Math.PI * 2;
     s.kx = Math.cos(a) * 3.2; s.kz = Math.sin(a) * 3.2;
     s.state = ST.GETUP; s.stateT = 0; s.stateDur = 0.9; setAnim(s, 'getup', 1);

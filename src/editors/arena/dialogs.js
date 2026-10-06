@@ -94,7 +94,9 @@ export function openLibrary(app, tab = 'mine') {
     wrap.append(tabs, area); paint();
     return wrap;
   };
-  return K.modal({ title: cur === 'mine' ? D.libTitle : D.newTitle, icon: 'folder', wide: true, class: 'vw-ed__libmodal', id: 'ed-library', body, dismissValue: null, buttons: [{ label: S.common.close, variant: 'secondary', value: null, cancel: true, id: 'ed-lib-close' }] });
+  const shown = K.modal({ title: cur === 'mine' ? D.libTitle : D.newTitle, icon: 'folder', wide: true, class: 'vw-ed__libmodal', id: 'ed-library', body, dismissValue: null, buttons: [{ label: S.common.close, variant: 'secondary', value: null, cancel: true, id: 'ed-lib-close' }] });
+  const active = document.querySelector('#ed-lib-tabs [aria-selected="true"]'); if (active) active.focus();   // the kit focuses the first tab: start on the one that is showing
+  return shown;
 }
 
 // ---------------------------------------------------------------------------------------------------------------- export

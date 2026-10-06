@@ -196,6 +196,36 @@ export async function run(name, h) {
     const cur = await ev(() => window.__vw.app.router.current()); expect(cur === 'phone_notice', 'phones are sent to the friendly notice (' + cur + ')'); await shot('18_phone');
     return;
   }
+  if (name === 'touch') {
+    const coarse = await A(() => matchMedia('(pointer: coarse)').matches); expect(coarse, 'the page sees a coarse pointer (touch emulation)');
+    await openBuilder({ closeModal: true });
+    const cdp = await page.context().newCDPSession(page);
+    const touch = (type, pts) => cdp.send('Input.dispatchTouchEvent', { type, touchPoints: pts.map((p, i) => ({ x: p[0], y: p[1], id: i + 1 })) });
+    const v = await view(), cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    const bar = await A(() => { const b = document.getElementById('ed-touchbar'); if (!b || b.classList.contains('vw-hide')) return null; return Array.from(b.querySelectorAll('button')).map((e) => { const r = e.getBoundingClientRect(); return [e.id, Math.round(r.width), Math.round(r.height)]; }); });
+    expect(bar && bar.length === 5, 'touch helper bar is shown with 5 buttons ' + JSON.stringify(bar));
+    expect(bar && bar.every((b) => b[1] >= 44 && b[2] >= 44), 'every touch helper is at least 44 px');
+    const toolMin = await A(() => Math.min(...Array.from(document.querySelectorAll('#ed-root .vw-ed__tool')).map((e) => Math.min(e.getBoundingClientRect().width, e.getBoundingClientRect().height))));
+    expect(toolMin >= 44, 'tool buttons are at least 44 px (' + Math.round(toolMin) + ')');
+    const h0 = await hsum(); const d0 = (await counts()).depth;
+    await touch('touchStart', [[cx - 40, cy]]); for (let i = 1; i <= 8; i++) { await touch('touchMove', [[cx - 40 + i * 10, cy]]); await sleep(60); } await touch('touchEnd', []); await sleep(400);
+    expect((await hsum()) !== h0 && (await counts()).depth === d0 + 1, 'one finger draws one raise stroke (one undo step)');
+    await page.tap('#ed-touch-lower'); await sleep(150);
+    expect(await A(() => window.__vw.arenaBuilder.st.touchLower === true), 'Lower toggles the dig mode');
+    await page.tap('#ed-touch-lower'); await sleep(100);
+    await page.tap('#ed-touch-cam'); await sleep(150);
+    const y0 = await A(() => window.__vw.arenaBuilder.host.rig.yaw), hh = await hsum();
+    await touch('touchStart', [[cx, cy]]); for (let i = 1; i <= 8; i++) { await touch('touchMove', [[cx + i * 14, cy]]); await sleep(60); } await touch('touchEnd', []); await sleep(500);
+    const y1 = await A(() => window.__vw.arenaBuilder.host.rig.yaw);
+    expect(Math.abs(y1 - y0) > 0.05 && (await hsum()) === hh, 'with Move camera on, a one-finger drag orbits and does not paint (' + y0.toFixed(2) + ' -> ' + y1.toFixed(2) + ')');
+    await page.tap('#ed-touch-cam'); await sleep(100);
+    const di = await A(() => window.__vw.arenaBuilder.host.rig.dist);
+    await touch('touchStart', [[cx - 60, cy], [cx + 60, cy]]); for (let i = 1; i <= 8; i++) { await touch('touchMove', [[cx - 60 - i * 12, cy], [cx + 60 + i * 12, cy]]); await sleep(60); } await touch('touchEnd', []); await sleep(500);
+    const di1 = await A(() => window.__vw.arenaBuilder.host.rig.dist), hz = await hsum();
+    expect(di1 < di - 1 && hz === hh, 'a two-finger pinch zooms in and never paints (' + di.toFixed(0) + ' -> ' + di1.toFixed(0) + ')');
+    await shot('22_touch');
+    return;
+  }
   if (name === 'probe') {
     await ev(() => window.__vw.goto('arena_builder')); await sleep(4000);
     const d = await A(() => { const r = document.getElementById('ed-root'); const b = r && r.getBoundingClientRect(); const cs = r && getComputedStyle(r); const lay = r && r.parentElement; const lb = lay && lay.getBoundingClientRect(); return { cur: window.__vw.app.router.current(), root: b && [b.x, b.y, b.width, b.height], disp: cs && [cs.display, cs.visibility, cs.opacity], parent: lay && [lay.className, lb.width, lb.height], inner: [innerWidth, innerHeight], modal: !!document.querySelector('.vw-modal-wrap'), kids: r ? r.children.length : -1 }; });
@@ -220,9 +250,11 @@ export async function run(name, h) {
     const tools = ['raise', 'smooth', 'flatten', 'paint', 'water', 'noise', 'ramp', 'stamp', 'props', 'hazards', 'zones', 'symmetry', 'generate', 'environment', 'info', 'markers'];
     expect(tools.every((t) => stops.some((s) => s.id === 'ed-tool-' + t)), 'all 16 tools are reachable with Tab');
     expect(stops.every((s) => s.vis), 'every tab stop is visible'); expect(stops.filter((s) => !s.ring).length === 0, 'every tab stop shows the gold focus ring (' + stops.filter((s) => !s.ring).map((s) => s.id).join(',') + ')');
-    await page.focus('#ed-tool-raise'); const p0 = await A(() => { const r = window.__vw.arenaBuilder.host.rig; return [r.tx, r.tz]; });
-    await page.keyboard.down('ArrowRight'); await sleep(700); await page.keyboard.up('ArrowRight'); await sleep(200);
-    const p1 = await A(() => { const r = window.__vw.arenaBuilder.host.rig; return [r.tx, r.tz]; });
+    await page.focus('#ed-tool-raise'); const rigAt = () => A(() => { const r = window.__vw.arenaBuilder.host.rig; return [r.tx, r.tz]; });
+    const p0 = await rigAt(); let p1 = p0;
+    await page.keyboard.down('ArrowRight');
+    for (let k = 0; k < 40 && Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) <= 0.3; k++) { await sleep(250); p1 = await rigAt(); }   // frames are slow under software rendering: wait for one
+    await page.keyboard.up('ArrowRight'); await sleep(200);
     expect(Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) > 0.3, 'arrow keys pan the camera even while a toolbar button has focus ' + JSON.stringify([p0, p1]));
     await page.keyboard.press('?'); await sleep(500); expect(!!(await page.$('#ed-sc-close')), '? opens the shortcuts overlay'); await shot('19_shortcuts'); await page.keyboard.press('Escape'); await sleep(400);
     return;
