@@ -78,7 +78,7 @@ export class Game {
 
   on(ev, fn) { return this.bus.on('game:' + ev, fn); }
   emit(ev, p) { if (this.isDiorama) return; this.bus.emit('game:' + ev, p || {}); }
-  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 38, marble: 56, olympian: 76 }[this.tier] || 56; this.view.nearBudget = { potato: 40, papyrus: 80, marble: 140, olympian: 260 }[this.tier] || 140; }
+  _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 36, marble: 48, olympian: 76 }[this.tier] || 56; this.view.nearBudget = { potato: 40, papyrus: 70, marble: 110, olympian: 260 }[this.tier] || 140; }
   setTier(t) { this.tier = t; this._applyTier(); if (this.props && this.props.setQuality) this.props.setQuality(t); }
 
   // ------------------------------------------------------------------ setup / lifecycle

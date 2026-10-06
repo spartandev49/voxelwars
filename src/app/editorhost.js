@@ -196,9 +196,18 @@ export class EditorHost {
   onFrame(fn) { this._frameFns.add(fn); return () => this._frameFns.delete(fn); }
   _tick(dt) {
     this._applyInsets();                       // cheap: the game clears the view offset on canvas-mode changes and resizes
+    this._fogFollow();
     this.terrain.update(dt);
     this.props.update(dt, this.engine.camera);
     for (const f of this._frameFns) f(dt);
+  }
+  /** The environment's fog is tuned for a battle camera about 60 u away: slide it out with the editor camera so the arena itself keeps its true colours at any zoom. */
+  _fogFollow() {
+    const f = this.scene.fog, p = this.engine.fogParams; if (!f || !p || !this.rig) return;
+    const shift = Math.max(0, (this.rig.sdist || 0) - 60), near = p.near + shift;
+    if (Math.abs(f.near - near) < 0.5) return;
+    f.near = near; f.far = p.far + shift;
+    if (this.terrain) this.terrain.setFog(this.engine.fogColor, f.near, f.far);
   }
   /** Run one frame by hand (tests / tools that do not use game.frame): rig, host, render. */
   step(dt = 1 / 60) { this.rig.update(dt, 1); this.engine.render(dt); }
