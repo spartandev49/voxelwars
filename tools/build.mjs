@@ -53,12 +53,13 @@ if (exists('assets/manifest.json')) {
     files[p] = p;
   }
 }
-const credits = exists('assets/CREDITS.md') ? read('assets/CREDITS.md') : '';
+// the vfx sprites are not shipped, so their credit line is not either
+const credits = exists('assets/CREDITS.md') ? read('assets/CREDITS.md').split('\n').filter((l) => !/Kenney Particle Pack/.test(l)).join('\n').replace('audio / sprites', 'audio') : '';
 
 // ---------- templates ----------
 const FONTS = 'https://fonts.googleapis.com/css2?family=Bungee&family=Cinzel:wght@500;700&family=Rubik:wght@400;500;600;700&display=swap';
-// Inline loader: three (required) and gsap (optional) with a CDN fallback chain cdnjs -> jsDelivr -> unpkg (same pinned versions).
-const LOADER = `(function(){var L={three:['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js','https://unpkg.com/three@0.128.0/build/three.min.js'],gsap:['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js','https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js','https://unpkg.com/gsap@3.12.5/dist/gsap.min.js']};function load(u,i){return new Promise(function(res){if(i>=u.length)return res(false);var s=document.createElement('script');s.src=u[i];s.onload=function(){res(true)};s.onerror=function(){s.remove();load(u,i+1).then(res)};document.head.appendChild(s)})}window.__vwReady=load(L.three,0).then(function(t){return load(L.gsap,0).then(function(g){return{three:t,gsap:g}})})})();`;
+// Inline loader: three (required; GSAP is not used and not loaded) with a CDN fallback chain cdnjs -> jsDelivr -> unpkg (same pinned versions).
+const LOADER = `(function(){var L={three:['https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js','https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js','https://unpkg.com/three@0.128.0/build/three.min.js']};function load(u,i){return new Promise(function(res){if(i>=u.length)return res(false);var s=document.createElement('script');s.src=u[i];s.onload=function(){res(true)};s.onerror=function(){s.remove();load(u,i+1).then(res)};document.head.appendChild(s)})}window.__vwReady=load(L.three,0).then(function(t){return{three:t}})})();`;
 const cdnTags = `<script>${LOADER}</script>`;
 
 const bodyHtml = `<div id="vw-root"><div id="vw-boot"><div class="boot-logo">VOXELWARS</div><div class="boot-bar"><i></i></div><div class="boot-msg">Polishing helmets…</div></div></div>`;

@@ -766,7 +766,7 @@ export class World {
   _tickDying(dt) {
     const d = this.dying;
     for (let i = d.length - 1; i >= 0; i--) {
-      const u = d[i]; u.deadT += dt; u.anim.t += dt * u.anim.rate; if (u.anim.blend < 1) u.anim.blend = Math.min(1, u.anim.blend + dt / 0.1);
+      const u = d[i]; u.deadT += dt; u.anim.t += dt * u.anim.rate; if (u.anim.blend < 1) u.anim.blend = Math.min(1, u.anim.blend + dt / 0.14);
       // flung corpses keep sliding on their launch velocity (render owns pitch/roll)
       if (u.deathKind === 2 && u.deadT < 0.9) {
         const nx = u.x + u.kx * dt, nz = u.z + u.kz * dt;

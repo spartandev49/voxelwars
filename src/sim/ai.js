@@ -149,7 +149,7 @@ export function think(w, u, dt) {
     u.dvx = 0; u.dvz = 0;
     if (st0 === ST.DOWN) return;
     u.state = ST.STUN;
-    setAnim(u, se[SE.SLEEP] > 0 ? 'cower' : 'stun', 1);
+    setAnim(u, se[SE.SLEEP] > 0 ? 'sleep' : 'stun', 1);
     if (se[SE.STONE] > 0) u.anim.rate = 0;
     return;
   }
@@ -174,7 +174,7 @@ export function think(w, u, dt) {
     case ST.STAGGER: u.stateT += dt; u.dvx = 0; u.dvz = 0; if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; } return;
     case ST.CAST: case ST.GETUP: case ST.COWER: u.stateT += dt; u.dvx = 0; u.dvz = 0; if (u.stateT >= u.stateDur) { u.state = ST.IDLE; u.stateT = 0; } return;
     case ST.SIT: u.dvx = 0; u.dvz = 0; return;
-    case ST.FLY: u.dvx = 0; u.dvz = 0; return;
+    case ST.FLY: u.dvx = 0; u.dvz = 0; if (u.ex === 0 && u.ez === 0) setAnim(u, 'flail', 1); return;      // knocked airborne (a dash keeps its run clip)
     case ST.CHEER: return;
     default: break;
   }

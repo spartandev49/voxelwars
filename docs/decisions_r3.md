@@ -85,3 +85,4 @@ Content assembly names (`MODELS`, `BUILDERS`, `UNIT_TEXT`, `setCompiler`) docume
 2. The artifact fragment ships its code packed (deflate + base64 in `<script type="text/plain" id="vw-pack">`, inflated at load with DecompressionStream). Reason found by bisecting the publisher: its page scanner flagged the plain script as a PR-review page. The standalone `dist/voxelwars.html` stays unpacked.
 3. VFX sprites (Kenney particles) are not shipped (the renderer uses voxel particles); their entries are removed from the shipped credits.
 4. R10 (context loss/restore) is handled in main.js (pause + toast + resume) and verified with WEBGL_lose_context in Chromium.
+5. GSAP is NOT shipped or loaded (nothing used it; core/tween.js keeps its built-in timeline). The credits must not list it.

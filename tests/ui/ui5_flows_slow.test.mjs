@@ -232,7 +232,7 @@ const authors = (md.match(/^### .+$/gm) || []).map((l) => l.slice(4).trim());
 const credText = await ev(() => document.getElementById('cr-ledger').textContent);
 check(`UI14: every CC0 author heading (${authors.length}) and the licence names appear`, authors.every((a) => credText.includes(a)) && /CC BY 4\.0/.test(credText) && /CC BY 3\.0/.test(credText));
 const libsText = await ev(() => document.getElementById('cr-libs').textContent + document.getElementById('cr-anim').textContent);
-check('UI14: library and font licences listed (three.js MIT, GSAP, OFL fonts, CC0 animation)', /three\.js/.test(libsText) && /MIT/.test(libsText) && /GSAP/.test(libsText) && /Open Font Licence/.test(libsText) && /Bungee/.test(libsText) && /Rubik/.test(libsText) && /Cinzel/.test(libsText) && /Quaternius/.test(libsText) && /hand-authored/.test(libsText));
+check('UI14: library and font licences listed truthfully (three.js MIT, OFL fonts, CC0 animation; no GSAP, it is not shipped)', /three\.js/.test(libsText) && /MIT/.test(libsText) && !/GSAP/i.test(libsText) && /Open Font Licence/.test(libsText) && /Bungee/.test(libsText) && /Rubik/.test(libsText) && /Cinzel/.test(libsText) && /Quaternius/.test(libsText) && /CC0/.test(libsText) && /animated by hand/.test(libsText) && !/Kenney/i.test(libsText));
 await p.fill('#cr-filter', 'Kevin MacLeod'); await wait(150);
 check('credits: the filter narrows the ledger', await ev(() => document.querySelectorAll('#cr-ledger li:not([hidden])').length > 0 && document.querySelectorAll('#cr-ledger li[hidden]').length > 20));
 

@@ -473,6 +473,7 @@ R.nile = (g) => {
   for (let cz = 0; cz < a.size; cz++) for (let cx = 0; cx < a.size; cx++) { const x = a.worldX(cx), z = a.worldZ(cz), d = Math.abs(z - zr(x)); if (Math.abs(x) < 4.5 && d < rw(x) + 1.6 && a.getH(cx, cz) < 10) a.setH(cx, cz, 10); }
   g.slopeMat(MAT.mud, 2, [MAT.grass]);
   g.keepClearPath(curve((x) => zr(x), -W * 0.2, W * 0.2, 12).map((p) => [p[0], p[1]]), 7.5); g.keepClear(0, zr(0), 8);
+  for (const sg of [-1, 1]) { g.keepClear(sg * 7, sg * 19, 9); g.keepClear(sg * 11, sg * 22, 7); }   // landing plazas on both banks behind the ford (the campaign's far-bank skirmish and any army crossing needs room)
   // fertile banks: palms, reeds, wheat, then desert scatter
   const nearRiver = (x, z) => Math.abs(z - zr(x)) < rw(x) + 12;
   g.scatter({ reeds: 1 }, 34, { region: (x, z) => { const d = Math.abs(z - zr(x)); return d > rw(x) - 0.3 && d < rw(x) + 3 && Math.abs(x) > 6.5; }, shore: -2, noSpacing: true, maxSlope: 3, scale: [1, 1.4], inZones: true });

@@ -41,9 +41,9 @@ export async function run({ page, shot, step, check, sleep }) {
   await setSlider(page, '#ws-stat-hp', 0); await setSlider(page, '#ws-stat-armor', 20); await sleep(200); s = await wsState(page); check(s.stats.armor === 20 && s.stats.hp === 0, 'points can be moved between stats');
   const cost1 = s.cost; await setSlider(page, '#ws-stat-hp', 10); await sleep(150); s = await wsState(page); check(s.cost > cost1, 'more points cost more');
   // ---- body
-  await page.click('#ws-body-type [data-value="slim"]'); await sleep(200); await setSlider(page, '#ws-height', 0.9); await sleep(200);
+  await page.click('#ws-body-type [data-value="slim"]'); await sleep(200); await setSlider(page, '#ws-height', 0.9); await sleep(200); await wsState(page);
   const size = await page.textContent('#ws-size-note'); check(/0\.85 x 0\.90 x 0\.85/.test(size), 'slim at 0.90 is held at 0.85 on x and z: ' + size);
-  await page.click('#ws-body-type [data-value="stocky"]'); await setSlider(page, '#ws-height', 1.2); await sleep(200);
+  await page.click('#ws-body-type [data-value="stocky"]'); await setSlider(page, '#ws-height', 1.2); await sleep(200); await wsState(page);
   const size2 = await page.textContent('#ws-size-note'); check(/1\.34 x 1\.18 x 1\.34/.test(size2), 'stocky at 1.20 is 1.34 x 1.18 x 1.34: ' + size2);
   await shot('ws_stats_body');
   // ---- abilities legality

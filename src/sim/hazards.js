@@ -84,7 +84,7 @@ export class HazardSystem {
         const u = units[i]; if (!u.alive || !this._inside(h, u, 0)) continue;
         const o = H.reset(); o.type = 'blunt'; o.kb = 0; o.noBlock = true; o.noCrit = true; o.fixed = true; o.cause = 'geyser'; o.aoe = true; o.at(h.x, h.z);
         applyDamage(w, null, u, 20, o);
-        if (u.alive) { u.ky = 13.3; u.y += 0.1; u.state = ST.FLY; u.stateT = 0; u.stateDur = 99; u.dvx = 0; u.dvz = 0; }
+        if (u.alive) { u.ky = 13.3; u.y += 0.1; u.state = ST.FLY; u.stateT = 0; u.stateDur = 99; u.dvx = 0; u.dvz = 0; setAnim(u, 'flail', 1); }
       }
     }
   }
