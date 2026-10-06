@@ -6,7 +6,7 @@ export const EVENTS = {
   unit_hit: ['src', 'dst', 'srcDef', 'dstDef', 'dmg', 'type', 'crit', 'backstab', 'charge', 'proj', 'aoe', 'x', 'y', 'z'],
   unit_block: ['src', 'dst', 'x', 'y', 'z', 'kind'],
   unit_kill: ['src', 'dst', 'srcDef', 'dstDef', 'srcTeam', 'dstTeam', 'friendly', 'byPlayer', 'revived', 'cause', 'x', 'y', 'z'],
-  unit_heal: ['id', 'amount'], unit_stagger: ['id'], unit_rout: ['id', 'team'], unit_rally: ['id'], unit_revive: ['id'], unit_convert: ['id', 'team'],
+  unit_heal: ['id', 'amount'], unit_stagger: ['id'], unit_rout: ['id', 'team'], unit_rally: ['id', 'team'], unit_revive: ['id'], unit_convert: ['id', 'team'],
   ability_cast: ['id', 'ability', 'x', 'z', 'team'], ability_channel_start: ['id', 'ability', 'duration'], ability_channel_end: ['id', 'ability', 'duration'],
   telegraph: ['kind', 'x', 'z', 'r', 't', 'h', 'a', 'team'],
   status_apply: ['id', 'status'],
@@ -17,7 +17,7 @@ export const EVENTS = {
   lead_change: ['team', 'ratio'], big_swing: ['team', 'ratio', 'flank', 'cluster'], stalemate_warning: ['t'], intervention: ['kind'],
   objective_update: ['id', 'state', 'progress'], wave_spawn: ['n', 'count'], wave_intermission: ['n', 'budget', 'name', 'boss'], god_power: ['kind', 'x', 'z', 'team'],
   chicken_tantrum: ['id', 'x', 'z'], philosopher_monologue: ['id', 'x', 'z'], trojan_reveal: ['id', 'x', 'z', 'count'], stone_gaze: ['src', 'count'], throne_sit: ['id', 'x', 'z', 'sitting'],
-  friendly_fire: ['src', 'dst', 'dmg'], trample: ['id', 'count'], charge_hit: ['id', 'dst', 'mul'], unit_brace: ['id', 'dst'],
+  friendly_fire: ['src', 'dst', 'dmg'], trample: ['id', 'count', 'team'], charge_hit: ['id', 'dst', 'mul'], unit_brace: ['id', 'dst'],
   cyclops_misaim: ['id'], catapult_misfire: ['id'], unit_corpse_done: ['id', 'def', 'team', 'x', 'y', 'z'], bark: ['id', 'text'],
   fire_started: ['x', 'z', 'r'], crowd_roar: ['x', 'z'], hazard_trigger: ['kind', 'x', 'z', 'r'], possess: ['id', 'on'],
 };

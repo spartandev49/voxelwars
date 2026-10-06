@@ -207,7 +207,7 @@ export class World {
     secs *= this.weather.burnMul;
     const was = u.se[SE.BURN] > 0;
     if (secs > u.se[SE.BURN]) u.se[SE.BURN] = secs;
-    if (!was && u.se[SE.BURN] > 0) { const e = this.P.status_apply; e.id = u.id; e.status = 'burn'; this.emit('status_apply', e); }
+    if (!was && u.se[SE.BURN] > 0) { const e = this.P.status_apply; e.id = u.id; e.status = 'burn'; this.emit('status_apply', e); this.bark(u, 'status:burn'); }
     this.abilityHook('onBurn', u);
   }
   addEffect(kind, x, z, r, t, dps, team, src) {
@@ -377,16 +377,24 @@ export class World {
   }
 
   /** Speech-bubble line for an ability moment: UnitDef.text[key] (HUMOR) or the default in content/sim_text.js. Rate limited (global 1.2 s, per unit 6 s; heroes/bosses bypass the global limit). */
-  bark(u, key) {
+  /**
+   * Speech bubble (`bark` event). Lines: the unit's own text (`def.text[key]`: last words, taunts, engage ... or a custom soldier's), then the class list
+   * (`SIM_BARKS['rout:cavalry']`), then the generic one. Deterministic and RNG-free: the line is picked from (tickN, id), so barking never shifts the sim's random stream.
+   * Rate limits: 6 s per unit, 1.2 s global (heroes, monsters and `force` bypass the global one).
+   */
+  bark(u, key, force) {
     if (u.bark > 0) return false;
-    const big = u.def.role === 'hero' || u.def.role === 'monster';
+    const big = force || u.def.role === 'hero' || u.def.role === 'monster';
     if (!big && this.time - this._lastBark < 1.2) return false;
-    const lines = (u.def.text && u.def.text[key]) || SIM_BARKS[key];
+    const t = u.def.text;
+    const lines = (t && t[key]) || SIM_BARKS[key + ':' + u.def.role] || SIM_BARKS[key];
     if (!lines || !lines.length) return false;
     this._lastBark = this.time; u.bark = 6;
-    const e = this.P.bark; e.id = u.id; e.text = lines[(this.rng.next() * lines.length) | 0]; this.emit('bark', e);
+    const e = this.P.bark; e.id = u.id; e.text = lines[(this.tickN * 17 + u.id * 5) % lines.length]; this.emit('bark', e);
     return true;
   }
+  /** Deterministic percentage roll (no RNG): true for `pct` of (tick, id) pairs. */
+  barkRoll(u, pct) { return (this.tickN * 31 + u.id) % 100 < pct; }
 
   // ------------------------------------------------------------------ inputs (tick-stamped => deterministic)
   /** Queue a player input to be applied at the START of tick `tick` (use world.tickN + 1 for 'next tick'). */
@@ -698,7 +706,7 @@ export class World {
     const h = this.acquireHit(); h.type = 'blunt'; h.kb = 1; h.noBlock = true; h.noCrit = true; h.aoe = true; h.cause = 'trample'; h.fixed = true; h.at(big.x, big.z);
     applyDamage(this, big, small, G.trampleDps * dt, h);
     this.releaseHit();
-    if (((this.tickN + big.id) & 7) === 0) { const e = this.P.trample; e.id = big.id; e.count = 1; this.emit('trample', e); }
+    if (((this.tickN + big.id) & 7) === 0) { const e = this.P.trample; e.id = big.id; e.count = 1; e.team = small.team; this.emit('trample', e); }
   }
 
   // ------------------------------------------------------------------ effects / props / morale / end
@@ -753,9 +761,10 @@ export class World {
       if (u.state !== ST.ROUT && u.morale <= G.routThreshold && !u.def._ai.fearless && u.state !== ST.DOWN && u.state !== ST.SIT && u.state !== ST.CAST) {
         u.state = ST.ROUT; u.routT = 0; u.target = null; u.stateT = 0; if (u.claim) { if (u.claim.claims > 0) u.claim.claims--; u.claim = null; }
         const e = this.P.unit_rout; e.id = u.id; e.team = u.team; this.emit('unit_rout', e);
+        if (this.barkRoll(u, 25)) this.bark(u, 'rout');
       } else if (u.state === ST.ROUT) {
         u.routT += dt;
-        if (u.morale > G.rallyThreshold && u.routT > G.rallyHold) { u.state = ST.IDLE; const e = this.P.unit_rally; e.id = u.id; this.emit('unit_rally', e); }
+        if (u.morale > G.rallyThreshold && u.routT > G.rallyHold) { u.state = ST.IDLE; const e = this.P.unit_rally; e.id = u.id; e.team = u.team; this.emit('unit_rally', e); }
       }
     }
   }
@@ -872,7 +881,8 @@ export class World {
     for (const u of this.units) if (u.alive && u.team < 2) pd[u.team][u.def.id] = (pd[u.team][u.def.id] || 0) + 1;
     e.perDef = pd;
     this.emit('battle_end', e);
-    for (const u of this.units) if (u.alive) { u.dvx = 0; u.dvz = 0; if (winner >= 0 && u.team === winner && u.state !== ST.DOWN) { u.state = ST.CHEER; setAnim(u, 'cheer', 1); } }
+    let cheers = 0;
+    for (const u of this.units) if (u.alive) { u.dvx = 0; u.dvz = 0; if (winner >= 0 && u.team === winner && u.state !== ST.DOWN) { u.state = ST.CHEER; setAnim(u, 'cheer', 1); if (u.id % 9 === 0 && cheers < 4) { cheers++; this.bark(u, 'cheer', true); } } }
   }
   /** Run n ticks (tests / fast-forward). */
   step(n = 1) { for (let i = 0; i < n; i++) this.tick(); }

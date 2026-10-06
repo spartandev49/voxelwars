@@ -63,7 +63,10 @@ export function applyStatus(w, u, slot, secs) {
   if (!u.alive || secs <= 0) return false;
   const was = u.se[slot] > 0;
   if (secs > u.se[slot]) u.se[slot] = secs;
-  if (!was) { const e = w.P.status_apply; e.id = u.id; e.status = SE_NAMES[slot]; w.emit('status_apply', e); }
+  if (!was) {
+    const e = w.P.status_apply; e.id = u.id; e.status = SE_NAMES[slot]; w.emit('status_apply', e);
+    if (slot === SE.CONFUSE || slot === SE.SLEEP || slot === SE.TIPSY || slot === SE.STONE || slot === SE.PANIC) w.bark(u, 'status:' + SE_NAMES[slot]);
+  }
   return true;
 }
 
@@ -157,6 +160,9 @@ export function applyDamage(w, src, dst, base, o) {
     w.emit('unit_hit', p);
     if (src && src.team === dst.team && src !== dst) { const f = w.P.friendly_fire; f.src = src.id; f.dst = dst.id; f.dmg = fin; w.emit('friendly_fire', f); }
   }
+  // speech bubbles (deterministic rolls, no RNG): a unit's first blow, and the first time it falls below the low-hp line
+  if (src && !src.barkedEngage && src !== dst && src.team !== dst.team) { src.barkedEngage = true; if (w.barkRoll(src, 5)) w.bark(src, 'engage'); }
+  if (!dst.barkedHurt && dst.hp > 0 && dst.hp < dst.hpMax * G.moraleLowHp) { dst.barkedHurt = true; if (w.barkRoll(dst, 12)) w.bark(dst, 'hurt'); }
   // ability hooks (before death so hooks see the state; killUnit runs onLethal)
   if (src && src.alive) w.abilityHook('onHitDealt', src, dst, fin, o);
   if (dst.hp <= 0) killUnit(w, dst, src, o.cause || (o.proj ? 'ranged' : o.aoe ? 'aoe' : type === 'fire' ? 'fire' : type === 'magic' ? 'magic' : 'melee'), o);
@@ -213,6 +219,7 @@ export function killUnit(w, u, src, cause, o) {
   p.byPlayer = !!(src && src.controlled); p.revived = !!u.revived;
   p.x = u.x; p.y = u.y; p.z = u.z;
   w.emit('unit_kill', p);
+  if (u.def.role === 'hero' || u.def.role === 'monster' || w.barkRoll(u, 6)) w.bark(u, 'deaths');
   w.moraleShock(u);
   w.abilityHook('onKilled', u, src, cause);
   if (src && src.alive) w.abilityHook('onKill', src, u, cause);

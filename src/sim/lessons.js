@@ -44,14 +44,14 @@ export function generateLessons(log, ctx = {}) {
   if (bracesWin >= 2) add('brace_win', 30 + bracesWin * 4, { n: bracesWin });
   if (bracesLoss >= 2) add('brace_loss', 40 + bracesLoss * 5, { n: bracesLoss });
   // ---- army low / flank folds / heroes / routs
-  for (const e of ev) if (e.type === 'army_low' && e.p.team === team) add('army_low', 45 + (won ? -30 : 15), { t: fmtT(e.t) });
+  for (const e of ev) if (e.type === 'army_low' && e.p.team === team) add('army_low', 45 + (won ? -30 : 15), { t: fmtT(e.t), pct: Math.round((e.p.frac || 0) * 100) });
   for (const e of ev) if (e.type === 'big_swing' && e.p.team !== team && e.p.flank && e.p.flank !== 'center') { add('flank_fold', 50 + Math.abs(Math.log(e.p.ratio || 1)) * 30, { flank: e.p.flank, t: fmtT(e.t) }); break; }
   for (const e of ev) if (e.type === 'hero_down' && e.p.team === team) { add('hero_down', 38, { def: nm(defs, e.p.def), t: fmtT(e.t) }); break; }
   let routs = 0; for (const e of ev) if (e.type === 'unit_rout' && e.p.team === team) routs++;
   if (routs >= 4) add('routs', 25 + Math.min(40, routs * 2), { n: routs });
   const stale = ev.find((x) => x.type === 'stalemate_warning');
   if (stale) add('stalemate', 45, { n: Math.round(stale.p.t || 12) });
-  let tramples = 0; for (const e of ev) if (e.type === 'trample' && teamOf.get(e.p.id) !== team) tramples += e.p.count || 1;
+  let tramples = 0; for (const e of ev) if (e.type === 'trample' && (e.p.team !== undefined ? e.p.team === team : teamOf.get(e.p.id) !== team)) tramples += e.p.count || 1;      // `team` = the victim's side (a scared elephant also flattens its own)
   if (tramples >= 4) add('trample', 35 + Math.min(30, tramples * 2), { n: tramples });
   // ---- damage split (ranged vs melee) of the player's side
   let rd = 0, md = 0;
@@ -68,9 +68,10 @@ export function generateLessons(log, ctx = {}) {
   cand.sort((a, b) => b.score - a.score || (a.id < b.id ? -1 : 1));
   const picked = [], seen = new Set();
   for (const c of cand) { if (seen.has(c.id)) continue; seen.add(c.id); picked.push(c); if (picked.length === 3) break; }
-  // pad with generic lessons so the screen always has three
-  const pads = won ? ['melee_win', 'blitz', 'ranged_win', 'slog'] : ['army_low', 'composition', 'routs', 'slog'];
-  for (const id of pads) { if (picked.length >= 3) break; if (seen.has(id)) continue; seen.add(id); picked.push({ id, score: 0, vars: { n: 0, t: fmtT(total), pct: 0, role: 'infantry', flank: 'center', def: 'hero' } }); }
+  // pad with lessons that are true after any battle (slot-free except {t}); a draw never says "You lost"
+  const draw = !!end && end.p.winner === -1;
+  const pads = draw ? ['pad_draw_1', 'pad_draw_2', 'pad_draw_3'] : won ? ['pad_win_1', 'pad_win_2', 'pad_win_3'] : ['pad_loss_1', 'pad_loss_2', 'pad_loss_3'];
+  for (const id of pads) { if (picked.length >= 3) break; if (seen.has(id)) continue; seen.add(id); picked.push({ id, score: 0, vars: { t: fmtT(total) } }); }
   const rng = ctx.rng, pick = (arr, k) => arr[(rng ? Math.floor(rng.next() * arr.length) : k % arr.length)];
   return picked.map((c, i) => {
     const T = LESSON_TEXT[c.id];

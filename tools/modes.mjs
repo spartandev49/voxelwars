@@ -32,7 +32,7 @@ await page.route('**/*', (route) => {
 const shot = (n) => page.screenshot({ path: path.join(out, n + '.png') });
 const state = () => page.evaluate(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current(), tick: window.__vw.game.world ? window.__vw.game.world.tickN : -1, alive: window.__vw.game.world ? [window.__vw.game.world.stats[0].alive, window.__vw.game.world.stats[1].alive] : null }));
 let fail = '';
-const ONLY = arg('only', 'campaign,puzzle,survival,daily,nav').split(',');
+const ONLY = arg('only', 'campaign,puzzle,survival,daily,nav,camera').split(',');
 const ev = (fn, a) => page.evaluate(fn, a);
 // run the sim in small chunks until the predicate holds (the headless browser is slow: world.step is the same code the frame loop runs)
 const verbose = process.argv.includes('--verbose');
@@ -150,6 +150,20 @@ try {
     await ev(() => window.__vw.goto('title')); await page.waitForTimeout(2500);
     const t3 = await ev(() => ({ s: window.__vw.game.state, scr: window.__vw.app.router.current() })); log('title: ' + JSON.stringify(t3));
     if (t3.s !== 'diorama' && t3.s !== 'idle') throw new Error('title shows a leftover world: ' + t3.s);
+  }
+
+  if (ONLY.includes('camera')) {
+    log('--- camera: the battle view re-frames as the armies close, and stops once the player takes the camera');
+    await ev(async () => { const v = window.__vw; v.goto('quick'); await v.quick({ rules: { budget: 1800 } }); v.game.setSpeed(4); v.fight(); });
+    const samples = [];
+    for (let i = 0; i < 14; i++) { await page.waitForTimeout(4000); samples.push(await ev(() => { const g = window.__vw.game; return { t: Math.round(g.world.time), s: g.state, dist: Math.round(g.rig.dist * 10) / 10, touched: g.rig.userTouched }; })); }
+    log('samples: ' + samples.map((x) => x.t + 's:' + x.dist).join('  '));
+    await shot('cam1_mid_battle');
+    const first = samples.find((x) => x.s === 'running') || samples[0], last = samples[samples.length - 1];
+    if (!(last.dist <= first.dist + 0.5)) throw new Error('the camera did not close in as the armies met: ' + JSON.stringify([first, last]));
+    await ev(() => { const g = window.__vw.game; g.rig.zoom(1.5); });
+    const d0 = await ev(() => window.__vw.game.rig.dist); await page.waitForTimeout(6000); const d1 = await ev(() => window.__vw.game.rig.dist);
+    log('after the player zoomed out: ' + d0 + ' -> ' + d1); if (Math.abs(d1 - d0) > 0.5) throw new Error('auto-frame fought the player: ' + d0 + ' -> ' + d1);
   }
 
   if (ONLY.includes('daily')) {

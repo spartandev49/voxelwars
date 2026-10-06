@@ -56,6 +56,6 @@ export class PowerTracker {
     // left of a unit facing (fx,fz) is (fz,-fx)  (spec §1: forward=(sin h,cos h), left=(cos h,-sin h))
     const lat = (cl.x - mc.x) * fz + (cl.z - mc.z) * -fx;
     let ext = 6; for (const u of w.units) if (u.alive && u.team === team) { const l = Math.abs((u.x - mc.x) * fz - (u.z - mc.z) * fx); if (l > ext) ext = l; }
-    return lat > ext * 0.25 ? 'left' : lat < -ext * 0.25 ? 'right' : 'center';
+    return lat > ext * 0.18 ? 'left' : lat < -ext * 0.18 ? 'right' : 'center';
   }
 }
