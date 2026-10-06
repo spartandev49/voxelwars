@@ -51,7 +51,7 @@ try {
     const hasResults = await page.evaluate(() => !!document.querySelector('.vw-screen[data-screen="results"]'));
     if (!hasResults) fail = 'results overlay did not appear';
     else {
-      await page.getByText(/rematch|again/i).first().click().catch(() => { fail = 'no rematch button'; }); await page.waitForTimeout(2500); st = await state(); log('after rematch: ' + JSON.stringify(st));
+      await page.locator('#res-rematch').click({ timeout: 20000 }).catch(() => { fail = 'no rematch button'; });          // by id: a text match found jokes that contain "again" await page.waitForTimeout(2500); st = await state(); log('after rematch: ' + JSON.stringify(st));
       if (!fail && !['countdown', 'running', 'placement'].includes(st.s)) fail = 'rematch did not restart the battle: ' + st.s;
       await shot('05_rematch');
     }
