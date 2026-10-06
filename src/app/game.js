@@ -16,6 +16,7 @@ import { formationOffsets, placeOffsets } from '../sim/formations.js';
 import { WorldLabels } from '../render/labels.js';
 import { MinimapFeed } from '../render/minimap.js';
 import { MarkerLayer, ZoneLayer } from '../render/markers.js';
+import { WeatherLayer } from '../render/weather.js';
 import { UndoStack } from '../core/undo.js';
 import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
@@ -55,6 +56,7 @@ export class Game {
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
     this.fx = new CubeFX(this.engine.scene, null, 24000);
     this.markers = new MarkerLayer(this.engine.scene);                    // mission zones: the hill to hold, the far bank
+    this.weather = new WeatherLayer(this.engine.scene);                   // rain, snow, storm and sand cubes around the camera (capped by the quality tier)
     this.zoneLayer = new ZoneLayer(this.engine.scene);                    // the deployment zones while the player places soldiers
     const A = ANIMATOR && ANIMATOR.Animator; const animator = A ? (typeof A === 'function' ? new A() : A) : new TempAnimator();
     this.animator = animator;
@@ -82,7 +84,8 @@ export class Game {
   on(ev, fn) { return this.bus.on('game:' + ev, fn); }
   emit(ev, p) { if (this.isDiorama) return; this.bus.emit('game:' + ev, p || {}); }
   _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 36, marble: 48, olympian: 76 }[this.tier] || 56; this.view.nearBudget = { potato: 40, papyrus: 70, marble: 110, olympian: 260 }[this.tier] || 140; }
-  setTier(t) { this.tier = t; this._applyTier(); if (this.props && this.props.setQuality) this.props.setQuality(t); }
+  _applyWeather() { const w = this.world; if (w && !this.isDiorama) this.weather.set(w.arena.env.weather, this.engine.q.weather, w.arena.env.wind); else this.weather.clear(); }
+  setTier(t) { this.tier = t; this._applyTier(); if (this.world) this._applyWeather(); if (this.props && this.props.setQuality) this.props.setQuality(t); }
 
   // ------------------------------------------------------------------ setup / lifecycle
   newSetup(kind = 'quick', preset = {}) {
@@ -123,7 +126,7 @@ export class Game {
     if (mode.m) { this.run = this.content.campaignApi.setup(w, mode.m); this._freeCost = w.stats[0].startCost; }     // the enemy army, the free VIP, the script and the star tracker
     this.terrain.setArena(w.arena);
     if (this.props) { this.props.setArena ? this.props.setArena(w.arena, w.props) : null; }
-    this.fx.setArena(w.arena); this.fx.clear(); this.markers.set(w.arena);
+    this.fx.setArena(w.arena); this.fx.clear(); this.markers.set(w.arena); this._applyWeather();
     const env = this.engine.setEnvironment(w.arena.env, w.arena); this.terrain.setFog(env.color, env.near, env.far);
     this.engine.setEnvironment(w.arena.env, w.arena);
     this.view.gore = setup.rules.gore || 'red'; this.view.corpseMode = setup.rules.corpses || 'stay';
@@ -596,7 +599,7 @@ export class Game {
       this.rig.update(dt, this.alpha);
       this.view.update(this.alpha, dt, this.engine.camera);
       this.fx.update(rdt);
-      this.markers.update(this.clock);
+      this.markers.update(this.clock); this.weather.update(this.clock, this.rig.sx, this.rig.sy, this.rig.sz);
       this.zoneLayer.visible = this.state === 'placement' && !this.isDiorama; this.zoneLayer.update(this.clock);
       if ((this.state === 'running' || this.state === 'countdown') && !this.paused) this._autoFrame(dt);
       if (this._warm && (this.state === 'placement' || this.state === 'countdown') && this._warm.step(5)) this._warm = null;
@@ -705,7 +708,7 @@ export class Game {
     if (this.audio && this.audio.detach) { try { this.audio.detach(); } catch (e) { /* ignore */ } }
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
-    this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.zoneLayer.clear(); this.ghost.visible = false; this.records.length = 0;
+    this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.zoneLayer.clear(); this.weather.clear(); this.ghost.visible = false; this.records.length = 0;
     this.run = null; this._inter = null; this._warm = null;
   }
 }
