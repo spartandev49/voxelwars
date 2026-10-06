@@ -5,3 +5,4 @@ node_modules/
 assets/masters/
 tools/pylib/
 __pycache__/
+dist/
