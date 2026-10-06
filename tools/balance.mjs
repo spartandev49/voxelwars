@@ -33,7 +33,8 @@ async function jobsModule() {
   const ABI = await import('../src/content/era_ancient/stats.js');
   const D = await import('../src/sim/defs.js');
   const SC = await import('./lib/scale.mjs');
-  return { H, G, S, P, R, GEN, ST, ABI, D, SC };
+  const DC = await import('../tests/sim/design_costs.mjs');
+  return { H, G, S, P, R, GEN, ST, ABI, D, SC, DC };
 }
 let M = null, BASE = null;
 
@@ -338,7 +339,7 @@ async function sectionTune(pool) {
     for (const x of rows) {
       const target = BOSS(defs[x.id]) ? 0.58 : 0.5;
       const lm = Math.log(x.m) + 0.85 * (target - x.f) * 1.5;
-      mult[x.id] = Math.min(2.4, Math.max(0.42, Math.exp(lm)));
+      mult[x.id] = Math.min(1.5, Math.max(0.67, Math.exp(lm)));
     }
     const data0 = (() => { try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch (e) { return {}; } })();
     data0.tune = { mult, history, budget }; fs.writeFileSync(DATA_FILE, JSON.stringify(data0));
@@ -538,9 +539,18 @@ function analysePairs(d) {
 
 function table(head, rows) { return ['| ' + head.join(' | ') + ' |', '|' + head.map(() => '---').join('|') + '|'].concat(rows.map((r) => '| ' + r.join(' | ') + ' |')).join('\n'); }
 
+function costRows() {
+  const defs = M.H.DEFS;
+  return Object.keys(defs).sort().map((id) => { const d = defs[id], design = M.DC.DESIGN_COSTS[id], f = M.S.costFormula(d); return { id, role: d.role, cost: d.cost, design, formula: f, drift: d.cost / design - 1, resid: f / d.cost - 1 }; });
+}
 function verdicts(data) {
   const V = [];
   const add = (id, pass, text) => V.push({ id, pass, text });
+  if (M && M.DC && !data.__skipU7) {
+    const rows = costRows(), worstDrift = rows.reduce((a, r) => (Math.abs(r.drift) > Math.abs(a.drift) ? r : a), rows[0]), worstRes = rows.reduce((a, r) => (Math.abs(r.resid) > Math.abs(a.resid) ? r : a), rows[0]);
+    const hop = M.S.costFormula(M.H.DEFS.hoplite);
+    add('U7', Math.abs(worstDrift.drift) <= 0.15 + 1e-9 && Math.abs(hop - 100) <= 5, `shipped costs vs the design table: worst drift ${worstDrift.id} ${pct(worstDrift.drift)} (limit 15%); formula(hoplite) = ${hop}; worst formula residual ${worstRes.id} ${pct(worstRes.resid)}`);
+  }
   if (data.pairs) {
     const rows = analysePairs(data.pairs); const q = data.pairs.quick ? ' (quick)' : '';
     const over = rows.filter((r) => r.field > 0.62 && !r.boss);
@@ -614,6 +624,17 @@ function renderReport(data) {
   L.push('');
   L.push(table(['Criterion', 'Result', 'Evidence'], V.map((v) => [v.id, v.pass ? 'PASS' : 'FAIL', v.text.replace(/\|/g, '/')])));
   L.push('');
+  if (M && M.DC) {
+    const rows = costRows();
+    L.push('## Costs (U7)');
+    L.push('');
+    L.push('Shipped cost vs the design table (docs/spec/units.md, must stay within 15%) and vs the fitted cost formula (a guide: `costFormula(def)`, hoplite = 100).');
+    L.push('');
+    L.push(table(['unit', 'role', 'design', 'shipped', 'drift', 'formula', 'formula/shipped'], rows.filter((r) => Math.abs(r.drift) > 0.001 || Math.abs(r.resid) > 0.2).map((r) => [r.id, r.role, r.design, r.cost, (r.drift >= 0 ? '+' : '') + pct(r.drift, 0), r.formula, (r.resid >= 0 ? '+' : '') + pct(r.resid, 0)])));
+    L.push('');
+    L.push('(Only units that moved from the design cost or whose formula residual exceeds 20% are listed.)');
+    L.push('');
+  }
   if (data.pairs) {
     const rows = analysePairs(data.pairs);
     L.push('## Equal-cost mass battles (U5)');
@@ -667,6 +688,13 @@ function renderReport(data) {
     L.push(table(['setup', 'n', 'len med/p10/p90 s', 'lead change>=1', 'steamroll>80%', 'close<40%', 'dead air>=20s', 'gag', 'kills', 'endings'], Object.keys(data.fun.setups).map((k) => { const x = data.fun.setups[k]; return [x.label, x.n, `${x.lenMed.toFixed(0)}/${x.lenP10.toFixed(0)}/${x.lenP90.toFixed(0)}`, pct(x.leadChange, 0), pct(x.steamroll, 0), pct(x.close, 0), pct(x.deadAir, 0), pct(x.gag, 0), x.kills.toFixed(0), JSON.stringify(x.reasons)]; })));
     L.push('');
   }
+  if (data.tune && data.tune.history && data.tune.history.length) {
+    const h = data.tune.history;
+    L.push('## Tuning pass (stats.js)');
+    L.push('');
+    L.push(`An automatic tuner (\`node tools/balance.mjs tune\`) round-robins the ${h[0].rows.length} mass-battle units (melee, ranged, cavalry, beast, swarm, monster, siege) at equal cost (${data.tune.budget} drachmae, both orientations, new seeds every round) and nudges a per-unit power multiplier (hp and damage by its square root) toward a 50% field win rate (58% for bosses, which are not judged against low-tier units). Spread = rms of (field win rate - 50%) in percentage points, the measurement noise floor is about 8: ${h.map((x) => 'round ' + x.round + ' ' + (x.spread * 100).toFixed(1)).join(', ')}. Its output was applied to \`stats.js\`, combined with cost nudges within the 15% band and three mechanism fixes (Trojan stowaways arrive at 40% hp, goat knockback 12 -> 6 with a 9 s dash, gladiator/berserker knockback trimmed to keep S25).`);
+    L.push('');
+  }
   if (data.diff) {
     L.push('## Difficulty tiers (S21)');
     L.push('');
@@ -716,13 +744,13 @@ async function main() {
     const t = Date.now();
     data[s] = await runners[s](pool); data[s].quick = QUICK; data[s].seconds = +((Date.now() - t) / 1000).toFixed(0);
     console.log(`section ${s} done in ${data[s].seconds}s`);
-    const vs = verdicts({ [s]: data[s] }); for (const v of vs) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
+    const vs = verdicts({ [s]: data[s], __skipU7: true }); for (const v of vs) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
     fs.writeFileSync(DATA_FILE, JSON.stringify(data));
   }
   await pool.stop();
   if (sections.includes('perf')) {                                // CPU-time perf runs alone, after the workers are gone
     data.perf = await sectionPerf(); data.perf.quick = QUICK;
-    for (const v of verdicts({ perf: data.perf })) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
+    for (const v of verdicts({ perf: data.perf, __skipU7: true })) console.log(`  ${v.pass ? 'PASS' : 'FAIL'} ${v.id}: ${v.text}`);
   }
   data.meta = { updated: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC' };
   fs.writeFileSync(DATA_FILE, JSON.stringify(data));

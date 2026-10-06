@@ -11,7 +11,7 @@ const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith('--' + n
 const arenas = arg('arenas', 'marathon').split(',');
 const ticks = +arg('ticks', 240);
 const out = path.resolve(root, arg('out', '.cache/look')); fs.mkdirSync(out, { recursive: true });
-const teleArg = arg('tele', ''), seArg = arg('se', ''), lodArg = arg('lod', ''), quality = arg('q', 'marble'), size = arg('size', 'medium'), cam = arg('cam', 'battle');
+const missionArg = arg('mission', ''), teleArg = arg('tele', ''), seArg = arg('se', ''), lodArg = arg('lod', ''), quality = arg('q', 'marble'), size = arg('size', 'medium'), cam = arg('cam', 'battle');
 const pageFile = path.join(root, arg('page', 'dist/voxelwars.html'));
 const CSP = "default-src 'none'; script-src 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://unpkg.com https://cdn.tailwindcss.com https://code.jquery.com; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self' data: blob:; worker-src blob: 'self'; base-uri 'none'; form-action 'none'";
 const wrapPage = (h) => (/^\s*<!doctype/i.test(h) ? h : '<!doctype html><html><head><meta charset="utf8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}</style></head><body>' + h + '</body></html>');
@@ -40,10 +40,10 @@ await page.goto('http://vw.test/index.html');
 await page.waitForSelector('body[data-vw-ready="1"]', { timeout: 60000 });
 await page.evaluate(({ q, lod }) => { const v = window.__vw; v.engine.setQuality(q); v.game.setTier(q); v.app.settings.data.autoScale = false; window.__lodForce = lod === '' ? null : +lod; }, { q: quality, lod: lodArg });
 for (const a of arenas) {
-  const info = await page.evaluate(async ({ a, size, ticks, cam, se, tele }) => {
+  const info = await page.evaluate(async ({ a, size, ticks, cam, se, tele, mission }) => {
     const vw = window.__vw; const g = vw.game;
-    const s = g.newSetup('quick', { arena: { presetId: a, size, seed: 5 }, rules: { budget: +(window.__lookBudget || 3000) } });
-    console.log('begin'); await g.begin(s); console.log('begun'); g.autoFill(0, {}); g.autoFill(1, {}); console.log('filled ' + g.world.units.length); vw.app.router.goto('placement'); console.log('placement');
+    const s = mission ? g.newSetup(mission.startsWith('puzzle:') ? 'puzzle' : 'campaign', { mission: mission.replace('puzzle:', ''), arena: { presetId: a, size, seed: 5 } }) : g.newSetup('quick', { arena: { presetId: a, size, seed: 5 }, rules: { budget: +(window.__lookBudget || 3000) } });
+    console.log('begin'); await g.begin(s); console.log('begun'); g.autoFill(0, {}); if (!mission) g.autoFill(1, {}); console.log('filled ' + g.world.units.length); vw.app.router.goto('placement'); console.log('placement');
     g.fight(); console.log('fight ' + g.state); g.world.countdown = 0; vw.step(1); console.log('stepped');
     vw.step(Math.max(0, ticks));
     g.frameArmies(true); if (window.__lodForce !== null && window.__lodForce !== undefined) g.view.lodDist = window.__lodForce; g.setTier = () => {};
@@ -53,9 +53,9 @@ for (const a of arenas) {
     if (se) { const ids = se.split(',').map(Number); g.world.units.forEach((u, i) => { u.se[ids[i % ids.length]] = 99; }); }
     for (let i = 0; i < 4; i++) vw.step(1);
     return { units: g.world.units.length, tick: g.world.tickN, arena: a, dist: r.dist };
-  }, { a, size, ticks, cam, se: seArg, tele: teleArg });
+  }, { a, size, ticks, cam, se: seArg, tele: teleArg, mission: missionArg });
   await page.waitForTimeout(700);
-  const file = path.join(out, `${a}_${cam}.png`); await page.screenshot({ path: file, timeout: 180000 });
+  const file = path.join(out, `${missionArg ? missionArg.replace(':', '_') : a}_${cam}.png`); await page.screenshot({ path: file, timeout: 180000 });
   console.log('[look]', JSON.stringify(info), '->', path.relative(root, file));
 }
 await browser.close();

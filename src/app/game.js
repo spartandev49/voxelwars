@@ -15,6 +15,7 @@ import { teamColorsLinear } from '../render/style.js';
 import { formationOffsets, placeOffsets } from '../sim/formations.js';
 import { WorldLabels } from '../render/labels.js';
 import { MinimapFeed } from '../render/minimap.js';
+import { MarkerLayer } from '../render/markers.js';
 import { UndoStack } from '../core/undo.js';
 import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
@@ -50,6 +51,7 @@ export class Game {
     this.terrain = new TerrainRenderer(this.engine.scene);
     this.props = PROP_RENDERER && PROP_RENDERER.PropRenderer ? new PROP_RENDERER.PropRenderer(this.engine, null) : null;
     this.fx = new CubeFX(this.engine.scene, null, 24000);
+    this.markers = new MarkerLayer(this.engine.scene);                    // mission zones: the hill to hold, the far bank
     const A = ANIMATOR && ANIMATOR.Animator; const animator = A ? (typeof A === 'function' ? new A() : A) : new TempAnimator();
     this.animator = animator;
     this.view = new BattleView({ engine: this.engine, fx: this.fx, animator, modelFor: (d, u) => this.content.modelFor(d, u), palette: this.settings.get('palette') || 'classic', gore: this.settings.get('gore') || 'red', corpses: this.settings.get('corpses') || 'stay' });
@@ -117,7 +119,7 @@ export class Game {
     if (mode.m) { this.run = this.content.campaignApi.setup(w, mode.m); this._freeCost = w.stats[0].startCost; }     // the enemy army, the free VIP, the script and the star tracker
     this.terrain.setArena(w.arena);
     if (this.props) { this.props.setArena ? this.props.setArena(w.arena, w.props) : null; }
-    this.fx.setArena(w.arena); this.fx.clear();
+    this.fx.setArena(w.arena); this.fx.clear(); this.markers.set(w.arena);
     const env = this.engine.setEnvironment(w.arena.env, w.arena); this.terrain.setFog(env.color, env.near, env.far);
     this.engine.setEnvironment(w.arena.env, w.arena);
     this.view.gore = setup.rules.gore || 'red'; this.view.corpseMode = setup.rules.corpses || 'stay';
@@ -523,6 +525,7 @@ export class Game {
       this.rig.update(dt, this.alpha);
       this.view.update(this.alpha, dt, this.engine.camera);
       this.fx.update(rdt);
+      this.markers.update(this.clock);
       this.terrain.update(dt);
       if (this.props && this.props.update) this.props.update(dt, this.engine.camera);
       this._countsT -= dt;
@@ -612,7 +615,7 @@ export class Game {
     if (this.audio && this.audio.detach) { try { this.audio.detach(); } catch (e) { /* ignore */ } }
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
-    this.terrain.clear(); this.fx.clear(); this.ghost.visible = false; this.records.length = 0;
+    this.terrain.clear(); this.fx.clear(); this.markers.clear(); this.ghost.visible = false; this.records.length = 0;
     this.run = null; this._inter = null;
   }
 }
