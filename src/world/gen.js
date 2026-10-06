@@ -86,8 +86,9 @@ R.thermopylae = (a, rng, noise) => {
   });
   // sea on the south edge visible via water plane at low level
   a.zones = { A: { x: -W * 0.3, z: 0, w: W * 0.2, d: W * 0.18 }, B: { x: W * 0.3, z: 0, w: W * 0.2, d: W * 0.18 } };
-  flattenZones(a, 1, () => 28);
-  line(a, 'wall_stone', -W * 0.05, -W * 0.16, -W * 0.05, W * 0.16, 1.9, { rot: Math.PI / 2 });
+  flattenZones(a, 1, () => 14);
+  line(a, 'wall_stone', -W * 0.05, -W * 0.16, -W * 0.05, -4.2, 1.9, { rot: Math.PI / 2 });
+  line(a, 'wall_stone', -W * 0.05, 4.2, -W * 0.05, W * 0.16, 1.9, { rot: Math.PI / 2 });
   scatter(a, rng, ['rock_small', 'rock_big', 'tree_cypress', 'bush'], 50, { minSlope: 6 });
 };
 
@@ -185,12 +186,12 @@ R.olympus = (a, rng, noise) => {
 R.troy = (a, rng, noise) => {
   a.biome = 'sand'; a.env = { time: 18, weather: 'clear', fog: 0.25, theme: 'greek', wind: 0.35 };
   const W = a.worldSize();
-  fillBase(a, (x, z) => ({ h: 14 + (x > W * 0.12 ? 7 : 0) + noise.fbm(x / 22, z / 22, 3) * 2, m: x > W * 0.12 ? MAT.cobble : (noise.noise(x / 6, z / 6) > 0.3 ? MAT.dirt : MAT.sand) }));
+  fillBase(a, (x, z) => { const gap = Math.abs(z) < 6; const up = gap ? smoothstep(W * 0.1, W * 0.2, x) : (x > W * 0.12 ? 1 : 0); return { h: 14 + up * 7 + noise.fbm(x / 22, z / 22, 3) * 1.2, m: up > 0.5 ? MAT.cobble : (noise.noise(x / 6, z / 6) > 0.3 ? MAT.dirt : MAT.sand) }; });
   a.zones = { A: { x: -W * 0.3, z: 0, w: W * 0.2, d: W * 0.6 }, B: { x: W * 0.3, z: 0, w: W * 0.16, d: W * 0.5 } };
   flattenZones(a, 1, (k) => (k === 'A' ? 14 : 21));
   line(a, 'wall_stone', W * 0.1, -W * 0.33, W * 0.1, -3.6, 1.9, { rot: Math.PI / 2, s: 1.3 });
   line(a, 'wall_stone', W * 0.1, 3.6, W * 0.1, W * 0.33, 1.9, { rot: Math.PI / 2, s: 1.3 });
-  a.props.push({ t: 'tower', x: W * 0.1, z: -W * 0.33, r: 0, s: 1.4, v: 0 }, { t: 'tower', x: W * 0.1, z: W * 0.33, r: 0, s: 1.4, v: 0 }, { t: 'tower', x: W * 0.1, z: -5, r: 0, s: 1.3, v: 0 }, { t: 'tower', x: W * 0.1, z: 5, r: 0, s: 1.3, v: 0 }, { t: 'arch_gate', x: W * 0.1, z: 0, r: Math.PI / 2, s: 1.2, v: 0 });
+  a.props.push({ t: 'tower', x: W * 0.1, z: -W * 0.33, r: 0, s: 1.4, v: 0 }, { t: 'tower', x: W * 0.1, z: W * 0.33, r: 0, s: 1.4, v: 0 }, { t: 'tower', x: W * 0.1, z: -5, r: 0, s: 1.3, v: 0 }, { t: 'tower', x: W * 0.1, z: 5, r: 0, s: 1.3, v: 0 }, { t: 'arch_gate', x: W * 0.1, z: 0, r: Math.PI / 2, s: 1.2, v: 0 }, { t: 'gate_door', x: W * 0.1, z: -2, r: Math.PI / 2, s: 0.9, v: 0 }, { t: 'gate_door', x: W * 0.1, z: 2, r: Math.PI / 2, s: 0.9, v: 0 });
   scatter(a, rng, ['rock_small', 'bush', 'crate', 'torch'], 30);
 };
 
@@ -202,7 +203,7 @@ R.styx = (a, rng, noise) => {
   a.zones = { A: { x: -W * 0.3, z: 0, w: W * 0.2, d: W * 0.6 }, B: { x: W * 0.3, z: 0, w: W * 0.2, d: W * 0.6 } };
   flattenZones(a, 1, () => 16);
   // two bone bridges over the lava
-  for (const bz of [-8, 8]) for (let cx = 0; cx < a.size; cx++) for (let cz = 0; cz < a.size; cz++) { const x = a.worldX(cx), z = a.worldZ(cz); if (Math.abs(z - bz) < 1.6 && Math.abs(x + Math.sin(z / 13) * 6) < 5) { a.setH(cx, cz, 13); a.setM(cx, cz, MAT.planks); } }
+  for (const bz of [-8, 8]) for (let cx = 0; cx < a.size; cx++) for (let cz = 0; cz < a.size; cz++) { const x = a.worldX(cx), z = a.worldZ(cz); const rx = x + Math.sin(z / 13) * 6; if (Math.abs(z - bz) < 1.6 && Math.abs(rx) < 16) { a.setH(cx, cz, 14); if (Math.abs(rx) < 5) a.setM(cx, cz, MAT.planks); } }
   scatter(a, rng, ['bones', 'rock_big', 'torch', 'tree_dead', 'skull_pile'], Math.floor(a.size * 0.5), { avoidWater: true });
   a.hazards.push({ t: 'geyser', x: -W * 0.1, z: -W * 0.2, r: 3 }, { t: 'geyser', x: W * 0.1, z: W * 0.2, r: 3 });
 };

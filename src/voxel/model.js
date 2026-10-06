@@ -31,6 +31,7 @@ export class ModelDef {
       parentIndex: parent ? this.byId[parent].index : -1,
       origin: (o.origin || [0, 0, 0]).map((v) => v * s),
       originVox: (o.origin || [0, 0, 0]).slice(),
+      rest: (o.rest || [0, 0, 0]).slice(),                 // static rest rotation (rx,ry,rz), applied after the animated rotation
       pivot: (o.pivot || [grid.sx / 2, 0, grid.sz / 2]).slice(),
       shadow: o.shadow !== false,
       index: this.parts.length,

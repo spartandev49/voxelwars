@@ -1,0 +1,77 @@
+{
+  "_doc": "Mapping for tools/anim/retarget.mjs + bake.mjs. 'rigs': source bone names per UAL library (role -> glTF node name). 'clips': our clip name -> source clip(s) (arrays are concatenated, e.g. attack + recovery) + flags: loop, locomotion (compute speedRef from foot planting), snap (shift root so the lowest sole of the clip touches y=0), floor (raise-only so no box goes below the ground), attack {hand L|R|auto, tip metres, multi}, drop [[from,to),...] (remove frame ranges), note.",
+  "ourParts": {
+    "body": "chord hip-joint midpoint -> neck, twist about it from the chest bone",
+    "head": "head bone world orientation relative to body",
+    "armUL/armLL/armUR/armLR": "upper arm / forearm segment directions (swing only, ry = 0)",
+    "legUL/legLL/legUR/legLR": "thigh / shin segment directions (swing only, ry = 0)",
+    "root": "pelvis up-axis swing (rootPitch, rootRoll), hip-midpoint offset (root = vertical, rootX, rootZ in leg lengths), optional heading rootYaw"
+  },
+  "settings": { "fps": 30, "bodyTwistGain": 1.0, "bodyTwistClamp": 1.3, "headGain": 1.0 },
+  "rigs": {
+    "ual1": {
+      "detect": "DEF-hips",
+      "bones": {
+        "pelvis": "DEF-hips", "spine1": "DEF-spine.001", "spine2": "DEF-spine.002", "chest": "DEF-spine.003", "neck": "DEF-neck", "head": "DEF-head",
+        "uaL": "DEF-upper_arm.L", "faL": "DEF-forearm.L", "haL": "DEF-hand.L", "midL": "DEF-f_middle.01.L",
+        "uaR": "DEF-upper_arm.R", "faR": "DEF-forearm.R", "haR": "DEF-hand.R", "midR": "DEF-f_middle.01.R",
+        "thL": "DEF-thigh.L", "shL": "DEF-shin.L", "ftL": "DEF-foot.L", "toL": "DEF-toe.L",
+        "thR": "DEF-thigh.R", "shR": "DEF-shin.R", "ftR": "DEF-foot.R", "toR": "DEF-toe.R"
+      }
+    },
+    "ual2": {
+      "detect": "pelvis",
+      "bones": {
+        "pelvis": "pelvis", "spine1": "spine_01", "spine2": "spine_02", "chest": "spine_03", "neck": "neck_01", "head": "Head",
+        "uaL": "upperarm_l", "faL": "lowerarm_l", "haL": "hand_l", "midL": "middle_01_l",
+        "uaR": "upperarm_r", "faR": "lowerarm_r", "haR": "hand_r", "midR": "middle_01_r",
+        "thL": "thigh_l", "shL": "calf_l", "ftL": "foot_l", "toL": "ball_l",
+        "thR": "thigh_r", "shR": "calf_r", "ftR": "foot_r", "toR": "ball_r"
+      }
+    }
+  },
+  "clips": {
+    "idle":           { "src": "Idle_Loop", "loop": true, "snap": true, "note": "relaxed standing idle (UAL1)" },
+    "idle_combat":    { "src": "Sword_Idle", "loop": true, "snap": true, "note": "one-handed sword ready stance (UAL1)" },
+    "walk":           { "src": "Walk_Loop", "loop": true, "locomotion": true, "snap": true },
+    "walk_formal":    { "src": "Walk_Formal_Loop", "loop": true, "locomotion": true, "snap": true, "note": "upright officer walk" },
+    "run":            { "src": "Jog_Fwd_Loop", "loop": true, "locomotion": true, "snap": true },
+    "sprint":         { "src": "Sprint_Loop", "loop": true, "locomotion": true, "snap": true, "note": "also usable as rout / charge" },
+    "crouch":         { "src": "Crouch_Idle_Loop", "loop": true, "snap": true, "note": "crouch / cower / hiding" },
+    "zombie_idle":    { "src": "Zombie_Idle_Loop", "loop": true, "snap": true, "note": "mummy idle (UAL2)" },
+    "zombie_walk":    { "src": "Zombie_Walk_Fwd_Loop", "loop": true, "locomotion": true, "snap": true, "note": "mummy walk (UAL2)" },
+
+    "strike_slash_1": { "src": "Sword_Attack", "attack": { "hand": "R", "tip": 0.9 }, "note": "lunging diagonal slash, starts/ends in idle_combat pose (UAL1)" },
+    "strike_slash_2": { "src": ["Sword_Regular_A", "Sword_Regular_A_Rec"], "attack": { "hand": "R", "tip": 0.9 }, "note": "fast turning slash + slow recovery (UAL2 A + A_Rec)" },
+    "strike_overhead":{ "src": "TreeChopping_Loop", "attack": { "hand": "R", "tip": 0.9 }, "note": "heavy overhead chop; clip starts and ends in a raised-weapon pose (blend-in is the wind-up). UAL2 chop loop, used once" },
+    "strike_thrust":  { "src": "Sword_Dash_RM", "drop": [[19, 33]], "attack": { "hand": "R", "tip": 0.9 }, "note": "lunge thrust, arm extended along the line of the body (UAL2 Sword_Dash with its long hold trimmed, root motion removed)" },
+    "strike_combo":   { "src": "Sword_Regular_Combo", "attack": { "hand": "R", "tip": 0.9, "multi": true }, "note": "three-strike sword combo incl. a full spin (UAL2); hitFrames[]" },
+    "strike_punch_1": { "src": "Punch_Jab", "attack": { "hand": "auto", "tip": 0.1 }, "note": "boxing jab (UAL1)" },
+    "strike_punch_2": { "src": "Punch_Cross", "attack": { "hand": "auto", "tip": 0.1 }, "note": "boxing cross (UAL1)" },
+    "strike_punch_3": { "src": ["Melee_Hook", "Melee_Hook_Rec"], "attack": { "hand": "auto", "tip": 0.1 }, "note": "hook / heavy swing + recovery (UAL2)" },
+    "punch_ready":    { "src": "Punch_Enter", "note": "idle -> boxing stance (UAL1)" },
+    "strike_bash":    { "src": "Shield_OneShot", "attack": { "hand": "L", "tip": 0.1 }, "note": "shield shove (UAL2)" },
+    "shield_dash":    { "src": "Shield_Dash_RM", "attack": { "hand": "L", "tip": 0.1 }, "note": "shield charge, root motion removed (UAL2)" },
+    "throw":          { "src": "OverhandThrow", "attack": { "hand": "R", "tip": 0.1 }, "note": "overhand throw: javelin / francisca / pilum (UAL2)" },
+
+    "block_enter":    { "src": "Sword_Block", "note": "sword guard parry (UAL2)" },
+    "block_hold":     { "src": "Idle_Shield_Loop", "loop": true, "snap": true, "note": "shield raised hold (UAL2)" },
+    "shield_break":   { "src": "Idle_Shield_Break", "note": "recoil when the shield breaks: also a usable stagger (UAL2)" },
+    "hit_front":      { "src": "Hit_Chest", "note": "short flinch (UAL1)" },
+    "hit_head":       { "src": "Hit_Head", "note": "short head flinch (UAL1)" },
+    "knockdown":      { "src": "Hit_Knockback", "floor": true, "note": "thrown backwards onto the ground; starts mid-stumble (UAL2)" },
+    "death_back":     { "src": "Death01", "floor": true, "note": "falls backwards, lies flat (UAL1)" },
+    "getup":          { "src": "LayToIdle", "floor": true, "note": "lying -> standing (UAL2)" },
+    "roll":           { "src": "Roll", "floor": true, "note": "forward dodge roll (UAL1)" },
+
+    "cast":           { "src": ["Spell_Simple_Enter", "Spell_Simple_Shoot", "Spell_Simple_Exit"], "note": "raise hand, cast, lower (UAL1)" },
+    "cast_idle":      { "src": "Spell_Simple_Idle_Loop", "loop": true, "snap": true, "note": "channeling hold (UAL1)" },
+    "point_order":    { "src": "Yes", "loop": true, "snap": true, "note": "left arm points / commands (UAL2 'Yes')" },
+    "talk":           { "src": "Idle_Talking_Loop", "loop": true, "snap": true, "note": "gesticulating while shouting / taunting (UAL1)" },
+    "smug":           { "src": "Idle_FoldArms_Loop", "loop": true, "snap": true, "note": "arms folded idle (UAL2)" },
+    "shake_no":       { "src": "Idle_No_Loop", "loop": true, "snap": true, "note": "head shake / refuse (UAL2)" },
+    "dance":          { "src": "Dance_Loop", "loop": true, "snap": true, "note": "silly dance (UAL1)" },
+    "sit":            { "src": "Sitting_Idle_Loop", "loop": true, "note": "seated idle, hips ~5.3 voxels above the ground (UAL1)" },
+    "sit_enter":      { "src": "Sitting_Enter", "note": "stand -> sit (UAL1)" }
+  }
+}

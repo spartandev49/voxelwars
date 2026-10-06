@@ -1,0 +1,7054 @@
+{
+ "legLenSrcMetres": 0.8297897222595041,
+ "clips": {
+  "idle": {
+   "floorMinYVoxBefore": -0.78,
+   "soleMinYVoxBefore": 0.01,
+   "floorMinYVoxAfter": -0.79,
+   "soleMinYVoxAfter": 0,
+   "frames": 75,
+   "loop": true,
+   "meta": {
+    "durationFrames": 75,
+    "src": "Idle_Loop",
+    "groundShiftVox": -0.01
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.03,
+     "worstAt": "armLL@74",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.03,
+     "worstAt": "armLL@74",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      6,
+      0,
+      0
+     ],
+     "max": [
+      7,
+      0,
+      0
+     ],
+     "maxStepDeg": 0.1,
+     "at": 1
+    },
+    "head": {
+     "min": [
+      9,
+      11,
+      2
+     ],
+     "max": [
+      13,
+      11,
+      3
+     ],
+     "maxStepDeg": 0.4,
+     "at": 66
+    },
+    "armUL": {
+     "min": [
+      11,
+      0,
+      17
+     ],
+     "max": [
+      17,
+      0,
+      18
+     ],
+     "maxStepDeg": 0.6,
+     "at": 6
+    },
+    "armLL": {
+     "min": [
+      -33,
+      0,
+      -2
+     ],
+     "max": [
+      -28,
+      0,
+      -1
+     ],
+     "maxStepDeg": 0.4,
+     "at": 5
+    },
+    "armUR": {
+     "min": [
+      20,
+      0,
+      -18
+     ],
+     "max": [
+      24,
+      0,
+      -15
+     ],
+     "maxStepDeg": 0.4,
+     "at": 8
+    },
+    "armLR": {
+     "min": [
+      -44,
+      0,
+      2
+     ],
+     "max": [
+      -44,
+      0,
+      3
+     ],
+     "maxStepDeg": 0.1,
+     "at": 1
+    },
+    "legUL": {
+     "min": [
+      -19,
+      0,
+      13
+     ],
+     "max": [
+      -13,
+      0,
+      14
+     ],
+     "maxStepDeg": 0.5,
+     "at": 49
+    },
+    "legLL": {
+     "min": [
+      20,
+      0,
+      -5
+     ],
+     "max": [
+      27,
+      0,
+      -4
+     ],
+     "maxStepDeg": 0.5,
+     "at": 28
+    },
+    "legUR": {
+     "min": [
+      9,
+      0,
+      -16
+     ],
+     "max": [
+      13,
+      0,
+      -13
+     ],
+     "maxStepDeg": 0.4,
+     "at": 11
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      10
+     ],
+     "max": [
+      17,
+      0,
+      15
+     ],
+     "maxStepDeg": 0.6,
+     "at": 9
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.081,
+    "loopGap": 0.51,
+    "dirErrDeg": 0.0000017075472925031877
+   }
+  },
+  "idle_combat": {
+   "floorMinYVoxBefore": -1.39,
+   "soleMinYVoxBefore": 0.01,
+   "floorMinYVoxAfter": -1.4,
+   "soleMinYVoxAfter": 0,
+   "frames": 50,
+   "loop": true,
+   "meta": {
+    "durationFrames": 50,
+    "src": "Sword_Idle",
+    "groundShiftVox": -0.01
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@4",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      18,
+      -23,
+      -6
+     ],
+     "max": [
+      19,
+      -22,
+      -6
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "head": {
+     "min": [
+      23,
+      32,
+      2
+     ],
+     "max": [
+      30,
+      33,
+      4
+     ],
+     "maxStepDeg": 0.8,
+     "at": 5
+    },
+    "armUL": {
+     "min": [
+      18,
+      0,
+      38
+     ],
+     "max": [
+      22,
+      0,
+      41
+     ],
+     "maxStepDeg": 0.5,
+     "at": 37
+    },
+    "armLL": {
+     "min": [
+      -47,
+      0,
+      10
+     ],
+     "max": [
+      -47,
+      0,
+      11
+     ],
+     "maxStepDeg": 0.1,
+     "at": 41
+    },
+    "armUR": {
+     "min": [
+      30,
+      0,
+      -34
+     ],
+     "max": [
+      32,
+      0,
+      -34
+     ],
+     "maxStepDeg": 0.3,
+     "at": 1
+    },
+    "armLR": {
+     "min": [
+      -42,
+      0,
+      -16
+     ],
+     "max": [
+      -31,
+      0,
+      -12
+     ],
+     "maxStepDeg": 1.3,
+     "at": 9
+    },
+    "legUL": {
+     "min": [
+      -30,
+      0,
+      17
+     ],
+     "max": [
+      -24,
+      0,
+      21
+     ],
+     "maxStepDeg": 0.6,
+     "at": 44
+    },
+    "legLL": {
+     "min": [
+      62,
+      0,
+      -5
+     ],
+     "max": [
+      70,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.9,
+     "at": 43
+    },
+    "legUR": {
+     "min": [
+      -5,
+      0,
+      -39
+     ],
+     "max": [
+      -1,
+      0,
+      -35
+     ],
+     "maxStepDeg": 0.5,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      59,
+      0,
+      30
+     ],
+     "max": [
+      68,
+      0,
+      32
+     ],
+     "maxStepDeg": 1.1,
+     "at": 19
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.758,
+    "loopGap": 0,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "walk": {
+   "floorMinYVoxBefore": -0.58,
+   "soleMinYVoxBefore": -0.06,
+   "floorMinYVoxAfter": -0.52,
+   "soleMinYVoxAfter": 0,
+   "frames": 40,
+   "loop": true,
+   "meta": {
+    "durationFrames": 40,
+    "src": "Walk_Loop",
+    "groundShiftVox": 0.06,
+    "speedRef": 1.1,
+    "strideVox": 14.7
+   },
+   "footSlide": {
+    "feet": {
+     "L": [
+      {
+       "frames": 20,
+       "dur": 0.67,
+       "groundSpeedVox": 10.6,
+       "slideRmsVox": 0.34,
+       "slideMaxVox": 1.04,
+       "stanceDisp": 7.1
+      }
+     ],
+     "R": [
+      {
+       "frames": 20,
+       "dur": 0.67,
+       "groundSpeedVox": 11.5,
+       "slideRmsVox": 0.36,
+       "slideMaxVox": 1.14,
+       "stanceDisp": 7.7
+      }
+     ]
+    },
+    "speedVoxPerS": 11,
+    "speedUnitsPerS": 1.1,
+    "speedSpreadVox": 0.9,
+    "stridePerCycleVox": 14.7,
+    "cycleSeconds": 1.333,
+    "worstSlideAtSpeedRefVox": 1.14,
+    "stanceMismatchPerStrideVox": 0.3
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLL@30",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLL@30",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      5,
+      -5,
+      0
+     ],
+     "max": [
+      6,
+      6,
+      0
+     ],
+     "maxStepDeg": 0.8,
+     "at": 37
+    },
+    "head": {
+     "min": [
+      8,
+      -5,
+      -4
+     ],
+     "max": [
+      11,
+      4,
+      3
+     ],
+     "maxStepDeg": 0.8,
+     "at": 39
+    },
+    "armUL": {
+     "min": [
+      -12,
+      0,
+      13
+     ],
+     "max": [
+      17,
+      0,
+      21
+     ],
+     "maxStepDeg": 3.3,
+     "at": 27
+    },
+    "armLL": {
+     "min": [
+      -40,
+      0,
+      -10
+     ],
+     "max": [
+      -32,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.8,
+     "at": 33
+    },
+    "armUR": {
+     "min": [
+      -12,
+      0,
+      -21
+     ],
+     "max": [
+      18,
+      0,
+      -13
+     ],
+     "maxStepDeg": 3.4,
+     "at": 7
+    },
+    "armLR": {
+     "min": [
+      -40,
+      0,
+      1
+     ],
+     "max": [
+      -32,
+      0,
+      10
+     ],
+     "maxStepDeg": 0.8,
+     "at": 10
+    },
+    "legUL": {
+     "min": [
+      -48,
+      0,
+      -5
+     ],
+     "max": [
+      15,
+      0,
+      3
+     ],
+     "maxStepDeg": 8.3,
+     "at": 29
+    },
+    "legLL": {
+     "min": [
+      14,
+      0,
+      -1
+     ],
+     "max": [
+      88,
+      0,
+      3
+     ],
+     "maxStepDeg": 12.9,
+     "at": 26
+    },
+    "legUR": {
+     "min": [
+      -47,
+      0,
+      -4
+     ],
+     "max": [
+      26,
+      0,
+      4
+     ],
+     "maxStepDeg": 9.3,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      -3
+     ],
+     "max": [
+      87,
+      0,
+      0
+     ],
+     "maxStepDeg": 15.9,
+     "at": 5
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.085,
+    "loopGap": 0,
+    "dirErrDeg": 0.0000017075472925031877
+   }
+  },
+  "walk_formal": {
+   "floorMinYVoxBefore": -0.58,
+   "soleMinYVoxBefore": -0.06,
+   "floorMinYVoxAfter": -0.52,
+   "soleMinYVoxAfter": 0,
+   "frames": 41,
+   "loop": true,
+   "meta": {
+    "durationFrames": 41,
+    "src": "Walk_Formal_Loop",
+    "groundShiftVox": 0.06,
+    "speedRef": 1.06,
+    "strideVox": 14.5
+   },
+   "footSlide": {
+    "feet": {
+     "L": [
+      {
+       "frames": 22,
+       "dur": 0.73,
+       "groundSpeedVox": 10.4,
+       "slideRmsVox": 0.4,
+       "slideMaxVox": 1.23,
+       "stanceDisp": 7.6
+      }
+     ],
+     "R": [
+      {
+       "frames": 21,
+       "dur": 0.7,
+       "groundSpeedVox": 10.8,
+       "slideRmsVox": 0.33,
+       "slideMaxVox": 1.05,
+       "stanceDisp": 7.6
+      }
+     ]
+    },
+    "speedVoxPerS": 10.6,
+    "speedUnitsPerS": 1.06,
+    "speedSpreadVox": 0.4,
+    "stridePerCycleVox": 14.5,
+    "cycleSeconds": 1.367,
+    "worstSlideAtSpeedRefVox": 1.23,
+    "stanceMismatchPerStrideVox": 0.15
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@25",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@25",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      3,
+      -3,
+      -1
+     ],
+     "max": [
+      5,
+      3,
+      1
+     ],
+     "maxStepDeg": 0.5,
+     "at": 39
+    },
+    "head": {
+     "min": [
+      8,
+      -3,
+      -2
+     ],
+     "max": [
+      10,
+      2,
+      2
+     ],
+     "maxStepDeg": 0.5,
+     "at": 39
+    },
+    "armUL": {
+     "min": [
+      7,
+      0,
+      17
+     ],
+     "max": [
+      10,
+      0,
+      21
+     ],
+     "maxStepDeg": 0.4,
+     "at": 13
+    },
+    "armLL": {
+     "min": [
+      -31,
+      0,
+      -12
+     ],
+     "max": [
+      -22,
+      0,
+      -6
+     ],
+     "maxStepDeg": 0.7,
+     "at": 22
+    },
+    "armUR": {
+     "min": [
+      7,
+      0,
+      -20
+     ],
+     "max": [
+      10,
+      0,
+      -15
+     ],
+     "maxStepDeg": 0.5,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -30,
+      0,
+      6
+     ],
+     "max": [
+      -14,
+      0,
+      9
+     ],
+     "maxStepDeg": 1.3,
+     "at": 40
+    },
+    "legUL": {
+     "min": [
+      -50,
+      0,
+      -4
+     ],
+     "max": [
+      20,
+      0,
+      2
+     ],
+     "maxStepDeg": 8.6,
+     "at": 29
+    },
+    "legLL": {
+     "min": [
+      9,
+      0,
+      0
+     ],
+     "max": [
+      90,
+      0,
+      2
+     ],
+     "maxStepDeg": 14.7,
+     "at": 25
+    },
+    "legUR": {
+     "min": [
+      -49,
+      0,
+      -3
+     ],
+     "max": [
+      26,
+      0,
+      3
+     ],
+     "maxStepDeg": 11.7,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      9,
+      0,
+      -2
+     ],
+     "max": [
+      89,
+      0,
+      0
+     ],
+     "maxStepDeg": 17.3,
+     "at": 6
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.093,
+    "loopGap": 1.2,
+    "dirErrDeg": 0.0000017075472925031877
+   }
+  },
+  "run": {
+   "floorMinYVoxBefore": -0.98,
+   "soleMinYVoxBefore": 0.55,
+   "floorMinYVoxAfter": -1.53,
+   "soleMinYVoxAfter": 0,
+   "frames": 28,
+   "loop": true,
+   "meta": {
+    "durationFrames": 28,
+    "src": "Jog_Fwd_Loop",
+    "groundShiftVox": -0.55,
+    "speedRef": 6.31,
+    "strideVox": 58.9
+   },
+   "footSlide": {
+    "feet": {
+     "L": [
+      {
+       "frames": 6,
+       "dur": 0.2,
+       "groundSpeedVox": 63.1,
+       "slideRmsVox": 0.08,
+       "slideMaxVox": 0.13,
+       "stanceDisp": 12.6
+      }
+     ],
+     "R": [
+      {
+       "frames": 6,
+       "dur": 0.2,
+       "groundSpeedVox": 63.1,
+       "slideRmsVox": 0.08,
+       "slideMaxVox": 0.13,
+       "stanceDisp": 12.6
+      }
+     ]
+    },
+    "speedVoxPerS": 63.1,
+    "speedUnitsPerS": 6.31,
+    "speedSpreadVox": 0,
+    "stridePerCycleVox": 58.9,
+    "cycleSeconds": 0.933,
+    "worstSlideAtSpeedRefVox": 0.13,
+    "stanceMismatchPerStrideVox": 0.01
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.4,
+     "meanDeg": 0.05,
+     "worstAt": "armLL@27",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.4,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@27",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      10,
+      -45,
+      -4
+     ],
+     "max": [
+      16,
+      46,
+      6
+     ],
+     "maxStepDeg": 17.1,
+     "at": 17
+    },
+    "head": {
+     "min": [
+      0,
+      -46,
+      -4
+     ],
+     "max": [
+      5,
+      44,
+      0
+     ],
+     "maxStepDeg": 16.9,
+     "at": 17
+    },
+    "armUL": {
+     "min": [
+      6,
+      0,
+      31
+     ],
+     "max": [
+      44,
+      0,
+      49
+     ],
+     "maxStepDeg": 6.9,
+     "at": 19
+    },
+    "armLL": {
+     "min": [
+      -94,
+      0,
+      5
+     ],
+     "max": [
+      -79,
+      0,
+      22
+     ],
+     "maxStepDeg": 2.9,
+     "at": 25
+    },
+    "armUR": {
+     "min": [
+      8,
+      0,
+      -46
+     ],
+     "max": [
+      48,
+      0,
+      -28
+     ],
+     "maxStepDeg": 8.9,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -94,
+      0,
+      -28
+     ],
+     "max": [
+      -78,
+      0,
+      -11
+     ],
+     "maxStepDeg": 2.9,
+     "at": 10
+    },
+    "legUL": {
+     "min": [
+      -83,
+      0,
+      -5
+     ],
+     "max": [
+      35,
+      0,
+      5
+     ],
+     "maxStepDeg": 36.2,
+     "at": 16
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -5
+     ],
+     "max": [
+      129,
+      0,
+      3
+     ],
+     "maxStepDeg": 60.8,
+     "at": 1
+    },
+    "legUR": {
+     "min": [
+      -85,
+      0,
+      -5
+     ],
+     "max": [
+      35,
+      0,
+      5
+     ],
+     "maxStepDeg": 37.1,
+     "at": 4
+    },
+    "legLR": {
+     "min": [
+      0,
+      0,
+      -3
+     ],
+     "max": [
+      126,
+      0,
+      4
+     ],
+     "maxStepDeg": 59.5,
+     "at": 15
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.095,
+    "loopGap": 0.78,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "sprint": {
+   "floorMinYVoxBefore": -0.84,
+   "soleMinYVoxBefore": 0.22,
+   "floorMinYVoxAfter": -1.06,
+   "soleMinYVoxAfter": 0,
+   "frames": 20,
+   "loop": true,
+   "meta": {
+    "durationFrames": 20,
+    "src": "Sprint_Loop",
+    "groundShiftVox": -0.22,
+    "speedRef": 5.73,
+    "strideVox": 38.2
+   },
+   "footSlide": {
+    "feet": {
+     "L": [
+      {
+       "frames": 6,
+       "dur": 0.2,
+       "groundSpeedVox": 63.7,
+       "slideRmsVox": 1.33,
+       "slideMaxVox": 2.07,
+       "stanceDisp": 12.7
+      }
+     ],
+     "R": [
+      {
+       "frames": 5,
+       "dur": 0.17,
+       "groundSpeedVox": 49.7,
+       "slideRmsVox": 1.17,
+       "slideMaxVox": 1.88,
+       "stanceDisp": 8.3
+      }
+     ]
+    },
+    "speedVoxPerS": 57.3,
+    "speedUnitsPerS": 5.73,
+    "speedSpreadVox": 14,
+    "stridePerCycleVox": 38.2,
+    "cycleSeconds": 0.667,
+    "worstSlideAtSpeedRefVox": 2.07,
+    "stanceMismatchPerStrideVox": 1.3
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.06,
+     "worstAt": "armLL@19",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.05,
+     "worstAt": "armLL@19",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      8,
+      -34,
+      -2
+     ],
+     "max": [
+      13,
+      35,
+      4
+     ],
+     "maxStepDeg": 15.8,
+     "at": 12
+    },
+    "head": {
+     "min": [
+      -14,
+      -33,
+      -3
+     ],
+     "max": [
+      -4,
+      32,
+      1
+     ],
+     "maxStepDeg": 15.1,
+     "at": 13
+    },
+    "armUL": {
+     "min": [
+      -2,
+      0,
+      31
+     ],
+     "max": [
+      38,
+      0,
+      45
+     ],
+     "maxStepDeg": 7.2,
+     "at": 17
+    },
+    "armLL": {
+     "min": [
+      -94,
+      0,
+      -18
+     ],
+     "max": [
+      -79,
+      0,
+      21
+     ],
+     "maxStepDeg": 14.7,
+     "at": 12
+    },
+    "armUR": {
+     "min": [
+      1,
+      0,
+      -42
+     ],
+     "max": [
+      36,
+      0,
+      -29
+     ],
+     "maxStepDeg": 8,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -94,
+      0,
+      -27
+     ],
+     "max": [
+      -79,
+      0,
+      5
+     ],
+     "maxStepDeg": 12.2,
+     "at": 2
+    },
+    "legUL": {
+     "min": [
+      -95,
+      0,
+      -3
+     ],
+     "max": [
+      17,
+      0,
+      5
+     ],
+     "maxStepDeg": 48.9,
+     "at": 4
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -3
+     ],
+     "max": [
+      130,
+      0,
+      5
+     ],
+     "maxStepDeg": 59.1,
+     "at": 4
+    },
+    "legUR": {
+     "min": [
+      -90,
+      0,
+      -6
+     ],
+     "max": [
+      18,
+      0,
+      2
+     ],
+     "maxStepDeg": 54.1,
+     "at": 15
+    },
+    "legLR": {
+     "min": [
+      0,
+      0,
+      -5
+     ],
+     "max": [
+      114,
+      0,
+      4
+     ],
+     "maxStepDeg": 67.9,
+     "at": 15
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.079,
+    "loopGap": 0.77,
+    "dirErrDeg": 0.0000019090959104164224
+   }
+  },
+  "crouch": {
+   "floorMinYVoxBefore": -1.13,
+   "soleMinYVoxBefore": -0.15,
+   "floorMinYVoxAfter": -0.98,
+   "soleMinYVoxAfter": 0,
+   "frames": 88,
+   "loop": true,
+   "meta": {
+    "durationFrames": 88,
+    "src": "Crouch_Idle_Loop",
+    "groundShiftVox": 0.15
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@59",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@59",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      19,
+      14,
+      7
+     ],
+     "max": [
+      21,
+      14,
+      8
+     ],
+     "maxStepDeg": 0.1,
+     "at": 11
+    },
+    "head": {
+     "min": [
+      -2,
+      -4,
+      5
+     ],
+     "max": [
+      4,
+      0,
+      7
+     ],
+     "maxStepDeg": 0.5,
+     "at": 8
+    },
+    "armUL": {
+     "min": [
+      6,
+      0,
+      29
+     ],
+     "max": [
+      12,
+      0,
+      36
+     ],
+     "maxStepDeg": 0.3,
+     "at": 67
+    },
+    "armLL": {
+     "min": [
+      -47,
+      0,
+      -12
+     ],
+     "max": [
+      -46,
+      0,
+      -7
+     ],
+     "maxStepDeg": 0.3,
+     "at": 71
+    },
+    "armUR": {
+     "min": [
+      16,
+      0,
+      -25
+     ],
+     "max": [
+      22,
+      0,
+      -21
+     ],
+     "maxStepDeg": 0.3,
+     "at": 73
+    },
+    "armLR": {
+     "min": [
+      -74,
+      0,
+      -19
+     ],
+     "max": [
+      -74,
+      0,
+      -11
+     ],
+     "maxStepDeg": 0.4,
+     "at": 72
+    },
+    "legUL": {
+     "min": [
+      -123,
+      0,
+      6
+     ],
+     "max": [
+      -119,
+      0,
+      10
+     ],
+     "maxStepDeg": 0.2,
+     "at": 17
+    },
+    "legLL": {
+     "min": [
+      93,
+      0,
+      12
+     ],
+     "max": [
+      95,
+      0,
+      14
+     ],
+     "maxStepDeg": 0.1,
+     "at": 7
+    },
+    "legUR": {
+     "min": [
+      -76,
+      0,
+      -10
+     ],
+     "max": [
+      -75,
+      0,
+      -7
+     ],
+     "maxStepDeg": 0.1,
+     "at": 23
+    },
+    "legLR": {
+     "min": [
+      133,
+      0,
+      -5
+     ],
+     "max": [
+      133,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.1,
+     "at": 18
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.088,
+    "loopGap": 0.02,
+    "dirErrDeg": 0.0000019090959104164224
+   }
+  },
+  "zombie_idle": {
+   "floorMinYVoxBefore": -1.79,
+   "soleMinYVoxBefore": -0.36,
+   "floorMinYVoxAfter": -1.43,
+   "soleMinYVoxAfter": 0,
+   "frames": 40,
+   "loop": true,
+   "meta": {
+    "durationFrames": 40,
+    "src": "Zombie_Idle_Loop",
+    "groundShiftVox": 0.36
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@31",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@31",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      33,
+      -42,
+      -12
+     ],
+     "max": [
+      35,
+      -39,
+      -10
+     ],
+     "maxStepDeg": 0.3,
+     "at": 1
+    },
+    "head": {
+     "min": [
+      10,
+      15,
+      -3
+     ],
+     "max": [
+      12,
+      18,
+      0
+     ],
+     "maxStepDeg": 0.3,
+     "at": 23
+    },
+    "armUL": {
+     "min": [
+      -17,
+      0,
+      16
+     ],
+     "max": [
+      -11,
+      0,
+      24
+     ],
+     "maxStepDeg": 0.7,
+     "at": 9
+    },
+    "armLL": {
+     "min": [
+      -24,
+      0,
+      11
+     ],
+     "max": [
+      -16,
+      0,
+      14
+     ],
+     "maxStepDeg": 0.7,
+     "at": 9
+    },
+    "armUR": {
+     "min": [
+      -18,
+      0,
+      -27
+     ],
+     "max": [
+      -7,
+      0,
+      -24
+     ],
+     "maxStepDeg": 1,
+     "at": 10
+    },
+    "armLR": {
+     "min": [
+      -48,
+      0,
+      28
+     ],
+     "max": [
+      -42,
+      0,
+      29
+     ],
+     "maxStepDeg": 0.5,
+     "at": 30
+    },
+    "legUL": {
+     "min": [
+      -50,
+      0,
+      -2
+     ],
+     "max": [
+      -36,
+      0,
+      1
+     ],
+     "maxStepDeg": 1.1,
+     "at": 11
+    },
+    "legLL": {
+     "min": [
+      37,
+      0,
+      8
+     ],
+     "max": [
+      53,
+      0,
+      11
+     ],
+     "maxStepDeg": 1.3,
+     "at": 11
+    },
+    "legUR": {
+     "min": [
+      -22,
+      0,
+      -20
+     ],
+     "max": [
+      -10,
+      0,
+      -16
+     ],
+     "maxStepDeg": 0.9,
+     "at": 9
+    },
+    "legLR": {
+     "min": [
+      45,
+      0,
+      16
+     ],
+     "max": [
+      64,
+      0,
+      17
+     ],
+     "maxStepDeg": 1.4,
+     "at": 9
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.46,
+    "loopGap": 0.09,
+    "dirErrDeg": 0.0000014787793334710982
+   }
+  },
+  "zombie_walk": {
+   "floorMinYVoxBefore": -1.27,
+   "soleMinYVoxBefore": 0.28,
+   "floorMinYVoxAfter": -1.55,
+   "soleMinYVoxAfter": 0,
+   "frames": 40,
+   "loop": true,
+   "meta": {
+    "durationFrames": 40,
+    "src": "Zombie_Walk_Fwd_Loop",
+    "groundShiftVox": -0.28,
+    "speedRef": 1.03,
+    "strideVox": 13.8
+   },
+   "footSlide": {
+    "feet": {
+     "L": [
+      {
+       "frames": 26,
+       "dur": 0.87,
+       "groundSpeedVox": 10.3,
+       "slideRmsVox": 0.33,
+       "slideMaxVox": 1.14,
+       "stanceDisp": 9
+      }
+     ]
+    },
+    "speedVoxPerS": 10.3,
+    "speedUnitsPerS": 1.03,
+    "speedSpreadVox": 0,
+    "stridePerCycleVox": 13.8,
+    "cycleSeconds": 1.333,
+    "worstSlideAtSpeedRefVox": 1.14,
+    "stanceMismatchPerStrideVox": 0.04
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armUL@12",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@39",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      17,
+      -1,
+      -1
+     ],
+     "max": [
+      22,
+      9,
+      6
+     ],
+     "maxStepDeg": 3,
+     "at": 23
+    },
+    "head": {
+     "min": [
+      17,
+      6,
+      18
+     ],
+     "max": [
+      23,
+      18,
+      22
+     ],
+     "maxStepDeg": 2.5,
+     "at": 23
+    },
+    "armUL": {
+     "min": [
+      -18,
+      0,
+      18
+     ],
+     "max": [
+      13,
+      0,
+      27
+     ],
+     "maxStepDeg": 3.4,
+     "at": 27
+    },
+    "armLL": {
+     "min": [
+      -53,
+      0,
+      1
+     ],
+     "max": [
+      -52,
+      0,
+      11
+     ],
+     "maxStepDeg": 0.9,
+     "at": 28
+    },
+    "armUR": {
+     "min": [
+      5,
+      0,
+      -23
+     ],
+     "max": [
+      41,
+      0,
+      -13
+     ],
+     "maxStepDeg": 3.8,
+     "at": 7
+    },
+    "armLR": {
+     "min": [
+      -53,
+      0,
+      -13
+     ],
+     "max": [
+      -52,
+      0,
+      0
+     ],
+     "maxStepDeg": 4.4,
+     "at": 24
+    },
+    "legUL": {
+     "min": [
+      -70,
+      0,
+      -7
+     ],
+     "max": [
+      -9,
+      0,
+      4
+     ],
+     "maxStepDeg": 8.6,
+     "at": 30
+    },
+    "legLL": {
+     "min": [
+      33,
+      0,
+      6
+     ],
+     "max": [
+      83,
+      0,
+      20
+     ],
+     "maxStepDeg": 13.4,
+     "at": 1
+    },
+    "legUR": {
+     "min": [
+      -64,
+      0,
+      -22
+     ],
+     "max": [
+      -15,
+      0,
+      -11
+     ],
+     "maxStepDeg": 6.4,
+     "at": 10
+    },
+    "legLR": {
+     "min": [
+      41,
+      0,
+      -13
+     ],
+     "max": [
+      70,
+      0,
+      -5
+     ],
+     "maxStepDeg": 9.6,
+     "at": 21
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.092,
+    "loopGap": 0.04,
+    "dirErrDeg": 0.0000014787793334710982
+   }
+  },
+  "strike_slash_1": {
+   "floorMinYVoxBefore": -2.41,
+   "soleMinYVoxBefore": -0.25,
+   "floorMinYVoxAfter": -2.41,
+   "soleMinYVoxAfter": -0.25,
+   "frames": 47,
+   "loop": false,
+   "meta": {
+    "durationFrames": 47,
+    "src": "Sword_Attack",
+    "hand": "R",
+    "hitFrame": 13,
+    "peakSpeedFrame": 12,
+    "recoverFrame": 15,
+    "peakSpeed": 36.66
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 27.5,
+     "meanDeg": 0.39,
+     "worstAt": "armLL@12",
+     "framesOver10deg": 1
+    },
+    "slerp": {
+     "maxDeg": 26,
+     "meanDeg": 0.29,
+     "worstAt": "armLL@12",
+     "framesOver10deg": 1
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      5,
+      -41,
+      -8
+     ],
+     "max": [
+      19,
+      76,
+      17
+     ],
+     "maxStepDeg": 37.9,
+     "at": 12
+    },
+    "head": {
+     "min": [
+      -5,
+      -78,
+      -4
+     ],
+     "max": [
+      38,
+      52,
+      5
+     ],
+     "maxStepDeg": 36.5,
+     "at": 11
+    },
+    "armUL": {
+     "min": [
+      -82,
+      0,
+      38
+     ],
+     "max": [
+      109,
+      0,
+      113
+     ],
+     "maxStepDeg": 93.6,
+     "at": 13
+    },
+    "armLL": {
+     "min": [
+      -73,
+      0,
+      -46
+     ],
+     "max": [
+      32,
+      0,
+      67
+     ],
+     "maxStepDeg": 105.7,
+     "at": 13
+    },
+    "armUR": {
+     "min": [
+      -111,
+      0,
+      -114
+     ],
+     "max": [
+      33,
+      0,
+      -34
+     ],
+     "maxStepDeg": 61.4,
+     "at": 14
+    },
+    "armLR": {
+     "min": [
+      -58,
+      0,
+      -40
+     ],
+     "max": [
+      11,
+      0,
+      10
+     ],
+     "maxStepDeg": 37,
+     "at": 7
+    },
+    "legUL": {
+     "min": [
+      -30,
+      0,
+      4
+     ],
+     "max": [
+      13,
+      0,
+      45
+     ],
+     "maxStepDeg": 19.7,
+     "at": 13
+    },
+    "legLL": {
+     "min": [
+      50,
+      0,
+      -5
+     ],
+     "max": [
+      98,
+      0,
+      30
+     ],
+     "maxStepDeg": 20.8,
+     "at": 13
+    },
+    "legUR": {
+     "min": [
+      -79,
+      0,
+      -41
+     ],
+     "max": [
+      6,
+      0,
+      -6
+     ],
+     "maxStepDeg": 40.6,
+     "at": 10
+    },
+    "legLR": {
+     "min": [
+      50,
+      0,
+      -4
+     ],
+     "max": [
+      104,
+      0,
+      31
+     ],
+     "maxStepDeg": 25.3,
+     "at": 10
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.1,
+    "loopGap": null,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "strike_slash_2": {
+   "floorMinYVoxBefore": -3.12,
+   "soleMinYVoxBefore": -1.05,
+   "floorMinYVoxAfter": -3.12,
+   "soleMinYVoxAfter": -1.05,
+   "frames": 43,
+   "loop": false,
+   "meta": {
+    "durationFrames": 43,
+    "src": "Sword_Regular_A+Sword_Regular_A_Rec",
+    "hand": "R",
+    "hitFrame": 7,
+    "peakSpeedFrame": 7,
+    "recoverFrame": 9,
+    "peakSpeed": 14.1,
+    "segments": [
+     0,
+     14
+    ]
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 5.1,
+     "meanDeg": 0.25,
+     "worstAt": "armUL@6",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 3.6,
+     "meanDeg": 0.18,
+     "worstAt": "armUL@6",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      6,
+      -37,
+      -10
+     ],
+     "max": [
+      22,
+      38,
+      4
+     ],
+     "maxStepDeg": 22.1,
+     "at": 7
+    },
+    "head": {
+     "min": [
+      2,
+      -79,
+      -15
+     ],
+     "max": [
+      16,
+      43,
+      6
+     ],
+     "maxStepDeg": 41.6,
+     "at": 7
+    },
+    "armUL": {
+     "min": [
+      -72,
+      0,
+      6
+     ],
+     "max": [
+      37,
+      0,
+      55
+     ],
+     "maxStepDeg": 35.5,
+     "at": 3
+    },
+    "armLL": {
+     "min": [
+      -153,
+      0,
+      -80
+     ],
+     "max": [
+      12,
+      0,
+      -2
+     ],
+     "maxStepDeg": 53,
+     "at": 9
+    },
+    "armUR": {
+     "min": [
+      -107,
+      0,
+      -49
+     ],
+     "max": [
+      23,
+      0,
+      9
+     ],
+     "maxStepDeg": 47,
+     "at": 8
+    },
+    "armLR": {
+     "min": [
+      -44,
+      0,
+      -11
+     ],
+     "max": [
+      -5,
+      0,
+      35
+     ],
+     "maxStepDeg": 14.1,
+     "at": 7
+    },
+    "legUL": {
+     "min": [
+      -56,
+      0,
+      -3
+     ],
+     "max": [
+      6,
+      0,
+      30
+     ],
+     "maxStepDeg": 21.8,
+     "at": 8
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -23
+     ],
+     "max": [
+      99,
+      0,
+      22
+     ],
+     "maxStepDeg": 24.5,
+     "at": 20
+    },
+    "legUR": {
+     "min": [
+      -101,
+      0,
+      -59
+     ],
+     "max": [
+      46,
+      0,
+      2
+     ],
+     "maxStepDeg": 59.4,
+     "at": 8
+    },
+    "legLR": {
+     "min": [
+      -51,
+      0,
+      -35
+     ],
+     "max": [
+      103,
+      0,
+      88
+     ],
+     "maxStepDeg": 98.3,
+     "at": 16
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.105,
+    "loopGap": null,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "strike_overhead": {
+   "floorMinYVoxBefore": -1.69,
+   "soleMinYVoxBefore": -0.52,
+   "floorMinYVoxAfter": -1.69,
+   "soleMinYVoxAfter": -0.52,
+   "frames": 30,
+   "loop": false,
+   "meta": {
+    "durationFrames": 30,
+    "src": "TreeChopping_Loop",
+    "hand": "R",
+    "hitFrame": 5,
+    "peakSpeedFrame": 4,
+    "recoverFrame": 6,
+    "peakSpeed": 23.29
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 1.8,
+     "meanDeg": 0.07,
+     "worstAt": "armLR@4",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 1.2,
+     "meanDeg": 0.06,
+     "worstAt": "armUR@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      2,
+      -12,
+      1
+     ],
+     "max": [
+      19,
+      31,
+      4
+     ],
+     "maxStepDeg": 12.8,
+     "at": 3
+    },
+    "head": {
+     "min": [
+      2,
+      -18,
+      -2
+     ],
+     "max": [
+      19,
+      39,
+      7
+     ],
+     "maxStepDeg": 16.8,
+     "at": 3
+    },
+    "armUL": {
+     "min": [
+      -4,
+      0,
+      34
+     ],
+     "max": [
+      32,
+      0,
+      50
+     ],
+     "maxStepDeg": 11,
+     "at": 5
+    },
+    "armLL": {
+     "min": [
+      -55,
+      0,
+      -16
+     ],
+     "max": [
+      -27,
+      0,
+      0
+     ],
+     "maxStepDeg": 8.4,
+     "at": 3
+    },
+    "armUR": {
+     "min": [
+      -113,
+      0,
+      -61
+     ],
+     "max": [
+      -60,
+      0,
+      0
+     ],
+     "maxStepDeg": 33.4,
+     "at": 4
+    },
+    "armLR": {
+     "min": [
+      -72,
+      0,
+      -23
+     ],
+     "max": [
+      -26,
+      0,
+      3
+     ],
+     "maxStepDeg": 18,
+     "at": 4
+    },
+    "legUL": {
+     "min": [
+      -33,
+      0,
+      11
+     ],
+     "max": [
+      -15,
+      0,
+      30
+     ],
+     "maxStepDeg": 5.4,
+     "at": 3
+    },
+    "legLL": {
+     "min": [
+      46,
+      0,
+      -24
+     ],
+     "max": [
+      59,
+      0,
+      13
+     ],
+     "maxStepDeg": 10.7,
+     "at": 3
+    },
+    "legUR": {
+     "min": [
+      -12,
+      0,
+      -31
+     ],
+     "max": [
+      7,
+      0,
+      -20
+     ],
+     "maxStepDeg": 5.6,
+     "at": 3
+    },
+    "legLR": {
+     "min": [
+      37,
+      0,
+      27
+     ],
+     "max": [
+      44,
+      0,
+      30
+     ],
+     "maxStepDeg": 2.1,
+     "at": 4
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.077,
+    "loopGap": null,
+    "dirErrDeg": 0.0000024148365394514667
+   }
+  },
+  "strike_thrust": {
+   "floorMinYVoxBefore": -3,
+   "soleMinYVoxBefore": -1.02,
+   "floorMinYVoxAfter": -3,
+   "soleMinYVoxAfter": -1.02,
+   "frames": 34,
+   "loop": false,
+   "meta": {
+    "durationFrames": 34,
+    "src": "Sword_Dash_RM",
+    "hand": "R",
+    "hitFrame": 9,
+    "peakSpeedFrame": 9,
+    "recoverFrame": 11,
+    "peakSpeed": 15.96,
+    "cuts": [
+     18
+    ]
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 10.8,
+     "meanDeg": 0.5,
+     "worstAt": "armLR@10",
+     "framesOver10deg": 1
+    },
+    "slerp": {
+     "maxDeg": 10.3,
+     "meanDeg": 0.37,
+     "worstAt": "armLR@10",
+     "framesOver10deg": 1
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      8,
+      -59,
+      -9
+     ],
+     "max": [
+      30,
+      6,
+      0
+     ],
+     "maxStepDeg": 26.6,
+     "at": 19
+    },
+    "head": {
+     "min": [
+      -8,
+      -47,
+      -8
+     ],
+     "max": [
+      12,
+      53,
+      11
+     ],
+     "maxStepDeg": 38.8,
+     "at": 10
+    },
+    "armUL": {
+     "min": [
+      -368,
+      0,
+      18
+     ],
+     "max": [
+      -164,
+      0,
+      190
+     ],
+     "maxStepDeg": 60.4,
+     "at": 10
+    },
+    "armLL": {
+     "min": [
+      -64,
+      0,
+      -7
+     ],
+     "max": [
+      113,
+      0,
+      83
+     ],
+     "maxStepDeg": 56.9,
+     "at": 7
+    },
+    "armUR": {
+     "min": [
+      -139,
+      0,
+      -65
+     ],
+     "max": [
+      24,
+      0,
+      46
+     ],
+     "maxStepDeg": 74,
+     "at": 11
+    },
+    "armLR": {
+     "min": [
+      -60,
+      0,
+      -13
+     ],
+     "max": [
+      4,
+      0,
+      58
+     ],
+     "maxStepDeg": 30,
+     "at": 2
+    },
+    "legUL": {
+     "min": [
+      -87,
+      0,
+      -33
+     ],
+     "max": [
+      19,
+      0,
+      50
+     ],
+     "maxStepDeg": 43.8,
+     "at": 9
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -14
+     ],
+     "max": [
+      99,
+      0,
+      25
+     ],
+     "maxStepDeg": 29.5,
+     "at": 21
+    },
+    "legUR": {
+     "min": [
+      -113,
+      0,
+      -71
+     ],
+     "max": [
+      16,
+      0,
+      -11
+     ],
+     "maxStepDeg": 57.1,
+     "at": 3
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      -38
+     ],
+     "max": [
+      127,
+      0,
+      39
+     ],
+     "maxStepDeg": 55.1,
+     "at": 3
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.076,
+    "loopGap": null,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "strike_combo": {
+   "floorMinYVoxBefore": -3.12,
+   "soleMinYVoxBefore": -1.05,
+   "floorMinYVoxAfter": -3.12,
+   "soleMinYVoxAfter": -1.05,
+   "frames": 91,
+   "loop": false,
+   "meta": {
+    "durationFrames": 91,
+    "src": "Sword_Regular_Combo",
+    "hand": "R",
+    "hitFrame": 7,
+    "peakSpeedFrame": 7,
+    "recoverFrame": 9,
+    "peakSpeed": 35.44,
+    "hitFrames": [
+     7,
+     21,
+     36,
+     47
+    ],
+    "recoverFrames": [
+     9,
+     23,
+     37,
+     49
+    ]
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 52.4,
+     "meanDeg": 0.43,
+     "worstAt": "armLR@45",
+     "framesOver10deg": 1
+    },
+    "slerp": {
+     "maxDeg": 45.5,
+     "meanDeg": 0.27,
+     "worstAt": "armLR@45",
+     "framesOver10deg": 1
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      3,
+      -59,
+      -13
+     ],
+     "max": [
+      30,
+      44,
+      7
+     ],
+     "maxStepDeg": 35.5,
+     "at": 47
+    },
+    "head": {
+     "min": [
+      -18,
+      -79,
+      -10
+     ],
+     "max": [
+      16,
+      63,
+      21
+     ],
+     "maxStepDeg": 43.1,
+     "at": 22
+    },
+    "armUL": {
+     "min": [
+      -346,
+      0,
+      18
+     ],
+     "max": [
+      -164,
+      0,
+      190
+     ],
+     "maxStepDeg": 60.4,
+     "at": 22
+    },
+    "armLL": {
+     "min": [
+      -115,
+      0,
+      -2
+     ],
+     "max": [
+      153,
+      0,
+      83
+     ],
+     "maxStepDeg": 83.1,
+     "at": 37
+    },
+    "armUR": {
+     "min": [
+      -139,
+      0,
+      -74
+     ],
+     "max": [
+      24,
+      0,
+      46
+     ],
+     "maxStepDeg": 138.1,
+     "at": 46
+    },
+    "armLR": {
+     "min": [
+      -44,
+      0,
+      -59
+     ],
+     "max": [
+      14,
+      0,
+      58
+     ],
+     "maxStepDeg": 81.7,
+     "at": 46
+    },
+    "legUL": {
+     "min": [
+      -121,
+      0,
+      -22
+     ],
+     "max": [
+      26,
+      0,
+      51
+     ],
+     "maxStepDeg": 46.6,
+     "at": 21
+    },
+    "legLL": {
+     "min": [
+      7,
+      0,
+      -35
+     ],
+     "max": [
+      118,
+      0,
+      27
+     ],
+     "maxStepDeg": 48.6,
+     "at": 44
+    },
+    "legUR": {
+     "min": [
+      -111,
+      0,
+      -70
+     ],
+     "max": [
+      42,
+      0,
+      9
+     ],
+     "maxStepDeg": 59.4,
+     "at": 8
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      -35
+     ],
+     "max": [
+      122,
+      0,
+      82
+     ],
+     "maxStepDeg": 59.9,
+     "at": 8
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.097,
+    "loopGap": null,
+    "dirErrDeg": 0.000002561320938754782
+   }
+  },
+  "strike_punch_1": {
+   "floorMinYVoxBefore": -1.19,
+   "soleMinYVoxBefore": -0.06,
+   "floorMinYVoxAfter": -1.19,
+   "soleMinYVoxAfter": -0.06,
+   "frames": 27,
+   "loop": false,
+   "meta": {
+    "durationFrames": 27,
+    "src": "Punch_Jab",
+    "hand": "L",
+    "hitFrame": 6,
+    "peakSpeedFrame": 5,
+    "recoverFrame": 7,
+    "peakSpeed": 7.36
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 9.8,
+     "meanDeg": 0.11,
+     "worstAt": "armLL@5",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 9.5,
+     "meanDeg": 0.11,
+     "worstAt": "armLL@5",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      13,
+      -39,
+      -8
+     ],
+     "max": [
+      17,
+      1,
+      2
+     ],
+     "maxStepDeg": 19.9,
+     "at": 5
+    },
+    "head": {
+     "min": [
+      27,
+      11,
+      8
+     ],
+     "max": [
+      35,
+      47,
+      14
+     ],
+     "maxStepDeg": 18.1,
+     "at": 5
+    },
+    "armUL": {
+     "min": [
+      -83,
+      0,
+      15
+     ],
+     "max": [
+      -28,
+      0,
+      56
+     ],
+     "maxStepDeg": 42.2,
+     "at": 6
+    },
+    "armLL": {
+     "min": [
+      -126,
+      0,
+      -20
+     ],
+     "max": [
+      1,
+      0,
+      2
+     ],
+     "maxStepDeg": 66.4,
+     "at": 5
+    },
+    "armUR": {
+     "min": [
+      -17,
+      0,
+      -59
+     ],
+     "max": [
+      -8,
+      0,
+      -25
+     ],
+     "maxStepDeg": 16.9,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -125,
+      0,
+      7
+     ],
+     "max": [
+      -125,
+      0,
+      10
+     ],
+     "maxStepDeg": 1.9,
+     "at": 6
+    },
+    "legUL": {
+     "min": [
+      -3,
+      0,
+      7
+     ],
+     "max": [
+      1,
+      0,
+      12
+     ],
+     "maxStepDeg": 1.5,
+     "at": 5
+    },
+    "legLL": {
+     "min": [
+      42,
+      0,
+      -7
+     ],
+     "max": [
+      44,
+      0,
+      0
+     ],
+     "maxStepDeg": 2.4,
+     "at": 7
+    },
+    "legUR": {
+     "min": [
+      27,
+      0,
+      -24
+     ],
+     "max": [
+      34,
+      0,
+      -21
+     ],
+     "maxStepDeg": 1.8,
+     "at": 11
+    },
+    "legLR": {
+     "min": [
+      13,
+      0,
+      13
+     ],
+     "max": [
+      25,
+      0,
+      21
+     ],
+     "maxStepDeg": 7.5,
+     "at": 5
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.081,
+    "loopGap": null,
+    "dirErrDeg": 0.0000024148365394514667
+   }
+  },
+  "strike_punch_2": {
+   "floorMinYVoxBefore": -1.07,
+   "soleMinYVoxBefore": -0.03,
+   "floorMinYVoxAfter": -1.07,
+   "soleMinYVoxAfter": -0.03,
+   "frames": 31,
+   "loop": false,
+   "meta": {
+    "durationFrames": 31,
+    "src": "Punch_Cross",
+    "hand": "R",
+    "hitFrame": 8,
+    "peakSpeedFrame": 6,
+    "recoverFrame": 9,
+    "peakSpeed": 5.27
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 6.6,
+     "meanDeg": 0.1,
+     "worstAt": "armLR@6",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 6.6,
+     "meanDeg": 0.1,
+     "worstAt": "armLR@6",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      17,
+      1,
+      2
+     ],
+     "max": [
+      17,
+      47,
+      9
+     ],
+     "maxStepDeg": 23.4,
+     "at": 7
+    },
+    "head": {
+     "min": [
+      32,
+      -45,
+      -8
+     ],
+     "max": [
+      35,
+      11,
+      16
+     ],
+     "maxStepDeg": 19.8,
+     "at": 7
+    },
+    "armUL": {
+     "min": [
+      -48,
+      0,
+      -14
+     ],
+     "max": [
+      -37,
+      0,
+      15
+     ],
+     "maxStepDeg": 15.1,
+     "at": 7
+    },
+    "armLL": {
+     "min": [
+      -119,
+      0,
+      -52
+     ],
+     "max": [
+      -103,
+      0,
+      -18
+     ],
+     "maxStepDeg": 17.9,
+     "at": 7
+    },
+    "armUR": {
+     "min": [
+      -90,
+      0,
+      -52
+     ],
+     "max": [
+      -17,
+      0,
+      -19
+     ],
+     "maxStepDeg": 23.7,
+     "at": 7
+    },
+    "armLR": {
+     "min": [
+      -129,
+      0,
+      -21
+     ],
+     "max": [
+      0,
+      0,
+      31
+     ],
+     "maxStepDeg": 45.9,
+     "at": 6
+    },
+    "legUL": {
+     "min": [
+      -7,
+      0,
+      6
+     ],
+     "max": [
+      -2,
+      0,
+      13
+     ],
+     "maxStepDeg": 2.9,
+     "at": 7
+    },
+    "legLL": {
+     "min": [
+      32,
+      0,
+      -8
+     ],
+     "max": [
+      42,
+      0,
+      1
+     ],
+     "maxStepDeg": 5.3,
+     "at": 7
+    },
+    "legUR": {
+     "min": [
+      19,
+      0,
+      -24
+     ],
+     "max": [
+      35,
+      0,
+      -12
+     ],
+     "maxStepDeg": 7.5,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      12,
+      0,
+      10
+     ],
+     "max": [
+      41,
+      0,
+      20
+     ],
+     "maxStepDeg": 12.3,
+     "at": 6
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.103,
+    "loopGap": null,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "strike_punch_3": {
+   "floorMinYVoxBefore": -2.42,
+   "soleMinYVoxBefore": -0.42,
+   "floorMinYVoxAfter": -2.42,
+   "soleMinYVoxAfter": -0.42,
+   "frames": 34,
+   "loop": false,
+   "meta": {
+    "durationFrames": 34,
+    "src": "Melee_Hook+Melee_Hook_Rec",
+    "hand": "R",
+    "hitFrame": 8,
+    "peakSpeedFrame": 8,
+    "recoverFrame": 10,
+    "peakSpeed": 19.44,
+    "segments": [
+     0,
+     15
+    ]
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 23.7,
+     "meanDeg": 1.68,
+     "worstAt": "armUR@7",
+     "framesOver10deg": 3
+    },
+    "slerp": {
+     "maxDeg": 14,
+     "meanDeg": 1.52,
+     "worstAt": "armUR@7",
+     "framesOver10deg": 3
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      10,
+      -9,
+      0
+     ],
+     "max": [
+      24,
+      51,
+      15
+     ],
+     "maxStepDeg": 22.4,
+     "at": 7
+    },
+    "head": {
+     "min": [
+      1,
+      -41,
+      -4
+     ],
+     "max": [
+      31,
+      25,
+      20
+     ],
+     "maxStepDeg": 24.2,
+     "at": 7
+    },
+    "armUL": {
+     "min": [
+      -99,
+      0,
+      11
+     ],
+     "max": [
+      89,
+      0,
+      43
+     ],
+     "maxStepDeg": 63.4,
+     "at": 8
+    },
+    "armLL": {
+     "min": [
+      -119,
+      0,
+      -43
+     ],
+     "max": [
+      -39,
+      0,
+      24
+     ],
+     "maxStepDeg": 28.6,
+     "at": 5
+    },
+    "armUR": {
+     "min": [
+      159,
+      0,
+      -188
+     ],
+     "max": [
+      339,
+      0,
+      -25
+     ],
+     "maxStepDeg": 106.9,
+     "at": 8
+    },
+    "armLR": {
+     "min": [
+      -24,
+      0,
+      -9
+     ],
+     "max": [
+      245,
+      0,
+      77
+     ],
+     "maxStepDeg": 80,
+     "at": 14
+    },
+    "legUL": {
+     "min": [
+      -131,
+      0,
+      4
+     ],
+     "max": [
+      3,
+      0,
+      66
+     ],
+     "maxStepDeg": 49.2,
+     "at": 7
+    },
+    "legLL": {
+     "min": [
+      34,
+      0,
+      -9
+     ],
+     "max": [
+      115,
+      0,
+      33
+     ],
+     "maxStepDeg": 28,
+     "at": 7
+    },
+    "legUR": {
+     "min": [
+      -26,
+      0,
+      -44
+     ],
+     "max": [
+      36,
+      0,
+      -15
+     ],
+     "maxStepDeg": 23.8,
+     "at": 2
+    },
+    "legLR": {
+     "min": [
+      13,
+      0,
+      -11
+     ],
+     "max": [
+      78,
+      0,
+      24
+     ],
+     "maxStepDeg": 19.5,
+     "at": 2
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.091,
+    "loopGap": null,
+    "dirErrDeg": 0.0000024148365394514667
+   }
+  },
+  "punch_ready": {
+   "floorMinYVoxBefore": -1.02,
+   "soleMinYVoxBefore": -0.03,
+   "floorMinYVoxAfter": -1.02,
+   "soleMinYVoxAfter": -0.03,
+   "frames": 27,
+   "loop": false,
+   "meta": {
+    "durationFrames": 27,
+    "src": "Punch_Enter"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.05,
+     "worstAt": "armLL@4",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.3,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      0,
+      0
+     ],
+     "max": [
+      17,
+      1,
+      2
+     ],
+     "maxStepDeg": 0.7,
+     "at": 11
+    },
+    "head": {
+     "min": [
+      12,
+      11,
+      2
+     ],
+     "max": [
+      35,
+      13,
+      9
+     ],
+     "maxStepDeg": 3,
+     "at": 6
+    },
+    "armUL": {
+     "min": [
+      -41,
+      0,
+      15
+     ],
+     "max": [
+      18,
+      0,
+      18
+     ],
+     "maxStepDeg": 10,
+     "at": 5
+    },
+    "armLL": {
+     "min": [
+      -123,
+      0,
+      -18
+     ],
+     "max": [
+      -33,
+      0,
+      -2
+     ],
+     "maxStepDeg": 10.3,
+     "at": 7
+    },
+    "armUR": {
+     "min": [
+      -25,
+      0,
+      -26
+     ],
+     "max": [
+      25,
+      0,
+      -18
+     ],
+     "maxStepDeg": 8.8,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -129,
+      0,
+      2
+     ],
+     "max": [
+      -44,
+      0,
+      9
+     ],
+     "maxStepDeg": 9.9,
+     "at": 7
+    },
+    "legUL": {
+     "min": [
+      -14,
+      0,
+      12
+     ],
+     "max": [
+      -2,
+      0,
+      13
+     ],
+     "maxStepDeg": 1.7,
+     "at": 6
+    },
+    "legLL": {
+     "min": [
+      21,
+      0,
+      -7
+     ],
+     "max": [
+      42,
+      0,
+      -4
+     ],
+     "maxStepDeg": 1.8,
+     "at": 11
+    },
+    "legUR": {
+     "min": [
+      13,
+      0,
+      -22
+     ],
+     "max": [
+      33,
+      0,
+      -13
+     ],
+     "maxStepDeg": 2.1,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      10
+     ],
+     "max": [
+      21,
+      0,
+      20
+     ],
+     "maxStepDeg": 1.1,
+     "at": 11
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.097,
+    "loopGap": null,
+    "dirErrDeg": 0.0000029575586669421963
+   }
+  },
+  "strike_bash": {
+   "floorMinYVoxBefore": -1.14,
+   "soleMinYVoxBefore": -0.22,
+   "floorMinYVoxAfter": -1.14,
+   "soleMinYVoxAfter": -0.22,
+   "frames": 26,
+   "loop": false,
+   "meta": {
+    "durationFrames": 26,
+    "src": "Shield_OneShot",
+    "hand": "L",
+    "hitFrame": 3,
+    "peakSpeedFrame": 2,
+    "recoverFrame": 4,
+    "peakSpeed": 3.47
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 1.4,
+     "meanDeg": 0.07,
+     "worstAt": "armUL@2",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 1.4,
+     "meanDeg": 0.07,
+     "worstAt": "armUL@2",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      -41,
+      -1
+     ],
+     "max": [
+      8,
+      0,
+      0
+     ],
+     "maxStepDeg": 14.7,
+     "at": 2
+    },
+    "head": {
+     "min": [
+      3,
+      10,
+      -3
+     ],
+     "max": [
+      11,
+      49,
+      2
+     ],
+     "maxStepDeg": 13.5,
+     "at": 2
+    },
+    "armUL": {
+     "min": [
+      -91,
+      0,
+      16
+     ],
+     "max": [
+      16,
+      0,
+      23
+     ],
+     "maxStepDeg": 31.7,
+     "at": 3
+    },
+    "armLL": {
+     "min": [
+      -56,
+      0,
+      -72
+     ],
+     "max": [
+      19,
+      0,
+      -1
+     ],
+     "maxStepDeg": 23.5,
+     "at": 17
+    },
+    "armUR": {
+     "min": [
+      23,
+      0,
+      -20
+     ],
+     "max": [
+      34,
+      0,
+      -11
+     ],
+     "maxStepDeg": 2.8,
+     "at": 4
+    },
+    "armLR": {
+     "min": [
+      -54,
+      0,
+      -28
+     ],
+     "max": [
+      -43,
+      0,
+      2
+     ],
+     "maxStepDeg": 5.6,
+     "at": 4
+    },
+    "legUL": {
+     "min": [
+      -25,
+      0,
+      11
+     ],
+     "max": [
+      -9,
+      0,
+      12
+     ],
+     "maxStepDeg": 3.6,
+     "at": 3
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -5
+     ],
+     "max": [
+      29,
+      0,
+      -3
+     ],
+     "maxStepDeg": 4.8,
+     "at": 3
+    },
+    "legUR": {
+     "min": [
+      6,
+      0,
+      -18
+     ],
+     "max": [
+      16,
+      0,
+      -11
+     ],
+     "maxStepDeg": 2.9,
+     "at": 5
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      5
+     ],
+     "max": [
+      26,
+      0,
+      21
+     ],
+     "maxStepDeg": 4.8,
+     "at": 5
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.082,
+    "loopGap": null,
+    "dirErrDeg": 0.0000017075472925031877
+   }
+  },
+  "shield_dash": {
+   "floorMinYVoxBefore": -3.76,
+   "soleMinYVoxBefore": -1.38,
+   "floorMinYVoxAfter": -3.76,
+   "soleMinYVoxAfter": -1.38,
+   "frames": 34,
+   "loop": false,
+   "meta": {
+    "durationFrames": 34,
+    "src": "Shield_Dash_RM",
+    "hand": "L",
+    "hitFrame": 1,
+    "peakSpeedFrame": 2,
+    "recoverFrame": 4,
+    "peakSpeed": 1.69
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 2,
+     "meanDeg": 0.11,
+     "worstAt": "armLR@2",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 2.1,
+     "meanDeg": 0.09,
+     "worstAt": "armLR@2",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      8,
+      -26,
+      -7
+     ],
+     "max": [
+      30,
+      26,
+      4
+     ],
+     "maxStepDeg": 16.7,
+     "at": 2
+    },
+    "head": {
+     "min": [
+      -11,
+      11,
+      -15
+     ],
+     "max": [
+      14,
+      40,
+      7
+     ],
+     "maxStepDeg": 9.7,
+     "at": 2
+    },
+    "armUL": {
+     "min": [
+      -106,
+      0,
+      18
+     ],
+     "max": [
+      16,
+      0,
+      69
+     ],
+     "maxStepDeg": 21.8,
+     "at": 17
+    },
+    "armLL": {
+     "min": [
+      -148,
+      0,
+      -80
+     ],
+     "max": [
+      -33,
+      0,
+      -2
+     ],
+     "maxStepDeg": 17.8,
+     "at": 6
+    },
+    "armUR": {
+     "min": [
+      10,
+      0,
+      -82
+     ],
+     "max": [
+      94,
+      0,
+      -18
+     ],
+     "maxStepDeg": 42.3,
+     "at": 3
+    },
+    "armLR": {
+     "min": [
+      -47,
+      0,
+      -28
+     ],
+     "max": [
+      -7,
+      0,
+      3
+     ],
+     "maxStepDeg": 19.8,
+     "at": 3
+    },
+    "legUL": {
+     "min": [
+      -65,
+      0,
+      12
+     ],
+     "max": [
+      15,
+      0,
+      53
+     ],
+     "maxStepDeg": 16.6,
+     "at": 2
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -17
+     ],
+     "max": [
+      109,
+      0,
+      51
+     ],
+     "maxStepDeg": 18.5,
+     "at": 16
+    },
+    "legUR": {
+     "min": [
+      -51,
+      0,
+      -33
+     ],
+     "max": [
+      19,
+      0,
+      -11
+     ],
+     "maxStepDeg": 16.7,
+     "at": 2
+    },
+    "legLR": {
+     "min": [
+      1,
+      0,
+      -28
+     ],
+     "max": [
+      66,
+      0,
+      19
+     ],
+     "maxStepDeg": 11.5,
+     "at": 18
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.103,
+    "loopGap": null,
+    "dirErrDeg": 0.000002561320938754782
+   }
+  },
+  "throw": {
+   "floorMinYVoxBefore": -2.76,
+   "soleMinYVoxBefore": -0.1,
+   "floorMinYVoxAfter": -2.76,
+   "soleMinYVoxAfter": -0.1,
+   "frames": 41,
+   "loop": false,
+   "meta": {
+    "durationFrames": 41,
+    "src": "OverhandThrow",
+    "hand": "R",
+    "hitFrame": 12,
+    "peakSpeedFrame": 11,
+    "recoverFrame": 14,
+    "peakSpeed": 15.42
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 34.5,
+     "meanDeg": 0.5,
+     "worstAt": "armLR@8",
+     "framesOver10deg": 4
+    },
+    "slerp": {
+     "maxDeg": 33.3,
+     "meanDeg": 0.36,
+     "worstAt": "armLR@8",
+     "framesOver10deg": 4
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      -3,
+      -37,
+      -5
+     ],
+     "max": [
+      26,
+      47,
+      20
+     ],
+     "maxStepDeg": 33.1,
+     "at": 9
+    },
+    "head": {
+     "min": [
+      -8,
+      -54,
+      -5
+     ],
+     "max": [
+      13,
+      50,
+      5
+     ],
+     "maxStepDeg": 41.1,
+     "at": 9
+    },
+    "armUL": {
+     "min": [
+      -65,
+      0,
+      18
+     ],
+     "max": [
+      56,
+      0,
+      72
+     ],
+     "maxStepDeg": 52,
+     "at": 9
+    },
+    "armLL": {
+     "min": [
+      -41,
+      0,
+      -48
+     ],
+     "max": [
+      -13,
+      0,
+      -2
+     ],
+     "maxStepDeg": 23,
+     "at": 9
+    },
+    "armUR": {
+     "min": [
+      23,
+      0,
+      -105
+     ],
+     "max": [
+      389,
+      0,
+      -18
+     ],
+     "maxStepDeg": 92.9,
+     "at": 11
+    },
+    "armLR": {
+     "min": [
+      -62,
+      0,
+      -54
+     ],
+     "max": [
+      64,
+      0,
+      39
+     ],
+     "maxStepDeg": 125.5,
+     "at": 9
+    },
+    "legUL": {
+     "min": [
+      -96,
+      0,
+      -19
+     ],
+     "max": [
+      -15,
+      0,
+      26
+     ],
+     "maxStepDeg": 24,
+     "at": 10
+    },
+    "legLL": {
+     "min": [
+      31,
+      0,
+      -6
+     ],
+     "max": [
+      101,
+      0,
+      19
+     ],
+     "maxStepDeg": 11.9,
+     "at": 9
+    },
+    "legUR": {
+     "min": [
+      -15,
+      0,
+      -38
+     ],
+     "max": [
+      17,
+      0,
+      12
+     ],
+     "maxStepDeg": 18.1,
+     "at": 11
+    },
+    "legLR": {
+     "min": [
+      4,
+      0,
+      4
+     ],
+     "max": [
+      58,
+      0,
+      30
+     ],
+     "maxStepDeg": 10.3,
+     "at": 8
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.125,
+    "loopGap": null,
+    "dirErrDeg": 0.0000019090959104164224
+   }
+  },
+  "block_enter": {
+   "floorMinYVoxBefore": -2.14,
+   "soleMinYVoxBefore": -0.33,
+   "floorMinYVoxAfter": -2.14,
+   "soleMinYVoxAfter": -0.33,
+   "frames": 38,
+   "loop": false,
+   "meta": {
+    "durationFrames": 38,
+    "src": "Sword_Block"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 13,
+     "meanDeg": 0.14,
+     "worstAt": "armUR@2",
+     "framesOver10deg": 1
+    },
+    "slerp": {
+     "maxDeg": 12,
+     "meanDeg": 0.12,
+     "worstAt": "armUR@2",
+     "framesOver10deg": 1
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      8,
+      -9,
+      0
+     ],
+     "max": [
+      15,
+      47,
+      5
+     ],
+     "maxStepDeg": 29.1,
+     "at": 3
+    },
+    "head": {
+     "min": [
+      3,
+      -31,
+      -3
+     ],
+     "max": [
+      11,
+      21,
+      3
+     ],
+     "maxStepDeg": 26.2,
+     "at": 3
+    },
+    "armUL": {
+     "min": [
+      9,
+      0,
+      18
+     ],
+     "max": [
+      57,
+      0,
+      51
+     ],
+     "maxStepDeg": 48.3,
+     "at": 3
+    },
+    "armLL": {
+     "min": [
+      -71,
+      0,
+      -15
+     ],
+     "max": [
+      -30,
+      0,
+      2
+     ],
+     "maxStepDeg": 17.7,
+     "at": 5
+    },
+    "armUR": {
+     "min": [
+      -58,
+      0,
+      -58
+     ],
+     "max": [
+      23,
+      0,
+      -18
+     ],
+     "maxStepDeg": 68.2,
+     "at": 3
+    },
+    "armLR": {
+     "min": [
+      -89,
+      0,
+      -5
+     ],
+     "max": [
+      -40,
+      0,
+      33
+     ],
+     "maxStepDeg": 49.5,
+     "at": 3
+    },
+    "legUL": {
+     "min": [
+      -66,
+      0,
+      12
+     ],
+     "max": [
+      -12,
+      0,
+      20
+     ],
+     "maxStepDeg": 23.2,
+     "at": 3
+    },
+    "legLL": {
+     "min": [
+      17,
+      0,
+      -8
+     ],
+     "max": [
+      78,
+      0,
+      8
+     ],
+     "maxStepDeg": 24.7,
+     "at": 2
+    },
+    "legUR": {
+     "min": [
+      -37,
+      0,
+      -21
+     ],
+     "max": [
+      15,
+      0,
+      -11
+     ],
+     "maxStepDeg": 23.1,
+     "at": 3
+    },
+    "legLR": {
+     "min": [
+      7,
+      0,
+      6
+     ],
+     "max": [
+      87,
+      0,
+      22
+     ],
+     "maxStepDeg": 33.4,
+     "at": 2
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.102,
+    "loopGap": null,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "block_hold": {
+   "floorMinYVoxBefore": -0.86,
+   "soleMinYVoxBefore": -0.14,
+   "floorMinYVoxAfter": -0.72,
+   "soleMinYVoxAfter": 0,
+   "frames": 75,
+   "loop": true,
+   "meta": {
+    "durationFrames": 75,
+    "src": "Idle_Shield_Loop",
+    "groundShiftVox": 0.14
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.03,
+     "worstAt": "head@74",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.03,
+     "worstAt": "head@74",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      -20,
+      0
+     ],
+     "max": [
+      9,
+      -20,
+      0
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "head": {
+     "min": [
+      8,
+      30,
+      -1
+     ],
+     "max": [
+      13,
+      30,
+      0
+     ],
+     "maxStepDeg": 0.4,
+     "at": 66
+    },
+    "armUL": {
+     "min": [
+      -59,
+      0,
+      24
+     ],
+     "max": [
+      -57,
+      0,
+      25
+     ],
+     "maxStepDeg": 0.2,
+     "at": 37
+    },
+    "armLL": {
+     "min": [
+      -46,
+      0,
+      -69
+     ],
+     "max": [
+      -42,
+      0,
+      -67
+     ],
+     "maxStepDeg": 0.4,
+     "at": 9
+    },
+    "armUR": {
+     "min": [
+      18,
+      0,
+      -16
+     ],
+     "max": [
+      23,
+      0,
+      -14
+     ],
+     "maxStepDeg": 0.4,
+     "at": 9
+    },
+    "armLR": {
+     "min": [
+      -43,
+      0,
+      -7
+     ],
+     "max": [
+      -43,
+      0,
+      -7
+     ],
+     "maxStepDeg": 0.1,
+     "at": 1
+    },
+    "legUL": {
+     "min": [
+      -14,
+      0,
+      12
+     ],
+     "max": [
+      -9,
+      0,
+      13
+     ],
+     "maxStepDeg": 0.5,
+     "at": 49
+    },
+    "legLL": {
+     "min": [
+      11,
+      0,
+      -4
+     ],
+     "max": [
+      18,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.5,
+     "at": 29
+    },
+    "legUR": {
+     "min": [
+      12,
+      0,
+      -13
+     ],
+     "max": [
+      16,
+      0,
+      -10
+     ],
+     "maxStepDeg": 0.3,
+     "at": 9
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      5
+     ],
+     "max": [
+      10,
+      0,
+      9
+     ],
+     "maxStepDeg": 0.4,
+     "at": 11
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.079,
+    "loopGap": 0.31,
+    "dirErrDeg": 0.0000024148365394514667
+   }
+  },
+  "shield_break": {
+   "floorMinYVoxBefore": -0.88,
+   "soleMinYVoxBefore": -0.1,
+   "floorMinYVoxAfter": -0.88,
+   "soleMinYVoxAfter": -0.1,
+   "frames": 33,
+   "loop": false,
+   "meta": {
+    "durationFrames": 33,
+    "src": "Idle_Shield_Break"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 1.8,
+     "meanDeg": 0.06,
+     "worstAt": "armLL@0",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 1.1,
+     "meanDeg": 0.05,
+     "worstAt": "armLL@0",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      0,
+      -20,
+      -3
+     ],
+     "max": [
+      8,
+      45,
+      0
+     ],
+     "maxStepDeg": 30.9,
+     "at": 3
+    },
+    "head": {
+     "min": [
+      -11,
+      -25,
+      -10
+     ],
+     "max": [
+      13,
+      30,
+      4
+     ],
+     "maxStepDeg": 23.6,
+     "at": 1
+    },
+    "armUL": {
+     "min": [
+      -59,
+      0,
+      25
+     ],
+     "max": [
+      -30,
+      0,
+      47
+     ],
+     "maxStepDeg": 16.2,
+     "at": 1
+    },
+    "armLL": {
+     "min": [
+      -69,
+      0,
+      -69
+     ],
+     "max": [
+      -42,
+      0,
+      -5
+     ],
+     "maxStepDeg": 22.7,
+     "at": 1
+    },
+    "armUR": {
+     "min": [
+      9,
+      0,
+      -30
+     ],
+     "max": [
+      41,
+      0,
+      -12
+     ],
+     "maxStepDeg": 6.3,
+     "at": 2
+    },
+    "armLR": {
+     "min": [
+      -64,
+      0,
+      -18
+     ],
+     "max": [
+      -19,
+      0,
+      1
+     ],
+     "maxStepDeg": 21.8,
+     "at": 5
+    },
+    "legUL": {
+     "min": [
+      -18,
+      0,
+      12
+     ],
+     "max": [
+      -5,
+      0,
+      14
+     ],
+     "maxStepDeg": 2.3,
+     "at": 2
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -5
+     ],
+     "max": [
+      28,
+      0,
+      -3
+     ],
+     "maxStepDeg": 5.4,
+     "at": 2
+    },
+    "legUR": {
+     "min": [
+      1,
+      0,
+      -21
+     ],
+     "max": [
+      16,
+      0,
+      -11
+     ],
+     "maxStepDeg": 4.8,
+     "at": 2
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      5
+     ],
+     "max": [
+      44,
+      0,
+      22
+     ],
+     "maxStepDeg": 15.7,
+     "at": 2
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.545,
+    "loopGap": null,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "hit_front": {
+   "floorMinYVoxBefore": -0.9,
+   "soleMinYVoxBefore": -0.06,
+   "floorMinYVoxAfter": -0.9,
+   "soleMinYVoxAfter": -0.06,
+   "frames": 11,
+   "loop": false,
+   "meta": {
+    "durationFrames": 11,
+    "src": "Hit_Chest"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armUL@1",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armUL@1",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      1,
+      0,
+      0
+     ],
+     "max": [
+      7,
+      0,
+      2
+     ],
+     "maxStepDeg": 1.5,
+     "at": 4
+    },
+    "head": {
+     "min": [
+      -21,
+      -1,
+      1
+     ],
+     "max": [
+      12,
+      11,
+      4
+     ],
+     "maxStepDeg": 12.3,
+     "at": 7
+    },
+    "armUL": {
+     "min": [
+      1,
+      0,
+      18
+     ],
+     "max": [
+      18,
+      0,
+      22
+     ],
+     "maxStepDeg": 3.8,
+     "at": 5
+    },
+    "armLL": {
+     "min": [
+      -40,
+      0,
+      -2
+     ],
+     "max": [
+      -33,
+      0,
+      2
+     ],
+     "maxStepDeg": 2.1,
+     "at": 3
+    },
+    "armUR": {
+     "min": [
+      7,
+      0,
+      -18
+     ],
+     "max": [
+      25,
+      0,
+      -14
+     ],
+     "maxStepDeg": 3.8,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -51,
+      0,
+      2
+     ],
+     "max": [
+      -44,
+      0,
+      3
+     ],
+     "maxStepDeg": 2.2,
+     "at": 8
+    },
+    "legUL": {
+     "min": [
+      -14,
+      0,
+      11
+     ],
+     "max": [
+      -6,
+      0,
+      13
+     ],
+     "maxStepDeg": 1.2,
+     "at": 5
+    },
+    "legLL": {
+     "min": [
+      21,
+      0,
+      -6
+     ],
+     "max": [
+      29,
+      0,
+      -4
+     ],
+     "maxStepDeg": 1.1,
+     "at": 6
+    },
+    "legUR": {
+     "min": [
+      13,
+      0,
+      -19
+     ],
+     "max": [
+      23,
+      0,
+      -13
+     ],
+     "maxStepDeg": 1.4,
+     "at": 5
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      10
+     ],
+     "max": [
+      16,
+      0,
+      15
+     ],
+     "maxStepDeg": 0.9,
+     "at": 7
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.086,
+    "loopGap": null,
+    "dirErrDeg": 0.0000012074182697257333
+   }
+  },
+  "hit_head": {
+   "floorMinYVoxBefore": -0.74,
+   "soleMinYVoxBefore": 0.01,
+   "floorMinYVoxAfter": -0.74,
+   "soleMinYVoxAfter": 0.01,
+   "frames": 14,
+   "loop": false,
+   "meta": {
+    "durationFrames": 14,
+    "src": "Hit_Head"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@4",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armLR@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      4,
+      0,
+      0
+     ],
+     "max": [
+      7,
+      0,
+      1
+     ],
+     "maxStepDeg": 0.5,
+     "at": 4
+    },
+    "head": {
+     "min": [
+      -24,
+      -1,
+      -2
+     ],
+     "max": [
+      12,
+      16,
+      2
+     ],
+     "maxStepDeg": 8.5,
+     "at": 9
+    },
+    "armUL": {
+     "min": [
+      5,
+      0,
+      18
+     ],
+     "max": [
+      18,
+      0,
+      22
+     ],
+     "maxStepDeg": 3.1,
+     "at": 2
+    },
+    "armLL": {
+     "min": [
+      -33,
+      0,
+      -4
+     ],
+     "max": [
+      -26,
+      0,
+      -2
+     ],
+     "maxStepDeg": 1.5,
+     "at": 3
+    },
+    "armUR": {
+     "min": [
+      11,
+      0,
+      -18
+     ],
+     "max": [
+      25,
+      0,
+      -15
+     ],
+     "maxStepDeg": 3.2,
+     "at": 2
+    },
+    "armLR": {
+     "min": [
+      -44,
+      0,
+      2
+     ],
+     "max": [
+      -37,
+      0,
+      3
+     ],
+     "maxStepDeg": 1.6,
+     "at": 3
+    },
+    "legUL": {
+     "min": [
+      -15,
+      0,
+      12
+     ],
+     "max": [
+      -14,
+      0,
+      13
+     ],
+     "maxStepDeg": 0.6,
+     "at": 2
+    },
+    "legLL": {
+     "min": [
+      20,
+      0,
+      -4
+     ],
+     "max": [
+      21,
+      0,
+      -4
+     ],
+     "maxStepDeg": 0.6,
+     "at": 2
+    },
+    "legUR": {
+     "min": [
+      9,
+      0,
+      -16
+     ],
+     "max": [
+      13,
+      0,
+      -13
+     ],
+     "maxStepDeg": 2.1,
+     "at": 2
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      10
+     ],
+     "max": [
+      16,
+      0,
+      14
+     ],
+     "maxStepDeg": 2.6,
+     "at": 2
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.079,
+    "loopGap": null,
+    "dirErrDeg": 0.0000012074182697257333
+   }
+  },
+  "knockdown": {
+   "floorMinYVoxBefore": -5.06,
+   "soleMinYVoxBefore": -0.44,
+   "floorMinYVoxAfter": 0,
+   "soleMinYVoxAfter": 1.08,
+   "frames": 26,
+   "loop": false,
+   "meta": {
+    "durationFrames": 26,
+    "src": "Hit_Knockback",
+    "floorRaiseMaxVox": 5.06
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 5.1,
+     "meanDeg": 0.25,
+     "worstAt": "armUR@8",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 5.1,
+     "meanDeg": 0.22,
+     "worstAt": "armUR@8",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      1,
+      -1,
+      0
+     ],
+     "max": [
+      41,
+      19,
+      6
+     ],
+     "maxStepDeg": 6.8,
+     "at": 10
+    },
+    "head": {
+     "min": [
+      -14,
+      -24,
+      -18
+     ],
+     "max": [
+      82,
+      0,
+      1
+     ],
+     "maxStepDeg": 27.6,
+     "at": 8
+    },
+    "armUL": {
+     "min": [
+      -90,
+      0,
+      15
+     ],
+     "max": [
+      12,
+      0,
+      31
+     ],
+     "maxStepDeg": 28.6,
+     "at": 9
+    },
+    "armLL": {
+     "min": [
+      -75,
+      0,
+      -23
+     ],
+     "max": [
+      -5,
+      0,
+      -3
+     ],
+     "maxStepDeg": 25,
+     "at": 12
+    },
+    "armUR": {
+     "min": [
+      -101,
+      0,
+      -30
+     ],
+     "max": [
+      10,
+      0,
+      -21
+     ],
+     "maxStepDeg": 47.8,
+     "at": 9
+    },
+    "armLR": {
+     "min": [
+      -80,
+      0,
+      -23
+     ],
+     "max": [
+      2,
+      0,
+      4
+     ],
+     "maxStepDeg": 37.3,
+     "at": 11
+    },
+    "legUL": {
+     "min": [
+      -99,
+      0,
+      13
+     ],
+     "max": [
+      2,
+      0,
+      30
+     ],
+     "maxStepDeg": 25.5,
+     "at": 10
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -14
+     ],
+     "max": [
+      100,
+      0,
+      1
+     ],
+     "maxStepDeg": 42.3,
+     "at": 3
+    },
+    "legUR": {
+     "min": [
+      -60,
+      0,
+      -36
+     ],
+     "max": [
+      -4,
+      0,
+      -4
+     ],
+     "maxStepDeg": 18.9,
+     "at": 14
+    },
+    "legLR": {
+     "min": [
+      8,
+      0,
+      3
+     ],
+     "max": [
+      96,
+      0,
+      30
+     ],
+     "maxStepDeg": 35.4,
+     "at": 2
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.094,
+    "loopGap": null,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "death_back": {
+   "floorMinYVoxBefore": -8.05,
+   "soleMinYVoxBefore": -0.62,
+   "floorMinYVoxAfter": 0,
+   "soleMinYVoxAfter": 0.74,
+   "frames": 73,
+   "loop": false,
+   "meta": {
+    "durationFrames": 73,
+    "src": "Death01",
+    "floorRaiseMaxVox": 8.05
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 7.7,
+     "meanDeg": 0.09,
+     "worstAt": "armLL@32",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 6.6,
+     "meanDeg": 0.07,
+     "worstAt": "armLL@32",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      3,
+      -15,
+      0
+     ],
+     "max": [
+      20,
+      8,
+      0
+     ],
+     "maxStepDeg": 3.1,
+     "at": 1
+    },
+    "head": {
+     "min": [
+      -39,
+      0,
+      -2
+     ],
+     "max": [
+      36,
+      11,
+      4
+     ],
+     "maxStepDeg": 29.4,
+     "at": 36
+    },
+    "armUL": {
+     "min": [
+      -9,
+      0,
+      12
+     ],
+     "max": [
+      125,
+      0,
+      68
+     ],
+     "maxStepDeg": 23.5,
+     "at": 33
+    },
+    "armLL": {
+     "min": [
+      -274,
+      0,
+      -20
+     ],
+     "max": [
+      -28,
+      0,
+      72
+     ],
+     "maxStepDeg": 87.3,
+     "at": 33
+    },
+    "armUR": {
+     "min": [
+      -177,
+      0,
+      -54
+     ],
+     "max": [
+      38,
+      0,
+      4
+     ],
+     "maxStepDeg": 22.5,
+     "at": 36
+    },
+    "armLR": {
+     "min": [
+      -88,
+      0,
+      -11
+     ],
+     "max": [
+      3,
+      0,
+      23
+     ],
+     "maxStepDeg": 16.7,
+     "at": 2
+    },
+    "legUL": {
+     "min": [
+      -54,
+      0,
+      13
+     ],
+     "max": [
+      -1,
+      0,
+      31
+     ],
+     "maxStepDeg": 13.8,
+     "at": 41
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -16
+     ],
+     "max": [
+      80,
+      0,
+      6
+     ],
+     "maxStepDeg": 18,
+     "at": 27
+    },
+    "legUR": {
+     "min": [
+      -82,
+      0,
+      -34
+     ],
+     "max": [
+      14,
+      0,
+      -13
+     ],
+     "maxStepDeg": 20.7,
+     "at": 45
+    },
+    "legLR": {
+     "min": [
+      0,
+      0,
+      0
+     ],
+     "max": [
+      119,
+      0,
+      29
+     ],
+     "maxStepDeg": 41.7,
+     "at": 30
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.088,
+    "loopGap": null,
+    "dirErrDeg": 0.0000022588727439225506
+   }
+  },
+  "getup": {
+   "floorMinYVoxBefore": -5.29,
+   "soleMinYVoxBefore": -0.93,
+   "floorMinYVoxAfter": 0,
+   "soleMinYVoxAfter": 0.69,
+   "frames": 47,
+   "loop": false,
+   "meta": {
+    "durationFrames": 47,
+    "src": "LayToIdle",
+    "floorRaiseMaxVox": 5.29
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 1.5,
+     "meanDeg": 0.11,
+     "worstAt": "armLR@5",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 1.2,
+     "meanDeg": 0.09,
+     "worstAt": "armUR@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      8,
+      0,
+      -1
+     ],
+     "max": [
+      29,
+      42,
+      6
+     ],
+     "maxStepDeg": 4.2,
+     "at": 10
+    },
+    "head": {
+     "min": [
+      -1,
+      -19,
+      -5
+     ],
+     "max": [
+      38,
+      11,
+      8
+     ],
+     "maxStepDeg": 4.3,
+     "at": 6
+    },
+    "armUL": {
+     "min": [
+      -20,
+      0,
+      12
+     ],
+     "max": [
+      68,
+      0,
+      77
+     ],
+     "maxStepDeg": 35.4,
+     "at": 9
+    },
+    "armLL": {
+     "min": [
+      -115,
+      0,
+      -66
+     ],
+     "max": [
+      0,
+      0,
+      23
+     ],
+     "maxStepDeg": 43,
+     "at": 9
+    },
+    "armUR": {
+     "min": [
+      -33,
+      0,
+      -61
+     ],
+     "max": [
+      98,
+      0,
+      22
+     ],
+     "maxStepDeg": 33.7,
+     "at": 5
+    },
+    "armLR": {
+     "min": [
+      -120,
+      0,
+      -57
+     ],
+     "max": [
+      0,
+      0,
+      60
+     ],
+     "maxStepDeg": 35.5,
+     "at": 2
+    },
+    "legUL": {
+     "min": [
+      -94,
+      0,
+      6
+     ],
+     "max": [
+      12,
+      0,
+      52
+     ],
+     "maxStepDeg": 7.3,
+     "at": 12
+    },
+    "legLL": {
+     "min": [
+      1,
+      0,
+      -33
+     ],
+     "max": [
+      121,
+      0,
+      14
+     ],
+     "maxStepDeg": 9.3,
+     "at": 43
+    },
+    "legUR": {
+     "min": [
+      -74,
+      0,
+      -44
+     ],
+     "max": [
+      16,
+      0,
+      -3
+     ],
+     "maxStepDeg": 10.1,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      -21
+     ],
+     "max": [
+      116,
+      0,
+      34
+     ],
+     "maxStepDeg": 15.6,
+     "at": 3
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.101,
+    "loopGap": null,
+    "dirErrDeg": 0.000002091309789151873
+   }
+  },
+  "roll": {
+   "floorMinYVoxBefore": -7.36,
+   "soleMinYVoxBefore": -0.01,
+   "floorMinYVoxAfter": 0,
+   "soleMinYVoxAfter": 0.74,
+   "frames": 45,
+   "loop": false,
+   "meta": {
+    "durationFrames": 45,
+    "src": "Roll",
+    "floorRaiseMaxVox": 7.36
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 6.6,
+     "meanDeg": 0.25,
+     "worstAt": "legLR@2",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 6.3,
+     "meanDeg": 0.22,
+     "worstAt": "armUR@1",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      6,
+      -25,
+      -8
+     ],
+     "max": [
+      22,
+      4,
+      1
+     ],
+     "maxStepDeg": 27.3,
+     "at": 16
+    },
+    "head": {
+     "min": [
+      -5,
+      -113,
+      -126
+     ],
+     "max": [
+      81,
+      12,
+      5
+     ],
+     "maxStepDeg": 63.3,
+     "at": 13
+    },
+    "armUL": {
+     "min": [
+      -133,
+      0,
+      13
+     ],
+     "max": [
+      29,
+      0,
+      43
+     ],
+     "maxStepDeg": 38.4,
+     "at": 3
+    },
+    "armLL": {
+     "min": [
+      -151,
+      0,
+      -23
+     ],
+     "max": [
+      -20,
+      0,
+      32
+     ],
+     "maxStepDeg": 40.6,
+     "at": 13
+    },
+    "armUR": {
+     "min": [
+      -85,
+      0,
+      -33
+     ],
+     "max": [
+      39,
+      0,
+      -21
+     ],
+     "maxStepDeg": 55.1,
+     "at": 2
+    },
+    "armLR": {
+     "min": [
+      -87,
+      0,
+      -6
+     ],
+     "max": [
+      -30,
+      0,
+      40
+     ],
+     "maxStepDeg": 23.9,
+     "at": 15
+    },
+    "legUL": {
+     "min": [
+      -140,
+      0,
+      -1
+     ],
+     "max": [
+      15,
+      0,
+      21
+     ],
+     "maxStepDeg": 45.6,
+     "at": 3
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -6
+     ],
+     "max": [
+      128,
+      0,
+      24
+     ],
+     "maxStepDeg": 74.1,
+     "at": 3
+    },
+    "legUR": {
+     "min": [
+      -154,
+      0,
+      -49
+     ],
+     "max": [
+      15,
+      0,
+      -5
+     ],
+     "maxStepDeg": 50.6,
+     "at": 26
+    },
+    "legLR": {
+     "min": [
+      0,
+      0,
+      -12
+     ],
+     "max": [
+      145,
+      0,
+      31
+     ],
+     "maxStepDeg": 66.4,
+     "at": 3
+    }
+   },
+   "poleFlags": [
+    "head@13: euler 63 vs true 23",
+    "head@14: euler 46 vs true 9",
+    "head@16: euler 62 vs true 26",
+    "head@17: euler 40 vs true 13"
+   ],
+   "retarget": {
+    "quantErrDeg": 0.087,
+    "loopGap": null,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "cast": {
+   "floorMinYVoxBefore": -0.73,
+   "soleMinYVoxBefore": -0.02,
+   "floorMinYVoxAfter": -0.73,
+   "soleMinYVoxAfter": -0.02,
+   "frames": 47,
+   "loop": false,
+   "meta": {
+    "durationFrames": 47,
+    "src": "Spell_Simple_Enter+Spell_Simple_Shoot+Spell_Simple_Exit",
+    "segments": [
+     0,
+     17,
+     33
+    ]
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 13.4,
+     "meanDeg": 0.78,
+     "worstAt": "armUL@39",
+     "framesOver10deg": 5
+    },
+    "slerp": {
+     "maxDeg": 13.2,
+     "meanDeg": 0.77,
+     "worstAt": "armUL@39",
+     "framesOver10deg": 5
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      5,
+      -16,
+      -2
+     ],
+     "max": [
+      6,
+      0,
+      0
+     ],
+     "maxStepDeg": 4.5,
+     "at": 20
+    },
+    "head": {
+     "min": [
+      11,
+      11,
+      3
+     ],
+     "max": [
+      18,
+      54,
+      9
+     ],
+     "maxStepDeg": 7.4,
+     "at": 44
+    },
+    "armUL": {
+     "min": [
+      -95,
+      0,
+      18
+     ],
+     "max": [
+      16,
+      0,
+      69
+     ],
+     "maxStepDeg": 22.8,
+     "at": 38
+    },
+    "armLL": {
+     "min": [
+      -28,
+      0,
+      -20
+     ],
+     "max": [
+      0,
+      0,
+      0
+     ],
+     "maxStepDeg": 10,
+     "at": 17
+    },
+    "armUR": {
+     "min": [
+      15,
+      0,
+      -28
+     ],
+     "max": [
+      23,
+      0,
+      -18
+     ],
+     "maxStepDeg": 3,
+     "at": 19
+    },
+    "armLR": {
+     "min": [
+      -48,
+      0,
+      -2
+     ],
+     "max": [
+      -27,
+      0,
+      2
+     ],
+     "maxStepDeg": 4.8,
+     "at": 38
+    },
+    "legUL": {
+     "min": [
+      -13,
+      0,
+      13
+     ],
+     "max": [
+      -4,
+      0,
+      22
+     ],
+     "maxStepDeg": 1.4,
+     "at": 41
+    },
+    "legLL": {
+     "min": [
+      19,
+      0,
+      -15
+     ],
+     "max": [
+      21,
+      0,
+      -4
+     ],
+     "maxStepDeg": 1.7,
+     "at": 41
+    },
+    "legUR": {
+     "min": [
+      -1,
+      0,
+      -20
+     ],
+     "max": [
+      14,
+      0,
+      -13
+     ],
+     "maxStepDeg": 1.8,
+     "at": 41
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      10
+     ],
+     "max": [
+      20,
+      0,
+      17
+     ],
+     "maxStepDeg": 1.5,
+     "at": 19
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.715,
+    "loopGap": null,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "cast_idle": {
+   "floorMinYVoxBefore": -0.57,
+   "soleMinYVoxBefore": -0.03,
+   "floorMinYVoxAfter": -0.54,
+   "soleMinYVoxAfter": 0,
+   "frames": 63,
+   "loop": true,
+   "meta": {
+    "durationFrames": 63,
+    "src": "Spell_Simple_Idle_Loop",
+    "groundShiftVox": 0.03
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLR@8",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLR@8",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      5,
+      -17,
+      -2
+     ],
+     "max": [
+      8,
+      -16,
+      -2
+     ],
+     "maxStepDeg": 0.2,
+     "at": 30
+    },
+    "head": {
+     "min": [
+      13,
+      54,
+      4
+     ],
+     "max": [
+      19,
+      54,
+      7
+     ],
+     "maxStepDeg": 0.3,
+     "at": 8
+    },
+    "armUL": {
+     "min": [
+      -90,
+      0,
+      66
+     ],
+     "max": [
+      -76,
+      0,
+      77
+     ],
+     "maxStepDeg": 0.7,
+     "at": 18
+    },
+    "armLL": {
+     "min": [
+      -27,
+      0,
+      -24
+     ],
+     "max": [
+      -10,
+      0,
+      -14
+     ],
+     "maxStepDeg": 0.9,
+     "at": 20
+    },
+    "armUR": {
+     "min": [
+      14,
+      0,
+      -28
+     ],
+     "max": [
+      18,
+      0,
+      -26
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "armLR": {
+     "min": [
+      -39,
+      0,
+      -1
+     ],
+     "max": [
+      -27,
+      0,
+      3
+     ],
+     "maxStepDeg": 0.6,
+     "at": 23
+    },
+    "legUL": {
+     "min": [
+      -7,
+      0,
+      21
+     ],
+     "max": [
+      -4,
+      0,
+      23
+     ],
+     "maxStepDeg": 0.2,
+     "at": 16
+    },
+    "legLL": {
+     "min": [
+      19,
+      0,
+      -17
+     ],
+     "max": [
+      23,
+      0,
+      -15
+     ],
+     "maxStepDeg": 0.2,
+     "at": 13
+    },
+    "legUR": {
+     "min": [
+      0,
+      0,
+      -20
+     ],
+     "max": [
+      2,
+      0,
+      -19
+     ],
+     "maxStepDeg": 0.1,
+     "at": 11
+    },
+    "legLR": {
+     "min": [
+      16,
+      0,
+      14
+     ],
+     "max": [
+      18,
+      0,
+      16
+     ],
+     "maxStepDeg": 0.1,
+     "at": 9
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.091,
+    "loopGap": 0.01,
+    "dirErrDeg": 0.0000024148365394514667
+   }
+  },
+  "point_order": {
+   "floorMinYVoxBefore": -0.85,
+   "soleMinYVoxBefore": -0.17,
+   "floorMinYVoxAfter": -0.68,
+   "soleMinYVoxAfter": 0,
+   "frames": 75,
+   "loop": true,
+   "meta": {
+    "durationFrames": 75,
+    "src": "Yes",
+    "groundShiftVox": 0.17
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.04,
+     "worstAt": "armUL@8",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.04,
+     "worstAt": "armUL@8",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      0,
+      0
+     ],
+     "max": [
+      9,
+      0,
+      0
+     ],
+     "maxStepDeg": 0.2,
+     "at": 4
+    },
+    "head": {
+     "min": [
+      8,
+      11,
+      2
+     ],
+     "max": [
+      19,
+      11,
+      2
+     ],
+     "maxStepDeg": 1.8,
+     "at": 16
+    },
+    "armUL": {
+     "min": [
+      -97,
+      0,
+      8
+     ],
+     "max": [
+      17,
+      0,
+      18
+     ],
+     "maxStepDeg": 9.9,
+     "at": 9
+    },
+    "armLL": {
+     "min": [
+      -72,
+      0,
+      -3
+     ],
+     "max": [
+      -2,
+      0,
+      6
+     ],
+     "maxStepDeg": 12.9,
+     "at": 14
+    },
+    "armUR": {
+     "min": [
+      18,
+      0,
+      -18
+     ],
+     "max": [
+      23,
+      0,
+      -15
+     ],
+     "maxStepDeg": 0.4,
+     "at": 29
+    },
+    "armLR": {
+     "min": [
+      -56,
+      0,
+      2
+     ],
+     "max": [
+      -44,
+      0,
+      3
+     ],
+     "maxStepDeg": 1.2,
+     "at": 7
+    },
+    "legUL": {
+     "min": [
+      -11,
+      0,
+      9
+     ],
+     "max": [
+      -1,
+      0,
+      12
+     ],
+     "maxStepDeg": 1.8,
+     "at": 16
+    },
+    "legLL": {
+     "min": [
+      3,
+      0,
+      -4
+     ],
+     "max": [
+      17,
+      0,
+      -1
+     ],
+     "maxStepDeg": 2.6,
+     "at": 15
+    },
+    "legUR": {
+     "min": [
+      15,
+      0,
+      -13
+     ],
+     "max": [
+      22,
+      0,
+      -9
+     ],
+     "maxStepDeg": 1.2,
+     "at": 16
+    },
+    "legLR": {
+     "min": [
+      1,
+      0,
+      1
+     ],
+     "max": [
+      9,
+      0,
+      8
+     ],
+     "maxStepDeg": 1.7,
+     "at": 16
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 1.045,
+    "loopGap": 0.33,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "talk": {
+   "floorMinYVoxBefore": -0.77,
+   "soleMinYVoxBefore": 0.01,
+   "floorMinYVoxAfter": -0.78,
+   "soleMinYVoxAfter": 0,
+   "frames": 88,
+   "loop": true,
+   "meta": {
+    "durationFrames": 88,
+    "src": "Idle_Talking_Loop",
+    "groundShiftVox": -0.01
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armUR@14",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armUR@7",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      5,
+      0,
+      0
+     ],
+     "max": [
+      7,
+      0,
+      1
+     ],
+     "maxStepDeg": 0.4,
+     "at": 6
+    },
+    "head": {
+     "min": [
+      6,
+      11,
+      2
+     ],
+     "max": [
+      15,
+      12,
+      5
+     ],
+     "maxStepDeg": 2.2,
+     "at": 52
+    },
+    "armUL": {
+     "min": [
+      -27,
+      0,
+      13
+     ],
+     "max": [
+      3,
+      0,
+      38
+     ],
+     "maxStepDeg": 3.4,
+     "at": 84
+    },
+    "armLL": {
+     "min": [
+      -121,
+      0,
+      -43
+     ],
+     "max": [
+      -93,
+      0,
+      -16
+     ],
+     "maxStepDeg": 5.5,
+     "at": 79
+    },
+    "armUR": {
+     "min": [
+      -22,
+      0,
+      -28
+     ],
+     "max": [
+      -9,
+      0,
+      -17
+     ],
+     "maxStepDeg": 3.8,
+     "at": 15
+    },
+    "armLR": {
+     "min": [
+      -99,
+      0,
+      18
+     ],
+     "max": [
+      -80,
+      0,
+      32
+     ],
+     "maxStepDeg": 5,
+     "at": 15
+    },
+    "legUL": {
+     "min": [
+      -18,
+      0,
+      13
+     ],
+     "max": [
+      -15,
+      0,
+      14
+     ],
+     "maxStepDeg": 0.3,
+     "at": 9
+    },
+    "legLL": {
+     "min": [
+      22,
+      0,
+      -5
+     ],
+     "max": [
+      26,
+      0,
+      -4
+     ],
+     "maxStepDeg": 0.3,
+     "at": 10
+    },
+    "legUR": {
+     "min": [
+      9,
+      0,
+      -16
+     ],
+     "max": [
+      12,
+      0,
+      -14
+     ],
+     "maxStepDeg": 0.3,
+     "at": 11
+    },
+    "legLR": {
+     "min": [
+      12,
+      0,
+      11
+     ],
+     "max": [
+      16,
+      0,
+      15
+     ],
+     "maxStepDeg": 0.4,
+     "at": 53
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.096,
+    "loopGap": 0.03,
+    "dirErrDeg": 0.000002561320938754782
+   }
+  },
+  "smug": {
+   "floorMinYVoxBefore": -0.86,
+   "soleMinYVoxBefore": -0.14,
+   "floorMinYVoxAfter": -0.72,
+   "soleMinYVoxAfter": 0,
+   "frames": 75,
+   "loop": true,
+   "meta": {
+    "durationFrames": 75,
+    "src": "Idle_FoldArms_Loop",
+    "groundShiftVox": 0.14
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.03,
+     "worstAt": "head@74",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.2,
+     "meanDeg": 0.03,
+     "worstAt": "head@74",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      0,
+      0
+     ],
+     "max": [
+      9,
+      0,
+      0
+     ],
+     "maxStepDeg": 0.2,
+     "at": 4
+    },
+    "head": {
+     "min": [
+      6,
+      7,
+      2
+     ],
+     "max": [
+      8,
+      15,
+      3
+     ],
+     "maxStepDeg": 2.4,
+     "at": 46
+    },
+    "armUL": {
+     "min": [
+      -64,
+      0,
+      -3
+     ],
+     "max": [
+      -62,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "armLL": {
+     "min": [
+      7,
+      0,
+      -103
+     ],
+     "max": [
+      18,
+      0,
+      -103
+     ],
+     "maxStepDeg": 0.9,
+     "at": 10
+    },
+    "armUR": {
+     "min": [
+      -51,
+      0,
+      -3
+     ],
+     "max": [
+      -49,
+      0,
+      -2
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "armLR": {
+     "min": [
+      25,
+      0,
+      104
+     ],
+     "max": [
+      32,
+      0,
+      105
+     ],
+     "maxStepDeg": 0.5,
+     "at": 8
+    },
+    "legUL": {
+     "min": [
+      -14,
+      0,
+      12
+     ],
+     "max": [
+      -9,
+      0,
+      13
+     ],
+     "maxStepDeg": 0.5,
+     "at": 52
+    },
+    "legLL": {
+     "min": [
+      12,
+      0,
+      -4
+     ],
+     "max": [
+      18,
+      0,
+      -3
+     ],
+     "maxStepDeg": 1.1,
+     "at": 31
+    },
+    "legUR": {
+     "min": [
+      12,
+      0,
+      -13
+     ],
+     "max": [
+      16,
+      0,
+      -10
+     ],
+     "maxStepDeg": 0.3,
+     "at": 9
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      5
+     ],
+     "max": [
+      10,
+      0,
+      9
+     ],
+     "maxStepDeg": 0.4,
+     "at": 11
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.081,
+    "loopGap": 0.44,
+    "dirErrDeg": 0.000002699869328381916
+   }
+  },
+  "shake_no": {
+   "floorMinYVoxBefore": -0.86,
+   "soleMinYVoxBefore": -0.14,
+   "floorMinYVoxAfter": -0.72,
+   "soleMinYVoxAfter": 0,
+   "frames": 75,
+   "loop": true,
+   "meta": {
+    "durationFrames": 75,
+    "src": "Idle_No_Loop",
+    "groundShiftVox": 0.14
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armUR@74",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "armUR@74",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      0,
+      0
+     ],
+     "max": [
+      9,
+      0,
+      0
+     ],
+     "maxStepDeg": 0.2,
+     "at": 2
+    },
+    "head": {
+     "min": [
+      10,
+      -4,
+      -4
+     ],
+     "max": [
+      34,
+      23,
+      13
+     ],
+     "maxStepDeg": 9.5,
+     "at": 15
+    },
+    "armUL": {
+     "min": [
+      9,
+      0,
+      17
+     ],
+     "max": [
+      16,
+      0,
+      18
+     ],
+     "maxStepDeg": 0.6,
+     "at": 7
+    },
+    "armLL": {
+     "min": [
+      -33,
+      0,
+      -2
+     ],
+     "max": [
+      -28,
+      0,
+      -1
+     ],
+     "maxStepDeg": 0.4,
+     "at": 5
+    },
+    "armUR": {
+     "min": [
+      18,
+      0,
+      -18
+     ],
+     "max": [
+      23,
+      0,
+      -15
+     ],
+     "maxStepDeg": 0.4,
+     "at": 29
+    },
+    "armLR": {
+     "min": [
+      -44,
+      0,
+      2
+     ],
+     "max": [
+      -44,
+      0,
+      3
+     ],
+     "maxStepDeg": 0.1,
+     "at": 1
+    },
+    "legUL": {
+     "min": [
+      -14,
+      0,
+      12
+     ],
+     "max": [
+      -9,
+      0,
+      13
+     ],
+     "maxStepDeg": 0.5,
+     "at": 49
+    },
+    "legLL": {
+     "min": [
+      11,
+      0,
+      -4
+     ],
+     "max": [
+      18,
+      0,
+      -3
+     ],
+     "maxStepDeg": 0.5,
+     "at": 29
+    },
+    "legUR": {
+     "min": [
+      12,
+      0,
+      -13
+     ],
+     "max": [
+      16,
+      0,
+      -10
+     ],
+     "maxStepDeg": 0.3,
+     "at": 9
+    },
+    "legLR": {
+     "min": [
+      5,
+      0,
+      5
+     ],
+     "max": [
+      10,
+      0,
+      9
+     ],
+     "maxStepDeg": 0.4,
+     "at": 11
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.085,
+    "loopGap": 0.26,
+    "dirErrDeg": 0.0000014787793334710982
+   }
+  },
+  "dance": {
+   "floorMinYVoxBefore": -1.02,
+   "soleMinYVoxBefore": -0.39,
+   "floorMinYVoxAfter": -0.63,
+   "soleMinYVoxAfter": 0,
+   "frames": 30,
+   "loop": true,
+   "meta": {
+    "durationFrames": 30,
+    "src": "Dance_Loop",
+    "groundShiftVox": 0.39
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.05,
+     "worstAt": "armLL@8",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.04,
+     "worstAt": "armLL@8",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      -5,
+      -12,
+      -5
+     ],
+     "max": [
+      5,
+      16,
+      3
+     ],
+     "maxStepDeg": 2.8,
+     "at": 21
+    },
+    "head": {
+     "min": [
+      6,
+      -10,
+      -17
+     ],
+     "max": [
+      11,
+      9,
+      16
+     ],
+     "maxStepDeg": 3.4,
+     "at": 23
+    },
+    "armUL": {
+     "min": [
+      -8,
+      0,
+      16
+     ],
+     "max": [
+      33,
+      0,
+      24
+     ],
+     "maxStepDeg": 4,
+     "at": 24
+    },
+    "armLL": {
+     "min": [
+      -88,
+      0,
+      0
+     ],
+     "max": [
+      -71,
+      0,
+      9
+     ],
+     "maxStepDeg": 2.8,
+     "at": 27
+    },
+    "armUR": {
+     "min": [
+      -12,
+      0,
+      -27
+     ],
+     "max": [
+      10,
+      0,
+      -13
+     ],
+     "maxStepDeg": 2.3,
+     "at": 8
+    },
+    "armLR": {
+     "min": [
+      -88,
+      0,
+      -16
+     ],
+     "max": [
+      -71,
+      0,
+      6
+     ],
+     "maxStepDeg": 3,
+     "at": 26
+    },
+    "legUL": {
+     "min": [
+      -31,
+      0,
+      -10
+     ],
+     "max": [
+      -13,
+      0,
+      21
+     ],
+     "maxStepDeg": 4.5,
+     "at": 10
+    },
+    "legLL": {
+     "min": [
+      0,
+      0,
+      -6
+     ],
+     "max": [
+      49,
+      0,
+      0
+     ],
+     "maxStepDeg": 10.6,
+     "at": 21
+    },
+    "legUR": {
+     "min": [
+      -37,
+      0,
+      -18
+     ],
+     "max": [
+      6,
+      0,
+      11
+     ],
+     "maxStepDeg": 5.8,
+     "at": 5
+    },
+    "legLR": {
+     "min": [
+      0,
+      0,
+      -2
+     ],
+     "max": [
+      50,
+      0,
+      5
+     ],
+     "maxStepDeg": 9.1,
+     "at": 29
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.084,
+    "loopGap": 0,
+    "dirErrDeg": 0.0000022588727439225506
+   }
+  },
+  "sit": {
+   "floorMinYVoxBefore": -0.26,
+   "soleMinYVoxBefore": 0.17,
+   "floorMinYVoxAfter": -0.26,
+   "soleMinYVoxAfter": 0.17,
+   "frames": 50,
+   "loop": true,
+   "meta": {
+    "durationFrames": 50,
+    "src": "Sitting_Idle_Loop"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.02,
+     "worstAt": "armLL@44",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.02,
+     "worstAt": "armLL@44",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      7,
+      0,
+      0
+     ],
+     "max": [
+      8,
+      0,
+      0
+     ],
+     "maxStepDeg": 0.1,
+     "at": 37
+    },
+    "head": {
+     "min": [
+      1,
+      11,
+      0
+     ],
+     "max": [
+      5,
+      11,
+      1
+     ],
+     "maxStepDeg": 0.2,
+     "at": 7
+    },
+    "armUL": {
+     "min": [
+      14,
+      0,
+      9
+     ],
+     "max": [
+      14,
+      0,
+      12
+     ],
+     "maxStepDeg": 0.2,
+     "at": 37
+    },
+    "armLL": {
+     "min": [
+      -83,
+      0,
+      -12
+     ],
+     "max": [
+      -82,
+      0,
+      -9
+     ],
+     "maxStepDeg": 0.2,
+     "at": 36
+    },
+    "armUR": {
+     "min": [
+      6,
+      0,
+      -23
+     ],
+     "max": [
+      6,
+      0,
+      -21
+     ],
+     "maxStepDeg": 0.2,
+     "at": 40
+    },
+    "armLR": {
+     "min": [
+      -75,
+      0,
+      26
+     ],
+     "max": [
+      -74,
+      0,
+      29
+     ],
+     "maxStepDeg": 0.2,
+     "at": 15
+    },
+    "legUL": {
+     "min": [
+      -86,
+      0,
+      10
+     ],
+     "max": [
+      -86,
+      0,
+      10
+     ],
+     "maxStepDeg": 0,
+     "at": 0
+    },
+    "legLL": {
+     "min": [
+      85,
+      0,
+      -1
+     ],
+     "max": [
+      85,
+      0,
+      -1
+     ],
+     "maxStepDeg": 0,
+     "at": 0
+    },
+    "legUR": {
+     "min": [
+      -85,
+      0,
+      -4
+     ],
+     "max": [
+      -85,
+      0,
+      -4
+     ],
+     "maxStepDeg": 0,
+     "at": 0
+    },
+    "legLR": {
+     "min": [
+      83,
+      0,
+      -10
+     ],
+     "max": [
+      83,
+      0,
+      -10
+     ],
+     "maxStepDeg": 0,
+     "at": 0
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.071,
+    "loopGap": 0,
+    "dirErrDeg": 0.0000017075472925031877
+   }
+  },
+  "sit_enter": {
+   "floorMinYVoxBefore": -0.74,
+   "soleMinYVoxBefore": 0.01,
+   "floorMinYVoxAfter": -0.74,
+   "soleMinYVoxAfter": 0.01,
+   "frames": 40,
+   "loop": false,
+   "meta": {
+    "durationFrames": 40,
+    "src": "Sitting_Enter"
+   },
+   "interp": {
+    "eulerLerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "legLR@3",
+     "framesOver10deg": 0
+    },
+    "slerp": {
+     "maxDeg": 0.1,
+     "meanDeg": 0.03,
+     "worstAt": "legLR@4",
+     "framesOver10deg": 0
+    }
+   },
+   "ranges": {
+    "body": {
+     "min": [
+      6,
+      0,
+      0
+     ],
+     "max": [
+      11,
+      3,
+      2
+     ],
+     "maxStepDeg": 0.6,
+     "at": 33
+    },
+    "head": {
+     "min": [
+      8,
+      8,
+      2
+     ],
+     "max": [
+      19,
+      12,
+      4
+     ],
+     "maxStepDeg": 1.7,
+     "at": 33
+    },
+    "armUL": {
+     "min": [
+      4,
+      0,
+      8
+     ],
+     "max": [
+      21,
+      0,
+      19
+     ],
+     "maxStepDeg": 3,
+     "at": 4
+    },
+    "armLL": {
+     "min": [
+      -84,
+      0,
+      -16
+     ],
+     "max": [
+      -31,
+      0,
+      -2
+     ],
+     "maxStepDeg": 4.4,
+     "at": 14
+    },
+    "armUR": {
+     "min": [
+      3,
+      0,
+      -32
+     ],
+     "max": [
+      24,
+      0,
+      -17
+     ],
+     "maxStepDeg": 3.9,
+     "at": 4
+    },
+    "armLR": {
+     "min": [
+      -90,
+      0,
+      0
+     ],
+     "max": [
+      -45,
+      0,
+      34
+     ],
+     "maxStepDeg": 4.8,
+     "at": 21
+    },
+    "legUL": {
+     "min": [
+      -93,
+      0,
+      10
+     ],
+     "max": [
+      -14,
+      0,
+      14
+     ],
+     "maxStepDeg": 4.4,
+     "at": 17
+    },
+    "legLL": {
+     "min": [
+      21,
+      0,
+      -6
+     ],
+     "max": [
+      85,
+      0,
+      0
+     ],
+     "maxStepDeg": 4.5,
+     "at": 15
+    },
+    "legUR": {
+     "min": [
+      -92,
+      0,
+      -21
+     ],
+     "max": [
+      13,
+      0,
+      -4
+     ],
+     "maxStepDeg": 8.7,
+     "at": 6
+    },
+    "legLR": {
+     "min": [
+      10,
+      0,
+      -10
+     ],
+     "max": [
+      83,
+      0,
+      22
+     ],
+     "maxStepDeg": 8.9,
+     "at": 5
+    }
+   },
+   "poleFlags": [],
+   "retarget": {
+    "quantErrDeg": 0.07,
+    "loopGap": null,
+    "dirErrDeg": 0.0000014787793334710982
+   }
+  }
+ }
+}

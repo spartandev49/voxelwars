@@ -32,8 +32,17 @@ def info(slug):
     h = get(url)
     t = re.search(r'<title>(.*?) \| OpenGameArt', h, re.S)
     title = html.unescape(t.group(1)).strip() if t else slug
-    a = re.search(r"class='username'><a[^>]*>(.*?)</a>", h, re.S)
-    author = strip(a.group(1)) if a else '?'
+    author, submitter = '?', None
+    i = h.find('field-name-author-submitter')
+    if i >= 0:
+        j = h.find('field-name-post-date', i)
+        k = h.rfind('<div', i, j) if j > 0 else i + 1500
+        txt = strip(h[i:k])
+        txt = re.sub(r'^.*?Author:\s*', '', txt)
+        m = re.match(r'(.*?)\s*\(Submitted by\s*(.*?)\s*\)\s*$', txt)
+        if m: author, submitter = m.group(1).strip(), m.group(2).strip()
+        else: author = txt.strip()
+        author = author.strip(' ()') or '?'
     lic = licenses(h)
     files = [f for f in re.findall(r'href="(https://opengameart.org/sites/default/files/[^"]+)"', h)
              if not f.endswith('.css') and '/license_images/' not in f and '/styles/' not in f and '/css/' not in f and '/js/' not in f]
@@ -41,7 +50,7 @@ def info(slug):
     d = re.search(r'field-name-body.*?<div class="field-item even"[^>]*>(.*?)</div></div></div>', h, re.S)
     desc = strip(d.group(1))[:700] if d else ''
     tags = re.findall(r'field_art_tags_tid=[^"]*"[^>]*>([^<]+)<', h)
-    return dict(slug=slug, url=url, title=title, author=author, licenses=lic, files=files, desc=desc, tags=tags[:12])
+    return dict(slug=slug, url=url, title=title, author=author, submitter=submitter, licenses=lic, files=files, desc=desc, tags=tags[:12])
 
 def search(keys, typ, pages=1):
     out = []

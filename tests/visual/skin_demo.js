@@ -1,0 +1,56 @@
+import { Engine } from '../../src/render/engine.js';
+import { generateArena } from '../../src/world/gen.js';
+import { TerrainRenderer } from '../../src/render/terrain.js';
+import { VoxelGrid, V, T, G } from '../../src/voxel/grid.js';
+import { ModelDef } from '../../src/voxel/model.js';
+import { VoxSkin, newPose, POSE_STRIDE } from '../../src/render/voxskin.js';
+import { lin } from '../../src/render/engine.js';
+const eng = new Engine(document.body);
+const arena = generateArena('marathon', 'medium', 3);
+const tr = new TerrainRenderer(eng.scene); tr.setArena(arena);
+const f = eng.setEnvironment(arena.env, arena); tr.setFog(f.color, f.near, f.far);
+// hum1-like test model
+const skin = 0xe0ac84;
+const m = new ModelDef('hum_test', 0.1);
+const body = new VoxelGrid(10, 9, 5).box(0, 0, 0, 10, 9, 5, T(0xf0f0f0)).box(1, 0, 0, 8, 2, 5, V(0x7a5a3a)).box(3, 4, 4, 4, 3, 1, V(0xd8b24a));
+const head = new VoxelGrid(10, 10, 10).box(2, 0, 2, 6, 6, 6, V(skin)).box(2, 4, 2, 6, 2, 6, V(0xb87333)).box(4, 6, 4, 2, 3, 2, T(0xffffff)).box(3, 2, 7, 1, 1, 1, V(0x222222)).box(6, 2, 7, 1, 1, 1, V(0x222222));
+const armU = new VoxelGrid(3, 5, 3).box(0, 0, 0, 3, 5, 3, V(skin));
+const armL = new VoxelGrid(3, 5, 3).box(0, 0, 0, 3, 5, 3, V(skin)).box(0, 3, 0, 3, 2, 3, V(0xb87333));
+const legU = new VoxelGrid(4, 5, 4).box(0, 0, 0, 4, 5, 4, V(0xe8e2d0));
+const legL = new VoxelGrid(4, 5, 6).box(0, 0, 0, 4, 5, 4, V(skin)).box(0, 0, 0, 4, 2, 6, V(0x6b4a2a));
+const spear = new VoxelGrid(5, 40, 5).box(2, 0, 2, 1, 36, 1, V(0x8b5a2b)).box(1, 36, 1, 3, 4, 3, V(0xcfd3d8));
+const shield = new VoxelGrid(14, 14, 3).ellipsoid(7, 7, 1, 7, 7, 1.2, T(0xffffff)).ellipsoid(7, 7, 2, 3, 3, 0.8, V(0xe0b84a));
+m.addPart('body', body, { origin: [0, 10, 0], pivot: [5, 0, 2.5] });
+m.addPart('head', head, { parent: 'body', origin: [0, 9, 0], pivot: [5, 0, 5] });
+m.addPart('armUL', armU, { parent: 'body', origin: [6.5, 8, 0], pivot: [1.5, 5, 1.5] });
+m.addPart('armLL', armL, { parent: 'armUL', origin: [0, -5, 0], pivot: [1.5, 5, 1.5] });
+m.addPart('armUR', armU, { parent: 'body', origin: [-6.5, 8, 0], pivot: [1.5, 5, 1.5] });
+m.addPart('armLR', armL, { parent: 'armUR', origin: [0, -5, 0], pivot: [1.5, 5, 1.5] });
+m.addPart('weapon', spear, { parent: 'armLR', origin: [0, -4, 0.5], pivot: [2.5, 8, 2.5] });
+m.addPart('offhand', shield, { parent: 'armLL', origin: [2.5, -3, 1.5], pivot: [7, 7, 1.5], rest: [0, Math.PI / 2, 0] });
+m.addPart('legUL', legU, { origin: [3, 10, 0], pivot: [2, 5, 2] });
+m.addPart('legLL', legL, { parent: 'legUL', origin: [0, -5, 0], pivot: [2, 5, 2] });
+m.addPart('legUR', legU, { origin: [-3, 10, 0], pivot: [2, 5, 2] });
+m.addPart('legLR', legL, { parent: 'legUR', origin: [0, -5, 0], pivot: [2, 5, 2] });
+const sk = new VoxSkin(eng, m, { capacity: 8 });
+const pose = newPose(m.parts.length);
+const idx = (id) => m.partIndex(id) * POSE_STRIDE;
+const teams = [lin(0xe23b3b), lin(0x2f6bff)];
+sk.begin();
+for (let i = 0; i < 60; i++) {
+  const gx = i % 10, gz = Math.floor(i / 10), x = -12 + gx * 2.6, z = -6 + gz * 2.8, y = arena.heightAt(x, z);
+  const ph = i * 0.7;
+  pose.fill(0); for (let k = 6; k < pose.length; k += 9) { pose[k] = pose[k + 1] = pose[k + 2] = 1; }
+  const s = Math.sin(ph) * 0.8;
+  pose[idx('legUL') + 3] = s; pose[idx('legLL') + 3] = Math.max(0, -s) * 1.1;
+  pose[idx('legUR') + 3] = -s; pose[idx('legLR') + 3] = Math.max(0, s) * 1.1;
+  pose[idx('armUL') + 3] = -s * 0.7; pose[idx('armUR') + 3] = -1.2 - (i % 3) * 0.2; pose[idx('armLR') + 3] = -0.6;
+  pose[idx('head') + 4] = Math.sin(ph * 0.5) * 0.4;
+  pose[idx('body') + 4] = Math.sin(ph * 0.3) * 0.2; pose[idx('body') + 1] = Math.abs(s) * 0.05;
+  const t = teams[(gx < 5) ? 0 : 1];
+  sk.add(x, y, z, (gx < 5 ? 1 : -1) * 1.4 + gz * 0.1, 1, 1, 1, pose, [t.r, t.g, t.b], i === 7 ? 0.9 : 0, i === 12 ? 1 : 0, 0, i === 20 ? 1.2 : 0, i === 33 ? 0.4 : 0);
+}
+sk.end();
+eng.camera.position.set(-15, 14.5, 15); eng.camera.lookAt(0, 9.5, 0); eng.focus.set(0, 9, 0); eng.shadowRadius = 30;
+eng.render(0.016); eng.render(0.016);
+console.log('draw calls', eng.renderer.info.render.calls, 'tris', eng.renderer.info.render.triangles, 'program count', eng.renderer.info.programs.length);
