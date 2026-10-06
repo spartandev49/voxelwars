@@ -130,6 +130,7 @@ async function start() {
     else if (k === 'shake') game.rig.shakeAmp = v; else if (k === 'uiScale') document.documentElement.style.fontSize = (16 * v) + 'px';
     else if (k.startsWith('vol') && audio.setVolume) { for (const b of Object.keys(settings.get('vol'))) audio.setVolume(b, settings.get('vol.' + b)); } else if (k === 'muted' && audio.setMuted) audio.setMuted(v);
   });
+  game.setTier(settings.get('quality') || 'marble');   // lod distances, near budget, fx caps, prop tier for the saved quality
   game.rig.reduceMotion = !!settings.get('reduceMotion'); game.rig.shakeAmp = settings.get('shake') ?? 1;
   document.documentElement.style.fontSize = (16 * (settings.get('uiScale') || 1)) + 'px';
   if (settings.get('reduceMotion')) document.documentElement.classList.add('vw-reduce-motion');

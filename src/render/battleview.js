@@ -64,7 +64,9 @@ export class BattleView {
     on('crater', (p) => { if (this.terrain) this.terrain.markDirty({ x0: p.x0, z0: p.z0, x1: p.x1, z1: p.z1 }); });
     on('prop_damaged', (p) => { if (this.props && this.props.setStageById) this.props.setStageById(p.id, p.hpFrac < 0.6 ? 1 : 0); });
     on('prop_destroyed', (p) => this._onPropDestroyed(p));
-    on('lightning_arc', (p) => this.fx.lightning(p.x0, p.y0, p.z0, p.x1, p.y1, p.z1));
+    on('telegraph', (p) => this._onTelegraph(p));
+    on('hazard_trigger', (p) => this._onHazard(p));
+        on('lightning_arc', (p) => this.fx.lightning(p.x0, p.y0, p.z0, p.x1, p.y1, p.z1));
     on('unit_heal', (p) => { const u = this._unitById(p.id); if (u) for (let i = 0; i < 4; i++) this.fx.spawn(u.x + (fxRand.next() - 0.5), u.y + 1 + fxRand.next() * 1.5, u.z + (fxRand.next() - 0.5), 0, 1.5, 0, 0x6aff9a, 0.1, 0.6, { g: -1, flags: 2 | 4 }); });
     on('stone_gaze', () => {});
   }
@@ -271,6 +273,47 @@ export class BattleView {
     if (!id) return; const u = this._unitById(id); if (!u || !u.anim) return;
     const until = this.time + dur, e = this._hs.get(id);
     if (!e) this._hs.set(id, { until, t: u.anim.t }); else if (until > e.until) e.until = until;
+  }
+  // ------------------------------------------------------------------ telegraphs (ability areas) and hazards, drawn as voxel cubes lying on the terrain
+  _onTelegraph(p) {
+    const fx = this.fx, w = this.world; if (!w || this.fxScale < 0.1) return;
+    // rate limit: the same shape from the same place is drawn once per 0.45 s; at most ~600 cubes per second overall
+    const now = this.time, key = p.kind + ((p.x * 2) | 0) + ':' + ((p.z * 2) | 0);
+    if (!this._tgLast) { this._tgLast = new Map(); this._tgBudget = 900; this._tgT = now; }
+    this._tgBudget = Math.min(900, this._tgBudget + (now - this._tgT) * 900); this._tgT = now;
+    const last = this._tgLast.get(key); if (last !== undefined && now - last < 0.45) return; this._tgLast.set(key, now);
+    if (this._tgLast.size > 200) for (const [k, t] of this._tgLast) if (now - t > 2) this._tgLast.delete(k);
+    const arena = w.arena, life = Math.max(0.3, p.t || 0.6), lowQ = this.fxScale < 0.6;
+    const col = p.kind === 'heal' ? 0x6aff9a : p.kind === 'aura' ? 0xffe58a : (p.team === 1 ? 0xff6a5a : p.team === 0 ? 0x6a9cff : 0xfff0b0);
+    const gy = (x, z) => arena.heightAt(x, z) + 0.16;
+    const put = (x, z, size, l) => { if (this._tgBudget < 1) return; this._tgBudget -= 1; fx.spawn(x, gy(x, z), z, 0, 0, 0, col, size, l, { g: 0, drag: 0, spin: 0 }); };
+    const ring = (cx, cz, r, size, l) => { const n = Math.max(14, Math.min(lowQ ? 40 : 84, Math.round(r * 7))); for (let i = 0; i < n; i++) { const a = i / n * TAU; put(cx + Math.sin(a) * r, cz + Math.cos(a) * r, size, l); } };
+    const sweep = (cx, cz, r) => {      // a ring of cubes that travels outward and lands on the edge exactly when the telegraph ends: the countdown you can read
+      const n = Math.max(10, Math.min(lowQ ? 22 : 44, Math.round(r * 3.2)));
+      for (let i = 0; i < n && this._tgBudget >= 1; i++) { const a = i / n * TAU + 0.1, sx = Math.sin(a), sz = Math.cos(a); this._tgBudget -= 1; fx.spawn(cx + sx * r * 0.15, gy(cx + sx * r, cz + sz * r) + 0.1, cz + sz * r * 0.15, sx * r * 0.85 / life, 0, sz * r * 0.85 / life, col, 0.22, life, { g: 0, drag: 0, spin: 0 }); }
+    };
+    switch (p.kind) {
+      case 'cone': {
+        const r = p.r, h = p.h, half = p.a || 0.7, n = Math.max(8, Math.min(lowQ ? 22 : 44, Math.round(r * half * 4)));
+        for (let i = 0; i <= n; i++) { const a = h - half + (i / n) * half * 2; put(p.x + Math.sin(a) * r, p.z + Math.cos(a) * r, 0.32, life); }
+        for (const e of [-half, half]) for (let k = 1; k <= 7; k++) { const a = h + e; put(p.x + Math.sin(a) * r * k / 7, p.z + Math.cos(a) * r * k / 7, 0.28, life); }
+        break;
+      }
+      case 'line': {
+        const len = p.a || 4, fxv = Math.sin(p.h), fzv = Math.cos(p.h), n = Math.max(6, Math.min(40, Math.round(len * 3.5)));
+        for (let i = 0; i <= n; i++) { const d = len * i / n; const x = p.x - fxv * (len - d), z = p.z - fzv * (len - d); put(x - fzv * p.r * 0.5, z + fxv * p.r * 0.5, 0.28, life); put(x + fzv * p.r * 0.5, z - fxv * p.r * 0.5, 0.28, life); }
+        break;
+      }
+      case 'execute': case 'kick': case 'net': ring(p.x, p.z, p.r, 0.34, life); break;
+      default: ring(p.x, p.z, p.r, 0.34, life); if (p.r >= 3) sweep(p.x, p.z, p.r);
+    }
+  }
+  _onHazard(p) {
+    const fx = this.fx; if (!fx || this.fxScale < 0.1) return;
+    if (p.kind === 'spikes') { fx.dust(p.x, this.world.arena.heightAt(p.x, p.z) + 0.3, p.z, 6, 0xb8b0a0, 1.6); fx.sparks(p.x, this.world.arena.heightAt(p.x, p.z) + 0.6, p.z, 5, 0xffe08a, 3); }
+    else if (p.kind === 'geyser') { const y = this.world.arena.heightAt(p.x, p.z); for (let i = 0; i < 26; i++) fx.spawn(p.x + (fxRand.next() - 0.5) * 0.8, y + 0.3, p.z + (fxRand.next() - 0.5) * 0.8, (fxRand.next() - 0.5) * 2, 9 + fxRand.next() * 5, (fxRand.next() - 0.5) * 2, 0xbfe6ff, 0.22, 1.1, { g: 12 }); }
+    else if (p.kind === 'fire') fx.fire(p.x, this.world.arena.heightAt(p.x, p.z) + 0.5, p.z, 6);
+    else if (p.kind === 'boulders') fx.dust(p.x, this.world.arena.heightAt(p.x, p.z) + 0.5, p.z, 8, 0xcdbb94, 3);
   }
   _onBlock(p) { this.fx.sparks(p.x, p.y, p.z, 7, 0xfff0b0, 5); }
   _onKill(p) {

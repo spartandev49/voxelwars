@@ -167,12 +167,12 @@ export class Engine {
     u.uStars.value = night * (1 - grey);
     // lights
     const sunI = clamp(elev * 1.6 + 0.35, 0.0, 1.0) * (1 - grey * 0.65);
-    this.sun.intensity = 0.1 + 0.95 * sunI;
+    this.sun.intensity = 0.1 + 0.95 * sunI + 0.42 * night * (1 - grey * 0.5);     // moonlight: night stays readable (R12)
     this.sun.color.copy(lin(0xfff1da).lerp(lin(0xff9c52), dusk * 0.9)).lerp(lin(0x9fb4ff), night * 0.9);
-    this.hemi.intensity = 0.34 + 0.34 * (1 - night) * (1 - grey * 0.3) + 0.1 * night;
+    this.hemi.intensity = 0.34 + 0.34 * (1 - night) * (1 - grey * 0.3) + 0.34 * night;
     this.hemi.color.copy(horizon).lerp(lin(0xffffff), 0.35);
     this.hemi.groundColor.copy(lin(0x6e5c40)).lerp(lin(0x1a1830), night * 0.8);
-    this.post.exposure = GRADE.exposure * (1 + 0.1 * (1 - night));
+    this.post.exposure = GRADE.exposure * (1 + 0.1 * (1 - night) + 0.22 * night);
     // fog
     const fogK = clamp(e.fog + (w === 'fog' ? 0.35 : w === 'rain' || w === 'storm' ? 0.18 : w === 'sandstorm' ? 0.4 : 0), 0, 1);
     const near = lerp(130, 12, fogK), far = lerp(480, 80, Math.pow(fogK, 0.8));

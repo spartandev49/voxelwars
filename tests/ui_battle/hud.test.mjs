@@ -211,10 +211,11 @@ async function measureCoverage(p) {
   check('subtitles are on by default (X4)', await p.evaluate(() => __ui.mock.ctx.settings.get('subtitles') === true && !document.querySelector('.hud-ann').classList.contains('no-subs')));
   // brutus intro at t=0.6: typewriter in 4-char steps at 10 Hz, ui_tick blips
   await p.evaluate(`__ui.step(1.0); __ui.mock.calls.audio.length = 0;`);
-  const samples = [];
-  for (let i = 0; i < 6; i++) { samples.push(await p.evaluate(() => document.querySelector('.hud-ann-text .shown').textContent.length)); await p.waitForTimeout(100); }
-  const incs = samples.slice(1).map((v, i) => v - samples[i]).filter((d) => d > 0);
-  check('typewriter reveals text in chunks (4 chars per 100 ms)', incs.length >= 3 && incs.every((d) => d >= 4 && d <= 8), samples.join(','));
+  const samples = [];                                                                                      // [chars shown, page clock ms]; sampled with the page clock so a busy machine cannot fake a failure
+  for (let i = 0; i < 8; i++) { samples.push(await p.evaluate(() => [document.querySelector('.hud-ann-text .shown').textContent.length, performance.now()])); await p.waitForTimeout(100); }
+  const steps = samples.slice(1).map((v, i) => ({ d: v[0] - samples[i][0], dt: v[1] - samples[i][1] })).filter((x) => x.d > 0);   // a line that ends and restarts shows as a drop: ignored
+  const rate = steps.reduce((t, x) => t + x.d, 0) / (steps.reduce((t, x) => t + x.dt, 0) / 1000);
+  check('typewriter reveals text in 4-char chunks, at most one step per 105 ms (' + rate.toFixed(0) + ' chars/s)', steps.length >= 3 && steps.filter((x) => x.d === 4).length >= 3 && steps.every((x) => x.d <= 4 * (Math.floor(x.dt / 100) + 1)) && rate > 15 && rate <= 4 * 10 * 1.05, samples.map((x) => x[0]).join(','));
   check('typewriter plays ui_tick blips', (await p.evaluate(() => __ui.mock.calls.audio.filter((c) => c === 'ui_tick').length)) >= 2);
   check('the portrait is Brutus with the talking animation on', await p.evaluate(() => { const a = document.querySelector('.hud-ann'); return a.dataset.who === 'brutus' && a.classList.contains('is-talking') && /BRUTUS/i.test(a.querySelector('.hud-ann-name').textContent); }));
   // skip: click the text finishes it

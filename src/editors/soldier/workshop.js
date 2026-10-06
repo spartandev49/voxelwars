@@ -82,15 +82,16 @@ export function mount(root, ctx, params = {}) {
   for (const t of PART_TABS) {
     const b = h('button', { type: 'button', class: 'ws-cat', role: 'tab', id: 'ws-cat-' + t.id, 'aria-selected': 'false', tabindex: '-1', dataset: { tab: t.id } }, K.icon(t.icon), h('span', { text: t.label }));
     b.addEventListener('click', () => { K.sfx('ui_click'); selectTab(t.id); });
-    catBtns[t.id] = b; catBar.appendChild(b);
+    K.tooltip(b, t.label); catBtns[t.id] = b; catBar.appendChild(b);
   }
+  const catName = h('div', { class: 'ws-catname vw-label', id: 'ws-catname', 'aria-hidden': 'true' });
   K.roving(catBar, { selector: '.ws-cat', orientation: 'both' });
   const slotSeg = h('div', { class: 'ws-slots', role: 'tablist', 'aria-label': 'Slot' });
   const search = K.searchBox({ id: 'ws-search', label: WS.searchParts, placeholder: WS.searchParts, onInput: (v) => { cur.search = v.trim().toLowerCase(); renderList(); } });
   const sillyChip = K.chip(WS.onlySilly, { pressed: false, id: 'ws-silly', onClick: () => { cur.silly = !cur.silly; sillyChip.setPressed(cur.silly); renderList(); } });
   const listEl = h('div', { class: 'ws-parts vw-scroll', role: 'group', 'aria-label': WS.partsTitle, id: 'ws-parts' });
   cleanups.push(K.roving(listEl, { selector: '.ws-part', orientation: 'both' }));
-  const left = K.tablet(WS.partsTitle, h('div', { class: 'ws-left__body' }, catBar, slotSeg, h('div', { class: 'ws-searchrow' }, search, sillyChip), listEl), { id: 'ws-left', class: 'ws-left', variant: 'glass', tight: true, icon: 'hammer' });
+  const left = K.tablet(WS.partsTitle, h('div', { class: 'ws-left__body' }, catBar, catName, slotSeg, h('div', { class: 'ws-searchrow' }, search, sillyChip), listEl), { id: 'ws-left', class: 'ws-left', variant: 'glass', tight: true, icon: 'hammer' });
 
   function selectTab(id) {
     const t = PART_TABS.find((x) => x.id === id); if (!t) return;
@@ -99,7 +100,7 @@ export function mount(root, ctx, params = {}) {
     renderCats(); renderSlots(); renderList();
   }
   function selectSlot(slot) { cur.slot = slot; cur.search = ''; search.input.value = ''; cur.silly = false; sillyChip.setPressed(false); renderSlots(); renderList(); }
-  function renderCats() { for (const t of PART_TABS) { const on = t.id === cur.tab; catBtns[t.id].setAttribute('aria-selected', String(on)); catBtns[t.id].classList.toggle('is-active', on); catBtns[t.id].tabIndex = on ? 0 : -1; } }
+  function renderCats() { for (const t of PART_TABS) { if (t.id === cur.tab) catName.textContent = t.label; const on = t.id === cur.tab; catBtns[t.id].setAttribute('aria-selected', String(on)); catBtns[t.id].classList.toggle('is-active', on); catBtns[t.id].tabIndex = on ? 0 : -1; } }
   function renderSlots() {
     const t = PART_TABS.find((x) => x.id === cur.tab); slotSeg.replaceChildren(); slotSeg.classList.toggle('vw-hide', t.slots.length < 2);
     for (const s of t.slots) {
@@ -159,7 +160,7 @@ export function mount(root, ctx, params = {}) {
 
   // ---------------------------------------------------------------- right: tabs
   const panels = { stats: statsPanel(env), abilities: abilitiesPanel(env), colours: coloursPanel(env), personality: personalityPanel(env), paint: paintPanel(env) };
-  const rightTabs = K.tabs(Object.keys(panels).map((k) => ({ id: k, label: WS.tabsRight[k] })), { id: 'ws-rtabs', label: 'Soldier settings', value: 'stats', scroll: true, onChange: (id) => showPanel(id) });
+  const rightTabs = K.tabs(Object.keys(panels).map((k) => ({ id: k, label: WS.tabsRight[k] })), { id: 'ws-rtabs', label: 'Soldier settings', value: 'stats', onChange: (id) => showPanel(id) });
   const panelHost = h('div', { class: 'ws-panelhost vw-scroll', id: 'ws-panelhost', role: 'tabpanel' });
   const right = K.tablet(null, h('div', { class: 'ws-right__body' }, rightTabs, panelHost), { id: 'ws-right', class: 'ws-right', variant: 'glass', tight: true, headless: true });
   let activePanel = 'stats';

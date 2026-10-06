@@ -196,6 +196,14 @@ export async function run(name, h) {
     const cur = await ev(() => window.__vw.app.router.current()); expect(cur === 'phone_notice', 'phones are sent to the friendly notice (' + cur + ')'); await shot('18_phone');
     return;
   }
+  if (name === 'panprobe') {
+    await openBuilder({ closeModal: true });
+    const rd = () => A(() => { const b = window.__vw.arenaBuilder, r = b.host.rig; return { tx: r.tx, tz: r.tz, sdist: r.sdist, syaw: r.syaw, keys: Array.from(b.ctl.keys), vis: b.host.visible, mode: r.mode }; });
+    step('before ' + JSON.stringify(await rd()));
+    await page.focus('#ed-tool-raise'); await page.keyboard.down('ArrowRight'); await sleep(300); step('down ' + JSON.stringify(await rd())); await sleep(700); step('later ' + JSON.stringify(await rd())); await page.keyboard.up('ArrowRight'); await sleep(200); step('up ' + JSON.stringify(await rd()));
+    await page.mouse.move(640, 360); await page.keyboard.down('KeyD'); await sleep(900); await page.keyboard.up('KeyD'); step('after D ' + JSON.stringify(await rd()));
+    return;
+  }
   if (name === 'keys') {
     await openBuilder({ closeModal: true });
     const seq = [];

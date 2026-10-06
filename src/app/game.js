@@ -74,7 +74,7 @@ export class Game {
   on(ev, fn) { return this.bus.on('game:' + ev, fn); }
   emit(ev, p) { if (this.isDiorama) return; this.bus.emit('game:' + ev, p || {}); }
   _applyTier() { const q = this.engine.q; this.fx.setCap(q.debris + q.particles); this.view.fxScale = this.tier === 'potato' ? 0.35 : 1; this.view.farDist = this.tier === 'potato' ? 150 : 260; this.view.lodDist = { potato: 24, papyrus: 38, marble: 56, olympian: 76 }[this.tier] || 56; this.view.nearBudget = { potato: 40, papyrus: 80, marble: 140, olympian: 260 }[this.tier] || 140; }
-  setTier(t) { this.tier = t; this._applyTier(); }
+  setTier(t) { this.tier = t; this._applyTier(); if (this.props && this.props.setQuality) this.props.setQuality(t); }
 
   // ------------------------------------------------------------------ setup / lifecycle
   newSetup(kind = 'quick', preset = {}) {
@@ -480,7 +480,7 @@ export class Game {
       this.view.update(this.alpha, dt, this.engine.camera);
       this.fx.update(rdt);
       this.terrain.update(dt);
-      if (this.props && this.props.update) this.props.update(dt);
+      if (this.props && this.props.update) this.props.update(dt, this.engine.camera);
       this._countsT -= dt;
     } else { this.rig.update(dt, 1); this.terrain.update(dt); }
     eng.render(dt);

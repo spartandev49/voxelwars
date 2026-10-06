@@ -95,7 +95,7 @@ export function mount(root, ctx, params) {
     }
     if (items.length) {
       const d = K.h('details', { class: 'vw-diag__assets-d', id: 'dg-assets' }, K.h('summary', { class: 'vw-small', text: T.assetsList(items.length) }),
-        K.h('ul', { class: 'vw-chips vw-diag__assets' }, ...items.map((it) => K.chip(`${it.id}: ${it.path}`, { variant: it.path === 'synth' ? 'lava' : it.path === 'failed' ? 'danger' : it.path === 'embedded' ? 'gold' : 'sky', class: 'vw-chip--wrap' }))));
+        K.h('ul', { class: 'vw-chips vw-diag__assets vw-scroll', tabindex: '0', 'aria-label': T.assetsList(items.length) }, ...items.map((it) => K.chip(`${it.id}: ${it.path}`, { variant: it.path === 'synth' ? 'lava' : it.path === 'failed' ? 'danger' : it.path === 'embedded' ? 'gold' : 'sky', class: 'vw-chip--wrap' }))));
       frag.push(d);
     }
     return frag;

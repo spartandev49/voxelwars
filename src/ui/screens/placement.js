@@ -404,7 +404,7 @@ export function mount(root, ctx, params) {
           K.button(i + 1 < list2.length ? T0.common.next : T0.common.gotIt, { variant: 'primary', size: 'sm', id: 'pl-hint-next', onClick: () => { if (never.checked) setSeenHint(ctx, 'placementTutorial', true); showHints(i + 1); } }),
           K.button(T.hints.dismiss, { variant: 'ghost', size: 'sm', id: 'pl-hint-dismiss', sound: 'ui_back', onClick: () => { if (never.checked || i + 1 >= list2.length) setSeenHint(ctx, 'placementTutorial', true); hideHints(); } }))));
     root.appendChild(hintEl);
-    K.anim(hintEl, [{ opacity: 0, transform: 'translateY(-12px) scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 300 });
+    K.anim(hintEl, [{ opacity: 0, transform: 'translateY(-12px)' }, { opacity: 1, transform: 'none' }], { duration: 300 });   // no scale: tap targets keep their real size while it enters
   }
   function hideHints() { if (hintEl) { hintEl.remove(); hintEl = null; } }
   cleanups.push(hideHints);

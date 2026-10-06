@@ -54,7 +54,7 @@ export async function run({ page, shot, step, check, sleep }) {
   const hp = await page.getAttribute('#ws-ab-heal_pulse', 'aria-disabled'); check(hp === 'true', 'heal_pulse is greyed out with a gladius');
   await page.click('#ws-ab-kick'); await sleep(100); await page.click('#ws-cat-main'); await page.click('#ws-part-mains-longbow'); await sleep(250);
   s = await wsState(page); check(s.abilities.length === 1 && s.abilities[0] === 'rage' || s.abilities.length === 0, 'a bow cannot rage: abilities dropped ' + JSON.stringify(s.abilities));
-  await page.click('#ws-part-mains-staff'); await sleep(200); const hp2 = await page.getAttribute('#ws-ab-heal_pulse', 'aria-disabled'); check(hp2 === 'false', 'heal_pulse unlocks with a staff');
+  await page.click('#ws-part-mains-staff'); await sleep(200); await wsState(page); const hp2 = await page.getAttribute('#ws-ab-heal_pulse', 'aria-disabled'); check(hp2 === 'false', 'heal_pulse unlocks with a staff');
   await shot('ws_abilities_staff');
   // ---- colours
   await page.click('#ws-rtabs-colours'); await sleep(150);
