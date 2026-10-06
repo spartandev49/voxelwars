@@ -151,14 +151,14 @@ export class EditorHost {
   }
 
   /** Distance at which the whole arena (W units wide) fits the free area between the panels with a margin; never closer than `min`. */
-  _fitDist(W, yaw, pitch, min) {
+  _fitDist(W, yaw, pitch, min, plan) {
     try {
       const el = this.engine.renderer.domElement, cam = this.engine.camera, i = this.insets;
       const vw = el.clientWidth || window.innerWidth, vh = el.clientHeight || window.innerHeight;
       const fw = Math.max(240, vw - i.left - i.right), fh = Math.max(180, vh - i.top - i.bottom);
       const k = 2 * Math.tan(((cam.fov || 48) * Math.PI) / 360) * 0.9;           // world units per pixel-of-height at distance 1, with a 10% margin
-      const extH = W * (Math.abs(Math.cos(yaw)) + Math.abs(Math.sin(yaw))), extV = extH * Math.sin(pitch) + 10;
-      const d = Math.max(extH / (k * fw / vh), 0.7 * extV / (k * fh / vh));   // width first; a tall, thin free area may hide the near and far corners under the panels
+      const extH = W * (Math.abs(Math.cos(yaw)) + Math.abs(Math.sin(yaw))), extV = plan ? extH * Math.sin(pitch) + 6 : extH * Math.sin(pitch) * 1.15 + 12;
+      const dH = extH / (k * fw / vh), dV = extV / (k * fh / vh), d = Math.max(dH, plan ? dV : Math.min(dV, dH * 1.08));   // width first; a tall, thin free area may hide the near and far corners under the panels
       return isFinite(d) ? Math.min(this.rig.limits.maxDist, Math.max(min, d)) : min;
     } catch (e) { return min; }
   }
@@ -169,7 +169,7 @@ export class EditorHost {
     const W = a.worldSize(), x = o.x === undefined ? 0 : o.x, z = o.z === undefined ? 0 : o.z;
     rig.tx = x; rig.tz = z; rig.ty = a.heightAt(x, z) + 1;
     const mode = o.mode || 'oblique';
-    if (mode === 'top') { rig.setMode('topdown'); rig.pitch = 1.38; rig.yaw = 0; rig.dist = o.dist || this._fitDist(W, 0, 1.38, W * 1.05); }
+    if (mode === 'top') { rig.setMode('topdown'); rig.pitch = 1.38; rig.yaw = 0; rig.dist = o.dist || this._fitDist(W, 0, 1.38, W * 1.05, true); }
     else if (mode === 'oblique') { rig.setMode('orbit'); rig.yaw = -0.7; rig.pitch = 0.62; rig.dist = o.dist || this._fitDist(W, -0.7, 0.62, W * 1.5); }
     else if (o.dist) rig.dist = o.dist;
     rig.dist = clamp(rig.dist, rig.limits.minDist, rig.limits.maxDist);

@@ -218,6 +218,14 @@ const JOBS = {
     const sc = (o, side) => (o.winner < 0 ? 0.5 : o.winner === side ? 1 : 0);
     return { d: j.d, score: (sc(o1, 0) + sc(o2, 1)) / 2, kills: o1.kills + o2.kills };
   },
+  /** escorted pair: unit i (~30% of the budget) + hoplite escort vs unit j (same share) + the same escort. For units that cannot fight alone (support, siege, hero). */
+  escortPair(j) {
+    const defs = M.H.DEFS, eq = equalCounts(defs, j.i, j.j, j.budget * 0.3), nh = Math.round(j.budget * 0.7 / defs.hoplite.cost);
+    const ga = [{ defId: j.i, n: eq.na }, { defId: 'hoplite', n: nh }], gb = [{ defId: j.j, n: eq.nb }, { defId: 'hoplite', n: nh }];
+    const sc = (o, side) => (o.winner < 0 ? 0.5 : o.winner === side ? 1 : 0);
+    const r = battle({ a: ga, b: gb, seed: j.seed, arena: 'marathon' }), q = battle({ a: gb, b: ga, seed: j.seed + 1, arena: 'marathon' });
+    return { i: j.i, j: j.j, score: (sc(r, 0) + sc(q, 1)) / 2 };
+  },
   /** composition: faction/style matrix cell */
   comp(j) {
     const { G, H } = M;
@@ -294,7 +302,7 @@ class Pool {
 const argv = process.argv.slice(2);
 const flag = (n, d) => { const a = argv.find((x) => x.startsWith('--' + n + '=')); return a ? a.split('=')[1] : d; };
 const QUICK = argv.includes('--quick');
-const ALL = ['pairs', 'duels', 'comp', 'fuzz', 'mirror', 'fun', 'diff', 'metrics', 'soldier', 'perf'];
+const ALL = ['pairs', 'escort', 'duels', 'comp', 'fuzz', 'mirror', 'fun', 'diff', 'metrics', 'soldier', 'perf'];
 const wanted = argv.filter((a) => !a.startsWith('--'));
 const sections = wanted.length ? wanted : ALL;
 const DATA_FILE = path.join(ROOT, 'docs/balance_data.json');
@@ -378,6 +386,14 @@ function applyTune() {
   fs.writeFileSync(file, lines.join('\n'));
   data.tune = { mult: {}, history: data.tune.history || [], budget: data.tune.budget, applied: new Date().toISOString().slice(0, 10) }; fs.writeFileSync(DATA_FILE, JSON.stringify(data));
   console.log('stats.js: rewrote ' + changed + ' unit lines; multipliers reset');
+}
+
+async function sectionEscort(pool) {
+  const defs = M.H.DEFS, ids = Object.keys(defs).sort(), alone = ids.filter((id) => ['support', 'hero', 'siege'].includes(defs[id].role)), jobs = [];
+  for (const a of alone) for (const b of ids) if (a !== b) jobs.push({ i: a, j: b, budget: QUICK ? 1500 : 2400, seed: 700 + hashStr(a + b) % 8000 });
+  const res = await pool.map('escortPair', jobs, 'escort');
+  const m = {}; for (const r of res) (m[r.i] || (m[r.i] = {}))[r.j] = r.score;
+  return { alone, matrix: m };
 }
 
 async function sectionDuels(pool) {
@@ -542,7 +558,7 @@ function analysePairs(d) {
   const rows = ids.map((id) => {
     const others = ids.filter((o) => o !== id);
     const dd = defs[id], boss = BOSS(dd);
-    const field = others.filter((o) => !(boss && defs[o].cost < 120 && !BOSS(defs[o])));
+    const field = others.filter((o) => defs[o].role !== 'support' && !(boss && defs[o].cost < 120 && !BOSS(defs[o])));   // unescorted supports cannot fight: they are not part of the field
     const fw = mean(field.map((o) => matrix[id][o]));
     const counters = others.filter((o) => matrix[o][id] >= 0.6).sort((a, b) => matrix[b][id] - matrix[a][id]);
     const prey = others.filter((o) => matrix[id][o] >= 0.6).sort((a, b) => matrix[id][b] - matrix[id][a]);
@@ -571,8 +587,11 @@ function verdicts(data) {
     const worst = rows.slice().sort((a, b) => b.field - a.field)[0];
     add('U5a', over.length === 0, `no non-boss unit above 62% vs the field${q}: highest ${worst.id} ${pct(worst.field)}${over.length ? '; over: ' + over.map((r) => r.id + ' ' + pct(r.field)).join(', ') : ''}`);
     const nb = rows.filter((r) => !r.boss);
-    const noC = nb.filter((r) => !r.counters.length), noP = nb.filter((r) => !r.prey.length);
-    add('U5b', noC.length === 0 && noP.length === 0, `every non-boss unit has a counter (>=60%) and a prey${q}: without counter [${noC.map((r) => r.id).join(', ')}]; without prey [${noP.map((r) => r.id).join(', ')}]`);
+    const esc = data.escort && data.escort.matrix;
+    const escPrey = (id) => esc && esc[id] && Object.keys(esc[id]).some((o) => esc[id][o] >= 0.6);
+    const escCounter = (id) => esc && esc[id] && Object.keys(esc[id]).some((o) => esc[id][o] <= 0.4);
+    const noC = nb.filter((r) => !r.counters.length && !escCounter(r.id)), noP = nb.filter((r) => !r.prey.length && !escPrey(r.id));
+    add('U5b', noC.length === 0 && noP.length === 0, `every non-boss unit has a counter (>=60%) and a prey${q} (units that cannot fight alone are judged as 30% of an army with a hoplite escort): without counter [${noC.map((r) => r.id).join(', ')}]; without prey [${noP.map((r) => r.id).join(', ')}]`);
   }
   if (data.duels) {
     const bad = []; let n = 0;
@@ -653,9 +672,18 @@ function renderReport(data) {
     const rows = analysePairs(data.pairs);
     L.push('## Equal-cost mass battles (U5)');
     L.push('');
-    L.push(`Every pair of the ${data.pairs.ids.length} shipped units fights at equal cost (~${data.pairs.budget} drachmae each side, marathon medium, both orientations; draw = 0.5). ${data.pairs.battles} battles. "field" is the mean win rate against all other units (bosses/monsters ignore opponents under cost 120, by design). Counter = a unit that beats it >= 60%; prey = beaten >= 60%.`);
+    L.push(`Every pair of the ${data.pairs.ids.length} shipped units fights at equal cost (~${data.pairs.budget} drachmae each side, marathon medium, both orientations; draw = 0.5). ${data.pairs.battles} battles. "field" is the mean win rate against all other units except the four pure-support units, which cannot fight unescorted (bosses/monsters also ignore opponents under cost 120, by design). Counter = a unit that beats it >= 60%; prey = beaten >= 60%.`);
     L.push('');
     L.push(table(['unit', 'role', 'cost', 'field win%', 'counters', 'prey'], rows.slice().sort((a, b) => b.field - a.field).map((r) => [r.id + (r.boss ? ' (boss)' : ''), r.role, r.cost, pct(r.field, 0), r.counters.slice(0, 4).join(', ') || '-', r.prey.slice(0, 4).join(', ') || '-'])));
+    L.push('');
+  }
+  if (data.escort) {
+    const e = data.escort.matrix, defs = M.H.DEFS;
+    L.push('## Units that cannot fight alone (escorted pairs)');
+    L.push('');
+    L.push('Support, siege and hero units are judged as ~30% of an army whose other 70% is hoplites, against the same army with another unit in that 30% (both orientations). Marginal win rate = how often the army wins against the army carrying each other unit.');
+    L.push('');
+    L.push(table(['unit', 'role', 'mean', 'beats (>=60%)', 'beaten by (<=40%)'], data.escort.alone.map((id) => { const o = Object.keys(e[id] || {}); const mean2 = mean(o.map((k) => e[id][k])); return [id, defs[id].role, pct(mean2, 0), o.filter((k) => e[id][k] >= 0.6).sort((a, b) => e[id][b] - e[id][a]).slice(0, 4).join(', ') || '-', o.filter((k) => e[id][k] <= 0.4).sort((a, b) => e[id][a] - e[id][b]).slice(0, 4).join(', ') || '-']; })));
     L.push('');
   }
   if (data.duels) {
@@ -751,7 +779,7 @@ async function main() {
   try { data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); } catch (e) { data = {}; }
   const pool = new Pool(workers); await pool.start();
   const t0 = Date.now();
-  const runners = { diff: sectionDiff, tune: sectionTune, pairs: sectionPairs, duels: sectionDuels, comp: sectionComp, fuzz: sectionFuzz, mirror: sectionMirror, fun: sectionFun, metrics: sectionMetrics, soldier: sectionSoldier };
+  const runners = { escort: sectionEscort, diff: sectionDiff, tune: sectionTune, pairs: sectionPairs, duels: sectionDuels, comp: sectionComp, fuzz: sectionFuzz, mirror: sectionMirror, fun: sectionFun, metrics: sectionMetrics, soldier: sectionSoldier };
   for (const s of sections) {
     if (s === 'perf') continue;
     if (!runners[s]) { console.error('unknown section ' + s); continue; }

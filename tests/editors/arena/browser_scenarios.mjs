@@ -253,6 +253,13 @@ export async function run(name, h) {
     await shot('22_touch');
     return;
   }
+  if (name === 'top') {
+    await openBuilder({ closeModal: true });
+    await shot('25_oblique');
+    await key('t'); await sleep(1800); const m = await A(() => window.__vw.arenaBuilder.host.rig.mode); expect(m === 'topdown', 'T switches to the plan view (' + m + ')'); await shot('26_topdown');
+    await key('t'); await sleep(1200); const m2 = await A(() => window.__vw.arenaBuilder.host.rig.mode); expect(m2 === 'orbit', 'T switches back to the orbit view (' + m2 + ')');
+    return;
+  }
   if (name === 'probe') {
     await ev(() => window.__vw.goto('arena_builder')); await sleep(4000);
     const d = await A(() => { const r = document.getElementById('ed-root'); const b = r && r.getBoundingClientRect(); const cs = r && getComputedStyle(r); const lay = r && r.parentElement; const lb = lay && lay.getBoundingClientRect(); return { cur: window.__vw.app.router.current(), root: b && [b.x, b.y, b.width, b.height], disp: cs && [cs.display, cs.visibility, cs.opacity], parent: lay && [lay.className, lb.width, lb.height], inner: [innerWidth, innerHeight], modal: !!document.querySelector('.vw-modal-wrap'), kids: r ? r.children.length : -1 }; });
