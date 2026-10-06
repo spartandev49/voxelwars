@@ -52,6 +52,7 @@ export function mount(root, ctx, params) {
   const b = banner(r);
   const rm = reduced(ctx);
   const isMission = !!(r.mission && r.mission.id);
+  const isPuzzle = r.kind === 'puzzle' || !!r.puzzle || !!(r.mission && r.mission.kind === 'puzzle');       // puzzles: the same stars box, but Retry / Next puzzle / Puzzles
   const isSurvival = !!r.survival, isDaily = !!r.daily;
 
   const host = root.parentElement;
@@ -70,8 +71,8 @@ export function mount(root, ctx, params) {
     const block = h('div', { class: 'bs-res-missionbox' });
     if (isMission) {
       const stars = (r.stars || []).slice(0, 3);
-      block.append(h('div', { class: 'bs-res-mission' }, h('span', { class: 'bs-res-mission-act', text: 'Act ' + ['I', 'II', 'III'][(r.mission.act || 1) - 1] }), h('b', { text: r.mission.title })),
-        h('div', { class: 'bs-res-stars', role: 'list', 'aria-label': 'Mission stars' }, stars.map((s, i) => h('div', { class: 'bs-res-star' + (s.earned ? ' is-earned' : ''), role: 'listitem', style: { '--i': i } }, icon(s.earned ? 'star' : 'starO', 'bs-res-star-ic'), h('span', { class: 'bs-res-star-tx', text: s.text })))));
+      block.append(h('div', { class: 'bs-res-mission' }, h('span', { class: 'bs-res-mission-act', text: isPuzzle ? 'Puzzle ' + (((r.mission.index | 0) || 0) + 1) : 'Act ' + ['I', 'II', 'III'][(r.mission.act || 1) - 1] }), h('b', { text: r.mission.title })),
+        h('div', { class: 'bs-res-stars', role: 'list', 'aria-label': isPuzzle ? 'Puzzle stars' : 'Mission stars' }, stars.map((s, i) => h('div', { class: 'bs-res-star' + (s.earned ? ' is-earned' : ''), role: 'listitem', style: { '--i': i } }, icon(s.earned ? 'star' : 'starO', 'bs-res-star-ic'), h('span', { class: 'bs-res-star-tx', text: s.text })))));
     }
     if (r.rewards) {
       const chips = [];
@@ -129,15 +130,15 @@ export function mount(root, ctx, params) {
 
   // ------------------------------------------------------------ actions
   const nextId = isMission && r.canNext && r.mission.next ? r.mission.next : null;
-  const rematchLabel = isSurvival ? 'One more wave' : 'Again, but smarter';
+  const rematchLabel = isSurvival ? 'One more wave' : isPuzzle ? 'Retry' : 'Again, but smarter';
   const rematch = K.button(rematchLabel, { variant: nextId ? 'secondary' : 'primary', size: nextId ? 'md' : 'lg', icon: 'refresh', hint: 'KeyR', id: 'res-rematch', onClick: () => { leaveOverlay(); ctx.game.rematch(); } });
   const tweak = K.button('Tweak army', { variant: 'secondary', icon: 'hammer', hint: 'KeyT', id: 'res-tweak', onClick: () => { leaveOverlay(); ctx.game.tweak(); } });
   const canKill = !!(ctx.game && typeof ctx.game.killcam === 'function' && r.canKillcam !== false);
   const kill = canKill ? K.button('Kill-cam', { variant: 'secondary', icon: 'eye', hint: 'KeyK', id: 'res-killcam', onClick: () => playKillcam() }) : null;
-  const next = nextId ? K.button('Next mission', { variant: 'primary', size: 'lg', icon: 'forward', id: 'res-next', sub: r.mission.nextTitle || null, onClick: () => { leaveOverlay(); ctx.nav.goto('briefing', { mission: nextId }); } }) : null;
-  const menu = K.button(isMission ? 'Map' : 'Menu', { variant: 'ghost', icon: isMission ? 'map' : 'door', hint: 'Escape', id: 'res-menu', sound: 'ui_back', onClick: () => goMenu() });
+  const next = nextId ? K.button(isPuzzle ? 'Next puzzle' : 'Next mission', { variant: 'primary', size: 'lg', icon: 'forward', id: 'res-next', sub: r.mission.nextTitle || null, onClick: () => { leaveOverlay(); ctx.nav.goto('briefing', isPuzzle ? { puzzle: nextId } : { mission: nextId }); } }) : null;
+  const menu = K.button(isPuzzle ? 'Puzzles' : isMission ? 'Map' : 'Menu', { variant: 'ghost', icon: isMission ? 'map' : 'door', hint: 'Escape', id: 'res-menu', sound: 'ui_back', onClick: () => goMenu() });
   const actions = h('footer', { class: 'bs-res-actions' }, next, rematch, tweak, kill, menu);
-  function goMenu() { try { ctx.game.exitToMenu(); } catch (e) { /* not ready */ } leaveOverlay(); ctx.nav.goto(isMission ? 'campaign' : 'title'); }
+  function goMenu() { try { ctx.game.exitToMenu(); } catch (e) { /* not ready */ } leaveOverlay(); ctx.nav.goto(isPuzzle ? 'puzzles' : isMission ? 'campaign' : 'title'); }
 
   // kill-cam: hide the results while the cinematic plays, bring them back when it ends (or on click / Esc)
   const back = h('button', { class: 'bs-killcam-back', type: 'button', hidden: true, text: 'Back to results (Esc)' });

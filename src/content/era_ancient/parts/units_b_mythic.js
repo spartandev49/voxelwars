@@ -92,7 +92,8 @@ AR.minotaur_harness = {
       B(l, 0, 1, 3, 3, 1, 3, (x, y, z) => fringeV(ctx, x + 1)); B(l, 0, 1, 0, 3, 1, 0, (x, y, z) => fringeV(ctx, x));
       B(l, 0, 0, 3, 3, 0, 3, (x, y, z) => ((x % 2) ? V(shade(ctx.c.secondary, 0.9)) : 0));
     });
-    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 3, 2, (x, y, z) => V(ctx.m[(x + y + z) % 2 ? 2 : 3])); });   // brass bracers
+    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 3, 2, (x, y, z) => (((x + y + z) % 3 === 0) ? V(ctx.m[3]) : strap(x, y, z, 1.0))); });   // team-leather bracers with brass studs
+    both(o, 'legLL', 'legLR', (l) => { B(l, 0, 2, 0, 3, 3, 3, (x, y, z) => strap(x, y, z, 0.95)); B(l, 0, 4, 0, 3, 4, 3, (x, y, z) => (((x + z) % 2) ? V(ctx.m[3]) : strap(x, y, z, 1.1))); });   // shin wraps
     both(o, 'armUL', 'armUR', (a) => { B(a, 0, 4, 0, 2, 4, 2, (x, y, z) => V(ctx.m[2])); });
     return o;
   },
@@ -105,15 +106,16 @@ H.cyclops_face = {
     const { head, crest, hs } = headSpace();
     const sk = (x, y, z, f = 1) => V(shade(ctx.c.skin, f * (0.92 + 0.14 * hash3(x, y, z, 1))));
     B(hs, 2, 4, 8, 7, 5, 8, (x, y, z) => sk(x, y, z, 0.82));                                    // heavy forehead
-    B(hs, 2, 5, 9, 7, 5, 9, (x, y, z) => sk(x, y, z, 0.62)); B(hs, 3, 5, 9, 6, 5, 9, V(shade(ctx.c.hair, 0.8)));   // one huge brow
-    B(hs, 3, 2, 8, 6, 4, 8, V(0xf4efe4));                                                        // the eye: sclera 4 x 3
-    B(hs, 3, 2, 9, 6, 4, 9, V(0xf4efe4)); X(hs, 3, 2, 9, 3, 2, 9); X(hs, 6, 2, 9, 6, 2, 9); X(hs, 3, 4, 9, 3, 4, 9); X(hs, 6, 4, 9, 6, 4, 9);
-    P(hs, 3, 3, 9, V(0xb8281c)); P(hs, 6, 2, 8, V(0xb8281c));                                    // bloodshot
-    B(hs, 4, 2, 9, 5, 4, 9, V(ctx.c.eyes)); B(hs, 4, 3, 9, 5, 3, 9, V(0x10100c)); P(hs, 5, 4, 9, V(0xffffff));   // iris, pupil, glint
-    B(hs, 3, 1, 8, 6, 1, 8, (x, y, z) => sk(x, y, z, 0.7));                                      // eye bag
-    B(hs, 4, 0, 9, 5, 1, 9, (x, y, z) => sk(x, y, z, 1.1));                                      // fat nose
-    B(hs, 2, 0, 8, 7, 0, 8, V(0x6a2a24)); B(hs, 3, 0, 9, 6, 0, 9, V(0x6a2a24));                  // wide mouth
-    Ps(hs, 2, 0, 9, V(0xf4efe0)); Ps(hs, 2, 1, 9, V(0xf4efe0)); Ps(hs, 3, 1, 9, V(0xe8e0cc));    // two tusks
+    B(hs, 2, 5, 9, 7, 5, 9, (x, y, z) => sk(x, y, z, 0.6)); B(hs, 3, 5, 9, 6, 5, 9, V(shade(ctx.c.hair, 0.7)));   // one huge bushy brow
+    // the eye: a 4 x 3 sclera with a big green iris, a black pupil and a glint; red only in the corners
+    B(hs, 3, 2, 8, 6, 4, 8, V(0xf4efe4)); B(hs, 3, 2, 9, 6, 4, 9, V(0xf4efe4));
+    X(hs, 3, 2, 9, 3, 2, 9); X(hs, 6, 2, 9, 6, 2, 9); X(hs, 3, 4, 9, 3, 4, 9); X(hs, 6, 4, 9, 6, 4, 9);
+    P(hs, 3, 3, 9, V(0xe8b0a0)); P(hs, 6, 3, 9, V(0xe8b0a0));
+    B(hs, 4, 2, 9, 5, 4, 9, V(ctx.c.eyes)); B(hs, 4, 3, 9, 5, 3, 9, V(0x0a0a08)); P(hs, 5, 4, 9, V(0xffffff));
+    B(hs, 3, 1, 8, 6, 1, 8, (x, y, z) => sk(x, y, z, 0.68));                                      // eye bag
+    B(hs, 4, 0, 9, 5, 1, 9, (x, y, z) => sk(x, y, z, 1.12));                                      // fat nose
+    B(hs, 2, 0, 8, 7, 0, 8, V(0x4a1c18)); B(hs, 3, 0, 9, 6, 0, 9, V(0x4a1c18));                  // wide dark mouth
+    Ps(hs, 2, 0, 9, V(0xf0e6c8)); Ps(hs, 2, 1, 9, V(0xf0e6c8)); Ps(hs, 2, 2, 9, V(0xe8dcb8));     // two long tusks
     return { head, crest };
   },
 };
@@ -135,7 +137,7 @@ TU.cyclops_tunic = {
     // knucklebone necklace on the bare right chest
     for (const [x, y] of [[1, 6], [2, 5], [3, 5], [4, 6]]) P(g, x, y, 4, V(0xefe6cc));
     P(g, 2, 4, 4, V(0xf8f2e0)); P(g, 2, 3, 4, V(0x2a2020));
-    both(o, 'armUL', 'armUR', (a, i) => { if (i === 0) B(a, 0, 1, 0, 2, 4, 2, (x, y, z) => cloth(x, y, z, 0.96)); });
+    both(o, 'armUL', 'armUR', (a, i) => { if (i === 0) B(a, 0, 1, 0, 2, 4, 2, (x, y, z) => cloth(x, y, z, 0.96)); else B(a, 0, 2, 0, 2, 3, 2, (x, y, z) => ctx.t((x + y) % 2 ? 1.2 : 0.85)); });   // bicep rag on the bare arm
     both(o, 'legUL', 'legUR', (l) => B(l, 0, 0, 0, 3, 4, 3, (x, y, z) => cloth(x, y, z, 0.94)));
     both(o, 'legLL', 'legLR', (l) => B(l, 0, 2, 0, 3, 4, 3, (x, y, z) => ((y === 2 && hash3(x, y, z, 5) > 0.5) ? 0 : cloth(x, y, z, 0.9 + 0.2 * ((x + y) % 2)))));    // ragged shin wraps
     both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => ctx.t(((y + x) % 2 ? 1.25 : 0.9))); });                                  // wrist wraps
@@ -163,7 +165,7 @@ M.tree_club = {
   },
 };
 
-// the boulder in the off hand: a 14 x 14 x 6 lump of grey rock with moss on top and cracks (natural: the tint is in the tunic and rope belt)
+// the boulder in the off hand: a 14 x 14 x 6 lump of grey rock with moss and cracks, carried in a team-colour rope net
 O.boulder = {
   name: 'Boulder', meta: { kind: 'item', w: 14, h: 14 },
   build(ctx) {
@@ -174,6 +176,12 @@ O.boulder = {
       return V(shade(0x8a8c90, (0.72 + 0.42 * n) * (1.08 - 0.3 * d + (z > 3 ? 0.08 : -0.06))));
     });
     for (const [x, y] of [[5, 9], [6, 8], [6, 7], [7, 6], [7, 5], [8, 5], [9, 4]]) if (g.get(x, y, 5)) g.set(x, y, 5, V(0x4a4c52));    // crack
+    // carried in a team-colour rope net (a diamond lattice over the front and back faces): he treats it like a shopping bag
+    for (let x = 0; x < 16; x++) for (let y = 0; y < 16; y++) {
+      if (!((x + y) % 4 === 0 || (x - y + 20) % 4 === 0)) continue;
+      for (let z = 5; z >= 0; z--) if (g.get(x, y, z)) { g.set(x, y, z, ctx.t(0.95 + 0.25 * ((x * y) % 2))); break; }
+      for (let z = 0; z <= 5; z++) if (g.get(x, y, z)) { g.set(x, y, z, ctx.t(0.8 + 0.2 * ((x + y) % 2))); break; }
+    }
     return g;
   },
 };
@@ -186,32 +194,35 @@ H.gorgon_hair = {
     const { head, crest, hs } = headSpace();
     const body = newGrid('body');
     // dark teal snakes with pale diamond markings: they must not melt into the bright green skin
-    const sc = (n, x, y, z) => ((n % 5) === 2 ? V(shade(0xd8d86a, 0.85 + 0.2 * hash3(x, y, z, 2))) : V(shade(SK_G, 0.8 + 0.4 * hash3(x, y, z, 3) + ((n % 5) === 0 ? 0.25 : 0))));
+    const sc = (n, x, y, z) => ((n % 4) < 2 ? V(shade(0x1c5a46, 0.8 + 0.4 * hash3(x, y, z, 3))) : V(shade(0x8fd04c, 0.82 + 0.3 * hash3(x, y, z, 2))));    // banded: deep teal / lime
     const okH = (x, y, z) => x >= 0 && x <= 9 && y >= 0 && y <= 13 && z >= (y < 8 ? 0 : -1) && z <= (y < 8 ? 9 : 10);
     const okB = (x, y, z) => x >= 0 && x <= 9 && y >= 0 && y <= 8 && z >= 0 && z <= 4;
     const opt = (ok, extra) => Object.assign({ head: V(shade(SK_G, 1.2)), eye: G(0xfff060), tongue: V(0xe8281c), ok, headH: 2, headL: 3 }, extra);
     const scalp = (x, y, z) => V(shade(0x2f7a50, 0.8 + 0.4 * hash3(x, y, z, 4)));
     B(hs, 2, 6, 2, 7, 6, 7, scalp); B(hs, 2, 4, 1, 7, 5, 1, scalp); B(hs, 2, 5, 7, 7, 5, 7, scalp); Bs(hs, 1, 5, 2, 1, 5, 7, scalp);
-    // nine thin snakes rise from the crown on a swaying path and finish with a fat head looking outward; staggered heights keep the stalks apart
-    const tops = [9, 12, 10, 13, 11, 13, 10, 12, 11];
-    for (let i = 0; i < 9; i++) {
-      const th = (i * 40 + 15) * Math.PI / 180, sx = Math.sin(th), sz = Math.cos(th), yt = tops[i];
-      const bx = 4.5 + 2.4 * sx, bz = 4.5 + 2.2 * sz, pts = [];
-      for (let k = 0; k <= 4; k++) {
-        const t = k / 4, sway = 1.1 * Math.sin(t * 6 + i * 1.7) * t;
-        pts.push([Math.round(bx + 0.9 * sx * t * t * 2 - sz * sway), Math.round(6 + (yt - 6) * t), Math.round(bz + 0.9 * sz * t * t * 2 + sx * sway)]);
-      }
-      const l = pts[pts.length - 1], dxo = Math.abs(sx) >= Math.abs(sz) ? [Math.sign(sx), 0] : [0, Math.sign(sz)];
-      pts.push([l[0] + 2 * dxo[0], l[1], l[2] + 2 * dxo[1]]);
-      for (const q of pts) { q[0] = Math.max(0, Math.min(9, q[0])); q[2] = Math.max(0, Math.min(9, q[2])); }
-      snake(hs, pts, 1, (n, x, y, z) => sc(n + i, x, y, z), opt(okH));
-    }
+    // five fat snakes in S-curves, each at its own depth so none merges into another: three rear up at the front (heads look at the viewer), two at the sides
+    const snakes = [
+      { bx: 6, bz: 3, dx: 1.2, A: 1.7, ph: 0.0, top: 10, face: 'z' },
+      { bx: 1, bz: 3, dx: -0.6, A: 1.7, ph: 3.1, top: 9, face: 'z' },
+      { bx: 4, bz: 2, dx: 0.0, A: 1.5, ph: 1.6, top: 12, face: 'z' },
+      { bx: 7, bz: 5, dx: 1.0, A: 1.2, ph: 2.2, top: 8, face: 'x+' },
+      { bx: 1, bz: 5, dx: -1.0, A: 1.2, ph: 0.9, top: 8, face: 'x-' },
+    ];
+    snakes.forEach((sn, i) => {
+      const pts = [];
+      for (let k = 0; k <= 4; k++) { const t = k / 4; pts.push([Math.round(sn.bx + sn.dx * t + sn.A * Math.sin(t * 7.5 + sn.ph)), Math.round(6 + (sn.top - 6 - 2) * t + (k === 0 ? 0 : 0)), sn.bz]); }
+      const l = pts[pts.length - 1];
+      if (sn.face === 'z') { l[0] = Math.max(1, Math.min(6, l[0])); pts.push([l[0], l[1], sn.bz + 2]); }
+      else if (sn.face === 'x+') { l[0] = Math.min(5, l[0]); pts.push([l[0] + 2, l[1], l[2]]); }
+      else { l[0] = Math.max(4, l[0]); pts.push([l[0] - 2, l[1], l[2]]); }
+      snake(hs, pts, 2, (n, x, y, z) => sc(n + i, x, y, z), opt(okH, { headH: 2, headL: 3 }));
+    });
     // two more slung over the shoulders, heads on the chest
     snake(body, [[1, 8, 1], [0, 7, 2], [0, 6, 3], [1, 5, 3]], 2, (n, x, y, z) => sc(n + 3, x, y, z), opt(okB, { headH: 2 }));
     snake(body, [[7, 8, 1], [8, 7, 2], [8, 6, 3], [7, 5, 3]], 2, (n, x, y, z) => sc(n + 1, x, y, z), opt(okB));
     // the gaze: glowing stone-green eyes
     X(hs, 2, 3, 7, 7, 3, 7);
-    Ps(hs, 2, 3, 8, G(0xc0ffdc)); Ps(hs, 3, 3, 8, G(0x30f080)); Ps(hs, 2, 4, 8, V(0x143a1c)); Ps(hs, 3, 4, 8, V(0x143a1c)); Ps(hs, 3, 2, 8, V(0x2f6a30));
+    Ps(hs, 2, 3, 8, G(0xc0ffdc)); Ps(hs, 3, 3, 8, G(0x30f080)); Ps(hs, 3, 4, 8, G(0x30f080)); Ps(hs, 2, 4, 8, V(0x143a1c)); Ps(hs, 4, 4, 8, V(0x143a1c)); Ps(hs, 3, 2, 8, V(0x2f6a30));
     return { head, crest, body };
   },
 };

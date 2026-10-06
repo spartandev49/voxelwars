@@ -2,7 +2,7 @@
 // ctx.len = voxels from the grip to the tip (already clamped by the compiler's weapon length rule), ctx.back = voxels behind the grip.
 import { registerParts } from './_registry.js';
 import { V, T, G, shade, mixRGB, B, Bs, X, P, Ps, E, hash3, newGrid, gripWrap, sprite, emblem } from './_kit.js';
-import { wood } from './weapons_melee.js';
+import { wood, PARTS as MELEE } from './weapons_melee.js';
 
 export const PARTS = { mains: {}, offs: {} };
 const M = PARTS.mains, O = PARTS.offs;
@@ -11,7 +11,7 @@ const R_UP = 0.3, R_CARRY = 2.44;
 // ------------------------------------------------------------------------------------------------ mains
 /** The philosopher's scroll: a fat rolled papyrus with wooden knobs, a team-colour ribbon, and a sheet that has unrolled down the front (with scribbles). It is a blunt argument. */
 M.scroll = {
-  name: 'Scroll', meta: { style: 'bash', ready: 14, len: 12, back: 6, rest: [0.7, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
+  name: 'Scroll', meta: { style: 'bash', ready: 14, len: 12, back: 6, rest: [0.7, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee', faction: 'hellenes' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len, y0 = 10 - ctx.back;
     const pap = (x, y, z, f = 1) => V(shade(0xeadcae, f * (0.9 + 0.14 * hash3(x, y, z, 7))));
@@ -37,7 +37,7 @@ M.scroll = {
 
 /** The senator's bag of coins: a fat leather purse tied with a team ribbon, gold coins spilling out of the top, one stamped coin on the front. */
 M.coin_bag = {
-  name: 'Bag of coins', meta: { style: 'throw', ready: 8, len: 13, back: 4, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee' },
+  name: 'Bag of coins', meta: { style: 'throw', ready: 8, len: 13, back: 4, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 9, kind: 'melee', faction: 'romans' },
   build(ctx) {
     const g = newGrid('weapon'), cy = 16 + Math.max(0, ctx.len - 13) * 0;
     const bag = (x, y, z, f = 1) => V(shade(0x8a5a30, f * (0.82 + 0.28 * hash3(x, y, z, 17))));
@@ -59,9 +59,21 @@ M.coin_bag = {
   },
 };
 
+/** Anubis' khopesh-spear with a pennon: the temple guard's long spear-sickle, a swallow-tailed team-colour streamer tied below the blade and streaming backwards. */
+M.khopesh_spear_pennon = {
+  name: 'Khopesh-spear with pennon', meta: Object.assign({}, MELEE.mains.khopesh_spear.meta, { faction: 'egyptians' }),
+  build(ctx) {
+    const g = MELEE.mains.khopesh_spear.build(ctx), yt = 9 + ctx.len, y0 = yt - 10;
+    B(g, 3, y0, 3, 5, y0 + 1, 5, V(ctx.m[3]));                                                       // gold binding where the streamer is tied
+    for (let k = 0; k < 4; k++) for (let dy = 0; dy < [5, 4, 3, 2][k]; dy++) P(g, 4, y0 + 1 - dy, 3 - k, ctx.t(0.9 + 0.14 * ((k + dy) % 2)));       // the streamer flying backwards
+    for (let i = 0; i < 9; i++) for (let x = 3; x <= 5; x++) if (!(i >= 7 && x === 4)) P(g, x, y0 - 1 - i, 5, ctx.t(0.9 + 0.14 * ((i + x) % 2)));    // and a tail hanging down the haft
+    return g;
+  },
+};
+
 /** The mummy's club: tomb-wood wrapped in the same linen as its owner (tinted bands), loose strands trailing off the end. */
 M.wrapped_club = {
-  name: 'Wrapped tomb club', meta: { style: 'bash', len: 15, back: 5, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 10, kind: 'melee' },
+  name: 'Wrapped tomb club', meta: { style: 'bash', len: 15, back: 5, rest: [R_CARRY, 0, 0], grip: [4, 10, 4], minLen: 10, kind: 'melee', faction: 'egyptians' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len;
     B(g, 4, 5, 4, 4, 11, 4, (x, y) => wood(y, 3, 0x5a4026));
@@ -133,13 +145,14 @@ function egyptShield(name, o) {
         let face;
         if (o.face === 'hide') face = (hash3(x >> 1, y >> 1, 0, 13) > 0.7) ? V(0xf2ead6) : V(shade(0xa8703c, 0.85 + 0.2 * hash3(x, y, 1, 4)));
         else if (o.face === 'black') face = V(shade(0x1a1a20, 0.8 + 0.4 * hash3(x, y, 1, 4)));
+        else if (o.face === 'team') face = ctx.t(0.58 + 0.12 * hash3(x, y, 1, 4));
         else face = V(shade(ctx.m[3], 0.88 + 0.16 * hash3(x, y, 1, 4)));
         g.set(x, y, 4, rim ? ctx.t(0.82 + 0.14 * (y > 7 ? 1 : 0) + 0.05 * hash3(x, y, 2, 3)) : face);
         if (dx > w - 0.8 || y === 1 || y === 14) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 3 : 2]));
         if (dx > w - 2.2 || y <= 3) g.set(x, y, 3, ctx.t(0.62 + 0.1 * hash3(x, y, 3, 2)));
       }
       for (let y = 7; y <= 10; y++) for (let x = 6; x <= 9; x++) if (Math.hypot(x - 7.5, y - 8.5) <= 2.0) g.set(x, y, 5, V(ctx.m[(x + y) % 2 ? 4 : 3]));
-      if (o.emblem) emblem(g, o.emblem, 4, 12, 5, o.face === 'gold' ? V(shade(ctx.c.primary, 0.9)) : V(shade(ctx.m[3], 1.05)));
+      if (o.emblem) emblem(g, o.emblem, 4, 12, 5, o.face === 'gold' ? V(shade(ctx.c.primary, 0.9)) : V(shade(ctx.m[4], 1.0)));
       return g;
     },
   };
@@ -147,5 +160,6 @@ function egyptShield(name, o) {
 O.egyptian_shield = egyptShield('Egyptian shield (hide)', { face: 'hide' });
 O.egyptian_shield_black = egyptShield('Egyptian shield (black, eye)', { face: 'black', emblem: 'eye' });
 O.egyptian_shield_gold = egyptShield('Egyptian shield (gold, sun)', { face: 'gold', emblem: 'sun' });
+O.egyptian_shield_team = egyptShield('Egyptian shield (team colour, eye)', { face: 'team', emblem: 'eye' });
 
 registerParts(PARTS);

@@ -3,6 +3,7 @@
 // (score + leaderboard). survivalPanel() is also embedded by the results overlay; mountIntermission() can be embedded by the placement screen.
 // Rules (spec/world.md section 7): start budget 6,000; waves every 40 s or when the field is clear; +1,600 + 240*n reinforcements; boss every 5th wave.
 import * as K from '../kit.js';
+import { setThumb } from './_shared.js';
 import { h, disposer, sfx, fmtInt, ROLE_ICON, unitRole, unitName } from '../hud/_dom.js';
 import { icon } from '../hud/_icons.js';
 import { survivalBoard } from '../hud/_progress.js';
@@ -125,17 +126,16 @@ export function mount(root, ctx, params) {
   const frame = K.pageFrame({ title: 'Survival', sub: 'How long can you hold? Waves keep coming. Budgets do not.', onBack: () => ctx.nav.back(), id: 'surv-setup' });
   frame.mount(root);
 
-  const thumb = h('img', { class: 'bs-surv-thumb', alt: '', width: 192, height: 108 });
+  const thumb = h('img', { class: 'bs-surv-thumb', alt: '', width: 192, height: 108 }), thumbPh = h('div', { class: 'vw-thumb-ph vw-hide', 'aria-hidden': 'true' });
   const arenaName = h('h3', { class: 'bs-surv-arena-name' }), arenaBlurb = h('p', { class: 'bs-surv-arena-blurb' }), tactics = h('div', { class: 'bs-inter-chips' });
   const paintArena = () => {
     const a = arenas.find((x) => x.id === arenaId) || arenas[0] || {};
-    let url = ''; try { url = ctx.content.arenaThumb ? ctx.content.arenaThumb(a.id) : ''; } catch (e) { url = ''; }
-    if (url) { thumb.src = url; thumb.hidden = false; } else thumb.hidden = true;
+    setThumb(thumb, ctx, a.id, thumbPh); // arenaThumb() returns a Promise<dataURL>; never assign it to img.src
     arenaName.textContent = a.name || a.id || ''; arenaBlurb.textContent = a.blurb || '';
     tactics.replaceChildren(...(a.tactics || []).slice(0, 4).map((t) => K.chip(t, { variant: 'sky' })));
   };
   const sel = K.select({ label: 'Arena', value: arenaId, options: arenas.map((a) => ({ value: a.id, label: a.name || a.id })), onChange: (v) => { arenaId = v; paintArena(); }, id: 'surv-arena' });
-  const arenaTab = K.tablet('Arena', h('div', { class: 'bs-surv-arena' }, h('div', { class: 'bs-surv-arena-media' }, thumb), h('div', { class: 'bs-surv-arena-text' }, sel, arenaName, arenaBlurb, tactics)), { variant: 'glass', icon: 'map', id: 'surv-arena-tab' });
+  const arenaTab = K.tablet('Arena', h('div', { class: 'bs-surv-arena' }, h('div', { class: 'bs-surv-arena-media' }, thumb, thumbPh), h('div', { class: 'bs-surv-arena-text' }, sel, arenaName, arenaBlurb, tactics)), { variant: 'glass', icon: 'map', id: 'surv-arena-tab' });
   paintArena();
 
   const facOptions = Object.keys(factions).map((id) => ({ value: id, label: factions[id].name || id })).concat([{ value: 'mixed', label: 'Mixed' }]);

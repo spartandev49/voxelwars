@@ -33,6 +33,9 @@ const norm = (a) => Arena.fromJSON(JSON.parse(JSON.stringify(a.toJSON())));
   const { code, length, cls } = await exportArena(s.arena, { objective: 'eliminate' });
   ok(length <= MAX_CODE, 'a full 1,500-prop arena still fits the 38,000 character limit (' + length + ', class ' + cls + ')');
   const r = await importArena(code); assert.strictEqual(r.arena.props.length, 1500); assert.strictEqual(hashArena(r.arena), hashArena(norm(s.arena)));
+  // drafts split big codes into parts below the draft store's 20,000 character string cap
+  const rec = await makeDraft(s); ok(rec.parts.every((p) => p.length <= 16000) && rec.parts.join('') === code, 'a big draft is stored in parts of <= 16,000 characters (' + rec.parts.length + ' parts)');
+  const back = await readDraft(JSON.parse(JSON.stringify(rec))); assert.strictEqual(hashArena(back.arena), hashArena(norm(s.arena)));
   assert.strictEqual(sizeClass(1800), 'S'); assert.strictEqual(sizeClass(8000), 'M'); assert.strictEqual(sizeClass(38000), 'L'); assert.strictEqual(sizeClass(38001), 'XL');
 }
 { // the biggest generated presets

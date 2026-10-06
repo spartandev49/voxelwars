@@ -25,10 +25,11 @@ function view(pr, a, h = 60) { eng.camera.position.set(0, h, a.worldSize() * 0.5
   let { a, fx, pr } = setup('teutoburg');
   view(pr, a);
   const st = pr.stats();
+  t('prop geometry carries a real aFlash attribute', pr.batches.values().next().value.info.geos[0].getAttribute('aFlash').count === pr.batches.values().next().value.info.geos[0].getAttribute('position').count);
   t('items match arena props', st.items === a.props.length, st.items + ' vs ' + a.props.length);
   t('ids are 1-based list indices (sim contract)', pr.get(1).type === a.props[0].t && pr.get(a.props.length).type === a.props[a.props.length - 1].t);
   t('visible instances are culled and drawn', st.instances > 0 && st.instances <= st.items && st.drawCalls > 0 && st.triangles > 0, JSON.stringify(st));
-  t('draw calls stay inside the R2 prop budget (<= 60)', st.drawCalls <= 60, st.drawCalls);
+  t('draw calls stay inside the R2 prop budget (<= 60) and batches <= 60', st.drawCalls <= 60 && st.batches <= 60, st.drawCalls + ' draws, ' + st.batches + ' batches, merged ' + st.lodMerged);
   eng.render(0.016);
   t('first render with prop batches does not throw', true);
   // camera far away: nothing visible and no draw
@@ -99,9 +100,11 @@ function view(pr, a, h = 60) { eng.camera.position.set(0, h, a.worldSize() * 0.5
   t('emitters feed CubeFX fire particles', fx.liveCount > 0, fx.liveCount);
   const b = a.props.findIndex((p) => p.t === 'tree_olive') + 1;
   if (b) { pr.setBurning(b, true); for (let i = 0; i < 10; i++) { pr.update(0.05, eng.camera); fx.update(0.05); } t('burning props emit flames', true); pr.setBurning(b, false); }
-  t('light pool follows the tier', pr.lights.length === PROP_TIERS.marble.lights, pr.lights.length);
+  for (let i = 0; i < 20; i++) pr.update(0.05, eng.camera);
+  t('light pool is constant (2) and lit by torches at marble', pr.lights.length === 2 && pr.lights.some((l) => l.intensity > 0.2), pr.lights.map((l) => l.intensity.toFixed(2)).join(','));
   pr.setQuality('potato');
-  t('potato tier: no point lights, shadows off', pr.lights.length === 0 && pr.shadowsOn === false);
+  for (let i = 0; i < 40; i++) pr.update(0.05, eng.camera);
+  t('potato tier: lights fade to 0 without changing the light count, shadows off', pr.lights.length === 2 && pr.lights.every((l) => l.intensity < 0.05) && pr.shadowsOn === false, pr.lights.map((l) => l.intensity.toFixed(2)).join(','));
   pr.setQuality('marble'); view(pr, a, 40); eng.render(0.016);
 
   // ---- ships float, clouds hover

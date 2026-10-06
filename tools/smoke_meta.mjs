@@ -108,8 +108,8 @@ try {
   check(await ev(() => !window.__vw.app.meta.aim.active), 'a right-click cancels aiming'); check(await ev(() => window.__vw.game.state === 'running' && !window.__vw.game.isPaused()), 'and does not pause the game');
   await ev(() => window.__vw.game.aim('meteor')); await page.keyboard.press('Escape'); await page.waitForTimeout(250);
   check(await ev(() => !window.__vw.app.meta.aim.active), 'Esc cancels aiming');
-  // take command
-  const tc = await ev(async () => { const g = window.__vw.game, w = g.world; const u = w.units.find((x) => x.team === 0 && x.alive); g.possess(u.id); await new Promise((r) => setTimeout(r, 400)); const x0 = u.x, z0 = u.z; const ok = g.possessInput({ move: { x: 0, y: -1 } }); await new Promise((r) => setTimeout(r, 1200)); const hud = g.hud(); return { ok, moved: Math.hypot(u.x - x0, u.z - z0), possess: hud.possess && { id: hud.possess.id, name: hud.possess.name, ab: hud.possess.abilities.length }, alive: u.alive }; });
+  // take command (SwiftShader renders ~1 fps, so the sim is advanced with the test hook instead of waiting)
+  const tc = await ev(async () => { const g = window.__vw.game, w = g.world; const u = w.units.find((x) => x.team === 0 && x.alive); g.possess(u.id); window.__vw.step(3); const x0 = u.x, z0 = u.z; const ok = g.possessInput({ move: { x: 0, y: -1 } }); window.__vw.step(45); const hud = g.hud(); return { ok, moved: Math.hypot(u.x - x0, u.z - z0), possess: hud.possess && { id: hud.possess.id, name: hud.possess.name, ab: hud.possess.abilities.length }, alive: u.alive }; });
   check(tc.ok && (tc.moved > 0.8 || !tc.alive), 'possessInput moves the possessed soldier (moved ' + tc.moved.toFixed(2) + ')'); check(!!tc.possess || !tc.alive, 'hud.possess is filled ' + JSON.stringify(tc.possess));
   await page.waitForTimeout(600); await shot('possess');
   await ev(() => window.__vw.game.possess(null));

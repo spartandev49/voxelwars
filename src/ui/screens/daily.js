@@ -2,6 +2,7 @@
 // summary, one big Play button, the local history (last 14 days, streak) and a copyable result string. dailyPlan() is a pure function of the date
 // (screens/_daily_plan.js, unit tested). dailyResultPanel() / recordDaily() are used by the results overlay when ResultsData.daily is present.
 import * as K from '../kit.js';
+import { setThumb } from './_shared.js';
 import { h, disposer, fmtInt, fmtTime } from '../hud/_dom.js';
 import { icon } from '../hud/_icons.js';
 import { mutatorBadge } from '../hud/mutators.js';
@@ -49,13 +50,14 @@ export function mount(root, ctx) {
   const frame = K.pageFrame({ title: 'Daily Skirmish', sub: 'Same battle for everyone today. Different tomorrow.', onBack: () => ctx.nav.back(), id: 'daily-frame' });
   frame.mount(root);
 
-  let thumb = null;
-  try { const url = ctx.content.arenaThumb && ctx.content.arenaThumb(plan.arenaId); if (url) thumb = h('img', { class: 'bs-daily-thumb', src: url, alt: '', width: 192, height: 108 }); } catch (e) { thumb = null; }
+  // arenaThumb() returns a Promise<dataURL>: setThumb keeps the placeholder until it resolves (never assign the raw value to img.src).
+  const thumb = h('img', { class: 'bs-daily-thumb vw-hide', alt: '', width: 192, height: 108 }), thumbPh = h('div', { class: 'vw-thumb-ph vw-hide', 'aria-hidden': 'true', style: { maxWidth: '22rem' } });
+  setThumb(thumb, ctx, plan.arenaId, thumbPh);
   const mut = plan.mutator ? mutatorBadge(ctx, plan.mutator, { large: true }) : null;
   const facA = factionName(ctx, plan.factionA), facB = factionName(ctx, plan.factionB);
   const summary = h('div', { class: 'bs-daily-summary' },
     h('div', { class: 'bs-daily-date' }, icon('calendar'), h('b', { text: today }), info.streak ? K.chip('Streak: ' + (done ? info.streak : streakOf(info.history, today)) + ' day' + (info.streak === 1 ? '' : 's'), { icon: 'fire', variant: 'lava' }) : null),
-    thumb, h('h3', { class: 'bs-daily-arena', text: plan.arenaName }),
+    thumb, thumbPh, h('h3', { class: 'bs-daily-arena', text: plan.arenaName }),
     h('div', { class: 'bs-daily-vs' }, h('span', { class: 'is-a', text: facA }), h('i', { text: 'vs' }), h('span', { class: 'is-b', text: facB })),
     h('div', { class: 'bs-inter-chips' }, K.chip(fmtInt(DAILY_BUDGET) + ' dr each', { icon: 'coin', variant: 'gold' }), K.chip('Enemy: ' + plan.enemyStyle, { icon: 'flag', variant: 'sky' }), K.chip('Citizen difficulty', { variant: 'ink' })),
     mut ? h('div', { class: 'bs-daily-twist' }, h('span', { text: 'Today’s twist' }), mut) : h('p', { class: 'bs-daily-twist-none', text: 'No twist today. Pure, boring physics.' }));

@@ -9,7 +9,7 @@ import { HAZARD_BY_ID, boulderHalfLane, MARKER_BY_ID } from './consts.js';
 
 const T = () => window.THREE;
 const TAU = Math.PI * 2;
-const TEAM_COL = { A: 0x3b6cf0, B: 0xee4b4b };
+const TEAM_COL = { A: 0x2f63f2, B: 0xf0283c };
 
 /** Instanced cubes with per-instance colour: the building block of every ring and line. */
 class Cubes {
@@ -63,7 +63,7 @@ const spriteTex = new Map();
 function iconTexture(kind, color) {
   const key = kind + color;
   let tx = spriteTex.get(key);
-  if (!tx) { tx = new (T().CanvasTexture)(badge(GLYPHS[kind] || GLYPHS.hill, color)); tx.minFilter = T().LinearFilter; spriteTex.set(key, tx); }
+  if (!tx) { tx = new (T().CanvasTexture)(badge(GLYPHS[kind] || GLYPHS.hill, color)); tx.minFilter = T().LinearFilter; tx.encoding = T().sRGBEncoding; spriteTex.set(key, tx); }
   return tx;
 }
 function letterTexture(letter, color) {
@@ -72,7 +72,7 @@ function letterTexture(letter, color) {
   g.font = '900 78px "Bungee","Arial Black",Impact,sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
   g.lineWidth = 12; g.strokeStyle = '#14163a'; g.lineJoin = 'round'; g.strokeText(letter, 48, 52);
   g.fillStyle = '#' + color.toString(16).padStart(6, '0'); g.fillText(letter, 48, 52);
-  const tx = new (T().CanvasTexture)(c); tx.minFilter = T().LinearFilter; return tx;
+  const tx = new (T().CanvasTexture)(c); tx.minFilter = T().LinearFilter; tx.encoding = T().sRGBEncoding; return tx;
 }
 
 export class EditorView {
@@ -225,10 +225,10 @@ export class EditorView {
     for (const k of ['A', 'B']) {
       const zn = a.zones[k]; if (!zn || !vis) continue;
       const active = this.active.zone === k && this.active.tool === 'zones', hex = TEAM_COL[k];
-      const d = this._drape(zn, hex, active ? 0.4 : 0.26); if (d) { this.root.add(d); this.drapes[k] = d; }
-      this.rect(b, zn.x - zn.w / 2, zn.z - zn.d / 2, zn.x + zn.w / 2, zn.z + zn.d / 2, hex, { len: active ? 0.8 : 0.6, h: active ? 0.3 : 0.2, w: active ? 0.4 : 0.3, lift: 0.1 });
+      const d = this._drape(zn, hex, active ? 0.5 : 0.4); if (d) { this.root.add(d); this.drapes[k] = d; }
+      this.rect(b, zn.x - zn.w / 2, zn.z - zn.d / 2, zn.x + zn.w / 2, zn.z + zn.d / 2, hex, { len: active ? 1.0 : 0.8, h: active ? 0.34 : 0.26, w: active ? 0.5 : 0.4, lift: 0.1 });
       const t = T(); const sp = new t.Sprite(new t.SpriteMaterial({ map: letterTexture(k, hex), depthTest: false, transparent: true }));
-      const top = this._y(zn.x, zn.z); sp.position.set(zn.x, top + 3.2, zn.z); sp.scale.set(3.6, 3.6, 1); sp.renderOrder = 31; this.root.add(sp); this.labels[k] = sp;
+      const top = this._y(zn.x, zn.z); sp.position.set(zn.x, top + 3.2, zn.z); sp.scale.set(4.6, 4.6, 1); sp.renderOrder = 31; this.root.add(sp); this.labels[k] = sp;
     }
     b.flush();
   }

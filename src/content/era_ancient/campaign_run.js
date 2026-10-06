@@ -260,17 +260,21 @@ export class MissionRuntime {
     this.off = [world.events.on('battle_start', () => this._start())];
     if (m.teaching) this.off.push(world.events.onAny((type, p) => this._beat(type, p)));
     if (this.script.waves) this._installWaves();
-    // a binding objective (the goat must cross) is not satisfied by wiping out the enemy: the battle goes on until the objective itself ends it
-    if (m.objective && m.objective.binding && world.objective && !this.waves) { const obj = world.objective; Object.defineProperty(obj, 'blocksElimination', { configurable: true, enumerable: true, get: () => !obj.done, set: () => {} }); }
+    this._guardElimination();
     const prev = world.onTick;
     world.onTick = (w, dt) => { if (prev) prev(w, dt); this.tick(w, dt); };
   }
   _installWaves() {
-    const w = this.w, cfg = this.script.waves;
-    this.waves = new ScriptedWaves(w, cfg);
-    const obj = w.objective, ws = this.waves;
-    // an empty field must not end the battle while waves are still to come (hold_hill, kill_general) or before the last one is cleared (survive_waves)
-    if (obj) Object.defineProperty(obj, 'blocksElimination', { configurable: true, enumerable: true, get: () => ws.pending || (obj.type === 'survive_waves' && ws.cleared < ws.total), set: () => {} });
+    this.waves = new ScriptedWaves(this.w, this.script.waves);
+  }
+  /**
+   * An empty field must not end the battle (and a rout must not either) while the objective itself is still open: before the last scripted wave has
+   * arrived, until a survive_waves objective completes, and for a `binding` objective (the goat must cross, the general must die, the gates must fall).
+   */
+  _guardElimination() {
+    const obj = this.w.objective, ws = this.waves, binding = !!(this.m.objective && this.m.objective.binding);
+    if (!obj || !(ws || binding || obj.type === 'survive_waves')) return;
+    Object.defineProperty(obj, 'blocksElimination', { configurable: true, enumerable: true, get: () => !obj.done && ((ws ? ws.pending : false) || binding || obj.type === 'survive_waves'), set: () => {} });
   }
   _start() {
     const w = this.w;
@@ -288,12 +292,14 @@ export class MissionRuntime {
   /** The VIP leaves when the delay is over and no enemy stands within `clear` u of the way to the exit marker (the player can still order the squad by hand). */
   _vip(w, dt) {
     const sq = this.vipSquad, u = this.vipUnit;
-    if (!sq || sq.order !== 'hold' || !u.alive || this.t < this.vipAt) return;
+    if (!u.alive) return;
+    if (!this.vipGone && sq.order === 'advance') sq.order = 'hold';        // the stalemate watchdog turns every Hold into Advance after 18 s: the goat must not march into the enemy
+    if (sq.order !== 'hold' || this.t < this.vipAt) return;
     this.vipCheck -= dt; if (this.vipCheck > 0) return;
     this.vipCheck = 0.5;
     const clear = this.vipMarch.clear || 0, e = this.vipExit;
     if (clear > 0) for (const o of w.units) if (o.alive && o.team !== TEAM_PLAYER && MissionRuntime.segDist(o.x, o.z, u.x, u.z, e.x, e.z) < clear) return;
-    sq.order = 'move';
+    sq.order = 'move'; this.vipGone = true;
   }
   tick(w, dt) {
     if (w.state !== 'running') return;

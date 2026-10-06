@@ -33,3 +33,11 @@ for (const [clip, [mk, pt]] of Object.entries(CASES)) {
 console.log(rows.join('\n'));
 assert.deepStrictEqual(bad, [], 'A5: hit frame not within +-2 frames of the tip-speed peak');
 ok('A5 hit frames match the tip-speed peak (+-2 frames) and ClipLib.hit within 1 tick');
+
+// negative control: moving a clip's hitFrame by 6 frames must make the same check fail
+{
+  const clip = 'strike_slash_1', m = sold.gladius, [part, local] = tip(m);
+  const prof = pointSpeedProfile(m, clip, part, local), hitF = ClipLib.get(clip, 'hum1').meta.hitFrame;
+  assert.ok(Math.abs(prof.peakFrame - (hitF + 6)) > TOL && Math.abs(prof.peakFrame - (hitF - 6)) > TOL, 'NC: a hitFrame shifted by 6 frames must fail the +-2 frame check');
+  ok('A5 NC: hitFrame shifted by +-6 frames is rejected');
+}

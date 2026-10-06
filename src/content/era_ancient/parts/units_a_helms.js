@@ -107,6 +107,33 @@ H.murmillo = {
   },
 };
 
+/** Centurion's helm: a gilded (bronze) Imperial helm with broad cheek plates, an embossed brow band and a wide, flat-topped transverse crest (ear to ear) on a gold holder. */
+H.centurion_gilded = {
+  name: 'Centurion helm (gilded, transverse crest)', meta: { hair: 'none', crest: 'transverse', faction: 'romans' },
+  build(ctx) {
+    const { head, crest, hs } = headSpace();
+    lathe(hs, [[3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.4, 3.4], [2.3, 2.3]], { color: bowl(ctx) });
+    cutFaceCube(hs);
+    X(hs, 3, 0, 8, 6, 4, 8);                                                          // open face between the cheek plates
+    Bs(hs, 1, 0, 8, 2, 3, 8, mcol(ctx, 3, 7, 0.02)); Bs(hs, 1, 0, 5, 1, 3, 7, mcol(ctx, 2, 7, -0.06));
+    Bs(hs, 2, 5, 9, 4, 5, 9, mcol(ctx, 6, 7, 0.12));                                  // brow ridge
+    const au = [0xb08a18, 0xe0b82e, 0xf6d850];                                          // the gilding is gold whatever the helm metal is
+    B(hs, 1, 5, 2, 8, 5, 8, (x, y, z) => ((x === 1 || x === 8 || z === 2 || z === 8) ? V(au[(x + z) % 2 ? 2 : 1]) : 0));   // embossed gold band
+    B(hs, 2, 0, 0, 7, 3, 0, mcol(ctx, 3, 7, 0)); B(hs, 1, 0, 1, 8, 1, 1, mcol(ctx, 1, 7, -0.1));                          // wide neck guard
+    // the crest: a flat-topped brush of horsehair, 3 deep, with a fine serrated top and a darker spine
+    B(hs, 1, 7, 3, 8, 7, 6, V(au[1])); Bs(hs, 0, 7, 4, 0, 8, 5, V(au[2]));
+    const h = [0, 5, 6, 6, 6, 6, 6, 6, 5, 0];
+    for (let x = 1; x <= 8; x++) for (let y = 8; y <= 7 + h[x]; y++) {
+      const top = y === 7 + h[x];
+      const c = ctx.t(0.84 + 0.26 * ((y - 8) / 5) + 0.06 * hash3(x, y, 4, 8) - (x === 4 || x === 5 ? 0.06 : 0));
+      if (top && x % 2 === 0) continue;
+      for (let z = 4; z <= 5; z++) P(hs, x, y, z, c);
+      if (!top && y < 7 + h[x] - 1) P(hs, x, y, 6, ctx.t(0.78 + 0.1 * hash3(x, y, 6, 9)));
+    }
+    return { head, crest };
+  },
+};
+
 // ---------------------------------------------------------------------------------------------- Egyptians
 /** Nemes-lite: a striped headcloth (team / gold) with short lappets at the ears and a gold brow band; no uraeus, no chest lappets. */
 H.nemes_lite = {
@@ -131,10 +158,10 @@ H.mummy_head = {
   build(ctx) {
     const { head, crest, hs } = headSpace();
     const wrap = (x, y, z) => {
-      const d = (x + y * 2 + (z > 4 ? z : -z) + 20) % 5, n = hash3(x, y, z, 12);
-      if (d === 0 && n > 0.3) return V(0x4a4032);                                     // gap: dark dry skin
-      if (d === 1 || n > 0.86) return V(shade(0xe6dcc0, 0.86 + 0.2 * n));              // a strip of plain linen
-      return ctx.t((d === 2 ? 0.86 : d === 3 ? 0.96 : 1.04) * (0.94 + 0.1 * n));
+      const d = (x + y * 2 + (z > 4 ? z : -z) + 24) % 8, n = hash3(x, y, z, 12);
+      if (d === 0 && n > 0.6) return V(0x4a4032);                                     // gap: dark dry skin
+      if (d === 1 || d === 2) return V(shade(0xe6dcc0, 0.9 + 0.14 * n));               // a band of plain linen
+      return ctx.t((d >= 6 ? 0.86 : 1.02) * (0.96 + 0.08 * n));
     };
     // a wrapped shell over the whole head (the face cube stays underneath)
     B(hs, 2, 6, 2, 7, 6, 7, wrap); B(hs, 3, 7, 3, 6, 7, 6, wrap);
@@ -159,15 +186,16 @@ H.jackal_anubis = {
   name: 'Anubis jackal head', meta: { hair: 'none', noEyes: true, faction: 'egyptians' },
   build(ctx) {
     const { head, crest, hs } = headSpace();
-    const fur = (x, y, z, f = 1) => V(shade(0x2a2a34, f * (0.72 + 0.5 * hash3(x, y, z, 5)) * (y > 5 ? 1.12 : 1)));
+    const fur = (x, y, z, f = 1) => V(shade(0x383844, f * (0.72 + 0.5 * hash3(x, y, z, 5)) * (y > 5 ? 1.12 : 1)));
     const gold = (f = 1) => V(shade(ctx.m[3], f));
     lathe(hs, [[3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.9, 3.9], [3.6, 3.6], [2.5, 2.5]], { color: (x, y, z) => fur(x, y, z), n: 2.8 });
     cutFaceCube(hs);
-    B(hs, 2, 0, 8, 7, 5, 8, (x, y, z) => fur(x, y, z, 1.0));                          // face plate
-    B(hs, 3, 0, 9, 6, 3, 9, (x, y, z) => fur(x, y, z, 1.05));                         // the long snout (2 deep)
+    B(hs, 2, 4, 8, 7, 5, 8, (x, y, z) => fur(x, y, z, 1.0));                          // brow and forehead plate
+    B(hs, 3, 0, 8, 6, 3, 8, (x, y, z) => fur(x, y, z, 1.04));                         // muzzle, wide part
+    B(hs, 4, 1, 9, 5, 3, 9, (x, y, z) => fur(x, y, z, 1.18));                         // the long narrow tip of the snout (2 deep)
     B(hs, 4, 3, 9, 5, 3, 9, V(0x08080a));                                              // nose
-    B(hs, 3, 1, 9, 6, 1, 9, V(0x4a3a38));                                              // mouth line
-    B(hs, 3, 0, 9, 6, 0, 9, (x, y, z) => V(shade(0x5a4640, 0.9 + 0.15 * hash3(x, y, z, 3))));   // lighter chin
+    B(hs, 3, 1, 8, 6, 1, 8, V(0x4a3a38)); B(hs, 4, 1, 9, 5, 1, 9, V(0x4a3a38));       // mouth line
+    B(hs, 3, 0, 8, 6, 0, 8, (x, y, z) => V(shade(0x5a4640, 0.9 + 0.15 * hash3(x, y, z, 3))));   // lighter chin
     // eyes: gold with a long dark liner reaching toward the ears
     Ps(hs, 3, 4, 8, V(0xf0c24a)); Ps(hs, 2, 4, 8, V(0x08080a)); Ps(hs, 3, 5, 8, V(0x08080a)); Ps(hs, 1, 4, 5, V(0x08080a));
     B(hs, 1, 5, 1, 8, 5, 8, (x, y, z) => ((x === 1 || x === 8 || z === 1 || z === 8) ? gold(0.9) : 0));   // gold headband
@@ -177,7 +205,7 @@ H.jackal_anubis = {
     Bs(hs, 2, 8, 5, 2, 11, 5, V(0x5a2e36));
     Bs(hs, 0, 13, 3, 0, 13, 4, V(0x0a0a0e));
     // a lighter ridge along the snout and brow so the long muzzle reads
-    B(hs, 4, 3, 9, 5, 3, 9, V(0x08080a)); B(hs, 3, 2, 9, 6, 2, 9, (x, y, z) => fur(x, y, z, 1.3)); B(hs, 3, 5, 8, 6, 5, 8, (x, y, z) => fur(x, y, z, 1.28));
+    B(hs, 3, 2, 8, 6, 2, 8, (x, y, z) => fur(x, y, z, 1.3)); B(hs, 3, 5, 8, 6, 5, 8, (x, y, z) => fur(x, y, z, 1.28));
     // wig: black locks behind, down the back with gold ends
     B(hs, 2, 0, 0, 7, 4, 0, (x, y, z) => fur(x, y, z, 0.9)); B(hs, 1, 0, 1, 8, 3, 1, (x, y, z) => fur(x, y, z, 0.85));
     const body = newGrid('body');

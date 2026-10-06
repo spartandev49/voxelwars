@@ -16,7 +16,7 @@ export function brush(set, x, y, z, w, h, d, v) {
 /**
  * Draw a thick polyline through `pts` ([x,y,z] voxel indices, any space with a set(x,y,z,v) method) with a cube brush of `thick`
  * voxels, then a snake head at the last point. colorAt(i, x, y, z) gives the body voxel; the head faces along the last segment's dominant axis
- * and is 2 long x (thick+2) wide x `o.headH` (default thick) high; eyes are GLOW voxels on the outer top corners of the front row, the tongue a red fork.
+ * and is 2 long x (thick+2) wide x `o.headH` (default thick) high; eyes are GLOW voxels on the outer top corners of the front row, the tongue one red voxel.
  * `o.ok(x,y,z)` (default: everything) lets the caller clip cells that would fall outside its grid. Used by Medusa's hair.
  */
 export function snake(S, pts, thick, colorAt, o = {}) {
@@ -43,7 +43,7 @@ export function snake(S, pts, thick, colorAt, o = {}) {
   const hL = o.headL || 2;
   for (let f = 1; f <= hL; f++) for (let s2 = -1; s2 <= thick; s2++) for (let u = 0; u < hH; u++) put(f, s2, u, head);
   put(hL, -1, hH - 1, eye); put(hL, thick, hH - 1, eye);
-  put(hL + 1, 0, 0, tongue); put(hL + 2, 0, 0, tongue); put(hL + 2, -1, 0, tongue); put(hL + 2, 1, 0, tongue);
+  put(hL + 1, 0, 0, tongue);
 }
 
 /** alternating purple/gold fringe voxel for hems (x or z index decides) */

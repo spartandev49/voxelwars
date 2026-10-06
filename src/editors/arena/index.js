@@ -11,7 +11,7 @@ import { PropThumbs } from './thumbs.js';
 import { buildToolPanel, buildChecksPanel, PLACEABLE } from './panels.js';
 import { validateArena } from './validate.js';
 import { applyFix } from './fixes.js';
-import { libraryFor, draftFor, makeDraft, readDraft } from './library.js';
+import { libraryFor, draftFor, makeDraft, readDraft, looksLikeDraft } from './library.js';
 import { openLibrary, exportDialog, importDialog, showShortcuts, askLeave, askResize, askName, askDiscardForNew, offerDraft, arenaFromTemplate } from './dialogs.js';
 import { getS } from './strings.js';
 import { eicon } from './icons.js';
@@ -38,6 +38,8 @@ const defaultState = (settings) => ({
 });
 
 const safe = (fn, d) => { try { const v = fn(); return v === undefined ? d : v; } catch (e) { return d; } };
+/** Icon-only button with one of the builder's own glyphs (the kit builds buttons from its icon set only). */
+function glyphButton(name, aria, o) { const b = K.iconButton('cube', aria, o); const old = b.querySelector('.vw-btn__icon'); if (old) old.replaceWith(eicon(name, { class: 'vw-btn__icon' })); return b; }
 
 export function mount(root, ctx, params) {
   K.init(ctx);
@@ -89,12 +91,11 @@ export function mount(root, ctx, params) {
   K.tooltip(newBtn, S.dialogs.newTitle);
   const libBtn = K.button(S.bar.open, { icon: 'folder', variant: 'secondary', id: 'ed-library-btn', class: 'vw-ed__lbl', onClick: () => app.openLibrary('mine') });
   K.tooltip(libBtn, S.dialogs.libTitle);
-  const statusBtn = K.button('', { icon: 'check', variant: 'olive', id: 'ed-status', aria: S.checks.title, onClick: () => app.showChecks() });
-  const statusLabel = K.h('span', { class: 'vw-ed__status-l', id: 'ed-status-l', 'aria-live': 'polite' });
-  statusBtn.querySelector('.vw-btn__face').appendChild(statusLabel);
-  const topBtn = K.iconButton('top', S.bar.topdown, { id: 'ed-topdown', variant: 'secondary', onClick: () => app.toggleTopDown() }); K.tooltip(topBtn, `${S.bar.topdown} [T]`);
-  const frameBtn = K.iconButton('target', S.bar.frame, { id: 'ed-frame', variant: 'secondary', onClick: () => app.frameArena() }); K.tooltip(frameBtn, `${S.bar.frame} [F]`);
-  const overBtn = K.iconButton('layers', S.bar.overlays, { id: 'ed-overlays', variant: 'secondary', pressed: true, onClick: () => { st.overlays = !st.overlays; app.view.setOverlays(st.overlays); overBtn.setPressed(st.overlays); } }); K.tooltip(overBtn, S.bar.overlays);
+  const statusBtn = K.button(S.checks.ready, { icon: 'check', variant: 'olive', id: 'ed-status', aria: S.checks.title, class: 'vw-ed__status', onClick: () => app.showChecks() });
+  const statusLabel = { set textContent(t) { statusBtn.setLabel(t); }, get textContent() { const l = statusBtn.querySelector('.vw-btn__label'); return l ? l.textContent : ''; } };
+  const topBtn = glyphButton('top', S.bar.topdown, { id: 'ed-topdown', variant: 'secondary', onClick: () => app.toggleTopDown() }); K.tooltip(topBtn, `${S.bar.topdown} [T]`);
+  const frameBtn = glyphButton('target', S.bar.frame, { id: 'ed-frame', variant: 'secondary', onClick: () => app.frameArena() }); K.tooltip(frameBtn, `${S.bar.frame} [F]`);
+  const overBtn = glyphButton('layers', S.bar.overlays, { id: 'ed-overlays', variant: 'secondary', pressed: true, onClick: () => { st.overlays = !st.overlays; app.view.setOverlays(st.overlays); overBtn.setPressed(st.overlays); } }); K.tooltip(overBtn, S.bar.overlays);
   const helpBtn = K.iconButton('help', S.bar.help, { id: 'ed-help', variant: 'ghost', onClick: () => app.showShortcuts() }); K.tooltip(helpBtn, `${S.bar.help} [?]`);
   const mute = K.muteButton(); cleanups.push(() => mute.destroy && mute.destroy());
   const top = K.h('header', { class: 'vw-ed__top' }, backBtn, title, K.h('span', { class: 'vw-spacer' }), newBtn, libBtn, statusBtn, K.h('div', { class: 'vw-ed__camtools', role: 'group', 'aria-label': 'Camera' }, topBtn, frameBtn, overBtn), helpBtn, mute);
@@ -186,8 +187,8 @@ export function mount(root, ctx, params) {
   app.onToolChanged = (id) => {
     for (const [k, b] of toolBtns) b.setAttribute('aria-pressed', String(k === id));
     hintEl.textContent = S.tools[id].hint;
-    if (st.panelTab === 'tool') renderToolPanel();
-    else paintInspHead();
+    if (st.panelTab !== 'tool') { st.panelTab = 'tool'; tabs.select('tool', { silent: true }); }
+    renderToolPanel();
     app.view.setActiveZone(st.zoneKey, id);
   };
   function paintInspHead() {
@@ -215,7 +216,6 @@ export function mount(root, ctx, params) {
   app.syncBrushWidgets = () => {
     const w = app.brushWidgets; if (!w) return;
     if (w.radius) w.radius.set(st.brush.radius, true); if (w.strength) w.strength.set(Math.round(st.strengths[st.tool] * 10), true); if (w.shape) w.shape.set(st.brush.shape, true); if (w.fall) w.fall.set(st.brush.falloff, true);
-    const r = $('ed-brush-radius'); if (r && !w.radius) r.value = String(st.brush.radius);
   };
 
   // validation (debounced; a few ms on small arenas, tens on large ones)
@@ -228,7 +228,7 @@ export function mount(root, ctx, params) {
     const n = res.issues.length;
     statusBtn.className = statusBtn.className.replace(/vw-btn--(olive|danger|primary|secondary)/g, '').trim() + ' vw-btn--' + (res.errors ? 'danger' : res.warnings ? 'primary' : 'olive');
     statusLabel.textContent = res.errors ? S.checks.errors(res.errors) : res.warnings ? S.checks.warnings(res.warnings) : S.checks.ready;
-    const ic = statusBtn.querySelector('.vw-btn__icon'); if (ic) ic.replaceWith(eicon(res.errors ? 'hazards' : res.warnings ? 'hazards' : 'info', { class: 'vw-btn__icon' }));
+    const ic = statusBtn.querySelector('.vw-btn__icon'); if (ic) ic.replaceWith(eicon(res.errors || res.warnings ? 'hazards' : 'info', { class: 'vw-btn__icon' }));
     statusBtn.setAttribute('aria-label', `${S.checks.title}: ${statusLabel.textContent}`);
     tabs.setBadge('checks', n || null);
     playBtn.setAttribute('aria-disabled', res.canPlaytest ? 'false' : 'true'); playBtn.classList.toggle('is-soft-disabled', !res.canPlaytest);
@@ -370,8 +370,7 @@ export function mount(root, ctx, params) {
       const setup = g.newSetup('quick', { arena: { data: a.toJSON(), size: sizeName, seed: a.seed || 1, env: {} }, rules: { objective } });
       await g.begin(setup);
       g.autoFill(0, {}); g.autoFill(1, {});
-      if (ctx.nav.current() !== 'placement') ctx.nav.goto('placement', { setup, arenaName: a.name });
-      else ctx.nav.goto('placement', { setup, arenaName: a.name });
+      ctx.nav.goto('placement', { setup, arenaName: a.name });                 // the glue already opened it; this remount shows the arena's own name
       installReturnChip();
       return true;
     } catch (e) {
@@ -391,9 +390,9 @@ export function mount(root, ctx, params) {
   app.validateNow();
   // touch helpers (only on touch devices): Move camera, Lower (Shift), Rotate (R), Scale (Alt+wheel)
   if (safe(() => ctx.platform.isTouch, false)) {
-    const camT = K.button(S.view.touchCamera, { id: 'ed-touch-cam', size: 'sm', icon: 'touch', pressed: false, onClick: () => { st.touchCamera = !st.touchCamera; camT.setPressed(st.touchCamera); } });
+    const camT = K.button(S.view.touchCamera, { id: 'ed-touch-cam', size: 'sm', icon: 'hand', pressed: false, onClick: () => { st.touchCamera = !st.touchCamera; camT.setPressed(st.touchCamera); } });
     const lowT = K.button(S.view.touchLower, { id: 'ed-touch-lower', size: 'sm', icon: 'chevD', pressed: false, onClick: () => { st.touchLower = !st.touchLower; lowT.setPressed(st.touchLower); } });
-    const rotT = K.button(S.view.touchRotate, { id: 'ed-touch-rot', size: 'sm', icon: 'rotate', onClick: () => app.ctl.rotateBy(1) });
+    const rotT = K.button(S.view.touchRotate, { id: 'ed-touch-rot', size: 'sm', icon: 'refresh', onClick: () => app.ctl.rotateBy(1) });
     const sclP = K.iconButton('plus', S.view.touchScale + ' +', { id: 'ed-touch-scale-up', onClick: () => app.ctl.scaleBy(1) }), sclM = K.iconButton('minus', S.view.touchScale + ' -', { id: 'ed-touch-scale-down', onClick: () => app.ctl.scaleBy(-1) });
     touchBar.append(camT, lowT, rotT, sclM, sclP);
   } else touchBar.classList.add('vw-hide');
@@ -402,7 +401,7 @@ export function mount(root, ctx, params) {
 
   async function startUpOffers() {
     let d = null; try { d = draft.load(); } catch (e) { d = null; }
-    if (d && typeof d === 'object' && typeof d.code === 'string') {
+    if (looksLikeDraft(d)) {
       const info = { name: d.name || S.untitled, savedAt: d.savedAt || 0 };
       const c = await offerDraft(app, info);
       if (!alive) return;

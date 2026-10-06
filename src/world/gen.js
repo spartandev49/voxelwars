@@ -324,6 +324,7 @@ function distPoly(x, z, pts) {
 function curve(f, x0, x1, n = 24) { const pts = []; for (let i = 0; i <= n; i++) { const x = lerp(x0, x1, i / n); pts.push([x, f(x)]); } return pts; }
 
 const R = {};
+const half0 = (W) => W / 2;
 
 // ------------------------------------------------------------------ marathon: the reference arena
 /** Gentle rolling plain with broad hills, two dirt tracks between the camps, olive groves, wheat fields and a few ruins. (symmetric by 180 degrees) */
@@ -383,8 +384,9 @@ R.thermopylae = (g) => {
   g.raw('banner_post', gx - 3.4, -4.4, { s: 1.2, v: 1 }); g.raw('banner_post', gx - 3.4, 4.4, { s: 1.2, v: 1 }); g.raw('torch', gx + 2.4, -4.7, { s: 1.2 }); g.raw('torch', gx + 2.4, 4.7, { s: 1.2 });
   g.raw('skull_pile', gx + 5, 5.5, { s: 1.1, v: 1, r: 0.6 }); g.raw('bones', gx + 6.5, -5.8, { s: 1.2, v: 0, r: 1.1 });
   // camps behind the zones, then rocks and cypress along the cliffs
-  for (const [x, z, r, v] of [[-W * 0.46, -6, 1.1, 0], [-W * 0.46, 7, 2.1, 1], [-W * 0.43, 13, 0.4, 2]]) g.raw('tent', x, z, { r, v, s: 1.1 });
-  g.raw('campfire', -W * 0.44, 0.5, { s: 1.2, v: 0 }); g.raw('campfire', W * 0.44, -1, { s: 1.2, v: 2 });
+  const campX = a.zones.A.x - a.zones.A.w / 2 - 3.6;                                  // tents sit BEHIND the deployment zone, never on its edge
+  for (const [dx, z, r, v] of [[0, -6, 1.1, 0], [0, 7, 2.1, 1], [0.6, 13, 0.4, 2]]) g.raw('tent', Math.max(-half0(W) + 2, campX - dx), z, { r, v, s: 1.1 });
+  g.raw('campfire', Math.max(-half0(W) + 1.5, campX + 1.2), 0.5, { s: 1.2, v: 0 }); g.raw('campfire', Math.min(half0(W) - 1.5, a.zones.B.x + a.zones.B.w / 2 + 2.6), -1, { s: 1.2, v: 2 });
   g.scatter({ rock_big: 2, rock_small: 3, bush: 3, tree_cypress: 3 }, 55, { region: (x, z) => Math.abs(z) > 5.5 && Math.abs(x - gx) > 6, scale: [0.9, 1.5] });
   g.scatter({ bones: 1, skull_pile: 1, rock_small: 2 }, 8, { region: (x, z) => x > gx + 8 && Math.abs(z) < 12, scale: [0.9, 1.3] });
 };
@@ -488,7 +490,7 @@ R.giza = (g) => {
   a.biome = 'sand'; a.env = { time: 15.5, weather: 'clear', fog: 0.16, theme: 'egypt', wind: 0.4, mood: 'auto' };
   const dune = (x, z) => g.ridged(x * 0.85 + z * 0.35, z * 1.25 - x * 0.2, 30, 2);
   g.setZones(0.31, 0.6, 0.2);
-  const px = [[0, -W * 0.3, 1.6], [W * 0.1, W * 0.31, 1.05]];
+  const sk = clamp(W / 96, 0.72, 1.15), px = [[0, -W * 0.3, 1.6 * sk], [W * 0.1, W * 0.31, 1.05 * sk]];
   g.fill((x, z) => 14 + dune(x, z) * 6 + g.fbm(x, z, 11, 2) * 0.7, (x, z, h) => (g.fbm(x, z, 11, 2) > 0.34 ? MAT.sandstone : MAT.sand));
   g.smooth(1);
   for (const [x, z, s] of px) g.flatRect(x, z, 7.4 * s, 7.4 * s, 14, 4);
@@ -580,15 +582,23 @@ R.teutoburg = (g) => {
   a.biome = 'grass'; a.env = { time: 7, weather: 'fog', fog: 0.3, theme: 'barbarian', wind: 0.3, mood: 'auto' };
   g.setZones(0.31, 0.46, 0.2);
   const lane = curve((x) => Math.sin(x / 16 + 0.6) * 9 + Math.sin(x / 7) * 1.5, -W / 2, W / 2, 28);
-  g.fill((x, z) => 14 + smoothstep(-0.2, 0.5, g.fbm(x, z, 30, 2) * 1.3) * 6 + g.fbm(x, z, 12, 2) * 0.8, (x, z, h) => { const d = distPoly(x, z, lane); if (d < 1.6) return MAT.mud; const n = g.fbm(x, z, 5, 2); return n > 0.25 ? MAT.moss : g.fbm(x + 9, z, 7, 2) > 0.38 ? MAT.mud : MAT.grass; });
+  g.fill((x, z) => 14 + smoothstep(-0.2, 0.5, g.fbm(x, z, 30, 2) * 1.3) * 6 + g.fbm(x, z, 12, 2) * 0.8, (x, z, h) => { const d = distPoly(x, z, lane); if (d < 1.6) return MAT.mud; const n = g.fbm(x, z, 5, 2); return n > 0.25 ? MAT.moss : g.fbm(x + 9, z, 7, 2) > 0.5 ? MAT.mud : MAT.grass; });
   g.smooth(1); g.flatZones(9, 2); g.terrace(2, 0.3); g.commit();
   g.slopeMat(MAT.dirt, 2, [MAT.grass, MAT.moss]);
   g.keepClearPath(lane, 2.4);
   g.raw('tent', -W * 0.46, -9, { r: 0.5, s: 1.3, v: 0 }); g.raw('tent', W * 0.46, 12, { r: 2.5, s: 1.3, v: 1 }); g.raw('campfire', -W * 0.44, -3, { s: 1.2, v: 0 }); g.raw('campfire', W * 0.43, 7, { s: 1.2, v: 1 });
   g.raw('banner_post', -W * 0.4, 8, { s: 1.2, v: 3 }); g.raw('banner_post', W * 0.4, -7, { s: 1.2, v: 0 });
-  const forest = (x, z) => 0.55 + 0.5 * g.fbm(x + 40, z, 15, 2) + smoothstep(14, 40, distPoly(x, z, lane)) * 0.35;
-  g.scatter({ tree_pine: 5, tree_oak: 4, bush: 2 }, 480, { density: forest, scale: [0.95, 1.6], gap: 1.1, maxSlope: 3 });
-  g.scatter({ log: 2, bush: 3, rock_small: 2, rock_big: 1, tree_dead: 1 }, 40, { density: forest, scale: [0.9, 1.4] });
+  // READABILITY (docs/sheets look gate + tests/props/readability.test.mjs): the default battle camera looks down at ~37 degrees, so any tree taller than a
+  // head hides soldiers within ~5 u behind it. The forest is therefore a WALL around a glade: a deep clearing of ~0.27 W each side of the lane covering both
+  // zones and the whole corridor (only small young trees, bushes, logs and rocks inside), the dense old-growth forest starts beyond it and fills the edges
+  // and the ends behind the camps.
+  const glade = (x, z) => 1 - smoothstep(W * 0.265, W * 0.37, Math.hypot(Math.max(0, Math.abs(x) - W * 0.46) * 1.6, Math.abs(z)));
+  const forest = (x, z) => (1 - glade(x, z)) * (0.6 + 0.45 * g.fbm(x + 40, z, 15, 2) + smoothstep(14, 40, distPoly(x, z, lane)) * 0.2);
+  g.scatter({ tree_pine: 5, tree_oak: 4, bush: 2 }, 440, { density: forest, scale: [0.95, 1.6], gap: 1.1, maxSlope: 3 });
+  g.scatter({ log: 2, bush: 3, rock_small: 2, rock_big: 1, tree_dead: 1 }, 36, { density: forest, scale: [0.9, 1.4] });
+  // the glade: a few small trees in loose clumps (kept off the lane and the zones), bushes and fallen logs for cover and colour
+  g.groves({ tree_oak: 3, tree_pine: 3, tree_olive: 1, bush: 4 }, 11, 4, 3.4, { region: (x, z) => Math.abs(z) > 10 && Math.abs(x) < W * 0.42, scale: [0.65, 0.95], gap: 1.5 });
+  g.scatter({ bush: 4, log: 1, rock_small: 2, rock_big: 1, tree_dead: 1 }, 28, { region: (x, z) => glade(x, z) > 0.5, scale: [0.8, 1.2] });
   g.scatter({ bones: 1, skull_pile: 1, log: 1 }, 6, { region: (x, z) => distPoly(x, z, lane) < 6, scale: [1, 1.3] });
 };
 
@@ -675,8 +685,8 @@ R.troy = (g) => {
   for (const sg of [-1, 1]) {
     const z0 = sg * 8.7, z1 = sg * (W / 2 - 2.2), n = Math.max(1, Math.floor(Math.abs(z1 - z0) / seg));
     for (let i = 0; i <= n; i++) g.raw('wall_stone', wx, lerp(z0, z1, i / n), { r: Math.PI / 2, s: 1.3, v: 1 });
-    g.raw('tower', wx, sg * 6.9, { s: 1.35, v: 1, r: sg > 0 ? Math.PI : 0 });
-    for (const f of [0.17, 0.33]) g.raw('tower', wx, sg * W * f * 1.3, { s: 1.3, v: 1, r: Math.PI / 2 * (sg > 0 ? -1 : 1) });
+    g.raw('tower', wx, sg * 6.9, { s: 1.35 * clamp(W / 96, 0.85, 1.1), v: 1, r: sg > 0 ? Math.PI : 0 });
+    for (const f of (W >= 90 ? [0.17, 0.33] : [0.33])) g.raw('tower', wx, sg * W * f * 1.3, { s: 1.3 * clamp(W / 96, 0.85, 1.1), v: 1, r: Math.PI / 2 * (sg > 0 ? -1 : 1) });
     g.raw('gate_door', wx, sg * 2.0, { r: Math.PI / 2, s: 0.9, v: sg > 0 ? 1 : 0 });
   }
   g.raw('arch_gate', wx, 0, { r: Math.PI / 2, s: 1.0, v: 0 });
@@ -771,7 +781,7 @@ R.oasis = (g) => {
   g.smooth(1); g.flatZones(8, 2, { A: 14, B: 14 }); g.terrace(2, 0.3); g.commit();
   g.slopeMat(MAT.sandstone, 2, [MAT.sand]);
   const F = { force: true, noSpacing: true };
-  for (let i = 0; i < 5; i++) { const th = (i + 0.5) / 10 * TAU; g.put('palm', Math.cos(th) * 12.4, Math.sin(th) * 12.4, Object.assign({ s: 1.3, v: i & 3, r: th }, F)); }
+  for (let i = 0; i < (W < 90 ? 3 : 4); i++) { const th = (W < 90 ? (i + 0.5) / 6 : (i + 0.5) / 8) * TAU; g.put('palm', Math.cos(th) * 12.4, Math.sin(th) * 12.4, Object.assign({ s: 1.15, v: i & 3, r: th }, F)); }
   for (const t of [0.6, 2.0]) g.put('reeds', Math.cos(t) * 9.4, Math.sin(t) * 9.4, Object.assign({ s: 1.3, v: 2 }, F));
   g.put('tent', -17, 8, Object.assign({ r: 0.6, s: 1.1, v: 0 }, F)); g.put('campfire', -16, 3.2, Object.assign({ v: 0, s: 1.1 }, F));
   g.keepClear(0, 0, 0);

@@ -71,22 +71,26 @@ for (const id of ['statue_zeus', 'cave_mouth', 'throne', 'skull_pile']) {
   const th = colorHistogram(buildProp('throne', 0, 0)).slice(0, 4).map((e) => e.rgb); check(th.some((c) => ((c >> 16) & 255) > 200 && ((c >> 8) & 255) > 150 && (c & 255) < 120), 'throne: gold dominates');
   check(buildProp('tent', 0, 0).parts[0].grid.count() > 1000 && colorHistogram(buildProp('tent', 0, 1)).length >= 4, 'tent: striped');
 }
-// spectators: hum_lite-like, hum1 ids, 4 colour variants, standing on the ground
+// spectators: hum_lite (spec 4.1): hum1 part ids, grid sizes, pivots and parents; 4 colour variants; feet on the ground
 {
   const want = ['body', 'head', 'armUL', 'armUR', 'legUL', 'legUR'];
+  const dims = { body: [10, 9, 5], head: [10, 10, 10], armUL: [3, 5, 3], armUR: [3, 5, 3], legUL: [4, 5, 4], legUR: [4, 5, 4] };
+  const pivots = { body: [5, 0, 2.5], head: [5, 0, 5], armUL: [1.5, 5, 1.5], armUR: [1.5, 5, 1.5], legUL: [2, 5, 2], legUR: [2, 5, 2] };
   const sigs = new Set();
   for (let v = 0; v < SPECTATOR_VARIANTS; v++) {
     const s = buildSpectator(v);
     assert.deepEqual(s.parts.map((p) => p.id), want, 'spectator part ids');
     check(s.parts.length === 6 && s.voxelSize === 0.1, 'spectator: 6 parts at 0.1');
-    check(s.meta.rig === 'hum1', 'spectator rig hum1');
-    check(s.height() > 2.3 && s.height() < 2.75, 'spectator height 2.3-2.7 u, got ' + s.height());
-    check(s.byId.body.parent === null && s.byId.head.parent === 'body' && s.byId.armUL.parent === 'body' && s.byId.legUL.parent === null, 'spectator hierarchy follows hum1');
+    check(s.meta.rig === 'hum1' && s.meta.lite === true, 'spectator rig hum1 / lite');
+    for (const p of s.parts) { check(JSON.stringify([p.grid.sx, p.grid.sy, p.grid.sz]) === JSON.stringify(dims[p.id]), `spectator ${p.id} grid is the hum1 size ${dims[p.id]}`); check(JSON.stringify(p.pivot) === JSON.stringify(pivots[p.id]), `spectator ${p.id} pivot`); check(p.grid.count() > 10, 'spectator ' + p.id + ' has voxels'); }
+    check(s.height() > 2.0 && s.height() < 2.7, 'spectator height 2.0-2.7 u, got ' + s.height());
+    check(s.byId.body.parent === null && s.byId.head.parent === 'body' && s.byId.armUL.parent === 'body' && s.byId.armUR.parent === 'body' && s.byId.legUL.parent === null && s.byId.legUR.parent === null, 'spectator hierarchy follows hum1');
+    check(Math.abs(s.byId.armUL.originVox[0] - 6.5) < 1e-9 && Math.abs(s.byId.armUR.originVox[0] + 6.5) < 1e-9 && s.byId.legUL.originVox[0] === 3 && s.byId.legUR.originVox[0] === -3, 'spectator limb origins follow hum1 (arms +-6.5, legs +-3, left = +X)');
     sigs.add(hash(s));
-    // feet on the ground: lowest leg voxel is at the leg pivot - 8 voxels, i.e. y = 0 once the origin is applied
     const leg = s.byId.legUL, lowY = leg.origin[1] - leg.pivot[1] * s.voxelSize;
     check(Math.abs(lowY) < 1e-6, 'spectator feet touch the ground (' + lowY + ')');
-    check(JSON.stringify(buildSpectator(v).parts.map((p) => p.grid.count())) === JSON.stringify(s.parts.map((p) => p.grid.count())), 'spectator deterministic');
+    check(s.attach.head_top && s.attach.eyes && s.attach.feet, 'spectator attach points');
+    check(hash(buildSpectator(v)) === hash(s), 'spectator deterministic');
   }
   check(sigs.size === SPECTATOR_VARIANTS, 'spectator: 4 distinct colour variants');
   check(buildSpectator(5).meta.variant === 1, 'spectator variant wraps');

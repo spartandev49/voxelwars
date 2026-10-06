@@ -2,7 +2,7 @@
 import * as K from '../kit.js';
 import { getT } from '../strings.js';
 import { generateArena } from '../../world/gen.js';
-import { BUDGETS, AI_STYLES, qualityCaps, totalStars, factionIds, timeName, setThumb, safe, seenHint, setSeenHint } from './_shared.js';
+import { BUDGETS, AI_STYLES, qualityCaps, totalStars, factionIds, timeName, setThumb, showThumb, safe, seenHint, setSeenHint } from './_shared.js';
 import { factionColor, factionName } from '../unitinfo.js';
 
 export const meta = { id: 'quick', layer: 'menu', music: 'menu', canvas: 'none' };
@@ -94,7 +94,7 @@ export function mount(root, ctx, params) {
     if (a.id === 'random') {
       let url = '';
       try { const ar = generateArena('random', 'small', S.seed); const cv = document.createElement('canvas'); cv.width = 384; cv.height = 216; url = (ctx.preview && ctx.preview.arena) ? ctx.preview.arena(cv, ar, { w: 384, h: 216 }) : ''; } catch (e) { url = ''; }
-      if (url && typeof url === 'string') { img.src = url; img.classList.remove('vw-hide'); thumbBox.classList.add('vw-hide'); } else setThumb(img, ctx, a.id, thumbBox);
+      if (url && typeof url === 'string') showThumb(img, url, thumbBox); else setThumb(img, ctx, a.id, thumbBox);
     } else setThumb(img, ctx, a.id, thumbBox);
     const cur = stripBtns[arenaIdx()];
     if (cur && cur.scrollIntoView) { try { cur.scrollIntoView({ block: 'nearest', inline: 'center' }); } catch (e) { /* ignore */ } }

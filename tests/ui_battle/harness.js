@@ -5,7 +5,7 @@ import { createBattleMock, MISSIONS, POWERS } from './mockhud.js';
 import { paintScene } from './scene.js';
 import { mountHud } from '../../src/ui/hud/_hud.js';
 import { avatar } from '../../src/ui/hud/_portraits.js';
-import { icon, ICON_NAMES } from '../../src/ui/hud/_icons.js';
+import { icon, ICON_NAMES, MISSING } from '../../src/ui/hud/_icons.js';
 import { SCREENS } from './screens_registry.js';
 
 const state = { mock: null, hud: null, raf: 0, last: 0, stats: { updates: 0 } };
@@ -70,6 +70,6 @@ function startLoop(rate) {
 }
 function stopLoop() { cancelAnimationFrame(state.raf); }
 
-window.__ui = { K, state, setup, teardown, mountHudOnly, step, startLoop, stopLoop, MISSIONS, POWERS, avatar, icon, ICON_NAMES, qs, SCREENS,
+window.__ui = { missingIcons: () => [...MISSING], K, state, setup, teardown, mountHudOnly, step, startLoop, stopLoop, MISSIONS, POWERS, avatar, icon, ICON_NAMES, qs, SCREENS,
   get mock() { return state.mock; }, get hud() { return state.hud; }, get router() { return state.mock && state.mock.router; } };
 window.__ready = true;

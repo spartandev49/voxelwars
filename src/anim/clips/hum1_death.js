@@ -4,7 +4,7 @@ import { define, seq, mergeKeys, wave, waveC, bump } from '../dsl.js';
 import { feet, READY, readyAt, merge } from './poses.js';
 
 const PI = Math.PI;
-export const LIE_BACK = { body: [-0.04, 0.08, 0.05], head: [0.22, 0.3, 0.04], armUL: [-0.35, 0.25, 1.15], armLL: [-0.3, 0, 0], armUR: [-1.0, -0.2, -1.3], armLR: [-0.35, 0, 0],
+export const LIE_BACK = { body: [-0.04, 0.08, 0.05], head: [0.22, 0.3, 0.04], armUL: [-0.35, 0.25, 0.95], armLL: [-0.3, 0, 0], armUR: [-1.65, -0.2, -0.5], armLR: [-1.15, 0, 0],
   legUL: [-0.08, 0.12, 0.38], legLL: [0.18, 0, 0], legUR: [0.05, -0.1, -0.42], legLR: [0.45, 0, 0], root: { pitch: -1.54, roll: 0.05, y: 0 } };
 export const LIE_FRONT = { body: [0.04, -0.1, 0.0], head: [-0.3, 0.55, 0.05], armUL: [-2.7, 0.2, 0.55], armLL: [-0.2, 0, 0], armUR: [-2.3, -0.1, -0.9], armLR: [-0.8, 0, 0],
   legUL: [0.12, 0.1, 0.3], legLL: [0.25, 0, 0], legUR: [-0.15, -0.1, -0.35], legLR: [0.7, 0, 0], root: { pitch: 1.54, roll: -0.04, y: 0 } };

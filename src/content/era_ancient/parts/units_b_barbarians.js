@@ -7,8 +7,8 @@ import { lathe } from './helms.js';
 import { wood, edgeCol } from './weapons_melee.js';
 import { furV, cl } from './_units_b_kit.js';
 
-export const PARTS = { helms: {}, tunics: {}, armors: {}, capes: {}, backs: {}, mains: {}, offs: {} };
-const H = PARTS.helms, TU = PARTS.tunics, AR = PARTS.armors, CP = PARTS.capes, BK = PARTS.backs, O = PARTS.offs;
+export const PARTS = { helms: {}, faces: {}, tunics: {}, armors: {}, capes: {}, backs: {}, mains: {}, offs: {} };
+const F = PARTS.faces, H = PARTS.helms, TU = PARTS.tunics, AR = PARTS.armors, CP = PARTS.capes, BK = PARTS.backs, O = PARTS.offs;
 const G9 = () => ({ body: newGrid('body'), armUL: newGrid('armUL'), armUR: newGrid('armUR'), armLL: newGrid('armLL'), armLR: newGrid('armLR'), legUL: newGrid('legUL'), legUR: newGrid('legUR'), legLL: newGrid('legLL'), legLR: newGrid('legLR') });
 const both = (o, a, b, fn) => { fn(o[a], 0); fn(o[b], 1); };
 const noise = (x, y, z, s = 1, a = 0.14) => 1 + (hash3(x, y, z, s) - 0.5) * 2 * a;
@@ -81,6 +81,23 @@ H.brow_band = {
   },
 };
 
+// ---------------------------------------------------------------------------------------------------------------- faces
+// Axe thrower: a drooping moustache and two thin braids hanging off the chin, tied with gold (leaves the chest tunic visible)
+F.beard_two_braids = {
+  name: 'Two braids',
+  build(ctx) {
+    const head = newGrid('head'), body = newGrid('body');
+    const hv = (x, y, z, f = 1) => V(shade(ctx.c.hair, f * (0.84 + 0.32 * hash3(x, y, z, 3))));
+    B(head, 2, 0, 8, 7, 1, 8, (x, y, z) => hv(x, y, z, 0.95)); Bs(head, 1, 0, 4, 1, 2, 7, (x, y, z) => hv(x, y, z, 0.9));
+    B(head, 3, 0, 9, 6, 0, 9, (x, y, z) => hv(x, y, z, 1.05));
+    B(head, 2, 2, 8, 7, 2, 9, (x, y, z) => hv(x, y, z, 1.1));                                   // moustache
+    Bs(head, 1, 1, 8, 1, 2, 9, (x, y, z) => hv(x, y, z, 1.15)); Bs(head, 1, 0, 9, 1, 0, 9, (x, y, z) => hv(x, y, z, 1.1));    // drooping ends
+    for (const x of [3, 6]) { for (let y = 8; y >= 3; y--) P(body, x, y, 4, hv(x, y, 4, y % 2 ? 0.8 : 1.15)); P(body, x, 3, 4, V(ctx.m[3])); P(body, x, 2, 4, hv(x, 2, 4, 1.1)); }
+    X(body, 3, 8, 3, 6, 8, 4);
+    return { head, body };
+  },
+};
+
 // ---------------------------------------------------------------------------------------------------------------- torso
 // Axe thrower: long-sleeved team tunic, shaggy fur collar and cuffs, a wide belt with four throwing axes hung in loops.
 TU.thrower_tunic = {
@@ -90,12 +107,11 @@ TU.thrower_tunic = {
     const fur = (x, y, z) => V(shade(0xcfc0a0, 0.62 + 0.5 * hash3(x, y, z, 41)));
     B(g, 0, 0, 0, 9, 8, 4, (x, y, z) => ctx.t(noise(x, y, z, 2, 0.1) * (y === 0 ? 0.88 : 1)));
     B(g, 0, 8, 0, 9, 8, 4, fur); X(g, 3, 8, 3, 6, 8, 4); X(g, 3, 8, 1, 6, 8, 3);                       // fur collar
-    B(g, 2, 7, 4, 7, 7, 4, fur);
     B(g, 0, 0, 0, 9, 0, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? fur(x, y, z) : 0));    // fur hem
-    B(g, 0, 2, 0, 9, 3, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? V(shade(ctx.c.trim, 0.85 + 0.12 * (y - 2))) : 0));   // wide belt
-    B(g, 4, 2, 4, 5, 3, 4, V(ctx.m[3]));
+    B(g, 0, 2, 0, 9, 2, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? V(shade(0x7a5a38, 0.95)) : 0));   // belt
+    B(g, 4, 2, 4, 5, 2, 4, V(ctx.m[3]));
     // four throwing axes in belt loops: haft above the belt, iron head on top
-    for (const x of [1, 2, 7, 8]) { B(g, x, 4, 4, x, 5, 4, V(shade(0x8a5a2e, 0.95))); }
+    for (const x of [1, 2, 7, 8]) { B(g, x, 3, 4, x, 5, 4, V(shade(0x8a5a2e, 0.95))); }
     for (const [x0, x1] of [[1, 2], [7, 8]]) { P(g, x0, 6, 4, V(ctx.m[3])); P(g, x1, 6, 4, V(ctx.m[4])); P(g, x0 === 1 ? 0 : 9, 6, 4, V(ctx.m[2])); P(g, x0, 7, 4, V(ctx.m[2])); P(g, x1, 5, 4, V(ctx.m[2])); }
     both(o, 'armUL', 'armUR', (a) => B(a, 0, 0, 0, 2, 4, 2, (x, y, z) => ctx.t(noise(x, y, z, 3, 0.1))));
     both(o, 'armLL', 'armLR', (a) => { B(a, 0, 3, 0, 2, 4, 2, (x, y, z) => ctx.t(noise(x, y, z, 4, 0.1))); B(a, 0, 2, 0, 2, 2, 2, fur); });
@@ -130,12 +146,14 @@ AR.horn_baldric = {
   name: 'War-horn baldric',
   build(ctx) {
     const o = G9(), g = o.body;
+    // the strap is a DARKER shade of the team cloth than the shirt (a tinted strap, so it stays visible on the tinted shirt), with gold studs
     for (let y = 0; y <= 8; y++) {
       const x0 = Math.round(0 + (8 - y) * 0.95);
-      for (let x = x0; x <= Math.min(9, x0 + 3); x++) { const edge = x === x0 || x === x0 + 3; P(g, x, y, 4, edge ? V(shade(ctx.c.trim, 0.8)) : ctx.t(1.15)); P(g, x, y, 0, edge ? V(shade(ctx.c.trim, 0.7)) : ctx.t(1.05)); }
+      for (let x = x0; x <= Math.min(9, x0 + 3); x++) { const edge = x === x0 || x === x0 + 3; P(g, x, y, 4, edge ? ctx.t(0.45) : ctx.t(0.62 + 0.08 * hash3(x, y, 4, 2))); P(g, x, y, 0, edge ? ctx.t(0.42) : ctx.t(0.58)); }
+      if (y % 3 === 1 && x0 + 1 <= 9) P(g, x0 + 1, y, 4, V(ctx.m[3]));
     }
-    B(g, 0, 7, 0, 3, 8, 4, (x, y, z) => ctx.t(1.1)); X(g, 3, 8, 3, 6, 8, 4);
-    B(g, 0, 1, 0, 9, 1, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? V(shade(ctx.c.trim, 0.9)) : 0));    // belt
+    B(g, 0, 7, 0, 3, 8, 4, (x, y, z) => ctx.t(0.62)); X(g, 3, 8, 3, 6, 8, 4);
+    B(g, 0, 1, 0, 9, 1, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? ctx.t(0.5) : 0));    // belt
     B(g, 4, 1, 4, 5, 1, 4, V(ctx.m[3]));
     // the horn lies along the left hip: a curved cream tube with a gold band and mouthpiece
     const horn = [[9, 3], [8, 3], [8, 2], [7, 2], [7, 1], [6, 1]];
@@ -151,11 +169,11 @@ CP.bearskin_short = {
   name: 'Bearskin cloak (short)',
   build(ctx) {
     const cape = newGrid('cape');
-    const fur = (x, y, z, f = 1) => V(shade(0x6b4f35, f * (0.66 + 0.6 * hash3(x, y, z, 61))));
-    B(cape, 0, 10, 0, 9, 13, 1, (x, y, z) => ((y < 12 && hash3(x, y, z, 62) < (12 - y) * 0.3) ? 0 : fur(x, y, z, 0.92 + 0.04 * (y - 10))));
+    const fur = (x, y, z, f = 1) => V(shade(0x8c6c4a, f * (0.74 + 0.5 * hash3(x, y, z, 61))));
+    B(cape, 0, 11, 0, 9, 13, 1, (x, y, z) => ((y < 12 && hash3(x, y, z, 62) < 0.45) ? 0 : fur(x, y, z, 0.92 + 0.04 * (y - 11))));
     B(cape, 0, 12, 0, 9, 13, 1, (x, y, z) => fur(x, y, z, 1.18));
-    B(cape, 0, 8, 0, 1, 12, 1, (x, y, z) => ((hash3(x, y, z, 63) > 0.35) ? fur(x, y, z, 0.88) : 0));      // paws
-    B(cape, 8, 8, 0, 9, 12, 1, (x, y, z) => ((hash3(x, y, z, 64) > 0.35) ? fur(x, y, z, 0.88) : 0));
+    B(cape, 0, 9, 0, 1, 12, 1, (x, y, z) => ((hash3(x, y, z, 63) > 0.35) ? fur(x, y, z, 0.88) : 0));      // paws
+    B(cape, 8, 9, 0, 9, 12, 1, (x, y, z) => ((hash3(x, y, z, 64) > 0.35) ? fur(x, y, z, 0.88) : 0));
     B(cape, 3, 12, 0, 6, 12, 1, (x, y, z) => ((x % 2) ? ctx.t(0.95) : 0));                               // tinted tie band at the neck
     return { cape };
   },
@@ -183,9 +201,9 @@ O.throwing_axe = {
   name: 'Throwing axe (off hand)', meta: { kind: 'item', rest: [2.44, 0, 0] },
   build(ctx) {
     const g = newGrid('offhand');
-    for (let y = 4; y <= 14; y++) B(g, 8, y, 4, 8, y, 4, V(shade(0x8a5a2e, 0.9 + 0.2 * hash3(8, y, 4, 2))));
-    B(g, 7, 7, 3, 9, 9, 5, V(shade(0xa8743e, 0.9)));                                     // wrapped grip
-    B(g, 7, 4, 3, 9, 4, 5, V(ctx.m[1]));                                                  // pommel
+    for (let y = 6; y <= 14; y++) B(g, 8, y, 4, 8, y, 4, V(shade(0x8a5a2e, 0.9 + 0.2 * hash3(8, y, 4, 2))));
+    B(g, 7, 7, 3, 9, 9, 4, V(shade(0xa8743e, 0.9)));                                     // wrapped grip
+    B(g, 7, 6, 3, 9, 6, 4, V(ctx.m[1]));                                                  // pommel
     for (const [y, zf] of [[15, 5], [14, 5], [13, 5], [12, 5]]) { for (let z = 3; z <= zf; z++) B(g, 7, y, z, 9, y, z, edgeCol(ctx, z === zf ? 'edge' : (z === 3 ? 'spine' : 'mid'))); }
     return g;
   },
@@ -196,8 +214,8 @@ O.golden_sickle = {
   name: 'Golden sickle (off hand)', meta: { kind: 'item', rest: [2.2, 0, 0], metal: 'gold' },
   build(ctx) {
     const g = newGrid('offhand');
-    for (let y = 4; y <= 10; y++) B(g, 8, y, 4, 8, y, 4, V(shade(0x7a5a38, 0.9 + 0.2 * hash3(8, y, 4, 2))));
-    B(g, 7, 7, 3, 9, 9, 5, V(shade(0xa8743e, 0.9)));
+    for (let y = 6; y <= 10; y++) B(g, 8, y, 4, 8, y, 4, V(shade(0x7a5a38, 0.9 + 0.2 * hash3(8, y, 4, 2))));
+    B(g, 7, 7, 3, 9, 9, 4, V(shade(0xa8743e, 0.9)));
     const blade = [[4, 11], [4, 12], [5, 13], [5, 14], [4, 15], [3, 15], [2, 14]];       // crescent in the YZ plane, edge on the inside
     for (const [z, y] of blade) { B(g, 8, y, z, 8, y, z, V(ctx.m[3])); B(g, 8, y - 1, z, 8, y - 1, z, V(ctx.m[2])); }
     P(g, 8, 15, 3, V(ctx.m[4])); P(g, 8, 14, 2, V(ctx.m[4]));
@@ -214,11 +232,11 @@ TU.clan_tunic = {
     B(g, 0, 0, 0, 9, 8, 4, (x, y, z) => ctx.t(noise(x, y, z, 2, 0.1) * (y === 0 ? 0.88 : 1) * ((z === 4 && (x === 3 || x === 6)) ? 0.93 : 1)));
     X(g, 3, 8, 3, 6, 8, 4); X(g, 4, 7, 4, 5, 7, 4);
     for (const y of [6, 5, 4]) P(g, y % 2 ? 4 : 5, y, 4, V(0xe8e0c8));                                  // lacing
-    B(g, 0, 2, 0, 9, 3, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? V(shade(ctx.c.trim, 0.9 + 0.12 * (y - 2))) : 0));
+    B(g, 0, 2, 0, 9, 3, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? ctx.t(0.5 + 0.08 * (y - 2)) : 0));
     B(g, 4, 2, 4, 5, 3, 4, V(ctx.m[3]));
     B(g, 0, 0, 0, 9, 0, 4, (x, y, z) => ((x === 0 || x === 9 || z === 0 || z === 4) ? V(shade(ctx.c.secondary, 0.85 + 0.15 * (x % 2))) : 0));
     both(o, 'armUL', 'armUR', (a) => B(a, 0, 0, 0, 2, 4, 2, (x, y, z) => ctx.t(noise(x, y, z, 3, 0.1))));
-    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => ctx.t(noise(x, y, z, 4, 0.1) * 0.97)); B(a, 0, 2, 0, 2, 2, 2, V(shade(ctx.c.trim, 1.0))); });
+    both(o, 'armLL', 'armLR', (a) => { B(a, 0, 2, 0, 2, 4, 2, (x, y, z) => ctx.t(noise(x, y, z, 4, 0.1) * 0.97)); B(a, 0, 2, 0, 2, 2, 2, ctx.t(0.5)); });
     both(o, 'legUL', 'legUR', (l) => B(l, 0, 3, 0, 3, 4, 3, (x, y, z) => ctx.t(noise(x, y, z, 5, 0.1) * 0.95)));
     return o;
   },
@@ -226,18 +244,20 @@ TU.clan_tunic = {
 
 // the clan war-club: weathered pale wood, iron hoops and spikes (a lighter cousin of the library's massive club so it does not vanish into shadow)
 PARTS.mains.war_club = {
-  name: 'Clan war-club', meta: { style: 'overhead', len: 22, back: 5, rest: [2.44, 0, 0], twoHanded: true, grip: [4, 10, 4], minLen: 10, kind: 'melee' },
+  name: 'Clan war-club', meta: { style: 'overhead', len: 17, back: 5, rest: [2.44, 0, 0], twoHanded: true, grip: [4, 10, 4], minLen: 10, kind: 'melee' },
   build(ctx) {
     const g = newGrid('weapon'), yt = 9 + ctx.len;
-    const wc = (x, y, z, k = 1) => V(shade(0xa87a46, k * (0.78 + 0.34 * hash3(x, y, z, 9))));
+    const wc = (x, y, z, k = 1) => V(shade(0xb08650, k * (0.78 + 0.34 * hash3(x, y, z, 9))));
     B(g, 4, 5, 4, 4, 11, 4, (x, y, z) => wc(x, y, z, 0.9)); B(g, 3, 6, 3, 5, 11, 5, (x, y, z) => wc(x, y, z, 0.9));
     B(g, 3, 8, 3, 5, 11, 5, V(shade(0x6a4a2a, 0.95)));
+    // a tapering trunk: thin by the hand, swelling to a 5-wide head, rounded at the tip
     for (let y = 12; y <= yt; y++) {
-      const t = (y - 12) / Math.max(1, yt - 12), r = t < 0.25 ? 1 : (t > 0.96 ? 2 : 3), lo = 4 - r, hi = 4 + r;
-      B(g, lo, y, lo, hi, y, hi, (x, yy, z) => (r > 2 && (x === lo || x === hi) && (z === lo || z === hi) ? 0 : wc(x, yy, z, 0.95 + 0.15 * t)));
+      const t = (y - 12) / Math.max(1, yt - 12), r = t < 0.22 ? 1 : (t < 0.9 ? 2 : 1), lo = 4 - r, hi = 4 + r;
+      B(g, lo, y, lo, hi, y, hi, (x, yy, z) => (r > 1 && (x === lo || x === hi) && (z === lo || z === hi) && (t < 0.4 || t > 0.8) ? 0 : wc(x, yy, z, 0.92 + 0.2 * t)));
     }
-    for (const y of [yt - 12, yt - 6, yt - 1]) if (y > 12) B(g, 4 - 3, y, 4 - 3, 4 + 3, y, 4 + 3, (x, yy, z) => (((x === 1 || x === 7) && (z === 1 || z === 7)) ? 0 : V(ctx.m[(x + z) % 2 ? 1 : 2])));
-    for (let y = yt - 9; y <= yt - 2; y += 3) { for (const [dx, dz] of [[-4, 0], [4, 0], [0, -4], [0, 4]]) P(g, 4 + dx, y, 4 + dz, V(ctx.m[3])); P(g, 4, yt + 1, 4, V(ctx.m[4])); }
+    for (const y of [Math.round(yt - 0.35 * ctx.len), yt - 2]) if (y > 12) B(g, 2, y, 2, 6, y, 6, (x, yy, z) => (((x === 2 || x === 6) && (z === 2 || z === 6)) ? 0 : V(ctx.m[(x + z) % 2 ? 1 : 2])));    // iron hoops
+    for (let y = yt - Math.round(0.3 * ctx.len) + 1; y <= yt - 3; y += 2) for (const [dx, dz] of [[-3, 0], [3, 0], [0, -3], [0, 3]]) P(g, 4 + dx, y, 4 + dz, V(ctx.m[3]));
+    P(g, 4, yt + 1, 4, V(ctx.m[4])); B(g, 3, yt, 3, 5, yt, 5, V(ctx.m[2]));
     return g;
   },
 };

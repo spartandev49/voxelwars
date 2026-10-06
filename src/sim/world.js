@@ -4,7 +4,7 @@
 import { DT, ST, SE, N_SE, G, TEAM_A, TEAM_B } from './consts.js';
 import { Unit } from './unit.js';
 import { Spatial } from './spatial.js';
-import { think } from './ai.js';
+import { think, aiInfo } from './ai.js';
 import { Squad, updateSquads } from './squads.js';
 import { applyDamage, killUnit, setAnim, angleDiff, dotDamage, newHit, Hit } from './combat.js';
 import { ProjectileSystem } from './projectiles.js';
@@ -53,7 +53,7 @@ export class World {
   constructor({ arena, seed = 1, rules = {}, defs, props = true }) {
     this.arena = arena.clone(); arena = this.arena; this.defs = defs; this.seed = seed;   // the world mutates its own copy (craters, collapses)
     this.rules = Object.assign({}, DEFAULT_RULES, rules);
-    this.rng = new RNG(seed);
+    this.rng = new RNG(seed); this._kdt = 0; this._kfr = 1;
     this.ev = new EventBus(); this.events = this.ev; this.ev.now = () => this.time;
     this.P = makePayloads();
     this.time = 0; this.tickN = 0; this.state = 'placing'; this.winner = -1; this.endReason = '';
@@ -240,6 +240,7 @@ export class World {
   addUnit(defId, team, x, z, o = {}) {
     const def = (o.def) || this.defs[defId];
     if (!def) throw new Error('unknown unit def ' + defId);
+    aiInfo(def);                                                // caches def._ai (target-side flags) before any unit scans it
     const u = new Unit(def, team, x, z, o.heading !== undefined ? o.heading : (team === TEAM_A ? Math.PI / 2 : -Math.PI / 2), this.nextUnitId++);
     u.y = u.py = this.arena.cellHeight(x, z);
     u.cd = this.rng.next() * 0.9;
@@ -351,9 +352,9 @@ export class World {
   }
   moraleShock(dead) {
     if (!this.rules.morale) return;
-    const k = (dead.def.tags.includes('officer') || dead.def.role === 'hero') ? 1.5 : 1;
+    const k = dead.def._ai.officer ? 1.5 : 1;
     const n = this.hash.query(dead.x, dead.z, 6, this.qbuf2);
-    for (let i = 0; i < n; i++) { const u = this.units[this.qbuf2[i]]; if (u && u.alive && u.team === dead.team) u.morale -= G.moraleAllyDeath * k * (u.def.tags.includes('discipline') ? 0.6 : 1) * this.moraleLoss(u); }
+    for (let i = 0; i < n; i++) { const u = this.units[this.qbuf2[i]]; if (u && u.alive && u.team === dead.team) u.morale -= G.moraleAllyDeath * k * (u.def._ai.discipline ? 0.6 : 1) * this.moraleLoss(u); }
     if (dead.def.role === 'hero' || dead.general) { const e = this.P.hero_down; e.id = dead.id; e.def = dead.def.id; e.team = dead.team; this.emit('hero_down', e); }
   }
   moraleLoss(u) { return u.mMoraleLoss === undefined ? 1 : u.mMoraleLoss; }
@@ -531,7 +532,7 @@ export class World {
       mS *= wx.speedMul * u.mEnv;
       u.mDmg = mD; u.mSpeed = mS; u.mArmor = 0; u.mBlock = 0; u.mProj = 0; u.mCd = mCd; u.mDmgTaken = 1; u.mReach = 0; u.mMoraleLoss = 1;
       if (u.convertT > 0) { u.convertT -= dt; if (u.convertT <= 0) { const old = u.team; this.stats[old].alive--; this.stats[old].aliveCost -= u.def.cost; u.team = u.origTeam; this.stats[u.team].alive++; this.stats[u.team].aliveCost += u.def.cost; u.target = null; u.claim = null; } }
-      if (u.def.tags.includes('officer')) this.officers.push(u);
+      if (u.def._ai.officer) this.officers.push(u);
       if (u.abil.length) anyAbil = true;
     }
     // pass 2: abilities modify stat multipliers (stance on self, auras on neighbours)
@@ -597,7 +598,8 @@ export class World {
     const arena = this.arena, mat = arena.materialAt(u.x, u.z);
     let k = mat.speed;
     if (arena.water > 0 && arena.cellHeight(u.x, u.z) < arena.waterY()) k *= 0.6;
-    const fr = Math.exp(-G.knockFriction * dt);
+    if (dt !== this._kdt) { this._kdt = dt; this._kfr = Math.exp(-G.knockFriction * dt); }
+    const fr = this._kfr;
     const mvx = u.vx * k + u.kx + u.ex, mvz = u.vz * k + u.kz + u.ez;
     u.kx *= fr; u.kz *= fr; if (u.kx < 0.05 && u.kx > -0.05) u.kx = 0; if (u.kz < 0.05 && u.kz > -0.05) u.kz = 0;
     let nx = u.x + mvx * dt, nz = u.z + mvz * dt;
@@ -741,7 +743,7 @@ export class World {
         if (this.collapseTeam === t) dm -= 2.5;
       }
       u.morale = Math.max(-20, Math.min(u.moraleMax, u.morale + dm * dt));
-      if (u.state !== ST.ROUT && u.morale <= G.routThreshold && !u.def.tags.includes('fearless') && u.state !== ST.DOWN && u.state !== ST.SIT && u.state !== ST.CAST) {
+      if (u.state !== ST.ROUT && u.morale <= G.routThreshold && !u.def._ai.fearless && u.state !== ST.DOWN && u.state !== ST.SIT && u.state !== ST.CAST) {
         u.state = ST.ROUT; u.routT = 0; u.target = null; u.stateT = 0; if (u.claim) { if (u.claim.claims > 0) u.claim.claims--; u.claim = null; }
         const e = this.P.unit_rout; e.id = u.id; e.team = u.team; this.emit('unit_rout', e);
       } else if (u.state === ST.ROUT) {

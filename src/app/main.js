@@ -11,7 +11,7 @@ import { Loop } from './loop.js';
 import { Router } from './router.js';
 import { FALLBACK_SCREENS } from './debugui.js';
 import { createNullAudio } from './nullaudio.js';
-import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT, CAMPAIGN, CUSTOM, EDITOR_HOST } from '../_generated/registry.optional.js';
+import { BLUEPRINTS, AUDIO, ANIM_BOOT, ARMYGEN, KIT, CAMPAIGN, CUSTOM, EDITOR_HOST, SURVIVAL, PUZZLES, DAILY } from '../_generated/registry.optional.js';
 import { generateArena } from '../world/gen.js';
 import { ClipLib } from '../anim/clips.js';
 import { PreviewService } from '../render/preview.js';
@@ -46,6 +46,9 @@ async function start() {
   if (CAMPAIGN) content.campaign = CAMPAIGN.CAMPAIGN || CAMPAIGN.campaign || content.campaign;
   if (CAMPAIGN && CAMPAIGN.campaignApi) content.campaignApi = CAMPAIGN.campaignApi;
   if (CUSTOM && CUSTOM.customDef) content.customDef = CUSTOM.customDef;
+  if (PUZZLES) content.puzzles = PUZZLES.PUZZLES || PUZZLES.puzzles || PUZZLES.default || content.puzzles || [];
+  if (SURVIVAL) content.survival = SURVIVAL;
+  if (DAILY) content.daily = DAILY;
   try { if (ANIM_BOOT && ANIM_BOOT.registerAllClips) { const r = ANIM_BOOT.registerAllClips(ClipLib, { humanoid: window.__VW_UAL_CLIPS__ || null, onReport: (m) => diag.note(m) }); diag.extra.clips = r; } } catch (e) { diag.error('anim', e && e.message); }
   const audio = (AUDIO && AUDIO.createAudio) ? AUDIO.createAudio({ settings, getListener: () => game.rig.listener, quality: () => engine.qualityKey }) : createNullAudio();
 

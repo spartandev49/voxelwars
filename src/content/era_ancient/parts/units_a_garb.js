@@ -91,11 +91,11 @@ TU.mummy_wraps = {
     const o = G9();
     // strips run diagonally over the torso (mode 0) and in bands round the limbs (mode 1); mostly tinted, some plain linen, gaps of dry skin
     const wrap = (x, y, z, s = 0, mode = 0) => {
-      const d = mode === 0 ? (x + y * 2 + (z === 0 ? 3 : 0) + s) % 6 : (y + s + (x >> 1)) % 4, n = hash3(x, y, z, 12 + s);
-      if (n > 0.93) return 0;                                                          // a hole: the skin below shows
-      if (mode === 0 ? d === 5 : d === 3) return V(shade(0xe6dcc0, 0.86 + 0.2 * n));    // a strip of plain linen
-      if (n > 0.84) return V(shade(0xdcd0b0, 0.84 + 0.2 * n));                          // a loose strip
-      return ctx.t(((mode === 0 ? d % 3 === 0 : d === 0) ? 0.88 : 1.0) * (0.95 + 0.1 * n));
+      const d = mode === 0 ? (x + y * 2 + (z === 0 ? 4 : 0) + s) % 10 : (y + s + (x >> 2)) % 4, n = hash3(x, y, z, 12 + s);
+      if (n > 0.985) return 0;                                                         // a hole: the skin below shows
+      if (mode === 0 ? d === 6 || d === 7 : d === 2) return V(shade(0xe6dcc0, 0.9 + 0.12 * n));   // a band of plain linen
+      if (n > 0.965) return V(shade(0xdcd0b0, 0.84 + 0.2 * n));                         // a loose strip
+      return ctx.t(((mode === 0 ? d >= 8 : d === 3) ? 0.84 : 1.0) * (0.97 + 0.06 * n));
     };
     B(o.body, 0, 0, 0, 9, 8, 4, (x, y, z) => wrap(x, y, z));
     B(o.armUL, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 1, 1)); B(o.armUR, 0, 0, 0, 2, 4, 2, (x, y, z) => wrap(x, y, z, 2, 1));
@@ -155,6 +155,25 @@ AR.thorax_strategos = {
     B(o.legUR, 2, 2, 3, 3, 4, 3, (x, y, z) => ctx.t(0.96 - 0.04 * (4 - y))); B(o.legUR, 2, 4, 3, 3, 4, 3, ctx.t(1.15));
     // the baton, tucked into the sash on the left hip: wood with gold caps, sloping up and out
     for (const [x, y, c] of [[6, 1, V(ctx.m[3])], [7, 2, V(0x6a4020)], [8, 3, V(0x6a4020)], [9, 4, V(ctx.m[4])]]) P(g, x, y, 4, c);
+    return o;
+  },
+};
+
+/** Anubis' sash: a broad diagonal sash of team-colour linen with gold edges, front and back, over the bare chest. */
+AR.sash_broad = {
+  name: 'Broad shoulder sash', meta: { faction: 'egyptians' },
+  build(ctx) {
+    const o = G9(), g = o.body;
+    for (let y = 0; y <= 8; y++) {
+      const x0 = Math.round(0.5 + (8 - y) * 0.95);
+      for (let x = x0; x <= Math.min(9, x0 + 3); x++) {
+        const edge = x === x0 || x === x0 + 3;
+        P(g, x, y, 4, edge ? V(shade(ctx.m[3], 0.92 + 0.1 * (y % 2))) : ctx.t(1.04 + 0.1 * hash3(x, y, 4, 2)));
+        P(g, x, y, 0, edge ? V(shade(ctx.m[3], 0.85)) : ctx.t(0.98 + 0.1 * hash3(x, y, 0, 2)));
+      }
+    }
+    B(g, 0, 7, 0, 3, 8, 4, (x, y, z) => ctx.t(1.1)); X(g, 3, 8, 3, 6, 8, 4);
+    for (const a of [o.armUL, o.armUR]) B(a, 0, 4, 0, 2, 4, 2, (x, y, z) => ctx.t(1.04));
     return o;
   },
 };
@@ -261,8 +280,8 @@ SH.thracian_mantle = {
     const body = newGrid('body'), L = newGrid('armUL'), R = newGrid('armUR');
     const band = (x, y, z) => {
       const k = x % 5;
-      if (k <= 1) return ctx.t((0.98 + 0.1 * hash3(x, y, z, 82)) * ((y + x) % 4 === 0 ? 0.92 : 1.0));
-      if (k === 2) return V(shade(0xefe4c8, 0.9 + 0.14 * hash3(x, y, z, 83)));
+      if (k <= 2) return ctx.t((0.98 + 0.1 * hash3(x, y, z, 82)) * ((y + x) % 4 === 0 ? 0.92 : 1.0));
+      if (k === 3) return V(shade(0xefe4c8, 0.9 + 0.14 * hash3(x, y, z, 83)));
       return V(shade(0x4a2c1c, 0.85 + 0.2 * hash3(x, y, z, 84)));
     };
     for (let y = 8; y >= 4; y--) for (let z = 0; z <= 4; z++) for (let x = 0; x <= 9; x++) {
@@ -274,6 +293,27 @@ SH.thracian_mantle = {
     for (const a of [L, R]) { B(a, 0, 3, 0, 2, 4, 2, (x, y, z) => ((y === 3 && (x + z) % 2 === 0) ? 0 : band(x + (a === L ? 0 : 3), y, z))); }
     P(body, 4, 7, 4, V(ctx.m[3])); P(body, 5, 7, 4, V(ctx.m[4]));                  // the pin at the throat
     return { body, armUL: L, armUR: R };
+  },
+};
+
+/** Paludamentum: the officer's cloak pinned at the right shoulder with a gold brooch and thrown over the left shoulder and arm (team colour). */
+SH.paludamentum = {
+  name: 'Officer cloak (paludamentum)', meta: { faction: 'romans' },
+  build(ctx) {
+    const body = newGrid('body'), L = newGrid('armUL');
+    const cloth = (x, y, z, f = 1) => ctx.t(f * noise(x, y, z, 62, 0.08) * (((x + y) % 5 === 0) ? 0.9 : 1));
+    for (let y = 8; y >= 3; y--) for (let z = 0; z <= 4; z++) {
+      const xmin = Math.min(8, 3 + (8 - y) * 1), xminF = Math.min(8, 2 + (8 - y) * 1.4);
+      for (let x = (z === 4 ? Math.round(xminF) : (z === 0 ? 1 : xmin)); x <= 9; x++) {
+        if (y === 8 && z >= 1 && z <= 3 && x >= 3 && x <= 6) continue;
+        if (z > 0 && z < 4 && y < 7) continue;                                                       // hollow inside
+        body.set(x, y, z, cloth(x, y, z, 0.96 + 0.02 * y));
+      }
+    }
+    B(L, 0, 1, 0, 2, 4, 2, (x, y, z) => cloth(x, y, z, 1.0)); B(L, 0, 1, 0, 2, 1, 2, V(shade(ctx.c.secondary, 0.85)));
+    X(body, 3, 8, 3, 6, 8, 4);
+    Ps(body, 2, 7, 4, V(ctx.m[4])); P(body, 2, 6, 4, V(ctx.m[3])); P(body, 3, 6, 4, V(ctx.m[3])); P(body, 3, 7, 4, V(ctx.m[3]));                     // the brooch
+    return { body, armUL: L };
   },
 };
 
@@ -340,6 +380,19 @@ BK.pilum_pair = {
   },
 };
 
+/** The peltast's javelins: a bundle of four in a wide tinted leather wrap, carried on a tinted baldric slung across the back. */
+BK.javelin_baldric = {
+  name: 'Javelins on a baldric', meta: { faction: 'hellenes' },
+  build(ctx) {
+    const g = newGrid('back');
+    for (let i = 0; i < 4; i++) { const x0 = 3 + i * 2, z = 4 + (i % 2), xt = x0 + 3 - (i > 1 ? 1 : 0); g.line(x0 + 1, 0, z + 1, xt, 12, z, V(0xb08850), 1); P(g, xt, 13, z, V(ctx.m[4])); P(g, xt - 1, 12, z, V(ctx.m[3])); }
+    B(g, 3, 3, 3, 10, 6, 7, (x, y, z) => ((y === 3 || y === 6) ? V(shade(0x4a2c1c, 0.9)) : ctx.t(0.92 + 0.12 * hash3(x, y, z, 5))));
+    for (let i = 0; i <= 11; i++) { const x = 1 + Math.round(i * 0.85), y = 12 - i; for (let k = 0; k < 3; k++) { P(g, Math.min(11, x + k), y, 7, ctx.t(0.98 + 0.08 * (k % 2))); } }
+    P(g, 1, 12, 7, V(ctx.m[3])); P(g, 10, 1, 7, V(ctx.m[3]));
+    return g;
+  },
+};
+
 /** Retiarius' net: a coil of rope with lead weights on the left hip and the mesh trailing over the lower back. */
 BK.net_coil = {
   name: 'Net and coil (hip)', meta: { faction: 'romans' },
@@ -362,6 +415,26 @@ BK.net_coil = {
 };
 
 // ------------------------------------------------------------------------------------------------ legs
+/** Thracian leggings: full-length patterned wool tights (diamonds of team colour on cream, dark brown bands) above soft leather shoes with a fur cuff. */
+LG.thracian_leggings = {
+  name: 'Patterned Thracian leggings', meta: { faction: 'hellenes' },
+  build(ctx) {
+    const o = { legUL: newGrid('legUL'), legUR: newGrid('legUR'), legLL: newGrid('legLL'), legLR: newGrid('legLR') };
+    const pat = (x, y, z, s) => {
+      const d = ((x + y + s) % 4 + 4) % 4, e = ((x - y + s + 8) % 4 + 4) % 4;
+      if ((y + s) % 7 === 0) return V(shade(0x4a2c1c, 0.85 + 0.2 * hash3(x, y, z, 77)));                          // dark band
+      return (d === 0 && e === 0) ? V(shade(0xefe4c8, 0.9 + 0.12 * hash3(x, y, z, 78))) : ctx.t(0.94 + 0.12 * hash3(x, y, z, 79));
+    };
+    both(o, 'legUL', 'legUR', (g, s) => B(g, 0, 0, 0, 3, 4, 3, (x, y, z) => pat(x, y, z, s)));
+    both(o, 'legLL', 'legLR', (g, s) => {
+      B(g, 0, 2, 0, 3, 4, 3, (x, y, z) => pat(x, y + 5, z, s));
+      B(g, 0, 0, 0, 3, 1, 5, (x, y, z) => lea(x, y, z, 0x4a3020, y === 0 ? 0.8 : 1.0));                                 // soft shoe
+      B(g, 0, 2, 0, 3, 2, 3, (x, y, z) => V(shade(0x8a5a30, 0.8 + 0.4 * hash3(x, y, z, 80))));                         // fur cuff
+    });
+    return o;
+  },
+};
+
 /** Legionary footwear for the light troops: hobnailed caligae with fasciae (leg wraps) in the team colour from the ankle to the knee. */
 LG.caligae_fasciae = {
   name: 'Caligae with leg wraps', meta: { faction: 'romans' },

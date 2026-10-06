@@ -110,23 +110,24 @@ export class PartDoc {
   doRedo() { return this.undo.redo(); }
 
   // ---------------------------------------------------------------- brushes
-  _brush(x, y, z, size, fn) {
+  /** brush cells of `size` around (x,y,z): a cube, or a flat square when `plane` ('x'|'y'|'z') fixes the slice the brush may not leave */
+  _brush(x, y, z, size, fn, plane) {
     const lo = -Math.floor((size - 1) / 2), hi = lo + size - 1;
-    for (let dy = lo; dy <= hi; dy++) for (let dz = lo; dz <= hi; dz++) for (let dx = lo; dx <= hi; dx++) fn(x + dx, y + dy, z + dz);
+    for (let dy = plane === 'y' ? 0 : lo; dy <= (plane === 'y' ? 0 : hi); dy++) for (let dz = plane === 'z' ? 0 : lo; dz <= (plane === 'z' ? 0 : hi); dz++) for (let dx = plane === 'x' ? 0 : lo; dx <= (plane === 'x' ? 0 : hi); dx++) fn(x + dx, y + dy, z + dz);
   }
   /** Add voxels (the pencil): sets `value` on the brush cells. */
-  pencil(x, y, z, value, size = 1) { return this.op('Pencil', (put) => this._brush(x, y, z, size, (a, b, c) => put(a, b, c, value))); }
-  eraser(x, y, z, size = 1) { return this.op('Eraser', (put) => this._brush(x, y, z, size, (a, b, c) => { if (this.grid.get(a, b, c)) put(a, b, c, 0); })); }
+  pencil(x, y, z, value, size = 1, plane) { return this.op('Pencil', (put) => this._brush(x, y, z, size, (a, b, c) => put(a, b, c, value), plane)); }
+  eraser(x, y, z, size = 1, plane) { return this.op('Eraser', (put) => this._brush(x, y, z, size, (a, b, c) => { if (this.grid.get(a, b, c)) put(a, b, c, 0); }, plane)); }
   /** Recolour only the voxels that exist (keeps the shape). */
-  recolor(x, y, z, value, size = 1) { return this.op('Paint', (put) => this._brush(x, y, z, size, (a, b, c) => { if (this.grid.get(a, b, c)) put(a, b, c, value); })); }
+  recolor(x, y, z, value, size = 1, plane) { return this.op('Paint', (put) => this._brush(x, y, z, size, (a, b, c) => { if (this.grid.get(a, b, c)) put(a, b, c, value); }, plane)); }
   /** Set (on) or clear (off) the team-tint or glow flag on existing voxels, keeping their colour. */
-  flag(x, y, z, which, on, size = 1) {
+  flag(x, y, z, which, on, size = 1, plane) {
     const bit = FLAG_BITS[which] << 24 >>> 0;
     return this.op(which === 'team' ? 'Team tint' : 'Glow', (put) => this._brush(x, y, z, size, (a, b, c) => {
       const v = this.grid.get(a, b, c); if (!v) return;
       const nv = on ? ((v & ~((F_TEAM | F_GLOW) << 24)) | bit) : (v & ~bit);
       put(a, b, c, nv >>> 0);
-    }));
+    }, plane));
   }
   /** Flood fill: recolour the connected voxels that share the seed's value. mode '3d' (6-neighbour; needs a solid seed) or 'layer' (4-neighbour inside the plane axis=layer; an empty seed fills the hole). */
   fill(x, y, z, value, mode = '3d', axis = 'y') {
@@ -148,8 +149,8 @@ export class PartDoc {
     return this.op('Fill', (put) => { for (const c of q) put(c[0], c[1], c[2], value); });
   }
   /** A 3D line of brush cells from a to b. */
-  line(a, b, value, size = 1) {
-    return this.op('Line', (put) => { for (const c of lineCells(a, b)) this._brush(c[0], c[1], c[2], size, (x, y, z) => put(x, y, z, value)); });
+  line(a, b, value, size = 1, plane) {
+    return this.op('Line', (put) => { for (const c of lineCells(a, b)) this._brush(c[0], c[1], c[2], size, (x, y, z) => put(x, y, z, value), plane); });
   }
   /** Box between two corners (inclusive); hollow keeps only the shell. */
   box(a, b, value, hollow = false) {
@@ -226,6 +227,12 @@ export class PartDoc {
     const saved = Object.assign({}, this.mirror); this.mirror = { x: false, y: false, z: false };
     const r = this.op('Copy from the other side', (put) => { for (let y = 0; y < g.sy; y++) for (let z = 0; z < g.sz; z++) for (let x = 0; x < g.sx; x++) put(x, y, z, srcGrid.get(g.sx - 1 - x, y, z)); });
     this.mirror = saved; return r;
+  }
+  /** Apply a paint RLE (e.g. from another soldier) on top of the GENERATED voxels as one undoable edit (cap-checked, never mirrored). */
+  applyRLE(r) {
+    const target = this.gen.clone();
+    if (r && Array.isArray(r.rle)) { let p = 0; const d = target.d; for (let i = 0; i < r.rle.length; i += 2) { const n = r.rle[i], v = r.rle[i + 1] >>> 0; if (v) for (let k = 0; k < n && p + k < d.length; k++) d[p + k] = v === PAINT_ERASE ? 0 : v; p += n; } }
+    return this._replace('Import paint', target);
   }
   /** The RLE override layer of this part (or null when nothing differs from the generated voxels). */
   toRLE() { return this.diff ? diffPaint(this.grid, this.gen) : null; }

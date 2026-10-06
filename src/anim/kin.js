@@ -4,7 +4,7 @@
 import { isGlow } from '../voxel/grid.js';
 
 /** voxel bounds of a part's SOLID voxels (glow voxels - halos, flames - are light, not matter, and never touch the ground) */
-function solidBounds(g) {
+export function solidBounds(g) {
   let x0 = 1e9, y0 = 1e9, z0 = 1e9, x1 = -1, y1 = -1, z1 = -1;
   for (let y = 0; y < g.sy; y++) for (let z = 0; z < g.sz; z++) for (let x = 0; x < g.sx; x++) {
     const v = g.d[g.idx(x, y, z)];
@@ -75,10 +75,11 @@ export function rootPoint(root, x, y, z, out) {
 }
 
 const _c = [0, 0, 0], _o = [0, 0, 0];
-/** lowest world y over all part box corners (root applied, heading 0, scale 1) */
+/** lowest world y over all part box corners (root applied, heading 0, scale 1); parts flagged in desc.skip (held items, capes) are ignored */
 export function lowestPoint(desc, W, root) {
   let minY = Infinity;
   for (let p = 0; p < desc.P; p++) {
+    if (desc.skip !== undefined && desc.skip[p]) continue;
     const bx = desc.box, o = p * 6, w = p * 12;
     if (bx[o] === 0 && bx[o + 3] === 0 && bx[o + 1] === 0 && bx[o + 4] === 0) continue;
     for (let k = 0; k < 8; k++) {
@@ -96,5 +97,30 @@ export function partPointWorld(desc, W, partIndex, lx, ly, lz, root, out) {
   const w = partIndex * 12;
   _c[0] = W[w] * lx + W[w + 1] * ly + W[w + 2] * lz + W[w + 3]; _c[1] = W[w + 4] * lx + W[w + 5] * ly + W[w + 6] * lz + W[w + 7]; _c[2] = W[w + 8] * lx + W[w + 9] * ly + W[w + 10] * lz + W[w + 11];
   return rootPoint(root, _c[0], _c[1], _c[2], out);
+}
+
+/** canonical hum1 part boxes (voxels, relative to the part pivot): [x0,y0,z0,x1,y1,z1] */
+export const HUM1_RIG = {
+  body: { parent: null, origin: [0, 10, 0], box: [-5, 0, -2.5, 5, 9, 2.5] },
+  head: { parent: 'body', origin: [0, 9, 0], box: [-4.5, 0, -4.5, 4.5, 8, 4.5] },
+  armUL: { parent: 'body', origin: [6.5, 8, 0], box: [-1.5, -5, -1.5, 1.5, 0, 1.5] },
+  armLL: { parent: 'armUL', origin: [0, -5, 0], box: [-1.5, -5, -1.5, 1.5, 0, 1.5] },
+  armUR: { parent: 'body', origin: [-6.5, 8, 0], box: [-1.5, -5, -1.5, 1.5, 0, 1.5] },
+  armLR: { parent: 'armUR', origin: [0, -5, 0], box: [-1.5, -5, -1.5, 1.5, 0, 1.5] },
+  legUL: { parent: null, origin: [3, 10, 0], box: [-2, -5, -2, 2, 0, 2] },
+  legLL: { parent: 'legUL', origin: [0, -5, 0], box: [-2, -5, -2, 2, 0, 3] },
+  legUR: { parent: null, origin: [-3, 10, 0], box: [-2, -5, -2, 2, 0, 2] },
+  legLR: { parent: 'legUR', origin: [0, -5, 0], box: [-2, -5, -2, 2, 0, 3] },
+};
+
+/** description of a rig TABLE like HUM1_RIG (voxel units) in the same shape describeModel returns (world units, voxelSize 0.1) */
+export function describeRig(table, vs = 0.1) {
+  const ids = Object.keys(table), P = ids.length, parent = new Int16Array(P), origin = new Float64Array(P * 3), rest = [], box = new Float64Array(P * 6);
+  ids.forEach((id, i) => {
+    const e = table[id];
+    parent[i] = e.parent ? ids.indexOf(e.parent) : -1;
+    origin.set(e.origin.map((v) => v * vs), i * 3); rest.push([0, 0, 0]); box.set(e.box.map((v) => v * vs), i * 6);
+  });
+  return { P, ids, parent, origin, rest, box, vs };
 }
 

@@ -2,12 +2,14 @@
 //   node tests/campaign/run_feasibility.mjs --missions=1,2 --bots=counter,greedy,turtle --n=20       run (one JSON per mission+bot in .cache/campaign/)
 //   node tests/campaign/run_feasibility.mjs --report                                                 write docs/campaign_report.md from the stored runs
 // Bots: counter = counter-pick against the whole enemy list (the reference player), greedy = random composition, every squad advances (the naive deployment),
-// turtle = balanced composition, every squad holds. 'thrifty' = counter bot with the par budget (proves star 3 of mission 1 is reachable).
+// turtle = balanced composition, every squad holds. Star-hunting variants (not part of the bands): 'thrifty' = counter bot with the par budget (star 3 of
+// mission 1), 'melee' = infantry and heroes only (no friendly fire from arrows: mission 8, no Spartan lost: mission 2), 'raid' = rush style (the time stars).
 // Every battle is deterministic: (mission, bot, seed) always gives the same result. Parallelise by starting one process per (mission, bot).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { MISSIONS, sweep } from './_lib.mjs';
+import { missionHash } from '../../src/content/era_ancient/campaign.js';
 import { puzzleReport } from './_puzzle_report.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
@@ -22,12 +24,24 @@ for (const i of idx) for (const bot of bots) {
   const m = MISSIONS[i - 1];
   const mm = bot === 'thrifty' ? Object.assign({}, m, { budget: m.par || Math.round(m.budget * 0.75) }) : m;
   const r = sweep(mm, bot === 'thrifty' ? 'counter' : bot, n, { seedBase: base });
-  const rec = { id: m.id, index: i, bot, n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
+  const rec = { id: m.id, index: i, bot, hash: missionHash(m), n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, cpuMs: r.cpuMs, budget: mm.budget, perSeed: r.results.map((x) => ({ win: x.win, t: +x.t.toFixed(1), reason: x.reason, stars: x.stars, earned: x.earned, alive: x.alive, frac: +x.aliveCostFrac.toFixed(2) })) };
   fs.writeFileSync(path.join(dir, `m${i}_${bot}.json`), JSON.stringify(rec));
   console.log(m.id, bot, `${r.wins}/${n}`, 'stars', r.starHits.join('/'), 'avgWinT', r.avgWinT.toFixed(0), 'cpu', (r.cpuMs / n / 1000).toFixed(1) + 's');
 }
 
+function collect() {
+  // merge the per-run JSON files into tests/campaign/feasibility.json (committed: the fast test checks bands and data hashes against it)
+  const out = { version: 1, runs: {} };
+  MISSIONS.forEach((m, k) => {
+    const rec = { hash: missionHash(m), bots: {} };
+    for (const bot of ['counter', 'greedy', 'turtle', 'thrifty', 'melee', 'raid']) { const f = path.join(dir, `m${k + 1}_${bot}.json`); if (fs.existsSync(f)) { const r = JSON.parse(fs.readFileSync(f, 'utf8')); rec.bots[bot] = { n: r.n, wins: r.wins, rate: r.rate, starHits: r.starHits, avgWinT: r.avgWinT, budget: r.budget, hash: r.hash || rec.hash, perSeed: r.perSeed.map((x) => [x.win ? 1 : 0, x.t, x.stars]) }; } }
+    out.runs[m.id] = rec;
+  });
+  fs.writeFileSync(path.join(root, 'tests/campaign/feasibility.json'), JSON.stringify(out));
+}
+
 function writeReport() {
+  collect();
   const get = (i, bot) => { const f = path.join(dir, `m${i}_${bot}.json`); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : null; };
   const pct = (r) => (r ? Math.round(r.rate * 100) + '% (' + r.wins + '/' + r.n + ')' : 'not run');
   const band = (r, lo, hi) => (!r ? 'n/a' : r.rate >= lo - 1e-9 && r.rate <= hi + 1e-9 ? 'PASS' : 'FAIL');
@@ -45,7 +59,7 @@ function writeReport() {
   });
   lines.push('', `Bands passing: **${ok}/${tot}** runs recorded.`, '');
   lines.push('## Stars reachable (winning battles that earned each star, of all battles of that bot)', '', '| # | mission | bot | win | star 2 (half alive) | star 3 | avg win time |', '|---|---|---|---|---|---|---|');
-  MISSIONS.forEach((m, k) => { for (const bot of ['counter', 'greedy', 'turtle', 'thrifty']) { const r = get(k + 1, bot); if (r) lines.push(`| ${k + 1} | ${m.id} | ${bot} | ${r.starHits[0]}/${r.n} | ${r.starHits[1]}/${r.n} | ${r.starHits[2]}/${r.n} | ${r.avgWinT ? r.avgWinT.toFixed(0) + ' s' : '-'} |`); } });
+  MISSIONS.forEach((m, k) => { for (const bot of ['counter', 'greedy', 'turtle', 'thrifty', 'melee', 'raid']) { const r = get(k + 1, bot); if (r) lines.push(`| ${k + 1} | ${m.id} | ${bot} | ${r.starHits[0]}/${r.n} | ${r.starHits[1]}/${r.n} | ${r.starHits[2]}/${r.n} | ${r.avgWinT ? r.avgWinT.toFixed(0) + ' s' : '-'} |`); } });
   lines.push('', '## Mission facts', '', '| # | mission | arena | player (budget) | enemy (cost, units) | objective | time limit |', '|---|---|---|---|---|---|---|');
   MISSIONS.forEach((m, k) => {
     const g = (m.enemy.groups || []).concat(...((m.script && m.script.waves) ? m.script.waves.list.map((w) => w.groups) : []));

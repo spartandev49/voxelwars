@@ -26,6 +26,9 @@ for (const id of ['walk', 'jog', 'run', 'rout']) {
   assert.ok(r.ratio <= MAXR, `A3: ${id} foot slide ${fmt(r.ratio)} > 15%`);
 }
 ok('A3 hum1 gait clips at their speedRef: foot slide ' + a3.join(', '));
+// negative control: the same clip at rate 1 over ground moving at 0.3x its design speed slides beyond the bound
+{ const nc = footSlide(sold, 'walk', 2.4 * 0.3, 2.4 * 0.3);   // rate 1 at 0.3x the ground speed (the feet then trail the ground)
+  assert.ok(nc.ratio > MAXR, `NC: walk at 0.3x speed must slide > 15% (got ${fmt(nc.ratio)})`); ok('A3 NC: walk at 0.3x its speedRef slides ' + fmt(nc.ratio)); }
 
 // ---- A4: every infantry def, walk and run ------------------------------------------------------------------------------------------------------------
 const INFANTRY = Object.entries(STAT_TABLE).filter(([, d]) => ['melee', 'ranged', 'support', 'hero'].includes(d.role) && !(d.tags || []).includes('cavalry'));

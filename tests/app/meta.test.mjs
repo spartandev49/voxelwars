@@ -11,7 +11,7 @@ import { KILL_VERBS } from '../../src/content/era_ancient/humor/killverbs.js';
 
 const run = (w, n) => { for (let i = 0; i < n; i++) w.tick(); };
 // ---------------------------------------------------------------- a full battle through the meta layer
-const world = makeWorld({ a: [['hoplite', 14], ['cretan_archer', 6]], b: [['hoplite', 6], ['sacred_chicken', 2]], seed: 11 });
+const world = makeWorld({ a: [['hoplite', 14], ['cretan_archer', 6]], b: [['hoplite', 14], ['sacred_chicken', 2]], seed: 11, gap: 24 });
 const order = [];                                              // the order the three battle_end consumers run in
 const H = makeMeta({ world });
 const { meta, game, stats, docs } = H;
@@ -27,7 +27,7 @@ let handlerResults = null; world.events.on('battle_end', () => { game.state = 'e
 game.state = 'countdown'; world.start(0);
 let ticks = 0; const frame = () => { meta.onFrame(1 / 30); };
 while (world.state !== 'ended' && ticks < 30 * 240) { world.tick(); ticks++; if (ticks % 3 === 0) frame(); }
-assert.equal(world.state, 'ended', 'the battle finishes'); assert.ok(ticks >= 100, 'a real battle (' + ticks + ' ticks, ' + (ticks / 30).toFixed(1) + ' s)');
+assert.equal(world.state, 'ended', 'the battle finishes'); assert.ok(ticks >= 600, 'a real battle of at least 600 ticks (' + ticks + ' ticks, ' + (ticks / 30).toFixed(1) + ' s)');
 for (let i = 0; i < 90; i++) frame();                          // keep pumping real time after the end (victory lines, toasts)
 
 // -- dispatch order and exactly-once

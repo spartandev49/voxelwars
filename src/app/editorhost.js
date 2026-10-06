@@ -147,7 +147,7 @@ export class EditorHost {
     rig.tx = x; rig.tz = z; rig.ty = a.heightAt(x, z) + 1;
     const mode = o.mode || 'oblique';
     if (mode === 'top') { rig.setMode('topdown'); rig.pitch = 1.38; rig.yaw = 0; rig.dist = o.dist || W * 1.05; }
-    else if (mode === 'oblique') { rig.setMode('orbit'); rig.yaw = -0.7; rig.pitch = 0.62; rig.dist = o.dist || W * 0.9; }
+    else if (mode === 'oblique') { rig.setMode('orbit'); rig.yaw = -0.7; rig.pitch = 0.62; rig.dist = o.dist || W * 1.5; }
     else if (o.dist) rig.dist = o.dist;
     rig.dist = clamp(rig.dist, rig.limits.minDist, rig.limits.maxDist);
     rig.snap();

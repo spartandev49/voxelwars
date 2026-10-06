@@ -24,7 +24,8 @@ export function enemyAll(m) {
 
 /**
  * The player's army for a bot. kinds: 'counter' (counter-pick against the full enemy list), 'greedy' (spend everything on a random composition, every squad
- * advances), 'turtle' (balanced composition, every squad holds), 'melee' (hoplite-style infantry only, no ranged: the friendly-fire-safe army).
+ * advances), 'turtle' (balanced composition, every squad holds), 'melee' (infantry and heroes only, no ranged: the friendly-fire-safe army), 'raid' (the rush
+ * style: fast cavalry and beasts, for the missions with a time star).
  * `core` units the mission asks for (the Trojan horse, elephants, Spartans) are always bought first.
  */
 export function botGroups(m, kind, seed) {
@@ -32,7 +33,7 @@ export function botGroups(m, kind, seed) {
   const spent = groupsCost(core, defs);
   const rest = Math.max(0, m.budget - spent);
   const ids = m.roster ? m.roster.filter((id) => !core.some((c) => c.defId === id) || true) : null;
-  const style = kind === 'counter' ? 'counter' : kind === 'greedy' ? 'chaos' : kind === 'turtle' ? 'balanced' : 'balanced';
+  const style = kind === 'counter' ? 'counter' : kind === 'greedy' ? 'chaos' : kind === 'raid' ? 'rush' : 'balanced';
   let pool = ids;
   if (kind === 'melee' && ids) pool = ids.filter((id) => defs[id].role === 'melee' || defs[id].role === 'hero');
   const army = generateArmy({ faction: m.roster ? 'mixed' : m.playerFaction, budget: rest, style, difficulty: kind === 'counter' ? 'hard' : 'normal', against: kind === 'counter' ? enemyAll(m) : undefined, ids: pool || undefined, seed: seed * 101 + 7, defs, cap: 300 });

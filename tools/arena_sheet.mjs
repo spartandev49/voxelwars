@@ -11,7 +11,7 @@ const opt = (k, d) => { const i = args.indexOf('--' + k); return i >= 0 ? args[i
 const flag = (k) => args.includes('--' + k);
 const positional = args.filter((a, i) => !a.startsWith('--') && !(i > 0 && args[i - 1].startsWith('--') && !['index', 'index-only'].includes(args[i - 1].slice(2))));
 const W = +opt('w', 960), H = +opt('h', 540), outDir = opt('out', 'docs/sheets'), size = opt('size', 'medium'), seed = +opt('seed', 3);
-const cams = opt('cams', 'top,oblique,hero').split(',');
+const cams = opt('cams', 'top,oblique,hero').split(',');   // also: battle (default battle camera with stand-in soldiers)
 const loadOpts = {}; if (opt('time')) loadOpts.time = +opt('time'); if (opt('weather')) loadOpts.weather = opt('weather'); if (opt('quality')) loadOpts.quality = opt('quality');
 if (opt('look')) { const [sun, hemi, exp] = opt('look').split(',').map(Number); loadOpts.look = { sun, hemi, exp }; }
 fs.mkdirSync(outDir, { recursive: true });

@@ -13,7 +13,7 @@
 // Time is in SECONDS in the DSL; the baked clip is 30 fps. Looping clips are sampled periodically (frame N == frame 0).
 // Pure module: no THREE, no DOM.
 
-import { HUM1_RIG, describeRig, fk, lowestPoint } from './analysis.js';
+import { HUM1_RIG, describeRig, fk, lowestPoint } from './kin.js';
 
 export const FPS = 30;
 const PI = Math.PI, TAU = Math.PI * 2;

@@ -179,6 +179,9 @@ export function mount(root, ctx, params = {}) {
   const saveBtn = K.button(WS.save, { icon: 'save', variant: 'primary', id: 'ws-save', onClick: () => save() }); K.tooltip(saveBtn, WS.save + ' (Ctrl+S)');
   const battleBtn = K.button(WS.useInBattle, { icon: 'sword', variant: 'olive', id: 'ws-battle', onClick: () => useInBattle() });
   const shareBtn = K.iconButton('upload', WS.share, { variant: 'secondary', id: 'ws-share', onClick: () => shareNow() }); K.tooltip(shareBtn, WS.share + ': get a code or a file to send to a friend');
+  // compact windows show the short labels (CSS toggles .ws-long / .ws-short)
+  const dual = (btn, long, short) => { const l = btn.querySelector('.vw-btn__label'); if (l) l.replaceChildren(h('span', { class: 'ws-long', text: long }), h('span', { class: 'ws-short', text: short })); };
+  dual(saveBtn, WS.save, 'Save'); dual(battleBtn, WS.useInBattle, 'Battle');
   const bottom = h('footer', { class: 'ws-bottom vw-tablet vw-tablet--glass' },
     h('div', { class: 'ws-bottom__name' }, nameInput, diceBtn), h('div', { class: 'ws-bottom__chips' }, costChip, roleChip), h('span', { class: 'vw-spacer' }),
     h('div', { class: 'ws-bottom__tools' }, randBtn, mutBtn, resetBtn), h('div', { class: 'ws-bottom__btns' }, shareBtn, battleBtn, saveBtn));
@@ -196,7 +199,7 @@ export function mount(root, ctx, params = {}) {
     syncClipOptions();
     // bottom
     if (document.activeElement !== nameInput && nameInput.value !== cs.name) nameInput.value = cs.name;
-    costChip.querySelector('span').textContent = WS.cost(def.cost); roleChip.querySelector('span').textContent = `${C.CLASS_LABEL[def.weaponStyle] || def.role} · ${def.role}`;
+    costChip.querySelector('span').replaceChildren(h('span', { class: 'ws-long', text: WS.cost(def.cost) }), h('span', { class: 'ws-short', text: String(def.cost) })); roleChip.querySelector('span').textContent = `${C.CLASS_LABEL[def.weaponStyle] || def.role} · ${def.role}`;
     undoBtn.disabled = !doc.canUndo(); redoBtn.disabled = !doc.canRedo();
     saveBtn.classList.toggle('is-dirty', doc.dirty);
     // parts list: selection + icons when colours changed

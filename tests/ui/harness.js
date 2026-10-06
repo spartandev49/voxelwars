@@ -21,7 +21,7 @@ function sceneStandIn(kind, content) {
   } else if (kind === 'scene') {
     el.style.background = 'linear-gradient(180deg,#6ec6ff 0%,#cfeaff 38%,#9ed3ff 100%)';
     const img = document.createElement('div');
-    const url = content.arenaThumb('marathon');
+    const url = content.arenaThumbSync('marathon');
     img.style.cssText = `position:absolute;left:-15%;right:-15%;top:24%;height:110%;background:url(${url}) center/100% 100%;transform:perspective(900px) rotateX(62deg);transform-origin:50% 0;border:3px solid #14163a;image-rendering:pixelated`;
     el.appendChild(img);
     const add = (css) => { const d = document.createElement('div'); d.style.cssText = 'position:absolute;' + css; el.appendChild(d); return d; };

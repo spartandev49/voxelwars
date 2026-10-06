@@ -107,7 +107,7 @@ F.beard_ringlets = {
   name: 'Ringlet beard',
   build(ctx) {
     const head = newGrid('head'), body = newGrid('body');
-    const hv = (x, y, z, k = 0) => V(shade(ctx.c.hair, (((((x + (y & 1)) >> 1) + y) % 2) ? 1.3 : 0.78) * (0.9 + 0.2 * hash3(x, y, z, 3 + k))));
+    const hv = (x, y, z, k = 0) => V(shade(ctx.c.hair, (((((x + (y & 1)) >> 1) + y) % 2) ? 1.35 : 0.85) * (0.9 + 0.2 * hash3(x, y, z, 3 + k))));
     B(head, 2, 0, 8, 7, 2, 8, (x, y, z) => ((y === 1 && x >= 4 && x <= 5) ? 0 : hv(x, y, z)));       // cheeks and chin shell
     Bs(head, 1, 0, 4, 1, 2, 7, (x, y, z) => hv(x, y, z, 2));
     B(head, 3, 0, 9, 6, 1, 9, (x, y, z) => hv(x, y, z, 1));

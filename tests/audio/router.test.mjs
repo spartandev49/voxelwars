@@ -42,6 +42,11 @@ const hit = (o = {}) => Object.assign({ src: 1, dst: 2, srcDef: 'hoplite', dstDe
   const defs = Object.assign({}, STAT_TABLE, { hoplite: Object.assign({}, STAT_TABLE.hoplite, { sfx: { hit: 'hit_blunt', death: 'death_oof' } }) });
   const R2 = rig({ defs }); R2.r.handle('unit_hit', hit({ srcDef: 'hoplite', type: 'pierce' })); assert.ok(R2.cues().includes('hit_blunt') && !R2.cues().includes('hit_pierce'), 'sfx.hit override');
   R2.r.handle('unit_kill', { src: 1, dst: 2, srcDef: 'hoplite', dstDef: 'hoplite', cause: 'melee', x: 4, y: 0, z: 2 }); assert.ok(R2.cues().includes('death_oof'), 'sfx.death override');
+  const defs3 = Object.assign({}, STAT_TABLE, { cretan_archer: Object.assign({}, STAT_TABLE.cretan_archer, { sfx: { shoot: 'ballista_twang', voice: 'goat_bleat' } }) });
+  const R3 = rig({ defs: defs3, world: { state: 'running', units: [{ id: 5, x: 2, y: 0, z: 2, px: 2, pz: 2, def: { id: 'cretan_archer' } }], dying: [] } });
+  R3.r.handle('projectile_launch', { kind: 'arrow', team: 0, x: 3, y: 2, z: 3, srcDef: 'cretan_archer' }); assert.deepEqual(R3.cues(), ['ballista_twang'], 'sfx.shoot override (when the payload names the shooter)');
+  R3.clear(); R3.r.handle('projectile_launch', { kind: 'arrow', team: 0, x: 3, y: 2, z: 3 }); assert.ok(R3.cues().includes('bow_shoot'), 'default when the shooter is unknown');
+  R3.clear(); R3.r.handle('bark', { id: 5, text: 'x' }); assert.deepEqual(R3.cues(), ['goat_bleat'], 'sfx.voice override on barks');
 }
 
 // ---- block / projectiles

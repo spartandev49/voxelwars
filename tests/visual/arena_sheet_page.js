@@ -5,10 +5,13 @@ import { generateArena, RECIPES } from '../../src/world/gen.js';
 import { TerrainRenderer } from '../../src/render/terrain.js';
 import { PropRenderer } from '../../src/render/props.js';
 import { CubeFX } from '../../src/render/fx.js';
+import { VoxSkin, newPose } from '../../src/render/voxskin.js';
+import { buildSpectator } from '../../src/content/era_ancient/props/models/index.js';
+import { PROP_CATALOG } from '../../src/content/era_ancient/props/catalog.js';
 
 const eng = new Engine(document.body);
 const tr = new TerrainRenderer(eng.scene);
-let pr = null, fx = null, arena = null, info = null;
+let pr = null, fx = null, arena = null, info = null, stand = null;
 const T = window.THREE;
 
 // per-recipe hero shots: preferred camera spot (fx,fz as fractions of the arena width), target (tx,tz) and heights above ground.
@@ -71,6 +74,7 @@ window.__sheet = {
     const t0 = performance.now();
     pr = new PropRenderer(eng, arena, { fx });
     const buildMs = performance.now() - t0;
+    if (stand) { stand.forEach((s0) => s0.skin.dispose()); stand = null; }
     const f = eng.setEnvironment(arena.env, arena); tr.setFog(f.color, f.near, f.far);
     if (opts.look) {   // look-dev experiment: multipliers on the engine light rig (does not touch engine.js)
       eng.sun.intensity *= opts.look.sun ?? 1; eng.hemi.intensity *= opts.look.hemi ?? 1; eng.renderer.toneMappingExposure = opts.look.exp ?? eng.renderer.toneMappingExposure;
@@ -83,7 +87,30 @@ window.__sheet = {
     const W = arena.worldSize(), c = eng.camera;
     if (w && h) { eng.renderer.setSize(w, h, false); c.aspect = w / h; c.updateProjectionMatrix(); eng.resize(); }
     const half = W / 2;
-    if (name === 'top') {
+    if (name === 'battle') {
+      // default battle camera exactly like Game.frameArmies + CameraRig (yaw -0.7, pitch 0.65), with stand-in soldiers (spectator models) filling both zones
+      const A = arena.zones.A, B = arena.zones.B, cx = (A.x + B.x) / 2, cz = (A.z + B.z) / 2;
+      let r = 0; for (const z of [A, B]) for (const sx of [-1, 1]) for (const sz of [-1, 1]) r = Math.max(r, Math.hypot(z.x + sx * z.w * 0.35 - cx, z.z + sz * z.d * 0.35 - cz));
+      const dist = Math.min(150, Math.max(6, r * 1.12 + 14)), ty = arena.heightAt(cx, cz) + 1, cp = Math.cos(0.65);
+      let px = cx + Math.sin(-0.7) * cp * dist, py = ty + Math.sin(0.65) * dist, pz = cz + Math.cos(-0.7) * cp * dist;
+      py = Math.max(py, arena.heightAt(px, pz) + 1.4);
+      c.position.set(px, py, pz); c.lookAt(cx, ty, cz); eng.focus.set(cx, ty, cz);
+      if (!stand) {
+        stand = [];
+        [[A, 0], [B, 1]].forEach(([z, team]) => {
+          const skin = new VoxSkin({ scene: eng.scene }, buildSpectator(team ? 1 : 0), { capacity: 80, shadow: true }), pts = [];
+          for (let j = 0; j < 9; j++) for (let i = 0; i < 9; i++) {
+            const x = z.x + (i - 4) * Math.min(1.7, z.w * 0.9 / 9), zz = z.z + (j - 4) * Math.min(1.9, z.d * 0.7 / 9);
+            if (arena.props.some((p) => { const k = PROP_CATALOG[p.t]; return k && k.r > 0 && k.blocks !== 'none' && (p.x - x) ** 2 + (p.z - zz) ** 2 < (k.r * p.s + 0.7) ** 2; })) continue;
+            pts.push([x, arena.cellHeight(x, zz), zz]);
+          }
+          stand.push({ skin, pts, team, pose: newPose(6) });
+        });
+      }
+      for (const s0 of stand) { s0.skin.begin(); for (const q of s0.pts) s0.skin.add(q[0], q[1], q[2], s0.team ? -Math.PI / 2 : Math.PI / 2, 1.15, 1.15, 1.15, s0.pose, s0.team ? [0.35, 0.5, 1] : [1, 0.3, 0.25]); s0.skin.end(); }
+    } else if (stand) { for (const s0 of stand) { s0.skin.begin(); s0.skin.end(); } }
+    if (name === 'battle') { /* camera set above */ }
+    else if (name === 'top') {
       const H = (half * 1.2) / Math.tan((c.fov / 2) * Math.PI / 180);
       c.position.set(0, H, H * 0.05); c.lookAt(0, 0, 0); eng.focus.set(0, 8, 0);
     } else if (name === 'oblique') {

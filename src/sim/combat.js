@@ -6,7 +6,7 @@ import { ST, SE, SE_NAMES, G, AP } from './consts.js';
 import { ClipLib } from '../anim/clips.js';
 
 const TAU = Math.PI * 2;
-export function angleDiff(a, b) { let d = (b - a) % TAU; if (d > Math.PI) d -= TAU; else if (d < -Math.PI) d += TAU; return d; }
+export function angleDiff(a, b) { let d = b - a; while (d > Math.PI) d -= TAU; while (d < -Math.PI) d += TAU; return d; }
 
 /** Is the point (ax,az) inside t's front arc of half-angle `arc` (radians)? */
 export function inFrontArc(t, ax, az, arc) {

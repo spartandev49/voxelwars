@@ -75,7 +75,7 @@ export function solve(p, o = {}) {
   for (let i = 0; i < iters; i++) {
     const cand = i % 3 === 2 && best ? mutate(p, best, rng) : randomCandidate(p, rng, o);
     tryIt(cand, 'iter ' + i);
-    if (bestR && bestR.stars === 3 && o.stopAtThree !== false) break;
+    if (bestR && bestR.stars === 3 && bestR.t <= 0.7 * p.timeLimit && o.stopAtThree !== false) break;       // a robust solution wins with 30% of the time limit to spare
   }
   return { best, result: bestR };
 }

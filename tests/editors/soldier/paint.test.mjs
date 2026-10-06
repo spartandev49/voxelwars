@@ -140,3 +140,15 @@ assert.deepEqual(lineCells([0, 0, 0], [3, 0, 0]), [[0, 0, 0], [1, 0, 0], [2, 0, 
   const g2 = new VoxelGrid(3, 3, 3); g2.set(1, 1, 0, RED); const e2 = pickCell(g2, [1.5, 1.5, 5], [0, 0, -1], [1.5, 1.5, 5]); assert.deepEqual(e2.cell, [1, 1, 0]); assert.deepEqual(e2.add, [1, 1, 1]); const e3 = pickCell(g2, [1.5, 1.5, -5], [0, 0, 1], [1.5, 1.5, -5]); assert.equal(e3.add, null, 'the face looks out of the grid: nothing to add');
 }
 console.log('paint OK');
+
+// ---- palette maths and codes
+{
+  const { hsvToRgb, rgbToHsv, toHex, parseHex, pushRecent, encodePalette, decodePalette, PALETTE_MAX } = await import('../../../src/editors/painter/palette.js');
+  for (const rgb of [0, 0xffffff, 0xff0000, 0x00ff00, 0x0000ff, 0xc8453c, 0x123456, 0x808080]) { const c = rgbToHsv(rgb), back = hsvToRgb(c.h, c.s, c.v); assert.ok(Math.abs(((back >> 16) & 255) - ((rgb >> 16) & 255)) <= 1 && Math.abs(((back >> 8) & 255) - ((rgb >> 8) & 255)) <= 1 && Math.abs((back & 255) - (rgb & 255)) <= 1, toHex(rgb)); }
+  assert.equal(parseHex('#c8453c'), 0xc8453c); assert.equal(parseHex('c8453c'), 0xc8453c); assert.equal(parseHex('#c8453'), null); assert.equal(parseHex('zzzzzz'), null);
+  let r = []; for (let i = 0; i < 30; i++) r = pushRecent(r, { rgb: i, material: 'normal' }); assert.equal(r.length, 24); assert.equal(r[0].rgb, 29); r = pushRecent(r, { rgb: 20, material: 'normal' }); assert.equal(r[0].rgb, 20); assert.equal(r.filter((e) => e.rgb === 20).length, 1);
+  const pal = [{ rgb: 0xc8453c, material: 'normal' }, { rgb: 0xf2d36b, material: 'team' }, { rgb: 0xffee88, material: 'glow' }];
+  const code = encodePalette(pal); assert.equal(code, 'VWPAL1:c8453c,f2d36bT,ffee88G'); assert.deepEqual(decodePalette(code).list, pal);
+  for (const bad of ['', 'hello', 'VWPAL1:', 'VWPAL1:12345', 'VWPAL1:c8453cX', 'VWPAL1:' + new Array(PALETTE_MAX + 1).fill('ffffff').join(','), 'VWPAL1:' + 'a'.repeat(3000), 'VWPAL1:c8453c,<img>']) { const d = decodePalette(bad); assert.equal(d.ok, false); assert.ok(d.error.length > 10, bad.slice(0, 20)); }
+}
+console.log('palette OK');

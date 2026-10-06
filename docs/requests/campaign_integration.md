@@ -37,7 +37,7 @@ Unlock keys (`rewards.unlockParts`): `silly_helms` (mission 3), `silly_weapons` 
 `campaignApi.teachingBeats('marathon_sort_of')` returns HUMOR's TEACHING_BEATS; the run object records the moments the beats trigger on (`run.beats`: battle_start, first_contact = first unit_hit, cavalry_brace = first unit_brace, battle_end). The placement_start beat is the app's (first placement frame).
 
 ## 5. Survival (src/content/era_ancient/survival.js)
-`survivalRules(rules)` -> the Rules for `new World` of kind 'survival' (`rules.waves` switches sim/waves.js on, `timeLimit: 0`, no objective, start budget 6,000). The UI sets `rules.survival: true` and nothing in the sim reads it: please map it through `survivalRules`.
+`survivalRules(rules)` -> the Rules for `new World` of kind 'survival' (`rules.waves` switches sim/waves.js on, `timeLimit: 0`, an endless `survive_waves` objective (without it the first cleared wave ends the run as a victory, see campaign_sim_bugs.md #8), start budget 6,000). The UI sets `rules.survival: true` and nothing in the sim reads it: please map it through `survivalRules`.
 `placementBudget(nextWave)` = what the intermission may place (start budget before wave 1, then `1,600 + 240*clearedWave`). NOTE ui/screens/survival.js `mountIntermission` computes `bonus = 1600 + 240 * (sv.wave || 1)` where `sv.wave` is the NEXT wave: the sim's `wave_intermission.budget` is `reinforceBudget(clearedWave)` = one step lower. Pass `bonus: e.budget` in `hud.survival` so both agree.
 Leaderboard: `recordRun(prev, {score, waves, date, arena}) -> {state:{best, board}, rank, newBest}`; persist `state` under `vw.survival`. Score: `survivalScore({waves: cleared, kills, remainingCost})`.
 

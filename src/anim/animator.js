@@ -446,16 +446,19 @@ const GROUND_CLIP = /^(death|getup|knockdown|tumble|sleep|sit)/;
 const BOTH_WAYS = /^(sit|sleep|getup)/;
 let _inFloor = false;
 const _fRoot = { x: 0, y: 0, z: 0, pitch: 0, roll: 0, yaw: 0 };
+const FLOOR_HZ = 90;      // the table is sampled finer than the 30 fps clips (a fast fall sinks between two clip frames)
 function floorTable(model, info, id) {
-  const rig = info.rig, dur = ClipLib.meta(id, rig).dur, N = Math.max(2, Math.round(dur * 30) + 1), tab = new Float32Array(N);
+  const rig = info.rig, dur = ClipLib.meta(id, rig).dur, N = Math.max(2, Math.round(dur * FLOOR_HZ) + 1), tab = new Float32Array(N);
   const desc = describeModel(model), pose = new Float32Array(info.P * 9), W = new Float64Array(info.P * 12), st = { clip: id, t: 0, rate: 1, flinch: 0, dir: 0, prev: id, blend: 1 }, ex = { root: _fRoot, scale: 1, phase: 0 };
+  desc.skip = new Uint8Array(info.P);          // held items and capes lie on the ground wherever they happen to fall: they never lift the body
+  for (let i = 0; i < info.P; i++) if (/(^|_)(weapon|offhand|cape2?|crest)$/.test(model.parts[i].id)) desc.skip[i] = 1;
   const both = BOTH_WAYS.test(id);
   _inFloor = true;
   try {
     for (let f = 0; f < N; f++) {
-      st.t = f / 30; Animator.pose(model, st, ex, pose); fk(desc, pose, W);
+      st.t = f / FLOOR_HZ; Animator.pose(model, st, ex, pose); fk(desc, pose, W);
       const y = lowestPoint(desc, W, _fRoot), k = f / (N - 1);
-      tab[f] = y < 0 ? -y : (both ? -y : (k > 0.75 ? -y * sstep((k - 0.75) / 0.25) : 0));
+      tab[f] = y < 0 ? -y + 0.006 : (both ? -y : (k > 0.75 ? -y * sstep((k - 0.75) / 0.25) : 0));
     }
   } finally { _inFloor = false; }
   return tab;
@@ -464,9 +467,10 @@ function floorAt(model, info, id, t) {
   let tab = info.floor.get(id);
   if (tab === undefined) { tab = floorTable(model, info, id); info.floor.set(id, tab); }
   const N = tab.length;
-  let f = t * 30; if (f < 0) f = 0; else if (f > N - 1) f = N - 1;
+  let f = t * FLOOR_HZ; if (f < 0) f = 0; else if (f > N - 1) f = N - 1;
   const i0 = f | 0, i1 = i0 + 1 < N ? i0 + 1 : i0;
-  return tab[i0] + (tab[i1] - tab[i0]) * (f - i0);
+  const a = tab[i0], b = tab[i1];
+  return a > b ? a : b;          // the larger neighbour: the lowest point is a min over corners (kinked), a body must never sink between two samples
 }
 
 /**

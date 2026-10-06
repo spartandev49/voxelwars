@@ -12,8 +12,8 @@ const EGYPT = { primary: '#1f8f8a', secondary: '#e8c15a', trim: '#3a2a1a', metal
 
 export const BLUEPRINTS = {
   peltast: bp({ v: 1, id: 'peltast', name: 'Peltast', body: { type: 'slim', skin: '#d9a47c', hair: '#3a2416' },
-    head: { helm: 'thracian_fox', hair: 'short', face: 'stubble', eyes: '#2a3a2a' }, torso: { armor: 'none', tunic: 'tunic' }, legs: { armor: 'trousers', skirt: 'none' },
-    shoulders: 'thracian_mantle', cape: 'none', back: 'javelin_bundle', main: 'javelin', off: 'pelte_wicker', colors: Object.assign({}, HELLENE, { trim: '#5a3a1c' }), emblem: 'none', paint: {} }),
+    head: { helm: 'thracian_fox', hair: 'short', face: 'stubble', eyes: '#2a3a2a' }, torso: { armor: 'none', tunic: 'tunic' }, legs: { armor: 'thracian_leggings', skirt: 'none' },
+    shoulders: 'thracian_mantle', cape: 'none', back: 'javelin_baldric', main: 'javelin', off: 'pelte_wicker', colors: Object.assign({}, HELLENE, { trim: '#5a3a1c' }), emblem: 'none', paint: {} }),
   philosopher: bp({ v: 1, id: 'philosopher', name: 'Philosopher', body: { type: 'average', skin: '#e0ac84', hair: '#f0f0ec' },
     head: { helm: 'laurel', hair: 'receding', face: 'philosopher_beard', eyes: '#222222' }, torso: { armor: 'none', tunic: 'himation' }, legs: { armor: 'sandals', skirt: 'none' },
     shoulders: 'none', cape: 'none', back: 'none', main: 'scroll', off: 'none', colors: Object.assign({}, HELLENE, { primary: '#3a7a3a' }), emblem: 'none', paint: {} }),
@@ -24,8 +24,8 @@ export const BLUEPRINTS = {
     head: { helm: 'galea_light', hair: 'short', face: 'none', eyes: '#2a2a2a' }, torso: { armor: 'none', tunic: 'tunic' }, legs: { armor: 'caligae_fasciae', skirt: 'pteruges' },
     shoulders: 'scarf', cape: 'none', back: 'pilum_pair', main: 'pilum', off: 'parma_small', colors: ROMAN, emblem: 'bolt', paint: {} }),
   centurion: bp({ v: 1, id: 'centurion', name: 'Centurion', body: { type: 'stocky', skin: '#e2b08a', hair: '#3a2a1a' },
-    head: { helm: 'centurion_crest', hair: 'short', face: 'stubble', eyes: '#2a2a2a' }, torso: { armor: 'harness_phalerae', tunic: 'tunic' }, legs: { armor: 'greaves', skirt: 'pteruges' },
-    shoulders: 'none', cape: 'long', back: 'none', main: 'vine_staff', off: 'parma', colors: Object.assign({}, ROMAN, { metal: 'silver' }), emblem: 'eagle', paint: {} }),
+    head: { helm: 'centurion_gilded', hair: 'short', face: 'stubble', eyes: '#2a2a2a' }, torso: { armor: 'harness_phalerae', tunic: 'tunic' }, legs: { armor: 'greaves', skirt: 'pteruges' },
+    shoulders: 'paludamentum', cape: 'long', back: 'none', main: 'vine_staff', off: 'parma', colors: Object.assign({}, ROMAN, { metal: 'steel' }), emblem: 'eagle', paint: {} }),
   gladiator: bp({ v: 1, id: 'gladiator', name: 'Gladiator', body: { type: 'stocky', skin: '#c68a62', hair: '#2a1a10' },
     head: { helm: 'murmillo', hair: 'short', face: 'none', eyes: '#2a2a2a' }, torso: { armor: 'none', tunic: 'subligaculum' }, legs: { armor: 'gladiator_legs', skirt: 'none' },
     shoulders: 'manica', cape: 'none', back: 'net_coil', main: 'trident', off: 'none', colors: Object.assign({}, ROMAN, { metal: 'bronze' }), emblem: 'none', paint: {} }),
@@ -39,14 +39,22 @@ export const BLUEPRINTS = {
     head: { helm: 'mummy_head', hair: 'bald', face: 'none', eyes: '#80ff80' }, torso: { armor: 'none', tunic: 'mummy_wraps' }, legs: { armor: 'bare', skirt: 'none' },
     shoulders: 'none', cape: 'bandage_trail', back: 'none', main: 'wrapped_club', off: 'none', colors: EGYPT, emblem: 'none', paint: {} }),
   anubis_guard: bp({ v: 1, id: 'anubis_guard', name: 'Anubis Guard', body: { type: 'stocky', skin: '#26262c', hair: '#15151a' },
-    head: { helm: 'jackal_anubis', hair: 'bald', face: 'none', eyes: '#e8c050' }, torso: { armor: 'sash_team', tunic: 'shendyt_royal' }, legs: { armor: 'sandals', skirt: 'none' },
-    shoulders: 'broad_collar_gold', cape: 'none', back: 'none', main: 'khopesh_spear', off: 'egyptian_shield_black', colors: Object.assign({}, EGYPT, { metal: 'gold' }), emblem: 'eye', paint: {} }),
+    head: { helm: 'jackal_anubis', hair: 'bald', face: 'none', eyes: '#e8c050' }, torso: { armor: 'sash_broad', tunic: 'shendyt_royal' }, legs: { armor: 'wraps', skirt: 'none' },
+    shoulders: 'broad_collar_gold', cape: 'none', back: 'none', main: 'khopesh_spear_pennon', off: 'egyptian_shield_team', colors: Object.assign({}, EGYPT, { metal: 'gold' }), emblem: 'eye', paint: {} }),
   priest_of_ra: bp({ v: 1, id: 'priest_of_ra', name: 'Priest of Ra', body: { type: 'slim', skin: '#b87a52', hair: '#151210' },
     head: { helm: 'sun_circlet', hair: 'bald', face: 'none', eyes: '#2a1a0a' }, torso: { armor: 'none', tunic: 'robe' }, legs: { armor: 'sandals', skirt: 'none' },
     shoulders: 'leopard_mantle', cape: 'none', back: 'none', main: 'scepter_sun', off: 'none', colors: Object.assign({}, EGYPT, { metal: 'gold' }), emblem: 'none', paint: {} }),
   pharaoh: bp({ v: 1, id: 'pharaoh', name: 'Pharaoh', body: { type: 'average', skin: '#b87a52', hair: '#151210' },
     head: { helm: 'pschent', hair: 'bald', face: 'beard_false', eyes: '#2a1a0a' }, torso: { armor: 'none', tunic: 'shendyt_royal_sleeved' }, legs: { armor: 'sandals', skirt: 'none' },
     shoulders: 'broad_collar_gold', cape: 'royal_cape', back: 'none', main: 'crook_flail', off: 'egyptian_shield_gold', colors: Object.assign({}, EGYPT, { metal: 'gold' }), emblem: 'sun', paint: {} }),
+  // chariot crew (BEASTS composes them as `d_` and `a_`): compact on purpose (no cape, no shield: 10 and 13 parts, so the chariot stays at 43 parts <= 48).
+  // tint: wig band + kilt + armbands (driver); feather band + kilt + sash (archer)
+  crew_chariot_driver: bp({ v: 1, id: 'crew_chariot_driver', name: 'Chariot Driver', body: { type: 'average', skin: '#a56a45', hair: '#151210' },
+    head: { helm: 'none', hair: 'wig_bob', face: 'none', eyes: '#222222' }, torso: { armor: 'none', tunic: 'linen_kilt' }, legs: { armor: 'sandals', skirt: 'none' },
+    shoulders: 'armbands', cape: 'none', back: 'none', main: 'none', off: 'none', colors: EGYPT, emblem: 'none', paint: {} }),
+  crew_chariot_archer: bp({ v: 1, id: 'crew_chariot_archer', name: 'Chariot Archer', body: { type: 'slim', skin: '#b87a52', hair: '#2a1a10' },
+    head: { helm: 'feather_band', hair: 'curly', face: 'none', eyes: '#2a1a0a' }, torso: { armor: 'sash_team', tunic: 'linen_kilt' }, legs: { armor: 'sandals', skirt: 'none' },
+    shoulders: 'none', cape: 'none', back: 'quiver', main: 'composite_bow', off: 'none', colors: EGYPT, emblem: 'none', paint: {} }),
 };
 export const MODELS = {};
 for (const id of Object.keys(BLUEPRINTS)) MODELS[id] = { kind: 'humanoid', blueprint: BLUEPRINTS[id] };

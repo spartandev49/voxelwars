@@ -32,8 +32,12 @@ export const PROP_TIERS = {
   potato:   { lod: 0.55, cull: 46, lights: 0, fx: 0.45, shadows: false },
   papyrus:  { lod: 0.8, cull: 62, lights: 0, fx: 0.75, shadows: true },
   marble:   { lod: 1.0, cull: 84, lights: 2, fx: 1.0, shadows: true },
-  olympian: { lod: 1.3, cull: 110, lights: 4, fx: 1.0, shadows: true },
+  olympian: { lod: 1.3, cull: 110, lights: 2, fx: 1.0, shadows: true },
 };
+/** The point-light pool always has this many lights (a constant light count never recompiles materials); tiers with lights: 0 keep them at intensity 0. */
+const LIGHT_POOL = 2;
+/** Draw-call governor: when more than this many prop draws are visible the renderer merges the mid and far LODs (one mesh fewer per heavy batch). */
+const DRAW_BUDGET = 52;
 const LOD_NEAR = 26, LOD_FAR = 62;              // u at tier multiplier 1
 /** Props that are small enough to vanish at distance. */
 const TINY = new Set(['bush', 'wheat', 'reeds', 'bones', 'skull_pile', 'rock_small', 'fire_pit', 'campfire', 'crate', 'barrel', 'log', 'goat_pen', 'cactus', 'torch']);
@@ -45,6 +49,8 @@ const FLOAT = { ship: { kind: 'water', amp: 0.05, w: 1.35 }, cloud_island: { kin
 
 // ------------------------------------------------------------------ geometry cache (shared by every PropRenderer)
 const GEO = new Map();        // key -> info
+let ZERO = new Float32Array(1 << 16);
+const zeros = (n) => { if (ZERO.length < n) ZERO = new Float32Array(n); return ZERO.subarray(0, n); };
 /** 2x majority-ish downsample of a voxel grid (average colour of solid children, glow preserved). */
 export function downsample2(grid, thin) {
   const sx = (grid.sx + 1) >> 1, sy = (grid.sy + 1) >> 1, sz = (grid.sz + 1) >> 1, g = new VoxelGrid(sx, sy, sz), need = thin ? 2 : 3;
@@ -77,7 +83,9 @@ function geoInfo(type, stage, variant) {
   for (let l = 0; l < nl; l++) {
     if (l > 0) { grid = downsample2(grid, THIN.has(type)); size *= 2; pivot = [pivot[0] / 2, pivot[1] / 2, pivot[2] / 2]; }
     const mesh = meshGrid(grid, { size, pivot });
-    geos.push(geometryFromMesh(mesh)); tris.push(mesh.indices.length / 3);
+    const geo = geometryFromMesh(mesh);
+    geo.setAttribute('aFlash', new (T().BufferAttribute)(zeros(mesh.vertexCount), 1));   // the shared voxel material reads aFlash; a real zero attribute never inherits stale generic-attribute state
+    geos.push(geo); tris.push(mesh.indices.length / 3);
   }
   const b = part.grid.bounds();
   const px = part.pivot[0], pz = part.pivot[2], gy = part.pivot[1];
@@ -234,7 +242,7 @@ export class PropRenderer {
     this.lastCam = new Float32Array(18); this.camPos = [0, 0, 0]; this.camDirty = true;
     this.emitters = []; this.burning = new Map(); this.floaters = [];
     this.crowd = new Crowd(this); this.crowdEnabled = opts.crowd !== false; this._crowdList = [];
-    this.lights = []; this._lightT = 0; this._nLights = opts.lights !== undefined ? opts.lights : this.tier.lights;
+    this.lights = []; this._lightT = 0; this._lightOn = opts.lights !== undefined ? opts.lights > 0 : this.tier.lights > 0; this._merge = false;
     this._makeLights();
     this.unbinders = [];
     this._exc = 0; this._crowdCool = 0; this._lastKill = [0, 0];
@@ -248,13 +256,12 @@ export class PropRenderer {
     this.tierKey = key; this.tier = PROP_TIERS[key] || PROP_TIERS.marble;
     this.shadowsOn = !!(this.tier.shadows && (!this.engine.q || this.engine.q.shadow > 0));
     for (const b of this.batches.values()) b.applyShadowFlags();
-    this._nLights = this.tier.lights; this._makeLights(); this.camDirty = true;
+    this._lightOn = this.tier.lights > 0; this.camDirty = true;
   }
   _makeLights() {
     const t = T();
-    for (const l of this.lights) { this.scene.remove(l); }
-    this.lights = [];
-    for (let i = 0; i < this._nLights; i++) { const l = new t.PointLight(0xffa24a, 0, 15, 1.6); l.castShadow = false; l.userData.target = 0; this.scene.add(l); this.lights.push(l); }
+    if (this.lights.length) return;
+    for (let i = 0; i < LIGHT_POOL; i++) { const l = new t.PointLight(0xffa24a, 0, 15, 1.6); l.castShadow = false; l.userData.target = 0; this.scene.add(l); this.lights.push(l); }
   }
   /** Replace everything with an arena's props (ids are 1-based list indices, matching sim/world.js) and its spectators. */
   setArena(arena) {
@@ -508,7 +515,7 @@ export class PropRenderer {
     this.pv.multiplyMatrices(cam.projectionMatrix, cam.matrixWorldInverse.copy(cam.matrixWorld).invert());
     this.frustum.setFromProjectionMatrix(this.pv);
     const cx = e[12], cy = e[13], cz = e[14], k = this.tier.lod, n2 = (LOD_NEAR * k) ** 2, f2 = (LOD_FAR * k) ** 2, c2 = this.tier.cull ** 2, sph = this.sph, fr = this.frustum;
-    let inst = 0, draws = 0, tris = 0;
+    let inst = 0, draws = 0, tris = 0; const merge = this._merge;
     for (const b of this.batches.values()) {
       const cnt = b.counts; cnt[0] = cnt[1] = cnt[2] = 0;
       const nl = b.info.nl, items = b.items, src = b.src, m0 = b.meshes[0].instanceMatrix.array;
@@ -518,7 +525,7 @@ export class PropRenderer {
         if (it.tiny && d2 > c2) continue;
         sph.center.set(it.x, it.y + it.cy, it.z); sph.radius = it.rad + it.margin;
         if (!fr.intersectsSphere(sph)) continue;
-        let l = d2 < n2 ? 0 : d2 < f2 ? 1 : 2; if (l >= nl) l = nl - 1;
+        let l = d2 < n2 ? 0 : d2 < f2 ? 1 : 2; if (l === 1 && merge && nl > 2) l = 2; if (l >= nl) l = nl - 1;
         const a = arrs[l], o = cnt[l]++ * 16, s = i * 16;
         for (let q = 0; q < 16; q++) a[o + q] = src[s + q];
       }
@@ -530,6 +537,8 @@ export class PropRenderer {
       b.dirty = false;
     }
     this.visible.instances = inst; this.visible.draws = draws; this.visible.triangles = tris;
+    // governor with hysteresis: re-cull once with merged LODs when over budget, release when comfortably under
+    if (!merge && draws > DRAW_BUDGET) { this._merge = true; this.camDirty = true; } else if (merge && draws < DRAW_BUDGET * 0.8) { this._merge = false; this.camDirty = true; }
   }
   _emit(dt, cam) {
     const fx = this.fx; if (!fx) return;
@@ -572,7 +581,7 @@ export class PropRenderer {
       const cand = [];
       for (const it of this.emitters) if (it.em && it.em[0].kind === 'fire') cand.push([(it.x - fx0) ** 2 + (it.z - fz0) ** 2, it]);
       cand.sort((a, b) => a[0] - b[0]);
-      for (let i = 0; i < L.length; i++) { const c = cand[i]; L[i].userData.it = c && c[0] < 55 * 55 ? c[1] : null; }
+      for (let i = 0; i < L.length; i++) { const c = cand[i]; L[i].userData.it = this._lightOn && c && c[0] < 55 * 55 ? c[1] : null; }
     }
     for (let i = 0; i < L.length; i++) {
       const l = L[i], it = l.userData.it, want = it && it.em ? (0.5 + 1.7 * night) * (0.88 + 0.12 * Math.sin(this.time * 17 + i * 3) + 0.06 * Math.sin(this.time * 31 + i)) : 0;
@@ -586,7 +595,7 @@ export class PropRenderer {
   /** Counts for diagnostics and the draw-call budget check (R2): batches, draw calls this frame, visible instances/triangles. */
   stats() {
     let meshes = 0; for (const b of this.batches.values()) meshes += b.meshes.length;
-    return { items: this.items.size, batches: this.batches.size, meshes, drawCalls: this.visible.draws + this.crowd.skins.filter((s) => s && s.mesh.visible).length, instances: this.visible.instances, triangles: this.visible.triangles, crowd: this.crowd.members.length, emitters: this.emitters.length, lights: this.lights.length };
+    return { items: this.items.size, batches: this.batches.size, meshes, lodMerged: this._merge, drawCalls: this.visible.draws + this.crowd.skins.filter((s) => s && s.mesh.visible).length, instances: this.visible.instances, triangles: this.visible.triangles, crowd: this.crowd.members.length, emitters: this.emitters.length, lights: this.lights.length };
   }
   dispose() {
     this.unbindEvents(); this.clear();

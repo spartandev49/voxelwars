@@ -7,7 +7,7 @@
 //   playerPotential(n)             -> the most a player can have fielded at the start of wave n (start budget + every reinforcement, no losses)
 //   survivalScore(run)             -> waves*1000 + kills*10 + remaining cost
 //   recordRun(prev, entry)         -> {state:{best, board}, rank, newBest}   (local top five, ties keep the older entry first)
-//   survivalRules(rules)           -> the Rules to hand to `new World` for kind 'survival' (rules.waves switches the WaveSystem on, no time limit)
+//   survivalRules(rules)           -> the Rules to hand to `new World` for kind 'survival' (rules.waves switches the WaveSystem on, an endless survive_waves objective, no time limit)
 import { generateArmy } from '../../sim/armygen.js';
 import { buildSimDefs } from '../../sim/defs.js';
 import { waveBudget, reinforceBudget, waveStyle, isBossWave, bossOf, waveName } from '../../sim/waves.js';
@@ -57,8 +57,10 @@ export function recordRun(prev, entry) {
 
 /** Rules for `new World` in a Survival battle (UI sets rules.survival; the sim switches on with rules.waves). */
 export function survivalRules(rules = {}, o = {}) {
-  const r = Object.assign({}, rules, { waves: { faction: o.faction || 'mixed', interval: SURVIVAL.every, autoAdvance: o.autoAdvance !== false }, timeLimit: 0, objective: null, budget: SURVIVAL.start, survival: true });
-  return r;
+  // the endless run is a survive_waves objective that never completes: it is what keeps the battle alive while the field is empty between waves
+  // (World._checkEnd lets an objective block the elimination end; without it the first cleared wave would end the run as a victory)
+  const objective = { id: 'survive_waves', type: 'survive_waves', params: { waves: 1e9 }, markerIds: [], playerTeam: 0 };
+  return Object.assign({}, rules, { waves: { faction: o.faction || 'mixed', interval: SURVIVAL.every, autoAdvance: o.autoAdvance !== false }, timeLimit: 0, objective, budget: SURVIVAL.start, survival: true });
 }
 
 /** Budget a player may place for the next wave: the first wave uses the start budget, later waves the reinforcement of the cleared wave. */

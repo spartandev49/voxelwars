@@ -148,19 +148,22 @@ export function buildContent() {
   const unitList = () => Object.keys(units).map((k) => units[k]);
   const thumbs = {};
   const arenas = ARENAS.map(([id, name, blurb, tactics, theme, rec], i) => ({ id, name, recipe: id, size: id === 'oasis' ? 'small' : id === 'thermopylae' || id === 'troy' ? 'medium' : 'medium', seed: 100 + i * 17, blurb, tactics, theme, mood: theme, recommendedBudget: rec, thumbNew: true }));
-  const arenaThumb = (id) => {
+  const arenaThumbSync = (id) => {
     if (thumbs[id]) return thumbs[id];
     const a = arenas.find((x) => x.id === id);
     if (!a) return '';
     try { thumbs[id] = arenaThumbFor(a.recipe, a.seed, 192, 108).url; } catch (e) { thumbs[id] = ''; }
     return thumbs[id];
   };
+  // Like the real app (main.js arenaThumbQueue): a Promise<dataURL|''> that resolves a little later. Screens must go through setThumb.
+  const promised = new Map();
+  const arenaThumb = (id) => { if (!promised.has(id)) promised.set(id, new Promise((res) => setTimeout(() => res(arenaThumbSync(id)), 20))); return promised.get(id); };
   const props = {};
   for (const id of Object.keys(PROP_CATALOG)) props[id] = Object.assign({ id }, PROP_CATALOG[id]);
   const missions = [['marathon_sort_of', 'Marathon (Sort Of)'], ['thermopylae_snack', 'The 300 Slightly Overweight Spartans'], ['pyramid_scheme', 'Pyramid Scheme'], ['nile_crossing', 'Goat Across the Nile'], ['alps_elephant', 'Hannibal Ante Portas'], ['teutoburg_peekaboo', 'Teutoburg Hide and Seek'], ['troy_giftshop', 'Siege of Troy (Gift Shop Not Included)'], ['cyclops_meet', 'Cyclops Isle Meet-and-Greet'], ['zeus_bad_day', 'Zeus Has a Bad Day']]
     .map(([id, title], i) => ({ id, title, act: 1 + Math.floor(i / 3), index: i }));
   return {
-    units, unitList, factions: FACTIONS, arenas, arenaThumb, props,
+    units, unitList, factions: FACTIONS, arenas, arenaThumb, arenaThumbSync, props,
     campaign: { missions },
     humor: {
       tips: ['Spears beat cavalry. Cavalry beat archers. Archers beat everyone who stands still.', 'Chickens are not a strategy. They are, however, effective.'],
@@ -193,7 +196,7 @@ export function buildSave(content, opts) {
     totals: { battles: 58, wins: 41, losses: 15, draws: 2, kills: 684, deaths: 530, damage: 61234, playSeconds: 9420, shieldBlocks: 1190, kicks: 17, chickenKills: 41, goatsSaved: 2, elephantTramples: 9, godPowers: 63, zeusRageQuits: 1, arenasSaved: 2, soldiersSaved: 3, arenasPlayed: 9, drachmaeSpent: 301400, boulders: 212, arrows: 4802, unitsPlaced: 2310, commandKills: 12, campaignStars: 6, bestWave: 7, dailyStreak: 3 },
     get() { return stats.totals; },
   };
-  const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', size: 'medium', thumb: content.arenaThumb('marathon') }, { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', size: 'small', thumb: content.arenaThumb('oasis') }]);
+  const arenas = collection([{ id: 'ar_hill', name: 'Hill of Mild Inconvenience', author: 'You', desc: 'A hill. It is mildly inconvenient.', size: 'medium', thumb: content.arenaThumbSync('marathon') }, { id: 'ar_lake', name: 'Lake Lemon', author: 'You', desc: 'Lakeside brawls.', size: 'small', thumb: content.arenaThumbSync('oasis') }]);
   const soldiers = collection([{ id: 'cs_chad', name: 'Sir Chadius the Mildly Concerned', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 140 }, { id: 'cs_pan', name: 'Frying Pan Dave', blueprint: { v: 1 }, stats: {}, role: 'melee', cost: 95 }, { id: 'cs_olive', name: 'Olive Branch Olga', blueprint: { v: 1 }, stats: {}, role: 'support', cost: 120 }]);
   const armies = collection([{ id: 'army_phalanx', name: 'Big Phalanx Energy', n: 38, cost: 3900 }, { id: 'army_birds', name: 'Chicken Rain Insurance', n: 61, cost: 2400 }]);
   return {

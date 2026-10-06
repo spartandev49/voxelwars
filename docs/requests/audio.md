@@ -31,6 +31,7 @@ and `Catalog` skips every ledger row whose `assets/<path>` is not in that list (
 - Settings > Audio TTS: `audio.speech.supported()`, `setEnabled(b)`, `voices()`, `setVoice(name)`, `test()`; Humor/HUD announcer: `audio.speech.speak(text, {priority})` (priority >= 2 only, 1 line per 6 s, skipped above 2x speed).
 
 ## SIM (optional improvements, nothing is blocking)
+- Add `srcDef` (the shooter's def id) to `projectile_launch`: `UnitDef.sfx.shoot` overrides work as soon as the payload carries it (audio reads `p.srcDef || p.def`); today only the default per-projectile-kind cues play.
 - A `unit_swing{id,x,y,z,style}` event at the start of an attack clip would let audio place swing whooshes before the hit instead of probabilistic texture on `unit_hit`.
 - `trample`, `charge_hit`, `unit_brace`, `bark`, `status_apply` carry only unit ids; audio resolves positions via `world.units` (pass `world` to `attach`) or the last position seen in `unit_spawn/unit_hit/ability_cast`.
 

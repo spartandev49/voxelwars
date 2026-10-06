@@ -10,10 +10,18 @@
 import { STAT_TABLE } from './stats.js';
 import { CAMPAIGN_TEXT, ACTS as ACT_TEXT, MISSION_ORDER, TEACHING_BEATS, TEACHING_SKIP, REWARD_PARTS } from './campaign_text.js';
 import { UNLOCKS } from './parts/_registry.js';
+import { validateMission, validatePuzzle, OBJECTIVE_TYPES, MARKER_TYPES } from './campaign_validate.js';
 import { missionArena, missionRules, setupMission, enemyForces, objectiveSpec, markerOf, battleSummary, MissionRuntime, MissionTracker, ScriptedWaves, layoutGroups } from './campaign_run.js';
 
 export const MUTATOR_STARS = { big_heads: 3, tiny_titans: 6, moon_gravity: 9, chicken_rain: 12, wine_rain_always: 15, friendly_fire_fiesta: 18, speedy_soldiers: 21, ragdoll_frenzy: 24, glass_cannons: 27 };
 const MUTATOR_ORDER = Object.keys(MUTATOR_STARS);
+
+/** Stable hash of everything that decides how a mission plays (not its copy): feasibility records are only valid for the data they were run on. */
+export function missionHash(m) {
+  const js = JSON.stringify({ a: m.arena, f: m.playerFaction, r: m.roster, b: m.budget, c: m.core, x: m.fixed, e: m.enemy, o: m.objective, t: m.timeLimit, ff: m.friendlyFire, g: m.godPowers, s: m.script, p: m.par }, (k, v) => (typeof v === 'function' ? undefined : v));
+  let h = 2166136261 >>> 0; for (let i = 0; i < js.length; i++) { h ^= js.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; }
+  return h.toString(16).padStart(8, '0');
+}
 
 const cost = (id) => (STAT_TABLE[id] ? STAT_TABLE[id].cost : 0);
 const HEROES = new Set(Object.keys(STAT_TABLE).filter((id) => STAT_TABLE[id].role === 'hero'));
@@ -84,7 +92,7 @@ const RAW = [
     playerFaction: 'egyptians', roster: ['medjay', 'nubian_archer', 'khopesh_warrior', 'chariot_archer', 'anubis_guard', 'priest_of_ra'], budget: 6500, par: 0,
     fixed: [{ defId: 'battle_goat', marker: 'goat_start', vip: true, heading: Math.PI / 2, name: 'The Goat', def: { melee: null, abilities: [], ai: { style: 'hold' } } }],
     enemy: { faction: 'barbarians', style: 'ford ambush', difficulty: 'normal', special: 'goes for the goat',
-      groups: [{ defId: 'berserker', n: 18 }, { defId: 'axe_thrower', n: 14 }, { defId: 'warhound', n: 12 }, { defId: 'druid', n: 3 }, { defId: 'chieftain', n: 1 }] },
+      groups: [{ defId: 'berserker', n: 14, at: { x: 4, z: 17 }, order: 'hold', squad: 7 }, { defId: 'axe_thrower', n: 14, at: { x: 10, z: 20 }, order: 'hold', squad: 7 }, { defId: 'druid', n: 3, at: { x: 12, z: 24 }, order: 'hold' }, { defId: 'chieftain', n: 1, at: { x: 8, z: 18 }, order: 'hold' }, { defId: 'warhound', n: 12 }] },
     objective: { type: 'protect_vip', params: { time: 150, reachOnly: true }, markerIds: ['goat_start', 'far_bank'], binding: true }, timeLimit: 200,
     script: { vipMarch: { to: 'far_bank', delay: 12, clear: 14 } },
     rules: ['The Goat is a free extra unit. It walks to the far bank by itself after fourteen seconds: clear the way.', 'Win by getting the Goat inside the exit marker. If it falls, you lose.', 'Star 3: the Goat takes no damage at all.'],
@@ -236,7 +244,7 @@ export const campaignApi = {
   /** First unlocked, not yet cleared mission (null when every mission has at least one star). */
   nextMission(progress) { const s = starsOf(progress); for (const m of MISSIONS) if ((s[m.id] | 0) < 1) return campaignApi.isUnlocked(m, progress) ? m : null; return null; },
   starsFor(summary, mission) { return evaluateStars(mission, summary).stars; },
-  evaluateStars,
+  evaluateStars, hash: missionHash,
   /** Mutator ids unlocked by `totalStars` campaign stars, in unlock order. */
   unlockedMutators(totalStars) { return MUTATOR_ORDER.filter((id) => MUTATOR_STARS[id] <= (totalStars | 0)); },
   /** Mutators a clear announces: those whose threshold lies in (before, after]. */
@@ -261,5 +269,5 @@ export const campaignApi = {
 
 /** What COORD wires to ctx.content.campaign. */
 export const CAMPAIGN = { acts: ACTS, missions: MISSIONS, order: MISSION_ORDER, api: campaignApi };
-export { missionArena, missionRules, setupMission, enemyForces, objectiveSpec, markerOf, battleSummary, MissionRuntime, MissionTracker, ScriptedWaves, layoutGroups, UNLOCKS, REWARD_PARTS };
+export { validateMission, validatePuzzle, OBJECTIVE_TYPES, MARKER_TYPES, missionArena, missionRules, setupMission, enemyForces, objectiveSpec, markerOf, battleSummary, MissionRuntime, MissionTracker, ScriptedWaves, layoutGroups, UNLOCKS, REWARD_PARTS };
 export default CAMPAIGN;

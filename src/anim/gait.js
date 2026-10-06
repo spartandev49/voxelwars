@@ -7,6 +7,7 @@ import { clamp } from './dsl.js';
 
 const PI = Math.PI, TAU = Math.PI * 2;
 export const THIGH = 5, SHIN = 5, TOE = 4, HEEL = 2;
+export const MAX_FLEX = 2.72;
 
 /**
  * Planar 2-bone IK. Target = sole point (bottom of the shin) relative to the hip pivot: dz forward, dy up (negative below the hip).
@@ -18,7 +19,7 @@ export function legIK(dz, dy, out, a = THIGH, b = SHIN) {
   if (d > dmax) { dz *= dmax / d; dy *= dmax / d; d = dmax; }
   if (d < dmin) d = dmin;
   const cosFlex = (d * d - a * a - b * b) / (2 * a * b);          // angle between thigh and shin vectors (flex = PI - interior)
-  const flex = Math.acos(clamp(cosFlex, -1, 1));
+  const flex = Math.min(Math.acos(clamp(cosFlex, -1, 1)), MAX_FLEX);        // the knee stops at ~156 degrees: a sprint's heel kick never folds the leg further
   const psi = Math.atan2(dz, -dy);                                // forward angle of hip->ankle vector from straight down
   const beta = Math.atan2(b * Math.sin(flex), a + b * Math.cos(flex));
   const phi1 = psi + beta;                                        // thigh forward angle (knee bends backward)
@@ -69,29 +70,102 @@ export function footPath(ph, duty, e, lift, out, swingBias = 0.5) {
   return out;
 }
 
+// ---------------------------------------------------------------------------------------------------------------- biped roll-over gait
+// Stance is a REAL roll-over: the foot lands on its strike vertex (heel; mid-foot for runs), rolls flat while the hip passes over it, then pivots on the toe.
+// The vertex that is on the ground stays at the same world position for as long as it is the contact (zero slide by construction, the hip travels at
+// exactly the clip's speed). The foot is rigid with the shin (hum1 has no ankle joint), so its pitch is whatever the leg angles give: a fixed-point loop
+// places the ANKLE so that the contact vertex sits on the ground at its planted position for that pitch. The hip height follows from reach: the legs are
+// 10 voxels long and cannot plant a foot far from under the hip while the pelvis is high, so the pelvis dips as the feet spread (the natural walking bounce).
+const MID_Z = 1;                    // sole mid point, voxels ahead of the ankle (heel -2 .. toe +4)
+const LMAX = 9.9;                   // usable leg length (voxels): the IK clamps at 9.995
+const _ik2 = [0, 0], _st = [0, 0, 0], _sw = [0, 0, 0], _tg = [0, 0, 0];
+
+/**
+ * Ankle placement for a stance foot at stance progress s (0 = landing, 1 = lift-off) with the hip h voxels above the ground and the body leaning by
+ * `lean`. Writes out = [ankle z relative to the hip (world frame), ankle height above the ground, world foot pitch].
+ */
+function stanceAnkle(s, P, e, h, lean, out) {
+  const v1 = P.strike === 'mid' ? MID_Z : -HEEL, first = s < 0.5, oz = first ? v1 : TOE;
+  const Vz = oz + 0.5 * e - e * s;                                   // contact vertex, hip-relative: flat under the hip at s = 0.5, then travels back at the ground speed
+  const cl = Math.cos(lean), sl = Math.sin(lean);
+  let psi = 0, Az = 0, a = 0;
+  for (let it = 0; it < 8; it++) {
+    Az = Vz - oz * Math.cos(psi);
+    a = oz * Math.sin(psi); if (a < 0) a = 0;                          // the contact vertex is the lowest point of the sole
+    legIK(-(a - h) * sl + Az * cl, (a - h) * cl + Az * sl, _ik2);       // world target -> model frame (the whole model leans)
+    const pn = _ik2[0] + _ik2[1] + lean;
+    if (Math.abs(pn - psi) < 1e-4) { psi = pn; break; }
+    psi = pn;
+  }
+  out[0] = Az; out[1] = a; out[2] = psi;
+  return out;
+}
+const smin = (a, b, k) => { const m = Math.min(a, b); return m - k * Math.log(Math.exp(-(a - m) / k) + Math.exp(-(b - m) / k)); };   // soft minimum (no kinks)
+
+/** foot targets per leg and the resulting hip height for gait phases phL / phR */
+function planLegs(phL, phR, P, e, lean) {
+  const duty = P.duty, nominal = P.h0;
+  const wS = (ph) => (ph < duty ? Math.sqrt(Math.sin(PI * ph / duty)) : 0);
+  const fly = P.fly ? P.fly * (1 - Math.max(wS(phL), wS(phR))) : 0;
+  let h = nominal + fly;
+  for (let it = 0; it < 4; it++) {
+    let hl = 1e9;
+    for (const ph of [phL, phR]) {
+      if (ph >= duty) continue;
+      stanceAnkle(ph / duty, P, e, h, lean, _st);
+      const lim = _st[1] + Math.sqrt(Math.max(1, LMAX * LMAX - _st[0] * _st[0]));
+      hl = smin(hl, lim, 0.35);
+    }
+    h = hl < 1e8 ? smin(nominal + fly, hl, 0.35) : nominal + fly;
+  }
+  return h;
+}
+function placeLeg(ph, P, e, h, lean, out) {
+  // out = [thigh rx, knee rx, world foot pitch]
+  const duty = P.duty;
+  if (ph < duty) {
+    stanceAnkle(ph / duty, P, e, h, lean, _st);
+    ankleToLeg(_st[0], _st[1], h, lean, out);
+    return out;
+  }
+  // swing: from the lift-off ankle to the next landing ankle, lifted for clearance (toe and heel never below the ground)
+  const x = (ph - duty) / (1 - duty);
+  stanceAnkle(1, P, e, h, lean, _sw); stanceAnkle(0, P, e, h, lean, _tg);
+  const w = x < 0.5 ? 0.5 * Math.pow(2 * x, 1.6) : 1 - 0.5 * Math.pow(2 * (1 - x), 1.6);
+  const z = _sw[0] + (_tg[0] - _sw[0]) * w;
+  const sx = x * x * (3 - 2 * x);
+  const bump = Math.sin(PI * Math.pow(x, 0.85 + ((P.swingBias === undefined ? 0.5 : P.swingBias) - 0.5)));
+  let a = _sw[1] + (_tg[1] - _sw[1]) * sx + P.lift * Math.pow(Math.max(0, bump), 0.9);
+  ankleToLeg(z, a, h, lean, out);
+  for (let i = 0; i < 6; i++) {                                         // clearance: the foot pitch changes the toe / heel height
+    const need = footLift(out[2], 0.3);
+    const a2 = Math.max(a, need);
+    if (a2 <= a + 0.02) break;
+    a = a2; ankleToLeg(z, a, h, lean, out);
+  }
+  return out;
+}
+function ankleToLeg(Az, a, h, lean, out) {
+  const cl = Math.cos(lean), sl = Math.sin(lean);
+  legIK(-(a - h) * sl + Az * cl, (a - h) * cl + Az * sl, _ik2);
+  out[0] = _ik2[0]; out[1] = _ik2[1]; out[2] = _ik2[0] + _ik2[1] + lean;
+}
+
 /**
  * Biped locomotion cycle. params:
- *   D (s cycle), speed (u/s ground speed this clip is designed for), duty (0.62 walk, ~0.38 run), h0/bob (hip height & bounce, voxels),
- *   lift (foot clearance), lean (body pitch), armSwing, armBend (elbow flex), twist (torso counter rotation), sway (hip lateral shift, voxels),
- *   headStab (0..1 head counter rotation), rollAmt
+ *   D (s cycle), speed (u/s ground speed this clip is designed for), duty (0.62 walk, ~0.35 run), h0 (highest pelvis, voxels; dips follow from reach),
+ *   fly (extra pelvis rise while both feet are airborne), strike ('heel' | 'mid'), lift (swing clearance), lean (body pitch), armSwing, armBend (elbow
+ *   flex), twist (torso counter rotation), sway (hip lateral shift, voxels), headStab (0..1 head counter rotation), rollAmt
  * Fills the frame context `c` at normalised time u.
  */
 export function bipedFrame(c, u, P) {
   const e = P.speed * P.D * P.duty * 10;                 // stance excursion in voxels (speed u/s * time on ground * 10 vox/u)
+  const lean = P.lean || 0;
   const phL = ((u + (P.phase || 0)) % 1 + 1) % 1, phR = (phL + 0.5) % 1;
-  const fp = _fpL, fq = _fpR;
-  // hip height: walk = high at mid-stance, low in double support; run = low at mid-stance (spring compression), high in flight
-  const midStance = (ph) => (ph < P.duty ? Math.sin(PI * ph / P.duty) : 0);
-  const stanceL = midStance(phL), stanceR = midStance(phR);
-  const peak = Math.max(stanceL, stanceR);
-  const h = P.flight ? P.h0 - P.bob * peak + P.bob * 0.5 : P.h0 + P.bob * peak;
-  footPath(phL, P.duty, e, P.lift, fp);
-  footPath(phR, P.duty, e, P.lift, fq);
-  // foot pitch bias: during stance a bit of toe-off lift near the end
-  solveLeg(fp[0], fp[1], h, _lg); const lUL = _lg[0], lLL = _lg[1];
-  solveLeg(fq[0], fq[1], h, _lg); const lUR = _lg[0], lLR = _lg[1];
-  c.rot('legUL', lUL, P.toeOut ? 0.04 : 0, P.legRoll || 0).rot('legLL', lLL, 0, 0);
-  c.rot('legUR', lUR, P.toeOut ? -0.04 : 0, -(P.legRoll || 0)).rot('legLR', lLR, 0, 0);
+  const h = planLegs(phL, phR, P, e, lean);
+  placeLeg(phL, P, e, h, lean, _lgL); placeLeg(phR, P, e, h, lean, _lgR);
+  c.rot('legUL', _lgL[0], P.toeOut ? 0.04 : 0, P.legRoll || 0).rot('legLL', _lgL[1], 0, 0);
+  c.rot('legUR', _lgR[0], P.toeOut ? -0.04 : 0, -(P.legRoll || 0)).rot('legLR', _lgR[1], 0, 0);
   const swingL = Math.sin(TAU * (u + (P.phase || 0)) + P.armPhase);   // arm swing counter to the leg
   const dy = (h - 10) * 0.1;                                          // hip height offset in world units (10 vox = 1 u leg)
   c.rootSet('y', dy + (P.rootY || 0));
@@ -99,18 +173,18 @@ export function bipedFrame(c, u, P) {
   const sw = Math.sin(TAU * (u + (P.phase || 0)) + (P.swayPhase || 0));
   c.rootSet('x', -sw * (P.sway || 0) * 0.1);
   c.rootSet('roll', sw * (P.rollAmt || 0));
-  c.rootSet('pitch', P.lean || 0);
+  c.rootSet('pitch', lean);
   // torso counter-twist, head stabilisation
   const tw = Math.sin(TAU * (u + (P.phase || 0)) + (P.twistPhase || 0)) * (P.twist || 0);
   c.rot('body', P.bodyRx || 0, tw, -sw * (P.bodyRoll || 0));
-  c.rot('head', -(P.lean || 0) * (P.headStab === undefined ? 0.8 : P.headStab) + (P.headRx || 0), -tw * 0.7, sw * (P.bodyRoll || 0) * 0.8);
+  c.rot('head', -lean * (P.headStab === undefined ? 0.8 : P.headStab) + (P.headRx || 0), -tw * 0.7, sw * (P.bodyRoll || 0) * 0.8);
   // arms: opposite to legs
   const A = P.armSwing || 0, B = P.armBend || 0;
   const aL = swingL * A, aR = -swingL * A;
   c.rot('armUL', aL * -1 + (P.armRx || 0), 0, P.armOut || 0.08).rot('armLL', -(B + Math.max(0, -aL) * (P.armBendSwing || 0)), 0, 0);
   c.rot('armUR', aR * -1 + (P.armRx || 0), 0, -(P.armOut || 0.08)).rot('armLR', -(B + Math.max(0, -aR) * (P.armBendSwing || 0)), 0, 0);
 }
-const _fpL = [0, 0], _fpR = [0, 0], _lg = [0, 0];
+const _lgL = [0, 0, 0], _lgR = [0, 0, 0];
 
 /** measured speedRef of a generated gait (u/s): by construction speed */
 export const designSpeed = (P) => P.speed;

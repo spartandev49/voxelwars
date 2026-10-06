@@ -70,12 +70,14 @@ await test('the table is what the sim spawns: survivalWave(n, seed) equals WaveS
   assert.equal(w.stats[1].startCost, survivalWave(1, 9).cost, 'the spawned army costs exactly the table cost');
 });
 
-await test('survivalRules: switches the wave system on, no time limit, no objective, 6,000 start; placementBudget = start then 1,600 + 240 per cleared wave', () => {
+await test('survivalRules: switches the wave system on, no time limit, an endless survive_waves objective, 6,000 start; placementBudget = start then 1,600 + 240 per cleared wave', () => {
   const r = survivalRules({ difficulty: 'hard', mutators: ['big_heads'], budget: 1 });
-  assert.equal(r.timeLimit, 0); assert.equal(r.objective, null); assert.ok(r.waves && r.waves.faction === 'mixed' && r.waves.interval === 40); assert.equal(r.budget, 6000); assert.equal(r.difficulty, 'hard'); assert.deepEqual(r.mutators, ['big_heads']);
+  assert.equal(r.timeLimit, 0); assert.equal(r.objective.type, 'survive_waves'); assert.ok(r.objective.params.waves >= 1e6, 'endless'); assert.ok(r.waves && r.waves.faction === 'mixed' && r.waves.interval === 40); assert.equal(r.budget, 6000); assert.equal(r.difficulty, 'hard'); assert.deepEqual(r.mutators, ['big_heads']);
   assert.equal(r.survival, true); assert.equal(survivalRules({}, { autoAdvance: false }).waves.autoAdvance, false);
   assert.equal(placementBudget(1), 6000); assert.equal(placementBudget(2), 1840); assert.equal(placementBudget(3), 2080); assert.equal(placementBudget(6), reinforceBudget(5));
   // a survival battle does not end at the 6-minute limit: run 6.5 minutes of an unwinnable-by-idle world and it is still running
+  // negative control: WITHOUT the objective the first cleared wave ends the run as a win (the bug the objective prevents)
+  { const nr = Object.assign(survivalRules({}, { autoAdvance: false }), { objective: null }), nw = new World({ arena: generateArena('arenalab', 'small', 1), seed: 1, defs, rules: nr }); const a = nw.addUnit('hoplite', 0, -25, 0, {}); a.hpMax = a.hp = 1e9; nw.start(); nw.step(2); for (const u of nw.units.slice()) if (u.team === 1) { u.alive = false; nw.stats[1].alive--; } nw.step(60); assert.equal(nw.state, 'ended', 'no objective: an emptied field ends the battle'); }
   const arena = generateArena('arenalab', 'small', 1), w = new World({ arena, seed: 1, defs, rules: survivalRules({}, { autoAdvance: false }) });
   const g = w.addUnit('hoplite', 0, -25, 0, {}); g.hpMax = g.hp = 1e9; w.start(); w.step(30 * 60); assert.notEqual(w.state, 'ended', 'still fighting after 60 s'); assert.ok(w.waves.n >= 1);
 });

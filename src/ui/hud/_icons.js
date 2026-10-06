@@ -90,14 +90,22 @@ const I = {
   joystick: ['M12 3a4 4 0 1 0 .01 0', 'M5 17.500h14v3H5z', 's:M12 10v7.500'],
   grid: ['M3 3h8v8H3z', 'M13 3h8v8h-8z', 'M3 13h8v8H3z', 'M13 13h8v8h-8z'],
   diamond: ['M12 2l9 10-9 10-9-10z'],
+  users: ['M8.500 4a3.200 3.200 0 1 0 .01 0', 'M2.800 19.500v-2.200a5.700 5.700 0 0 1 11.400 0v2.200z', 'b:M16.500 5.500a2.800 2.800 0 1 0 .01 0', 'b:M15.800 11.600a5 5 0 0 1 5.400 4.900v3h-5z'],
+  target: ['w:M12 2.500a9.500 9.500 0 1 0 0 19 9.500 9.500 0 0 0 0-19z', 'r:M12 6a6 6 0 1 0 0 12 6 6 0 0 0 0-12z', 'w:M12 9.500a2.500 2.500 0 1 0 0 5 2.500 2.500 0 0 0 0-5z'],
+  cloud: ['w:M7 18.500a4.500 4.500 0 0 1-.6-8.900A6 6 0 0 1 18 9.500a4.500 4.500 0 0 1-.5 9z'],
+  puzzle: ['b:M3.500 8H8a2.500 2.500 0 1 1 4.600 0H17v4.200a2.500 2.500 0 1 1 0 4.600V21H3.500z'],
+  bulb: ['a:M12 2.500a6.500 6.500 0 0 0-3.800 11.800c.8.600 1.300 1.500 1.300 2.500h5c0-1 .5-1.900 1.300-2.500A6.500 6.500 0 0 0 12 2.500z', 'k:M9.500 19.500h5 M10.500 22h3'],
   calendar: ['w:M3.5 5h17v15.5h-17z', 'r:M3.5 5h17v4.5h-17z', 'k:M3.5 9.5h17 M8 2.8v4 M16 2.8v4 M7.5 13h3 M13.5 13h3 M7.5 16.5h3'],
 };
 
 /** icon('sword') -> <svg class="ic ic-sword"> ; entries are cached as templates and cloned. */
 const CACHE = new Map();
+/** Names asked for that have no art (they render as a diamond); the tests assert this stays empty. */
+export const MISSING = new Set();
 export function icon(name, cls) {
   let tpl = CACHE.get(name);
   if (!tpl) {
+    if (!I[name]) MISSING.add(String(name));
     const parts = I[name] || I.diamond;
     tpl = svg('svg', { viewBox: '0 0 24 24', 'aria-hidden': 'true', focusable: 'false', class: 'ic ic-' + name });
     for (const p of parts) {

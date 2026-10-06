@@ -30,12 +30,21 @@ export function timeName(T, hours) {
   const idx = h < 3 ? 0 : h < 6 ? 1 : h < 8 ? 2 : h < 11 ? 3 : h < 14 ? 4 : h < 17 ? 5 : h < 20 ? 6 : 7;
   return names[idx];
 }
-/** Put an arena thumbnail into an <img>; accepts a sync data URL or a Promise; falls back to a themed gradient box. */
+/** Show (src truthy) or hide an <img> and its placeholder; bumps a token so a slower earlier promise never overwrites a newer choice. */
+export function showThumb(img, src, fallbackEl) {
+  const tok = (img.__thumbTok = (img.__thumbTok || 0) + 1);
+  const apply = (v) => {
+    if (img.__thumbTok !== tok) return;
+    if (v && typeof v === 'string') { img.src = v; img.classList.remove('vw-hide'); if (fallbackEl) fallbackEl.classList.add('vw-hide'); } else { img.removeAttribute('src'); img.classList.add('vw-hide'); if (fallbackEl) fallbackEl.classList.remove('vw-hide'); }
+  };
+  if (src && typeof src.then === 'function') { apply(''); src.then(apply, () => apply('')); } else apply(src);
+}
+/** Put an arena thumbnail into an <img>. ctx.content.arenaThumb(id) returns a Promise<dataURL> in the real app (idle-sliced queue) and a plain string in simple mocks.
+ *  The placeholder (fallbackEl, or nothing) stays visible until it resolves; NEVER assign the raw return value to img.src. */
 export function setThumb(img, ctx, id, fallbackEl) {
   let v = '';
   try { v = ctx.content.arenaThumb(id); } catch (e) { v = ''; }
-  const apply = (src) => { if (src) { img.src = src; img.classList.remove('vw-hide'); if (fallbackEl) fallbackEl.classList.add('vw-hide'); } else { img.classList.add('vw-hide'); if (fallbackEl) fallbackEl.classList.remove('vw-hide'); } };
-  if (v && typeof v.then === 'function') v.then(apply, () => apply('')); else apply(v);
+  showThumb(img, v, fallbackEl);
 }
 export function fmtMoney(n) { return K.fmtNum(n); }
 export function todayKey() { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; }

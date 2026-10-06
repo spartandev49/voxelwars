@@ -19,6 +19,9 @@ export function aiInfo(d) {
     ranged1st: !!d.ranged && (!d.melee || st === 'skirmish' || st === 'siege' || st === 'support' || d.role === 'ranged'), kiter: false, aggro: 12, scan: 12, flees: st === 'guard' };
   a.kiter = a.ranged1st && !!d.melee && (tags.includes('skirmisher') || st === 'skirmish') && d.role !== 'support';
   a.archer = tags.includes('archer');
+  // target-side facts, precomputed so the scan loops do no string searches
+  a.large = tags.includes('large'); a.tCav = tags.includes('cavalry'); a.tArch = a.archer || d.role === 'siege' || d.role === 'support' || d.role === 'ranged';
+  a.officer = d.role === 'hero' || tags.includes('officer'); a.fearless = tags.includes('fearless'); a.discipline = tags.includes('discipline');
   let ag;
   switch (st) {
     case 'hold': ag = 11; break;
@@ -40,7 +43,7 @@ export function aiInfo(d) {
 }
 export function aggroRadius(u) { return aiInfo(u.def).aggro; }
 
-export function slotsFor(t) { return t.def.tags.includes('large') ? G.slotsLarge : G.slotsBase + Math.floor(t.radius * G.slotsPerRadius); }
+export function slotsFor(t) { const a = t.def._ai || aiInfo(t.def); return a.large ? G.slotsLarge : G.slotsBase + Math.floor(t.radius * G.slotsPerRadius); }
 
 /** Scored target pick. Returns the best enemy unit or null. */
 export function pickTarget(w, u) {
@@ -63,18 +66,18 @@ export function pickTarget(w, u) {
       const dist = Math.sqrt(d2);
       let s = 100 - dist * 2.2;
       if (c === cur) s += 25;
-      const ct = c.def.tags;
-      if (!info.ranged1st) { const lim = info.spear ? slotsFor(c) * 2 : slotsFor(c); if (c.claims >= lim && c !== u.claim) s -= 40; }
-      if (info.cav && (ct.includes('archer') || c.def.role === 'siege' || c.def.role === 'support' || c.def.role === 'ranged')) s += 40;
-      if (info.spear && ct.includes('cavalry')) s += 24;
+      const ci = c.def._ai || aiInfo(c.def);
+      if (!info.ranged1st) { const sl = ci.large ? G.slotsLarge : G.slotsBase + Math.floor(c.radius * G.slotsPerRadius); const lim = info.spear ? sl * 2 : sl; if (c.claims >= lim && c !== u.claim) s -= 40; }
+      if (info.cav && ci.tArch) s += 40;
+      if (info.spear && ci.tCav) s += 24;
       if (info.siege) s += (c.def.role === 'siege' ? 12 : 0) + clusterBonus(w, c);
       if (info.ranged1st && !info.siege && c.hp < c.hpMax * 0.5) s += 8;
       if (hard) s += 14 * (1 - c.hp / c.hpMax);
-      if (c.def.role === 'hero' || ct.includes('officer')) s += info.hero ? 10 : 6;
+      if (ci.officer) s += info.hero ? 10 : 6;
       if (c.stone > 0.5) s -= 20;
       if (c.se[SE.SLEEP] > 0) s += 6;
       if (c === focusU) s += 90;
-      if (info.prefer) for (let i = 0; i < info.prefer.length; i++) if (ct.includes(info.prefer[i])) s += 20;
+      if (info.prefer) for (let i = 0; i < info.prefer.length; i++) if (c.def.tags.includes(info.prefer[i])) s += 20;
       if (c.vip) s += 5;
       if (c === cur) curScore = s;
       if (s > bestScore) { bestScore = s; best = c; }

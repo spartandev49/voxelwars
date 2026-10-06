@@ -2,7 +2,7 @@
 // (synthetic BattleSummaries with negative controls), rewards point at real unlocks and the progress helpers behave. Feasibility (win-rate bands) is
 // tests/campaign/feasibility.slow.test.mjs; the numbers are in docs/campaign_report.md.
 import { test, finish, assert } from '../sim/_util.mjs';
-import { CAMPAIGN, MISSIONS, ACTS, campaignApi, evaluateStars, MUTATOR_STARS, starsOf, totalStarsOf, aliveCost, missionArena, missionRules, setupMission, objectiveSpec, markerOf } from '../../src/content/era_ancient/campaign.js';
+import { validateMission, CAMPAIGN, MISSIONS, ACTS, campaignApi, evaluateStars, MUTATOR_STARS, starsOf, totalStarsOf, aliveCost, missionArena, missionRules, setupMission, objectiveSpec, markerOf } from '../../src/content/era_ancient/campaign.js';
 import { CAMPAIGN_TEXT, MISSION_ORDER, REWARD_PARTS, TEACHING_BEATS } from '../../src/content/era_ancient/campaign_text.js';
 import { STAT_TABLE } from '../../src/content/era_ancient/stats.js';
 import { UNLOCKS, PART_REGISTRY, listParts } from '../../src/content/era_ancient/blueprints.js';
@@ -55,12 +55,11 @@ await test('worlds build for every mission: arena + markers + decor, objective c
     const w = new World({ arena, seed: 7, rules, defs });
     const rt = setupMission(w, m, { seed: 7 });
     assert.ok(w.objective && w.objective.type === m.objective.type, m.id + ' objective');
-    const B = arena.zones.B;
-    for (const u of w.units) if (u.team === 1) assert.ok(Math.abs(u.x - B.x) <= B.w / 2 + 6 && Math.abs(u.z - B.z) <= B.d / 2 + 6, m.id + ' enemy ' + u.def.id + ' in zone');
+    const B = arena.zones.B, spots = new Set((m.enemy.groups || []).filter((g) => g.at && g.at.x !== undefined).map((g) => g.defId));
+    for (const u of w.units) if (u.team === 1) { assert.ok(w.nav.walkable(u.x, u.z), m.id + ' enemy ' + u.def.id + ' stands on walkable ground at ' + u.x.toFixed(1) + ',' + u.z.toFixed(1)); if (!spots.has(u.def.id)) assert.ok(Math.abs(u.x - B.x) <= B.w / 2 + 6 && Math.abs(u.z - B.z) <= B.d / 2 + 6, m.id + ' enemy ' + u.def.id + ' in zone'); }
     assert.ok(w.stats[1].alive >= 1 || m.objective.type === 'survive_waves', m.id);
     for (const g of m.enemy.generals || []) assert.ok(w.units.some((u) => u.team === 1 && u.general && u.def.id === g), m.id + ' general ' + g);
     for (const f of m.fixed) { const u = w.units.find((x) => x.team === 0 && x.vip); assert.ok(u, 'vip placed'); assert.equal(u.def.id, f.defId); }
-    for (const u of w.units) if (u.team === 1) assert.ok(w.nav.walkable(u.x, u.z) || true);
     rt.destroy();
   }
 });
@@ -172,6 +171,19 @@ await test('UI contract: the screens\' normMission renders every mission without
     assert.ok(n.units && n.units.A > 0 && n.units.B > 0, m.id + ' unit counts for the briefing'); assert.ok(n.rules.length >= 2); assert.ok(n.rewards.title);
     const raw = n.raw; assert.ok(raw.arena.recipe && raw.arena.size && raw.arena.seed); assert.ok(raw.playerFaction); assert.ok(raw.enemy.faction);
   }
+});
+
+await test('validateMission (the Mission contract of the gate): every shipped mission is valid; each rule has a negative control that makes it report a problem', () => {
+  for (const m of MISSIONS) assert.deepEqual(validateMission(m, { mutatorStars: MUTATOR_STARS }), [], m.id);
+  const NC = (name, mutate, expect) => { const c = JSON.parse(JSON.stringify(Object.assign({}, M('thermopylae_snack'), { stars: M('thermopylae_snack').stars.map((s) => ({ id: s.id, text: s.text, test: s.test })) }))); c.stars = M('thermopylae_snack').stars; mutate(c); const p = validateMission(c, { mutatorStars: MUTATOR_STARS }); assert.ok(p.some((x) => expect.test(x)), name + ' not reported: ' + JSON.stringify(p)); };
+  NC('recipe', (c) => { c.arena.recipe = 'atlantis'; }, /recipe/); NC('size', (c) => { c.arena.size = 'huge'; }, /size/); NC('markers', (c) => { c.arena.markers = Array.from({ length: 9 }, (_, i) => ({ id: 'm' + i, type: 'hill', x: 0, z: 0, r: 3 })); }, /more than 8/);
+  NC('marker type', (c) => { c.arena.markers[0].type = 'banana'; }, /unknown type/); NC('marker outside', (c) => { c.arena.markers[0].x = 500; }, /outside/); NC('objective marker', (c) => { c.objective.markerIds = ['nope']; }, /does not exist/);
+  NC('hill marker', (c) => { c.arena.markers = []; c.objective.markerIds = []; }, /needs a hill marker/); NC('objective type', (c) => { c.objective.type = 'dance'; }, /objective type/); NC('hill time', (c) => { c.objective.params = {}; }, /params.time/);
+  NC('roster', (c) => { c.roster = ['hoplite', 'laser_cow']; }, /roster unit/); NC('core', (c) => { c.core = [{ defId: 'xerxes', n: 1 }]; }, /not in the roster/); NC('enemy unit', (c) => { c.enemy.groups[0].defId = 'dragon'; }, /enemy unit/);
+  NC('stars', (c) => { c.stars = c.stars.slice(0, 2); }, /three stars/); NC('star test', (c) => { c.stars = c.stars.map((s, i) => (i === 2 ? { id: s.id, text: s.text } : s)); }, /star 3 needs a test/);
+  NC('unlock key', (c) => { c.rewards.unlockParts = ['golden_toga_pack']; }, /unknown unlock key/); NC('mutator', (c) => { c.rewards.unlockMutators = ['chaos_goat']; }, /unknown mutator/); NC('bands', (c) => { c.bots.counter = [0.9, 0.5]; }, /band/);
+  NC('time limit', (c) => { c.timeLimit = 0; }, /timeLimit/); NC('budget', (c) => { c.budget = 5; }, /budget/); NC('id', (c) => { c.id = 'Bad Id'; }, /lower_snake_case/); NC('act', (c) => { c.act = 7; }, /act/);
+  assert.deepEqual(validateMission(null), ['mission is not an object']);
 });
 
 finish('campaign');

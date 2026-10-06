@@ -1,6 +1,7 @@
 // UI19 (data side) + spec/world.md 6a: the six Puzzle Challenges load, are legal, are solved by a stored placement the sim replays to a win, stay
 // deterministic, and fail correctly when the player does nothing or breaks a rule. Negative controls included.
 import { test, finish, assert } from '../sim/_util.mjs';
+import { validatePuzzle } from '../../src/content/era_ancient/campaign.js';
 import { PUZZLES, puzzleAsMission, evaluatePuzzleStars, puzzleText, puzzleApi } from '../../src/content/era_ancient/puzzles.js';
 import { SOLUTIONS } from '../../src/content/era_ancient/puzzle_solutions.js';
 import { STAT_TABLE } from '../../src/content/era_ancient/stats.js';
@@ -39,6 +40,13 @@ await test('arenas and hand-placed enemies are legal: enemy units stand on walka
     if (p.goal.type === 'destroy') assert.ok(w.props.filter((q) => q.type === 'gate_door').length === 2);
     assert.equal(w.rules.godPowers, false); assert.deepEqual(w.rules.mutators, []); assert.equal(w.godpowers, null);
   }
+});
+
+await test('validatePuzzle: all six are valid; negative controls (par above budget, no hand-placed enemy, unknown roster unit, second VIP-less goat puzzle) are reported', () => {
+  for (const p of PUZZLES) assert.deepEqual(validatePuzzle(p, puzzleAsMission), [], p.id);
+  const bad = (mut, rx) => { const c = JSON.parse(JSON.stringify(Object.assign({}, P('spear_wall'), { stars: undefined }))); c.stars = P('spear_wall').stars; mut(c); const r = validatePuzzle(c, puzzleAsMission); assert.ok(r.some((x) => rx.test(x)), JSON.stringify(r)); };
+  bad((c) => { c.par = c.player.budget + 1; }, /par must be below/); bad((c) => { c.enemy.placements = []; }, /hand-placed/); bad((c) => { c.player.roster = ['hoplite', 'ufo']; }, /roster unit/); bad((c) => { c.kind = 'mission'; }, /kind must be puzzle/);
+  const g = JSON.parse(JSON.stringify(Object.assign({}, P('goat_logistics'), { stars: undefined }))); g.stars = P('goat_logistics').stars; g.fixed = []; assert.ok(validatePuzzle(g, puzzleAsMission).some((x) => /VIP/.test(x)), 'protect_vip without a VIP is invalid');
 });
 
 // ------------------------------------------------------------------------------------------------ stars (pure)

@@ -58,14 +58,19 @@ export function libraryFor(ctx) {
   return lib;
 }
 
-/** Compact draft record of a session (autosave every 20 s). */
+/** Compact draft record of a session (autosave every 20 s). The share code is stored in <= 16,000 character parts: the draft store caps strings at 20,000. */
 export async function makeDraft(session) {
   const meta = { objective: session.objective, tags: session.tags };
   const { code } = await encodeShare('arena', toDoc(session.arena, meta));
-  return { v: 1, savedAt: Date.now(), name: session.arena.name, size: session.arena.size, objective: session.objective, tags: session.tags.slice(), id: session.id || null, code };
+  const parts = []; for (let i = 0; i < code.length; i += 16000) parts.push(code.slice(i, i + 16000));
+  return { v: 1, savedAt: Date.now(), name: session.arena.name, size: session.arena.size, objective: session.objective, tags: session.tags.slice(), id: session.id || null, parts };
 }
 /** Restore a draft record to {arena, objective, tags, id}; null when it is unusable. */
 export async function readDraft(d) {
-  if (!d || typeof d !== 'object' || typeof d.code !== 'string') return null;
-  try { const r = await importArena(d.code); return { arena: r.arena, objective: r.objective, tags: r.tags, id: d.id || null, savedAt: d.savedAt || 0, name: d.name || r.arena.name }; } catch (e) { return null; }
+  if (!d || typeof d !== 'object') return null;
+  const code = Array.isArray(d.parts) ? d.parts.join('') : (typeof d.code === 'string' ? d.code : '');
+  if (!code) return null;
+  try { const r = await importArena(code); return { arena: r.arena, objective: r.objective, tags: r.tags, id: d.id || null, savedAt: d.savedAt || 0, name: d.name || r.arena.name }; } catch (e) { return null; }
 }
+/** Is this stored record a usable-looking draft? (cheap check before offering it) */
+export function looksLikeDraft(d) { return !!d && typeof d === 'object' && (Array.isArray(d.parts) ? d.parts.length > 0 : typeof d.code === 'string'); }

@@ -327,6 +327,8 @@ export function createRouter(deps) {
   };
   H.projectile_launch = (p) => {
     if (cull(p.x, p.z, 105)) { stats.culled++; return; }
+    const shootDef = p.srcDef || p.def, over = shootDef ? D(shootDef, 'shoot') : null;      // UnitDef.sfx.shoot (the payload carries the shooter's def when the sim provides it)
+    if (over) { play(over, p.x, p.y, p.z, {}); return; }
     switch (p.kind) {
       case 'boulder': play('catapult_launch', p.x, p.y, p.z, {}); play('boulder_whoosh', p.x, p.y, p.z, { delay: 0.12, vol: 0.7 }); break;
       case 'bolt': play('ballista_twang', p.x, p.y, p.z, {}); break;
@@ -502,7 +504,8 @@ export function createRouter(deps) {
     const t = now(); if (t - lastBark < 1.2) return; lastBark = t;
     const u = unitAt(p.id); if (!u || cull(u.x, u.z, 60)) return;
     const id = u.def && u.def.id;
-    const cue = id === 'philosopher' ? 'philosopher_mumble' : id === 'senator' ? 'senator_blah' : id === 'sacred_chicken' ? 'chicken_cluck' : id === 'battle_goat' ? 'goat_bleat' : 'taunt';
+    const over = id ? D(id, 'voice') : null;                                                  // UnitDef.sfx.voice replaces the default taunt voice
+    const cue = over || (id === 'philosopher' ? 'philosopher_mumble' : id === 'senator' ? 'senator_blah' : id === 'sacred_chicken' ? 'chicken_cluck' : id === 'battle_goat' ? 'goat_bleat' : 'taunt');
     play(cue, u.x, u.y, u.z, { vol: 0.8 });
   };
   H.unit_spawn = (p) => {

@@ -39,7 +39,8 @@ import * as m36 from '../ui/hud/takecommand.js';
 import * as m37 from '../ui/hud/teaching.js';
 import * as m38 from '../ui/hud/timer.js';
 import * as m39 from '../ui/hud/typecounts.js';
-import * as m40 from '../editors/workshop.js';
+import * as m40 from '../editors/arena.js';
+import * as m41 from '../editors/workshop.js';
 export const SCREEN_MODULES = {
   "achievements": m0,
   "battle": m1,
@@ -85,5 +86,6 @@ export const HUD_MODULES = {
   "typecounts": m39,
 };
 export const EDITOR_MODULES = {
-  "workshop": m40,
+  "arena": m40,
+  "workshop": m41,
 };

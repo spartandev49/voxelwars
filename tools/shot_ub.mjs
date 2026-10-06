@@ -1,0 +1,68 @@
+// UNITS-B copy of tools/shot_beasts.mjs (mounted/crewed units with the UNITS-B riders and crews). BEASTS contact sheets. Renders every BEASTS model (SHEET_MODELS in beasts/index.js) with VoxSkin in headless Chromium.
+// Usage: node tools/shot_beasts.mjs [--out=docs/sheets/ub_mounted.png] [--only=id,id] [--group=mount|beast|siege|big] [--cell=240]
+//                                   [--mode=sheet|zoom|turn] [--zoom-out=docs/sheets/ub_mounted_zoom.png] [--all]
+//   --all   writes the full set: docs/sheets/ub_mounted.png (3 angles x team A/B), docs/sheets/ub_mounted_zoom.png (160/80/40 px), plus one sheet per group.
+// The page is bundled from tools/shot_ub_entry.js; three r128 comes from .cache/cdn (same as tools/shot.mjs).
+import { build } from 'esbuild';
+import { chromium } from 'playwright-core';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
+const flag = (k) => process.argv.includes('--' + k);
+
+async function bundle() {
+  const r = await build({ entryPoints: [path.join(root, 'tools/shot_ub_entry.js')], bundle: true, write: false, format: 'iife', target: 'es2020', logLevel: 'error', });
+  return r.outputFiles[0].text;
+}
+
+const cdn = { 'three.min.js': '.cache/cdn/three.min.js' };
+const exe = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
+
+async function render(js, cfg, out, W = 1400, H = 900) {
+  const html = `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#123}canvas{display:block}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.__SHEET=${JSON.stringify(cfg)};</script></head><body><script>${js.replace(/<\/script>/g, '<\\/script>')}</script></body></html>`;
+  const b = await chromium.launch({ executablePath: exe, args: ['--use-angle=swiftshader', '--use-gl=angle', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist', '--no-sandbox'] });
+  const p = await b.newPage({ viewport: { width: W, height: H } });
+  const logs = [];
+  p.on('console', (m) => { if (m.type() === 'error' || m.type() === 'warning') logs.push(m.type() + ': ' + m.text()); });
+  let failed = null;
+  p.on('pageerror', (e) => { logs.push('PAGEERROR: ' + e.message); failed = failed || e.message; });
+  await p.route('**/*', (r) => {
+    const u = r.request().url();
+    for (const k of Object.keys(cdn)) if (u.includes(k)) return r.fulfill({ path: path.join(root, cdn[k]), contentType: 'text/javascript' });
+    if (u.startsWith('http://t/')) return r.fulfill({ contentType: 'text/html', body: html });
+    return r.abort();
+  });
+  await p.goto('http://t/');
+  const t0 = Date.now();
+  while (Date.now() - t0 < 400000 && !failed) {
+    if (await p.evaluate(() => !!window.__SHEET_RESULT)) break;
+    await new Promise((r) => setTimeout(r, 400));
+  }
+  if (failed) logs.push('aborted on page error');
+  const res = await p.evaluate(() => window.__SHEET_RESULT || null);
+  await b.close();
+  if (res && res.dataUrl) {
+    fs.mkdirSync(path.dirname(path.resolve(root, out)), { recursive: true });
+    fs.writeFileSync(path.resolve(root, out), Buffer.from(res.dataUrl.split(',')[1], 'base64'));
+  }
+  console.log(`${out}: ${res ? res.models.length + ' models' : 'NO RESULT'}`);
+  if (res) console.log(res.log.join('\n'));
+  if (logs.length) console.log(logs.slice(0, 20).join('\n'));
+  return res;
+}
+
+const js = await bundle();
+const only = arg('only', null);
+const cell = +arg('cell', 240);
+if (flag('all')) {
+  await render(js, { cell: 220, mode: 'sheet' }, 'docs/sheets/ub_mounted.png');
+  await render(js, { cell: 220, mode: 'zoom' }, 'docs/sheets/ub_mounted_zoom.png');
+  for (const g of ['mount', 'beast', 'siege', 'big']) await render(js, { cell: 300, mode: 'sheet', group: g }, `docs/sheets/ub_mounted_${g}.png`);
+} else {
+  await render(js, { cell, mode: arg('mode', 'sheet'), only: only ? only.split(',') : null, group: arg('group', null) }, arg('out', 'docs/sheets/ub_mounted.png'));
+}
