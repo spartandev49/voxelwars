@@ -861,3 +861,6 @@
 .hud-mute { position: relative; }
 .hud-mute.is-muted { color: var(--crimson); }
 .hud-mute.is-muted::after { content: ''; position: absolute; left: 22%; right: 22%; top: 50%; height: 3px; margin-top: -1.5px; background: currentColor; border-radius: 2px; transform: rotate(-45deg); box-shadow: 0 0 0 1.5px var(--ink); }
+
+/* phones: the objective may use two lines instead of "Defeat the ene..." */
+.vw-hud[data-layout="phone"] .hud-obj-title { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

@@ -75,10 +75,11 @@ export function mount(parent, ctx) {
       const on = camMode(hud) === 'photo';
       if (on !== active) {
         active = on; setHidden(el, !on);
+        try { if (on) document.documentElement.style.setProperty('--toast-bottom', '7rem'); else document.documentElement.style.removeProperty('--toast-bottom'); } catch (e) { /* cosmetic */ }   // toasts rise above the photo bar instead of covering SNAPSHOT
         const r = el.closest && el.closest('.vw-hud'); if (r) r.classList.toggle('is-photo', on);
         if (on) setText(status, '');
       }
     },
-    destroy() { d.run(); el.remove(); },
+    destroy() { try { document.documentElement.style.removeProperty('--toast-bottom'); } catch (e) { /* cosmetic */ } d.run(); el.remove(); },
   };
 }
