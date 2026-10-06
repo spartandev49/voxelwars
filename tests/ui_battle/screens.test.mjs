@@ -360,8 +360,8 @@ const overlays = (p) => p.evaluate(`__ui.router.overlays.map((o) => o.id).join()
   await p.evaluate(`${SETUP({ touch: true })} __ui.router.goto('puzzles');`); await p.waitForTimeout(300);
   check('phone: one column, no horizontal scroll, nothing selected yet', await p.evaluate(() => { const c = [...document.querySelectorAll('.bs-pz')]; return new Set(c.map((e) => e.offsetLeft)).size === 1 && document.documentElement.scrollWidth <= innerWidth && !document.querySelector('#pz-panel'); }));
   await p.tap('#pz-pick-knock_knock'); await p.waitForTimeout(150);
-  check('phone: tapping a card opens its panel right under it, full width', await p.evaluate(() => { const c = document.querySelector('[data-id="knock_knock"]'); const pn = document.querySelector('#pz-panel'); return !!pn && c.nextElementSibling === pn && pn.getBoundingClientRect().width > 300; }));
-  check('phone: every control is at least 44 px', await p.evaluate(() => [...document.querySelectorAll('.bs-pz-pick, .bs-pz-foot button, #pz-panel button')].every((b) => { const r = b.getBoundingClientRect(); return r.height >= 43.5 && r.width >= 43.5; })));
+  check('phone: tapping a card opens its panel right under it, full width', await p.evaluate(() => { const c = document.querySelector('[data-id="knock_knock"]'); const pn = document.querySelector('#pz-panel'); return !!pn && c.nextElementSibling === pn && pn.offsetWidth > 300; }));
+  check('phone: every control is at least 44 px', await p.evaluate(() => [...document.querySelectorAll('.bs-pz-pick, .bs-pz-foot button, #pz-panel button')].every((b) => b.offsetHeight >= 43.5 && b.offsetWidth >= 43.5)));
   await p.tap('#pz-pick-knock_knock'); await p.waitForTimeout(100);
   check('phone: tapping the selected card again closes the panel', await p.evaluate(() => !document.querySelector('#pz-panel')));
   check('no console errors', logs.length === 0, logs.join(' | '));

@@ -137,6 +137,8 @@
   .vw-ed__tool { width: 2.75rem; height: 2.75rem; } .vw-ed__toolgrid { grid-template-columns: repeat(2, 2.75rem); gap: .3rem; }
 }
 @media (max-height: 600px) { .vw-ed__tools { padding: .35rem; } .vw-ed__tool.is-group-end { margin-bottom: .2rem; } .vw-ed__bottom { padding: .4rem 0 .5rem; } .vw-ed__view, .vw-ed__insp, .vw-ed__tools { margin-bottom: .45rem; } }
+/* short windows: the prop grid needs the room: one scrolling row of categories, and the tip that the top hint already says */
+@media (max-height: 600px) { .vw-ed__cats { flex-wrap: nowrap; overflow-x: auto; padding-bottom: .3rem; scrollbar-width: thin; } .vw-ed__cats > * { flex: none; } #ed-props-modetip { display: none; } }
 @media (max-width: 900px) {
   .vw-ed { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr) minmax(0, 38%) auto; grid-template-areas: "top" "tools" "view" "insp" "bottom"; }
   .vw-ed__tools { align-self: stretch; padding: .4rem; margin-bottom: .45rem; overflow-x: auto; overflow-y: hidden; }

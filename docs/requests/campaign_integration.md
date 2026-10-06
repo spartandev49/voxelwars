@@ -33,6 +33,9 @@ If you build the summary yourself, these keys must be present for stars 3 of mis
 `isUnlocked(mission, progress)`, `nextMission(progress)`, `unlockedMutators(totalStars)`. Progress shapes accepted: `{stars:{id:n}}`, `{missions:{id:{stars}}}` or the bare map (what `ui/hud/_progress.js starsMap` returns).
 Unlock keys (`rewards.unlockParts`): `silly_helms` (mission 3), `silly_weapons` (mission 5), `wings` (mission 9); grant them in whatever set `listParts(cat, unlocked)` / `isPartUnlocked` receives. `rewards.partNames` holds HUMOR's display names (the briefing chip prints the raw key today: see "UI findings" below).
 
+## 3a. Suggested army (`mission.reference`, `campaignApi.reference(m)`)
+Missions 4-7 and 9 carry an authored, tested deployment: `[{defId, n, order?}]`, a complete legal army (core units included, within `budget`, inside `roster`). It is what the `counter` reference player of docs/campaign_report.md fields on those missions (win rates in the report), so the Placement screen can offer it as an "Auto-fill: suggested" button next to the generated fill (`Game.autoFill` can lay it out with `layoutArmy(groups, zone, enemyZone, defs)` and set `order: 'hold'` where a group has it). Missions 1-3 and 8 have none (a generated counter-pick is the reference there): `campaignApi.reference(m)` returns `null`.
+
 ## 4. Teaching beats (mission 1)
 `campaignApi.teachingBeats('marathon_sort_of')` returns HUMOR's TEACHING_BEATS; the run object records the moments the beats trigger on (`run.beats`: battle_start, first_contact = first unit_hit, cavalry_brace = first unit_brace, battle_end). The placement_start beat is the app's (first placement frame).
 

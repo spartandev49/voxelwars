@@ -87,7 +87,7 @@ export async function run(name, h) {
     // ---- hazards / markers / zones
     await key('0'); await page.click('#ed-hz-geyser'); const hz0 = (await counts()).hz; await page.mouse.click(cx + 100, cy + 70); await sleep(150); expect((await counts()).hz === hz0 + 1, 'hazard placed');
     await key('m'); await page.click('#ed-obj-hold_hill'); await page.click('#ed-mk-hill'); await page.mouse.click(cx, cy + 10); await sleep(150); expect((await counts()).mk === 1, 'marker placed (hill)');
-    await key('z'); await page.click('#ed-zone-key [data-value="B"]'); const zb = await A(() => JSON.stringify(window.__vw.arenaBuilder.session.arena.zones.B)); await drag([[cx + 90, cy - 80], [cx + 200, cy + 60]]); expect(await A(() => JSON.stringify(window.__vw.arenaBuilder.session.arena.zones.B)) !== zb, 'zones: dragging redraws the zone'); await shot('07_zones');
+    await key('z'); await page.click('#ed-zone-key [data-value="B"]'); const zb = await A(() => JSON.stringify(window.__vw.arenaBuilder.session.arena.zones.B)); const zs = await A(() => { const b = window.__vw.arenaBuilder, f = (x, z) => b.host.worldToScreen(x, b.session.arena.heightAt(x, z), z); return [f(20, -12), f(36, 16)]; }); await drag([[zs[0].x, zs[0].y], [zs[1].x, zs[1].y]]); expect(await A(() => JSON.stringify(window.__vw.arenaBuilder.session.arena.zones.B)) !== zb, 'zones: dragging redraws the zone'); await shot('07_zones');
 
     // ---- the rest of the tools
     await key('y'); await page.click('#ed-sym-mode [data-value="mx"]'); await key('1'); const dS = (await counts()).depth; await drag([[cx - 140, cy], [cx - 100, cy]], { hold: 250 });
@@ -118,6 +118,33 @@ export async function run(name, h) {
     const code = await page.$eval('#ed-export-code', (el) => el.value); expect(/^VW1\.arena\./.test(code), 'share dialog shows a VW1.arena code (' + code.length + ' chars)');
     await closeModals();
     await page.click('#ed-library-btn'); await sleep(700); await shot('14_library'); await closeModals();
+    return;
+  }
+  if (name === 'share') {
+    await openBuilder({ closeModal: true });
+    const v = await view(), cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    await drag([[cx - 30, cy], [cx + 30, cy]], { hold: 300 });
+    await key('9'); for (let k = 0; k < 3; k++) { await page.mouse.click(cx - 60 + k * 30, cy - 50); await sleep(120); }
+    await page.fill('#ed-name', 'Round Trip'); await sleep(200);
+    const ref = { h: await hsum(), props: (await counts()).props };
+    await page.click('#ed-share'); await sleep(800);
+    const code = await page.$eval('#ed-export-code', (el) => el.value); expect(/^VW1\.arena\./.test(code), 'export gives a VW1.arena code (' + code.length + ' chars)');
+    await closeModals();
+    await key('1'); await drag([[cx + 20, cy + 40], [cx + 80, cy + 40]], { hold: 300 }); await key('9'); await page.mouse.click(cx + 60, cy + 60); await sleep(150);
+    expect((await hsum()) !== ref.h && (await counts()).props === ref.props + 1, 'the arena was edited after the export');
+    await page.click('#ed-library-btn'); await page.waitForSelector('#ed-lib-import', { timeout: 20000 }); await page.click('#ed-lib-import');
+    await page.waitForSelector('#ed-import-code', { timeout: 20000 });
+    await page.fill('#ed-import-code', 'VW1.arena.' + 'x'.repeat(40) + '.00000000'); await page.click('#ed-import-check'); await sleep(500);
+    const bad = await page.$eval('#ed-import-status', (e) => ({ hide: e.classList.contains('vw-hide'), text: e.textContent })).catch(() => null);
+    expect(bad && !bad.hide && bad.text.length > 5, 'a damaged code is refused with a message (' + (bad && bad.text) + ')');
+    await page.fill('#ed-import-code', '  ' + code.slice(0, 60) + '\n' + code.slice(60) + '  '); await page.click('#ed-import-check'); await sleep(700);
+    await shot('23_import_preview');
+    const prev = await page.$eval('#ed-import-preview', (e) => !e.classList.contains('vw-hide')); expect(prev, 'a good code (with stray whitespace) shows a preview');
+    await page.click('#ed-import-accept'); await page.waitForSelector('.vw-modal__foot button', { timeout: 20000 }); await sleep(400);
+    await page.locator('.vw-modal-wrap .vw-modal__foot button').last().click(); await sleep(1200);
+    const back = await st(); const hh = await hsum();
+    expect(back && back.name === 'Round Trip' && back.props === ref.props && hh === ref.h, 'importing the code restores the exact arena ' + JSON.stringify({ name: back && back.name, props: back && back.props, same: hh === ref.h }));
+    await shot('24_imported');
     return;
   }
   if (name === 'playtest') {

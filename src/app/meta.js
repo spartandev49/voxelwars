@@ -527,7 +527,46 @@ export function createMeta(o) {
     M.res = { funnyStats: funny, lessons, summary: S, achievements: M.battleUnlocked.map((id) => { const a = getAchievement(id); return a ? { id, name: a.name, desc: a.desc, icon: a.icon } : { id, name: pretty(id) }; }) };
     const kind = M.setup && M.setup.kind;
     if (kind === 'survival') M.res.survival = recordSurvival(w, ws, pt);
+    if ((kind === 'campaign' || kind === 'puzzle') && game.run) { try { M.res.mission = recordMission(w, kind); } catch (e) { console.warn('mission result failed', e); } }
     if (kind === 'daily') M.res.daily = { date: (M.setup.rules && M.setup.rules.daily) || localDateKey() };
+  }
+
+  /** A finished mission or puzzle: BattleSummary (+ the tracker's extras) -> stars, progress (vw.progress stars / puzzles / unlocks), rewards, "next". Runs once per battle (buildResults). */
+  function recordMission(w, kind) {
+    const capi = content.campaignApi, papi = content.puzzleApi, run = game.run, m = run && run.m; if (!capi || !m) return null;
+    const summary = capi.summaryOf(w, m, run.tracker, M.pt);
+    const isPuzzle = kind === 'puzzle', id = m.id;
+    const pz = isPuzzle && papi ? papi.puzzleById(id) : null;
+    const ev = isPuzzle ? (pz ? papi.evaluate(pz, summary) : { stars: 0, earned: [false, false, false] }) : capi.evaluateStars(m, summary);
+    const win = summary.win === true && summary.draw !== true;
+    const labels = isPuzzle && pz ? (papi.text(id, content.humor && content.humor.puzzles) || {}).stars || m.stars : m.stars;
+    const stars = labels.slice(0, 3).map((x, k) => ({ id: x.id, text: x.text, earned: !!ev.earned[k] }));
+    const out = { kind, stars, win, mission: { id, kind, index: m.index | 0, act: m.act || 0, title: m.title || id, next: null, nextTitle: null }, rewards: null, canNext: false };
+    if (!isPuzzle) {
+      const before = JSON.parse(JSON.stringify(docs.progress.get('stars', {}) || {}));
+      const rw = capi.rewardsFor(m, before, summary);
+      M.recordCampaign(id, ev.stars, win);                                                       // stars (max), lifetime stats, campaign medals
+      if (win) {
+        const partNames = (m.rewards && m.rewards.partNames) || [], keys = (m.rewards && m.rewards.unlockParts) || [];
+        const have = new Set([].concat(docs.progress.get('unlocks', []) || [], docs.progress.get('parts', []) || []));
+        for (const k of rw.parts) have.add(k);
+        if (rw.parts.length) { docs.progress.set('unlocks', Array.from(have)); docs.progress.set('parts', Array.from(have)); }
+        const names = (list) => (list || []).map((d) => { const df = content.defs && content.defs[d]; return df ? df.name : pretty(d); });
+        out.rewards = { title: rw.title, firstClear: rw.firstClear, improved: rw.improved, unlockParts: rw.parts.map((k) => partNames[keys.indexOf(k)] || pretty(k)), unlockMutators: rw.mutators.slice(), codex: rw.firstClear ? names(m.rewards && m.rewards.codex) : [] };
+        const nx = (capi.missions || [])[(m.index | 0) + 1];
+        if (nx) { out.mission.next = nx.id; out.mission.nextTitle = nx.title; out.canNext = true; }
+      }
+    } else {
+      const prev = JSON.parse(JSON.stringify(docs.progress.get('puzzles', {}) || {})), best = prev[id] || { stars: 0 };
+      const spent = Math.round(summary.spent !== undefined ? summary.spent : summary.playerCostStart || 0), t = Math.round(summary.t || 0);
+      if (win && (ev.stars > (best.stars | 0) || (ev.stars === (best.stars | 0) && (best.spent === undefined || spent < best.spent)))) {
+        prev[id] = { stars: ev.stars, spent, time: t }; docs.progress.set('puzzles', prev);
+        const st = JSON.parse(JSON.stringify(docs.progress.get('stars', {}) || {})); if (ev.stars > (st[id] | 0)) { st[id] = ev.stars; docs.progress.set('stars', st); }
+      }
+      const list = (papi && papi.puzzles) || [], nx = list[(m.index | 0) + 1];
+      if (win && nx) { out.mission.next = nx.id; out.mission.nextTitle = nx.title; out.canNext = true; }
+    }
+    return out;
   }
 
   function recordSurvival(w, ws, pt) {
@@ -557,6 +596,7 @@ export function createMeta(o) {
     base.summary = M.res.summary; base.achievements = M.res.achievements; base.canKillcam = !!M.qualKill;          // the Results button is hidden when no hero / boss / streak kill happened (spec ui.md §4)
     if (base.mvp && !base.mvp.quote) { const q = pickDeath(base.mvp.defId, new RNG(((M.world.seed | 0) ^ 0x3c6ef372) >>> 0)); if (q) base.mvp.quote = q; }
     if (M.res.survival) base.survival = M.res.survival; if (M.res.daily) base.daily = M.res.daily;
+    if (M.res.mission) { const x = M.res.mission; base.kind = x.kind; base.mission = Object.assign({}, x.mission); base.stars = x.stars.map((o) => Object.assign({}, o)); base.rewards = x.rewards ? JSON.parse(JSON.stringify(x.rewards)) : null; base.canNext = x.canNext; }
     return base;
   };
 

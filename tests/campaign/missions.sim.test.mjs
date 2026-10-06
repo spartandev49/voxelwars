@@ -8,6 +8,7 @@ import { buildSimDefs } from '../../src/sim/defs.js';
 import { layoutArmy } from '../../src/sim/armygen.js';
 import { aiInfo } from '../../src/sim/ai.js';
 import { applyDamage, newHit, killUnit } from '../../src/sim/combat.js';
+import { ST } from '../../src/sim/consts.js';
 
 const defs = buildSimDefs();
 if (defs.trojan_horse && !defs.trojan_horse.ranged) aiInfo(defs.trojan_horse).siege = false;       // SIM bug workaround (docs/requests/campaign_sim_bugs.md #1)
@@ -155,6 +156,20 @@ await test('mission 9 (survive_waves + Zeus): four scripted waves, a wave counts
   const sides = tp.map((p) => { let best = null, bd = 1e9; for (const u of z.w.units) { const d = Math.hypot(u.x - p[0], u.z - p[1]); if (d < bd) { bd = d; best = u; } } return best ? best.team : -1; }); assert.ok(sides.includes(0) && sides.includes(1), 'both teams get struck: ' + sides.join(','));
   // star: a hero must be fielded and survive
   const s = battleSummary(w, m, null); s.startDefs = { hoplite: 30, strategos: 1 }; s.heroesLost = 0; s.aliveDefs = { hoplite: 30, strategos: 1 }; s.playerCostStart = 3380; s.win = true; assert.equal(evaluateStars(m, s).earned[2], true);
+});
+
+await test('mission 9: a routed monster does not hold its wave open (it runs for the corner), a monster that still fights does (negative control)', () => {
+  const m = M('zeus_bad_day'), small = Object.assign({}, m, { script: Object.assign({}, m.script, { zeus: null, waves: Object.assign({}, m.script.waves, { first: 1, breather: 1, interval: 500, list: m.script.waves.list.map((w) => ({ name: w.name, groups: [{ defId: 'battle_goat', n: 4 }], after: 500 })) }) }) });
+  const go = (rout) => {
+    const { w } = world(small, { mission: small, noEnemy: true, player: [{ defId: 'hoplite', n: 20 }] });
+    for (const sq of w.squads) sq.order = 'hold'; w.start(); run(w, 3, (ww) => ww.waves.n >= 1); assert.equal(w.waves.n, 1, 'wave 1 spawned');
+    const mine = w.units.filter((u) => u.team === 1 && u.alive); assert.equal(mine.length, 4);
+    if (rout) for (const u of mine) { u.state = ST.ROUT; u.morale = -50; u.routT = 0; }
+    run(w, 1); return w;
+  };
+  const a = go(true), b = go(false);
+  assert.equal(a.waves.cleared, 1, 'four routed goats: wave 1 counts as beaten'); assert.ok(a.units.filter((u) => u.team === 1 && u.alive).length === 4, 'they are still alive, just running');
+  assert.equal(b.waves.cleared, 0, 'four goats still in the fight keep wave 1 open');
 });
 
 await test('S17 fail paths: every objective type loses correctly (timeout loses for hold_hill, kill_general, protect_vip, survive_waves, destroy; a wiped army loses; plain elimination is decided by cost at the limit)', () => {

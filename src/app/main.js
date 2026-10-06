@@ -47,6 +47,7 @@ async function start() {
   if (CAMPAIGN && CAMPAIGN.campaignApi) content.campaignApi = CAMPAIGN.campaignApi;
   if (CUSTOM && CUSTOM.customDef) content.customDef = CUSTOM.customDef;
   if (PUZZLES) content.puzzles = PUZZLES.PUZZLES || PUZZLES.puzzles || PUZZLES.default || content.puzzles || [];
+  if (PUZZLES && PUZZLES.puzzleApi) content.puzzleApi = PUZZLES.puzzleApi;
   if (SURVIVAL) content.survival = SURVIVAL;
   if (DAILY) content.daily = DAILY;
   try { if (ANIM_BOOT && ANIM_BOOT.registerAllClips) { const r = ANIM_BOOT.registerAllClips(ClipLib, { humanoid: window.__VW_UAL_CLIPS__ || null, onReport: (m) => diag.note(m) }); diag.extra.clips = r; } } catch (e) { diag.error('anim', e && e.message); }
@@ -114,7 +115,8 @@ async function start() {
   loop.onFrame = (dt) => { input.update(dt); };
 
   // flow glue: game state -> screens
-  game.on('placement', () => { if (router.current() !== 'placement' && game.state === 'placement') router.goto('placement'); });
+  game.on('placement', () => { if (router.current() !== 'placement' && game.state === 'placement' && !game.inIntermission()) router.goto('placement'); });
+  game.on('intermission', (sv) => { if (router.current() !== 'battle') router.goto('battle'); router.closeOverlay('survival'); router.overlay('survival', { view: 'intermission', survival: sv }); });
   game.on('state', (p) => {
     if (p.state === 'countdown') { if (router.current() !== 'battle') router.goto('battle'); if (router.has('countdown')) router.overlay('countdown'); }
     else if (p.state === 'running') { router.closeOverlay('countdown'); }

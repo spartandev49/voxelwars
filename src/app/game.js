@@ -20,6 +20,8 @@ import { RNG } from '../core/rng.js';
 import { EventBus } from '../core/events.js';
 import { PROP_RENDERER, ARMYGEN, ANIMATOR, LESSONS, POWER, MUTATORS } from '../_generated/registry.optional.js';
 import { TempAnimator } from '../render/tempanimator.js';
+import { waveName, waveStyle } from '../sim/waves.js';
+import { resolveMode, applyModeRules, dailySeed } from './modes.js';
 
 const T = () => window.THREE;
 export const BUDGET_PRESETS = { skirmish: 3000, battle: 8000, war: 20000, epic: 40000 };
@@ -102,12 +104,17 @@ export class Game {
   async begin(setup, { keepPlacements = false, diorama = false } = {}) {
     this.dispose(false);
     this.isDiorama = !!diorama;
-    this.setup = setup; this.rules = setup.rules;
-    const arena = this._arenaFor(setup);
+    this.setup = setup;
+    const mode = this.mode = resolveMode(this.content, setup);          // campaign / puzzle / survival / daily: mission rules, waves, the enemy the player never places (app/modes.js)
+    this.run = null; this._inter = null; this._freeCost = 0;
+    applyModeRules(this.content, setup, mode);
+    this.rules = setup.rules;
+    const arena = mode.m ? this.content.campaignApi.arena(mode.m) : this._arenaFor(setup);
     const rules = Object.assign({}, setup.rules, { timeLimit: setup.rules.timeLimit === undefined || setup.rules.timeLimit === null ? 360 : +setup.rules.timeLimit });
     this.world = new World({ arena, seed: (setup.arena.seed || 1) >>> 0, rules, defs: this.content.defs });
     const w = this.world;
     if (MUTATORS && MUTATORS.applyMutators) MUTATORS.applyMutators(w, setup.rules.mutators || []);
+    if (mode.m) { this.run = this.content.campaignApi.setup(w, mode.m); this._freeCost = w.stats[0].startCost; }     // the enemy army, the free VIP, the script and the star tracker
     this.terrain.setArena(w.arena);
     if (this.props) { this.props.setArena ? this.props.setArena(w.arena, w.props) : null; }
     this.fx.setArena(w.arena); this.fx.clear();
@@ -130,6 +137,7 @@ export class Game {
     w.events.on('battle_end', (p) => { this.state = 'ended'; this.emit('battle_end', this.results()); this.emit('state', { state: 'ended' }); });
     w.events.on('battle_start', () => { this.state = 'running'; this.emit('state', { state: 'running' }); this.emit('battle_start', {}); });
     w.events.on('battle_countdown', (p) => this.emit('countdown', p));
+    w.events.on('wave_intermission', (p) => this._onIntermission(p));
     w.events.on('explosion', (p) => this.rig.hint(p.x, p.z, 'explosion', 2));
     w.events.on('hero_down', () => { this.rig.addTrauma(0.35); });
     if (this.audio && this.audio.setPlayerTeam) { try { this.audio.setPlayerTeam(0); } catch (e) { /* optional */ } }
@@ -138,11 +146,33 @@ export class Game {
     w.events.on('crater', () => { this._miniDirty = this.clock; });
     this.state = 'placement';
     // restore / generate placements
-    if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); }
+    if (keepPlacements && setup.armies) { for (const key of ['A', 'B']) { if (key === 'B' && mode.locked) continue; for (const rec of setup.armies[key].placements || []) this._applyRecord(rec, false); } }
+    if (mode.kind === 'daily') this.autoFill(1, { force: true, style: (setup.armies.B && setup.armies.B.style) || 'balanced', seed: dailySeed(setup.rules) });   // the army of the day: the same for every player
     this.emit('placement', { arena: w.arena });
     this.emit('state', { state: 'placement' });
     this.audio && this.audio.music && this.audio.music.setMood && this.audio.music.setMood('editor');
   }
+
+  // ------------------------------------------------------------------ survival intermissions
+  /** The sim announces a cleared wave: the battle holds (no ticks in 'placement'), the player places reinforcements inside zone A, fight() sends in the next wave. */
+  _onIntermission(p) {
+    if (!this.mode || !this.mode.survival || !this.world) return;
+    const w = this.world, n = p.n;
+    this._inter = { n, budget: p.budget, base: w.stats[0].startCost };
+    this.records.length = 0; this.undo.clear(); this.select(0);
+    this.state = 'placement'; this.acc = 0;
+    this.brushState.team = 0;
+    this.emit('intermission', { wave: n, waveName: waveName(n - 1), nextName: waveName(n), nextStyle: waveStyle(n), boss: !!p.boss, bonus: p.budget, faction: this.setup.armies.A.faction, score: w.waves ? w.waves.score() : 0, cleared: w.waves ? w.waves.cleared : 0 });
+    this.emit('state', { state: 'placement' });
+  }
+  _resumeWave() {
+    const w = this.world; this._inter = null;
+    this.ghost.visible = false; this.ghostInfo.show = false;
+    if (w.waves) w.waves.next();
+    this.state = 'running'; this.acc = 0;
+    this.emit('state', { state: 'running' });
+  }
+  inIntermission() { return !!this._inter; }
 
   zones() { return this.world.arena.zones; }
   _heading(team) { return team === 0 ? Math.PI / 2 : -Math.PI / 2; }
@@ -154,14 +184,19 @@ export class Game {
     undo: () => { const ok = this.undo.undo(); this.emit('placement', {}); return ok; },
     redo: () => { const ok = this.undo.redo(); this.emit('placement', {}); return ok; },
     canUndo: () => this.undo.canUndo(), canRedo: () => this.undo.canRedo(),
-    clear: (team) => { if (this.state !== 'placement') return; const before = this.records.slice(); for (const r of before) if (team === undefined || r.team === team) this._removeRecord(r); this.undo.clear(); this.emit('placement', {}); },
+    clear: (team) => { if (this.state !== 'placement') return; const lock = this.mode && this.mode.locked, before = this.records.slice(); for (const r of before) if ((team === undefined || r.team === team) && !(lock && r.team === 1)) this._removeRecord(r); this.undo.clear(); this.emit('placement', {}); },
     autoFill: (team, o = {}) => this.autoFill(team, o),
     saveArmy: (name) => ({ name, records: this.records.map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, heading: r.heading, order: r.order })) }),
     loadArmy: (data) => { for (const r of (data.records || [])) this._applyRecord(Object.assign({}, r), true); this.emit('placement', {}); },
   };
 
   info = {
-    budget: (team) => { const cap = this._budgetCap(team); const spent = this.world ? this.world.stats[team].startCost : 0; return { spent, cap, left: Math.max(0, cap - spent) }; },
+    budget: (team) => {
+      const inter = this._inter && team === 0;                                          // survival intermission: only the reinforcement budget of this break counts
+      const cap = inter ? this._inter.budget : this._budgetCap(team);
+      const spent = this.world ? this.world.stats[team].startCost - (inter ? this._inter.base : team === 0 ? this._freeCost : 0) : 0;   // the free VIP of a mission is not paid for
+      return { spent, cap, left: Math.max(0, cap - spent) };
+    },
     counts: (team) => {
       const w = this.world; const by = new Map(); let total = 0;
       if (w) for (const u of w.units) if (u.team === team) { total++; by.set(u.def.id, (by.get(u.def.id) || 0) + 1); }
@@ -176,6 +211,7 @@ export class Game {
   _validity(x, z, team) {
     const w = this.world; if (!w) return 'No arena loaded';
     const a = w.arena;
+    if (team === 1 && this.mode && this.mode.locked) return 'The enemy deploys itself.';
     if (!w.nav.inside(x, z)) return 'Outside the arena';
     if (!w.nav.walkable(x, z)) return a.water > 0 && a.waterDepth(x, z) > 0.8 ? (a.lava ? 'That is lava. The soldiers vote no.' : 'Too deep: soldiers do not swim') : 'Not walkable';
     if (!this.setup.rules.freePlacement) {
@@ -251,7 +287,12 @@ export class Game {
     return rec;
   }
   _reAdd(rec) { this._applyRecord(rec, false); }
-  _removeRecord(rec) { for (const u of rec.units) this.world.removeUnit(u); rec.units = []; this.records = this.records.filter((r) => r !== rec); }
+  _removeRecord(rec) {
+    const w = this.world, st = w.state;
+    if (this._inter) w.state = 'placing';                       // World.removeUnit only works in the placing phase: a survival intermission is one (the sim itself is paused)
+    try { for (const u of rec.units) w.removeUnit(u); } finally { w.state = st; }
+    rec.units = []; this.records = this.records.filter((r) => r !== rec);
+  }
 
   placeAt(x, z) {
     if (this.state !== 'placement') return false;
@@ -280,6 +321,7 @@ export class Game {
     return true;
   }
   _eraseAt(x, z, team) {
+    if (team === 1 && this.mode && this.mode.locked) return false;
     const w = this.world; let hit = null, bd = 2.2 * 2.2;
     for (const u of w.units) { if (u.team !== team) continue; const d = (u.x - x) ** 2 + (u.z - z) ** 2; if (d < bd) { bd = d; hit = u; } }
     if (!hit) return false;
@@ -292,6 +334,7 @@ export class Game {
 
   autoFill(team, o = {}) {
     if (this.state !== 'placement') return;
+    if (team === 1 && this.mode && this.mode.locked && !o.force) return;                       // missions, puzzles, the daily and survival deploy the enemy themselves
     const w = this.world, a = w.arena, zone = team === 0 ? a.zones.A : a.zones.B;
     const budget = o.budget || this._budgetCap(team) - this.info.budget(team).spent;
     const faction = o.faction || (this.setup.armies[team === 0 ? 'A' : 'B'].faction) || 'mixed';
@@ -300,7 +343,7 @@ export class Game {
     let plan = null;
     if (ARMYGEN && ARMYGEN.generateArmy) {
       try {
-        const army = ARMYGEN.generateArmy({ faction, budget: this._budgetCap(team), style: o.style || 'balanced', difficulty: this.setup.rules.difficulty, defs: this.content.defs, zone, arena: a, team, seed: (this.setup.arena.seed || 1) + team * 977 + (o.reroll || 0), against: this._enemyComposition(team), cap: this._teamCap() });
+        const army = ARMYGEN.generateArmy({ faction, budget: this._budgetCap(team), style: o.style || 'balanced', difficulty: this.setup.rules.difficulty, defs: this.content.defs, zone, arena: a, team, seed: o.seed !== undefined ? o.seed : (this.setup.arena.seed || 1) + team * 977 + (o.reroll || 0), against: this._enemyComposition(team), cap: this._teamCap() });
         plan = this._recordsFromPlacements(army && army.placements);
       } catch (e) { console.warn('armygen failed, using fallback', e); }
     }
@@ -352,11 +395,12 @@ export class Game {
   // ------------------------------------------------------------------ battle control
   fight() {
     if (this.state !== 'placement') return;
-    const w = this.world;
-    if (w.stats[0].alive === 0 || w.stats[1].alive === 0) { this.emit('toast', { text: 'Both armies need at least one soldier. Fighting yourself is allowed but lonely.', kind: 'error' }); return; }
+    if (this._inter) { this._resumeWave(); return; }
+    const w = this.world, waves = !!w.waves;
+    if (w.stats[0].alive === 0 || (!waves && w.stats[1].alive === 0)) { this.emit('toast', { text: 'Both armies need at least one soldier. Fighting yourself is allowed but lonely.', kind: 'error' }); return; }
     this.ghost.visible = false; this.ghostInfo.show = false;
     // freeze the placement into the setup so rematch/tweak can replay it
-    for (const k of ['A', 'B']) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));
+    for (const k of ['A', 'B']) if (!(k === 'B' && this.mode && this.mode.locked)) this.setup.armies[k].placements = this.records.filter((r) => r.team === (k === 'A' ? 0 : 1)).map((r) => ({ team: r.team, defId: r.defId, custom: r.custom, positions: r.positions, cx: r.cx, cz: r.cz, heading: r.heading, order: r.order, squadSize: r.squadSize }));
     w.start(3); this.state = 'countdown'; this.acc = 0;
     this.rig.setMode(this.settings.get('cinematicStart') ? 'cinematic' : 'orbit');
     this.frameArmies();
@@ -471,7 +515,7 @@ export class Game {
       if ((this.state === 'countdown' || this.state === 'running' || this.state === 'ended' || this.state === 'diorama') && !this.paused) {
         this.acc += Math.min(dt, 0.1) * this.speed;
         let n = 0;
-        while (this.acc >= DT && n < 5) { w.tick(); this.acc -= DT; n++; this.fx.update(0); }
+        while (this.acc >= DT && n < 5 && this.state !== 'placement') { w.tick(); this.acc -= DT; n++; this.fx.update(0); }
         if (this.acc > DT * 5) this.acc = 0;
         this.alpha = this.acc / DT;
       } else this.alpha = 1;
@@ -541,6 +585,7 @@ export class Game {
     const show = sel || hv;
     const d = {
       state: this.state, time: w.time, speed: this.speed, paused: this.paused, fps: this.fps || 0, cam: this.rig.mode, teams, countdown: this.state === 'countdown' ? Math.ceil(w.countdown) : 0,
+      survival: w.waves ? { wave: w.waves.n, waveName: waveName(Math.max(1, w.waves.n)), cleared: w.waves.cleared, score: w.waves.score(), state: w.waves.state, nextIn: w.waves.state === 'fighting' ? Math.max(0, Math.ceil(w.waves.interval - w.waves.timer)) : 0 } : null,
       objective: w.objective && w.objective.hud ? w.objective.hud(w) : null, killfeed: this.killfeed.slice(), announcer: this.announce,
       selection: show ? { id: show.id, defId: show.def.id, name: show.name || show.def.name, hp: show.hp, hpMax: show.hpMax, kills: show.kills, status: [], blurb: (show.def.text && show.def.text.blurb) || '' } : null,
       powers: this.godPowers(), minimap: this.mini.update(w, this.engine.camera, this.selectedId, this.rig.ty, this.state === 'placement'),
@@ -568,5 +613,6 @@ export class Game {
     this.view.unbind(); this.labels.unbind();
     if (this.world) { this.world = null; }
     this.terrain.clear(); this.fx.clear(); this.ghost.visible = false; this.records.length = 0;
+    this.run = null; this._inter = null;
   }
 }
