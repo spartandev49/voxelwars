@@ -7,8 +7,10 @@ Process (user preference): e.md -> plan.md -> Socratic q.md (subagent) -> regene
 - [x] e.md (exposition)
 - [x] maps 01..07 (code cartography) ; 08 (tests/tools/gate/build) in flight
 - [x] plan.md v1
-- [ ] q1 round (5 critics: scope, engine, product, verify, content) in flight
-- [ ] plan v2 ... until dry
+- [x] q1 round (5 critics: ~190 questions, 27 blockers) -> plan v2
+- [ ] q2 round (disposition audit + 3 critics) in flight
+- [x] plan v2 written (WBS, 19-26 days est., ER1..ER24, M0..M17, G1..G10)
+- [ ] plan v3 ... until dry
 - [ ] spec.md + per-area specs + era design bibles
 - [ ] P0 safety nets G1..G6
 - [ ] P1 foundation, P2 Medieval, P3 Modern, P4 Sci-Fi, P5 integration, P6 balance, P7/P8 QA, P9 release
