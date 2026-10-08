@@ -6,6 +6,7 @@ import path from 'path';
 import { spawnSync } from 'child_process';
 import { fileURLToPath } from 'url';
 import { criterion } from '../lib/criteria.mjs';
+import { treeHash } from '../../tools/lib/snapshot.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const c = criterion('GATE-T05', { er: 'gate', owner: 'TOOLS-GATE', tier: 'T-fast', negctl: 'tests/negctl/GATE-T05.mjs', text: 'gate CLI: exit codes, flags, snapshot, cache hit/miss/poison, serial retry, criteria merge, logs' });
@@ -29,6 +30,7 @@ w('tests/bad.test.mjs', "console.log('  FAIL something is wrong -> {\"x\":1}');\
 
 const cleanEnv = () => { const e = { ...process.env }; for (const k of Object.keys(e)) if (k.startsWith('VW_')) delete e[k]; return e; };
 const gate = (args, env = {}) => {
+  if (!args.some((a) => a.startsWith('--tier') || a === '--fast' || a === '--help' || a === '--bogus')) args = ['--tier=fast', ...args];   // 'full' verifies ~10% of cache hits by tree hash; tests that need that pick the tree on purpose
   const r = spawnSync('node', ['tools/gate.mjs', ...args], { cwd: mini, encoding: 'utf8', env: { ...cleanEnv(), ...env }, timeout: 120000 });
   return { code: r.status, out: (r.stdout || '') + (r.stderr || ''), r };
 };
@@ -51,7 +53,7 @@ let L = last();
 c.check('others_ran', L.tests.n === 3 && L.tests.passed === 2 && L.tests.failed === 1, JSON.stringify(L.tests));
 const snaps = fs.readdirSync(path.join(mini, '.cache/snap')).filter((n) => /^[0-9a-f]{64}$/.test(n));
 c.check('snapshot_made_and_named_by_tree_hash', snaps.length === 1 && snaps[0] === L.treeHash, snaps.join());
-c.check('log_line_fields', (() => { const g = lines().pop(); return ['id', 'tier', 'era', 'treeHash', 'enqueuedAt', 'startedAt', 'finishedAt', 'wallS', 'cpuS', 'load1Start', 'steps', 'cacheHits', 'cacheVerified', 'red', 'amber'].every((k) => k in g) && g.red[0] === 'tests/bad.test.mjs' && g.tier === 'full'; })());
+c.check('log_line_fields', (() => { const g = lines().pop(); return ['id', 'tier', 'era', 'treeHash', 'enqueuedAt', 'startedAt', 'finishedAt', 'wallS', 'cpuS', 'load1Start', 'steps', 'cacheHits', 'cacheVerified', 'red', 'amber'].every((k) => k in g) && g.red[0] === 'tests/bad.test.mjs' && g.tier === 'fast'; })());
 const crit = JSON.parse(fs.readFileSync(path.join(mini, '.cache/gate/criteria.json'), 'utf8'));
 c.check('criteria_merged', crit.criteria['MINI-OK'] && crit.criteria['MINI-OK'].assertions === 2 && crit.criteria['MINI-OK'].status === 'UNVERIFIED' && /U3|U4/.test(crit.criteria['MINI-OK'].reason) && crit.run.treeHash === L.treeHash, JSON.stringify(crit.criteria));
 
@@ -94,6 +96,16 @@ c.check('stale_pass_served_without_verify', r.code === 0 && last().tests.cacheHi
 r = gate(['--steps=tests', '--jobs=1', '--verify-cache'], { POISON: '1' });
 c.check('verify_cache_catches_poison', r.code === 1 && /cache-poison/.test(r.out) && last().tests.verified === 1, r.out.slice(-300));
 
+// 5b. full tier verifies a seeded ~10% of the hits on its own, chosen by the tree hash (first 4 hex digits / 65535 < 0.1): pick the tree on purpose
+const autoVerify = () => { const h = treeHash(mini).treeHash; return parseInt(h.slice(0, 4), 16) / 65535 < 0.1; };
+const nonce = (want) => { for (let n = 0; n < 400; n++) { w('package.json', `{"name":"mini","type":"module","nonce":${n}}\n`); if (autoVerify() === want) return n; } throw new Error('no nonce found'); };
+nonce(false);
+r = gate(['--steps=tests', '--jobs=1', '--tier=full'], { POISON: '1' });
+c.check('full_tier_without_auto_verify_serves_stale_pass', r.code === 0 && last().tests.cacheHits === 1 && last().tests.verified === 0, r.out.slice(-300));
+nonce(true);
+r = gate(['--steps=tests', '--jobs=1', '--tier=full'], { POISON: '1' });
+c.check('full_tier_auto_verify_catches_poison', r.code === 1 && /cache-poison/.test(r.out) && last().tests.verified === 1, r.out.slice(-300));
+nonce(false);
 // 6. serial lane: a timing test that fails the first time passes alone; with --no-retry-serial it is red
 w('tests/timing.test.mjs', "// @serial\nimport fs from 'fs';\nconst m = new URL('../.flaky-marker', import.meta.url);\nif (!fs.existsSync(m)) { fs.writeFileSync(m, '1'); console.log('  FAIL too slow under load'); process.exit(1); }\nconsole.log('fast alone');\n");
 rm('tests/envdep.test.mjs');
