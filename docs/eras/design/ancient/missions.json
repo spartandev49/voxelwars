@@ -1,0 +1,1402 @@
+{
+ "$schema": "../../spec/ms.schema.json",
+ "msVersion": 1,
+ "era": "ancient",
+ "idPrefix": "",
+ "source": {
+  "generator": "tools/ms_backfill_ancient.mjs",
+  "files": [
+   "src/content/era_ancient/campaign.js",
+   "src/content/era_ancient/campaign_text.js",
+   "src/content/era_ancient/puzzles.js"
+  ],
+  "contentHash": "6400c40b"
+ },
+ "acts": [
+  {"id":1,"title":"Act I: Dawn of Bronze","blurb":"Spears, sandals and strongly held opinions about formations."},
+  {"id":2,"title":"Act II: Empires","blurb":"Bigger armies, bigger roads, bigger elephants."},
+  {
+   "id": 3,
+   "title": "Act III: Mythology Class",
+   "blurb": "The monsters you were warned about are real, and some of them are very polite."
+  }
+ ],
+ "rewardParts": {
+  "colander_helm": {"name":"Colander Helm","blurb":"Excellent ventilation. Terrible against arrows. Superb against pasta."},
+  "traffic_cone_helm": {"name":"Traffic Cone Helm","blurb":"Warns nobody of anything. Looks official."},
+  "fish": {"name":"Fish","blurb":"A sturdy weapon, if you believe in it. The fish has doubts."},
+  "rubber_chicken": {"name":"Rubber Chicken","blurb":"The sacred chicken's softer cousin. Squeaks in battle."},
+  "frying_pan": {"name":"Frying Pan","blurb":"Bonks with a pleasing sound and doubles as dinner."},
+  "baguette": {"name":"Baguette","blurb":"Anachronistic, crusty, and surprisingly effective."},
+  "foam_finger": {"name":"Foam Finger","blurb":"Number one. Technically only in the crowd."},
+  "olive_branch": {"name":"Olive Branch","blurb":"The weapon of peace, used for hitting."},
+  "giant_moustache": {"name":"Giant Moustache","blurb":"Adds nothing but authority."},
+  "golden_toga": {"name":"Golden Toga","blurb":"For senators who have already been bribed."},
+  "silly_helms": {"name":"Silly Helms","blurb":"The colander, the traffic cone and other regrettable headwear."},
+  "silly_weapons": {"name":"Silly Weapons","blurb":"A fish, a rubber chicken, a frying pan and a baguette. Strike with confidence."},
+  "wings": {"name":"Wings","blurb":"Feathers for the shoulders. Flight not included, but encouraged."}
+ },
+ "legacy": {
+  "mutatorStars": {
+   "big_heads": 3,
+   "tiny_titans": 6,
+   "moon_gravity": 9,
+   "chicken_rain": 12,
+   "wine_rain_always": 15,
+   "friendly_fire_fiesta": 18,
+   "speedy_soldiers": 21,
+   "ragdoll_frenzy": 24,
+   "glass_cannons": 27
+  },
+  "teachingSkip": {"label":"Skip tutorial","tip":"Plato will pretend not to mind."},
+  "teachingBeats": [
+   {
+    "id": "place_spears",
+    "trigger": "placement_start",
+    "who": "plato",
+    "text": "Place a line of hoplites across the field, spears toward the enemy. It looks simple because it is.",
+    "hint": "Choose the line brush, then drag across the field."
+   },
+   {
+    "id": "fight",
+    "trigger": "battle_start",
+    "who": "brutus",
+    "text": "FIGHT! Watch the line hold. Hoplites win by standing still and being annoying.",
+    "hint": "Space pauses. The speed keys change the pace."
+   },
+   {
+    "id": "god_power",
+    "trigger": "first_contact",
+    "who": "cassandra",
+    "text": "Press 1 to call down Zeus. He likes being asked. He will like the result more.",
+    "hint": "Number keys 1 to 6 cast god powers. Each has a cooldown."
+   },
+   {
+    "id": "counter",
+    "trigger": "cavalry_brace",
+    "who": "plato",
+    "text": "There it is: cavalry broke on the spears. Is that not a lesson? Write it down.",
+    "hint": "Spears beat cavalry. Archers beat spears. Horses beat archers."
+   },
+   {
+    "id": "done",
+    "trigger": "battle_end",
+    "who": "brutus",
+    "text": "THAT is how you win a battle! Do it again, smarter, for the stars!",
+    "hint": "Stars unlock mutators and silly hats."
+   }
+  ]
+ },
+ "missions": [
+  {
+   "id": "marathon_sort_of",
+   "act": 1,
+   "mood": "calm",
+   "unitsA": 30,
+   "text": {
+    "title": "Marathon (Sort Of)",
+    "blurb": "The original marathon, with fewer marathons. Beat the Persians, then somebody runs to tell Athens.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "WELCOME to your first battle! Spears in a line, enemy in front, long walk home afterwards!"
+     },
+     {
+      "who": "plato",
+      "text": "The Persians have come to Marathon. We have come to ask whether this was necessary. Place your hoplites first."
+     },
+     {
+      "who": "cassandra",
+      "text": "They will bring cavalry. Keep your spears still. I said so last time. Nobody remembers last time."
+     },
+     {"who":"brutus","text":"Keep it CHEAP! Spend less, win more, make the accountants cry! Hello, third star!"}
+    ],
+    "victory": {"who":"brutus","text":"MARATHON! The messenger has been dispatched. He has not been consulted."},
+    "defeat": {"who":"cassandra","text":"Marathon is lost. Persians in Athens by dinner. I said so in the original, too."},
+    "stars": [
+     {"id":"win","text":"Win the battle. Running is optional."},
+     {"id":"half","text":"Win with at least half your army (by cost) still standing."},
+     {"id":"thrift","text":"Win while spending under 2,250 drachmae. Frugal is the new fearless."}
+    ],
+    "reward": {"title":"Marathoner","blurb":"Ran a little. Fought a lot. Sat down afterwards."}
+   },
+   "arena": {"recipe":"marathon","size":"medium","seed":11,"env":{},"markers":[]},
+   "playerFaction": "hellenes",
+   "roster": ["hoplite","cretan_archer","peltast"],
+   "caps": {},
+   "budget": 3000,
+   "par": {"type":"cost","value":2250},
+   "core": [],
+   "fixed": [],
+   "reference": null,
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": null,
+   "enemy": {
+    "faction": "persians",
+    "style": "mixed",
+    "difficulty": "normal",
+    "special": "cavalry on both flanks",
+    "groups": [{"defId":"immortal","n":8},{"defId":"sparabara","n":10},{"defId":"cataphract","n":3},{"defId":"camel_rider","n":3}]
+   },
+   "objective": {"text":"Defeat the enemy army","type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Place hoplites first: spears beat cavalry. Archers behind them, peltasts on the flanks.",
+    "Star 3 asks for a cheaper army: spend at most 2,250 of your 3,000 drachmae."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"thrift","helper":"thrift","args":[2250]}],
+   "rewards": {
+    "primary": {"class":"mutator","id":"big_heads"},
+    "unlockMutators": ["big_heads"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["immortal","cataphract","sparabara"],
+    "substitution": null
+   },
+   "rewardId": "anc_r1_big_heads",
+   "teaching": {"beats":[],"exceptions":[],"legacy":true},
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "thermopylae_snack",
+   "act": 1,
+   "mood": "epic",
+   "unitsA": 32,
+   "text": {
+    "title": "The 300 Slightly Overweight Spartans",
+    "blurb": "Hold a narrow pass for two minutes against four waves. Somebody brought a snack table into the pass.",
+    "briefing": [
+     {"who":"brutus","text":"THE HOT GATES! Narrow! Spartan! And somebody has brought snacks!"},
+     {
+      "who": "plato",
+      "text": "Hold the hill for two minutes against four waves. What is endurance, if not stubbornness with a schedule?"
+     },
+     {
+      "who": "cassandra",
+      "text": "The fourth wave is the one that matters. The first three are only warm-up. I said so at the briefing."
+     },
+     {
+      "who": "brutus",
+      "text": "Keep every Spartan alive for the third star! They hate being killed! It is a whole LIFESTYLE!"
+     }
+    ],
+    "victory": {"who":"brutus","text":"HELD! The gates held, the snacks held, and the Spartans did not even look winded."},
+    "defeat": {"who":"cassandra","text":"They came around the side. They always do. Somebody always knows the path."},
+    "stars": [
+     {"id":"win","text":"Hold the hill for two minutes."},
+     {"id":"half","text":"Hold it with at least half your army alive. Spartans keep their own score."},
+     {"id":"no_spartan_lost","text":"Lose no Spartans. They take it personally, and so does the afterlife."}
+    ],
+    "reward": {"title":"Hot Gater","blurb":"Stood in a narrow gap and refused. Very Spartan. Very sweaty."}
+   },
+   "arena": {
+    "recipe": "thermopylae",
+    "size": "medium",
+    "seed": 3,
+    "env": {},
+    "markers": [{"id":"pass","type":"hill","x":-8,"z":0,"r":6}],
+    "props": [
+     {"t":"barrel","x":-13.5,"z":-2.6,"s":1.1},
+     {"t":"crate","x":-13.5,"z":-1.3,"s":1.1,"v":1},
+     {"t":"barrel","x":-13.5,"z":1.4,"s":1.1,"v":2},
+     {"t":"crate","x":-13.5,"z":2.7,"s":1.1}
+    ]
+   },
+   "playerFaction": "hellenes",
+   "roster": ["spartan","hoplite","philosopher","peltast","cretan_archer","strategos"],
+   "caps": {},
+   "budget": 6000,
+   "par": {"type":"none","value":0},
+   "core": [{"defId":"spartan","n":8}],
+   "fixed": [],
+   "reference": [
+    {"defId":"spartan","n":8},
+    {"defId":"hoplite","n":6},
+    {"defId":"strategos","n":7},
+    {"defId":"philosopher","n":6},
+    {"defId":"cretan_archer","n":5}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": null,
+   "enemy": {
+    "faction": "persians",
+    "style": "waves",
+    "difficulty": "normal",
+    "special": "four waves",
+    "groups": [{"defId":"immortal","n":9},{"defId":"sparabara","n":6},{"defId":"camel_rider","n":2}]
+   },
+   "objective": {"text":"Hold the hill for 2:00","type":"hold_hill","params":{"time":120},"markerIds":["pass"]},
+   "timeLimit": 330,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "waves": {
+     "placed": true,
+     "firstAfter": 28,
+     "interval": 30,
+     "breather": 3,
+     "list": [
+      {"groups":[{"defId":"immortal","n":12},{"defId":"sparabara","n":6}],"after":30},
+      {"groups":[{"defId":"immortal","n":9},{"defId":"cataphract","n":2},{"defId":"sparabara","n":5}],"after":30},
+      {
+       "groups": [{"defId":"immortal","n":12},{"defId":"camel_rider","n":4},{"defId":"xerxes","n":1},{"defId":"sparabara","n":5}]
+      }
+     ]
+    }
+   },
+   "inputs": [],
+   "rules": [
+    "Hold the hill behind the wall for 120 seconds in total. The clock stops while an enemy stands on it.",
+    "Four waves of Persians arrive, about thirty seconds apart.",
+    "Star 3 needs at least six Spartans on the field, and none may fall."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"no_spartan_lost","helper":"noLoss","args":[["spartan"],6]}
+   ],
+   "rewards": {
+    "primary": {"class":"mutator","id":"tiny_titans"},
+    "unlockMutators": ["tiny_titans"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["xerxes","spartan"],
+    "substitution": null
+   },
+   "rewardId": "anc_r2_tiny_titans",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "pyramid_scheme",
+   "act": 1,
+   "mood": "epic",
+   "unitsA": 42,
+   "text": {
+    "title": "Pyramid Scheme",
+    "blurb": "Take down the Pharaoh and the pyramid scheme collapses. They always do.",
+    "briefing": [
+     {"who":"brutus","text":"PYRAMID SCHEME! The plan: stab the boss, and the whole thing falls apart!"},
+     {
+      "who": "plato",
+      "text": "He will hide behind guards, locusts and an enormous hat. Is a general still a general when he is hiding?"
+     },
+     {
+      "who": "cassandra",
+      "text": "The locusts are the problem. I said locusts at the planning meeting. Nobody wrote it down."
+     },
+     {
+      "who": "brutus",
+      "text": "Under ninety SECONDS is the third star! The Pharaoh is a busy man. He has pyramids to finish!"
+     }
+    ],
+    "victory": {"who":"cassandra","text":"The Pharaoh fell. His pyramid is still unfinished. It always is."},
+    "defeat": {"who":"plato","text":"The Pharaoh lives. He will build something larger, probably from your mistakes."},
+    "stars": [
+     {"id":"win","text":"Kill the Pharaoh."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"quick","text":"Kill the Pharaoh in under 90 seconds. He keeps a schedule."}
+    ],
+    "reward": {"title":"Pyramid Schemer","blurb":"Toppled the top of the pyramid. Technically a promotion."}
+   },
+   "arena": {
+    "recipe": "giza",
+    "size": "large",
+    "seed": 5,
+    "env": {},
+    "markers": [{"id":"pharaoh_start","type":"general_spawn","x":47,"z":4,"r":3}]
+   },
+   "playerFaction": "romans",
+   "roster": ["legionary","pilum_thrower","gladiator","equites","ballista","centurion","senator"],
+   "caps": {},
+   "budget": 7500,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [],
+   "reference": [
+    {"defId":"equites","n":15},
+    {"defId":"gladiator","n":8},
+    {"defId":"centurion","n":8},
+    {"defId":"pilum_thrower","n":3},
+    {"defId":"ballista","n":2},
+    {"defId":"senator","n":4},
+    {"defId":"legionary","n":2}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": null,
+   "enemy": {
+    "faction": "egyptians",
+    "style": "guarded general",
+    "difficulty": "normal",
+    "generals": ["pharaoh"],
+    "special": "the pharaoh avoids contact",
+    "groups": [
+     {"defId":"pharaoh","n":1,"at":{"x":47,"z":4},"order":"hold"},
+     {"defId":"anubis_guard","n":6,"at":{"x":44,"z":4},"order":"advance","formation":"circle"},
+     {"defId":"medjay","n":21},
+     {"defId":"khopesh_warrior","n":15},
+     {"defId":"nubian_archer","n":14},
+     {"defId":"chariot_archer","n":5},
+     {"defId":"priest_of_ra","n":4}
+    ]
+   },
+   "objective": {"text":"Kill the Pharaoh","type":"kill_general","params":{},"markerIds":["pharaoh_start"],"binding":true},
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Kill the Pharaoh. The rest of his army does not matter, but it will try to matter.",
+    "The Pharaoh avoids contact and hides behind his guards. Cavalry and archers reach him fastest.",
+    "Star 3: the Pharaoh must fall within 90 seconds."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"quick","helper":"underTime","args":[90]}],
+   "rewards": {
+    "primary": {"class":"part","id":"silly_helms"},
+    "unlockMutators": ["moon_gravity"],
+    "unlockParts": ["silly_helms"],
+    "quickUnlocks": [],
+    "codex": ["pharaoh","anubis_guard"],
+    "substitution": null
+   },
+   "rewardId": "anc_r3_silly_helms",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "nile_crossing",
+   "act": 2,
+   "mood": "tense",
+   "unitsA": 52,
+   "text": {
+    "title": "Goat Across the Nile",
+    "blurb": "Escort one goat across the Nile. The goat has done this before and has opinions about your route.",
+    "briefing": [
+     {"who":"brutus","text":"THE GOAT! The NILE! A very important crossing and a very important goat!"},
+     {
+      "who": "plato",
+      "text": "The goat must reach the far bank. Everything else on the battlefield is merely a reason for the goat to continue."
+     },
+     {"who":"cassandra","text":"The goat will be fine. The goat is always fine. It is you I am worried about."},
+     {"who":"brutus","text":"No damage to the goat for the third star! Not a scratch! The helmet is new!"}
+    ],
+    "victory": {"who":"brutus","text":"THE GOAT HAS CROSSED! The goat has no comment. The goat is eating reeds."},
+    "defeat": {"who":"plato","text":"The goat is lost. Surely the wisest creature on the field was the one who knew the rules."},
+    "stars": [
+     {"id":"win","text":"Get the goat across the Nile."},
+     {"id":"half","text":"Win with at least half your army alive. Ignore the goat's expression."},
+     {"id":"untouched","text":"The goat takes no damage. None. The goat is watching."}
+    ],
+    "reward": {"title":"Goat Herder","blurb":"Delivered a goat across a river. A strange but honest career."}
+   },
+   "arena": {
+    "recipe": "nile",
+    "size": "medium",
+    "seed": 4,
+    "env": {},
+    "markers": [{"id":"goat_start","type":"vip_start","x":-24,"z":-22,"r":3},{"id":"far_bank","type":"exit","x":8,"z":12,"r":4}]
+   },
+   "playerFaction": "egyptians",
+   "roster": ["medjay","khopesh_warrior","mummy","chariot_archer","anubis_guard","priest_of_ra"],
+   "caps": {},
+   "budget": 6500,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [
+    {
+     "defId": "battle_goat",
+     "marker": "goat_start",
+     "vip": true,
+     "heading": 1.5707963267948966,
+     "name": "The Goat",
+     "def": {"melee":null,"abilities":[],"ai":{"style":"hold"}}
+    }
+   ],
+   "reference": [
+    {"defId":"anubis_guard","n":8},
+    {"defId":"medjay","n":20},
+    {"defId":"khopesh_warrior","n":14},
+    {"defId":"priest_of_ra","n":4},
+    {"defId":"mummy","n":6}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": null,
+   "enemy": {
+    "faction": "barbarians",
+    "style": "ford ambush",
+    "difficulty": "normal",
+    "special": "goes for the goat",
+    "groups": [
+     {"defId":"berserker","n":10,"at":{"x":4,"z":17},"order":"hold","squad":6},
+     {"defId":"axe_thrower","n":6,"at":{"x":10,"z":20},"order":"hold","squad":8},
+     {"defId":"druid","n":8,"at":{"x":12,"z":24},"order":"hold","squad":5},
+     {"defId":"chieftain","n":3,"at":{"x":8,"z":18},"order":"hold"},
+     {"defId":"warhound","n":15}
+    ]
+   },
+   "objective": {
+    "text": "Get the goat across the river",
+    "type": "protect_vip",
+    "params": {"time":150,"reachOnly":true},
+    "markerIds": ["goat_start","far_bank"],
+    "binding": true
+   },
+   "timeLimit": 150,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {"vipMarch":{"to":"far_bank","delay":12,"clear":14,"patience":60}},
+   "inputs": [],
+   "rules": [
+    "The Goat is a free extra unit. It waits at its start and walks to the far bank by itself once nothing hostile stands near the way (never before twelve seconds, and at the latest after sixty): clear the road.",
+    "Win by getting the Goat inside the exit marker. If it falls, you lose.",
+    "Star 3: the Goat takes no damage at all."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"untouched","helper":"vipUntouched","args":["battle_goat"]}
+   ],
+   "rewards": {
+    "primary": {"class":"mutator","id":"chicken_rain"},
+    "unlockMutators": ["chicken_rain"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["battle_goat","chieftain"],
+    "substitution": null
+   },
+   "rewardId": "anc_r4_chicken_rain",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "alps_elephant",
+   "act": 2,
+   "mood": "ominous",
+   "unitsA": 60,
+   "text": {
+    "title": "Hannibal Ante Portas",
+    "blurb": "Take elephants over the Alps and win. The elephants are cold, and want that noted.",
+    "briefing": [
+     {"who":"brutus","text":"THE ALPS! Snow! Elephants! A genuinely poor idea that worked!"},
+     {
+      "who": "plato",
+      "text": "Hannibal crossed the mountains with elephants. Brilliance or stubbornness? Historically, the same thing."
+     },
+     {
+      "who": "cassandra",
+      "text": "The Romans will bring fire. I told the elephants. They are elephants. They did not listen."
+     },
+     {
+      "who": "brutus",
+      "text": "Win with at least one elephant standing for the third star! It needs snacks! The ELEPHANT does!"
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "ROME BLINKS! The elephants are cold, tired and a little smug. So is Hannibal. He hides it badly."
+    },
+    "defeat": {
+     "who": "plato",
+     "text": "Rome holds. The elephants go home over the Alps, and the Alps, it must be said, are not impressed."
+    },
+    "stars": [
+     {"id":"win","text":"Defeat the Romans in the snow."},
+     {"id":"half","text":"Win with at least half your army alive. Count elephants twice."},
+     {"id":"elephant_alive","text":"Win with at least one elephant alive. Tell it it was a team effort."}
+    ],
+    "reward": {"title":"Alps Alpinist","blurb":"Crossed a mountain range in a bad mood with large animals."}
+   },
+   "arena": {"recipe":"alpine","size":"medium","seed":9,"env":{},"markers":[]},
+   "playerFaction": "carthage",
+   "roster": [
+    "war_elephant",
+    "numidian",
+    "catapult",
+    "hannibal",
+    "berserker",
+    "axe_thrower",
+    "warhound",
+    "druid",
+    "chieftain",
+    "hoplite",
+    "peltast",
+    "cretan_archer",
+    "nubian_archer",
+    "medjay"
+   ],
+   "caps": {},
+   "budget": 11000,
+   "par": {"type":"none","value":0},
+   "core": [{"defId":"war_elephant","n":2}],
+   "fixed": [],
+   "reference": [
+    {"defId":"war_elephant","n":3},
+    {"defId":"catapult","n":12},
+    {"defId":"hannibal","n":3},
+    {"defId":"chieftain","n":2},
+    {"defId":"warhound","n":10},
+    {"defId":"numidian","n":8},
+    {"defId":"axe_thrower","n":10},
+    {"defId":"berserker","n":5},
+    {"defId":"nubian_archer","n":3},
+    {"defId":"medjay","n":2},
+    {"defId":"cretan_archer","n":1},
+    {"defId":"hoplite","n":1}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0,0.6]},
+   "botsWhy": "the legion walks into a line without artillery or healers and wins: the passive balanced army needs the catapults of the reference to hold",
+   "blind": null,
+   "enemy": {
+    "faction": "romans",
+    "style": "legion with fire",
+    "difficulty": "normal",
+    "special": "auxiliary archers with fire arrows",
+    "groups": [
+     {"defId":"legionary","n":36},
+     {"defId":"pilum_thrower","n":15},
+     {"defId":"nubian_archer","n":18},
+     {"defId":"equites","n":7},
+     {"defId":"ballista","n":2},
+     {"defId":"centurion","n":2}
+    ]
+   },
+   "objective": {"text":"Defeat the enemy army","type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 360,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Elephants charge hard and panic when set on fire: Rome brings auxiliary archers with fire arrows. Keep your elephants behind the lines until the archers are dead.",
+    "Star 3: win with at least one war elephant still alive."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"elephant_alive","helper":"keptAlive","args":["war_elephant",1]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"silly_weapons"},
+    "unlockMutators": ["wine_rain_always"],
+    "unlockParts": ["silly_weapons"],
+    "quickUnlocks": [],
+    "codex": ["war_elephant","hannibal"],
+    "substitution": null
+   },
+   "rewardId": "anc_r5_silly_weapons",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "teutoburg_peekaboo",
+   "act": 2,
+   "mood": "ominous",
+   "unitsA": 69,
+   "text": {
+    "title": "Teutoburg Hide and Seek",
+    "blurb": "A Roman column marches into a foggy forest. The barbarians say hello very politely, then ambush it.",
+    "briefing": [
+     {"who":"brutus","text":"TEUTOBURG FOREST! Fog! Mud! An entire Roman column about to be very surprised!"},
+     {"who":"plato","text":"We hide, we wait, we jump out. It is the oldest game there is, played with sharper tools."},
+     {
+      "who": "cassandra",
+      "text": "The centurion is the one with the plan. Hit him first, before he fills in the paperwork."
+     },
+     {"who":"brutus","text":"Do it in seventy-five SECONDS! Tea is getting cold! Pottery class is at six!"}
+    ],
+    "victory": {"who":"plato","text":"A forest, a fog and a good deal of politeness. History has not forgotten."},
+    "defeat": {"who":"cassandra","text":"They saw you. The trees were not that thick. I said hide behind the thick ones."},
+    "stars": [
+     {"id":"win","text":"Defeat the centurion."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"fast","text":"Win in 75 seconds. Politeness does not mean slowness."}
+    ],
+    "reward": {"title":"Forest Phantom","blurb":"Was somewhere. Was suddenly everywhere. Vanished. Had tea."}
+   },
+   "arena": {
+    "recipe": "teutoburg",
+    "size": "large",
+    "seed": 8,
+    "env": {"weather":"fog"},
+    "markers": [{"id":"centurion_start","type":"general_spawn","x":47,"z":0,"r":3}]
+   },
+   "playerFaction": "barbarians",
+   "roster": ["berserker","axe_thrower","warhound","druid","chieftain"],
+   "caps": {},
+   "budget": 7500,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [],
+   "reference": [
+    {"defId":"warhound","n":29},
+    {"defId":"berserker","n":21},
+    {"defId":"druid","n":6},
+    {"defId":"chieftain","n":4},
+    {"defId":"axe_thrower","n":9}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": null,
+   "enemy": {
+    "faction": "romans",
+    "style": "marching column",
+    "difficulty": "normal",
+    "generals": ["centurion"],
+    "special": "arrives in a column",
+    "groups": [
+     {"defId":"centurion","n":1,"at":{"x":47,"z":0},"order":"hold"},
+     {"defId":"legionary","n":13},
+     {"defId":"equites","n":4}
+    ]
+   },
+   "objective": {"text":"Kill the Centurion","type":"kill_general","params":{},"markerIds":["centurion_start"],"binding":true},
+   "timeLimit": 240,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "waves": {
+     "placed": true,
+     "firstAfter": 14,
+     "interval": 14,
+     "breather": 2,
+     "list": [
+      {"groups":[{"defId":"legionary","n":12},{"defId":"equites","n":4}],"after":14},
+      {"groups":[{"defId":"legionary","n":13},{"defId":"gladiator","n":4}],"after":14},
+      {"groups":[{"defId":"legionary","n":12},{"defId":"equites","n":4},{"defId":"ballista","n":1}]}
+     ]
+    }
+   },
+   "inputs": [],
+   "rules": [
+    "The Roman column arrives in four pieces, one after another. Beat each piece before the next closes up.",
+    "Kill the Centurion. He stays at the back and avoids contact.",
+    "Star 3: finish in 75 seconds."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"fast","helper":"underTime","args":[75]}],
+   "rewards": {
+    "primary": {"class":"mutator","id":"friendly_fire_fiesta"},
+    "unlockMutators": ["friendly_fire_fiesta"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["centurion","druid"],
+    "substitution": null
+   },
+   "rewardId": "anc_r6_friendly_fire_fiesta",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "troy_giftshop",
+   "act": 3,
+   "mood": "epic",
+   "unitsA": 77,
+   "text": {
+    "title": "Siege of Troy (Gift Shop Not Included)",
+    "blurb": "Break the gates of Troy with a very large wooden horse. Please accept this gift. Please.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "TROY! A great wall, a great gate, and a great big horse! Surprise! It is full of hoplites!"
+     },
+     {"who":"plato","text":"We wait outside, offering a gift. Will they accept it? Do they ever learn?"},
+     {
+      "who": "cassandra",
+      "text": "The defenders will not open the gate. They will open the horse. History is very consistent about this."
+     },
+     {
+      "who": "brutus",
+      "text": "Bring the gate down inside a hundred seconds for the third star! The gift shop opens at DAWN!"
+     }
+    ],
+    "victory": {"who":"cassandra","text":"The horse worked. The gate fell. They gave me no gift shop discount."},
+    "defeat": {
+     "who": "plato",
+     "text": "Troy stands. The horse sits outside unopened. Is that a victory for caution, or for rudeness?"
+    },
+    "stars": [
+     {"id":"win","text":"Break both gates and defeat the defenders."},
+     {"id":"half","text":"Win with at least half your army alive. The horse counts as a family member."},
+     {"id":"gate_fast","text":"Bring a gate down within 100 seconds. The horse is not a patient horse."}
+    ],
+    "reward": {"title":"Gift Shop Manager","blurb":"Sold nothing. Won everything. Receipts are available on request."}
+   },
+   "arena": {"recipe":"troy","size":"large","seed":12,"env":{},"markers":[]},
+   "playerFaction": "hellenes",
+   "roster": [
+    "hoplite",
+    "spartan",
+    "peltast",
+    "cretan_archer",
+    "companion_cavalry",
+    "philosopher",
+    "strategos",
+    "trojan_horse",
+    "catapult"
+   ],
+   "caps": {},
+   "budget": 10000,
+   "par": {"type":"none","value":0},
+   "core": [{"defId":"trojan_horse","n":1}],
+   "fixed": [],
+   "reference": [
+    {"defId":"trojan_horse","n":1},
+    {"defId":"hoplite","n":28},
+    {"defId":"spartan","n":8},
+    {"defId":"cretan_archer","n":22},
+    {"defId":"catapult","n":5},
+    {"defId":"peltast","n":10},
+    {"defId":"strategos","n":1},
+    {"defId":"companion_cavalry","n":2}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,1]},
+   "botsWhy": "the Trojan defenders hold behind the walls and never attack: a patient army wins however it stands (the mission is slow, not dangerous)",
+   "blind": null,
+   "enemy": {
+    "faction": "hellenes",
+    "style": "defenders",
+    "difficulty": "normal",
+    "special": "hold behind the walls",
+    "groups": [
+     {"defId":"hoplite","n":37,"order":"hold"},
+     {"defId":"cretan_archer","n":15,"order":"hold"},
+     {"defId":"peltast","n":9,"order":"hold"},
+     {"defId":"strategos","n":1,"order":"hold"},
+     {"defId":"ballista","n":3,"order":"hold"}
+    ]
+   },
+   "objective": {
+    "text": "Break both gates, beat the defenders",
+    "type": "destroy",
+    "params": {"props":[{"type":"gate_door","count":2}],"eliminate":true},
+    "markerIds": []
+   },
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Both gate doors must be destroyed and every defender beaten.",
+    "The Trojan Horse is slow but sturdy: it opens up on contact. Fire is its only real enemy.",
+    "Star 3: bring a gate down within 100 seconds."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"gate_fast","helper":"propDownBy","args":["gate_door",100]}
+   ],
+   "rewards": {
+    "primary": {"class":"mutator","id":"speedy_soldiers"},
+    "unlockMutators": ["speedy_soldiers"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["trojan_horse","catapult"],
+    "substitution": null
+   },
+   "rewardId": "anc_r7_speedy_soldiers",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "cyclops_meet",
+   "act": 3,
+   "mood": "tense",
+   "unitsA": 62,
+   "text": {
+    "title": "Cyclops Isle Meet-and-Greet",
+    "blurb": "Meet the Cyclops. He is huge, lonely and a terrible shot. His goats are friendly.",
+    "briefing": [
+     {"who":"brutus","text":"CYCLOPS ISLE! A meet and greet! The guest of honour has one eye and a very large club!"},
+     {"who":"plato","text":"He misses a quarter of his throws. That is the nicest thing anyone can say about him."},
+     {
+      "who": "cassandra",
+      "text": "Do not shoot near your own people. The boulders cannot tell friends from enemies. Neither can some arrows."
+     },
+     {"who":"brutus","text":"No friendly fire for the third star! Be NICE to your own side! It is a big island!"}
+    ],
+    "victory": {"who":"brutus","text":"CYCLOPS DOWN! The island is quiet. The goats are not. The goats are celebrating."},
+    "defeat": {"who":"plato","text":"The Cyclops won. He missed a dozen times and still won. Was that skill, or volume?"},
+    "stars": [
+     {"id":"win","text":"Defeat the Cyclops."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"no_ff","text":"Cause no friendly fire. Aim at the giant, not the friend."}
+    ],
+    "reward": {"title":"Cyclops Whisperer","blurb":"Talked a ten-ton monster into a nap. Mostly with a club."}
+   },
+   "arena": {
+    "recipe": "cyclops",
+    "size": "medium",
+    "seed": 14,
+    "env": {},
+    "markers": [{"id":"cyclops_start","type":"general_spawn","x":30,"z":0,"r":3}]
+   },
+   "playerFaction": "hellenes",
+   "roster": ["hoplite","spartan","peltast","cretan_archer","companion_cavalry","philosopher","strategos"],
+   "caps": {},
+   "budget": 8000,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [],
+   "reference": null,
+   "bots": {"greedy":[0.05,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "friendly fire is on: a random army of archers and javelins shoots its own men (greedy ~20% and falling with every unit stat pass) while the reference wins ~90%",
+   "blind": null,
+   "enemy": {
+    "faction": "mythic",
+    "style": "boss and goats",
+    "difficulty": "normal",
+    "generals": ["cyclops"],
+    "special": "throws boulders, misses a quarter",
+    "groups": [{"defId":"cyclops","n":1,"at":{"x":30,"z":0}},{"defId":"battle_goat","n":72},{"defId":"sacred_chicken","n":38}]
+   },
+   "objective": {"text":"Kill the Cyclops","type":"kill_general","params":{},"markerIds":["cyclops_start"],"binding":true},
+   "timeLimit": 300,
+   "friendlyFire": true,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Friendly fire is ON: arrows and thrown javelins hurt your own soldiers.",
+    "Kill the Cyclops. The goats and chickens are an optional extra.",
+    "Star 3: not a single friendly hit."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"no_ff","helper":"noFriendlyFire","args":[]}],
+   "rewards": {
+    "primary": {"class":"mutator","id":"ragdoll_frenzy"},
+    "unlockMutators": ["ragdoll_frenzy"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["cyclops","battle_goat"],
+    "substitution": null
+   },
+   "rewardId": "anc_r8_ragdoll_frenzy",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "zeus_bad_day",
+   "act": 3,
+   "mood": "epic",
+   "unitsA": 104,
+   "text": {
+    "title": "Zeus Has a Bad Day",
+    "blurb": "Survive four waves of monsters on Mount Olympus while Zeus has a very bad day.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "MOUNT OLYMPUS! Four waves of monsters! A cranky god! The sky is on fire and he is not sorry!"
+     },
+     {
+      "who": "plato",
+      "text": "Zeus is having a bad day. The monsters are merely symptoms. Where does one begin with a temper?"
+     },
+     {
+      "who": "cassandra",
+      "text": "He will throw lightning at you. He will also throw it at them. I said he was fair. I did not say kind."
+     },
+     {
+      "who": "brutus",
+      "text": "Do not lose a HERO for the third star! The heroes have lawyers! Their statues are half done!"
+     }
+    ],
+    "victory": {
+     "who": "plato",
+     "text": "You survived Zeus. He will need a lie-down. So will you. Please do not lie down on the battlefield."
+    },
+    "defeat": {"who":"cassandra","text":"Zeus had a bad day, and you were in it. I said you would be."},
+    "stars": [
+     {"id":"win","text":"Survive four waves of monsters."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"heroes_alive","text":"Survive without losing a hero. Statues are expensive."}
+    ],
+    "reward": {"title":"Zeus' Therapist","blurb":"Listened to a god complain about his week. Billed him for the hour."}
+   },
+   "arena": {"recipe":"olympus","size":"large","seed":10,"env":{"weather":"storm"},"markers":[]},
+   "playerFaction": "mixed",
+   "roster": null,
+   "caps": {},
+   "budget": 15000,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [],
+   "reference": [
+    {"defId":"axe_thrower","n":7},
+    {"defId":"ballista","n":2},
+    {"defId":"centaur_archer","n":4},
+    {"defId":"chieftain","n":1,"order":"hold"},
+    {"defId":"equites","n":8},
+    {"defId":"gladiator","n":9},
+    {"defId":"medjay","n":10},
+    {"defId":"medusa","n":6},
+    {"defId":"minotaur","n":5},
+    {"defId":"peltast","n":9},
+    {"defId":"priest_of_ra","n":2},
+    {"defId":"spartan","n":9},
+    {"defId":"trojan_horse","n":1},
+    {"defId":"warhound","n":26},
+    {"defId":"hoplite","n":3},
+    {"defId":"cretan_archer","n":2}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0,0.6]},
+   "botsWhy": "four waves with Zeus on top: a balanced army that waits is overrun (the reference wins by killing the waves in time)",
+   "blind": null,
+   "enemy": {
+    "faction": "mythic",
+    "style": "mythic waves",
+    "difficulty": "normal",
+    "special": "Zeus throws lightning at everyone",
+    "groups": []
+   },
+   "objective": {"text":"Survive 4 waves","type":"survive_waves","params":{"waves":4},"markerIds":[]},
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "zeus": {"first":12,"every":12,"dmg":70,"r":3.2,"delay":1.2},
+    "waves": {
+     "placed": false,
+     "first": 6,
+     "interval": 40,
+     "breather": 5,
+     "list": [
+      {
+       "name": "Wave 1",
+       "groups": [
+        {"defId":"battle_goat","n":25},
+        {"defId":"sacred_chicken","n":51},
+        {"defId":"medusa","n":4},
+        {"defId":"centaur_archer","n":14}
+       ]
+      },
+      {
+       "name": "Wave 2",
+       "groups": [{"defId":"minotaur","n":7},{"defId":"centaur_archer","n":18},{"defId":"battle_goat","n":25}]
+      },
+      {
+       "name": "Wave 3",
+       "groups": [
+        {"defId":"minotaur","n":4},
+        {"defId":"medusa","n":7},
+        {"defId":"trojan_horse","n":1},
+        {"defId":"centaur_archer","n":14},
+        {"defId":"sacred_chicken","n":43}
+       ]
+      },
+      {
+       "name": "Wave 4",
+       "groups": [{"defId":"cyclops","n":4},{"defId":"minotaur","n":4},{"defId":"medusa","n":4},{"defId":"centaur_archer","n":14}]
+      }
+     ]
+    }
+   },
+   "inputs": [],
+   "rules": [
+    "Survive four waves of monsters. A wave counts once every one of its monsters is down or running for its life.",
+    "Zeus strikes both armies with lightning every twelve seconds: do not stand in a clump.",
+    "Star 3 needs at least one hero on the field, and none may fall."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"heroes_alive","helper":"heroesAlive","args":[]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"wings"},
+    "unlockMutators": ["glass_cannons"],
+    "unlockParts": ["wings"],
+    "quickUnlocks": [],
+    "codex": ["minotaur","medusa"],
+    "substitution": null
+   },
+   "rewardId": "anc_r9_wings",
+   "teaching": null,
+   "teaches": [],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [],
+   "softModules": [],
+   "setpiece": null,
+   "extraSetpieces": [],
+   "attempts": null,
+   "firstThreeMinutes": null
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "spear_wall",
+   "title": "Please Hold Still",
+   "blurb": "Four cavalry charge the line. Spears stop horses, but only a spear line that is ready for them.",
+   "hint": "Put the hoplites in one tight line facing the charge and keep them on Hold. Peltasts go behind the line.",
+   "goalText": "Defeat all four cavalry",
+   "arena": {"recipe":"marathon","size":"medium","seed":11,"env":{},"markers":[]},
+   "player": {"faction":"hellenes","roster":["hoplite","peltast"],"budget":1400},
+   "par": {"type":"cost","value":1000},
+   "enemy": {
+    "faction": "hellenes",
+    "placements": [
+     {
+      "defId": "companion_cavalry",
+      "x": 30,
+      "z": -1.1,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "companion_cavalry",
+      "x": 30,
+      "z": 1.1,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "companion_cavalry",
+      "x": 32.2,
+      "z": -1.1,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "companion_cavalry",
+      "x": 32.2,
+      "z": 1.1,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 180,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"few_losses","text":"Lose at most 2 units","helper":"lossesAtMost","args":[2]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  },
+  {
+   "id": "kiting_101",
+   "title": "Kiting for Beginners",
+   "blurb": "Six mummies walk slower than any archer. Shoot, step back, repeat.",
+   "hint": "Spread the archers along your back edge and stay out of reach: the mummies are slower than every archer, so the archers can keep backing away while they shoot.",
+   "goalText": "Defeat all six mummies",
+   "arena": {"recipe":"oasis","size":"small","seed":15,"env":{},"markers":[]},
+   "player": {"faction":"hellenes","roster":["cretan_archer","peltast"],"budget":1200},
+   "par": {"type":"cost","value":900},
+   "enemy": {
+    "faction": "egyptians",
+    "placements": [
+     {"defId":"mummy","x":17,"z":-1.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"mummy","x":17,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"mummy","x":17,"z":1.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"mummy","x":18.7,"z":-1.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"mummy","x":18.7,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"mummy","x":18.7,"z":1.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 150,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"no_losses","text":"Lose no unit","helper":"lossesAtMost","args":[0]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  },
+  {
+   "id": "elephant_room",
+   "title": "The Elephant in the Room",
+   "blurb": "One war elephant and six hoplites. Elephants are afraid of fire.",
+   "hint": "Fire arrows from the Nubian archers make an elephant panic and trample its own side. Keep spears in front of the archers.",
+   "goalText": "Defeat the elephant and its escort",
+   "arena": {"recipe":"marathon","size":"medium","seed":11,"env":{},"markers":[]},
+   "player": {"faction":"mixed","roster":["hoplite","peltast","nubian_archer"],"budget":2000},
+   "par": {"type":"cost","value":1600},
+   "enemy": {
+    "faction": "carthage",
+    "placements": [
+     {
+      "defId": "war_elephant",
+      "x": 30,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "hoplite",
+      "x": 27,
+      "z": -3.75,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoplite",
+      "x": 27,
+      "z": -2.25,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoplite",
+      "x": 27,
+      "z": -0.75,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {"defId":"hoplite","x":27,"z":0.75,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"hoplite","x":27,"z":2.25,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"hoplite","x":27,"z":3.75,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 180,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"elephant_fast","text":"Elephant down within 45 seconds","helper":"enemyDownBy","args":["war_elephant",45]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  },
+  {
+   "id": "knock_knock",
+   "title": "Knock Knock",
+   "blurb": "Eight defenders and two ballistas wait behind the gate. The gate is made of wood.",
+   "hint": "Catapults outrange everything on the wall, ballistas included. Park them at the back of your zone and let the boulders do the knocking.",
+   "goalText": "Destroy both gate doors in 120 seconds",
+   "arena": {"recipe":"troy","size":"large","seed":12,"env":{},"markers":[]},
+   "player": {"faction":"mixed","roster":["catapult","hoplite","peltast"],"budget":1500},
+   "par": {"type":"cost","value":1200},
+   "enemy": {
+    "faction": "hellenes",
+    "placements": [
+     {"defId":"hoplite","x":17,"z":-0.75,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"hoplite","x":17,"z":0.75,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"hoplite","x":18.5,"z":-0.75,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"hoplite","x":18.5,"z":0.75,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"hoplite","x":20,"z":-0.75,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"hoplite","x":20,"z":0.75,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"hoplite","x":21.5,"z":-0.75,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"hoplite","x":21.5,"z":0.75,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"ballista","x":22,"z":-3,"heading":-1.5707963267948966,"order":"hold","squadId":5,"formation":"block"},
+     {"defId":"ballista","x":22,"z":3,"heading":-1.5707963267948966,"order":"hold","squadId":6,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"destroy","params":{"props":[{"type":"gate_door","count":2}]},"markerIds":[],"binding":true},
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"gate_fast","text":"First gate door down within 70 seconds","helper":"propDownBy","args":["gate_door",70]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  },
+  {
+   "id": "goat_logistics",
+   "title": "Goat Logistics",
+   "blurb": "Walk one goat across the Nile. Nine barbarians would like a word with it.",
+   "hint": "The goat leaves when the way is clear. Kill the axe throwers before they reach the ford and keep the berserkers off the goat.",
+   "goalText": "Get the goat to the far bank",
+   "arena": {
+    "recipe": "nile",
+    "size": "medium",
+    "seed": 4,
+    "env": {},
+    "markers": [{"id":"goat_start","type":"vip_start","x":-24,"z":-22,"r":3},{"id":"far_bank","type":"exit","x":8,"z":12,"r":4}]
+   },
+   "player": {"faction":"hellenes","roster":["hoplite","peltast","cretan_archer"],"budget":1000},
+   "par": {"type":"cost","value":700},
+   "enemy": {
+    "faction": "barbarians",
+    "placements": [
+     {"defId":"axe_thrower","x":19,"z":15.2,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"axe_thrower","x":19,"z":17,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"axe_thrower","x":19,"z":18.8,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"axe_thrower","x":20.8,"z":15.2,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"axe_thrower","x":20.8,"z":17,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"axe_thrower","x":20.8,"z":18.8,"heading":-2.36,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"berserker","x":23,"z":19.5,"heading":-2.36,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"berserker","x":23,"z":21,"heading":-2.36,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"berserker","x":23,"z":22.5,"heading":-2.36,"order":"advance","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"protect_vip","params":{"time":120,"reachOnly":true},"markerIds":["goat_start","far_bank"],"binding":true},
+   "timeLimit": 150,
+   "godPowers": false,
+   "fixed": [
+    {
+     "defId": "battle_goat",
+     "marker": "goat_start",
+     "vip": true,
+     "heading": 1.5707963267948966,
+     "name": "The Goat",
+     "def": {"melee":null,"abilities":[],"ai":{"style":"hold"}}
+    }
+   ],
+   "script": {"vipMarch":{"to":"far_bank","delay":8,"clear":12,"patience":45}},
+   "bonus": {"id":"goat_untouched","text":"The goat takes no damage","helper":"vipUntouched","args":["battle_goat"]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  },
+  {
+   "id": "gaze_avoidance",
+   "title": "Do Not Look Directly",
+   "blurb": "Medusa turns whoever she faces to stone, at short range. Her five guards do not.",
+   "hint": "Her gaze reaches 14 units. Archers shoot from further away than that, and cavalry can run past her guards.",
+   "goalText": "Kill Medusa",
+   "arena": {
+    "recipe": "oasis",
+    "size": "small",
+    "seed": 15,
+    "env": {},
+    "markers": [{"id":"medusa_start","type":"general_spawn","x":23,"z":0,"r":3}]
+   },
+   "player": {"faction":"hellenes","roster":["cretan_archer","peltast","companion_cavalry"],"budget":1100},
+   "par": {"type":"cost","value":800},
+   "enemy": {
+    "faction": "mythic",
+    "generals": ["medusa"],
+    "placements": [
+     {"defId":"medusa","x":23,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":1},
+     {
+      "defId": "immortal",
+      "x": 20,
+      "z": -3.2,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "immortal",
+      "x": 20,
+      "z": -1.6,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {"defId":"immortal","x":20,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"immortal","x":20,"z":1.6,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"immortal","x":20,"z":3.2,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"kill_general","params":{},"markerIds":["medusa_start"],"binding":true},
+   "timeLimit": 150,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"no_stone","text":"Nobody turned to stone","helper":"summaryAtMost","args":["stonedUnits",0]},
+   "teaches": [],
+   "requiresModules": [],
+   "mechanicFired": null,
+   "firstSightBeat": null
+  }
+ ]
+}

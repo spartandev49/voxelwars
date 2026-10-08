@@ -1,0 +1,43 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "hashes": {
+   "era:ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf",
+   "render": "0af14c1b144722943e74d57d0391267200e52c557e168d7f57e6dc0dc6f2fcef",
+   "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+   "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+  },
+  "lists": {
+   "era:ancient": ["src/anim/clips/chicken1.js","src/anim/clips/elephant1.js","src/anim/clips/quad1.js","src/anim/clips/siege.js","src/content/era_ancient/arenas.js","src/content/era_ancient/campaign.js","src/content/era_ancient/campaign_run.js","src/content/era_ancient/campaign_text.js","src/content/era_ancient/campaign_validate.js","src/content/era_ancient/daily.js","src/content/era_ancient/lesson_text.js","src/content/era_ancient/props/catalog.js","src/content/era_ancient/puzzles.js","src/content/era_ancient/sim_text.js","src/content/era_ancient/stats.js","src/content/era_ancient/survival.js","src/content/era_ancient/wave_names.js"],
+   "render": ["src/render/battleview.js","src/render/cameras.js","src/render/engine.js","src/render/fx.js","src/render/instancing.js","src/render/labels.js","src/render/markers.js","src/render/minimap.js","src/render/post.js","src/render/preview.js","src/render/props.js","src/render/style.js","src/render/tempanimator.js","src/render/terrain.js","src/render/terrainMesh.js","src/render/voxskin.js","src/render/weather.js"],
+   "shared": ["src/anim/animator.js","src/content/era_ancient/beasts/common.js","src/content/era_ancient/beasts/quad1.js","src/content/era_ancient/blueprints.js","src/content/era_ancient/parts/_base.js","src/content/era_ancient/parts/_kit.js","src/content/era_ancient/parts/_registry.js","src/content/era_ancient/props/models/kit.js","src/voxel/compose.js","src/voxel/grid.js","src/voxel/lod.js","src/voxel/mesher.js","src/voxel/model.js"],
+   "simCore": ["assets/anim/humanoid_clips.json","src/anim/boot.js","src/anim/clips.js","src/anim/clips/hum1_death.js","src/anim/clips/hum1_loco.js","src/anim/clips/hum1_melee.js","src/anim/clips/hum1_ranged.js","src/anim/clips/hum1_react.js","src/anim/clips/hum1_ride.js","src/anim/clips/hum1_social.js","src/anim/clips/index.js","src/anim/clips/poses.js","src/anim/dsl.js","src/anim/gait.js","src/anim/kin.js","src/anim/ual.js","src/anim/ual_adopt.js","src/core/base64url.js","src/core/crc32.js","src/core/deflate.js","src/core/events.js","src/core/rng.js","src/core/tween.js","src/core/undo.js","src/sim/abilities/aura.js","src/sim/abilities/breaks_shield.js","src/sim/abilities/bribe.js","src/sim/abilities/cc_field.js","src/sim/abilities/chain_lightning.js","src/sim/abilities/cluck.js","src/sim/abilities/crowd_favorite.js","src/sim/abilities/dash.js","src/sim/abilities/dot_cloud.js","src/sim/abilities/execute.js","src/sim/abilities/fire_every.js","src/sim/abilities/fire_panic.js","src/sim/abilities/heal_pulse.js","src/sim/abilities/hook.js","src/sim/abilities/index.js","src/sim/abilities/kick.js","src/sim/abilities/misaim.js","src/sim/abilities/misfire.js","src/sim/abilities/net.js","src/sim/abilities/pack_bonus.js","src/sim/abilities/poison.js","src/sim/abilities/rage.js","src/sim/abilities/registry.js","src/sim/abilities/revive.js","src/sim/abilities/stance.js","src/sim/abilities/summon_on_death.js","src/sim/abilities/tantrum.js","src/sim/abilities/throne.js","src/sim/abilities/util.js","src/sim/abilities/war_horn.js","src/sim/ai.js","src/sim/armygen.js","src/sim/combat.js","src/sim/consts.js","src/sim/defs.js","src/sim/formations.js","src/sim/godpowers.js","src/sim/hazards.js","src/sim/lessons.js","src/sim/mutators.js","src/sim/objectives.js","src/sim/possession.js","src/sim/power.js","src/sim/projectiles.js","src/sim/spatial.js","src/sim/squads.js","src/sim/stats.js","src/sim/unit.js","src/sim/warmup.js","src/sim/waves.js","src/sim/world.js","src/world/arena.js","src/world/gen.js","src/world/nav.js"]
+  },
+  "unmatched": {
+   "era:ancient": ["src/content/era_ancient/data.js","src/content/era_ancient/manifest.js","src/content/era_ancient/pack.js"],
+   "render": [],
+   "shared": [],
+   "simCore": ["src/content/registry.js","src/content/eras.config.js","src/content/stat_helpers.js","src/content/shared/**","src/_generated/registry.eras.js"]
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "fingerprint_pin",
+ "regime": "baked",
+ "renderHash": "0af14c1b144722943e74d57d0391267200e52c557e168d7f57e6dc0dc6f2fcef",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

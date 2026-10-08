@@ -1,3 +1,4 @@
+// @serial  wall-clock-sensitive (the first-Tab check waits a fixed 800 ms and fails when the box is busy: measured on the v8 baseline too): serial lane, re-run alone before red
 // UI4: keyboard-only operation of title, quick-battle setup, placement and settings (pause/results belong to UI-B). Visible focus ring; Esc/back works.
 import { open, check, finish } from './lib.mjs';
 

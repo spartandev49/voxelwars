@@ -1,3 +1,4 @@
+// @serial  wall-clock-sensitive: the gate runs this file alone in the serial lane (tools/gate.mjs, docs/eras/spec/VF-impl.md)
 // A9: animation CPU cost. BattleView poses every unit each frame through Animator.pose with an LOD tier from its distance (0 full, 1 no secondary motion / overlays,
 // 2 frozen pose: no overlays or root finishing). 500 mixed units (soldiers of every weapon style, mounted units, beasts, siege) must cost <= 4 ms per frame,
 // the LOD tiers must each be cheaper than the one before, and a pose must not allocate (no GC spikes in a battle).

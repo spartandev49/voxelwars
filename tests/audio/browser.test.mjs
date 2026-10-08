@@ -1,3 +1,4 @@
+// @serial  wall-clock-sensitive: the gate runs this file alone in the serial lane (tools/gate.mjs, docs/eras/spec/VF-impl.md)
 // Browser checks (headless Chromium, real WebAudio): AU2 (autoplay gate with a stubbed suspended AudioContext + negative control), AU4 (core pack
 // with fetch blocked), AU8 (ducking restores within 800 ms), AU9 (volume sliders hit the right buses), AU10 (hidden -> suspended, visible -> running).
 import assert from 'node:assert/strict';

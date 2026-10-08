@@ -1,0 +1,1806 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "voxelwars/spec/ms.schema.json",
+ "title": "VOXELWARS MS: the campaign of one era (nine missions, six puzzles), msVersion 1",
+ "description": "Validated by tools/ms_lint.mjs (a JSON Schema 2020-12 subset interpreter: type enum const properties required additionalProperties items minItems maxItems minLength maxLength minimum maximum pattern uniqueItems oneOf anyOf allOf if/then $ref). x-vocab is the closed vocabulary the lint reads; spec/MS.md documents it.",
+ "$ref": "#/$defs/file",
+ "$defs": {
+  "snake": {"type":"string","pattern":"^[a-z][a-z0-9_]*$","description":"lower_snake_case id; immutable once shipped (AGENTS.md)"},
+  "idList": {"type":"array","items":{"$ref":"#/$defs/snake"},"uniqueItems":true},
+  "helperName": {"type":"string","pattern":"^[a-z][A-Za-z0-9]*$","description":"a key of x-vocab.helpers (lowerCamelCase)"},
+  "who": {"enum":["brutus","plato","cassandra"]},
+  "voiceLine": {
+   "type": "object",
+   "properties": {"who":{"$ref":"#/$defs/who"},"text":{"type":"string","minLength":1,"maxLength":400}},
+   "required": ["who","text"],
+   "additionalProperties": false
+  },
+  "anchor": {
+   "type": "string",
+   "pattern": "^(player_line|enemy_centroid|unit:[a-z][a-z0-9_]*|[a-z][a-z0-9_]*)$",
+   "description": "camera/aim anchor: player_line | enemy_centroid | unit:<defId> | <markerId> of this mission (resolved by the lint)"
+  },
+  "xz": {"type":"object","properties":{"x":{"type":"number"},"z":{"type":"number"}},"required":["x","z"],"additionalProperties":false},
+  "marker": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "type": {"enum":["hill","exit","vip_start","general_spawn","waypoint","capture","core"]},
+    "x": {"type":"number"},
+    "z": {"type":"number"},
+    "r": {"type":"number","minimum":1,"maximum":30}
+   },
+   "required": ["id","type","x","z","r"],
+   "additionalProperties": false
+  },
+  "arenaProp": {
+   "type": "object",
+   "properties": {
+    "t": {"$ref":"#/$defs/snake"},
+    "x": {"type":"number"},
+    "z": {"type":"number"},
+    "r": {"type":"number"},
+    "s": {"type":"number"},
+    "v": {"type":"integer","minimum":0}
+   },
+   "required": ["t","x","z"],
+   "additionalProperties": false,
+   "description": "decor/dressing prop placed by the mission (Ancient shape {t,x,z,r?,s?,v?})"
+  },
+  "arena": {
+   "type": "object",
+   "properties": {
+    "recipe": {"$ref":"#/$defs/snake"},
+    "size": {"enum":["small","medium","large"]},
+    "seed": {"type":"integer","minimum":0},
+    "env": {
+     "type": "object",
+     "additionalProperties": true,
+     "description": "env overrides: weather, time, fog, wind, theme, sky, gravity (checked by the lint against the closed lists)"
+    },
+    "markers": {"type":"array","items":{"$ref":"#/$defs/marker"},"maxItems":8},
+    "props": {"type":"array","items":{"$ref":"#/$defs/arenaProp"}}
+   },
+   "required": ["recipe","size","seed","env","markers"],
+   "additionalProperties": false
+  },
+  "parSpec": {
+   "type": "object",
+   "properties": {"type":{"enum":["cost","time","none"]},"value":{"type":"number","minimum":0}},
+   "required": ["type","value"],
+   "additionalProperties": false,
+   "description": "par defined ONCE: cost = money in fmtCost units, time = seconds, none = value 0"
+  },
+  "override": {
+   "type": "object",
+   "properties": {
+    "disarm": {"type":"boolean"},
+    "passive": {"type":"boolean"},
+    "disableAbilities": {"type":"array","items":{"$ref":"#/$defs/snake"},"uniqueItems":true},
+    "hp": {"type":"number","minimum":1},
+    "speed": {"type":"number","minimum":0},
+    "name": {"type":"string","minLength":1,"maxLength":60},
+    "ai": {"type":"object","properties":{"style":{"type":"string","minLength":1,"maxLength":20}},"required":["style"],"additionalProperties":false}
+   },
+   "required": [],
+   "additionalProperties": false,
+   "description": "closed per-group/per-fixed-unit patch (compiled to a def patch by the generator); Ancient fixed[].def keeps its open shape in `def`"
+  },
+  "group": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "defId": {"$ref":"#/$defs/snake"},
+    "n": {"type":"integer","minimum":1},
+    "at": {
+     "anyOf": [
+      {"$ref":"#/$defs/xz"},
+      {
+       "type": "object",
+       "properties": {"u":{"type":"number","minimum":0,"maximum":1},"v":{"type":"number","minimum":-1,"maximum":1}},
+       "required": ["u","v"],
+       "additionalProperties": false
+      },
+      {
+       "type": "object",
+       "properties": {"marker":{"$ref":"#/$defs/snake"},"dx":{"type":"number"},"dz":{"type":"number"}},
+       "required": ["marker"],
+       "additionalProperties": false
+      }
+     ]
+    },
+    "order": {"enum":["advance","hold"]},
+    "squad": {"type":"integer","minimum":1},
+    "formation": {"$ref":"#/$defs/snake"},
+    "spread": {"type":"number"},
+    "dx": {"type":"number"},
+    "dz": {"type":"number"},
+    "override": {"$ref":"#/$defs/override"},
+    "hired": {"type":"boolean"}
+   },
+   "required": ["defId","n"],
+   "additionalProperties": false
+  },
+  "placement": {
+   "type": "object",
+   "properties": {
+    "defId": {"$ref":"#/$defs/snake"},
+    "x": {"type":"number"},
+    "z": {"type":"number"},
+    "heading": {"type":"number"},
+    "order": {"enum":["advance","hold"]},
+    "squadId": {"type":"integer","minimum":1},
+    "formation": {"$ref":"#/$defs/snake"}
+   },
+   "required": ["defId","x","z","heading","order","squadId"],
+   "additionalProperties": false
+  },
+  "enemy": {
+   "type": "object",
+   "properties": {
+    "faction": {"$ref":"#/$defs/snake"},
+    "hired": {"$ref":"#/$defs/idList"},
+    "style": {"type":"string","minLength":1,"maxLength":60},
+    "difficulty": {"enum":["easy","normal","hard"]},
+    "special": {"type":"string","minLength":0,"maxLength":200},
+    "generals": {"$ref":"#/$defs/idList"},
+    "bosses": {"$ref":"#/$defs/idList"},
+    "groups": {"type":"array","items":{"$ref":"#/$defs/group"}},
+    "placements": {"type":"array","items":{"$ref":"#/$defs/placement"}}
+   },
+   "required": ["faction","style","difficulty","groups"],
+   "additionalProperties": false
+  },
+  "refGroup": {
+   "type": "object",
+   "properties": {"defId":{"$ref":"#/$defs/snake"},"n":{"type":"integer","minimum":1},"order":{"enum":["advance","hold"]}},
+   "required": ["defId","n"],
+   "additionalProperties": false
+  },
+  "fixedUnit": {
+   "type": "object",
+   "properties": {
+    "defId": {"$ref":"#/$defs/snake"},
+    "marker": {"$ref":"#/$defs/snake"},
+    "x": {"type":"number"},
+    "z": {"type":"number"},
+    "vip": {"type":"boolean"},
+    "heading": {"type":"number"},
+    "name": {"type":"string","minLength":1,"maxLength":60},
+    "def": {"type":"object","additionalProperties":true},
+    "override": {"$ref":"#/$defs/override"},
+    "selectable": {"type":"boolean"},
+    "free": {"type":"boolean"}
+   },
+   "required": ["defId"],
+   "additionalProperties": false
+  },
+  "objective": {
+   "type": "object",
+   "properties": {
+    "type": {"enum":["eliminate","kill_general","hold_hill","protect_vip","survive_waves","destroy","capture","defend_core","escort"]},
+    "params": {"type":"object","additionalProperties":true},
+    "markerIds": {"$ref":"#/$defs/idList"},
+    "binding": {"type":"boolean"},
+    "text": {"type":"string","minLength":1,"maxLength":80}
+   },
+   "required": ["type","params","markerIds","text"],
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {"properties":{"type":{"const":"hold_hill"}},"required":["type"]},
+     "then": {"properties":{"params":{"type":"object","properties":{"time":{"type":"number","minimum":1}},"required":["time"],"additionalProperties":false}}}
+    },
+    {
+     "if": {"properties":{"type":{"const":"survive_waves"}},"required":["type"]},
+     "then": {
+      "properties": {"params":{"type":"object","properties":{"waves":{"type":"integer","minimum":1}},"required":["waves"],"additionalProperties":false}}
+     }
+    },
+    {
+     "if": {"properties":{"type":{"const":"protect_vip"}},"required":["type"]},
+     "then": {
+      "properties": {
+       "params": {
+        "type": "object",
+        "properties": {"time":{"type":"number","minimum":1},"reachOnly":{"type":"boolean"}},
+        "required": ["time"],
+        "additionalProperties": false
+       }
+      }
+     }
+    },
+    {
+     "if": {"properties":{"type":{"const":"escort"}},"required":["type"]},
+     "then": {
+      "properties": {
+       "params": {
+        "type": "object",
+        "properties": {"vip":{"$ref":"#/$defs/snake"},"exit":{"$ref":"#/$defs/snake"},"mode":{"enum":["path"]},"reachOnly":{"type":"boolean"}},
+        "required": ["vip","exit","mode"],
+        "additionalProperties": false
+       }
+      }
+     }
+    },
+    {
+     "if": {"properties":{"type":{"const":"capture"}},"required":["type"]},
+     "then": {
+      "properties": {
+       "params": {
+        "type": "object",
+        "properties": {
+         "points": {"type":"array","items":{"$ref":"#/$defs/snake"},"minItems":1,"maxItems":8,"uniqueItems":true},
+         "need": {"type":"integer","minimum":1},
+         "hold": {"type":"number","minimum":0},
+         "flip": {"type":"number","minimum":1}
+        },
+        "required": ["points","need","hold"],
+        "additionalProperties": false
+       }
+      }
+     }
+    },
+    {
+     "if": {"properties":{"type":{"const":"defend_core"}},"required":["type"]},
+     "then": {
+      "properties": {
+       "params": {
+        "type": "object",
+        "properties": {"core":{"$ref":"#/$defs/snake"},"prop":{"$ref":"#/$defs/snake"},"time":{"type":"number","minimum":1}},
+        "required": ["core","prop"],
+        "additionalProperties": false
+       }
+      }
+     }
+    },
+    {
+     "if": {"properties":{"type":{"const":"destroy"}},"required":["type"]},
+     "then": {
+      "properties": {
+       "params": {
+        "type": "object",
+        "properties": {
+         "props": {
+          "type": "array",
+          "items": {
+           "anyOf": [
+            {
+             "type": "object",
+             "properties": {"type":{"$ref":"#/$defs/snake"},"count":{"type":"integer","minimum":1}},
+             "required": ["type","count"],
+             "additionalProperties": false
+            },
+            {
+             "type": "object",
+             "properties": {"def":{"$ref":"#/$defs/snake"},"count":{"type":"integer","minimum":1}},
+             "required": ["def","count"],
+             "additionalProperties": false
+            },
+            {
+             "type": "object",
+             "properties": {"tag":{"$ref":"#/$defs/snake"},"count":{"type":"integer","minimum":1}},
+             "required": ["tag","count"],
+             "additionalProperties": false
+            }
+           ]
+          },
+          "minItems": 1
+         },
+         "eliminate": {"type":"boolean"}
+        },
+        "required": ["props"],
+        "additionalProperties": false
+       }
+      }
+     }
+    },
+    {
+     "if": {"properties":{"type":{"enum":["eliminate","kill_general"]}},"required":["type"]},
+     "then": {"properties":{"params":{"type":"object","properties":{},"required":[],"additionalProperties":false}}}
+    }
+   ]
+  },
+  "condition": {
+   "anyOf": [
+    {"type":["string","number","boolean"]},
+    {
+     "type": "object",
+     "properties": {
+      "eq": {},
+      "ne": {},
+      "gt": {"type":"number"},
+      "gte": {"type":"number"},
+      "lt": {"type":"number"},
+      "lte": {"type":"number"},
+      "in": {"type":"array","items":{"type":["string","number","boolean"]},"minItems":1}
+     },
+     "required": [],
+     "additionalProperties": false
+    }
+   ],
+   "description": "payload/virtual-field condition: a scalar (equality) or {eq,ne,gt,gte,lt,lte,in}"
+  },
+  "where": {"type":"object","additionalProperties":{"$ref":"#/$defs/condition"}},
+  "trigger": {
+   "oneOf": [
+    {
+     "type": "object",
+     "properties": {
+      "on": {"const":"unit_kill"},
+      "def": {"$ref":"#/$defs/snake"},
+      "tag": {"$ref":"#/$defs/snake"},
+      "group": {"$ref":"#/$defs/snake"},
+      "side": {"enum":["player","enemy"]},
+      "count": {"type":"integer","minimum":1}
+     },
+     "required": ["on"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {"on":{"const":"prop_destroyed"},"type":{"$ref":"#/$defs/snake"},"count":{"type":"integer","minimum":1}},
+     "required": ["on","type"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {"on":{"const":"objective"},"progress":{"type":"number","minimum":0,"maximum":1}},
+     "required": ["on","progress"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "on": {"const":"hp_frac"},
+      "target": {
+       "anyOf": [
+        {"type":"object","properties":{"prop":{"$ref":"#/$defs/snake"}},"required":["prop"],"additionalProperties":false},
+        {"type":"object","properties":{"unit":{"$ref":"#/$defs/snake"}},"required":["unit"],"additionalProperties":false},
+        {"type":"object","properties":{"group":{"$ref":"#/$defs/snake"}},"required":["group"],"additionalProperties":false}
+       ]
+      },
+      "below": {"type":"number","minimum":0,"maximum":1}
+     },
+     "required": ["on","target","below"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {"on":{"const":"counter"},"counter":{"$ref":"#/$defs/snake"},"gte":{"type":"number","minimum":0},"within":{"type":"number","minimum":0.1}},
+     "required": ["on","counter","gte"],
+     "additionalProperties": false
+    }
+   ]
+  },
+  "when": {"anyOf":[{"type":"number","minimum":0},{"$ref":"#/$defs/trigger"}],"description":"M14 `at`: battle seconds, or a trigger"},
+  "op": {
+   "oneOf": [
+    {
+     "type": "object",
+     "properties": {
+      "op": {"const":"strike"},
+      "kind": {"enum":["shell","airstrike","orbital","prop","fire","gas"]},
+      "at": {
+       "anyOf": [
+        {"$ref":"#/$defs/xz"},
+        {"type":"object","properties":{"marker":{"$ref":"#/$defs/snake"}},"required":["marker"],"additionalProperties":false},
+        {"type":"object","properties":{"near":{"enum":["player_densest","enemy_densest"]}},"required":["near"],"additionalProperties":false}
+       ]
+      },
+      "r": {"type":"number","minimum":0.5},
+      "dmg": {"type":"number","minimum":0},
+      "delay": {"type":"number","minimum":0},
+      "n": {"type":"integer","minimum":1},
+      "team": {"type":"integer","minimum":-1,"maximum":1},
+      "protect": {"type":"number","minimum":0,"maximum":1}
+     },
+     "required": ["op","kind"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "op": {"const":"spawn"},
+      "team": {"enum":["player","enemy"]},
+      "groups": {"type":"array","items":{"$ref":"#/$defs/group"},"minItems":1},
+      "at": {
+       "anyOf": [{"$ref":"#/$defs/xz"},{"type":"object","properties":{"marker":{"$ref":"#/$defs/snake"}},"required":["marker"],"additionalProperties":false}]
+      },
+      "free": {"type":"boolean"},
+      "unique": {"type":"boolean"}
+     },
+     "required": ["op","team","groups","at"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "op": {"const":"prop"},
+      "act": {"enum":["spawn","destroy","damage"]},
+      "type": {"$ref":"#/$defs/snake"},
+      "at": {
+       "anyOf": [{"$ref":"#/$defs/xz"},{"type":"object","properties":{"marker":{"$ref":"#/$defs/snake"}},"required":["marker"],"additionalProperties":false}]
+      },
+      "id": {"$ref":"#/$defs/snake"},
+      "dmg": {"type":"number","minimum":0},
+      "all": {"type":"boolean"}
+     },
+     "required": ["op","act","type"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {"op":{"const":"weather"},"kind":{"type":"string","minLength":1,"maxLength":20}},
+     "required": ["op","kind"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {"op":{"const":"sky"},"time":{"type":"number","minimum":0,"maximum":24},"over":{"type":"number","minimum":0,"maximum":30}},
+     "required": ["op","time"],
+     "additionalProperties": false,
+     "description": "render-only time-of-day jump (Sci-Fi R10); no sim state"
+    },
+    {"type":"object","properties":{"op":{"const":"beat"},"beat":{"$ref":"#/$defs/snake"}},"required":["op","beat"],"additionalProperties":false},
+    {"type":"object","properties":{"op":{"const":"setpiece"},"piece":{"$ref":"#/$defs/snake"}},"required":["op","piece"],"additionalProperties":false},
+    {
+     "type": "object",
+     "properties": {"op":{"const":"order"},"group":{"$ref":"#/$defs/snake"},"order":{"enum":["advance","hold"]}},
+     "required": ["op","group","order"],
+     "additionalProperties": false
+    },
+    {
+     "type": "object",
+     "properties": {
+      "op": {"const":"kill"},
+      "group": {"$ref":"#/$defs/snake"},
+      "def": {"$ref":"#/$defs/snake"},
+      "tag": {"$ref":"#/$defs/snake"},
+      "within": {
+       "type": "object",
+       "properties": {"marker":{"$ref":"#/$defs/snake"},"r":{"type":"number","minimum":1}},
+       "required": ["marker","r"],
+       "additionalProperties": false
+      },
+      "cause": {
+       "enum": [
+        "melee",
+        "ranged",
+        "aoe",
+        "fire",
+        "trample",
+        "magic",
+        "stone",
+        "kick",
+        "gore",
+        "fall",
+        "poison",
+        "execute",
+        "misfire",
+        "bribe",
+        "lightning",
+        "drown",
+        "lava",
+        "spikes",
+        "geyser",
+        "bullet",
+        "explosion",
+        "energy",
+        "emp",
+        "crush",
+        "crash",
+        "mine",
+        "strike"
+       ]
+      }
+     },
+     "required": ["op","cause"],
+     "additionalProperties": false
+    }
+   ]
+  },
+  "scriptEvent": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "at": {"$ref":"#/$defs/when"},
+    "once": {"const":true},
+    "repeat": {
+     "type": "object",
+     "properties": {"every":{"type":"number","minimum":1},"times":{"type":"integer","minimum":2,"maximum":20}},
+     "required": ["every","times"],
+     "additionalProperties": false
+    },
+    "do": {"type":"array","items":{"$ref":"#/$defs/op"},"minItems":1,"maxItems":8}
+   },
+   "required": ["id","at","once","do"],
+   "additionalProperties": false,
+   "description": "repeat is generator sugar for a timed event: it expands to `times` events (ids <id>_1.._n) at at, at+every, ...; every expanded event counts toward the 64-event limit"
+  },
+  "waveList": {
+   "type": "object",
+   "properties": {
+    "placed": {"type":"boolean"},
+    "firstAfter": {"type":"number","minimum":0},
+    "first": {"type":"number","minimum":0},
+    "interval": {"type":"number","minimum":1},
+    "breather": {"type":"number","minimum":0},
+    "list": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {"type":"string","minLength":1,"maxLength":40},
+       "groups": {"type":"array","items":{"$ref":"#/$defs/group"},"minItems":1},
+       "after": {"type":"number","minimum":1},
+       "order": {"enum":["advance","hold"]}
+      },
+      "required": ["groups"],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    }
+   },
+   "required": ["list"],
+   "additionalProperties": false
+  },
+  "counterRule": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "kind": {"enum":["event","world"]},
+    "event": {"$ref":"#/$defs/snake"},
+    "worldId": {"$ref":"#/$defs/snake"},
+    "of": {"type":"string","minLength":1,"maxLength":20},
+    "side": {"enum":["player","enemy","any"]},
+    "where": {"$ref":"#/$defs/where"},
+    "add": {"anyOf":[{"const":1},{"type":"string","minLength":1,"maxLength":20}]},
+    "distinct": {"type":"string","minLength":1,"maxLength":20},
+    "by": {"type":"string","minLength":1,"maxLength":20},
+    "first": {"type":"string","minLength":1,"maxLength":20},
+    "unit": {"enum":["events","hp","ticks"]}
+   },
+   "required": ["id","kind"],
+   "additionalProperties": false,
+   "description": "a mission-local counter rule (same language as x-vocab.counters); ids are prefixed with the era prefix"
+  },
+  "script": {
+   "type": "object",
+   "properties": {
+    "waves": {"$ref":"#/$defs/waveList"},
+    "vipMarch": {
+     "type": "object",
+     "properties": {
+      "to": {"$ref":"#/$defs/snake"},
+      "delay": {"type":"number","minimum":0},
+      "clear": {"type":"number","minimum":0},
+      "patience": {"type":"number","minimum":0}
+     },
+     "required": ["to","delay","clear","patience"],
+     "additionalProperties": false
+    },
+    "zeus": {
+     "type": "object",
+     "properties": {
+      "first": {"type":"number","minimum":0},
+      "every": {"type":"number","minimum":1},
+      "dmg": {"type":"number","minimum":0},
+      "r": {"type":"number","minimum":0.5},
+      "delay": {"type":"number","minimum":0}
+     },
+     "required": ["first","every","dmg","r","delay"],
+     "additionalProperties": false,
+     "description": "Ancient legacy (Zeus strikes); new eras use events[].do[].strike"
+    },
+    "events": {"type":"array","items":{"$ref":"#/$defs/scriptEvent"},"maxItems":64,"description":"M14 ScriptRunner events; limit 64"},
+    "counters": {"type":"array","items":{"$ref":"#/$defs/counterRule"},"maxItems":12}
+   },
+   "required": [],
+   "additionalProperties": false
+  },
+  "starTest": {
+   "type": "object",
+   "properties": {"id":{"$ref":"#/$defs/snake"},"helper":{"$ref":"#/$defs/helperName"},"args":{"type":"array"}},
+   "required": ["id"],
+   "additionalProperties": false,
+   "description": "star 1: {id:\"win\"}; star 2: aliveCostFrac [0.5]; star 3: any other helper of x-vocab.helpers"
+  },
+  "beat": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "trigger": {"$ref":"#/$defs/snake"},
+    "delay": {"type":"number","minimum":0},
+    "who": {"$ref":"#/$defs/who"},
+    "text": {"type":"string","minLength":1,"maxLength":240},
+    "hint": {"type":"string","minLength":0,"maxLength":160},
+    "basics": {"type":"boolean"},
+    "mechanic": {"$ref":"#/$defs/snake"},
+    "when": {"type":"string","minLength":0,"maxLength":120},
+    "action": {"$ref":"#/$defs/snake"},
+    "target": {"type":"string","minLength":0,"maxLength":60},
+    "ack": {"type":"string","minLength":0,"maxLength":60}
+   },
+   "required": ["id","trigger","who","text"],
+   "additionalProperties": false,
+   "description": "CU5 teaching beat; basics beats are the once-ever layer"
+  },
+  "teachingException": {
+   "type": "object",
+   "properties": {
+    "kind": {"enum":["unit","prop","power"]},
+    "id": {"$ref":"#/$defs/snake"},
+    "mechanic": {"$ref":"#/$defs/snake"},
+    "why": {"type":"string","minLength":1,"maxLength":160}
+   },
+   "required": ["kind","id","mechanic","why"],
+   "additionalProperties": false,
+   "description": "a declared cameo of a mechanic taught LATER (the untaught rule); units are checked, props and powers are documentation"
+  },
+  "teaching": {
+   "type": "object",
+   "properties": {
+    "beats": {"type":"array","items":{"$ref":"#/$defs/beat"}},
+    "exceptions": {"type":"array","items":{"$ref":"#/$defs/teachingException"}},
+    "legacy": {"type":"boolean"}
+   },
+   "required": ["beats","exceptions"],
+   "additionalProperties": false
+  },
+  "shotPoint": {
+   "type": "object",
+   "properties": {"anchor":{"$ref":"#/$defs/anchor"},"offset":{"type":"array","items":{"type":"number"},"minItems":3,"maxItems":3}},
+   "required": ["anchor","offset"],
+   "additionalProperties": false,
+   "description": "anchor + [dx, height above ground, dz] in units"
+  },
+  "setpiece": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "role": {"enum":["primary","secondary","conditional","coda","cameo"]},
+    "trigger": {"anyOf":[{"$ref":"#/$defs/when"},{"type":"null"}]},
+    "shot": {
+     "type": "object",
+     "properties": {
+      "from": {"$ref":"#/$defs/shotPoint"},
+      "to": {"$ref":"#/$defs/shotPoint"},
+      "hold": {"type":"number","minimum":1,"maximum":8},
+      "ease": {"enum":["in","out","inout"]},
+      "simSpeed": {"type":"number","minimum":0.25,"maximum":1}
+     },
+     "required": ["from","to","hold","ease","simSpeed"],
+     "additionalProperties": false
+    },
+    "announcer": {
+     "type": "object",
+     "properties": {
+      "category": {"type":"string","minLength":1,"maxLength":60},
+      "sub": {"$ref":"#/$defs/snake"},
+      "pri": {"type":"integer","minimum":5,"maximum":5},
+      "bypassAlternation": {"const":true},
+      "lines": {"type":"array","items":{"$ref":"#/$defs/voiceLine"},"minItems":3,"maxItems":3}
+     },
+     "required": ["category","pri","bypassAlternation","lines"],
+     "additionalProperties": false
+    },
+    "stinger": {
+     "type": "object",
+     "properties": {
+      "id": {"$ref":"#/$defs/snake"},
+      "kind": {"enum":["comic","hit","swell","dread","fanfare"]},
+      "secs": {"type":"number","minimum":0.5,"maximum":6},
+      "bypassLimiter": {"type":"boolean"}
+     },
+     "required": ["id","kind","secs"],
+     "additionalProperties": false
+    },
+    "sfx": {"type":"array","items":{"$ref":"#/$defs/snake"},"minItems":1,"maxItems":12},
+    "notes": {"type":"string","minLength":0,"maxLength":300}
+   },
+   "required": ["id","role","trigger","shot","announcer","stinger","sfx"],
+   "additionalProperties": false,
+   "description": "SETPIECES registry row (CU3) as authored; trigger null = emitted by the content-layer MissionRuntime timer or by a script setpiece op; a trigger is compiled to a script event"
+  },
+  "quickUnlock": {
+   "type": "object",
+   "properties": {"kind":{"enum":["arena","preset","style"]},"id":{"$ref":"#/$defs/snake"},"name":{"type":"string","minLength":1,"maxLength":80}},
+   "required": ["kind","id"],
+   "additionalProperties": false
+  },
+  "rewards": {
+   "type": "object",
+   "properties": {
+    "primary": {
+     "type": "object",
+     "properties": {"class":{"enum":["mutator","part","quick_unlock","codex_write"]},"id":{"$ref":"#/$defs/snake"}},
+     "required": ["class","id"],
+     "additionalProperties": false
+    },
+    "unlockMutators": {"$ref":"#/$defs/idList"},
+    "unlockParts": {"$ref":"#/$defs/idList"},
+    "quickUnlocks": {"type":"array","items":{"$ref":"#/$defs/quickUnlock"}},
+    "codex": {"type":"array","items":{"type":"string","minLength":1,"maxLength":60}},
+    "substitution": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {"class":{"enum":["mutator","part","quick_unlock","codex_write"]},"id":{"$ref":"#/$defs/snake"}},
+       "required": ["class","id"],
+       "additionalProperties": false
+      },
+      {"type":"null"}
+     ]
+    }
+   },
+   "required": ["primary","unlockMutators","unlockParts","quickUnlocks","codex","substitution"],
+   "additionalProperties": false
+  },
+  "band": {"type":"array","items":{"type":"number","minimum":0,"maximum":1},"minItems":2,"maxItems":2},
+  "bots": {
+   "type": "object",
+   "properties": {"greedy":{"$ref":"#/$defs/band"},"counter":{"$ref":"#/$defs/band"},"turtle":{"$ref":"#/$defs/band"}},
+   "required": ["greedy","counter","turtle"],
+   "additionalProperties": false
+  },
+  "attempts": {
+   "type": "object",
+   "properties": {
+    "design": {
+     "type": "object",
+     "properties": {"star1":{"type":"number","minimum":1,"maximum":4.5},"star3":{"type":"number","minimum":1,"maximum":8}},
+     "required": ["star1","star3"],
+     "additionalProperties": false
+    },
+    "computed": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "star1": {"type":"number","minimum":1},
+        "star3": {"anyOf":[{"type":"number","minimum":1},{"type":"null"}]},
+        "p1": {"type":"number","minimum":0,"maximum":1},
+        "p3": {"type":"number","minimum":0,"maximum":1},
+        "runs": {"type":"integer","minimum":30},
+        "bot": {"const":"human_median"},
+        "ci95": {
+         "type": "object",
+         "properties": {
+          "star1": {"type":"array","items":{"type":"number","minimum":0},"minItems":2,"maxItems":2},
+          "star3": {"type":"array","items":{"anyOf":[{"type":"number","minimum":0},{"type":"null"}]},"minItems":2,"maxItems":2}
+         },
+         "required": ["star1","star3"],
+         "additionalProperties": false
+        },
+        "engine": {"enum":["node","chromium"]},
+        "missionHash": {"type":"string","minLength":8,"maxLength":8},
+        "at": {"type":"string","minLength":10,"maxLength":40}
+       },
+       "required": ["star1","star3","p1","p3","runs","bot","ci95","engine","missionHash","at"],
+       "additionalProperties": false,
+       "description": "GENERATED by tools/ms_attempts.mjs; never hand-edited"
+      },
+      {"type":"null"}
+     ]
+    }
+   },
+   "required": ["design","computed"],
+   "additionalProperties": false
+  },
+  "firstThree": {
+   "type": "object",
+   "properties": {
+    "doc": {"type":"string","minLength":1,"maxLength":120},
+    "fresh": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"kind":{"enum":["arrival","beat","toast","caption","setpiece"]},"id":{"type":"string","minLength":1,"maxLength":60}},
+      "required": ["kind","id"],
+      "additionalProperties": false
+     },
+     "minItems": 1
+    },
+    "returning": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"kind":{"enum":["arrival","beat","toast","caption","setpiece"]},"id":{"type":"string","minLength":1,"maxLength":60}},
+      "required": ["kind","id"],
+      "additionalProperties": false
+     }
+    },
+    "milestonesS": {
+     "type": "object",
+     "properties": {
+      "briefingDeployed": {"type":"number","minimum":0},
+      "fight": {"type":"number","minimum":0},
+      "setpiece": {"type":"number","minimum":0},
+      "firstEffect": {"type":"number","minimum":0},
+      "victory": {"type":"number","minimum":0},
+      "starsShown": {"type":"number","minimum":0},
+      "nextPrompt": {"type":"number","minimum":0}
+     },
+     "required": ["briefingDeployed","fight","setpiece","firstEffect","victory","starsShown","nextPrompt"],
+     "additionalProperties": false
+    }
+   },
+   "required": ["doc","fresh","returning","milestonesS"],
+   "additionalProperties": false,
+   "description": "mission 1 only: the index of design/<era>/first_three_minutes.md (ids parsed from the md by the lint and compared)"
+  },
+  "powers": {
+   "type": "object",
+   "properties": {
+    "disable": {"$ref":"#/$defs/idList"},
+    "override": {"type":"object","additionalProperties":{"type":"object","additionalProperties":{"type":"number","minimum":0}}},
+    "reasons": {"type":"object","additionalProperties":{"type":"string","minLength":1,"maxLength":120}}
+   },
+   "required": ["disable","override"],
+   "additionalProperties": false,
+   "description": "COORD decision: rules.powers.disable / rules.powers.override are real"
+  },
+  "input": {
+   "type": "object",
+   "properties": {
+    "at": {"type":"number","minimum":0},
+    "kind": {"enum":["power","order"]},
+    "slot": {"type":"integer","minimum":1,"maximum":6},
+    "target": {
+     "anyOf": [
+      {"$ref":"#/$defs/xz"},
+      {"type":"object","properties":{"marker":{"$ref":"#/$defs/snake"}},"required":["marker"],"additionalProperties":false},
+      {"type":"object","properties":{"centroid":{"enum":["enemy","player"]}},"required":["centroid"],"additionalProperties":false}
+     ]
+    },
+    "defId": {"$ref":"#/$defs/snake"},
+    "order": {"enum":["advance","hold"]}
+   },
+   "required": ["at","kind"],
+   "additionalProperties": false,
+   "description": "scripted inputs of the reference run (campaign_play step 6)"
+  },
+  "blind": {
+   "anyOf": [
+    {
+     "type": "object",
+     "properties": {"swap":{"type":"object","additionalProperties":{"$ref":"#/$defs/snake"}},"why":{"type":"string","minLength":1,"maxLength":200}},
+     "required": ["swap","why"],
+     "additionalProperties": false
+    },
+    {"type":"null"}
+   ]
+  },
+  "marginWaiver": {
+   "type": "object",
+   "properties": {"ref":{"type":"string","minLength":1,"maxLength":80},"reason":{"type":"string","minLength":1,"maxLength":300}},
+   "required": ["ref","reason"],
+   "additionalProperties": false
+  },
+  "missionText": {
+   "type": "object",
+   "properties": {
+    "title": {"type":"string","minLength":1,"maxLength":80},
+    "blurb": {"type":"string","minLength":1,"maxLength":240},
+    "briefing": {"type":"array","items":{"$ref":"#/$defs/voiceLine"},"minItems":3,"maxItems":5},
+    "victory": {"$ref":"#/$defs/voiceLine"},
+    "defeat": {"$ref":"#/$defs/voiceLine"},
+    "stars": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"id":{"$ref":"#/$defs/snake"},"text":{"type":"string","minLength":1,"maxLength":240}},
+      "required": ["id","text"],
+      "additionalProperties": false
+     },
+     "minItems": 3,
+     "maxItems": 3
+    },
+    "reward": {
+     "type": "object",
+     "properties": {"title":{"type":"string","minLength":1,"maxLength":60},"blurb":{"type":"string","minLength":1,"maxLength":240}},
+     "required": ["title","blurb"],
+     "additionalProperties": false
+    },
+    "poster": {"type":"string","minLength":0,"maxLength":120}
+   },
+   "required": ["title","blurb","briefing","victory","defeat","stars","reward"],
+   "additionalProperties": false
+  },
+  "mission": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "act": {"type":"integer","minimum":1,"maximum":3},
+    "mood": {"enum":["calm","festive","comic","tense","ominous","epic"]},
+    "moodAlso": {"type":"array","items":{"enum":["calm","festive","comic","tense","ominous","epic"]},"uniqueItems":true},
+    "unitsA": {"type":"integer","minimum":1},
+    "text": {"$ref":"#/$defs/missionText"},
+    "arena": {"$ref":"#/$defs/arena"},
+    "playerFaction": {"$ref":"#/$defs/snake"},
+    "roster": {"anyOf":[{"type":"array","items":{"$ref":"#/$defs/snake"},"minItems":1,"uniqueItems":true},{"type":"null"}]},
+    "caps": {"type":"object","additionalProperties":{"type":"integer","minimum":1}},
+    "budget": {"type":"integer","minimum":500,"maximum":40000},
+    "par": {"$ref":"#/$defs/parSpec"},
+    "core": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {"defId":{"$ref":"#/$defs/snake"},"n":{"type":"integer","minimum":1}},
+      "required": ["defId","n"],
+      "additionalProperties": false
+     }
+    },
+    "fixed": {"type":"array","items":{"$ref":"#/$defs/fixedUnit"}},
+    "reference": {"anyOf":[{"type":"array","items":{"$ref":"#/$defs/refGroup"},"minItems":1},{"type":"null"}]},
+    "bots": {"$ref":"#/$defs/bots"},
+    "botsWhy": {"type":"string","minLength":0,"maxLength":300},
+    "blind": {"$ref":"#/$defs/blind"},
+    "enemy": {"$ref":"#/$defs/enemy"},
+    "objective": {"$ref":"#/$defs/objective"},
+    "timeLimit": {"type":"integer","minimum":1},
+    "friendlyFire": {"type":"boolean"},
+    "godPowers": {"type":"boolean"},
+    "powers": {"$ref":"#/$defs/powers"},
+    "script": {"anyOf":[{"$ref":"#/$defs/script"},{"type":"null"}]},
+    "inputs": {"type":"array","items":{"$ref":"#/$defs/input"}},
+    "rules": {"type":"array","items":{"type":"string","minLength":10,"maxLength":300},"minItems":2,"maxItems":5},
+    "starTests": {"type":"array","items":{"$ref":"#/$defs/starTest"},"minItems":3,"maxItems":3},
+    "rewards": {"$ref":"#/$defs/rewards"},
+    "rewardId": {"$ref":"#/$defs/snake"},
+    "teaching": {"anyOf":[{"$ref":"#/$defs/teaching"},{"type":"null"}]},
+    "teaches": {"type":"array","items":{"$ref":"#/$defs/snake"},"maxItems":1},
+    "tests": {"$ref":"#/$defs/idList"},
+    "combines": {"$ref":"#/$defs/idList"},
+    "requiresModules": {"type":"array","items":{"type":"string","minLength":2,"maxLength":5},"uniqueItems":true},
+    "softModules": {"type":"array","items":{"type":"string","minLength":2,"maxLength":5},"uniqueItems":true},
+    "marginWaiver": {"$ref":"#/$defs/marginWaiver"},
+    "designAmendment": {"type":"string","minLength":1,"maxLength":160},
+    "setpiece": {"anyOf":[{"$ref":"#/$defs/setpiece"},{"type":"null"}]},
+    "extraSetpieces": {"type":"array","items":{"$ref":"#/$defs/setpiece"}},
+    "attempts": {"anyOf":[{"$ref":"#/$defs/attempts"},{"type":"null"}]},
+    "firstThreeMinutes": {"anyOf":[{"$ref":"#/$defs/firstThree"},{"type":"null"}]}
+   },
+   "required": [
+    "id",
+    "act",
+    "mood",
+    "text",
+    "arena",
+    "playerFaction",
+    "roster",
+    "caps",
+    "budget",
+    "par",
+    "core",
+    "fixed",
+    "reference",
+    "bots",
+    "botsWhy",
+    "blind",
+    "enemy",
+    "objective",
+    "timeLimit",
+    "friendlyFire",
+    "godPowers",
+    "powers",
+    "script",
+    "inputs",
+    "rules",
+    "starTests",
+    "rewards",
+    "rewardId",
+    "teaching",
+    "teaches",
+    "tests",
+    "combines",
+    "requiresModules",
+    "softModules",
+    "setpiece",
+    "extraSetpieces",
+    "attempts",
+    "firstThreeMinutes"
+   ],
+   "additionalProperties": false
+  },
+  "puzzle": {
+   "type": "object",
+   "properties": {
+    "id": {"$ref":"#/$defs/snake"},
+    "title": {"type":"string","minLength":1,"maxLength":80},
+    "blurb": {"type":"string","minLength":1,"maxLength":240},
+    "hint": {"type":"string","minLength":1,"maxLength":300},
+    "goalText": {"type":"string","minLength":1,"maxLength":100},
+    "arena": {"$ref":"#/$defs/arena"},
+    "player": {
+     "type": "object",
+     "properties": {
+      "faction": {"$ref":"#/$defs/snake"},
+      "roster": {"type":"array","items":{"$ref":"#/$defs/snake"},"minItems":1,"uniqueItems":true},
+      "budget": {"type":"integer","minimum":100}
+     },
+     "required": ["faction","roster","budget"],
+     "additionalProperties": false
+    },
+    "par": {"$ref":"#/$defs/parSpec"},
+    "enemy": {
+     "type": "object",
+     "properties": {
+      "faction": {"$ref":"#/$defs/snake"},
+      "generals": {"$ref":"#/$defs/idList"},
+      "placements": {"type":"array","items":{"$ref":"#/$defs/placement"},"minItems":1}
+     },
+     "required": ["faction","placements"],
+     "additionalProperties": false
+    },
+    "goal": {
+     "type": "object",
+     "properties": {
+      "type": {"enum":["eliminate","kill_general","hold_hill","protect_vip","survive_waves","destroy","capture","defend_core","escort"]},
+      "params": {"type":"object","additionalProperties":true},
+      "markerIds": {"$ref":"#/$defs/idList"},
+      "binding": {"type":"boolean"}
+     },
+     "required": ["type","params","markerIds"],
+     "additionalProperties": false
+    },
+    "timeLimit": {"type":"integer","minimum":1},
+    "godPowers": {"const":false},
+    "fixed": {"type":"array","items":{"$ref":"#/$defs/fixedUnit"}},
+    "script": {"anyOf":[{"$ref":"#/$defs/script"},{"type":"null"}]},
+    "bonus": {
+     "type": "object",
+     "properties": {
+      "id": {"$ref":"#/$defs/snake"},
+      "text": {"type":"string","minLength":1,"maxLength":120},
+      "helper": {"$ref":"#/$defs/helperName"},
+      "args": {"type":"array"}
+     },
+     "required": ["id","text","helper","args"],
+     "additionalProperties": false
+    },
+    "teaches": {"type":"array","items":{"$ref":"#/$defs/snake"},"maxItems":1},
+    "requiresModules": {"type":"array","items":{"type":"string","minLength":2,"maxLength":5},"uniqueItems":true},
+    "mechanicFired": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {"counter":{"$ref":"#/$defs/snake"},"min":{"type":"integer","minimum":1}},
+       "required": ["counter","min"],
+       "additionalProperties": false
+      },
+      {"type":"null"}
+     ]
+    },
+    "firstSightBeat": {"anyOf":[{"$ref":"#/$defs/beat"},{"type":"null"}]}
+   },
+   "required": [
+    "id",
+    "title",
+    "blurb",
+    "hint",
+    "goalText",
+    "arena",
+    "player",
+    "par",
+    "enemy",
+    "goal",
+    "timeLimit",
+    "godPowers",
+    "fixed",
+    "script",
+    "bonus",
+    "teaches",
+    "requiresModules",
+    "mechanicFired",
+    "firstSightBeat"
+   ],
+   "additionalProperties": false
+  },
+  "act": {
+   "type": "object",
+   "properties": {
+    "id": {"type":"integer","minimum":1,"maximum":3},
+    "title": {"type":"string","minLength":1,"maxLength":60},
+    "blurb": {"type":"string","minLength":1,"maxLength":200}
+   },
+   "required": ["id","title","blurb"],
+   "additionalProperties": false
+  },
+  "rewardPart": {
+   "type": "object",
+   "properties": {"name":{"type":"string","minLength":1,"maxLength":60},"blurb":{"type":"string","minLength":1,"maxLength":240}},
+   "required": ["name","blurb"],
+   "additionalProperties": false
+  },
+  "legacy": {
+   "type": "object",
+   "properties": {
+    "mutatorStars": {"type":"object","additionalProperties":{"type":"integer","minimum":1}},
+    "teachingSkip": {
+     "type": "object",
+     "properties": {"label":{"type":"string","minLength":1,"maxLength":40},"tip":{"type":"string","minLength":1,"maxLength":120}},
+     "required": ["label","tip"],
+     "additionalProperties": false
+    },
+    "teachingBeats": {"type":"array","items":{"$ref":"#/$defs/beat"}}
+   },
+   "required": ["mutatorStars","teachingSkip","teachingBeats"],
+   "additionalProperties": false,
+   "description": "Ancient only: constants of the shipped campaign_text.js/campaign.js that new eras express elsewhere (MUTATOR_STARS, TEACHING_SKIP, TEACHING_BEATS)"
+  },
+  "file": {
+   "type": "object",
+   "properties": {
+    "$schema": {"type":"string"},
+    "msVersion": {"const":1},
+    "era": {"enum":["ancient","medieval","modern","scifi"]},
+    "idPrefix": {"type":"string","pattern":"^([a-z]+_)?$"},
+    "source": {
+     "type": "object",
+     "properties": {
+      "generator": {"type":"string","minLength":1,"maxLength":120},
+      "files": {"type":"array","items":{"type":"string","minLength":1,"maxLength":120}},
+      "contentHash": {"type":"string","minLength":8,"maxLength":8}
+     },
+     "required": ["generator","files","contentHash"],
+     "additionalProperties": false
+    },
+    "acts": {"type":"array","items":{"$ref":"#/$defs/act"},"minItems":3,"maxItems":3},
+    "rewardParts": {"type":"object","additionalProperties":{"$ref":"#/$defs/rewardPart"}},
+    "legacy": {"$ref":"#/$defs/legacy"},
+    "missions": {"type":"array","items":{"$ref":"#/$defs/mission"},"minItems":9,"maxItems":9},
+    "puzzles": {"type":"array","items":{"$ref":"#/$defs/puzzle"},"minItems":6,"maxItems":6}
+   },
+   "required": ["msVersion","era","idPrefix","acts","rewardParts","missions","puzzles"],
+   "additionalProperties": false
+  }
+ },
+ "x-vocab": {
+  "eras": ["ancient","medieval","modern","scifi"],
+  "eraPrefix": {"ancient":"","medieval":"med_","modern":"mod_","scifi":"sf_"},
+  "rewardPrefixes": {"ancient":"anc_r","medieval":"med_r","modern":"mod_r","scifi":"sf_r"},
+  "moods": ["calm","festive","comic","tense","ominous","epic"],
+  "markerTypes": ["hill","exit","vip_start","general_spawn","waypoint","capture","core"],
+  "markerFor": {"hold_hill":"hill","protect_vip":"exit","escort":"exit","kill_general":"general_spawn","capture":"capture","defend_core":"core"},
+  "objectiveTypes": {"legacy":["eliminate","kill_general","hold_hill","protect_vip","survive_waves","destroy"],"added":["capture","defend_core","escort"]},
+  "killCauses": [
+   "melee",
+   "ranged",
+   "aoe",
+   "fire",
+   "trample",
+   "magic",
+   "stone",
+   "kick",
+   "gore",
+   "fall",
+   "poison",
+   "execute",
+   "misfire",
+   "bribe",
+   "lightning",
+   "drown",
+   "lava",
+   "spikes",
+   "geyser",
+   "bullet",
+   "explosion",
+   "energy",
+   "emp",
+   "crush",
+   "crash",
+   "mine",
+   "strike"
+  ],
+  "strikeKinds": ["shell","airstrike","orbital","prop","fire","gas"],
+  "weather": {
+   "kinds": ["clear","cloudy","rain","storm","snow","sandstorm","fog","smog","ion_storm","ash"],
+   "pending": {"ember_ion":"ash","neon_rain":"rain","spores":"fog"}
+  },
+  "stingerKinds": ["comic","hit","swell","dread","fanfare"],
+  "setpieceRoles": ["primary","secondary","conditional","coda","cameo"],
+  "namedAnchors": ["player_line","enemy_centroid"],
+  "announcerCategories": {
+   "mission": "campaign_<missionId>",
+   "objective": ["hold_hill","capture","escort","destroy","defend_core","survive_waves","kill_general","mission_start","boss_enters","boss_stun","finale"],
+   "subs": ["start","mid","first","complete","low","win","emp","boss","finale","setpiece"]
+  },
+  "summaryFields": ["unitsLost","unitsAlive","friendlyHits","friendlyKills","heroesLost","stonedUnits","kicks","elephantTrampleKills","kills","vipDamage"],
+  "powerOverrideFields": ["cd","delay","r","dur","dmg","propDmg","structDmg","heal","count"],
+  "unitVirtualFields": ["def","layer","role","tags","vehicle","vip","reloading","inCover","overLiquid","arc","indirect"],
+  "attemptsMax": {"star1":[2.5,3.5,4.5],"star3":[5,6.5,8]},
+  "liteOps": ["setpiece","beat","order"],
+  "limits": {
+   "markers": 8,
+   "enemyTypes": 16,
+   "referenceTypes": 16,
+   "scriptEvents": 64,
+   "opsPerEvent": 8,
+   "capturePoints": 8,
+   "budgetMin": 500,
+   "budgetMax": 40000,
+   "timeLimitMin": 120,
+   "timeLimitMax": 600,
+   "referenceFillMin": 0.85,
+   "referenceFillMax": 1
+  },
+  "helpers": {
+   "aliveCostFrac": {
+    "args": [{"name":"f","type":"frac"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["aliveRoster|aliveDefs","playerCostStart"],
+    "optional": 0,
+    "star": [2],
+    "doc": "cost(aliveRoster ?? aliveDefs) / (playerCostStart > 0 ? playerCostStart : 1) >= f; cost from the era stat table; the Ancient star-2 test with f = 0.5",
+    "ancient": "evaluateStars star 2 (campaign.js:238) with f = 0.5"
+   },
+   "thrift": {
+    "args": [{"name":"par","type":"cost"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["playerCostStart"],
+    "optional": 0,
+    "star": [3],
+    "doc": "playerCostStart <= par (Ancient T.thrift); forbidden when the mission has fixed[] (their cost is in playerCostStart): use spentAtMost",
+    "ancient": "T.thrift (campaign.js:35); mission marathon_sort_of"
+   },
+   "spentAtMost": {
+    "args": [{"name":"par","type":"cost"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["spent","playerCostStart"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(spent !== undefined ? spent : playerCostStart) <= par (the puzzle par star)",
+    "ancient": "puzzle par star (puzzles.js:94)"
+   },
+   "noLoss": {
+    "args": [{"name":"defs","type":"units"},{"name":"minFielded","type":"int"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["startDefs","lostDefs"],
+    "optional": 1,
+    "star": [3],
+    "doc": "sum(startDefs[d], d in defs) >= minFielded (default 1) AND sum(lostDefs[d]) === 0 (Ancient noSpartanLost = noLoss([spartan], 6))",
+    "ancient": "T.noSpartanLost (campaign.js:36) = noLoss([spartan], 6)"
+   },
+   "underTime": {
+    "args": [{"name":"secs","type":"secs"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["t"],
+    "optional": 0,
+    "star": [3],
+    "doc": "t <= secs (Ancient T.quick)",
+    "ancient": "T.quick (campaign.js:37); pyramid_scheme 90, teutoburg_peekaboo 75"
+   },
+   "vipUntouched": {
+    "args": [{"name":"def","type":"unit"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["vipDef","vipDamage"],
+    "optional": 0,
+    "star": [3],
+    "doc": "vipDef === def AND vipDamage === 0 (Ancient goatUntouched)",
+    "ancient": "T.goatUntouched (campaign.js:38); puzzle goat_untouched"
+   },
+   "keptAlive": {
+    "args": [{"name":"def","type":"unit"},{"name":"n","type":"int"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["aliveRoster|aliveDefs"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(aliveRoster ?? aliveDefs)[def] >= n (Ancient elephantAlive = keptAlive(war_elephant, 1)); roster units only (bailed-out, summoned and reinforcement units are excluded)",
+    "ancient": "T.elephantAlive (campaign.js:39) = keptAlive(war_elephant, 1)"
+   },
+   "propDownBy": {
+    "args": [{"name":"type","type":"prop"},{"name":"secs","type":"secs"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["propDownT"],
+    "optional": 0,
+    "star": [3],
+    "doc": "propDownT[type] non-empty AND min(propDownT[type]) <= secs (Ancient gateFast)",
+    "ancient": "T.gateFast (campaign.js:40); puzzle gate_fast (puzzles.js:63)"
+   },
+   "noFriendlyFire": {
+    "args": [],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["friendlyKills","friendlyHits"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(friendlyKills|0) === 0 AND (friendlyHits|0) === 0",
+    "ancient": "T.noFriendlyFire (campaign.js:41)"
+   },
+   "heroesAlive": {
+    "args": [],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["startDefs","heroesLost"],
+    "optional": 0,
+    "star": [3],
+    "doc": "at least one unit of a def in context.heroes fielded AND (heroesLost|0) === 0 (Ancient heroesAlive)",
+    "ancient": "T.heroesAlive (campaign.js:42)"
+   },
+   "usedMechanic": {
+    "args": [{"name":"id","type":"mechanic"},{"name":"n","type":"num"}],
+    "mechanic": "arg0",
+    "counters": [],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "counters[mechanics[id].counter] >= n; n counts the unit of the counter (events or hit points, x-vocab.mechanics)"
+   },
+   "usedAll": {
+    "args": [{"name":"ids","type":"mechanics"},{"name":"n","type":"num"}],
+    "mechanic": "arg0*",
+    "counters": [],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "for every id in ids: counters[mechanics[id].counter] >= n"
+   },
+   "propStanding": {
+    "args": [{"name":"type","type":"prop"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["propsAlive"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(propsAlive[type]|0) >= 1 at the battle end (props with hit points left)"
+   },
+   "burnKills": {
+    "args": [{"name":"tag","type":"tag"},{"name":"n","type":"int"}],
+    "mechanic": {"medieval":"fire"},
+    "counters": ["fire_kill"],
+    "reads": ["countersBy"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(countersBy.fire_kill[tag]|0) >= n; tag is a def tag of the killed unit"
+   },
+   "shellsOnTarget": {
+    "args": [{"name":"def","type":"unit"},{"name":"n","type":"int"}],
+    "mechanic": {"medieval":"arc","modern":"shells"},
+    "counters": ["shell_hit"],
+    "reads": ["countersBy"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(countersBy.shell_hit[def]|0) >= n; shell_hit counts indirect-fire hits on a unit of def"
+   },
+   "hitsDuringReload": {
+    "args": [{"name":"n","type":"int"}],
+    "mechanic": {"medieval":"bolts","modern":"reload"},
+    "counters": ["reload_hit"],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "counters.reload_hit >= n (hits the player dealt to an enemy in its reload state)"
+   },
+   "bannerDownBy": {
+    "args": [{"name":"def","type":"unit"},{"name":"secs","type":"secs"}],
+    "mechanic": {"medieval":"colours"},
+    "counters": ["banner_fall"],
+    "reads": ["firstT"],
+    "optional": 0,
+    "star": [3],
+    "doc": "firstT['banner_fall:' + def] <= secs (first enemy banner of that def to fall)"
+   },
+   "coverFracAtLeast": {
+    "args": [{"name":"f","type":"frac"}],
+    "mechanic": {"modern":"cover"},
+    "counters": ["cover_unit_ticks","unit_ticks"],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "unit_ticks > 0 AND cover_unit_ticks / unit_ticks >= f (share of the player unit-seconds spent in cover)"
+   },
+   "hitsWhileReloadingAtMost": {
+    "args": [{"name":"n","type":"int"}],
+    "mechanic": {"modern":"reload"},
+    "counters": ["reload_hit_taken"],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(counters.reload_hit_taken|0) <= n (hits taken by the player units while the hit unit was reloading)"
+   },
+   "ownBreaksAtMost": {
+    "args": [{"name":"n","type":"int"}],
+    "mechanic": {"scifi":"shield"},
+    "counters": ["own_shield_break"],
+    "reads": ["counters"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(counters.own_shield_break|0) <= n"
+   },
+   "vipShieldNeverBroken": {
+    "args": [],
+    "mechanic": {"scifi":"shield"},
+    "counters": ["vip_shield_break"],
+    "reads": ["counters","vipDef"],
+    "optional": 0,
+    "star": [3],
+    "doc": "a VIP existed (vipDef non-null) AND (counters.vip_shield_break|0) === 0"
+   },
+   "coreHpAtLeast": {
+    "args": [{"name":"f","type":"frac"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["coreHpFrac"],
+    "optional": 0,
+    "star": [3],
+    "doc": "coreHpFrac !== null AND coreHpFrac >= f (hit points of the defended core prop at the battle end / its maximum)"
+   },
+   "lossesAtMost": {
+    "args": [{"name":"n","type":"int"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["unitsLost"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(unitsLost|0) <= n (puzzle bonus few_losses / no_losses)",
+    "ancient": "puzzle few_losses (2) and no_losses (0)"
+   },
+   "enemyDownBy": {
+    "args": [{"name":"def","type":"unit"},{"name":"secs","type":"secs"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["enemyDownT"],
+    "optional": 0,
+    "star": [3],
+    "doc": "enemyDownT[def] non-empty AND enemyDownT[def][0] <= secs (puzzle bonus elephant_fast)",
+    "ancient": "puzzle elephant_fast (puzzles.js:53)"
+   },
+   "summaryAtMost": {
+    "args": [{"name":"field","type":"field"},{"name":"n","type":"int"}],
+    "mechanic": null,
+    "counters": [],
+    "reads": ["<field>"],
+    "optional": 0,
+    "star": [3],
+    "doc": "(summary[field]|0) <= n for a field of x-vocab.summaryFields (puzzle bonus no_stone = summaryAtMost(stonedUnits, 0))",
+    "ancient": "puzzle no_stone (puzzles.js:85)"
+   }
+  },
+  "counters": {
+   "brace_break": {
+    "kind": "event",
+    "event": "unit_brace",
+    "of": "id",
+    "side": "player",
+    "add": 1,
+    "unit": "events",
+    "module": null,
+    "doc": "a braced pike stopped a charge (existing event unit_brace {id: bracer, dst: charger}, combat.js:289)"
+   },
+   "banner_fall": {
+    "kind": "event",
+    "event": "banner_fall",
+    "of": "team",
+    "side": "enemy",
+    "add": 1,
+    "by": "def",
+    "first": "def",
+    "unit": "events",
+    "module": "M13",
+    "needs": ["event banner_fall {id, def, team, x, z, allies}"],
+    "doc": "an enemy banner carrier fell or its banner was cut (NEW event); firstT[banner_fall:<def>] and countersBy.banner_fall[def]"
+   },
+   "bolt_heavy_hit": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "src",
+    "side": "player",
+    "where": {"ap":{"gte":0.5},"armor":{"gte":0.4}},
+    "add": 1,
+    "unit": "events",
+    "module": "M1",
+    "needs": ["unit_hit gains ap, armor, face"],
+    "doc": "armour-piercing (ap >= .5) hits on a target with armour >= .4"
+   },
+   "charge_hit": {
+    "kind": "event",
+    "event": "charge_hit",
+    "of": "id",
+    "side": "player",
+    "add": 1,
+    "unit": "events",
+    "module": null,
+    "doc": "a charge-boosted hit (existing event charge_hit)"
+   },
+   "unhorse": {
+    "kind": "event",
+    "event": "unit_bailout",
+    "of": "id",
+    "side": "enemy",
+    "where": {"id.role":"cavalry"},
+    "add": 1,
+    "unit": "events",
+    "module": "M13",
+    "needs": ["event unit_bailout {id, def, n, x, z}"],
+    "doc": "an enemy mount died and its rider stood up"
+   },
+   "props_siege": {
+    "kind": "world",
+    "worldId": "props_siege",
+    "unit": "hp",
+    "module": "M12",
+    "doc": "structure damage dealt by the player to team-owned props (M14 fixed counter)"
+   },
+   "heal_hp": {
+    "kind": "event",
+    "event": "unit_heal",
+    "of": "id",
+    "side": "player",
+    "add": "amount",
+    "unit": "hp",
+    "module": "M6a",
+    "doc": "hit points healed on the player side"
+   },
+   "heal_event": {
+    "kind": "event",
+    "event": "unit_heal",
+    "of": "id",
+    "side": "player",
+    "add": 1,
+    "unit": "events",
+    "module": "M6a",
+    "doc": "heal or repair events on the player side"
+   },
+   "fire_kill": {
+    "kind": "event",
+    "event": "unit_kill",
+    "of": "dstTeam",
+    "side": "enemy",
+    "where": {"cause":"fire"},
+    "add": 1,
+    "by": "dst.tags",
+    "unit": "events",
+    "module": "M12",
+    "needs": ["burning props, oil and fire patches kill with cause fire"],
+    "doc": "kills of enemy units by cause fire; countersBy.fire_kill[tag] fans out over the dead unit def tags"
+   },
+   "shell_hit": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "dst",
+    "side": "enemy",
+    "where": {"aoe":true,"src.indirect":true},
+    "add": 1,
+    "by": "dstDef",
+    "unit": "events",
+    "module": "M10",
+    "needs": ["virtual field src.indirect (weapon arc high or strike unit)"],
+    "doc": "indirect-fire hits (arc high shells, call_strike) on enemy units; countersBy.shell_hit[def]"
+   },
+   "air_kill": {
+    "kind": "event",
+    "event": "unit_kill",
+    "of": "dstTeam",
+    "side": "enemy",
+    "where": {"dst.layer":"air","srcTeam":0},
+    "add": 1,
+    "unit": "events",
+    "module": "M7",
+    "doc": "kills of air-layer units by the player side"
+   },
+   "reload_hit": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "dst",
+    "side": "enemy",
+    "where": {"dst.reloading":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M2",
+    "needs": ["unit field reloading (derived getter)"],
+    "doc": "damage the player dealt to an enemy unit whose reload is running"
+   },
+   "reload_hit_taken": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "dst",
+    "side": "player",
+    "where": {"dst.reloading":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M2",
+    "doc": "damage taken by player units while the hit unit was reloading"
+   },
+   "cover_hit": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "dst",
+    "side": "player",
+    "where": {"dst.inCover":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M9",
+    "needs": ["unit field inCover"],
+    "doc": "damage events on player units that lowCover halved"
+   },
+   "pin_applied": {
+    "kind": "event",
+    "event": "unit_suppressed",
+    "of": "team",
+    "side": "enemy",
+    "add": 1,
+    "distinct": "id",
+    "unit": "events",
+    "module": "M2",
+    "doc": "distinct enemy units that reached a full pin (first time per unit)"
+   },
+   "armour_flank_hit": {
+    "kind": "event",
+    "event": "unit_hit",
+    "of": "dst",
+    "side": "enemy",
+    "where": {"face":{"in":["side","rear"]},"dst.vehicle":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M8",
+    "needs": ["unit_hit.face resolved by M8"],
+    "doc": "hits on an enemy vehicle or armoured unit whose resolved face is side or rear"
+   },
+   "mine_hit": {
+    "kind": "event",
+    "event": "mine_trigger",
+    "of": "victim",
+    "side": "enemy",
+    "add": 1,
+    "unit": "events",
+    "module": "M11",
+    "doc": "mine triggers that hit an enemy (mine_trigger {x z team victim kind})"
+   },
+   "shield_break_enemy": {"kind":"event","event":"shield_break","of":"id","side":"enemy","add":1,"unit":"events","module":"M4","doc":"enemy shields broken"},
+   "own_shield_break": {"kind":"event","event":"shield_break","of":"id","side":"player","add":1,"unit":"events","module":"M4","doc":"player shields broken (all battle)"},
+   "vip_shield_break": {
+    "kind": "event",
+    "event": "shield_break",
+    "of": "id",
+    "side": "player",
+    "where": {"id.vip":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M4",
+    "doc": "the VIP shield broke"
+   },
+   "hover_liquid_kill": {
+    "kind": "event",
+    "event": "unit_kill",
+    "of": "srcTeam",
+    "side": "player",
+    "where": {"src.layer":"hover","src.overLiquid":true},
+    "add": 1,
+    "unit": "events",
+    "module": "M7",
+    "needs": ["unit field overLiquid"],
+    "doc": "kills by player hover units over deep water, lava, goo or a rift"
+   },
+   "cloak_kill": {
+    "kind": "world",
+    "worldId": "cloak_kills",
+    "unit": "events",
+    "module": "M5",
+    "doc": "kills by a player unit that was cloaked when its attack began (M14 fixed counter)"
+   },
+   "emp_hit_machine": {
+    "kind": "event",
+    "event": "emp_hit",
+    "of": "id",
+    "side": "enemy",
+    "add": 1,
+    "distinct": "id",
+    "unit": "events",
+    "module": "M6b",
+    "doc": "distinct enemy machines stunned by a player pulse"
+   },
+   "blink": {"kind":"event","event":"unit_blink","of":"id","side":"player","add":1,"unit":"events","module":"M13","doc":"blinks cast by player units"},
+   "strike_kill": {
+    "kind": "world",
+    "worldId": "strike_kills",
+    "unit": "events",
+    "module": "M10",
+    "doc": "kills by a player call_strike or the orbital power within 0.6 s of the explosion (M14 fixed counter)"
+   },
+   "cover_unit_ticks": {"kind":"world","worldId":"cover_unit_ticks","unit":"ticks","module":"M9","doc":"sum over ticks of player units with inCover"},
+   "unit_ticks": {"kind":"world","worldId":"unit_ticks","unit":"ticks","module":"M9","doc":"sum over ticks of living player units"},
+   "projectile_launches": {
+    "kind": "event",
+    "event": "projectile_launch",
+    "of": "team",
+    "side": "any",
+    "add": 1,
+    "unit": "events",
+    "module": null,
+    "doc": "projectiles launched (existing event); the trigger of the Modern mission 1 set-piece"
+   },
+   "banner_fall_crowd": {
+    "kind": "event",
+    "event": "banner_fall",
+    "of": "team",
+    "side": "enemy",
+    "where": {"allies":{"gte":6}},
+    "add": 1,
+    "unit": "events",
+    "module": "M13",
+    "needs": ["banner_fall.allies"],
+    "doc": "an enemy banner fell while >= 6 allies stood inside its ring (the Medieval mission 2 set-piece trigger)"
+   },
+   "wave_spawns": {
+    "kind": "event",
+    "event": "wave_spawn",
+    "of": "team",
+    "side": "any",
+    "add": 1,
+    "unit": "events",
+    "module": null,
+    "doc": "scripted wave arrivals (existing event wave_spawn)"
+   },
+   "captures": {"kind":"world","worldId":"captures","unit":"events","module":"M14","doc":"capture points flipped to the player (M14 fixed counter)"}
+  },
+  "mechanics": {
+   "ancient": {},
+   "medieval": {
+    "brace": {"counter":"brace_break","unit":"events","modules":[],"headline":true,"firstSightOnly":false,"title":"Brace and hold"},
+    "colours": {"counter":"banner_fall","unit":"events","modules":["M13"],"headline":true,"firstSightOnly":false,"title":"Colours (banner and rout)"},
+    "bolts": {"counter":"bolt_heavy_hit","unit":"events","modules":["M1","M2"],"headline":false,"firstSightOnly":false,"title":"Armour and reload"},
+    "charge": {"counter":"charge_hit","unit":"events","modules":["M13"],"headline":true,"firstSightOnly":false,"title":"Charge and unhorse"},
+    "gates": {"counter":"props_siege","unit":"hp","modules":["M12"],"headline":true,"firstSightOnly":false,"title":"Gates and rams"},
+    "healers": {"counter":"heal_hp","unit":"hp","modules":["M6a"],"headline":true,"firstSightOnly":false,"title":"Healers and poison"},
+    "fire": {"counter":"fire_kill","unit":"events","modules":["M12"],"headline":false,"firstSightOnly":false,"title":"Fire and oil"},
+    "arc": {"counter":"shell_hit","unit":"events","modules":["M10"],"headline":false,"firstSightOnly":false,"title":"Artillery (arc fire)"},
+    "air": {"counter":"air_kill","unit":"events","modules":["M7"],"headline":true,"firstSightOnly":false,"title":"Air and anti-air"}
+   },
+   "modern": {
+    "reload": {"counter":"reload_hit","unit":"events","modules":["M2"],"headline":true,"firstSightOnly":false,"title":"Reload"},
+    "cover": {"counter":"cover_hit","unit":"events","modules":["M9"],"headline":true,"firstSightOnly":false,"title":"Cover"},
+    "pin": {"counter":"pin_applied","unit":"events","modules":["M2","M3"],"headline":true,"firstSightOnly":false,"title":"Pin (suppression)"},
+    "armour": {"counter":"armour_flank_hit","unit":"events","modules":["M8"],"headline":true,"firstSightOnly":false,"title":"Armour faces"},
+    "shells": {"counter":"shell_hit","unit":"events","modules":["M10"],"headline":true,"firstSightOnly":false,"title":"Shells"},
+    "mines": {"counter":"mine_hit","unit":"events","modules":["M11"],"headline":true,"firstSightOnly":false,"title":"Mines"},
+    "air": {"counter":"air_kill","unit":"events","modules":["M7"],"headline":true,"firstSightOnly":false,"title":"Air layer"},
+    "repair": {"counter":"heal_event","unit":"events","modules":["M6a"],"headline":false,"firstSightOnly":false,"title":"Heal vs repair"}
+   },
+   "scifi": {
+    "shield": {"counter":"shield_break_enemy","unit":"events","modules":["M4"],"headline":true,"firstSightOnly":false,"title":"Bubbles (regenerating shields)"},
+    "hover": {"counter":"hover_liquid_kill","unit":"events","modules":["M7"],"headline":true,"firstSightOnly":false,"title":"Hover"},
+    "cloak": {"counter":"cloak_kill","unit":"events","modules":["M5"],"headline":true,"firstSightOnly":false,"title":"Cloak"},
+    "emp": {"counter":"emp_hit_machine","unit":"events","modules":["M6b"],"headline":true,"firstSightOnly":false,"title":"EMP"},
+    "blink": {"counter":"blink","unit":"events","modules":["M13"],"headline":true,"firstSightOnly":false,"title":"Blink"},
+    "strike": {"counter":"strike_kill","unit":"events","modules":["M10","M13"],"headline":true,"firstSightOnly":false,"title":"Orbital strike"},
+    "repair": {"counter":"heal_event","unit":"events","modules":["M6a"],"headline":false,"firstSightOnly":true,"title":"Repair (first-sight beat)"},
+    "air": {"counter":"air_kill","unit":"events","modules":["M7"],"headline":false,"firstSightOnly":true,"title":"Air (first-sight beat)"}
+   }
+  },
+  "headline": {
+   "medieval": ["brace","colours","charge","gates","healers","air"],
+   "modern": ["reload","cover","pin","armour","shells","mines","air"],
+   "scifi": ["shield","hover","cloak","emp","blink","strike"],
+   "ancient": []
+  },
+  "rejectedHelpers": {
+   "shieldsBroken": "say usedMechanic('shield', n)",
+   "suppressed": "say usedMechanic('pin', n)",
+   "gateBrokenBy": "say propDownBy(type, secs)",
+   "aliveAtLeast": "say keptAlive(def, n)",
+   "aliveDef": "say keptAlive(def, n)",
+   "cloakKills": "say usedMechanic('cloak', n)",
+   "strikeKills": "say usedMechanic('strike', n)",
+   "blinkCasts": "say usedMechanic('blink', n)",
+   "empHits": "say usedMechanic('emp', n)",
+   "airKills": "say usedMechanic('air', n)",
+   "vipSurvived": "a VIP death loses the mission, so the helper is a tautology; say vipUntouched(def)",
+   "killedFirst": "no design uses it and its semantics were never stated",
+   "noSpartanLost": "say noLoss(['spartan'], 6)",
+   "goatUntouched": "say vipUntouched('battle_goat')",
+   "elephantAlive": "say keptAlive('war_elephant', 1)",
+   "quick": "say underTime(secs)",
+   "gateFast": "say propDownBy('gate_door', secs)"
+  }
+ }
+}

@@ -1,0 +1,1699 @@
+{
+ "abilities": [
+  "aura",
+  "bailout",
+  "blink",
+  "call_strike",
+  "cavalry",
+  "cc_field",
+  "cloak",
+  "confuse",
+  "dash",
+  "detect",
+  "discipline",
+  "dot_cloud",
+  "emp",
+  "eshield",
+  "gas",
+  "heal_pulse",
+  "lunge",
+  "overclock",
+  "recharge",
+  "scare",
+  "setup",
+  "stomp",
+  "summon_on_death",
+  "taunt",
+  "turret"
+ ],
+ "bosses": [
+  "rustbucket_rex",
+  "hive_queen",
+  "grand_concierge",
+  "elder_hummock",
+  "void_manta"
+ ],
+ "contextVersion": 1,
+ "currency": {
+  "id": "erg",
+  "name": "ergs",
+  "symbol": "ergs"
+ },
+ "eFreeze": {
+  "ancient": 0,
+  "medieval": 13,
+  "modern": 16,
+  "scifi": 19
+ },
+ "era": "scifi",
+ "factions": [
+  "courtesy",
+  "glowmoss",
+  "quiet_hour",
+  "rummage",
+  "skitter",
+  "tidy_concord",
+  "mixed"
+ ],
+ "firstThree": {
+  "fresh": [
+   {
+    "id": "arrival.scifi",
+    "kind": "arrival"
+   },
+   {
+    "id": "b_place_line",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_dome_panel",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_low_gravity",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_tidy_trooper",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_bulwark_warden",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_bubble_tender",
+    "kind": "toast"
+   },
+   {
+    "id": "b_fight",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_b_bubble",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_rivet_gunner",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_b_pop",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_sp_lunch_served",
+    "kind": "setpiece"
+   },
+   {
+    "id": "fs_shield_pip",
+    "kind": "toast"
+   },
+   {
+    "id": "b_speed",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_b_lull",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_sweep_ring",
+    "kind": "toast"
+   },
+   {
+    "id": "b_powers",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_tender_ring",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_power_1",
+    "kind": "caption"
+   },
+   {
+    "id": "fs_wrench_runner",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_dome_block",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_ammo_pips",
+    "kind": "toast"
+   },
+   {
+    "id": "b_done",
+    "kind": "beat"
+   }
+  ],
+  "returning": [
+   {
+    "id": "arrival.scifi",
+    "kind": "arrival"
+   },
+   {
+    "id": "fs_dome_panel",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_low_gravity",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_b_bubble",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_rivet_gunner",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_b_pop",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_sp_lunch_served",
+    "kind": "setpiece"
+   },
+   {
+    "id": "fs_shield_pip",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_b_lull",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_sweep_ring",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_tender_ring",
+    "kind": "beat"
+   },
+   {
+    "id": "sf_power_1",
+    "kind": "caption"
+   },
+   {
+    "id": "fs_wrench_runner",
+    "kind": "toast"
+   },
+   {
+    "id": "sf_dome_block",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_ammo_pips",
+    "kind": "toast"
+   }
+  ]
+ },
+ "formations": [
+  "block",
+  "line",
+  "phalanx",
+  "wedge",
+  "column",
+  "skirmish",
+  "circle",
+  "hollow"
+ ],
+ "godPowers": [
+  "sf_arc_tickle",
+  "sf_orbital_clean",
+  "sf_gravity_burp",
+  "sf_nano_spritz",
+  "sf_off_switch",
+  "sf_grazer_drop"
+ ],
+ "heroes": [
+  "grand_housekeeper",
+  "maitre_deluxe"
+ ],
+ "ladder": [
+  {
+   "arena": "sf_moonbase",
+   "id": "sf_lunch_break",
+   "n": 1,
+   "objective": "eliminate"
+  },
+  {
+   "arena": "sf_lavaworld",
+   "id": "sf_floor_lava",
+   "n": 2,
+   "objective": "capture"
+  },
+  {
+   "arena": "sf_reactor",
+   "id": "sf_overclock_oops",
+   "n": 3,
+   "objective": "destroy"
+  },
+  {
+   "arena": "sf_crashsite",
+   "id": "sf_express_delivery",
+   "n": 4,
+   "objective": "protect_vip"
+  },
+  {
+   "arena": "sf_megamall",
+   "id": "sf_turn_it_off",
+   "n": 5,
+   "objective": "hold_hill"
+  },
+  {
+   "arena": "sf_neoncity",
+   "id": "sf_grand_reopening",
+   "n": 6,
+   "objective": "kill_general"
+  },
+  {
+   "arena": "sf_jungle",
+   "id": "sf_blink_jungle",
+   "n": 7,
+   "objective": "defend_core"
+  },
+  {
+   "arena": "sf_hive",
+   "id": "sf_noise_complaint",
+   "n": 8,
+   "objective": "survive_waves"
+  },
+  {
+   "arena": "sf_orbital",
+   "id": "sf_queen_size",
+   "n": 9,
+   "objective": "kill_general"
+  }
+ ],
+ "modules": [
+  {
+   "S": "S28",
+   "deps": [],
+   "id": "M0",
+   "pos": 1
+  },
+  {
+   "S": "S29",
+   "deps": [
+    "M0"
+   ],
+   "id": "M1",
+   "pos": 2
+  },
+  {
+   "S": "S30",
+   "deps": [
+    "M0"
+   ],
+   "id": "M3",
+   "pos": 3
+  },
+  {
+   "S": "S31",
+   "deps": [
+    "M0",
+    "M1",
+    "M3"
+   ],
+   "id": "M2",
+   "pos": 4
+  },
+  {
+   "S": "S32",
+   "deps": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "id": "M2b",
+   "pos": 5
+  },
+  {
+   "S": "S33",
+   "deps": [
+    "M1",
+    "M2"
+   ],
+   "id": "M10",
+   "pos": 6
+  },
+  {
+   "S": "S34",
+   "deps": [
+    "M2b"
+   ],
+   "id": "M6a",
+   "pos": 7
+  },
+  {
+   "S": "S35",
+   "deps": [
+    "M2",
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M7",
+   "pos": 8
+  },
+  {
+   "S": "S36",
+   "deps": [
+    "M7",
+    "M10"
+   ],
+   "id": "M12",
+   "pos": 9
+  },
+  {
+   "S": "S37",
+   "deps": [
+    "M10",
+    "M12"
+   ],
+   "id": "M14",
+   "pos": 10
+  },
+  {
+   "S": "S38",
+   "deps": [
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M13",
+   "pos": 11
+  },
+  {
+   "S": "S45",
+   "deps": [
+    "M0",
+    "M2",
+    "M10",
+    "M14"
+   ],
+   "id": "M15",
+   "pos": 12
+  },
+  {
+   "S": "S46",
+   "deps": [
+    "M1",
+    "M3",
+    "M12"
+   ],
+   "id": "M17e",
+   "pos": 13
+  },
+  {
+   "S": "S39",
+   "deps": [
+    "M1",
+    "M2",
+    "M7"
+   ],
+   "id": "M8",
+   "pos": 14
+  },
+  {
+   "S": "S40",
+   "deps": [
+    "M2",
+    "M8",
+    "M12",
+    "M13"
+   ],
+   "id": "M9",
+   "pos": 15
+  },
+  {
+   "S": "S41",
+   "deps": [
+    "M10",
+    "M12",
+    "M13"
+   ],
+   "id": "M11",
+   "pos": 16
+  },
+  {
+   "S": "S42",
+   "deps": [
+    "M1",
+    "M3",
+    "M15"
+   ],
+   "id": "M4",
+   "pos": 17
+  },
+  {
+   "S": "S43",
+   "deps": [
+    "M2b",
+    "M3",
+    "M13"
+   ],
+   "id": "M5",
+   "pos": 18
+  },
+  {
+   "S": "S44",
+   "deps": [
+    "M3",
+    "M4",
+    "M6a",
+    "M13"
+   ],
+   "id": "M6b",
+   "pos": 19
+  }
+ ],
+ "mutators": [
+  "sf_overcharge",
+  "sf_warranty_void"
+ ],
+ "outline": [
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.2,
+    "star3": 3
+   },
+   "budget": 3000,
+   "hard": [
+    "M0",
+    "M1",
+    "M3",
+    "M2",
+    "M2b",
+    "M4"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 2250
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     2250
+    ],
+    "helper": "thrift"
+   },
+   "timeLimit": 300
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.5,
+    "star3": 4
+   },
+   "budget": 4500,
+   "hard": [
+    "M7",
+    "M14",
+    "M10",
+    "M12",
+    "M8",
+    "M4"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 3400
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     30
+    ],
+    "helper": "ownBreaksAtMost"
+   },
+   "timeLimit": 300
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.2,
+    "star3": 5
+   },
+   "budget": 7000,
+   "hard": [
+    "M12",
+    "M14",
+    "M13",
+    "M15",
+    "M17e",
+    "M4"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 5600
+   },
+   "soft": [
+    "M8"
+   ],
+   "star3": {
+    "args": [
+     "dustpan_hover",
+     2
+    ],
+    "helper": "keptAlive"
+   },
+   "timeLimit": 420
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.8,
+    "star3": 4.5
+   },
+   "budget": 4200,
+   "hard": [
+    "M5",
+    "M14",
+    "M7",
+    "M2",
+    "M12",
+    "M15",
+    "M17e",
+    "M4"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 3200
+   },
+   "soft": [],
+   "star3": {
+    "args": [],
+    "helper": "vipShieldNeverBroken"
+   },
+   "timeLimit": 300
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.4,
+    "star3": 3
+   },
+   "budget": 6000,
+   "hard": [
+    "M6b",
+    "M6a",
+    "M7",
+    "M8",
+    "M4",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 4500
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     170
+    ],
+    "helper": "underTime"
+   },
+   "timeLimit": 240
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 3,
+    "star3": 6
+   },
+   "budget": 9000,
+   "hard": [
+    "M5",
+    "M6b",
+    "M8",
+    "M15",
+    "M17e",
+    "M12",
+    "M14",
+    "M13"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 7200
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "cloak",
+     6
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 360
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2,
+    "star3": 5
+   },
+   "budget": 8000,
+   "hard": [
+    "M13",
+    "M14",
+    "M12",
+    "M7",
+    "M6a"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 6400
+   },
+   "soft": [
+    "M4"
+   ],
+   "star3": {
+    "args": [
+     0.6
+    ],
+    "helper": "coreHpAtLeast"
+   },
+   "timeLimit": 420
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.5,
+    "star3": 5.5
+   },
+   "budget": 10000,
+   "hard": [
+    "M13",
+    "M10",
+    "M7",
+    "M4",
+    "M12",
+    "M14"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 8000
+   },
+   "soft": [
+    "M5"
+   ],
+   "star3": {
+    "args": [
+     40
+    ],
+    "helper": "ownBreaksAtMost"
+   },
+   "timeLimit": 420
+  },
+  {
+   "allModules": true,
+   "attempts": {
+    "star1": 3.5,
+    "star3": 7
+   },
+   "budget": 14000,
+   "hard": [],
+   "par": {
+    "type": "cost",
+    "value": 11000
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "strike",
+     25
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 480
+  }
+ ],
+ "props": {
+  "sf_airlock_door": {
+   "cat": "architecture",
+   "hp": 600
+  },
+  "sf_antenna_mast": {
+   "cat": "props",
+   "hp": 90
+  },
+  "sf_basalt_pillar": {
+   "cat": "nature",
+   "hp": "INF"
+  },
+  "sf_billboard": {
+   "cat": "props",
+   "hp": 300
+  },
+  "sf_blast_door": {
+   "cat": "architecture",
+   "hp": 1000
+  },
+  "sf_bulkhead": {
+   "cat": "architecture",
+   "hp": 800
+  },
+  "sf_cargo_container": {
+   "cat": "props",
+   "hp": 260
+  },
+  "sf_cargo_crate": {
+   "cat": "props",
+   "hp": 60
+  },
+  "sf_coolant_tank": {
+   "cat": "props",
+   "hp": 120
+  },
+  "sf_crystal_cluster": {
+   "cat": "nature",
+   "hp": 220
+  },
+  "sf_dome_panel": {
+   "cat": "architecture",
+   "hp": 400
+  },
+  "sf_drop_pod": {
+   "cat": "props",
+   "hp": 120
+  },
+  "sf_egg_cluster": {
+   "cat": "monuments",
+   "hp": 260
+  },
+  "sf_escape_pod": {
+   "cat": "monuments",
+   "hp": 300
+  },
+  "sf_force_gate": {
+   "cat": "architecture",
+   "hp": "INF"
+  },
+  "sf_giant_fern": {
+   "cat": "nature",
+   "hp": 30
+  },
+  "sf_glow_tree": {
+   "cat": "nature",
+   "hp": 160
+  },
+  "sf_hab_dome": {
+   "cat": "architecture",
+   "hp": 900
+  },
+  "sf_heart_tree": {
+   "cat": "monuments",
+   "hp": 2400
+  },
+  "sf_help_kiosk": {
+   "cat": "props",
+   "hp": 200
+  },
+  "sf_hive_spire": {
+   "cat": "monuments",
+   "hp": 1400
+  },
+  "sf_holo_beacon": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "sf_hull_plate": {
+   "cat": "architecture",
+   "hp": 900
+  },
+  "sf_ice_block": {
+   "cat": "nature",
+   "hp": 220
+  },
+  "sf_ice_spire": {
+   "cat": "nature",
+   "hp": "INF"
+  },
+  "sf_junk_heap": {
+   "cat": "props",
+   "hp": 400
+  },
+  "sf_neon_tower": {
+   "cat": "architecture",
+   "hp": "INF"
+  },
+  "sf_obsidian_shard": {
+   "cat": "nature",
+   "hp": 160
+  },
+  "sf_parked_hovercar": {
+   "cat": "props",
+   "hp": 200
+  },
+  "sf_reactor_core": {
+   "cat": "monuments",
+   "hp": 2000
+  },
+  "sf_regolith_boulder": {
+   "cat": "nature",
+   "hp": "INF"
+  },
+  "sf_resin_wall": {
+   "cat": "architecture",
+   "hp": 500
+  },
+  "sf_shield_pylon": {
+   "cat": "monuments",
+   "hp": 700
+  },
+  "sf_shop_front": {
+   "cat": "architecture",
+   "hp": 450
+  },
+  "sf_solar_array": {
+   "cat": "props",
+   "hp": 120
+  },
+  "sf_spore_pod": {
+   "cat": "nature",
+   "hp": 40
+  },
+  "sf_teleport_pad": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "sf_wreck_engine": {
+   "cat": "monuments",
+   "hp": "INF"
+  }
+ },
+ "puzzles": [
+  {
+   "arena": "sf_biodome",
+   "budget": 1500,
+   "id": "sf_pz_pop_then_hide",
+   "par": 1200,
+   "roster": [
+    "tidy_trooper",
+    "bulwark_warden",
+    "bubble_tender"
+   ],
+   "seed": 41,
+   "size": "small",
+   "title": "Pop, Then Hide"
+  },
+  {
+   "arena": "sf_lavaworld",
+   "budget": 1800,
+   "id": "sf_pz_light_bridge",
+   "par": 1450,
+   "roster": [
+    "dustpan_hover",
+    "tidy_trooper",
+    "bulwark_warden"
+   ],
+   "seed": 42,
+   "size": "medium",
+   "title": "Light Bridge Etiquette"
+  },
+  {
+   "arena": "sf_crashsite",
+   "budget": 1000,
+   "id": "sf_pz_do_not_disturb",
+   "par": 800,
+   "roster": [
+    "tidy_trooper",
+    "spritz_medic",
+    "glow_grazer"
+   ],
+   "seed": 43,
+   "size": "medium",
+   "title": "Do Not Disturb"
+  },
+  {
+   "arena": "sf_megamall",
+   "budget": 1100,
+   "id": "sf_pz_off_switch",
+   "par": 880,
+   "roster": [
+    "zapper_tinker",
+    "rivet_gunner",
+    "wrench_runner"
+   ],
+   "seed": 44,
+   "size": "medium",
+   "title": "Have You Tried Turning It Off? (Puzzle Edition)"
+  },
+  {
+   "arena": "sf_chasm",
+   "budget": 900,
+   "id": "sf_pz_gap_year",
+   "par": 720,
+   "roster": [
+    "hop_notary",
+    "tidy_trooper"
+   ],
+   "seed": 45,
+   "size": "medium",
+   "title": "Gap Year"
+  },
+  {
+   "arena": "sf_hive",
+   "budget": 1300,
+   "id": "sf_pz_bait_and_clean",
+   "par": 1000,
+   "roster": [
+    "glow_grazer",
+    "bulwark_warden",
+    "tidy_trooper",
+    "grand_housekeeper"
+   ],
+   "seed": 46,
+   "size": "medium",
+   "title": "Bait And Clean"
+  }
+ ],
+ "recipes": {
+  "sf_biodome": {
+   "name": "Biodome Gardens",
+   "seed": 23,
+   "size": "small"
+  },
+  "sf_chasm": {
+   "name": "Gap Year Canyon",
+   "seed": 19,
+   "size": "medium"
+  },
+  "sf_crashsite": {
+   "name": "Hull Down",
+   "seed": 5,
+   "size": "medium"
+  },
+  "sf_hive": {
+   "name": "Sinkhole Nest",
+   "seed": 8,
+   "size": "medium"
+  },
+  "sf_iceworld": {
+   "name": "Frostbite Flats",
+   "seed": 14,
+   "size": "medium"
+  },
+  "sf_jungle": {
+   "name": "Spore Hollow",
+   "seed": 17,
+   "size": "large"
+  },
+  "sf_lavaworld": {
+   "name": "Magma Lounge",
+   "seed": 3,
+   "size": "medium"
+  },
+  "sf_megamall": {
+   "name": "Courtesy Plaza",
+   "seed": 9,
+   "size": "large"
+  },
+  "sf_moonbase": {
+   "name": "Dome Sweet Dome",
+   "seed": 7,
+   "size": "medium"
+  },
+  "sf_neoncity": {
+   "name": "Gridlock Boulevard",
+   "seed": 21,
+   "size": "large"
+  },
+  "sf_orbital": {
+   "name": "Spin Cycle Station",
+   "seed": 31,
+   "size": "medium"
+  },
+  "sf_reactor": {
+   "name": "Core Meltdown Cafe",
+   "seed": 12,
+   "size": "medium"
+  }
+ },
+ "rewardParts": [],
+ "sizes": {
+  "large": 256,
+  "medium": 192,
+  "small": 128
+ },
+ "source": "markdown",
+ "units": {
+  "acid_spitter": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 120,
+   "faction": "skitter",
+   "firstMission": "M7 (enemy)",
+   "height": "M",
+   "name": "Acid Spitter",
+   "rig": "insect1 (bloat)",
+   "role": "ranged",
+   "tags": [
+    "acid",
+    "alien",
+    "organic"
+   ]
+  },
+  "bloom_stomper": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 400,
+   "faction": "glowmoss",
+   "firstMission": "M7",
+   "height": "L",
+   "name": "Bloom Stomper",
+   "rig": "quad1 (bloom giant)",
+   "role": "monster",
+   "tags": [
+    "alien",
+    "large",
+    "organic"
+   ]
+  },
+  "bubble_tender": {
+   "abilities": [
+    "aura",
+    "recharge",
+    "eshield"
+   ],
+   "aiStyle": "support",
+   "cost": 150,
+   "faction": "tidy_concord",
+   "firstMission": "M1",
+   "height": "T",
+   "name": "Bubble Tender",
+   "rig": "hum1 (slim)",
+   "role": "support",
+   "tags": [
+    "aura",
+    "organic",
+    "shielded"
+   ]
+  },
+  "bulwark_warden": {
+   "abilities": [
+    "eshield"
+   ],
+   "aiStyle": "hold",
+   "cost": 140,
+   "faction": "tidy_concord",
+   "firstMission": "M1",
+   "height": "M",
+   "name": "Bulwark Warden",
+   "rig": "hum1 (wide)",
+   "role": "melee",
+   "tags": [
+    "dome",
+    "energy",
+    "organic",
+    "shielded"
+   ]
+  },
+  "dustpan_hover": {
+   "abilities": [
+    "eshield"
+   ],
+   "aiStyle": "flank",
+   "cost": 270,
+   "faction": "tidy_concord",
+   "firstMission": "M2",
+   "height": "M",
+   "name": "Dustpan Hover Tank",
+   "rig": "hover1 (bowl)",
+   "role": "cavalry",
+   "tags": [
+    "energy",
+    "hover",
+    "machine",
+    "shielded",
+    "vehicle"
+   ]
+  },
+  "elder_hummock": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "aiStyle": "hold",
+   "cost": 1700,
+   "faction": "glowmoss",
+   "firstMission": "M7 (ally)",
+   "height": "XL",
+   "name": "The Elder Hummock [B]",
+   "rig": "quad1 (hill titan)",
+   "role": "monster",
+   "tags": [
+    "alien",
+    "boss",
+    "large",
+    "organic"
+   ]
+  },
+  "glidewing": {
+   "abilities": [],
+   "aiStyle": "flank",
+   "cost": 200,
+   "faction": "skitter",
+   "firstMission": "M8 (enemy)",
+   "height": "M A",
+   "name": "Glidewing",
+   "rig": "dragon1 (wyvern)",
+   "role": "ranged",
+   "tags": [
+    "air",
+    "alien",
+    "organic"
+   ]
+  },
+  "glow_grazer": {
+   "abilities": [
+    "detect"
+   ],
+   "aiStyle": "charge",
+   "cost": 70,
+   "faction": "glowmoss",
+   "firstMission": "M4",
+   "height": "M",
+   "name": "Glow Grazer",
+   "rig": "quad1 (grazer)",
+   "role": "beast",
+   "tags": [
+    "alien",
+    "beast",
+    "detector",
+    "organic"
+   ]
+  },
+  "grand_concierge": {
+   "abilities": [
+    "cc_field",
+    "confuse",
+    "eshield"
+   ],
+   "aiStyle": "hero",
+   "cost": 1400,
+   "faction": "courtesy",
+   "firstMission": "M6 (enemy boss)",
+   "height": "XL",
+   "name": "The Grand Concierge [B]",
+   "rig": "mech1 (biped)",
+   "role": "monster",
+   "tags": [
+    "boss",
+    "large",
+    "machine",
+    "mech",
+    "shielded"
+   ]
+  },
+  "grand_housekeeper": {
+   "abilities": [
+    "call_strike",
+    "aura",
+    "discipline",
+    "eshield"
+   ],
+   "aiStyle": "hero",
+   "cost": 420,
+   "faction": "tidy_concord",
+   "firstMission": "M8",
+   "height": "T",
+   "name": "The Grand Housekeeper [H]",
+   "rig": "hum1 (wide)",
+   "role": "hero",
+   "tags": [
+    "energy",
+    "hero",
+    "officer",
+    "organic",
+    "shielded"
+   ]
+  },
+  "greeter_unit": {
+   "abilities": [
+    "cc_field",
+    "taunt"
+   ],
+   "aiStyle": "charge",
+   "cost": 95,
+   "faction": "courtesy",
+   "firstMission": "M5 (enemy)",
+   "height": "M",
+   "name": "Greeter Unit",
+   "rig": "hum1 (std)",
+   "role": "melee",
+   "tags": [
+    "machine",
+    "polite"
+   ]
+  },
+  "hive_queen": {
+   "abilities": [
+    "summon_on_death",
+    "cc_field",
+    "scare"
+   ],
+   "aiStyle": "hold",
+   "cost": 1600,
+   "faction": "skitter",
+   "firstMission": "M9 (enemy boss)",
+   "height": "L",
+   "name": "The Hive Queen [B]",
+   "rig": "insect1 (queen x3)",
+   "role": "monster",
+   "tags": [
+    "alien",
+    "boss",
+    "large",
+    "organic"
+   ]
+  },
+  "hop_notary": {
+   "abilities": [
+    "dash",
+    "blink"
+   ],
+   "aiStyle": "skirmish",
+   "cost": 160,
+   "faction": "quiet_hour",
+   "firstMission": "M7",
+   "height": "M",
+   "name": "Hop Notary",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "blink",
+    "organic"
+   ]
+  },
+  "junk_buggy": {
+   "abilities": [
+    "bailout"
+   ],
+   "aiStyle": "flank",
+   "cost": 190,
+   "faction": "rummage",
+   "firstMission": "M2 (enemy)",
+   "height": "M",
+   "name": "Junk Buggy",
+   "rig": "car1 (lopsided)",
+   "role": "cavalry",
+   "tags": [
+    "explosive",
+    "machine",
+    "vehicle"
+   ]
+  },
+  "maitre_deluxe": {
+   "abilities": [
+    "cc_field",
+    "confuse",
+    "eshield"
+   ],
+   "aiStyle": "hero",
+   "cost": 400,
+   "faction": "courtesy",
+   "firstMission": "M6 (enemy)",
+   "height": "T",
+   "name": "Maitre D'Luxe [H]",
+   "rig": "hum1 (wide)",
+   "role": "hero",
+   "tags": [
+    "hero",
+    "machine",
+    "officer",
+    "shielded"
+   ]
+  },
+  "mandible_runner": {
+   "abilities": [
+    "cavalry"
+   ],
+   "aiStyle": "flank",
+   "cost": 100,
+   "faction": "skitter",
+   "firstMission": "M7 (enemy)",
+   "height": "S",
+   "name": "Mandible Runner",
+   "rig": "insect1 (runner)",
+   "role": "cavalry",
+   "tags": [
+    "alien",
+    "cavalry",
+    "organic"
+   ]
+  },
+  "plate_beetle": {
+   "abilities": [
+    "eshield"
+   ],
+   "aiStyle": "charge",
+   "cost": 220,
+   "faction": "skitter",
+   "firstMission": "M7 (enemy)",
+   "height": "M",
+   "name": "Plate Beetle",
+   "rig": "insect1 (beetle)",
+   "role": "melee",
+   "tags": [
+    "alien",
+    "armoured",
+    "organic",
+    "shielded"
+   ]
+  },
+  "refund_crawler": {
+   "abilities": [
+    "turret",
+    "eshield"
+   ],
+   "aiStyle": "hold",
+   "cost": 300,
+   "faction": "courtesy",
+   "firstMission": "M5 (enemy)",
+   "height": "M",
+   "name": "Refund Crawler",
+   "rig": "tank1 (pods)",
+   "role": "cavalry",
+   "tags": [
+    "armoured",
+    "machine",
+    "shielded",
+    "vehicle"
+   ]
+  },
+  "rivet_gunner": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 120,
+   "faction": "rummage",
+   "firstMission": "M1 (enemy)",
+   "height": "M",
+   "name": "Rivet Gunner",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "chip",
+    "kinetic",
+    "organic"
+   ]
+  },
+  "rustbucket_rex": {
+   "abilities": [
+    "stomp",
+    "overclock"
+   ],
+   "aiStyle": "hero",
+   "cost": 1500,
+   "faction": "rummage",
+   "firstMission": "M3 (enemy boss)",
+   "height": "XL",
+   "name": "Rustbucket Rex [B]",
+   "rig": "mech4 (quad rigid)",
+   "role": "monster",
+   "tags": [
+    "boss",
+    "large",
+    "machine",
+    "mech"
+   ]
+  },
+  "salvo_cart": {
+   "abilities": [
+    "setup"
+   ],
+   "aiStyle": "siege",
+   "cost": 230,
+   "faction": "rummage",
+   "firstMission": "M2 (enemy)",
+   "height": "M",
+   "name": "Salvo Cart",
+   "rig": "gun1 (cart)",
+   "role": "siege",
+   "tags": [
+    "crewed",
+    "indirect",
+    "machine"
+   ]
+  },
+  "shush_bike": {
+   "abilities": [
+    "eshield"
+   ],
+   "aiStyle": "flank",
+   "cost": 180,
+   "faction": "quiet_hour",
+   "firstMission": "M4 (enemy)",
+   "height": "S",
+   "name": "Shush Bike",
+   "rig": "hover1 (blade bike)",
+   "role": "cavalry",
+   "tags": [
+    "hover",
+    "machine",
+    "shielded",
+    "vehicle"
+   ]
+  },
+  "silent_signer": {
+   "abilities": [
+    "cloak",
+    "detect"
+   ],
+   "aiStyle": "hold",
+   "cost": 190,
+   "faction": "quiet_hour",
+   "firstMission": "M4 (enemy)",
+   "height": "M",
+   "name": "Silent Signer",
+   "rig": "hum1 (slim)",
+   "role": "ranged",
+   "tags": [
+    "cloaked",
+    "organic",
+    "sniper"
+   ]
+  },
+  "skitterling": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 25,
+   "faction": "skitter",
+   "firstMission": "M7 (enemy)",
+   "height": "S",
+   "name": "Skitterling",
+   "rig": "insect1 (gnat)",
+   "role": "swarm",
+   "tags": [
+    "alien",
+    "organic",
+    "swarm"
+   ]
+  },
+  "spore_shepherd": {
+   "abilities": [
+    "heal_pulse",
+    "dot_cloud",
+    "gas"
+   ],
+   "aiStyle": "support",
+   "cost": 150,
+   "faction": "glowmoss",
+   "firstMission": "M7",
+   "height": "T",
+   "name": "Spore Shepherd",
+   "rig": "hum1 (slim)",
+   "role": "support",
+   "tags": [
+    "alien",
+    "gas",
+    "organic",
+    "support"
+   ]
+  },
+  "spritz_medic": {
+   "abilities": [
+    "heal_pulse",
+    "detect",
+    "eshield"
+   ],
+   "aiStyle": "support",
+   "cost": 140,
+   "faction": "tidy_concord",
+   "firstMission": "M3",
+   "height": "S",
+   "name": "Spritz Medic",
+   "rig": "drone1 (sphere)",
+   "role": "support",
+   "tags": [
+    "detector",
+    "hover",
+    "machine"
+   ]
+  },
+  "thorn_slinger": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 115,
+   "faction": "glowmoss",
+   "firstMission": "M7",
+   "height": "T",
+   "name": "Thorn Slinger",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "alien",
+    "organic",
+    "poison"
+   ]
+  },
+  "tidy_trooper": {
+   "abilities": [
+    "eshield"
+   ],
+   "aiStyle": "hold",
+   "cost": 110,
+   "faction": "tidy_concord",
+   "firstMission": "M1",
+   "height": "M",
+   "name": "Tidy Trooper",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "energy",
+    "line",
+    "organic",
+    "shielded"
+   ]
+  },
+  "valet_drone": {
+   "abilities": [
+    "detect"
+   ],
+   "aiStyle": "skirmish",
+   "cost": 110,
+   "faction": "courtesy",
+   "firstMission": "M5 (enemy)",
+   "height": "S",
+   "name": "Valet Drone",
+   "rig": "drone1 (tray)",
+   "role": "ranged",
+   "tags": [
+    "detector",
+    "hover",
+    "machine"
+   ]
+  },
+  "veil_cutter": {
+   "abilities": [
+    "cloak"
+   ],
+   "aiStyle": "flank",
+   "cost": 140,
+   "faction": "quiet_hour",
+   "firstMission": "M4",
+   "height": "M",
+   "name": "Veil Cutter",
+   "rig": "hum1 (slim)",
+   "role": "melee",
+   "tags": [
+    "cloaked",
+    "organic"
+   ]
+  },
+  "void_manta": {
+   "abilities": [
+    "cloak",
+    "cc_field",
+    "scare",
+    "eshield"
+   ],
+   "aiStyle": "flank",
+   "cost": 1500,
+   "faction": "quiet_hour",
+   "firstMission": "M8 (enemy boss)",
+   "height": "L A",
+   "name": "The Void Manta [B]",
+   "rig": "dragon1 (manta)",
+   "role": "monster",
+   "tags": [
+    "air",
+    "alien",
+    "boss",
+    "cloaked",
+    "large",
+    "organic",
+    "shielded"
+   ]
+  },
+  "warranty_tech": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "aiStyle": "support",
+   "cost": 150,
+   "faction": "courtesy",
+   "firstMission": "M5 (enemy)",
+   "height": "M",
+   "name": "Warranty Tech",
+   "rig": "hum1 (slim)",
+   "role": "support",
+   "tags": [
+    "machine",
+    "repair"
+   ]
+  },
+  "wrench_runner": {
+   "abilities": [
+    "dash",
+    "lunge"
+   ],
+   "aiStyle": "charge",
+   "cost": 80,
+   "faction": "rummage",
+   "firstMission": "M1 (enemy)",
+   "height": "M",
+   "name": "Wrench Runner",
+   "rig": "hum1 (slim)",
+   "role": "melee",
+   "tags": [
+    "organic",
+    "raider"
+   ]
+  },
+  "zapper_tinker": {
+   "abilities": [
+    "cc_field",
+    "emp"
+   ],
+   "aiStyle": "support",
+   "cost": 160,
+   "faction": "rummage",
+   "firstMission": "M5",
+   "height": "T",
+   "name": "Zapper Tinker",
+   "rig": "hum1 (slim)",
+   "role": "support",
+   "tags": [
+    "gadget",
+    "organic"
+   ]
+  }
+ },
+ "unlocks": [],
+ "weather": [
+  "clear",
+  "cloudy",
+  "rain",
+  "storm",
+  "snow",
+  "sandstorm",
+  "fog"
+ ]
+}

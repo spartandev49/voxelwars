@@ -1,0 +1,1509 @@
+{
+ "abilities": [
+  "bailout",
+  "call_strike",
+  "heal_pulse",
+  "lay_mine",
+  "mine_immune",
+  "misfire",
+  "rage",
+  "shield",
+  "smoke",
+  "summon_on_death",
+  "turret"
+ ],
+ "bosses": [
+  "grand_mower",
+  "chandelier_gunship",
+  "grand_teapot",
+  "broadcast_behemoth",
+  "final_notice"
+ ],
+ "contextVersion": 1,
+ "currency": {
+  "id": "requisition",
+  "name": "requisitions",
+  "symbol": "rq"
+ },
+ "eFreeze": {
+  "ancient": 0,
+  "medieval": 13,
+  "modern": 16,
+  "scifi": 19
+ },
+ "era": "modern",
+ "factions": [
+  "briefing",
+  "caution",
+  "directorate",
+  "marmalade",
+  "shed",
+  "skyclub",
+  "mixed"
+ ],
+ "firstThree": {
+  "fresh": [
+   {
+    "id": "arrival.modern",
+    "kind": "arrival"
+   },
+   {
+    "id": "b_place_line",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_tin_hat_trooper",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_toast_rack_runabout",
+    "kind": "toast"
+   },
+   {
+    "id": "b_fight",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_ammo_pips",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_sp_live_fire",
+    "kind": "setpiece"
+   },
+   {
+    "id": "fs_flowerpot_peashooter",
+    "kind": "toast"
+   },
+   {
+    "id": "b_speed",
+    "kind": "beat"
+   },
+   {
+    "id": "b_powers",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_b_reload",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_power_1",
+    "kind": "caption"
+   },
+   {
+    "id": "mod_punish_click",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_trolley_rammer",
+    "kind": "toast"
+   },
+   {
+    "id": "mod_b_window",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_stagger_reloads",
+    "kind": "beat"
+   },
+   {
+    "id": "b_done",
+    "kind": "beat"
+   }
+  ],
+  "returning": [
+   {
+    "id": "arrival.modern",
+    "kind": "arrival"
+   },
+   {
+    "id": "mod_ammo_pips",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_sp_live_fire",
+    "kind": "setpiece"
+   },
+   {
+    "id": "fs_flowerpot_peashooter",
+    "kind": "toast"
+   },
+   {
+    "id": "mod_b_reload",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_power_1",
+    "kind": "caption"
+   },
+   {
+    "id": "mod_punish_click",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_trolley_rammer",
+    "kind": "toast"
+   },
+   {
+    "id": "mod_b_window",
+    "kind": "beat"
+   },
+   {
+    "id": "mod_stagger_reloads",
+    "kind": "beat"
+   }
+  ]
+ },
+ "formations": [
+  "block",
+  "line",
+  "phalanx",
+  "wedge",
+  "column",
+  "skirmish",
+  "circle",
+  "hollow"
+ ],
+ "godPowers": [
+  "mod_gp_ricochet_request",
+  "mod_gp_strafing_run",
+  "mod_gp_minefield_gift",
+  "mod_gp_tea_break",
+  "mod_gp_please_hold",
+  "mod_gp_express_delivery"
+ ],
+ "heroes": [
+  "chief_spokesperson",
+  "deputy_director"
+ ],
+ "ladder": [
+  {
+   "arena": "mod_parade_yard",
+   "id": "mod_boot_camp_dropout",
+   "n": 1,
+   "objective": "eliminate"
+  },
+  {
+   "arena": "mod_hedgerow_meadow",
+   "id": "mod_hedgerow_picnic",
+   "n": 2,
+   "objective": "hold_hill"
+  },
+  {
+   "arena": "mod_trench_line",
+   "id": "mod_trench_pardon",
+   "n": 3,
+   "objective": "capture"
+  },
+  {
+   "arena": "mod_bridge_gorge",
+   "id": "mod_bridge_too_far",
+   "n": 4,
+   "objective": "escort"
+  },
+  {
+   "arena": "mod_rail_yard",
+   "id": "mod_rail_yard_fireworks",
+   "n": 5,
+   "objective": "destroy"
+  },
+  {
+   "arena": "mod_downtown",
+   "id": "mod_switchboard_hold",
+   "n": 6,
+   "objective": "defend_core"
+  },
+  {
+   "arena": "mod_airfield",
+   "id": "mod_airfield_open_day",
+   "n": 7,
+   "objective": "kill_general"
+  },
+  {
+   "arena": "mod_harbour",
+   "id": "mod_harbour_tour",
+   "n": 8,
+   "objective": "survive_waves"
+  },
+  {
+   "arena": "mod_dam",
+   "id": "mod_dam_finale",
+   "n": 9,
+   "objective": "kill_general"
+  }
+ ],
+ "modules": [
+  {
+   "S": "S28",
+   "deps": [],
+   "id": "M0",
+   "pos": 1
+  },
+  {
+   "S": "S29",
+   "deps": [
+    "M0"
+   ],
+   "id": "M1",
+   "pos": 2
+  },
+  {
+   "S": "S30",
+   "deps": [
+    "M0"
+   ],
+   "id": "M3",
+   "pos": 3
+  },
+  {
+   "S": "S31",
+   "deps": [
+    "M0",
+    "M1",
+    "M3"
+   ],
+   "id": "M2",
+   "pos": 4
+  },
+  {
+   "S": "S32",
+   "deps": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "id": "M2b",
+   "pos": 5
+  },
+  {
+   "S": "S33",
+   "deps": [
+    "M1",
+    "M2"
+   ],
+   "id": "M10",
+   "pos": 6
+  },
+  {
+   "S": "S34",
+   "deps": [
+    "M2b"
+   ],
+   "id": "M6a",
+   "pos": 7
+  },
+  {
+   "S": "S35",
+   "deps": [
+    "M2",
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M7",
+   "pos": 8
+  },
+  {
+   "S": "S36",
+   "deps": [
+    "M7",
+    "M10"
+   ],
+   "id": "M12",
+   "pos": 9
+  },
+  {
+   "S": "S37",
+   "deps": [
+    "M10",
+    "M12"
+   ],
+   "id": "M14",
+   "pos": 10
+  },
+  {
+   "S": "S38",
+   "deps": [
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M13",
+   "pos": 11
+  },
+  {
+   "S": "S45",
+   "deps": [
+    "M0",
+    "M2",
+    "M10",
+    "M14"
+   ],
+   "id": "M15",
+   "pos": 12
+  },
+  {
+   "S": "S46",
+   "deps": [
+    "M1",
+    "M3",
+    "M12"
+   ],
+   "id": "M17e",
+   "pos": 13
+  },
+  {
+   "S": "S39",
+   "deps": [
+    "M1",
+    "M2",
+    "M7"
+   ],
+   "id": "M8",
+   "pos": 14
+  },
+  {
+   "S": "S40",
+   "deps": [
+    "M2",
+    "M8",
+    "M12",
+    "M13"
+   ],
+   "id": "M9",
+   "pos": 15
+  },
+  {
+   "S": "S41",
+   "deps": [
+    "M10",
+    "M12",
+    "M13"
+   ],
+   "id": "M11",
+   "pos": 16
+  },
+  {
+   "S": "S42",
+   "deps": [
+    "M1",
+    "M3",
+    "M15"
+   ],
+   "id": "M4",
+   "pos": 17
+  },
+  {
+   "S": "S43",
+   "deps": [
+    "M2b",
+    "M3",
+    "M13"
+   ],
+   "id": "M5",
+   "pos": 18
+  },
+  {
+   "S": "S44",
+   "deps": [
+    "M3",
+    "M4",
+    "M6a",
+    "M13"
+   ],
+   "id": "M6b",
+   "pos": 19
+  }
+ ],
+ "mutators": [
+  "mod_red_tape",
+  "mod_airmail"
+ ],
+ "outline": [
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.2,
+    "star3": 2
+   },
+   "budget": 3000,
+   "hard": [
+    "M0",
+    "M1",
+    "M3",
+    "M2",
+    "M2b"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 2250
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     2250
+    ],
+    "helper": "thrift"
+   },
+   "timeLimit": 240
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.6,
+    "star3": 2.6
+   },
+   "budget": 4200,
+   "hard": [
+    "M9",
+    "M14",
+    "M12"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 3200
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     6
+    ],
+    "helper": "hitsWhileReloadingAtMost"
+   },
+   "timeLimit": 300
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.9,
+    "star3": 3.2
+   },
+   "budget": 6000,
+   "hard": [
+    "M3",
+    "M2",
+    "M14",
+    "M9",
+    "M10"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 4500
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     0.35
+    ],
+    "helper": "coverFracAtLeast"
+   },
+   "timeLimit": 330
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.4,
+    "star3": 3.2
+   },
+   "budget": 8000,
+   "hard": [
+    "M8",
+    "M7",
+    "M14",
+    "M12",
+    "M13",
+    "M17e",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 6400
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     [
+      "biscuit_tank"
+     ]
+    ],
+    "helper": "noLoss"
+   },
+   "timeLimit": 270
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.5,
+    "star3": 3.4
+   },
+   "budget": 9000,
+   "hard": [
+    "M10",
+    "M2",
+    "M13",
+    "M12",
+    "M14",
+    "M3",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 7200
+   },
+   "soft": [
+    "M8"
+   ],
+   "star3": {
+    "args": [
+     [
+      "filing_howitzer"
+     ]
+    ],
+    "helper": "noLoss"
+   },
+   "timeLimit": 360
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.8,
+    "star3": 4.2
+   },
+   "budget": 9500,
+   "hard": [
+    "M11",
+    "M14",
+    "M12",
+    "M8",
+    "M9",
+    "M7",
+    "M10",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 7600
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "armour",
+     12
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 300
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.3,
+    "star3": 3
+   },
+   "budget": 7500,
+   "hard": [
+    "M7",
+    "M2",
+    "M14",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 6000
+   },
+   "soft": [
+    "M13"
+   ],
+   "star3": {
+    "args": [
+     [
+      "spotter_balloon"
+     ]
+    ],
+    "helper": "noLoss"
+   },
+   "timeLimit": 270
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.8,
+    "star3": 4.4
+   },
+   "budget": 10000,
+   "hard": [
+    "M6a",
+    "M14",
+    "M12",
+    "M8",
+    "M15"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 8000
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "mines",
+     8
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 420
+  },
+  {
+   "allModules": true,
+   "attempts": {
+    "star1": 4,
+    "star3": 6.5
+   },
+   "budget": 15000,
+   "hard": [],
+   "par": {
+    "type": "none",
+    "value": 0
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     [
+      "cover",
+      "pin",
+      "armour",
+      "shells",
+      "mines",
+      "air",
+      "repair"
+     ],
+     3
+    ],
+    "helper": "usedAll"
+   },
+   "timeLimit": 480
+  }
+ ],
+ "props": {
+  "mod_apartment_block": {
+   "cat": "architecture",
+   "hp": 1100
+  },
+  "mod_barbed_coil": {
+   "cat": "props",
+   "hp": 40
+  },
+  "mod_barge": {
+   "cat": "architecture",
+   "hp": 600
+  },
+  "mod_barrel_oil": {
+   "cat": "props",
+   "hp": 30
+  },
+  "mod_boxcar_cargo": {
+   "cat": "architecture",
+   "hp": 900
+  },
+  "mod_bridge_pier": {
+   "cat": "architecture",
+   "hp": "INF"
+  },
+  "mod_control_tower": {
+   "cat": "monuments",
+   "hp": 900
+  },
+  "mod_crane_gantry": {
+   "cat": "architecture",
+   "hp": 900
+  },
+  "mod_crate_stack": {
+   "cat": "props",
+   "hp": 120
+  },
+  "mod_dam_gate": {
+   "cat": "architecture",
+   "hp": 1800
+  },
+  "mod_dugout_roof": {
+   "cat": "props",
+   "hp": 300
+  },
+  "mod_fuel_tank": {
+   "cat": "architecture",
+   "hp": 200
+  },
+  "mod_girder_cross": {
+   "cat": "props",
+   "hp": 420
+  },
+  "mod_greenhouse": {
+   "cat": "architecture",
+   "hp": 220
+  },
+  "mod_guard_rail": {
+   "cat": "architecture",
+   "hp": 60
+  },
+  "mod_hangar": {
+   "cat": "architecture",
+   "hp": 1500
+  },
+  "mod_hay_bale": {
+   "cat": "props",
+   "hp": 80
+  },
+  "mod_hedge_row": {
+   "cat": "nature",
+   "hp": 90
+  },
+  "mod_lamp_post": {
+   "cat": "props",
+   "hp": 60
+  },
+  "mod_office_block": {
+   "cat": "architecture",
+   "hp": 1400
+  },
+  "mod_parked_car": {
+   "cat": "props",
+   "hp": 240
+  },
+  "mod_parked_plane": {
+   "cat": "props",
+   "hp": 150
+  },
+  "mod_picnic_hamper": {
+   "cat": "props",
+   "hp": 60
+  },
+  "mod_radar_dish": {
+   "cat": "monuments",
+   "hp": 300
+  },
+  "mod_rail_track": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "mod_road_barrier": {
+   "cat": "architecture",
+   "hp": 500
+  },
+  "mod_sandbag_nest": {
+   "cat": "props",
+   "hp": 220
+  },
+  "mod_sandbag_wall": {
+   "cat": "props",
+   "hp": 140
+  },
+  "mod_shipping_container": {
+   "cat": "architecture",
+   "hp": 700
+  },
+  "mod_shop_row": {
+   "cat": "architecture",
+   "hp": 700
+  },
+  "mod_signal_post": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "mod_switchboard_tower": {
+   "cat": "monuments",
+   "hp": 2500
+  },
+  "mod_tape_ring": {
+   "cat": "props",
+   "hp": 1
+  },
+  "mod_target_dummy": {
+   "cat": "props",
+   "hp": 40
+  },
+  "mod_traffic_cone": {
+   "cat": "props",
+   "hp": 5
+  },
+  "mod_warehouse": {
+   "cat": "architecture",
+   "hp": 1000
+  },
+  "mod_windsock_pole": {
+   "cat": "props",
+   "hp": 40
+  },
+  "mod_wreck": {
+   "cat": "props",
+   "hp": "INF"
+  }
+ },
+ "puzzles": [
+  {
+   "arena": "mod_parade_yard",
+   "budget": 1000,
+   "id": "mod_pz_duck_cover",
+   "par": 960,
+   "roster": [
+    "clerk_rifleman"
+   ],
+   "seed": 31,
+   "size": "small",
+   "title": "Duck, Duck, Cover"
+  },
+  {
+   "arena": "mod_trench_line",
+   "budget": 800,
+   "id": "mod_pz_pin_cushion",
+   "par": 700,
+   "roster": [
+    "tripod_mg_team",
+    "cub_reporter"
+   ],
+   "seed": 32,
+   "size": "medium",
+   "title": "Pin Cushion"
+  },
+  {
+   "arena": "mod_desert_outpost",
+   "budget": 900,
+   "id": "mod_pz_plink_crunch",
+   "par": 800,
+   "roster": [
+    "drainpipe_launcher",
+    "clerk_rifleman"
+   ],
+   "seed": 33,
+   "size": "medium",
+   "title": "Plink, Plink, Crunch"
+  },
+  {
+   "arena": "mod_garden_centre",
+   "budget": 1200,
+   "id": "mod_pz_too_close",
+   "par": 1100,
+   "roster": [
+    "filing_howitzer",
+    "clerk_rifleman",
+    "tripod_mg_team"
+   ],
+   "seed": 34,
+   "size": "medium",
+   "title": "Too Close For Comfort"
+  },
+  {
+   "arena": "mod_bridge_gorge",
+   "budget": 1000,
+   "id": "mod_pz_mind_the_gaps",
+   "par": 920,
+   "roster": [
+    "caution_sapper",
+    "dynamite_thrower",
+    "hoarding_bearer"
+   ],
+   "seed": 35,
+   "size": "medium",
+   "title": "Mind The Gaps"
+  },
+  {
+   "arena": "mod_harbour",
+   "budget": 1000,
+   "id": "mod_pz_cassandra_helicopter",
+   "par": 900,
+   "roster": [
+    "parasol_missileer",
+    "clerk_rifleman",
+    "mortar_pair"
+   ],
+   "seed": 36,
+   "size": "medium",
+   "title": "Cassandra Was Right About The Helicopter"
+  }
+ ],
+ "recipes": {
+  "mod_airfield": {
+   "name": "Airfield",
+   "seed": null,
+   "size": "large"
+  },
+  "mod_bridge_gorge": {
+   "name": "Bridge Gorge",
+   "seed": null,
+   "size": "medium"
+  },
+  "mod_dam": {
+   "name": "The Dam",
+   "seed": null,
+   "size": "large"
+  },
+  "mod_desert_outpost": {
+   "name": "Desert Outpost",
+   "seed": null,
+   "size": "medium"
+  },
+  "mod_downtown": {
+   "name": "Downtown",
+   "seed": null,
+   "size": "large"
+  },
+  "mod_garden_centre": {
+   "name": "Garden Centre",
+   "seed": null,
+   "size": "medium"
+  },
+  "mod_harbour": {
+   "name": "Harbour",
+   "seed": null,
+   "size": "medium"
+  },
+  "mod_hedgerow_meadow": {
+   "name": "Hedgerow Meadow",
+   "seed": null,
+   "size": "medium"
+  },
+  "mod_parade_yard": {
+   "name": "Parade Yard",
+   "seed": null,
+   "size": "small"
+  },
+  "mod_rail_yard": {
+   "name": "Rail Yard",
+   "seed": null,
+   "size": "large"
+  },
+  "mod_roadworks": {
+   "name": "Roadworks Without End",
+   "seed": null,
+   "size": "large"
+  },
+  "mod_trench_line": {
+   "name": "The Long Trench",
+   "seed": null,
+   "size": "medium"
+  }
+ },
+ "rewardParts": [],
+ "sizes": {
+  "large": 256,
+  "medium": 192,
+  "small": 128
+ },
+ "source": "markdown",
+ "units": {
+  "biscuit_tank": {
+   "abilities": [
+    "turret"
+   ],
+   "aiStyle": "charge",
+   "cost": 430,
+   "faction": "marmalade",
+   "firstMission": "M4",
+   "height": "T",
+   "name": "Biscuit-Tin Tank",
+   "rig": "tank1",
+   "role": "cavalry",
+   "tags": [
+    "vehicle medium machine tank"
+   ]
+  },
+  "broadcast_behemoth": {
+   "abilities": [
+    "summon_on_death"
+   ],
+   "aiStyle": "charge",
+   "cost": 1300,
+   "faction": "briefing",
+   "firstMission": "M5 (mini-boss)",
+   "height": "XL",
+   "name": "Outside-Broadcast Behemoth [B]",
+   "rig": "car1 x2.2",
+   "role": "monster",
+   "tags": [
+    "vehicle boss machine"
+   ]
+  },
+  "caution_sapper": {
+   "abilities": [
+    "lay_mine"
+   ],
+   "aiStyle": "support",
+   "cost": 140,
+   "faction": "caution",
+   "firstMission": "M6",
+   "height": "M",
+   "name": "Caution Sapper",
+   "rig": "hum1 (std)",
+   "role": "support",
+   "tags": [
+    "organic engineer mine_layer"
+   ]
+  },
+  "chandelier_gunship": {
+   "abilities": [
+    "summon_on_death"
+   ],
+   "aiStyle": "skirmish",
+   "cost": 1400,
+   "faction": "skyclub",
+   "firstMission": "M9 (90 s)",
+   "height": "XL-A",
+   "name": "Chandelier Gunship [B]",
+   "rig": "heli1 x2.0",
+   "role": "ranged",
+   "tags": [
+    "air vehicle machine boss"
+   ]
+  },
+  "chief_spokesperson": {
+   "abilities": [],
+   "aiStyle": "hero",
+   "cost": 420,
+   "faction": "briefing",
+   "firstMission": "M5 (enemy)",
+   "height": "T",
+   "name": "Chief Spokesperson Vale [H]",
+   "rig": "hum1 (wide)",
+   "role": "hero",
+   "tags": [
+    "organic officer hero"
+   ]
+  },
+  "clerk_rifleman": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 120,
+   "faction": "directorate",
+   "firstMission": "M2",
+   "height": "M",
+   "name": "Clerk Rifleman",
+   "rig": "hum1 (slim)",
+   "role": "ranged",
+   "tags": [
+    "organic line paper_pack slow_reload"
+   ]
+  },
+  "cub_reporter": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 90,
+   "faction": "briefing",
+   "firstMission": "M3",
+   "height": "M",
+   "name": "Cub Reporter",
+   "rig": "hum1 (slim)",
+   "role": "ranged",
+   "tags": [
+    "organic skirmisher"
+   ]
+  },
+  "deputy_director": {
+   "abilities": [
+    "call_strike"
+   ],
+   "aiStyle": "hero",
+   "cost": 440,
+   "faction": "directorate",
+   "firstMission": "M7 (general)",
+   "height": "T",
+   "name": "Deputy Director Pellmell [H]",
+   "rig": "hum1 (wide)",
+   "role": "hero",
+   "tags": [
+    "organic officer hero"
+   ]
+  },
+  "dozer_plough": {
+   "abilities": [
+    "mine_immune"
+   ],
+   "aiStyle": "charge",
+   "cost": 380,
+   "faction": "caution",
+   "firstMission": "M4 (enemy)",
+   "height": "L",
+   "name": "Dozer Plough",
+   "rig": "tank1 (blade variant)",
+   "role": "cavalry",
+   "tags": [
+    "vehicle heavy machine mine_immune"
+   ]
+  },
+  "drainpipe_launcher": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 140,
+   "faction": "shed",
+   "firstMission": "M4 (enemy, hired)",
+   "height": "M",
+   "name": "Drainpipe Launcher",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "organic at"
+   ]
+  },
+  "dynamite_thrower": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 125,
+   "faction": "caution",
+   "firstMission": "M3 (enemy, hired)",
+   "height": "M",
+   "name": "Dynamite Thrower",
+   "rig": "hum1 (slim)",
+   "role": "ranged",
+   "tags": [
+    "organic explosive"
+   ]
+  },
+  "filing_howitzer": {
+   "abilities": [],
+   "aiStyle": "siege",
+   "cost": 480,
+   "faction": "directorate",
+   "firstMission": "M5",
+   "height": "T",
+   "name": "Filing-Cabinet Howitzer",
+   "rig": "gun1 (heavy) + 3 lite crew",
+   "role": "siege",
+   "tags": [
+    "machine crew indirect ground_only"
+   ]
+  },
+  "final_notice": {
+   "abilities": [],
+   "aiStyle": "siege",
+   "cost": 1700,
+   "faction": "directorate",
+   "firstMission": "M9",
+   "height": "XL",
+   "name": "The Final Notice [B]",
+   "rig": "gun1 x2.5 giant + 2 lite crew",
+   "role": "siege",
+   "tags": [
+    "machine crew boss indirect ground_only"
+   ]
+  },
+  "fishbowl_chopper": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 520,
+   "faction": "skyclub",
+   "firstMission": "M7",
+   "height": "L-A",
+   "name": "Fishbowl Chopper",
+   "rig": "heli1",
+   "role": "ranged",
+   "tags": [
+    "air vehicle machine"
+   ]
+  },
+  "flowerpot_peashooter": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 55,
+   "faction": "shed",
+   "firstMission": "M1 (enemy)",
+   "height": "M",
+   "name": "Flowerpot Peashooter",
+   "rig": "hum1 (slim)",
+   "role": "swarm",
+   "tags": [
+    "organic cheap"
+   ]
+  },
+  "grand_mower": {
+   "abilities": [
+    "rage"
+   ],
+   "aiStyle": "charge",
+   "cost": 1500,
+   "faction": "shed",
+   "firstMission": "M8 (W4 boss)",
+   "height": "XL",
+   "name": "Grand Mower [B]",
+   "rig": "car1 x2.4",
+   "role": "monster",
+   "tags": [
+    "vehicle boss machine"
+   ]
+  },
+  "grand_teapot": {
+   "abilities": [
+    "summon_on_death"
+   ],
+   "aiStyle": "charge",
+   "cost": 1500,
+   "faction": "marmalade",
+   "firstMission": "M9 (general)",
+   "height": "XL",
+   "name": "Grand Teapot [B]",
+   "rig": "tank1 x1.6",
+   "role": "monster",
+   "tags": [
+    "vehicle boss machine tank"
+   ]
+  },
+  "hoarding_bearer": {
+   "abilities": [
+    "shield"
+   ],
+   "aiStyle": "hold",
+   "cost": 130,
+   "faction": "caution",
+   "firstMission": "M4 (enemy)",
+   "height": "M",
+   "name": "Hoarding Bearer",
+   "rig": "hum1 (wide)",
+   "role": "melee",
+   "tags": [
+    "organic shielded"
+   ]
+  },
+  "hobby_drone": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 55,
+   "faction": "skyclub",
+   "firstMission": "M7",
+   "height": "S-A",
+   "name": "Hobby Drone",
+   "rig": "drone1",
+   "role": "swarm",
+   "tags": [
+    "air machine drone pin_immune"
+   ]
+  },
+  "long_lens_sharpshooter": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 240,
+   "faction": "briefing",
+   "firstMission": "M3",
+   "height": "M",
+   "name": "Long-Lens Sharpshooter",
+   "rig": "hum1 (slim)",
+   "role": "ranged",
+   "tags": [
+    "organic sniper"
+   ]
+  },
+  "lunchbox_apc": {
+   "abilities": [
+    "bailout"
+   ],
+   "aiStyle": "guard",
+   "cost": 270,
+   "faction": "marmalade",
+   "firstMission": "M4 (VIP override \"Parcel Van\")",
+   "height": "M",
+   "name": "Lunchbox APC",
+   "rig": "car1",
+   "role": "cavalry",
+   "tags": [
+    "vehicle medium machine carrier"
+   ]
+  },
+  "mortar_pair": {
+   "abilities": [],
+   "aiStyle": "siege",
+   "cost": 210,
+   "faction": "directorate",
+   "firstMission": "M5",
+   "height": "M",
+   "name": "Mortar Pair",
+   "rig": "gun1 (mortar) + 2 lite crew",
+   "role": "siege",
+   "tags": [
+    "organic crew indirect ground_only"
+   ]
+  },
+  "parasol_missileer": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 150,
+   "faction": "skyclub",
+   "firstMission": "M7 (enemy)",
+   "height": "M",
+   "name": "Parasol Missileer",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "organic aa"
+   ]
+  },
+  "ride_on_mower": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 290,
+   "faction": "shed",
+   "firstMission": "M6 (enemy W4)",
+   "height": "M",
+   "name": "Ride-On Mower",
+   "rig": "car1",
+   "role": "cavalry",
+   "tags": [
+    "vehicle medium machine"
+   ]
+  },
+  "signal_officer": {
+   "abilities": [
+    "call_strike",
+    "smoke"
+   ],
+   "aiStyle": "support",
+   "cost": 190,
+   "faction": "directorate",
+   "firstMission": "M5",
+   "height": "T",
+   "name": "Signal Officer",
+   "rig": "hum1 (std)",
+   "role": "support",
+   "tags": [
+    "organic officer radio"
+   ]
+  },
+  "site_first_aider": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "aiStyle": "support",
+   "cost": 130,
+   "faction": "caution",
+   "firstMission": "M8",
+   "height": "M",
+   "name": "Site First-Aider",
+   "rig": "hum1 (slim)",
+   "role": "support",
+   "tags": [
+    "organic medic"
+   ]
+  },
+  "spanner_mechanic": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "aiStyle": "support",
+   "cost": 140,
+   "faction": "caution",
+   "firstMission": "M8",
+   "height": "M",
+   "name": "Spanner Mechanic",
+   "rig": "hum1 (std)",
+   "role": "support",
+   "tags": [
+    "organic engineer repair"
+   ]
+  },
+  "spotter_balloon": {
+   "abilities": [],
+   "aiStyle": "support",
+   "cost": 140,
+   "faction": "skyclub",
+   "firstMission": "M7",
+   "height": "L-A",
+   "name": "Spotter Balloon",
+   "rig": "drone1 (balloon variant)",
+   "role": "support",
+   "tags": [
+    "air machine unarmed pin_immune"
+   ]
+  },
+  "teapot_heavy": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 720,
+   "faction": "marmalade",
+   "firstMission": "M6 (enemy W3)",
+   "height": "L",
+   "name": "Teapot Heavy",
+   "rig": "tank1",
+   "role": "monster",
+   "tags": [
+    "vehicle heavy machine tank"
+   ]
+  },
+  "tin_hat_trooper": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 110,
+   "faction": "marmalade",
+   "firstMission": "M1",
+   "height": "M",
+   "name": "Tin-Hat Trooper",
+   "rig": "hum1 (std)",
+   "role": "ranged",
+   "tags": [
+    "organic line cover_ai"
+   ]
+  },
+  "toast_rack_runabout": {
+   "abilities": [],
+   "aiStyle": "flank",
+   "cost": 170,
+   "faction": "marmalade",
+   "firstMission": "M1",
+   "height": "M",
+   "name": "Toast-Rack Runabout",
+   "rig": "car1",
+   "role": "cavalry",
+   "tags": [
+    "vehicle light machine open_top"
+   ]
+  },
+  "tripod_mg_team": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 260,
+   "faction": "briefing",
+   "firstMission": "M3",
+   "height": "M",
+   "name": "Tripod MG Team",
+   "rig": "gun1 (HMG) + 2 lite crew",
+   "role": "ranged",
+   "tags": [
+    "organic crew mg suppress"
+   ]
+  },
+  "trolley_rammer": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 140,
+   "faction": "shed",
+   "firstMission": "M1 (enemy)",
+   "height": "M",
+   "name": "Trolley Rammer",
+   "rig": "ram1 + pusher",
+   "role": "cavalry",
+   "tags": [
+    "wheeled charge light"
+   ]
+  },
+  "wheelbarrow_cannon": {
+   "abilities": [
+    "misfire"
+   ],
+   "aiStyle": "siege",
+   "cost": 170,
+   "faction": "shed",
+   "firstMission": "M8 (enemy W3)",
+   "height": "M",
+   "name": "Wheelbarrow Cannon",
+   "rig": "gun1 (improvised) + 1 crew",
+   "role": "siege",
+   "tags": [
+    "organic crew indirect ground_only"
+   ]
+  }
+ },
+ "unlocks": [],
+ "weather": [
+  "clear",
+  "cloudy",
+  "rain",
+  "storm",
+  "snow",
+  "sandstorm",
+  "fog"
+ ]
+}

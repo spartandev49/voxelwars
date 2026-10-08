@@ -1,0 +1,5714 @@
+{
+ "$schema": "../../spec/ms.schema.json",
+ "msVersion": 1,
+ "era": "scifi",
+ "idPrefix": "sf_",
+ "acts": [
+  {
+   "id": 1,
+   "title": "Act I: Landlords and Squatters",
+   "blurb": "The Moon has been repossessed; both parties are confident about it"
+  },
+  {
+   "id": 2,
+   "title": "Act II: The Help Is Here",
+   "blurb": "The appliances are very pleased to assist; the guild would like a word, quietly"
+  },
+  {
+   "id": 3,
+   "title": "Act III: Queen Size",
+   "blurb": "The bugs have a plan, the jungle has a hill and the sky has a noise complaint"
+  }
+ ],
+ "rewardParts": {
+  "sf_helm_fishbowl": {
+   "name": "Fishbowl Helmet",
+   "blurb": "A fishbowl helmet for the Soldier Workshop. Rated for vacuum, rain, and being told you are on mute."
+  },
+  "sf_back_hoverpack": {
+   "name": "Hoverpack",
+   "blurb": "A hoverpack for the Soldier Workshop."
+  },
+  "sf_cape_shimmer": {
+   "name": "Shimmer Cape",
+   "blurb": "A cape that shimmers when nobody is looking. The Soldier Workshop has it now. It cannot be seen in the catalogue either."
+  },
+  "sf_back_fuses": {
+   "name": "Fuse Bandolier",
+   "blurb": "A bandolier of spare fuses for the Soldier Workshop. They are decorative. Do not ask which ones."
+  },
+  "sf_staff_glow": {
+   "name": "Glow Staff",
+   "blurb": "A lamp on a stick for the Soldier Workshop. It lights the way, the enemy and your hands."
+  }
+ },
+ "missions": [
+  {
+   "id": "sf_lunch_break",
+   "act": 1,
+   "mood": "calm",
+   "moodAlso": [
+    "comic"
+   ],
+   "text": {
+    "title": "Moon Base Lunch Break",
+    "blurb": "Clear the claim jumpers. The Moon thanks you; the lease does not.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "WELCOME to the future! Same wars, bigger bubbles, no sandals!"
+     },
+     {
+      "who": "plato",
+      "text": "The Moon has been repossessed. Can one evict a rock?"
+     },
+     {
+      "who": "cassandra",
+      "text": "They have rivet guns first and runners second. Between the two, the bubbles come back. Use the gap. I said use the gap."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "LUNCH is over! The Moon is yours, the lease is theirs, and nobody has read the lease!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The bubbles popped and nobody rotated. The Moon goes back to the squatters. I said rotate."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Clear the claim jumpers. The Moon thanks you; the lease does not."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) standing. Bubbles do not count; bodies do."
+     },
+     {
+      "id": "thrift",
+      "text": "Win while spending 2,250 ergs or less. Big bubbles, small bills."
+     }
+    ],
+    "reward": {
+     "title": "Probationary Tenant",
+     "blurb": "A fishbowl helmet for the Soldier Workshop. Rated for vacuum, rain, and being told you are on mute."
+    },
+    "poster": "HE CAME FOR THE MOON. HE STAYED FOR THE LEASE."
+   },
+   "arena": {
+    "recipe": "sf_moonbase",
+    "size": "medium",
+    "seed": 7,
+    "env": {
+     "time": 22,
+     "weather": "clear",
+     "fog": 0,
+     "theme": "sf_moon",
+     "sky": "space_planet",
+     "gravity": 0.4
+    },
+    "markers": [
+     {
+      "id": "dome_panel",
+      "type": "waypoint",
+      "x": 30,
+      "z": 24,
+      "r": 3
+     },
+     {
+      "id": "crater_ring",
+      "type": "waypoint",
+      "x": -18,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "airlock_lane",
+      "type": "waypoint",
+      "x": 0,
+      "z": 0,
+      "r": 6
+     }
+    ]
+   },
+   "playerFaction": "tidy_concord",
+   "roster": [
+    "tidy_trooper",
+    "bulwark_warden",
+    "bubble_tender"
+   ],
+   "caps": {},
+   "budget": 3000,
+   "par": {
+    "type": "cost",
+    "value": 2250
+   },
+   "core": [
+    {
+     "defId": "tidy_trooper",
+     "n": 10
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "tidy_trooper",
+     "n": 14
+    },
+    {
+     "defId": "bulwark_warden",
+     "n": 6
+    },
+    {
+     "defId": "bubble_tender",
+     "n": 4
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.3,
+     0.8
+    ],
+    "counter": [
+     0.7,
+     1
+    ],
+    "turtle": [
+     0.3,
+     0.9
+    ]
+   },
+   "botsWhy": "A patient bubble line beats a rush.",
+   "blind": {
+    "swap": {
+     "bubble_tender": "bulwark_warden"
+    },
+    "why": "The blind army never retreats a popped unit: with no Tender ring, every bubble breaks together and the runners walk in."
+   },
+   "enemy": {
+    "faction": "rummage",
+    "hired": [],
+    "style": "hold then rush",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {
+      "defId": "rivet_gunner",
+      "n": 4,
+      "at": {
+       "u": 0,
+       "v": 0
+      },
+      "order": "hold",
+      "formation": "line"
+     },
+     {
+      "defId": "rivet_gunner",
+      "n": 4,
+      "at": {
+       "u": 0.15,
+       "v": 0
+      },
+      "order": "hold",
+      "formation": "line"
+     }
+    ]
+   },
+   "objective": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": [],
+    "text": "Clear both waves of claim jumpers"
+   },
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [
+     "sf_off_switch"
+    ],
+    "override": {},
+    "reasons": {
+     "sf_off_switch": "The intern has not been told about this one yet."
+    }
+   },
+   "script": {
+    "waves": {
+     "placed": true,
+     "firstAfter": 300,
+     "interval": 300,
+     "breather": 25,
+     "list": [
+      {
+       "groups": [
+        {
+         "defId": "wrench_runner",
+         "n": 8
+        }
+       ],
+       "order": "advance"
+      }
+     ]
+    },
+    "events": [],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Every Concord soldier wears a bubble. It soaks damage first and regrows after three quiet seconds. Hit points do not regrow.",
+    "Rivet guns hit again and again so a bubble never gets to rest. A Warden's dome and a Tender's ring answer them.",
+    "Two waves: the second arrives 25 seconds after the first is cleared. Star 3: spend at most 2,250 of your 3,000 ergs."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "thrift",
+     "helper": "thrift",
+     "args": [
+      2250
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "part",
+     "id": "sf_helm_fishbowl"
+    },
+    "unlockMutators": [],
+    "unlockParts": [
+     "sf_helm_fishbowl"
+    ],
+    "quickUnlocks": [],
+    "codex": [
+     "tidy_trooper"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_generic_helm"
+    }
+   },
+   "rewardId": "sf_r1_fishbowl",
+   "teaching": {
+    "beats": [
+     {
+      "id": "b_place_line",
+      "trigger": "placement_start",
+      "who": "plato",
+      "text": "Pick a card, then drag across the field to draw a line. It looks simple because it is.",
+      "hint": "Choose the line brush, then drag along the Concord edge.",
+      "basics": true
+     },
+     {
+      "id": "b_fight",
+      "trigger": "battle_start",
+      "who": "brutus",
+      "text": "FIGHT! Press the button, watch the line, and try not to narrate it.",
+      "basics": true
+     },
+     {
+      "id": "b_speed",
+      "trigger": "battle_start",
+      "delay": 8,
+      "who": "cassandra",
+      "text": "Space pauses. The speed keys change the pace. Nobody asked me, so I am telling you.",
+      "basics": true
+     },
+     {
+      "id": "b_powers",
+      "trigger": "first_contact",
+      "delay": 4,
+      "who": "cassandra",
+      "text": "Keys 1 to 6 are your god powers. Press 1.",
+      "hint": "Number keys 1 to 6 cast god powers. Each has a cooldown.",
+      "basics": true
+     },
+     {
+      "id": "b_done",
+      "trigger": "battle_end",
+      "who": "brutus",
+      "text": "THAT is how you win a battle! Do it again, smarter, for the stars!",
+      "basics": true
+     },
+     {
+      "id": "sf_b_bubble",
+      "trigger": "shield_hit",
+      "who": "brutus",
+      "text": "Watch the BUBBLES flash when they are hit! They come back! Hit points do not!",
+      "hint": "A bubble soaks damage first. It regrows after 3 quiet seconds; hit points do not regrow.",
+      "mechanic": "shield",
+      "when": "first shield_hit"
+     },
+     {
+      "id": "sf_b_pop",
+      "trigger": "shield_break",
+      "who": "plato",
+      "text": "A broken bubble stays broken until nobody hits it. Rotate a fresh Warden forward.",
+      "hint": "Pull a popped unit back; its bubble regrows after three seconds without a hit.",
+      "when": "first shield_break"
+     },
+     {
+      "id": "sf_b_lull",
+      "trigger": "wave_cleared",
+      "who": "cassandra",
+      "text": "Look. The bubbles are full. The bodies are not. That is the whole game.",
+      "hint": "Chip fire keeps resetting the delay; a Tender behind a Warden cuts it to 0.6 s.",
+      "when": "wave 1 cleared"
+     },
+     {
+      "id": "sf_tender_ring",
+      "trigger": "tender_aura_active",
+      "who": "plato",
+      "text": "The ring turns a slow bubble into a quick one. Is that medicine, or merely manners?",
+      "hint": "A Tender shortens the recharge delay of nearby allies. It mends bubbles, not bodies.",
+      "when": "first Tender aura active on a bubble that is regrowing"
+     },
+     {
+      "id": "sf_dome_block",
+      "trigger": "dome_block",
+      "who": "brutus",
+      "text": "The dome CATCHES it! A door that is also a shield! The future is a hardware store!",
+      "hint": "A Warden's dome blocks beams and bolts from the front, not from the side.",
+      "when": "first beam or bolt stopped by a Warden dome"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [
+    "shield"
+   ],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [
+    "M0",
+    "M1",
+    "M3",
+    "M2",
+    "M2b",
+    "M4"
+   ],
+   "softModules": [],
+   "setpiece": {
+    "id": "sf_sp_lunch_served",
+    "role": "primary",
+    "trigger": 30,
+    "shot": {
+     "from": {
+      "anchor": "dome_panel",
+      "offset": [
+       -12,
+       9,
+       -6
+      ]
+     },
+     "to": {
+      "anchor": "dome_panel",
+      "offset": [
+       1.5,
+       2.2,
+       0.5
+      ]
+     },
+     "hold": 4,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_lunch_break",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "Lunch is SERVED! A dome panel has cracked and the atmosphere has left for a snack!"
+      },
+      {
+       "who": "plato",
+       "text": "A crack in the dome, and the air leaves politely. Was it ever ours to keep?"
+      },
+      {
+       "who": "cassandra",
+       "text": "The dome had a seam. I said the dome had a seam. The seam is now a window."
+      }
+     ],
+     "sub": "mid"
+    },
+    "stinger": {
+     "id": "sf_stg_klaxon",
+     "kind": "comic",
+     "secs": 2
+    },
+    "sfx": [
+     "sf_dome_crack",
+     "sf_airlock_hiss",
+     "sf_siren_short"
+    ],
+    "notes": "Presentation only: the flank sf_dome_panel swaps to its cracked stage with a steam puff and a klaxon; no stagger, no damage. Fired by the MissionRuntime timer at 30 s (outline 0.1 item 9), so mission 1 needs no M14."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 1.2,
+     "star3": 3
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": {
+    "doc": "docs/eras/design/scifi/first_three_minutes.md",
+    "fresh": [
+     {
+      "kind": "arrival",
+      "id": "arrival.scifi"
+     },
+     {
+      "kind": "beat",
+      "id": "b_place_line"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_dome_panel"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_low_gravity"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_tidy_trooper"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_bulwark_warden"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_bubble_tender"
+     },
+     {
+      "kind": "beat",
+      "id": "b_fight"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_bubble"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_rivet_gunner"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_pop"
+     },
+     {
+      "kind": "setpiece",
+      "id": "sf_sp_lunch_served"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_shield_pip"
+     },
+     {
+      "kind": "beat",
+      "id": "b_speed"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_lull"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_sweep_ring"
+     },
+     {
+      "kind": "beat",
+      "id": "b_powers"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_tender_ring"
+     },
+     {
+      "kind": "caption",
+      "id": "sf_power_1"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_wrench_runner"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_dome_block"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_ammo_pips"
+     },
+     {
+      "kind": "beat",
+      "id": "b_done"
+     }
+    ],
+    "returning": [
+     {
+      "kind": "arrival",
+      "id": "arrival.scifi"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_dome_panel"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_low_gravity"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_bubble"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_rivet_gunner"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_pop"
+     },
+     {
+      "kind": "setpiece",
+      "id": "sf_sp_lunch_served"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_shield_pip"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_b_lull"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_sweep_ring"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_tender_ring"
+     },
+     {
+      "kind": "caption",
+      "id": "sf_power_1"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_wrench_runner"
+     },
+     {
+      "kind": "beat",
+      "id": "sf_dome_block"
+     },
+     {
+      "kind": "toast",
+      "id": "fs_ammo_pips"
+     }
+    ],
+    "milestonesS": {
+     "briefingDeployed": 32,
+     "fight": 80,
+     "setpiece": 110,
+     "firstEffect": 91,
+     "victory": 198,
+     "starsShown": 205,
+     "nextPrompt": 220
+    }
+   },
+   "designAmendment": "SF-AM-1: waves firstAfter/interval 300 so wave 2 comes 25 s after the clear (engine default 40 s would force it); timer 30 s. See missions_notes.md"
+  },
+  {
+   "id": "sf_floor_lava",
+   "act": 1,
+   "mood": "tense",
+   "text": {
+    "title": "The Floor Is Lava (Medium Rare)",
+    "blurb": "Hold all three relay posts together for ten seconds. Dry feet optional.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "The floor is LAVA! This is not a metaphor! It is geology!"
+     },
+     {
+      "who": "plato",
+      "text": "If the floor is lava, what is the ceiling? We have not been told."
+     },
+     {
+      "who": "cassandra",
+      "text": "Hover tanks cost less than bridges. I priced both. Nobody asked."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "ALL three islets, all at once! The lava is furious and it has nobody to tell!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "They held the third islet. We walked. I said hover. I said it standing on the causeway."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Hold all three relay posts together for ten seconds. Dry feet optional."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "bubbles_kept",
+      "text": "Let no more than 30 of your own bubbles pop. Use the causeway, the Warden and the Tender, not your good intentions."
+     }
+    ],
+    "reward": {
+     "title": "Hover Hustler",
+     "blurb": "A night-time Magma Lounge for Quick Battle. The lava is the same. The lighting is dinner."
+    }
+   },
+   "arena": {
+    "recipe": "sf_lavaworld",
+    "size": "medium",
+    "seed": 3,
+    "env": {
+     "time": 21,
+     "weather": "ember_ion",
+     "fog": 0.1,
+     "theme": "sf_lava",
+     "sky": "ember"
+    },
+    "markers": [
+     {
+      "id": "islet_w",
+      "type": "capture",
+      "x": -9,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "islet_c",
+      "type": "capture",
+      "x": 0,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "islet_e",
+      "type": "capture",
+      "x": 9,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "lake_mid",
+      "type": "waypoint",
+      "x": 0,
+      "z": 8,
+      "r": 3
+     },
+     {
+      "id": "causeway",
+      "type": "waypoint",
+      "x": 0,
+      "z": -23,
+      "r": 3
+     }
+    ]
+   },
+   "playerFaction": "tidy_concord",
+   "roster": [
+    "dustpan_hover",
+    "tidy_trooper",
+    "bulwark_warden",
+    "bubble_tender"
+   ],
+   "caps": {},
+   "budget": 4500,
+   "par": {
+    "type": "cost",
+    "value": 3400
+   },
+   "core": [
+    {
+     "defId": "dustpan_hover",
+     "n": 4
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "dustpan_hover",
+     "n": 4
+    },
+    {
+     "defId": "tidy_trooper",
+     "n": 17
+    },
+    {
+     "defId": "bulwark_warden",
+     "n": 4
+    },
+    {
+     "defId": "bubble_tender",
+     "n": 4
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.2,
+     0.6
+    ],
+    "counter": [
+     0.6,
+     1
+    ],
+    "turtle": [
+     0.1,
+     0.5
+    ]
+   },
+   "botsWhy": "A ground-only army cannot reach the third islet.",
+   "blind": {
+    "swap": {
+     "dustpan_hover": "bulwark_warden"
+    },
+    "why": "The blind army sends everything down the shelled causeway and never builds a hover tank."
+   },
+   "enemy": {
+    "faction": "rummage",
+    "hired": [],
+    "style": "hold",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {
+      "defId": "rivet_gunner",
+      "n": 6,
+      "at": {
+       "marker": "islet_w"
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "rivet_gunner",
+      "n": 6,
+      "at": {
+       "u": 0,
+       "v": -0.75
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "wrench_runner",
+      "n": 6,
+      "at": {
+       "u": 0.5,
+       "v": 0
+      }
+     },
+     {
+      "defId": "junk_buggy",
+      "n": 3,
+      "at": {
+       "u": 0.2,
+       "v": 0.9
+      }
+     },
+     {
+      "defId": "salvo_cart",
+      "n": 2,
+      "at": {
+       "u": 1,
+       "v": 0
+      },
+      "dx": 1.1
+     }
+    ]
+   },
+   "objective": {
+    "type": "capture",
+    "params": {
+     "points": [
+      "islet_w",
+      "islet_c",
+      "islet_e"
+     ],
+     "need": 3,
+     "hold": 10
+    },
+    "markerIds": [
+     "islet_w",
+     "islet_c",
+     "islet_e"
+    ],
+    "text": "Hold all three relay posts for 10 seconds"
+   },
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [
+     "sf_off_switch"
+    ],
+    "override": {},
+    "reasons": {
+     "sf_off_switch": "The intern has not been told about this one yet."
+    }
+   },
+   "script": {
+    "events": [
+     {
+      "id": "magma_hiccup",
+      "at": 100,
+      "once": true,
+      "do": [
+       {
+        "op": "strike",
+        "kind": "prop",
+        "at": {
+         "x": 0,
+         "z": 5
+        },
+        "r": 2.4,
+        "dmg": 18,
+        "delay": 1.5,
+        "team": -1
+       },
+       {
+        "op": "strike",
+        "kind": "prop",
+        "at": {
+         "x": -4.3,
+         "z": -2.5
+        },
+        "r": 2.4,
+        "dmg": 18,
+        "delay": 1.5,
+        "team": -1
+       },
+       {
+        "op": "strike",
+        "kind": "prop",
+        "at": {
+         "x": 4.3,
+         "z": -2.5
+        },
+        "r": 2.4,
+        "dmg": 18,
+        "delay": 1.5,
+        "team": -1
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_magma_hiccup"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Three relay posts sit on three islets. Hold all three at once for ten seconds.",
+    "The third islet can only be reached by hover. The causeway is shelled by Salvo Carts.",
+    "Star 3: no more than 30 of your own bubbles may pop."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "bubbles_kept",
+     "helper": "ownBreaksAtMost",
+     "args": [
+      30
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "quick_unlock",
+     "id": "sf_qp_magma_night"
+    },
+    "unlockMutators": [],
+    "unlockParts": [],
+    "quickUnlocks": [
+     {
+      "kind": "preset",
+      "id": "sf_qp_magma_night",
+      "name": "Magma Lounge: Night Shift"
+     }
+    ],
+    "codex": [
+     "sf_codex_hover_tanks"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_back_glowpads"
+    }
+   },
+   "rewardId": "sf_r2_magma_night",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_hover",
+      "trigger": "hover_cross",
+      "who": "brutus",
+      "text": "The floor is LAVA! Your tanks have never touched the ground, so they win by default!",
+      "hint": "Hover tanks cross lava, water and goo. Foot soldiers keep to the causeway.",
+      "mechanic": "hover",
+      "when": "first hover_cross derived event"
+     },
+     {
+      "id": "sf_third_islet",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "The third islet has no road. Only hover reaches it."
+     },
+     {
+      "id": "sf_capture_how",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Hold all three posts together for ten seconds. Losing one restarts the clock."
+     },
+     {
+      "id": "sf_geyser_tell",
+      "trigger": "geyser_telegraph",
+      "who": "cassandra",
+      "text": "Red ring, then steam. I said red ring. It is always red ring.",
+      "hint": "A red ring on a vent means an eruption in 1.5 seconds.",
+      "when": "first red vent telegraph"
+     },
+     {
+      "id": "sf_salvo_ring",
+      "trigger": "salvo_ring",
+      "who": "plato",
+      "text": "A rocket that lands in a ring, from a very long way off. Is that aiming, or optimism?",
+      "hint": "A Salvo Cart cannot hit inside 12 units. Get close, or use hover.",
+      "when": "first salvo landing ring"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [
+    "hover"
+   ],
+   "tests": [
+    "shield"
+   ],
+   "combines": [],
+   "requiresModules": [
+    "M7",
+    "M14",
+    "M10",
+    "M12",
+    "M8",
+    "M4"
+   ],
+   "softModules": [],
+   "setpiece": {
+    "id": "sf_sp_magma_hiccup",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "unit:dustpan_hover",
+      "offset": [
+       -8,
+       4,
+       -2
+      ]
+     },
+     "to": {
+      "anchor": "unit:dustpan_hover",
+      "offset": [
+       5,
+       3,
+       6
+      ]
+     },
+     "hold": 5,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_floor_lava",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "The vents are ERUPTING! The causeway has a hiccup and so does the lava!"
+      },
+      {
+       "who": "plato",
+       "text": "A hiccup is a small earthquake that thinks it is polite. Who invited it onto the bridge?"
+      },
+      {
+       "who": "cassandra",
+       "text": "The vents go at one hundred seconds. I wrote one hundred on my hand. The ink ran. The lava did not."
+      }
+     ],
+     "sub": "mid"
+    },
+    "stinger": {
+     "id": "sf_stg_magma",
+     "kind": "swell",
+     "secs": 2.6
+    },
+    "sfx": [
+     "sf_lava_bloop",
+     "sf_hover_whine",
+     "sf_geyser_roar"
+    ],
+    "notes": "Script event magma_hiccup at 100 s: three prop-kind eruptions (r 2.4, 18 fire damage, 1.5 s red telegraph) at the three vents round islet_c; knock-back 6 and the arena geyser fallback are not representable here."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 1.5,
+     "star3": 4
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-2: islet_w garrison starts in rifle range of the front rank (W P1); carts at the zone back edge by dx; vents derived. See missions_notes.md"
+  },
+  {
+   "id": "sf_overclock_oops",
+   "act": 1,
+   "mood": "epic",
+   "text": {
+    "title": "Overclock Oops",
+    "blurb": "Destroy the reactor core and its three shield pylons. The Rex may object.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "An OVERCLOCKED reactor! What could possibly go... boom?"
+     },
+     {
+      "who": "plato",
+      "text": "The core is hot, the pylons are many. Is a reactor a thing, or merely a reason?"
+     },
+     {
+      "who": "cassandra",
+      "text": "I said do not overclock it. I said it in capital letters. Nobody reads capital letters in the future either."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "The reactor is in PIECES and the Rex is in a nap! Overclocking: confirmed! Recommended: no!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The core outlived us. It was meant to. I said the pylons first."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Destroy the reactor core and its three shield pylons. The Rex may object."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "hover_home",
+      "text": "Finish with at least two Dustpan Hover Tanks still hovering."
+     }
+    ],
+    "reward": {
+     "title": "Overclocker",
+     "blurb": "Overcharge for Quick Battle. Bubbles huge, breaks loud. The announcer asks everyone to stand one bubble apart."
+    }
+   },
+   "arena": {
+    "recipe": "sf_reactor",
+    "size": "medium",
+    "seed": 12,
+    "env": {
+     "time": 20,
+     "weather": "ember_ion",
+     "fog": 0.1,
+     "theme": "sf_industrial",
+     "sky": "teal_strip"
+    },
+    "markers": [
+     {
+      "id": "core",
+      "type": "waypoint",
+      "x": 0,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "pylon_n",
+      "type": "waypoint",
+      "x": 6,
+      "z": 10.4,
+      "r": 3
+     },
+     {
+      "id": "pylon_s",
+      "type": "waypoint",
+      "x": 6,
+      "z": -10.4,
+      "r": 3
+     },
+     {
+      "id": "pylon_w",
+      "type": "waypoint",
+      "x": -12,
+      "z": 0,
+      "r": 3
+     },
+     {
+      "id": "rex_bay",
+      "type": "waypoint",
+      "x": 44,
+      "z": 0,
+      "r": 5
+     }
+    ]
+   },
+   "playerFaction": "tidy_concord",
+   "roster": [
+    "tidy_trooper",
+    "bulwark_warden",
+    "bubble_tender",
+    "dustpan_hover",
+    "spritz_medic"
+   ],
+   "caps": {},
+   "budget": 7000,
+   "par": {
+    "type": "cost",
+    "value": 5600
+   },
+   "core": [
+    {
+     "defId": "dustpan_hover",
+     "n": 6
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "dustpan_hover",
+     "n": 6
+    },
+    {
+     "defId": "tidy_trooper",
+     "n": 22
+    },
+    {
+     "defId": "bulwark_warden",
+     "n": 5
+    },
+    {
+     "defId": "bubble_tender",
+     "n": 6
+    },
+    {
+     "defId": "spritz_medic",
+     "n": 4
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.15,
+     0.5
+    ],
+    "counter": [
+     0.5,
+     0.9
+    ],
+    "turtle": [
+     0.2,
+     0.7
+    ]
+   },
+   "botsWhy": "The blind bot ignores the pylons' bubble pops, walks the Rex's front and never flanks.",
+   "blind": {
+    "swap": {
+     "dustpan_hover": "bulwark_warden"
+    },
+    "why": "The blind army has no hover flankers: it walks the Rex's front plate and ignores the pylons' bubble pops."
+   },
+   "enemy": {
+    "faction": "rummage",
+    "hired": [],
+    "style": "guard",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [
+     "rustbucket_rex"
+    ],
+    "groups": [
+     {
+      "defId": "rivet_gunner",
+      "n": 5,
+      "at": {
+       "marker": "pylon_w",
+       "dx": 3,
+       "dz": -2
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "rivet_gunner",
+      "n": 5,
+      "at": {
+       "marker": "pylon_n",
+       "dx": 2,
+       "dz": 2
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "rivet_gunner",
+      "n": 4,
+      "at": {
+       "marker": "pylon_s",
+       "dx": 2,
+       "dz": -2
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "wrench_runner",
+      "n": 4,
+      "at": {
+       "marker": "pylon_w",
+       "dx": 1,
+       "dz": 3
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "wrench_runner",
+      "n": 3,
+      "at": {
+       "marker": "pylon_n",
+       "dx": 1,
+       "dz": -2
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "wrench_runner",
+      "n": 3,
+      "at": {
+       "marker": "pylon_s",
+       "dx": 1,
+       "dz": 2
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "junk_buggy",
+      "n": 4,
+      "at": {
+       "u": 0.4,
+       "v": 0
+      }
+     },
+     {
+      "defId": "salvo_cart",
+      "n": 3,
+      "at": {
+       "u": 1,
+       "v": 0
+      },
+      "dx": 1.1
+     },
+     {
+      "defId": "rustbucket_rex",
+      "n": 1,
+      "id": "rex",
+      "at": {
+       "marker": "rex_bay"
+      },
+      "order": "hold"
+     }
+    ]
+   },
+   "objective": {
+    "type": "destroy",
+    "params": {
+     "props": [
+      {
+       "type": "sf_reactor_core",
+       "count": 1
+      },
+      {
+       "type": "sf_shield_pylon",
+       "count": 3
+      }
+     ],
+     "eliminate": false
+    },
+    "markerIds": [],
+    "text": "Destroy the reactor core and its three pylons"
+   },
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [
+     "sf_off_switch"
+    ],
+    "override": {
+     "sf_gravity_burp": {
+      "propDmg": 0
+     }
+    },
+    "reasons": {
+     "sf_off_switch": "The intern has not been told about this one yet."
+    }
+   },
+   "script": {
+    "events": [
+     {
+      "id": "rex_wakes",
+      "at": {
+       "on": "prop_destroyed",
+       "type": "sf_shield_pylon",
+       "count": 1
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "order",
+        "group": "rex",
+        "order": "advance"
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_rex_wakes"
+       }
+      ]
+     },
+     {
+      "id": "core_overload",
+      "at": {
+       "on": "prop_destroyed",
+       "type": "sf_reactor_core"
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "strike",
+        "kind": "prop",
+        "at": {
+         "marker": "core"
+        },
+        "r": 14,
+        "dmg": 45,
+        "delay": 0.5,
+        "team": -1
+       },
+       {
+        "op": "kill",
+        "def": "rustbucket_rex",
+        "cause": "energy"
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_meltdown_cafe"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Destroy the reactor core and all three shield pylons. A fallen pylon pops the bubbles near it.",
+    "The Rustbucket Rex sleeps until the first pylon falls. Hit it from behind.",
+    "Star 3: finish with at least two Dustpan Hover Tanks alive."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "hover_home",
+     "helper": "keptAlive",
+     "args": [
+      "dustpan_hover",
+      2
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "mutator",
+     "id": "sf_overcharge"
+    },
+    "unlockMutators": [
+     "sf_overcharge"
+    ],
+    "unlockParts": [
+     "sf_back_hoverpack"
+    ],
+    "quickUnlocks": [],
+    "codex": [
+     "rustbucket_rex",
+     "spritz_medic"
+    ],
+    "substitution": null
+   },
+   "rewardId": "sf_r3_overcharge",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_medic",
+      "trigger": "heal_pulse",
+      "who": "plato",
+      "text": "A bubble mends itself. A body needs a medic. Which is the more honest?",
+      "hint": "A Medic mends bodies only; bubbles mend themselves.",
+      "mechanic": "repair",
+      "when": "first heal_pulse"
+     },
+     {
+      "id": "sf_destroy_list",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Destroy the reactor core and all three shield pylons. The Rex sleeps until the first pylon falls."
+     },
+     {
+      "id": "sf_pylon_pop",
+      "trigger": "pylon_death",
+      "who": "brutus",
+      "text": "The pylon POPS the bubbles around it! Yours too! It is a very honest pylon!",
+      "hint": "A falling pylon pops nearby bubbles. Keep your line a little way off.",
+      "when": "first pylon death"
+     },
+     {
+      "id": "sf_rear_plate",
+      "trigger": "deflect_front",
+      "who": "cassandra",
+      "text": "The front is thick. The back is thin. I said go round.",
+      "hint": "The Rex's rear plate is weaker. Hover flankers reach it.",
+      "when": "first deflect on the Rex's front"
+     },
+     {
+      "id": "sf_coolant_tank",
+      "trigger": "tank_explosion",
+      "who": "cassandra",
+      "text": "A coolant tank bursts in a frost-white blast. Stand away from them.",
+      "when": "first tank explosion"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "spritz_medic",
+      "mechanic": "cloak",
+      "why": "Its detect lamp is inert: no cloaked unit exists before mission 4."
+     },
+     {
+      "kind": "unit",
+      "id": "rustbucket_rex",
+      "mechanic": "emp",
+      "why": "Its EMP cap is a first-sight toast: no EMP source exists in the player roster before mission 5."
+     },
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [],
+   "tests": [
+    "hover"
+   ],
+   "combines": [
+    "shield",
+    "hover"
+   ],
+   "requiresModules": [
+    "M12",
+    "M14",
+    "M13",
+    "M15",
+    "M17e",
+    "M4"
+   ],
+   "softModules": [
+    "M8"
+   ],
+   "setpiece": {
+    "id": "sf_sp_meltdown_cafe",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "core",
+      "offset": [
+       0,
+       14,
+       8
+      ]
+     },
+     "to": {
+      "anchor": "core",
+      "offset": [
+       0,
+       26,
+       24
+      ]
+     },
+     "hold": 5,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_overclock_oops",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "The core is GONE! Every bubble in the building has just left, in order, with feeling!"
+      },
+      {
+       "who": "plato",
+       "text": "A bubble breaks and a chain of bubbles follows. Is that a reactor, or a rumour?"
+      },
+      {
+       "who": "cassandra",
+       "text": "Overclocked, I said. Overclocked, it did. The Rex has lain down. It asks not to be disturbed."
+      }
+     ],
+     "sub": "win"
+    },
+    "stinger": {
+     "id": "sf_stg_meltdown",
+     "kind": "hit",
+     "secs": 3
+    },
+    "sfx": [
+     "sf_reactor_overload",
+     "sf_shield_chain_pop",
+     "sf_mech_topple"
+    ],
+    "notes": "Script event core_overload (core destroyed): sim 0.5x, white flash (R16-limited), prop-kind ring r 14 / 45 energy that pops bubbles in a ripple, craters at the pylon sites, kill op topples the Rex (fallback: strike 4,000 protect 0)."
+   },
+   "extraSetpieces": [
+    {
+     "id": "sf_sp_rex_wakes",
+     "role": "secondary",
+     "trigger": null,
+     "shot": {
+      "from": {
+       "anchor": "unit:rustbucket_rex",
+       "offset": [
+        -8,
+        1,
+        2
+       ]
+      },
+      "to": {
+       "anchor": "unit:rustbucket_rex",
+       "offset": [
+        -3,
+        1.4,
+        0.5
+       ]
+      },
+      "hold": 3.5,
+      "ease": "in",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "boss_enters",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {
+        "who": "brutus",
+        "text": "A DUMPSTER with legs! And an ambition!"
+       },
+       {
+        "who": "plato",
+        "text": "Was it a crane, a truck or three vending machines? It declines to say."
+       },
+       {
+        "who": "cassandra",
+        "text": "The first pylon fell. I said the Rex would wake on the first pylon. It woke on the first pylon."
+       }
+      ]
+     },
+     "stinger": {
+      "id": "sf_stg_rex_horn",
+      "kind": "hit",
+      "secs": 2.4
+     },
+     "sfx": [
+      "sf_truck_horn",
+      "sf_stilt_creak",
+      "sf_airlock_hiss"
+     ],
+     "notes": "Script event rex_wakes (first sf_shield_pylon destroyed): order op wakes the Rex group; low push to the radiator teeth."
+    }
+   ],
+   "attempts": {
+    "design": {
+     "star1": 2.2,
+     "star3": 5
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-3: pylon garrisons start in rifle range of the front rank (W P1); Rex kill cause energy; wake and overload as events. See missions_notes.md"
+  },
+  {
+   "id": "sf_express_delivery",
+   "act": 2,
+   "mood": "tense",
+   "moodAlso": [
+    "comic"
+   ],
+   "text": {
+    "title": "Express Delivery (Fragile, Diplomatic)",
+    "blurb": "Get Envoy Plumbly to the exit. It walks by itself once the road is clear.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "A DIPLOMAT! In a bubble! Delivered express to an address nobody can pronounce!"
+     },
+     {
+      "who": "plato",
+      "text": "The cloaked cannot be seen. Does an unseen assassin exist, or merely lurk?"
+     },
+     {
+      "who": "cassandra",
+      "text": "They are here already. I can hear them not breathing. Light the lamps."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "DELIVERED! The Envoy is unpopped, the pod is unopened and the paperwork is, somehow, intact!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The Envoy's bubble went first. The Envoy followed. I said light the lamps."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Get Envoy Plumbly to the exit. It walks by itself once the road is clear."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "envoy_unpopped",
+      "text": "Bring the Envoy home with its bubble never popped. The Envoy is fragile. The Envoy is diplomatic."
+     }
+    ],
+    "reward": {
+     "title": "Diplomatic Courier",
+     "blurb": "A cape that shimmers when nobody is looking. The Soldier Workshop has it now. It cannot be seen in the catalogue either."
+    }
+   },
+   "arena": {
+    "recipe": "sf_crashsite",
+    "size": "medium",
+    "seed": 5,
+    "env": {
+     "time": 18,
+     "weather": "fog",
+     "fog": 0.3,
+     "theme": "sf_crash",
+     "sky": "dusk_smoke"
+    },
+    "markers": [
+     {
+      "id": "envoy_start",
+      "type": "vip_start",
+      "x": -38,
+      "z": 0,
+      "r": 3
+     },
+     {
+      "id": "pod_exit",
+      "type": "exit",
+      "x": 44,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "ridge",
+      "type": "waypoint",
+      "x": 42,
+      "z": 18,
+      "r": 5
+     },
+     {
+      "id": "dark_lane",
+      "type": "waypoint",
+      "x": 14,
+      "z": -6,
+      "r": 3
+     }
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "tidy_trooper",
+    "spritz_medic",
+    "glow_grazer",
+    "veil_cutter"
+   ],
+   "caps": {},
+   "budget": 4200,
+   "par": {
+    "type": "cost",
+    "value": 3200
+   },
+   "core": [
+    {
+     "defId": "tidy_trooper",
+     "n": 8
+    }
+   ],
+   "fixed": [
+    {
+     "defId": "bubble_tender",
+     "marker": "envoy_start",
+     "vip": true,
+     "heading": 1.5707963267948966,
+     "name": "Envoy Plumbly",
+     "override": {
+      "name": "Envoy Plumbly"
+     },
+     "free": true
+    }
+   ],
+   "reference": [
+    {
+     "defId": "tidy_trooper",
+     "n": 14
+    },
+    {
+     "defId": "spritz_medic",
+     "n": 4
+    },
+    {
+     "defId": "glow_grazer",
+     "n": 12
+    },
+    {
+     "defId": "veil_cutter",
+     "n": 8
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.25,
+     0.65
+    ],
+    "counter": [
+     0.6,
+     1
+    ],
+    "turtle": [
+     0.2,
+     0.6
+    ]
+   },
+   "botsWhy": "The blind bot walks the Envoy through the ambush with no lamp.",
+   "blind": {
+    "swap": {
+     "glow_grazer": "tidy_trooper",
+     "spritz_medic": "tidy_trooper"
+    },
+    "why": "The blind army has no lamp: it walks the Envoy through the cloaked ambush with troopers where the Grazers and Medics should be."
+   },
+   "enemy": {
+    "faction": "quiet_hour",
+    "hired": [
+     "rummage"
+    ],
+    "style": "ambush",
+    "difficulty": "normal",
+    "special": "targets the Envoy",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {
+      "defId": "veil_cutter",
+      "n": 3,
+      "at": {
+       "marker": "dark_lane",
+       "dx": -6
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "veil_cutter",
+      "n": 3,
+      "at": {
+       "marker": "dark_lane",
+       "dx": 6
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "veil_cutter",
+      "n": 2,
+      "at": {
+       "u": 0.5,
+       "v": -0.6
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "veil_cutter",
+      "n": 2,
+      "at": {
+       "u": 0.5,
+       "v": 0.6
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "shush_bike",
+      "n": 4,
+      "at": {
+       "u": 0,
+       "v": -0.95
+      }
+     },
+     {
+      "defId": "silent_signer",
+      "n": 2,
+      "at": {
+       "marker": "ridge"
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "rivet_gunner",
+      "n": 8,
+      "at": {
+       "u": 0.8,
+       "v": 0
+      },
+      "order": "hold",
+      "hired": true
+     }
+    ]
+   },
+   "objective": {
+    "type": "escort",
+    "params": {
+     "vip": "bubble_tender",
+     "exit": "pod_exit",
+     "mode": "path"
+    },
+    "markerIds": [
+     "envoy_start",
+     "pod_exit"
+    ],
+    "binding": true,
+    "text": "Walk Envoy Plumbly to the exit"
+   },
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [
+     "sf_off_switch"
+    ],
+    "override": {},
+    "reasons": {
+     "sf_off_switch": "The intern has not been told about this one yet."
+    }
+   },
+   "script": {
+    "vipMarch": {
+     "to": "pod_exit",
+     "delay": 12,
+     "clear": 14,
+     "patience": 60
+    },
+    "events": [
+     {
+      "id": "rolling_blackout",
+      "at": 70,
+      "once": true,
+      "do": [
+       {
+        "op": "weather",
+        "kind": "smog"
+       },
+       {
+        "op": "sky",
+        "time": 23,
+        "over": 2
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_rolling_blackout"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Envoy Plumbly walks to the exit by itself once nothing hostile stands near the way. If the Envoy falls, you lose.",
+    "Quiet Hour renegades cloak: lamps and splash reveal them, and a cloaked unit that attacks shows itself.",
+    "Star 3: the Envoy's bubble must never pop."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "envoy_unpopped",
+     "helper": "vipShieldNeverBroken",
+     "args": []
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "part",
+     "id": "sf_cape_shimmer"
+    },
+    "unlockMutators": [],
+    "unlockParts": [
+     "sf_cape_shimmer"
+    ],
+    "quickUnlocks": [],
+    "codex": [
+     "sf_codex_quiet_hour"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_generic_back"
+    }
+   },
+   "rewardId": "sf_r4_cape_shimmer",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_cloak",
+      "trigger": "cloak_on",
+      "who": "cassandra",
+      "text": "He was there the whole time. Look, a violet outline, a very polite one.",
+      "hint": "Cloaked units are hard to target. Lamps and drones reveal them; attacking breaks the cloak.",
+      "mechanic": "cloak",
+      "when": "first cloak_on"
+     },
+     {
+      "id": "sf_lamp_reveal",
+      "trigger": "detector_reveal",
+      "who": "brutus",
+      "text": "The Grazer's LAMP found him! The lamp is a ring light and the ring light is a hero!",
+      "hint": "A Grazer's lamp reveals cloaked units within ten units. A Medic's reaches twelve.",
+      "when": "first reveal by a detector"
+     },
+     {
+      "id": "sf_attack_breaks",
+      "trigger": "cloak_broken",
+      "who": "plato",
+      "text": "A secret kept until the moment it is useful. Is that discretion, or only timing?",
+      "hint": "A cloaked unit that attacks is revealed for a moment.",
+      "when": "first cloak broken by an attack"
+     },
+     {
+      "id": "sf_lock_line",
+      "trigger": "lock_line",
+      "who": "cassandra",
+      "text": "SILENT SIGNER. A red line means one second until a 70-point shot. Break the line of sight.",
+      "when": "first red lock line of a Signer"
+     },
+     {
+      "id": "sf_envoy_rule",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "The Envoy walks by itself once the road is clear. If its bubble breaks it is in danger; if it falls, you lose."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [
+    "cloak"
+   ],
+   "tests": [
+    "shield"
+   ],
+   "combines": [],
+   "requiresModules": [
+    "M5",
+    "M14",
+    "M7",
+    "M2",
+    "M12",
+    "M15",
+    "M17e",
+    "M4"
+   ],
+   "softModules": [],
+   "setpiece": {
+    "id": "sf_sp_rolling_blackout",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "unit:bubble_tender",
+      "offset": [
+       -3,
+       2.2,
+       1.2
+      ]
+     },
+     "to": {
+      "anchor": "unit:bubble_tender",
+      "offset": [
+       3,
+       2.2,
+       -1.2
+      ]
+     },
+     "hold": 4,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_express_delivery",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "The WRECK has lost its lights! Nobody ordered a night but we have one!"
+      },
+      {
+       "who": "plato",
+       "text": "In the dark the unseen and the seen look alike. Which of them was ever sure?"
+      },
+      {
+       "who": "cassandra",
+       "text": "Six outlines. Violet. Polite. I counted them in the dark. I said bring lamps."
+      }
+     ],
+     "sub": "mid"
+    },
+    "stinger": {
+     "id": "sf_stg_blackout",
+     "kind": "dread",
+     "secs": 3
+    },
+    "sfx": [
+     "sf_power_down_hum",
+     "sf_cloak_shimmer",
+     "sf_shush_whisper"
+    ],
+    "notes": "Script event rolling_blackout at 70 s: weather smog (lamp reach x0.8), render-only sky jump to night, every cloaked unit shows as a violet outline. Camera: over the shoulder behind the Envoy, half a turn."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 1.8,
+     "star3": 4.5
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-4 (spec A4/A5): escort vip = bubble_tender, reachOnly dropped, blackout as a script event. See missions_notes.md"
+  },
+  {
+   "id": "sf_turn_it_off",
+   "act": 2,
+   "mood": "comic",
+   "text": {
+    "title": "Have You Tried Turning It Off?",
+    "blurb": "Hold the Help Desk for 120 seconds in total. An enemy on the hill stops the clock.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "ROBOTS! Smiling, polite, deadly, and with a survey at the end!"
+     },
+     {
+      "who": "plato",
+      "text": "A robot has no soul, so who is being polite, and who is paying for it?"
+     },
+     {
+      "who": "cassandra",
+      "text": "I predicted the robots. Nobody listened. Again."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "The Help Desk is OURS! Every robot is on hold and one of them is still bowing!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "They bowed. We were polite. We lost the hill. I said do not be polite."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Hold the Help Desk for 120 seconds in total. An enemy on the hill stops the clock."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "quick_hill",
+      "text": "Win within 170 seconds. The queue was told to be quick."
+     }
+    ],
+    "reward": {
+     "title": "IT Department",
+     "blurb": "A bandolier of spare fuses for the Soldier Workshop. They are decorative. Do not ask which ones."
+    }
+   },
+   "arena": {
+    "recipe": "sf_megamall",
+    "size": "large",
+    "seed": 9,
+    "env": {
+     "time": 12,
+     "weather": "clear",
+     "fog": 0,
+     "theme": "sf_retail",
+     "sky": "retail_bright"
+    },
+    "markers": [
+     {
+      "id": "help_desk",
+      "type": "hill",
+      "x": 0,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "atrium_cam",
+      "type": "waypoint",
+      "x": 0,
+      "z": 12,
+      "r": 3
+     }
+    ]
+   },
+   "playerFaction": "rummage",
+   "roster": [
+    "wrench_runner",
+    "rivet_gunner",
+    "zapper_tinker",
+    "junk_buggy",
+    "salvo_cart"
+   ],
+   "caps": {},
+   "budget": 6000,
+   "par": {
+    "type": "cost",
+    "value": 4500
+   },
+   "core": [
+    {
+     "defId": "zapper_tinker",
+     "n": 4
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "wrench_runner",
+     "n": 14
+    },
+    {
+     "defId": "rivet_gunner",
+     "n": 12
+    },
+    {
+     "defId": "zapper_tinker",
+     "n": 6
+    },
+    {
+     "defId": "junk_buggy",
+     "n": 6
+    },
+    {
+     "defId": "salvo_cart",
+     "n": 5
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.2,
+     0.6
+    ],
+    "counter": [
+     0.6,
+     1
+    ],
+    "turtle": [
+     0.1,
+     0.5
+    ]
+   },
+   "botsWhy": "A blind bot with no tinkers loses at least 70 percent.",
+   "blind": {
+    "swap": {
+     "zapper_tinker": "rivet_gunner"
+    },
+    "why": "The blind army fights the greeters one by one with no Tinker, so the chip never ends."
+   },
+   "enemy": {
+    "faction": "courtesy",
+    "hired": [],
+    "style": "waves",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {
+      "defId": "greeter_unit",
+      "n": 10
+     },
+     {
+      "defId": "valet_drone",
+      "n": 4
+     }
+    ]
+   },
+   "objective": {
+    "type": "hold_hill",
+    "params": {
+     "time": 120
+    },
+    "markerIds": [
+     "help_desk"
+    ],
+    "text": "Hold the Help Desk for 120 seconds in total"
+   },
+   "timeLimit": 240,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [],
+    "override": {}
+   },
+   "script": {
+    "waves": {
+     "placed": true,
+     "firstAfter": 30,
+     "interval": 30,
+     "list": [
+      {
+       "groups": [
+        {
+         "defId": "greeter_unit",
+         "n": 8
+        },
+        {
+         "defId": "valet_drone",
+         "n": 6
+        },
+        {
+         "defId": "refund_crawler",
+         "n": 2
+        },
+        {
+         "defId": "warranty_tech",
+         "n": 2
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "refund_crawler",
+         "n": 2
+        },
+        {
+         "defId": "warranty_tech",
+         "n": 2
+        }
+       ]
+      }
+     ]
+    },
+    "events": [],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Hold the Help Desk for 120 seconds in total; an enemy standing on it stops the clock.",
+    "A Tinker's EMP stuns every machine in its ring for three seconds and wipes their bubbles. Greeters, valets, crawlers and techs are all machines.",
+    "Star 3: win within 170 seconds."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "quick_hill",
+     "helper": "underTime",
+     "args": [
+      170
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "part",
+     "id": "sf_back_fuses"
+    },
+    "unlockMutators": [],
+    "unlockParts": [
+     "sf_back_fuses"
+    ],
+    "quickUnlocks": [],
+    "codex": [
+     "sf_codex_courtesy_systems"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_generic_back"
+    }
+   },
+   "rewardId": "sf_r5_fuses",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_emp",
+      "trigger": "emp_cast",
+      "who": "brutus",
+      "text": "ROBOTS! Switched off! Please hold!",
+      "hint": "EMP stuns machines for 3 s and wipes their bubbles. It does nothing to organics.",
+      "mechanic": "emp",
+      "when": "first emp_cast"
+     },
+     {
+      "id": "sf_stun_pip",
+      "trigger": "machine_stunned",
+      "who": "cassandra",
+      "text": "A stunned machine shows a blue ring and a 'please hold' bubble. It cannot act until the ring ends.",
+      "when": "first stunned machine"
+     },
+     {
+      "id": "sf_b_repair",
+      "trigger": "tech_repair",
+      "who": "plato",
+      "text": "A Tech mends a machine. A Medic mends a person. Neither mends a bubble. Who does that?",
+      "hint": "Techs repair machines only. Medics mend organics only. The Tender mends bubbles.",
+      "mechanic": "repair",
+      "when": "first Tech repair"
+     },
+     {
+      "id": "sf_crawler_faces",
+      "trigger": "deflect_front",
+      "who": "cassandra",
+      "text": "REFUND CRAWLER. A grey tink is a hit on the front; an orange bonk is a hit on the rear.",
+      "when": "first deflect on a Refund Crawler's front"
+     },
+     {
+      "id": "sf_hill_clock",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Hold the Help Desk for 120 seconds in total. An enemy standing on it stops the clock."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [
+    "emp"
+   ],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [
+    "M6b",
+    "M6a",
+    "M7",
+    "M8",
+    "M4",
+    "M15"
+   ],
+   "softModules": [],
+   "marginWaiver": {
+    "ref": "docs/eras/cuts.md (COORD logs it, OI-MS6)",
+    "reason": "The headline EMP is M6b, landing position 19 = E-FREEZE (margin 0 by construction). Request R1 (split M6b so the stun lands at 17b) is open with SIM/COORD; M5 content is written against the spec/M EMP contract and first runs at the mechanic slice."
+   },
+   "setpiece": {
+    "id": "sf_sp_please_hold",
+    "role": "primary",
+    "trigger": {
+     "on": "counter",
+     "counter": "emp_hit_machine",
+     "gte": 8,
+     "within": 1
+    },
+    "shot": {
+     "from": {
+      "anchor": "enemy_centroid",
+      "offset": [
+       8,
+       3,
+       8
+      ]
+     },
+     "to": {
+      "anchor": "unit:greeter_unit",
+      "offset": [
+       1.2,
+       1.4,
+       0.8
+      ]
+     },
+     "hold": 4,
+     "ease": "in",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_turn_it_off",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "ROBOTS on hold! One of them is mid-bow and cannot finish! The bow will be completed in the next available century!"
+      },
+      {
+       "who": "plato",
+       "text": "Does a machine that has stopped know that it has stopped? Does the one still bowing?"
+      },
+      {
+       "who": "cassandra",
+       "text": "Eight of them stopped. I counted. They are on hold. The hold music is theirs."
+      }
+     ],
+     "sub": "emp"
+    },
+    "stinger": {
+     "id": "sf_stg_buzzkill",
+     "kind": "comic",
+     "secs": 2.2
+    },
+    "sfx": [
+     "sf_emp_burst",
+     "sf_robot_powerdown",
+     "sf_hold_music_snippet"
+    ],
+    "notes": "Fires on the first EMP that stuns >= 8 distinct machines at once (Tinkers or god power 5); a battle without such an EMP has no set-piece (declared, outline 6). Slow push-in on a frozen greeter mid-bow."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 1.4,
+     "star3": 3
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-5: marginWaiver for M6b (position 19 = E-FREEZE); waves 30 s apart as firstAfter/interval 30. See missions_notes.md"
+  },
+  {
+   "id": "sf_grand_reopening",
+   "act": 2,
+   "mood": "epic",
+   "text": {
+    "title": "The Concierge's Grand Reopening",
+    "blurb": "Topple the Grand Concierge. Check-out is compulsory.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE GRAND CONCIERGE! Ten stories of friendly! Bring a hat, he will want to hold it!"
+     },
+     {
+      "who": "plato",
+      "text": "He is a hotel that learned to walk. Is hospitality a kind of aggression?"
+     },
+     {
+      "who": "cassandra",
+      "text": "He reaches the neon sign first. I said so. The sign fell on my diagram."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "The Concierge TOPPLES! The bell rings! Check-out is at noon and also now!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The Concierge reached the end of the boulevard. He is still smiling. I said stun the back."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Topple the Grand Concierge. Check-out is compulsory."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "six_from_cloak",
+      "text": "Make six kills from cloak. The Concierge never saw a thing. Neither did the greeters."
+     }
+    ],
+    "reward": {
+     "title": "Complaints Department",
+     "blurb": "A Concierge boss rush for Quick Battle. Everything is the Concierge. Please take a number."
+    }
+   },
+   "arena": {
+    "recipe": "sf_neoncity",
+    "size": "large",
+    "seed": 21,
+    "env": {
+     "time": 23,
+     "weather": "neon_rain",
+     "fog": 0.25,
+     "theme": "sf_neon",
+     "sky": "neon_night"
+    },
+    "markers": [
+     {
+      "id": "plaza",
+      "type": "general_spawn",
+      "x": 52,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "sign_stack",
+      "type": "waypoint",
+      "x": 44,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "boulevard_cam",
+      "type": "waypoint",
+      "x": 0,
+      "z": 0,
+      "r": 4
+     }
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "wrench_runner",
+    "rivet_gunner",
+    "zapper_tinker",
+    "junk_buggy",
+    "veil_cutter",
+    "shush_bike",
+    "silent_signer"
+   ],
+   "caps": {},
+   "budget": 9000,
+   "par": {
+    "type": "cost",
+    "value": 7200
+   },
+   "core": [
+    {
+     "defId": "zapper_tinker",
+     "n": 6
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "wrench_runner",
+     "n": 10
+    },
+    {
+     "defId": "rivet_gunner",
+     "n": 12
+    },
+    {
+     "defId": "zapper_tinker",
+     "n": 8
+    },
+    {
+     "defId": "junk_buggy",
+     "n": 8
+    },
+    {
+     "defId": "veil_cutter",
+     "n": 10
+    },
+    {
+     "defId": "shush_bike",
+     "n": 8
+    },
+    {
+     "defId": "silent_signer",
+     "n": 2
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.1,
+     0.5
+    ],
+    "counter": [
+     0.5,
+     0.9
+    ],
+    "turtle": [
+     0.1,
+     0.4
+    ]
+   },
+   "botsWhy": "The blind bot charges the Concierge head-on and never stuns or stabs the back.",
+   "blind": {
+    "swap": {
+     "zapper_tinker": "rivet_gunner",
+     "veil_cutter": "rivet_gunner"
+    },
+    "why": "The blind army has no Tinker stun and no cloak: it charges the Concierge head-on and never stuns or stabs the back plate."
+   },
+   "enemy": {
+    "faction": "courtesy",
+    "hired": [],
+    "style": "guard",
+    "difficulty": "normal",
+    "generals": [
+     "grand_concierge"
+    ],
+    "bosses": [
+     "grand_concierge"
+    ],
+    "groups": [
+     {
+      "defId": "grand_concierge",
+      "n": 1,
+      "id": "concierge",
+      "at": {
+       "marker": "plaza"
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "maitre_deluxe",
+      "n": 1,
+      "id": "maitre",
+      "at": {
+       "marker": "plaza",
+       "dx": -3,
+       "dz": 4
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "greeter_unit",
+      "n": 20,
+      "id": "greeters",
+      "order": "hold"
+     },
+     {
+      "defId": "valet_drone",
+      "n": 12,
+      "id": "valets",
+      "order": "hold"
+     },
+     {
+      "defId": "refund_crawler",
+      "n": 5,
+      "id": "crawlers",
+      "order": "hold"
+     },
+     {
+      "defId": "warranty_tech",
+      "n": 5,
+      "id": "techs",
+      "order": "hold"
+     }
+    ]
+   },
+   "objective": {
+    "type": "kill_general",
+    "params": {},
+    "markerIds": [
+     "plaza"
+    ],
+    "binding": true,
+    "text": "Topple the Grand Concierge"
+   },
+   "timeLimit": 360,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [],
+    "override": {}
+   },
+   "script": {
+    "events": [
+     {
+      "id": "boulevard_advances",
+      "at": 20,
+      "once": true,
+      "do": [
+       {
+        "op": "order",
+        "group": "greeters",
+        "order": "advance"
+       },
+       {
+        "op": "order",
+        "group": "valets",
+        "order": "advance"
+       },
+       {
+        "op": "order",
+        "group": "crawlers",
+        "order": "advance"
+       },
+       {
+        "op": "order",
+        "group": "techs",
+        "order": "advance"
+       }
+      ]
+     },
+     {
+      "id": "sign_falls",
+      "at": 25,
+      "once": true,
+      "do": [
+       {
+        "op": "prop",
+        "act": "destroy",
+        "type": "sf_billboard",
+        "at": {
+         "marker": "sign_stack"
+        },
+        "all": true
+       },
+       {
+        "op": "order",
+        "group": "concierge",
+        "order": "advance"
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_mech_stomp_reveal"
+       }
+      ]
+     }
+    ],
+    "counters": [
+     {
+      "id": "sf_concierge_stunned",
+      "kind": "event",
+      "event": "emp_hit",
+      "of": "id",
+      "side": "enemy",
+      "where": {
+       "id.def": "grand_concierge"
+      },
+      "add": 1
+     }
+    ]
+   },
+   "inputs": [],
+   "rules": [
+    "Topple the Grand Concierge. His sign falls at twenty-five seconds and he walks out.",
+    "He shrugs off EMP in about two and a half seconds. Stun him, then hit his back plate, ideally from cloak.",
+    "Star 3: make six kills from cloak."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "six_from_cloak",
+     "helper": "usedMechanic",
+     "args": [
+      "cloak",
+      6
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "quick_unlock",
+     "id": "sf_qp_boss_rush"
+    },
+    "unlockMutators": [],
+    "unlockParts": [],
+    "quickUnlocks": [
+     {
+      "kind": "preset",
+      "id": "sf_qp_boss_rush",
+      "name": "Concierge Boss Rush"
+     }
+    ],
+    "codex": [
+     "grand_concierge"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_helm_bowtie"
+    }
+   },
+   "rewardId": "sf_r6_boss_rush",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_stomp",
+      "trigger": "mech_step",
+      "who": "cassandra",
+      "text": "Each step is a seismic event. Nobody is surprised. I am, again, unheard.",
+      "hint": "Stun the mech with EMP, then hit the back plate.",
+      "when": "first mech_step"
+     },
+     {
+      "id": "sf_emp_cap",
+      "trigger": "emp_on_boss",
+      "who": "cassandra",
+      "text": "A boss shakes off EMP faster: about 2.5 seconds. Use the window, not the lock.",
+      "when": "first EMP on a boss"
+     },
+     {
+      "id": "sf_back_plate",
+      "trigger": "deflect_front",
+      "who": "cassandra",
+      "text": "The front is for visitors. The back is for us. I said the back.",
+      "hint": "The Concierge's rear plate is weaker. Cloaked units reach it.",
+      "when": "first deflect on the Concierge's front"
+     },
+     {
+      "id": "sf_maitre_wait",
+      "trigger": "please_wait",
+      "who": "plato",
+      "text": "'Please wait' is the most powerful sentence in the language. Who is waiting, and for what?",
+      "hint": "The Maitre D'Luxe makes units in a ring stumble and fire slowly for a moment. Spread out.",
+      "when": "first please_wait"
+     },
+     {
+      "id": "sf_boss_bubble",
+      "trigger": "boss_shield_break",
+      "who": "cassandra",
+      "text": "THE GRAND CONCIERGE. A 600-point bubble that returns in six seconds. Break it, then hit the back.",
+      "when": "the Concierge's bubble first pops"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [],
+   "tests": [
+    "cloak"
+   ],
+   "combines": [
+    "cloak",
+    "emp",
+    "shield"
+   ],
+   "requiresModules": [
+    "M5",
+    "M6b",
+    "M8",
+    "M15",
+    "M17e",
+    "M12",
+    "M14",
+    "M13"
+   ],
+   "softModules": [],
+   "setpiece": {
+    "id": "sf_sp_mech_stomp_reveal",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "unit:grand_concierge",
+      "offset": [
+       -6,
+       0.6,
+       6
+      ]
+     },
+     "to": {
+      "anchor": "unit:grand_concierge",
+      "offset": [
+       -6,
+       7.5,
+       6
+      ]
+     },
+     "hold": 5,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_grand_reopening",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "TEN stories of friendly! The sign is down and the Concierge would like to hold your hat!"
+      },
+      {
+       "who": "plato",
+       "text": "He is a hotel that learned to walk. Does a building walk toward you, or away from its foundations?"
+      },
+      {
+       "who": "cassandra",
+       "text": "Each step is a seismic event. I said so. The sign fell on my diagram."
+      }
+     ],
+     "sub": "boss"
+    },
+    "stinger": {
+     "id": "sf_stg_mech_steps",
+     "kind": "dread",
+     "secs": 3
+    },
+    "sfx": [
+     "sf_mech_step_boom",
+     "sf_servo_whine",
+     "sf_welcome_chime"
+    ],
+    "notes": "Script event sign_falls at 25 s: the three billboards of sign_stack collapse (ground shake), the order op releases the Concierge; its death is a slow topple with a hotel bell (reaction table, no script)."
+   },
+   "extraSetpieces": [
+    {
+     "id": "sf_sp_buffering",
+     "role": "conditional",
+     "trigger": {
+      "on": "counter",
+      "counter": "sf_concierge_stunned",
+      "gte": 1
+     },
+     "shot": {
+      "from": {
+       "anchor": "unit:grand_concierge",
+       "offset": [
+        -14,
+        5,
+        14
+       ]
+      },
+      "to": {
+       "anchor": "unit:grand_concierge",
+       "offset": [
+        -12,
+        4,
+        12
+       ]
+      },
+      "hold": 4,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "boss_stun",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {
+        "who": "brutus",
+        "text": "He is BUFFERING! The face says loading! The knees have asked for a moment!"
+       },
+       {
+        "who": "plato",
+        "text": "A machine asked to wait. Is that rudeness, or progress?"
+       },
+       {
+        "who": "cassandra",
+        "text": "Two and a half seconds. Back plate. I said back plate."
+       }
+      ]
+     },
+     "stinger": {
+      "id": "sf_stg_buzzkill",
+      "kind": "comic",
+      "secs": 2.2
+     },
+     "sfx": [
+      "sf_emp_burst",
+      "sf_servo_whine"
+     ],
+     "notes": "Conditional: the first EMP stun on the Concierge (local counter sf_concierge_stunned); a wide shot of the knees folding and the TV face showing a spinner. Reuses sf_stg_buzzkill at -3 dB."
+    }
+   ],
+   "attempts": {
+    "design": {
+     "star1": 3,
+     "star3": 6
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-6: 'advance at 20 s' read as hold + order op; billboards collapse by prop op at sign_stack; buffering via local counter. See missions_notes.md"
+  },
+  {
+   "id": "sf_blink_jungle",
+   "act": 3,
+   "mood": "ominous",
+   "text": {
+    "title": "Blink And You'll Miss The Jungle",
+    "blurb": "Keep the Heart tree alive through three waves. Pull the gnats off its bark.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE JUNGLE! Glowing! Humid! Full of bugs the size of footstools!"
+     },
+     {
+      "who": "plato",
+      "text": "The Heart tree must live. Is a tree a person, or a very patient neighbour?"
+     },
+     {
+      "who": "cassandra",
+      "text": "The river is acid. I wrote 'acid' on the map in green. The map is now also a hazard."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "The Heart BEATS! The hill has woken, the bugs have gone home and the moss is standing room only!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The Heart fell. The spitters were across the river the whole time. I said blink."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Keep the Heart tree alive through three waves. Pull the gnats off its bark."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive and the Heart standing."
+     },
+     {
+      "id": "heart_proud",
+      "text": "Finish with the Heart above 60 percent. Blink over and silence the spitters first."
+     }
+    ],
+    "reward": {
+     "title": "Grove Keeper",
+     "blurb": "A lamp on a stick for the Soldier Workshop. It lights the way, the enemy and your hands."
+    }
+   },
+   "arena": {
+    "recipe": "sf_jungle",
+    "size": "large",
+    "seed": 17,
+    "env": {
+     "time": 19,
+     "weather": "spores",
+     "fog": 0.25,
+     "theme": "sf_jungle",
+     "sky": "jungle_dusk"
+    },
+    "markers": [
+     {
+      "id": "heart",
+      "type": "core",
+      "x": -12,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "ford",
+      "type": "waypoint",
+      "x": 0,
+      "z": 40,
+      "r": 5
+     },
+     {
+      "id": "far_bank",
+      "type": "waypoint",
+      "x": 12,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "hill_root",
+      "type": "waypoint",
+      "x": -20,
+      "z": 10,
+      "r": 4
+     },
+     {
+      "id": "grove_cam",
+      "type": "waypoint",
+      "x": -6,
+      "z": -6,
+      "r": 3
+     }
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "glow_grazer",
+    "thorn_slinger",
+    "spore_shepherd",
+    "bloom_stomper",
+    "hop_notary",
+    "tidy_trooper"
+   ],
+   "caps": {},
+   "budget": 8000,
+   "par": {
+    "type": "cost",
+    "value": 6400
+   },
+   "core": [
+    {
+     "defId": "hop_notary",
+     "n": 6
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "glow_grazer",
+     "n": 16
+    },
+    {
+     "defId": "thorn_slinger",
+     "n": 14
+    },
+    {
+     "defId": "spore_shepherd",
+     "n": 6
+    },
+    {
+     "defId": "bloom_stomper",
+     "n": 4
+    },
+    {
+     "defId": "hop_notary",
+     "n": 8
+    },
+    {
+     "defId": "tidy_trooper",
+     "n": 12
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.2,
+     0.6
+    ],
+    "counter": [
+     0.6,
+     1
+    ],
+    "turtle": [
+     0.1,
+     0.5
+    ]
+   },
+   "botsWhy": "Poison ignores bubbles, so the hill's own healers matter.",
+   "blind": {
+    "swap": {
+     "hop_notary": "thorn_slinger"
+    },
+    "why": "The blind army stands on the near bank and never blinks, so the spitters shell the Heart down."
+   },
+   "enemy": {
+    "faction": "skitter",
+    "hired": [],
+    "style": "waves",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {
+      "defId": "acid_spitter",
+      "n": 10,
+      "at": {
+       "marker": "far_bank"
+      },
+      "order": "hold"
+     }
+    ]
+   },
+   "objective": {
+    "type": "defend_core",
+    "params": {
+     "core": "heart",
+     "prop": "sf_heart_tree",
+     "time": 300
+    },
+    "markerIds": [
+     "heart"
+    ],
+    "text": "Keep the Heart tree alive through three waves"
+   },
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [],
+    "override": {}
+   },
+   "script": {
+    "waves": {
+     "placed": true,
+     "firstAfter": 40,
+     "interval": 60,
+     "list": [
+      {
+       "groups": [
+        {
+         "defId": "skitterling",
+         "n": 30
+        },
+        {
+         "defId": "mandible_runner",
+         "n": 6
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "skitterling",
+         "n": 30
+        },
+        {
+         "defId": "mandible_runner",
+         "n": 10
+        },
+        {
+         "defId": "plate_beetle",
+         "n": 3
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "skitterling",
+         "n": 40
+        },
+        {
+         "defId": "mandible_runner",
+         "n": 8
+        },
+        {
+         "defId": "plate_beetle",
+         "n": 5
+        }
+       ]
+      }
+     ]
+    },
+    "events": [
+     {
+      "id": "hummock_heart_low",
+      "at": {
+       "on": "hp_frac",
+       "target": {
+        "prop": "sf_heart_tree"
+       },
+       "below": 0.5
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "player",
+        "groups": [
+         {
+          "defId": "elder_hummock",
+          "n": 1
+         }
+        ],
+        "at": {
+         "marker": "hill_root"
+        },
+        "free": true,
+        "unique": true
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_hill_wakes"
+       }
+      ]
+     },
+     {
+      "id": "hummock_third_wave",
+      "at": {
+       "on": "counter",
+       "counter": "wave_spawns",
+       "gte": 3
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "player",
+        "groups": [
+         {
+          "defId": "elder_hummock",
+          "n": 1
+         }
+        ],
+        "at": {
+         "marker": "hill_root"
+        },
+        "free": true,
+        "unique": true
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_hill_wakes"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Defend the Heart tree through three waves. If it falls, you lose.",
+    "Spitters across the acid river shell the Heart from the start; their acid ignores bubbles. Hop Notaries blink across, silence them and blink home.",
+    "Star 3: the Heart must finish above 60 percent."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "heart_proud",
+     "helper": "coreHpAtLeast",
+     "args": [
+      0.6
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "part",
+     "id": "sf_staff_glow"
+    },
+    "unlockMutators": [],
+    "unlockParts": [
+     "sf_staff_glow"
+    ],
+    "quickUnlocks": [],
+    "codex": [
+     "elder_hummock"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_generic_staff"
+    }
+   },
+   "rewardId": "sf_r7_staff_glow",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_blink",
+      "trigger": "blink_cast",
+      "who": "brutus",
+      "text": "He was HERE! Now he is over there! The distance between is a rumour!",
+      "hint": "Blink covers 12 units; both ends are shown before it fires.",
+      "mechanic": "blink",
+      "when": "first blink_cast"
+     },
+     {
+      "id": "sf_river_acid",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "ACID RIVER. Ground units cannot cross it except at the ford 40 units upstream. Hover and blink do."
+     },
+     {
+      "id": "sf_acid_dot",
+      "trigger": "poison_through_shield",
+      "who": "cassandra",
+      "text": "Acid ignores bubbles. Spitters hurt shielded units as if the bubble were not there.",
+      "when": "first poison tick through a bubble"
+     },
+     {
+      "id": "sf_heart_bar",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Defend the Heart tree. Its bar is at the top of the screen. If it falls, you lose."
+     },
+     {
+      "id": "sf_spore_cloud",
+      "trigger": "spore_burst",
+      "who": "cassandra",
+      "text": "A burst spore pod makes a cloud that slows and poisons whoever stands in it.",
+      "when": "first spore pod burst"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "elder_hummock",
+      "mechanic": "repair",
+      "why": "Its heal aura is a first-sight toast, not a lesson (outline 0.1 item 4)."
+     },
+     {
+      "kind": "power",
+      "id": "sf_orbital_clean",
+      "mechanic": "strike",
+      "why": "Slot 2 casts the same red ring as the unit-borne Deep Clean taught in mission 8 (outline 0.1 item 3); it behaves as the Ancient meteor."
+     }
+    ]
+   },
+   "teaches": [
+    "blink"
+   ],
+   "tests": [],
+   "combines": [],
+   "requiresModules": [
+    "M13",
+    "M14",
+    "M12",
+    "M7",
+    "M6a"
+   ],
+   "softModules": [
+    "M4"
+   ],
+   "setpiece": {
+    "id": "sf_sp_hill_wakes",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "heart",
+      "offset": [
+       -6,
+       0.8,
+       8
+      ]
+     },
+     "to": {
+      "anchor": "heart",
+      "offset": [
+       -6,
+       11,
+       8
+      ]
+     },
+     "hold": 6,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_blink_jungle",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "The hill is AWAKE! It has a lamp as big as a hut and no patience for the Skitter!"
+      },
+      {
+       "who": "plato",
+       "text": "Hills were named after it. It disagrees with their coordinates. Who is to say which of them is correct?"
+      },
+      {
+       "who": "cassandra",
+       "text": "The ground humped at the Heart's lowest point. I said the Heart had friends. The friends are enormous."
+      }
+     ],
+     "sub": "boss"
+    },
+    "stinger": {
+     "id": "sf_stg_awaken",
+     "kind": "swell",
+     "secs": 3.4
+    },
+    "sfx": [
+     "sf_earth_rumble",
+     "sf_spore_burst",
+     "sf_titan_roar_soft"
+    ],
+    "notes": "Two script events (Heart under 50 percent; third wave spawned), each a free unique spawn of the elder_hummock at hill_root plus this set-piece; rising crane from the roots to the lamp."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 2,
+     "star3": 5
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-7 (spec A2): defend_core gains prop sf_heart_tree; third wave = wave_spawns >= 3 (placed list). See missions_notes.md"
+  },
+  {
+   "id": "sf_noise_complaint",
+   "act": 3,
+   "mood": "tense",
+   "text": {
+    "title": "Noise Complaint",
+    "blurb": "Survive all five waves. The fifth has a noise complaint.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "An ORBITAL strike! From space! At a rate of one per... please wait!"
+     },
+     {
+      "who": "plato",
+      "text": "A beam from the sky. Is it justice, or merely geometry?"
+     },
+     {
+      "who": "cassandra",
+      "text": "A noise complaint is coming. The Quiet Hour sends it personally. Stay quiet. You will not."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "Complaint RESOLVED! The Hive is quiet, the Manta is a stain and the Housekeeper is already tidying the crater!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The ring was two seconds. I counted. We stood in it for three."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Survive all five waves. The fifth has a noise complaint."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "bubbles_kept_40",
+      "text": "Let no more than 40 of your own bubbles pop. Keep them up while the sky falls."
+     }
+    ],
+    "reward": {
+     "title": "Complaint Resolved",
+     "blurb": "A night-time Sinkhole Nest for Quick Battle. The sky is open. The beam is also open."
+    }
+   },
+   "arena": {
+    "recipe": "sf_hive",
+    "size": "medium",
+    "seed": 8,
+    "env": {
+     "time": 12,
+     "weather": "spores",
+     "fog": 0.1,
+     "theme": "sf_hive",
+     "sky": "cavern_open"
+    },
+    "markers": [
+     {
+      "id": "dais",
+      "type": "waypoint",
+      "x": 40,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "pit",
+      "type": "waypoint",
+      "x": 0,
+      "z": 0,
+      "r": 4
+     },
+     {
+      "id": "spire_w",
+      "type": "waypoint",
+      "x": -12,
+      "z": 12,
+      "r": 3
+     },
+     {
+      "id": "spire_e",
+      "type": "waypoint",
+      "x": 12,
+      "z": 12,
+      "r": 3
+     },
+     {
+      "id": "front_choke",
+      "type": "waypoint",
+      "x": -18,
+      "z": 0,
+      "r": 3
+     }
+    ]
+   },
+   "playerFaction": "tidy_concord",
+   "roster": [
+    "grand_housekeeper",
+    "tidy_trooper",
+    "bulwark_warden",
+    "bubble_tender",
+    "dustpan_hover",
+    "spritz_medic"
+   ],
+   "caps": {},
+   "budget": 10000,
+   "par": {
+    "type": "cost",
+    "value": 8000
+   },
+   "core": [
+    {
+     "defId": "grand_housekeeper",
+     "n": 1
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "grand_housekeeper",
+     "n": 1
+    },
+    {
+     "defId": "tidy_trooper",
+     "n": 30
+    },
+    {
+     "defId": "bulwark_warden",
+     "n": 8
+    },
+    {
+     "defId": "bubble_tender",
+     "n": 6
+    },
+    {
+     "defId": "dustpan_hover",
+     "n": 8
+    },
+    {
+     "defId": "spritz_medic",
+     "n": 6
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.1,
+     0.5
+    ],
+    "counter": [
+     0.5,
+     0.9
+    ],
+    "turtle": [
+     0.2,
+     0.7
+    ]
+   },
+   "botsWhy": "The waves come to you; the blind bot never calls a strike and stands in the rings of its own.",
+   "blind": {
+    "swap": {
+     "grand_housekeeper": "dustpan_hover"
+    },
+    "why": "The blind army never calls a strike (no Housekeeper) and stands in the rings of its own."
+   },
+   "enemy": {
+    "faction": "skitter",
+    "hired": [],
+    "style": "waves",
+    "difficulty": "normal",
+    "generals": [],
+    "bosses": [
+     "void_manta"
+    ],
+    "groups": []
+   },
+   "objective": {
+    "type": "survive_waves",
+    "params": {
+     "waves": 5
+    },
+    "markerIds": [],
+    "text": "Survive five waves of the Skitter Hive"
+   },
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [],
+    "override": {}
+   },
+   "script": {
+    "waves": {
+     "placed": false,
+     "first": 20,
+     "interval": 60,
+     "list": [
+      {
+       "groups": [
+        {
+         "defId": "skitterling",
+         "n": 40
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "skitterling",
+         "n": 40
+        },
+        {
+         "defId": "mandible_runner",
+         "n": 10
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "acid_spitter",
+         "n": 12
+        },
+        {
+         "defId": "plate_beetle",
+         "n": 4
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "glidewing",
+         "n": 8
+        },
+        {
+         "defId": "plate_beetle",
+         "n": 4
+        }
+       ]
+      },
+      {
+       "groups": [
+        {
+         "defId": "void_manta",
+         "n": 1
+        },
+        {
+         "defId": "glidewing",
+         "n": 6
+        }
+       ]
+      }
+     ]
+    },
+    "events": [
+     {
+      "id": "manta_complaint",
+      "at": {
+       "on": "counter",
+       "counter": "wave_spawns",
+       "gte": 5
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "strike",
+        "kind": "orbital",
+        "at": {
+         "marker": "dais"
+        },
+        "dmg": 0,
+        "team": -1
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_noise_complaint"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Survive five waves of the Skitter Hive. The fifth wave brings the Void Manta.",
+    "The Housekeeper's Deep Clean needs a 1.2 second call, then a two-second red ring; stand outside it. Kill the caller to cancel.",
+    "Star 3: no more than 40 of your own bubbles may pop."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "bubbles_kept_40",
+     "helper": "ownBreaksAtMost",
+     "args": [
+      40
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "quick_unlock",
+     "id": "sf_qp_sinkhole_night"
+    },
+    "unlockMutators": [],
+    "unlockParts": [],
+    "quickUnlocks": [
+     {
+      "kind": "preset",
+      "id": "sf_qp_sinkhole_night",
+      "name": "Sinkhole Nest: Night"
+     }
+    ],
+    "codex": [
+     "sf_codex_the_hive",
+     "void_manta"
+    ],
+    "substitution": {
+     "class": "part",
+     "id": "sf_back_antenna"
+    }
+   },
+   "rewardId": "sf_r8_sinkhole_night",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_strike",
+      "trigger": "strike_call",
+      "who": "plato",
+      "text": "A beam from the sky. Is it justice, or merely geometry?",
+      "hint": "Orbital strikes hurt your own side too. Aim past your friends.",
+      "mechanic": "strike",
+      "when": "first strike_call whose source is a unit or the station"
+     },
+     {
+      "id": "sf_b_air",
+      "trigger": "air_unit_in_view",
+      "who": "brutus",
+      "text": "Something is ABOVE us! It has a shadow the size of a bedroom!",
+      "hint": "Air units fly over artillery. Rifles and beams can hit them.",
+      "mechanic": "air",
+      "when": "first air unit in view"
+     },
+     {
+      "id": "sf_channel_bar",
+      "trigger": "channel_bar",
+      "who": "cassandra",
+      "text": "GRAND HOUSEKEEPER. A bar over his head shows the call. Kill him while it fills and the call is cancelled.",
+      "when": "first Deep Clean channel bar"
+     },
+     {
+      "id": "sf_ring_friendly",
+      "trigger": "friendly_in_ring",
+      "who": "cassandra",
+      "text": "One of ours is in the ring. I said step out. The ring is not a suggestion.",
+      "hint": "Step out of a red ring within two seconds. Friends are not exempt.",
+      "when": "first friendly unit inside a red ring"
+     },
+     {
+      "id": "sf_manta_cycle",
+      "trigger": "manta_cloak",
+      "who": "cassandra",
+      "text": "VOID MANTA. Cloaks for six seconds out of sixteen. Lamps and drones reveal it; rifles and beams hit it.",
+      "when": "the Manta's first cloak"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "glidewing",
+      "mechanic": "air",
+      "why": "Air units arrive in wave 4 as the first-sight beat sf_b_air, not as a taught mechanic."
+     },
+     {
+      "kind": "unit",
+      "id": "void_manta",
+      "mechanic": "air",
+      "why": "The wave-5 boss flies; its shadow is the set-piece and sf_b_air covers its first sight."
+     }
+    ]
+   },
+   "teaches": [
+    "strike"
+   ],
+   "tests": [
+    "shield"
+   ],
+   "combines": [],
+   "requiresModules": [
+    "M13",
+    "M10",
+    "M7",
+    "M4",
+    "M12",
+    "M14"
+   ],
+   "softModules": [
+    "M5"
+   ],
+   "setpiece": {
+    "id": "sf_sp_noise_complaint",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "pit",
+      "offset": [
+       0,
+       0.8,
+       0
+      ]
+     },
+     "to": {
+      "anchor": "pit",
+      "offset": [
+       0,
+       1.2,
+       0
+      ]
+     },
+     "hold": 6,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_noise_complaint",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "A shadow the size of a BEDROOM! The Quiet Hour sent the noise complaint in person!"
+      },
+      {
+       "who": "plato",
+       "text": "A beam answers from the sky and hits nothing. Is that a reply, or a rumour of one?"
+      },
+      {
+       "who": "cassandra",
+       "text": "A noise complaint is coming. Stay quiet. You will not. I said so in the briefing."
+      }
+     ],
+     "sub": "boss"
+    },
+    "stinger": {
+     "id": "sf_stg_manta",
+     "kind": "dread",
+     "secs": 3.2
+    },
+    "sfx": [
+     "sf_manta_hum",
+     "sf_orbital_charge",
+     "sf_sonic_shush"
+    ],
+    "notes": "Script event manta_complaint (wave 5 spawned): the Manta shadow scales to half the screen, a cloak shimmer runs along its edge and a cosmetic orbital strike (dmg 0, empty dais cell) answers. Camera tilts 70 degrees up, pans 20 degrees."
+   },
+   "extraSetpieces": [],
+   "attempts": {
+    "design": {
+     "star1": 2.5,
+     "star3": 5.5
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-8: waves firstAfter 20 on an unplaced list becomes first 20 (MS-E08, engine reads first). See missions_notes.md"
+  },
+  {
+   "id": "sf_queen_size",
+   "act": 3,
+   "mood": "epic",
+   "text": {
+    "title": "Queen Size Bed (Hull Breach Edition)",
+    "blurb": "Topple the Hive Queen. The brood is not obliged to leave.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE QUEEN! Nine thousand children, one very large bedroom, zero doors!"
+     },
+     {
+      "who": "plato",
+      "text": "A queen with no court but a hive. Who does she answer to, if everyone is her?"
+     },
+     {
+      "who": "cassandra",
+      "text": "The station will lose its air. I said the windows were cosmetic. The windows were not cosmetic."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "The Queen is DOWN! The bed is made, the window is open and the credits are... wait, there is a scene after the credits!"
+    },
+    "defeat": {
+     "who": "cassandra",
+     "text": "The brood outnumbered us again. I said the sac. I said it twice."
+    },
+    "stars": [
+     {
+      "id": "win",
+      "text": "Topple the Hive Queen. The brood is not obliged to leave."
+     },
+     {
+      "id": "half",
+      "text": "Win with at least half your army (by cost) alive."
+     },
+     {
+      "id": "sky_work",
+      "text": "Let orbital strikes account for 25 kills. The sky has been waiting for this."
+     }
+    ],
+    "reward": {
+     "title": "Exterminator Emeritus",
+     "blurb": "Warranty Void for Quick Battle. Sticker removed. Please do not read the other stickers."
+    }
+   },
+   "arena": {
+    "recipe": "sf_orbital",
+    "size": "medium",
+    "seed": 31,
+    "env": {
+     "time": 0,
+     "weather": "clear",
+     "fog": 0,
+     "theme": "sf_station",
+     "sky": "space_ring",
+     "gravity": 0.6
+    },
+    "markers": [
+     {
+      "id": "queen_dais",
+      "type": "general_spawn",
+      "x": 40,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "window",
+      "type": "waypoint",
+      "x": 46,
+      "z": 0,
+      "r": 6
+     },
+     {
+      "id": "hall",
+      "type": "waypoint",
+      "x": 0,
+      "z": 0,
+      "r": 10
+     },
+     {
+      "id": "brood_gate",
+      "type": "waypoint",
+      "x": 30,
+      "z": 24,
+      "r": 4
+     },
+     {
+      "id": "station_cam",
+      "type": "waypoint",
+      "x": 0,
+      "z": 46,
+      "r": 4
+     }
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": null,
+   "caps": {},
+   "budget": 14000,
+   "par": {
+    "type": "cost",
+    "value": 11000
+   },
+   "core": [
+    {
+     "defId": "grand_housekeeper",
+     "n": 1
+    }
+   ],
+   "fixed": [],
+   "reference": [
+    {
+     "defId": "grand_housekeeper",
+     "n": 1
+    },
+    {
+     "defId": "tidy_trooper",
+     "n": 22
+    },
+    {
+     "defId": "bubble_tender",
+     "n": 6
+    },
+    {
+     "defId": "bulwark_warden",
+     "n": 8
+    },
+    {
+     "defId": "dustpan_hover",
+     "n": 8
+    },
+    {
+     "defId": "hop_notary",
+     "n": 8
+    },
+    {
+     "defId": "spore_shepherd",
+     "n": 6
+    },
+    {
+     "defId": "spritz_medic",
+     "n": 4
+    },
+    {
+     "defId": "bloom_stomper",
+     "n": 4
+    },
+    {
+     "defId": "glow_grazer",
+     "n": 10
+    }
+   ],
+   "bots": {
+    "greedy": [
+     0.1,
+     0.4
+    ],
+    "counter": [
+     0.5,
+     0.9
+    ],
+    "turtle": [
+     0.1,
+     0.5
+    ]
+   },
+   "botsWhy": "The blind bot ignores half the tools and runs out of time.",
+   "blind": {
+    "swap": {
+     "hop_notary": "tidy_trooper",
+     "grand_housekeeper": "dustpan_hover"
+    },
+    "why": "The blind army ignores half the tools: no blink onto the dais and no Deep Clean on the brood."
+   },
+   "enemy": {
+    "faction": "skitter",
+    "hired": [],
+    "style": "guard",
+    "difficulty": "normal",
+    "generals": [
+     "hive_queen"
+    ],
+    "bosses": [
+     "hive_queen"
+    ],
+    "groups": [
+     {
+      "defId": "hive_queen",
+      "n": 1,
+      "id": "queen",
+      "at": {
+       "marker": "queen_dais"
+      },
+      "order": "hold"
+     },
+     {
+      "defId": "mandible_runner",
+      "n": 28
+     },
+     {
+      "defId": "plate_beetle",
+      "n": 10
+     },
+     {
+      "defId": "acid_spitter",
+      "n": 20
+     },
+     {
+      "defId": "glidewing",
+      "n": 10
+     }
+    ]
+   },
+   "objective": {
+    "type": "kill_general",
+    "params": {},
+    "markerIds": [
+     "queen_dais"
+    ],
+    "binding": true,
+    "text": "Topple the Hive Queen"
+   },
+   "timeLimit": 480,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": [],
+    "override": {}
+   },
+   "script": {
+    "events": [
+     {
+      "id": "brood_pulse",
+      "at": 20,
+      "once": true,
+      "repeat": {
+       "every": 40,
+       "times": 11
+      },
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [
+         {
+          "defId": "skitterling",
+          "n": 9
+         }
+        ],
+        "at": {
+         "marker": "brood_gate"
+        }
+       }
+      ]
+     },
+     {
+      "id": "hull_breach",
+      "at": {
+       "on": "hp_frac",
+       "target": {
+        "unit": "hive_queen"
+       },
+       "below": 0.5
+      },
+      "once": true,
+      "do": [
+       {
+        "op": "prop",
+        "act": "destroy",
+        "type": "sf_force_gate",
+        "all": true
+       },
+       {
+        "op": "kill",
+        "def": "skitterling",
+        "within": {
+         "marker": "window",
+         "r": 22
+        },
+        "cause": "fall"
+       },
+       {
+        "op": "setpiece",
+        "piece": "sf_sp_hull_breach"
+       }
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Kill the Hive Queen. Her brood pulses every forty seconds until she falls.",
+    "At half health the window goes: skitterlings near it are pulled into space. Keep your own units off the rim.",
+    "Star 3: orbital strikes (the Housekeeper's Deep Clean or the god power) account for 25 kills."
+   ],
+   "starTests": [
+    {
+     "id": "win"
+    },
+    {
+     "id": "half",
+     "helper": "aliveCostFrac",
+     "args": [
+      0.5
+     ]
+    },
+    {
+     "id": "sky_work",
+     "helper": "usedMechanic",
+     "args": [
+      "strike",
+      25
+     ]
+    }
+   ],
+   "rewards": {
+    "primary": {
+     "class": "mutator",
+     "id": "sf_warranty_void"
+    },
+    "unlockMutators": [
+     "sf_warranty_void"
+    ],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": [],
+    "substitution": null
+   },
+   "rewardId": "sf_r9_warranty_void",
+   "teaching": {
+    "beats": [
+     {
+      "id": "sf_b_queen",
+      "trigger": "queen_reveal",
+      "who": "plato",
+      "text": "A queen with no court but a hive. Who does she answer to, if everyone is her?",
+      "hint": "The Hive Queen is armoured at the front and soft at her egg sac, behind her. Splash and strikes on the sac hurt most.",
+      "when": "the Queen's reveal"
+     },
+     {
+      "id": "sf_brood_pulse",
+      "trigger": "brood_pulse",
+      "who": "cassandra",
+      "text": "BROOD PULSE. Nine more skitterlings every 40 seconds until the Queen falls. Kill the Queen, not the gnats.",
+      "when": "the first brood pulse"
+     },
+     {
+      "id": "sf_window_vent",
+      "trigger": "window_vent",
+      "who": "cassandra",
+      "text": "The window is open. Skitterlings near it are pulled into space. Keep your own units away from the rim.",
+      "when": "during the breach"
+     },
+     {
+      "id": "sf_sac_weak",
+      "trigger": "sac_hit",
+      "who": "cassandra",
+      "text": "The sac is the soft part. I said the sac. I said it twice.",
+      "hint": "Hit the Queen's egg sac from behind. A Deep Clean on the dais counts.",
+      "when": "first hit on the sac"
+     },
+     {
+      "id": "sf_finale_hint",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Everything you learned is allowed: bubbles, hover, cloak, EMP, blink and the sky."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": [],
+   "tests": [
+    "strike"
+   ],
+   "combines": [
+    "blink",
+    "strike",
+    "shield",
+    "hover"
+   ],
+   "requiresModules": [
+    "M0",
+    "M1",
+    "M3",
+    "M2",
+    "M2b",
+    "M10",
+    "M6a",
+    "M7",
+    "M12",
+    "M14",
+    "M13",
+    "M15",
+    "M17e",
+    "M8",
+    "M4",
+    "M5",
+    "M6b"
+   ],
+   "softModules": [],
+   "setpiece": {
+    "id": "sf_sp_hull_breach",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {
+      "anchor": "window",
+      "offset": [
+       0,
+       4,
+       10
+      ]
+     },
+     "to": {
+      "anchor": "window",
+      "offset": [
+       0,
+       16,
+       38
+      ]
+     },
+     "hold": 6,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_sf_queen_size",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "The window is GONE! The brood goes out like a sneeze and the Queen is not amused!"
+      },
+      {
+       "who": "plato",
+       "text": "The air leaves, the children follow. Is a nest a home if the walls are optional?"
+      },
+      {
+       "who": "cassandra",
+       "text": "I said the windows were cosmetic. The windows were not cosmetic. The cosmetics are now in space."
+      }
+     ],
+     "sub": "finale"
+    },
+    "stinger": {
+     "id": "sf_stg_finale",
+     "kind": "fanfare",
+     "secs": 3.4,
+     "bypassLimiter": true
+    },
+    "sfx": [
+     "sf_hull_breach",
+     "sf_alarm_red",
+     "sf_queen_screech"
+    ],
+    "notes": "Script event hull_breach (Queen under 50 percent): the five sf_force_gate windows are destroyed, skitterlings within 22 u of the window are vented (cause fall), emergency lights go red (render tint), the Queen topples with a goo splat."
+   },
+   "extraSetpieces": [
+    {
+     "id": "sf_sp_queen_rise",
+     "role": "secondary",
+     "trigger": 15,
+     "shot": {
+      "from": {
+       "anchor": "unit:hive_queen",
+       "offset": [
+        -4,
+        1,
+        6
+       ]
+      },
+      "to": {
+       "anchor": "unit:hive_queen",
+       "offset": [
+        -4,
+        10,
+        6
+       ]
+      },
+      "hold": 4,
+      "ease": "out",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "boss_enters",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {
+        "who": "brutus",
+        "text": "Nine thousand children and ONE very large bedroom! The antlers are real!"
+       },
+       {
+        "who": "plato",
+        "text": "Brutus checked twice whether 'queen' is a metaphor. It is still a metaphor."
+       },
+       {
+        "who": "cassandra",
+        "text": "Nine thousand children. The bedroom is not big enough. I said so."
+       }
+      ]
+     },
+     "stinger": {
+      "id": "sf_stg_queen_rise",
+      "kind": "dread",
+      "secs": 3.6
+     },
+     "sfx": [
+      "sf_alien_goo"
+     ],
+     "notes": "Fires at 15 s (the proximity trigger of the outline is rejected by spec/MS A7): a crane-up from the egg clusters to the antler crown."
+    }
+   ],
+   "attempts": {
+    "design": {
+     "star1": 3.5,
+     "star3": 7
+    },
+    "computed": null
+   },
+   "firstThreeMinutes": null,
+   "designAmendment": "SF-AM-9: requiresModules = the 17 modules the era uses (never M9/M11); queen_rise at 15 s (spec A7). See missions_notes.md"
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "sf_pz_pop_then_hide",
+   "title": "Pop, Then Hide",
+   "blurb": "Ten rivet guns, one garden and a pop-up reminder that bubbles are not bulletproof, only forgiving.",
+   "hint": "Put a Tender directly behind two Wardens. The Wardens pop, the Troopers step out and shoot, and the bubbles are back before the next rivet volley.",
+   "goalText": "Defeat all ten rivet gunners",
+   "arena": {
+    "recipe": "sf_biodome",
+    "size": "small",
+    "seed": 41,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "tidy_concord",
+    "roster": [
+     "tidy_trooper",
+     "bulwark_warden",
+     "bubble_tender"
+    ],
+    "budget": 1500
+   },
+   "par": {
+    "type": "cost",
+    "value": 1200
+   },
+   "enemy": {
+    "faction": "rummage",
+    "placements": [
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": -6.6,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": -5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": -3.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 3.6,
+      "z": -6.6,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 3.6,
+      "z": -5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": 3.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": 5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 2,
+      "z": 6.6,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 3.6,
+      "z": 3.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 3.6,
+      "z": 5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {
+    "id": "no_losses",
+    "text": "Lose no unit",
+    "helper": "lossesAtMost",
+    "args": [
+     0
+    ]
+   },
+   "teaches": [
+    "shield"
+   ],
+   "requiresModules": [
+    "M4",
+    "M2"
+   ],
+   "mechanicFired": {
+    "counter": "own_shield_break",
+    "min": 6
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_shield",
+    "trigger": "placement_start",
+    "who": "brutus",
+    "text": "A bubble soaks damage first. It regrows after 3 quiet seconds; hit points do not regrow."
+   }
+  },
+  {
+   "id": "sf_pz_light_bridge",
+   "title": "Light Bridge Etiquette",
+   "blurb": "One lake of lava, one 6 u road that everyone has seen, and three tanks that have never needed a road.",
+   "hint": "Keep the Dustpans back, away from the causeway, so the first salvo is spent on the infantry line. Then skate across the lava to inside the cart's 12 unit minimum range and shoot the crew first.",
+   "goalText": "Defeat all eight shore defenders",
+   "arena": {
+    "recipe": "sf_lavaworld",
+    "size": "medium",
+    "seed": 42,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "tidy_concord",
+    "roster": [
+     "dustpan_hover",
+     "tidy_trooper",
+     "bulwark_warden"
+    ],
+    "budget": 1800
+   },
+   "par": {
+    "type": "cost",
+    "value": 1450
+   },
+   "enemy": {
+    "faction": "rummage",
+    "placements": [
+     {
+      "defId": "rivet_gunner",
+      "x": 30,
+      "z": -6.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 30,
+      "z": -3.2,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 30,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 30,
+      "z": 3.2,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "rivet_gunner",
+      "x": 30,
+      "z": 6.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "junk_buggy",
+      "x": 33,
+      "z": -3,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "junk_buggy",
+      "x": 33,
+      "z": 3,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "salvo_cart",
+      "x": 42,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 3,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 150,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {
+    "id": "dustpans_home",
+    "text": "No Dustpan bubble pops",
+    "helper": "noLoss",
+    "args": [
+     [
+      "dustpan_hover"
+     ]
+    ]
+   },
+   "teaches": [
+    "hover"
+   ],
+   "requiresModules": [
+    "M7",
+    "M8",
+    "M10"
+   ],
+   "mechanicFired": {
+    "counter": "hover_liquid_kill",
+    "min": 3
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_hover",
+    "trigger": "placement_start",
+    "who": "brutus",
+    "text": "Hover tanks cross lava, water and goo. Foot soldiers keep to the causeway."
+   }
+  },
+  {
+   "id": "sf_pz_do_not_disturb",
+   "title": "Do Not Disturb",
+   "blurb": "Six assassins, zero visible assassins, and a herd of woolly lamps that nobody asked to be on the front line.",
+   "hint": "Put two Grazers on the approach and a Medic behind them: their lamps reveal every cutter before it reaches the line. Keep the Troopers behind the lamps, not beside them.",
+   "goalText": "Defeat all six veil cutters",
+   "arena": {
+    "recipe": "sf_crashsite",
+    "size": "medium",
+    "seed": 43,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "mixed",
+    "roster": [
+     "tidy_trooper",
+     "spritz_medic",
+     "glow_grazer"
+    ],
+    "budget": 1000
+   },
+   "par": {
+    "type": "cost",
+    "value": 800
+   },
+   "enemy": {
+    "faction": "quiet_hour",
+    "placements": [
+     {
+      "defId": "veil_cutter",
+      "x": 32,
+      "z": -2.4,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "veil_cutter",
+      "x": 32,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "veil_cutter",
+      "x": 32,
+      "z": 2.4,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "veil_cutter",
+      "x": 34.4,
+      "z": -2.4,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "veil_cutter",
+      "x": 34.4,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "veil_cutter",
+      "x": 34.4,
+      "z": 2.4,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {
+    "id": "untouched",
+    "text": "Kill all six before any of them strikes",
+    "helper": "lossesAtMost",
+    "args": [
+     0
+    ]
+   },
+   "teaches": [
+    "cloak"
+   ],
+   "requiresModules": [
+    "M5",
+    "M7"
+   ],
+   "mechanicFired": {
+    "counter": "cloak_kill",
+    "min": 5
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_cloak",
+    "trigger": "placement_start",
+    "who": "cassandra",
+    "text": "Cloaked units are hard to target. Lamps and drones reveal them; attacking breaks the cloak."
+   }
+  },
+  {
+   "id": "sf_pz_off_switch",
+   "title": "Have You Tried Turning It Off? (Puzzle Edition)",
+   "blurb": "Four polite tanks in a very neat queue and one gentleman with a colander on a stick.",
+   "hint": "A Tinker's pulse fires once in this battle. Wait until the whole column is inside its ring, keep the Gunners behind it, and let the Runners wait for the stun.",
+   "goalText": "Defeat all four refund crawlers",
+   "arena": {
+    "recipe": "sf_megamall",
+    "size": "medium",
+    "seed": 44,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "rummage",
+    "roster": [
+     "zapper_tinker",
+     "rivet_gunner",
+     "wrench_runner"
+    ],
+    "budget": 1100
+   },
+   "par": {
+    "type": "cost",
+    "value": 880
+   },
+   "enemy": {
+    "faction": "courtesy",
+    "placements": [
+     {
+      "defId": "refund_crawler",
+      "x": 24,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     },
+     {
+      "defId": "refund_crawler",
+      "x": 27.5,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     },
+     {
+      "defId": "refund_crawler",
+      "x": 31,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     },
+     {
+      "defId": "refund_crawler",
+      "x": 34.5,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {
+    "id": "one_pulse",
+    "text": "One EMP stuns all four",
+    "helper": "usedMechanic",
+    "args": [
+     "emp",
+     4
+    ]
+   },
+   "teaches": [
+    "emp"
+   ],
+   "requiresModules": [
+    "M6b",
+    "M4"
+   ],
+   "mechanicFired": {
+    "counter": "emp_hit_machine",
+    "min": 4
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_emp",
+    "trigger": "placement_start",
+    "who": "brutus",
+    "text": "EMP stuns machines for 3 s and wipes their bubbles. It does nothing to organics."
+   }
+  },
+  {
+   "id": "sf_pz_gap_year",
+   "title": "Gap Year",
+   "blurb": "Five acid spitters, one canyon and a fresh batch of people who have just taken a gap year.",
+   "hint": "Stand the Notaries on the lip, not at the bridge. Blink over the rift and cut the spitters down before the first volley lands; the Troopers cover from the near rim.",
+   "goalText": "Defeat all five acid spitters",
+   "arena": {
+    "recipe": "sf_chasm",
+    "size": "medium",
+    "seed": 45,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "mixed",
+    "roster": [
+     "hop_notary",
+     "tidy_trooper"
+    ],
+    "budget": 900
+   },
+   "par": {
+    "type": "cost",
+    "value": 720
+   },
+   "enemy": {
+    "faction": "skitter",
+    "placements": [
+     {
+      "defId": "acid_spitter",
+      "x": 13,
+      "z": -6.8,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "acid_spitter",
+      "x": 13,
+      "z": -3.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "acid_spitter",
+      "x": 13,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "acid_spitter",
+      "x": 13,
+      "z": 3.4,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     },
+     {
+      "defId": "acid_spitter",
+      "x": 13,
+      "z": 6.8,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "line"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 90,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {
+    "id": "nobody_lost",
+    "text": "Lose nobody",
+    "helper": "lossesAtMost",
+    "args": [
+     0
+    ]
+   },
+   "teaches": [
+    "blink"
+   ],
+   "requiresModules": [
+    "M13",
+    "M12"
+   ],
+   "mechanicFired": {
+    "counter": "blink",
+    "min": 4
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_blink",
+    "trigger": "placement_start",
+    "who": "brutus",
+    "text": "Blink covers 12 units; both ends are shown before it fires."
+   }
+  },
+  {
+   "id": "sf_pz_bait_and_clean",
+   "title": "Bait And Clean",
+   "blurb": "Forty bugs, one housekeeper with a very large dustpan, and two woolly decoys that did not read the contract.",
+   "hint": "Place the two Grazers as bait at the gap's exit so the column clumps on them, and hold the Wardens behind the bait, out of the ring. Keep the Housekeeper alive through his call.",
+   "goalText": "Defeat all forty skitterlings",
+   "arena": {
+    "recipe": "sf_hive",
+    "size": "medium",
+    "seed": 46,
+    "env": {},
+    "markers": []
+   },
+   "player": {
+    "faction": "mixed",
+    "roster": [
+     "glow_grazer",
+     "bulwark_warden",
+     "tidy_trooper",
+     "grand_housekeeper"
+    ],
+    "budget": 1300
+   },
+   "par": {
+    "type": "cost",
+    "value": 1000
+   },
+   "enemy": {
+    "faction": "skitter",
+    "placements": [
+     {
+      "defId": "skitterling",
+      "x": 3,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 3,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 3,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 3,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 4.1,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 4.1,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 4.1,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 4.1,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 5.2,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 5.2,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 5.2,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 5.2,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 6.3,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 6.3,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 6.3,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 6.3,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 7.4,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 7.4,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 7.4,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 7.4,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 8.5,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 8.5,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 8.5,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 8.5,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 9.6,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 9.6,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 9.6,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 9.6,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 10.7,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 10.7,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 10.7,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 10.7,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 11.8,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 11.8,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 11.8,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 11.8,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 12.9,
+      "z": -1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 12.9,
+      "z": -0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 12.9,
+      "z": 0.55,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "skitterling",
+      "x": 12.9,
+      "z": 1.65,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {
+    "type": "eliminate",
+    "params": {},
+    "markerIds": []
+   },
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [
+    {
+     "defId": "grand_housekeeper",
+     "x": -37,
+     "z": 0,
+     "heading": 1.5707963267948966,
+     "free": true
+    }
+   ],
+   "script": null,
+   "bonus": {
+    "id": "bait_lives",
+    "text": "The bait survives",
+    "helper": "noLoss",
+    "args": [
+     [
+      "glow_grazer"
+     ]
+    ]
+   },
+   "teaches": [
+    "strike"
+   ],
+   "requiresModules": [
+    "M13",
+    "M10"
+   ],
+   "mechanicFired": {
+    "counter": "strike_kill",
+    "min": 25
+   },
+   "firstSightBeat": {
+    "id": "sf_pz_fs_strike",
+    "trigger": "placement_start",
+    "who": "plato",
+    "text": "Orbital strikes hurt your own side too. Aim past your friends."
+   }
+  }
+ ]
+}

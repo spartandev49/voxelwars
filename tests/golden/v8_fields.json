@@ -1,0 +1,72 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "battery": ["all-marathon","all-troy-storm-powers","all-thermopylae-mutators","all-styx-ff-hard","all-oasis-possess","all-alpine-fog","survival-waves"],
+  "effect": ["kind","x","z","r","t","dps","team","src","tm"],
+  "nested": {
+   "unit.abil.st": {
+    "aura": ["pulse"],
+    "breaks_shield": [],
+    "bribe": [],
+    "cc_field": ["ch","chDur","dx","dz","pt","tele"],
+    "chain_lightning": [],
+    "cluck": ["ch","chDur"],
+    "crowd_favorite": ["cd","chk","on"],
+    "dash": ["blocked","ch","chDur","dx","dz","go","ids","left","lx","lz","nhit","speed","started"],
+    "dot_cloud": ["ch","chDur","tx","tz"],
+    "execute": ["ch","chDur","tgt"],
+    "fire_every": ["n"],
+    "fire_panic": ["hits","last","src"],
+    "heal_pulse": ["ch","chDur"],
+    "hook": [],
+    "kick": ["ch","chDur","hitDone","tgt"],
+    "misaim": [],
+    "misfire": [],
+    "net": ["ch","chDur","tgt","tx","tz"],
+    "pack_bonus": ["n","t"],
+    "poison": [],
+    "rage": ["on"],
+    "revive": ["t","used"],
+    "stance": ["castT","chk","on"],
+    "summon_on_death": ["ch","chDur","contact","done","spawned"],
+    "tantrum": ["lock"],
+    "throne": ["idle","prop","seated","spawned"],
+    "war_horn": ["ch","chDur","used"]
+   },
+   "unit.anim": ["blend","clip","dir","flinch","prev","rate","t"],
+   "unit.breach": []
+  },
+  "observed": {
+   "effect": 483,
+   "projectile": 37721,
+   "prop": 54216,
+   "samples": 604,
+   "unit": 116513
+  },
+  "projectile": ["active","kind","team","src","x","y","z","vx","vy","vz","px","py","pz","g","life","dmg","type","ap","opts","pierceN","hits","aoe","crater","radius","fire","stuck","landX","landZ","id","hitIds","kb","crew"],
+  "prop": ["id","type","x","z","rot","s","v","info","radius","height","hpMax","hp","blocks","cover","flam","dead","stage","burning"],
+  "unit": ["id","def","team","squad","x","y","z","px","py","pz","heading","pheading","pitch","roll","vx","vz","kx","kz","ky","dvx","dvz","face","hpMax","hp","alive","deadT","deathKind","deathCause","deathLinger","radius","mass","scale","height","speedBase","state","stateT","stateDur","hitAt","hitDone","atkKind","cd","cdR","target","targetT","claim","lineT","lineOk","blockT","sideSign","waitT","hasTok","sox","soz","aggro","leash","anim","flash","se","moraleMax","morale","routT","mDmg","mSpeed","mArmor","mBlock","mProj","mCd","mDmgTaken","mReach","mMoraleLoss","ex","ez","poisonSrc","rageDmg","rageSpeed","speedNow","kills","dmgDealt","dmgTaken","lastAttacker","abil","stone","glow","custom","name","bark","gait","noRevive","revived","convertT","origTeam","timeAlive","vip","general","fireHits","idleT","atkN","controlled","altitude","tauntSrc","lastHitT","lastFlankT","sink","sinkWarn","drown","blockSoft","guard","breach","breachT","press","claims","engaged","hold","oppT","kiteT","mEnv","rank","focusT","fleeX","fleeZ","routFrom","mutScale","barkedEngage","barkedHurt","barkedTaunt"],
+  "walk": {
+   "prop": ["hp","dead"]
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "v8_fields",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

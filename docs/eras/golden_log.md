@@ -9,3 +9,9 @@
 
 ## Goldens (G1..G12)
 (not recorded yet; owner TOOLS-GOLDEN)
+
+## 2026-10-08 T1 first recordings from the baseline (TOOLS-GOLDEN; second signer pending: COORD or REVIEWER, author excluded)
+- `tests/golden/v8_fields.json` (kind `v8_fields`, engine node, regime baked, tag ancient-v8, sha 4aafd2e): the frozen field lists of the statwalk witness (Unit 125, Projectile 32, effect 9, Prop 18 fields; 27 ability state key lists). Recorded by `node tools/golden/v8_fields.mjs` from `.cache/baseline/ancient-v8` (HEAD verified = 4aafd2e3...); the battery of 7 battles ran twice and agreed before writing; `--check` reproduces the file.
+- `tests/golden/fp_ancient_v8.json` (kind `fingerprint_pin`): the AR 3.7.6 fingerprint definition applied to the baseline (simCore 78 files, shared 13, render 17, eraHash(ancient) 17); `node tools/golden/fp_record.mjs --check` reproduces it.
+- `tests/golden/legacy_hash.mjs`: the verbatim `World.stateHash()` body (no data, a frozen method).
+- `build.mjs` now emits `files.manifest.json`; the Ancient-only build of the baseline sources with `VW_BUILD_DATE=2026-10-08` is byte-identical to `release/v8/` for the fragment, `files.json` and `files.manifest.json` (test `VF-L04`, `VF-L03`).

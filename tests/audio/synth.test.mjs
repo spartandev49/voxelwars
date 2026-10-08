@@ -1,3 +1,4 @@
+// @serial  wall-clock-sensitive: the gate runs this file alone in the serial lane (tools/gate.mjs, docs/eras/spec/VF-impl.md)
 // Synth fallbacks: every family has a deterministic, finite, non-silent, bounded recipe; loops are seamless; music beds are
 // deterministic stereo loops with a seamless wrap and sane level.
 import assert from 'node:assert/strict';

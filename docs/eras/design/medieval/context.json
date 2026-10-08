@@ -1,0 +1,1661 @@
+{
+ "abilities": [
+  "aura",
+  "bailout",
+  "banner",
+  "bull_charge",
+  "call_strike",
+  "cc_field",
+  "cluck",
+  "confuse",
+  "dash",
+  "dot_cloud",
+  "fire_every",
+  "fire_panic",
+  "heal_pulse",
+  "hook",
+  "kick",
+  "knight_afoot",
+  "lance",
+  "mag",
+  "misfire",
+  "net",
+  "oil",
+  "pack_bonus",
+  "pavise",
+  "poison",
+  "rage",
+  "rally",
+  "reload",
+  "scare",
+  "stance",
+  "stun",
+  "summon_on_death",
+  "war_horn"
+ ],
+ "bosses": [
+  "great_hog",
+  "bridge_troll",
+  "lady_counterweight",
+  "rolling_keep",
+  "cinderwyrm"
+ ],
+ "contextVersion": 1,
+ "currency": {
+  "id": "groat",
+  "name": "groats",
+  "symbol": "gr"
+ },
+ "eFreeze": {
+  "ancient": 0,
+  "medieval": 13,
+  "modern": 16,
+  "scifi": 19
+ },
+ "era": "medieval",
+ "factions": [
+  "bellfount",
+  "free_company",
+  "gatehouse",
+  "marrowby",
+  "wyrmkin",
+  "yeomen",
+  "mixed"
+ ],
+ "firstThree": {
+  "fresh": [
+   {
+    "id": "arrival.medieval",
+    "kind": "arrival"
+   },
+   {
+    "id": "b_place_line",
+    "kind": "beat"
+   },
+   {
+    "id": "med_brace_place",
+    "kind": "beat"
+   },
+   {
+    "id": "b_fight",
+    "kind": "beat"
+   },
+   {
+    "id": "med_hold_order",
+    "kind": "beat"
+   },
+   {
+    "id": "b_speed",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_lancer",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_charge_thunder",
+    "kind": "toast"
+   },
+   {
+    "id": "med_sp_wrong_cue",
+    "kind": "setpiece"
+   },
+   {
+    "id": "med_brace_win",
+    "kind": "beat"
+   },
+   {
+    "id": "b_powers",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_squire",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_pageant_dragon",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_rout",
+    "kind": "toast"
+   },
+   {
+    "id": "b_done",
+    "kind": "beat"
+   }
+  ],
+  "returning": [
+   {
+    "id": "arrival.medieval",
+    "kind": "arrival"
+   },
+   {
+    "id": "med_brace_place",
+    "kind": "beat"
+   },
+   {
+    "id": "med_hold_order",
+    "kind": "beat"
+   },
+   {
+    "id": "fs_lancer",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_charge_thunder",
+    "kind": "toast"
+   },
+   {
+    "id": "med_sp_wrong_cue",
+    "kind": "setpiece"
+   },
+   {
+    "id": "med_brace_win",
+    "kind": "beat"
+   },
+   {
+    "id": "med_power_1",
+    "kind": "caption"
+   },
+   {
+    "id": "fs_squire",
+    "kind": "toast"
+   },
+   {
+    "id": "fs_pageant_dragon",
+    "kind": "toast"
+   }
+  ]
+ },
+ "formations": [
+  "block",
+  "line",
+  "phalanx",
+  "wedge",
+  "column",
+  "skirmish",
+  "circle",
+  "hollow"
+ ],
+ "godPowers": [
+  "med_royal_volley",
+  "med_bell_drop",
+  "med_mud_season",
+  "med_soup_cart",
+  "med_precedence_dispute",
+  "med_audience_joins"
+ ],
+ "heroes": [
+  "abbess",
+  "castellan",
+  "reeve",
+  "ser_valiant"
+ ],
+ "ladder": [
+  {
+   "arena": "med_pageant_green",
+   "id": "med_dress_rehearsal",
+   "n": 1,
+   "objective": "eliminate"
+  },
+  {
+   "arena": "med_tourney_field",
+   "id": "med_tourney_trouble",
+   "n": 2,
+   "objective": "kill_general"
+  },
+  {
+   "arena": "med_ford_of_dithering",
+   "id": "med_ford_dithering",
+   "n": 3,
+   "objective": "hold_hill"
+  },
+  {
+   "arena": "med_mizzlemoor",
+   "id": "med_mizzlemoor_beacons",
+   "n": 4,
+   "objective": "capture"
+  },
+  {
+   "arena": "med_castle_dour",
+   "id": "med_castle_dour",
+   "n": 5,
+   "objective": "destroy"
+  },
+  {
+   "arena": "med_bellfount_abbey",
+   "id": "med_bell_tolls_lunch",
+   "n": 6,
+   "objective": "defend_core"
+  },
+  {
+   "arena": "med_pennywhistle",
+   "id": "med_pennywhistle_blaze",
+   "n": 7,
+   "objective": "protect_vip"
+  },
+  {
+   "arena": "med_long_bridge",
+   "id": "med_toll_bridge",
+   "n": 8,
+   "objective": "survive_waves"
+  },
+  {
+   "arena": "med_dour_courtyard",
+   "id": "med_grand_pageant",
+   "n": 9,
+   "objective": "kill_general"
+  }
+ ],
+ "modules": [
+  {
+   "S": "S28",
+   "deps": [],
+   "id": "M0",
+   "pos": 1
+  },
+  {
+   "S": "S29",
+   "deps": [
+    "M0"
+   ],
+   "id": "M1",
+   "pos": 2
+  },
+  {
+   "S": "S30",
+   "deps": [
+    "M0"
+   ],
+   "id": "M3",
+   "pos": 3
+  },
+  {
+   "S": "S31",
+   "deps": [
+    "M0",
+    "M1",
+    "M3"
+   ],
+   "id": "M2",
+   "pos": 4
+  },
+  {
+   "S": "S32",
+   "deps": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "id": "M2b",
+   "pos": 5
+  },
+  {
+   "S": "S33",
+   "deps": [
+    "M1",
+    "M2"
+   ],
+   "id": "M10",
+   "pos": 6
+  },
+  {
+   "S": "S34",
+   "deps": [
+    "M2b"
+   ],
+   "id": "M6a",
+   "pos": 7
+  },
+  {
+   "S": "S35",
+   "deps": [
+    "M2",
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M7",
+   "pos": 8
+  },
+  {
+   "S": "S36",
+   "deps": [
+    "M7",
+    "M10"
+   ],
+   "id": "M12",
+   "pos": 9
+  },
+  {
+   "S": "S37",
+   "deps": [
+    "M10",
+    "M12"
+   ],
+   "id": "M14",
+   "pos": 10
+  },
+  {
+   "S": "S38",
+   "deps": [
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M13",
+   "pos": 11
+  },
+  {
+   "S": "S45",
+   "deps": [
+    "M0",
+    "M2",
+    "M10",
+    "M14"
+   ],
+   "id": "M15",
+   "pos": 12
+  },
+  {
+   "S": "S46",
+   "deps": [
+    "M1",
+    "M3",
+    "M12"
+   ],
+   "id": "M17e",
+   "pos": 13
+  },
+  {
+   "S": "S39",
+   "deps": [
+    "M1",
+    "M2",
+    "M7"
+   ],
+   "id": "M8",
+   "pos": 14
+  },
+  {
+   "S": "S40",
+   "deps": [
+    "M2",
+    "M8",
+    "M12",
+    "M13"
+   ],
+   "id": "M9",
+   "pos": 15
+  },
+  {
+   "S": "S41",
+   "deps": [
+    "M10",
+    "M12",
+    "M13"
+   ],
+   "id": "M11",
+   "pos": 16
+  },
+  {
+   "S": "S42",
+   "deps": [
+    "M1",
+    "M3",
+    "M15"
+   ],
+   "id": "M4",
+   "pos": 17
+  },
+  {
+   "S": "S43",
+   "deps": [
+    "M2b",
+    "M3",
+    "M13"
+   ],
+   "id": "M5",
+   "pos": 18
+  },
+  {
+   "S": "S44",
+   "deps": [
+    "M3",
+    "M4",
+    "M6a",
+    "M13"
+   ],
+   "id": "M6b",
+   "pos": 19
+  }
+ ],
+ "mutators": [
+  "med_foam_swords",
+  "med_plague_season"
+ ],
+ "outline": [
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.2,
+    "star3": 2.5
+   },
+   "budget": 3000,
+   "hard": [
+    "M0",
+    "M2b"
+   ],
+   "par": {
+    "type": "cost",
+    "value": 2250
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     2250
+    ],
+    "helper": "thrift"
+   },
+   "timeLimit": 240
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.5,
+    "star3": 3
+   },
+   "budget": 5200,
+   "hard": [
+    "M0",
+    "M13"
+   ],
+   "par": {
+    "type": "time",
+    "value": 150
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "brace",
+     4
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 270
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.8,
+    "star3": 3.5
+   },
+   "budget": 7000,
+   "hard": [
+    "M1",
+    "M2",
+    "M13"
+   ],
+   "par": {
+    "type": "none",
+    "value": 0
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "colours",
+     3
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 240
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 1.6,
+    "star3": 3.2
+   },
+   "budget": 8500,
+   "hard": [
+    "M2b",
+    "M13",
+    "M14"
+   ],
+   "par": {
+    "type": "time",
+    "value": 150
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "standard_bearer",
+     75
+    ],
+    "helper": "bannerDownBy"
+   },
+   "timeLimit": 270
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.2,
+    "star3": 4
+   },
+   "budget": 10500,
+   "hard": [
+    "M2",
+    "M12",
+    "M14"
+   ],
+   "par": {
+    "type": "time",
+    "value": 270
+   },
+   "soft": [
+    "M13"
+   ],
+   "star3": {
+    "args": [
+     10
+    ],
+    "helper": "hitsDuringReload"
+   },
+   "timeLimit": 420
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2,
+    "star3": 4
+   },
+   "budget": 8500,
+   "hard": [
+    "M6a",
+    "M12",
+    "M13",
+    "M14"
+   ],
+   "par": {
+    "type": "none",
+    "value": 0
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "med_castle_gate"
+    ],
+    "helper": "propStanding"
+   },
+   "timeLimit": 180
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.2,
+    "star3": 4
+   },
+   "budget": 7500,
+   "hard": [
+    "M6a",
+    "M12",
+    "M14"
+   ],
+   "par": {
+    "type": "time",
+    "value": 120
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "healers",
+     1000
+    ],
+    "helper": "usedMechanic"
+   },
+   "timeLimit": 210
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 2.5,
+    "star3": 4.5
+   },
+   "budget": 12000,
+   "hard": [
+    "M10",
+    "M12",
+    "M14"
+   ],
+   "par": {
+    "type": "time",
+    "value": 330
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "siege",
+     2
+    ],
+    "helper": "burnKills"
+   },
+   "timeLimit": 480
+  },
+  {
+   "allModules": false,
+   "attempts": {
+    "star1": 3,
+    "star3": 5
+   },
+   "budget": 14000,
+   "hard": [
+    "M7",
+    "M10",
+    "M13",
+    "M14",
+    "M15"
+   ],
+   "par": {
+    "type": "time",
+    "value": 300
+   },
+   "soft": [],
+   "star3": {
+    "args": [
+     "cinderwyrm",
+     1
+    ],
+    "helper": "shellsOnTarget"
+   },
+   "timeLimit": 420
+  }
+ ],
+ "props": {
+  "med_barn": {
+   "cat": "architecture",
+   "hp": 450
+  },
+  "med_beacon_brazier": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "med_bell_tower": {
+   "cat": "monuments",
+   "hp": 1500
+  },
+  "med_bridge_parapet": {
+   "cat": "architecture",
+   "hp": 200
+  },
+  "med_bunting": {
+   "cat": "props",
+   "hp": 20
+  },
+  "med_castle_gate": {
+   "cat": "architecture",
+   "hp": 2400
+  },
+  "med_cloister_arch": {
+   "cat": "architecture",
+   "hp": 300
+  },
+  "med_cottage": {
+   "cat": "architecture",
+   "hp": 220
+  },
+  "med_curtain_wall": {
+   "cat": "architecture",
+   "hp": 1200
+  },
+  "med_dragon_skull": {
+   "cat": "monuments",
+   "hp": "INF"
+  },
+  "med_drawbridge": {
+   "cat": "architecture",
+   "hp": 600
+  },
+  "med_grandstand": {
+   "cat": "props",
+   "hp": 400
+  },
+  "med_haystack": {
+   "cat": "props",
+   "hp": 40
+  },
+  "med_hedge": {
+   "cat": "nature",
+   "hp": 90
+  },
+  "med_herb_bed": {
+   "cat": "nature",
+   "hp": 30
+  },
+  "med_hoard_pile": {
+   "cat": "monuments",
+   "hp": "INF"
+  },
+  "med_hoarding": {
+   "cat": "architecture",
+   "hp": 300
+  },
+  "med_keep": {
+   "cat": "architecture",
+   "hp": 3500
+  },
+  "med_lair_mouth": {
+   "cat": "monuments",
+   "hp": "INF"
+  },
+  "med_mantlet": {
+   "cat": "props",
+   "hp": 200
+  },
+  "med_market_stall": {
+   "cat": "props",
+   "hp": 80
+  },
+  "med_maypole": {
+   "cat": "props",
+   "hp": 150
+  },
+  "med_oil_cauldron": {
+   "cat": "props",
+   "hp": 140
+  },
+  "med_palisade": {
+   "cat": "architecture",
+   "hp": 250
+  },
+  "med_pavilion": {
+   "cat": "props",
+   "hp": 200
+  },
+  "med_peasant_crowd": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "med_pitch_barrel": {
+   "cat": "props",
+   "hp": 40
+  },
+  "med_portcullis": {
+   "cat": "architecture",
+   "hp": 1800
+  },
+  "med_round_tower": {
+   "cat": "architecture",
+   "hp": 1800
+  },
+  "med_spike_stakes": {
+   "cat": "props",
+   "hp": 60
+  },
+  "med_standing_stone": {
+   "cat": "nature",
+   "hp": "INF"
+  },
+  "med_supply_cart": {
+   "cat": "props",
+   "hp": 120
+  },
+  "med_tilt_barrier": {
+   "cat": "props",
+   "hp": 120
+  },
+  "med_toll_booth": {
+   "cat": "props",
+   "hp": 300
+  },
+  "med_war_tent": {
+   "cat": "props",
+   "hp": 160
+  },
+  "med_well": {
+   "cat": "props",
+   "hp": "INF"
+  },
+  "med_willow": {
+   "cat": "nature",
+   "hp": 90
+  },
+  "med_windmill": {
+   "cat": "monuments",
+   "hp": 500
+  }
+ },
+ "puzzles": [
+  {
+   "arena": "med_ford_of_dithering",
+   "budget": 1400,
+   "id": "med_stake_your_claim",
+   "par": 1100,
+   "roster": [
+    "pikeman",
+    "longbowman",
+    "billman"
+   ],
+   "seed": 23,
+   "size": "medium",
+   "title": "Stake Your Claim"
+  },
+  {
+   "arena": "med_tourney_field",
+   "budget": 1500,
+   "id": "med_standard_deviation",
+   "par": 1300,
+   "roster": [
+    "longbowman",
+    "pikeman",
+    "peasant_levy"
+   ],
+   "seed": 22,
+   "size": "medium",
+   "title": "Standard Deviation"
+  },
+  {
+   "arena": "med_siege_camp",
+   "budget": 900,
+   "id": "med_oil_you_need",
+   "par": 750,
+   "roster": [
+    "mangonel",
+    "longbowman",
+    "pikeman",
+    "pavise_bearer"
+   ],
+   "seed": 24,
+   "size": "medium",
+   "title": "Oil You Need"
+  },
+  {
+   "arena": "med_bellfount_abbey",
+   "budget": 1300,
+   "id": "med_physician_heal_thyself",
+   "par": 1100,
+   "roster": [
+    "apothecary",
+    "crossbowman",
+    "longbowman",
+    "bellringer"
+   ],
+   "seed": 25,
+   "size": "medium",
+   "title": "Physician, Heal Thyself"
+  },
+  {
+   "arena": "med_siege_camp",
+   "budget": 1450,
+   "id": "med_counterweight_calculus",
+   "par": 1350,
+   "roster": [
+    "trebuchet",
+    "pavise_bearer",
+    "crossbowman"
+   ],
+   "seed": 26,
+   "size": "medium",
+   "title": "Counterweight Calculus"
+  },
+  {
+   "arena": "med_moat_keep",
+   "budget": 1300,
+   "id": "med_mind_the_gap",
+   "par": 1150,
+   "roster": [
+    "springald",
+    "longbowman",
+    "pikeman",
+    "pavise_bearer"
+   ],
+   "seed": 27,
+   "size": "small",
+   "title": "Mind the Gap"
+  }
+ ],
+ "recipes": {
+  "med_bellfount_abbey": {
+   "name": "Bellfount Abbey Grounds",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_castle_dour": {
+   "name": "Castle Dour",
+   "seed": null,
+   "size": "large"
+  },
+  "med_dour_courtyard": {
+   "name": "Dour Courtyard (the Grand Pageant stage)",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_ford_of_dithering": {
+   "name": "The Ford of Dithering",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_long_bridge": {
+   "name": "The Long Bridge of Toll",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_mizzlemoor": {
+   "name": "Mizzlemoor Beacons",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_moat_keep": {
+   "name": "Moat and Mud Keep",
+   "seed": null,
+   "size": "small"
+  },
+  "med_mount_perpetual": {
+   "name": "Mount Perpetual",
+   "seed": null,
+   "size": "large"
+  },
+  "med_pageant_green": {
+   "name": "The Pageant Green of Marrowby",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_pennywhistle": {
+   "name": "Pennywhistle Village",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_siege_camp": {
+   "name": "The Besiegers' Camp",
+   "seed": null,
+   "size": "medium"
+  },
+  "med_tourney_field": {
+   "name": "Tourney Field of Little Pomping",
+   "seed": null,
+   "size": "medium"
+  }
+ },
+ "rewardParts": [],
+ "sizes": {
+  "large": 256,
+  "medium": 192,
+  "small": 128
+ },
+ "source": "markdown",
+ "units": {
+  "abbess": {
+   "abilities": [
+    "aura",
+    "heal_pulse",
+    "cc_field",
+    "stun"
+   ],
+   "aiStyle": "hero",
+   "cost": 400,
+   "faction": "bellfount",
+   "firstMission": "M6 P",
+   "height": "T",
+   "name": "Abbess",
+   "rig": "hum1 stocky",
+   "role": "hero",
+   "tags": [
+    "banner",
+    "general",
+    "healer",
+    "hero",
+    "officer",
+    "organic",
+    "support"
+   ]
+  },
+  "apothecary": {
+   "abilities": [
+    "poison"
+   ],
+   "aiStyle": "skirmish",
+   "cost": 130,
+   "faction": "bellfount",
+   "firstMission": "M6 P",
+   "height": "M",
+   "name": "Apothecary",
+   "rig": "hum1 normal, throw",
+   "role": "ranged",
+   "tags": [
+    "organic",
+    "poison",
+    "support",
+    "thrower"
+   ]
+  },
+  "battering_ram": {
+   "abilities": [],
+   "aiStyle": "siege",
+   "cost": 260,
+   "faction": "free_company",
+   "firstMission": "M5 P",
+   "height": "L",
+   "name": "Battering Ram",
+   "rig": "ram1 (roofed) + 4 lite crew",
+   "role": "siege",
+   "tags": [
+    "crew",
+    "fire_weak",
+    "large",
+    "machine",
+    "ram",
+    "siege"
+   ]
+  },
+  "bellringer": {
+   "abilities": [
+    "cc_field",
+    "stun"
+   ],
+   "aiStyle": "support",
+   "cost": 125,
+   "faction": "bellfount",
+   "firstMission": "M6 P",
+   "height": "T",
+   "name": "Bellringer",
+   "rig": "hum1 stocky",
+   "role": "support",
+   "tags": [
+    "bell",
+    "organic",
+    "support"
+   ]
+  },
+  "billman": {
+   "abilities": [
+    "hook"
+   ],
+   "aiStyle": "charge",
+   "cost": 85,
+   "faction": "yeomen",
+   "firstMission": "M1 P",
+   "height": "M",
+   "name": "Billman",
+   "rig": "hum1 normal",
+   "role": "melee",
+   "tags": [
+    "levy",
+    "organic",
+    "polearm"
+   ]
+  },
+  "bridge_troll": {
+   "abilities": [
+    "cc_field",
+    "confuse",
+    "rage"
+   ],
+   "aiStyle": "charge",
+   "cost": 700,
+   "faction": "wyrmkin",
+   "firstMission": "M8 E",
+   "height": "L",
+   "name": "Bridge Troll",
+   "rig": "quad1 species troll (knuckle-walker x1.8)",
+   "role": "monster",
+   "tags": [
+    "boss",
+    "fire_weak",
+    "large",
+    "monster",
+    "organic"
+   ]
+  },
+  "castellan": {
+   "abilities": [
+    "aura",
+    "call_strike",
+    "oil"
+   ],
+   "aiStyle": "hero",
+   "cost": 430,
+   "faction": "gatehouse",
+   "firstMission": "M5 E",
+   "height": "T",
+   "name": "Castellan",
+   "rig": "hum1 stocky",
+   "role": "hero",
+   "tags": [
+    "banner",
+    "general",
+    "hero",
+    "officer",
+    "organic"
+   ]
+  },
+  "cinderwyrm": {
+   "abilities": [
+    "kick",
+    "cc_field",
+    "scare"
+   ],
+   "aiStyle": "air",
+   "cost": 1400,
+   "faction": "wyrmkin",
+   "firstMission": "M7 E (flyby, passive), M9 E (active)",
+   "height": "XL (A)",
+   "name": "Cinderwyrm",
+   "rig": "dragon1 full (20 parts)",
+   "role": "monster",
+   "tags": [
+    "air",
+    "boss",
+    "fire",
+    "large",
+    "monster"
+   ]
+  },
+  "coin_golem": {
+   "abilities": [
+    "summon_on_death"
+   ],
+   "aiStyle": "charge",
+   "cost": 620,
+   "faction": "wyrmkin",
+   "firstMission": "M8 E",
+   "height": "L",
+   "name": "Coin Golem",
+   "rig": "hum1 x1.9 with bespoke coin parts",
+   "role": "monster",
+   "tags": [
+    "golem",
+    "heavy",
+    "large",
+    "monster"
+   ]
+  },
+  "crossbowman": {
+   "abilities": [
+    "mag",
+    "reload"
+   ],
+   "aiStyle": "hold",
+   "cost": 115,
+   "faction": "gatehouse",
+   "firstMission": "M3 P",
+   "height": "M",
+   "name": "Crossbowman",
+   "rig": "hum1 normal, new gun style xbow",
+   "role": "ranged",
+   "tags": [
+    "air",
+    "organic",
+    "xbow"
+   ]
+  },
+  "great_hog": {
+   "abilities": [
+    "dash",
+    "bull_charge"
+   ],
+   "aiStyle": "charge",
+   "cost": 640,
+   "faction": "yeomen",
+   "firstMission": "M2 E (bodyguard)",
+   "height": "L",
+   "name": "Great Hog",
+   "rig": "quad1 species boar x2.2",
+   "role": "beast",
+   "tags": [
+    "animal",
+    "beast",
+    "boss",
+    "large"
+   ]
+  },
+  "hoardling": {
+   "abilities": [
+    "cluck"
+   ],
+   "aiStyle": "charge",
+   "cost": 20,
+   "faction": "wyrmkin",
+   "firstMission": "M8 E",
+   "height": "S",
+   "name": "Hoardling",
+   "rig": "hum1 x0.7, squat, big ears",
+   "role": "swarm",
+   "tags": [
+    "organic",
+    "small",
+    "swarm"
+   ]
+  },
+  "knight_afoot": {
+   "abilities": [],
+   "aiStyle": "charge",
+   "cost": 190,
+   "faction": "marrowby",
+   "firstMission": "M3 E",
+   "height": "M",
+   "name": "Knight Afoot",
+   "rig": "hum1 stocky x1.12",
+   "role": "melee",
+   "tags": [
+    "elite",
+    "heavy",
+    "organic",
+    "plate"
+   ]
+  },
+  "knight_errant": {
+   "abilities": [
+    "summon_on_death",
+    "bailout",
+    "knight_afoot"
+   ],
+   "aiStyle": "charge",
+   "cost": 330,
+   "faction": "marrowby",
+   "firstMission": "M4 P",
+   "height": "T",
+   "name": "Knight Errant",
+   "rig": "quad1 horse (barded) + hum1 plate rider",
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "heavy",
+    "lance",
+    "mounted",
+    "plate"
+   ]
+  },
+  "lady_counterweight": {
+   "abilities": [
+    "fire_every",
+    "misfire"
+   ],
+   "aiStyle": "siege",
+   "cost": 700,
+   "faction": "free_company",
+   "firstMission": "M8 E (boss)",
+   "height": "XL",
+   "name": "Lady Counterweight",
+   "rig": "trebuchet1 (x1.6, three-storey builder) + 2 lite crew",
+   "role": "siege",
+   "tags": [
+    "artillery",
+    "boss",
+    "fire_weak",
+    "large",
+    "machine",
+    "siege"
+   ]
+  },
+  "lancer": {
+   "abilities": [],
+   "aiStyle": "flank",
+   "cost": 190,
+   "faction": "marrowby",
+   "firstMission": "M1 E",
+   "height": "T",
+   "name": "Lancer",
+   "rig": "quad1 horse + hum1 rider",
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "lance",
+    "mounted"
+   ]
+  },
+  "longbowman": {
+   "abilities": [],
+   "aiStyle": "skirmish",
+   "cost": 100,
+   "faction": "yeomen",
+   "firstMission": "M1 P",
+   "height": "M",
+   "name": "Longbowman",
+   "rig": "hum1 normal-lean",
+   "role": "ranged",
+   "tags": [
+    "air",
+    "archer",
+    "organic"
+   ]
+  },
+  "mangonel": {
+   "abilities": [
+    "misfire"
+   ],
+   "aiStyle": "siege",
+   "cost": 240,
+   "faction": "free_company",
+   "firstMission": "M7 E",
+   "height": "L",
+   "name": "Mangonel",
+   "rig": "catapult1 (builder) + 2 lite crew",
+   "role": "siege",
+   "tags": [
+    "artillery",
+    "crew",
+    "fire_weak",
+    "machine",
+    "siege"
+   ]
+  },
+  "pageant_dragon": {
+   "abilities": [
+    "fire_panic",
+    "aura",
+    "rally"
+   ],
+   "aiStyle": "charge",
+   "cost": 45,
+   "faction": "marrowby",
+   "firstMission": "M1 E (decoy), M7 P (the float VIP), M9 P (core)",
+   "height": "T",
+   "name": "Pageant Dragon",
+   "rig": "quad1 species costume (horse gaits, four human legs)",
+   "role": "monster",
+   "tags": [
+    "comic",
+    "decoy",
+    "organic"
+   ]
+  },
+  "pavise_bearer": {
+   "abilities": [
+    "stance",
+    "pavise"
+   ],
+   "aiStyle": "hold",
+   "cost": 130,
+   "faction": "gatehouse",
+   "firstMission": "M3 P",
+   "height": "M",
+   "name": "Pavise Bearer",
+   "rig": "hum1 stocky",
+   "role": "melee",
+   "tags": [
+    "organic",
+    "pavise",
+    "shield"
+   ]
+  },
+  "peasant_levy": {
+   "abilities": [
+    "pack_bonus"
+   ],
+   "aiStyle": "charge",
+   "cost": 22,
+   "faction": "yeomen",
+   "firstMission": "M1 P",
+   "height": "M",
+   "name": "Peasant Levy",
+   "rig": "hum1 slim x0.92",
+   "role": "swarm",
+   "tags": [
+    "fragile",
+    "levy",
+    "organic",
+    "swarm"
+   ]
+  },
+  "physician": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "aiStyle": "support",
+   "cost": 150,
+   "faction": "bellfount",
+   "firstMission": "M6 P",
+   "height": "M",
+   "name": "Physician",
+   "rig": "hum1 slim, beaked mask",
+   "role": "support",
+   "tags": [
+    "healer",
+    "organic",
+    "support"
+   ]
+  },
+  "pikeman": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 105,
+   "faction": "yeomen",
+   "firstMission": "M1 P",
+   "height": "M",
+   "name": "Pikeman",
+   "rig": "hum1 stocky x1.12",
+   "role": "melee",
+   "tags": [
+    "levy",
+    "organic",
+    "pike",
+    "spear"
+   ]
+  },
+  "plague_cart": {
+   "abilities": [
+    "dot_cloud"
+   ],
+   "aiStyle": "charge",
+   "cost": 330,
+   "faction": "bellfount",
+   "firstMission": "M6 P (reinforcement)",
+   "height": "L",
+   "name": "Plague Cart",
+   "rig": "chariot1 + ox (quad1 horse species, ox skin)",
+   "role": "support",
+   "tags": [
+    "cart",
+    "fire_weak",
+    "gas",
+    "organic",
+    "support"
+   ]
+  },
+  "poacher": {
+   "abilities": [
+    "net"
+   ],
+   "aiStyle": "skirmish",
+   "cost": 95,
+   "faction": "free_company",
+   "firstMission": "M4 E",
+   "height": "M",
+   "name": "Poacher",
+   "rig": "hum1 slim, hooded",
+   "role": "ranged",
+   "tags": [
+    "air",
+    "archer",
+    "organic",
+    "skirmisher"
+   ]
+  },
+  "reeve": {
+   "abilities": [
+    "aura",
+    "war_horn"
+   ],
+   "aiStyle": "hero",
+   "cost": 380,
+   "faction": "yeomen",
+   "firstMission": "M2 P",
+   "height": "T",
+   "name": "Reeve",
+   "rig": "hum1 stocky",
+   "role": "hero",
+   "tags": [
+    "banner",
+    "general",
+    "hero",
+    "officer",
+    "organic"
+   ]
+  },
+  "rolling_keep": {
+   "abilities": [
+    "summon_on_death",
+    "bailout"
+   ],
+   "aiStyle": "siege",
+   "cost": 780,
+   "faction": "gatehouse",
+   "firstMission": "M5 P (one allowed)",
+   "height": "XL",
+   "name": "Rolling Keep",
+   "rig": "ram1 tower variant + 3 lite crew",
+   "role": "siege",
+   "tags": [
+    "boss",
+    "fire_weak",
+    "large",
+    "machine",
+    "siege",
+    "tower"
+   ]
+  },
+  "sellsword": {
+   "abilities": [
+    "rage"
+   ],
+   "aiStyle": "charge",
+   "cost": 135,
+   "faction": "free_company",
+   "firstMission": "M4 E",
+   "height": "M",
+   "name": "Sellsword",
+   "rig": "hum1 stocky, patchwork",
+   "role": "melee",
+   "tags": [
+    "mercenary",
+    "organic"
+   ]
+  },
+  "ser_valiant": {
+   "abilities": [
+    "aura",
+    "dash",
+    "lance"
+   ],
+   "aiStyle": "hero",
+   "cost": 540,
+   "faction": "marrowby",
+   "firstMission": "M2 E (general)",
+   "height": "T",
+   "name": "Ser Valiant",
+   "rig": "quad1 horse (barded, x1.1) + hum1 rider",
+   "role": "hero",
+   "tags": [
+    "cavalry",
+    "general",
+    "hero",
+    "lance",
+    "mounted",
+    "officer",
+    "plate"
+   ]
+  },
+  "springald": {
+   "abilities": [],
+   "aiStyle": "siege",
+   "cost": 230,
+   "faction": "gatehouse",
+   "firstMission": "M5 E, M9 P",
+   "height": "L",
+   "name": "Springald",
+   "rig": "ballista1 (upright twin-arm builder) + 2 lite crew",
+   "role": "siege",
+   "tags": [
+    "air",
+    "crew",
+    "fire_weak",
+    "machine",
+    "siege"
+   ]
+  },
+  "squire": {
+   "abilities": [],
+   "aiStyle": "hold",
+   "cost": 60,
+   "faction": "marrowby",
+   "firstMission": "M1 E",
+   "height": "M",
+   "name": "Squire",
+   "rig": "hum1 slim x0.92",
+   "role": "melee",
+   "tags": [
+    "light",
+    "organic",
+    "shielded"
+   ]
+  },
+  "standard_bearer": {
+   "abilities": [
+    "aura",
+    "banner"
+   ],
+   "aiStyle": "support",
+   "cost": 140,
+   "faction": "marrowby",
+   "firstMission": "M2 E",
+   "height": "T",
+   "name": "Standard Bearer",
+   "rig": "hum1 normal",
+   "role": "support",
+   "tags": [
+    "banner",
+    "officer",
+    "organic",
+    "support"
+   ]
+  },
+  "trebuchet": {
+   "abilities": [
+    "misfire"
+   ],
+   "aiStyle": "siege",
+   "cost": 480,
+   "faction": "gatehouse",
+   "firstMission": "M8 P",
+   "height": "XL",
+   "name": "Trebuchet",
+   "rig": "trebuchet1 + 3 lite crew",
+   "role": "siege",
+   "tags": [
+    "artillery",
+    "crew",
+    "fire_weak",
+    "large",
+    "machine",
+    "siege"
+   ]
+  },
+  "wyvern": {
+   "abilities": [],
+   "aiStyle": "air",
+   "cost": 260,
+   "faction": "wyrmkin",
+   "firstMission": "M9 E",
+   "height": "L (A)",
+   "name": "Wyvern",
+   "rig": "dragon1 (wyvern variant, 2 legs)",
+   "role": "monster",
+   "tags": [
+    "air",
+    "flier",
+    "monster",
+    "organic"
+   ]
+  }
+ },
+ "unlocks": [],
+ "weather": [
+  "clear",
+  "cloudy",
+  "rain",
+  "storm",
+  "snow",
+  "sandstorm",
+  "fog"
+ ]
+}

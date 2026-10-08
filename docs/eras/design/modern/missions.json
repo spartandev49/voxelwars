@@ -1,0 +1,2147 @@
+{
+ "$schema": "../../spec/ms.schema.json",
+ "msVersion": 1,
+ "era": "modern",
+ "idPrefix": "mod_",
+ "acts": [
+  {"id":1,"title":"Act I: Basic Forms","blurb":"Guns, hedges and the first pushpin."},
+  {"id":2,"title":"Act II: Combined Arms","blurb":"Faces, whistles and tape."},
+  {"id":3,"title":"Act III: Full Spectrum","blurb":"Look up, look after, look out."}
+ ],
+ "rewardParts": {
+  "mod_helm_tin_hat": {"name":"Tin Hat","blurb":"A helmet that is a biscuit tin lid. The Soldier Workshop has it now. Biscuits sold separately."},
+  "mod_visor_eyeshade": {"name":"Eyeshade Visor","blurb":"A green eyeshade for the Soldier Workshop. Sleeve garters not included."},
+  "mod_goggles": {"name":"Goggles","blurb":"Driving goggles for the Soldier Workshop. They do not make the bridge any wider."},
+  "mod_back_radio": {"name":"Back Radio","blurb":"A radio backpack with a whip antenna. The antenna has a bulb on it and no flag."},
+  "mod_hard_hat": {"name":"Hard Hat","blurb":"A yellow hard hat with a chin strap. It will not stop a mine. It looks like it might."},
+  "mod_aviator_goggles": {"name":"Aviator Goggles","blurb":"Flying goggles for the Soldier Workshop, earned at the Airfield Open Day."},
+  "mod_wrench_big": {"name":"Big Wrench","blurb":"A wrench the length of a bench. It repairs nothing in the Workshop and everything in the matinee."}
+ },
+ "missions": [
+  {
+   "id": "mod_boot_camp_dropout",
+   "act": 1,
+   "mood": "comic",
+   "text": {
+    "title": "Boot Camp Dropout",
+    "blurb": "Win the exercise. Live fire, dead dummies.",
+    "briefing": [
+     {"who":"brutus","text":"BOOT CAMP! I have a headset! It has a little arm for the mouth! Can you hear me? Over!"},
+     {"who":"plato","text":"They hand us a rifle and call it a lesson. A rifle is a spear that has given up on being brave. Is that progress?"},
+     {"who":"cassandra","text":"Eight rounds in the magazine. The ninth click is the one that gets you. It is in the manual. Nobody has the manual."}
+    ],
+    "victory": {"who":"brutus","text":"The yellow line HELD! Nobody reloaded in the open on purpose! The dummies are in a better place, which is the floor!"},
+    "defeat": {"who":"cassandra","text":"You reloaded in the open. I wrote 'reload' on your hand. The ink ran."},
+    "stars": [
+     {"id":"win","text":"Win the exercise. Live fire, dead dummies."},
+     {"id":"half","text":"Win with at least half your army (by cost) still standing. Nobody is graded on biscuits."},
+     {"id":"thrift","text":"Win while spending 2,250 rq or less. Frugal is the new brave."}
+    ],
+    "reward": {"title":"Reluctant Recruit","blurb":"A helmet that is a biscuit tin lid. The Soldier Workshop has it now. Biscuits sold separately."}
+   },
+   "arena": {
+    "recipe": "mod_parade_yard",
+    "size": "small",
+    "seed": 4,
+    "env": {"time":10,"weather":"clear","fog":0.1,"wind":0.3,"theme":"mod_field"},
+    "markers": [{"id":"firing_line","type":"waypoint","x":-22,"z":0,"r":3},{"id":"loudspeaker","type":"waypoint","x":0,"z":-12,"r":2}],
+    "props": [
+     {"t":"mod_target_dummy","x":-6,"z":-16},
+     {"t":"mod_target_dummy","x":6,"z":-12},
+     {"t":"mod_target_dummy","x":-6,"z":-8},
+     {"t":"mod_target_dummy","x":6,"z":-4},
+     {"t":"mod_target_dummy","x":-6,"z":0},
+     {"t":"mod_target_dummy","x":6,"z":4},
+     {"t":"mod_target_dummy","x":-6,"z":8},
+     {"t":"mod_target_dummy","x":6,"z":12},
+     {"t":"mod_target_dummy","x":-6,"z":16},
+     {"t":"mod_lamp_post","x":0,"z":-12,"v":2}
+    ]
+   },
+   "playerFaction": "marmalade",
+   "roster": ["tin_hat_trooper","toast_rack_runabout"],
+   "caps": {},
+   "budget": 3000,
+   "par": {"type":"cost","value":2250},
+   "core": [{"defId":"tin_hat_trooper","n":10}],
+   "fixed": [],
+   "reference": [{"defId":"tin_hat_trooper","n":22},{"defId":"toast_rack_runabout","n":3}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"toast_rack_runabout":"tin_hat_trooper"},
+    "why": "The blind army has no wheels: it stands in the open, reloads together, and the trolleys and the second row walk in."
+   },
+   "enemy": {
+    "faction": "shed",
+    "hired": [],
+    "style": "hold",
+    "difficulty": "normal",
+    "special": "open-day volunteers",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {"defId":"flowerpot_peashooter","n":3,"at":{"x":25,"z":-13.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":3,"at":{"x":25,"z":-4.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":2,"at":{"x":25,"z":4.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":2,"at":{"x":25,"z":13.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":3,"at":{"x":28,"z":-13.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":3,"at":{"x":28,"z":-4.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":2,"at":{"x":28,"z":4.5},"order":"hold","formation":"line"},
+     {"defId":"flowerpot_peashooter","n":2,"at":{"x":28,"z":13.5},"order":"hold","formation":"line"}
+    ]
+   },
+   "objective": {"type":"eliminate","params":{},"markerIds":[],"text":"Eliminate the open-day volunteers"},
+   "timeLimit": 240,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {"waves":{"placed":true,"firstAfter":30,"list":[{"groups":[{"defId":"trolley_rammer","n":4}]}]},"events":[],"counters":[]},
+   "inputs": [],
+   "rules": [
+    "Troopers fire in two-round bursts and run dry after eight: the pips under a soldier are the magazine, and empty means kneeling.",
+    "Trolleys arrive at thirty seconds and outrun bullets. A runabout beats a trolley; so does a rifleman who is not reloading.",
+    "Star 3: spend at most 2,250 of your 3,000 rq."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"thrift","helper":"thrift","args":[2250]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_helm_tin_hat"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_helm_tin_hat"],
+    "quickUnlocks": [],
+    "codex": ["tin_hat_trooper"],
+    "substitution": {"class":"part","id":"mod_generic_helm"}
+   },
+   "rewardId": "mod_r1_tin_hat",
+   "teaching": {
+    "beats": [
+     {
+      "id": "b_place_line",
+      "trigger": "placement_start",
+      "who": "plato",
+      "text": "Pick a card, then drag across the field to draw a line. It looks simple because it is.",
+      "hint": "Choose the line brush, then drag along the yellow line.",
+      "basics": true
+     },
+     {
+      "id": "b_fight",
+      "trigger": "battle_start",
+      "who": "brutus",
+      "text": "FIGHT! Press the button, watch the line, and try not to narrate it.",
+      "basics": true
+     },
+     {
+      "id": "b_speed",
+      "trigger": "battle_start",
+      "delay": 8,
+      "who": "cassandra",
+      "text": "Space pauses. The speed keys change the pace. Nobody asked me, so I am telling you.",
+      "basics": true
+     },
+     {
+      "id": "b_powers",
+      "trigger": "first_contact",
+      "delay": 4,
+      "who": "cassandra",
+      "text": "Keys 1 to 6 are your god powers. Press 1.",
+      "hint": "Number keys 1 to 6 cast god powers. Each has a cooldown.",
+      "basics": true
+     },
+     {"id":"b_done","trigger":"battle_end","who":"brutus","text":"THAT is how you win a battle! Do it again, smarter, for the stars!","basics":true},
+     {
+      "id": "mod_ammo_pips",
+      "trigger": "battle_start",
+      "delay": 2,
+      "who": "brutus",
+      "text": "Those little dots under a soldier are BULLETS! Eight dots, eight bullets! Dots gone, confidence gone!",
+      "hint": "Ammo pips under each shooter show the magazine."
+     },
+     {
+      "id": "mod_b_reload",
+      "trigger": "reload_start",
+      "who": "plato",
+      "text": "The rifle is empty. Is it still a rifle, or merely a stick with opinions?",
+      "hint": "Ammo pips under a soldier show the magazine. Empty: kneel and reload.",
+      "mechanic": "reload"
+     },
+     {
+      "id": "mod_b_window",
+      "trigger": "first_charge",
+      "who": "brutus",
+      "text": "A TROLLEY! Fast and wobbly! Bring a runabout and do not stand in a row!",
+      "hint": "Trolleys outrun bullets. Shoot the front rank, or meet them with wheels."
+     },
+     {
+      "id": "mod_punish_click",
+      "trigger": "reload_hit",
+      "who": "brutus",
+      "text": "He RELOADED in the open! We have punished the click!",
+      "hint": "Hit enemies while they reload: they cannot answer.",
+      "when": "first reload_hit"
+     },
+     {
+      "id": "mod_stagger_reloads",
+      "trigger": "own_reload_cluster",
+      "who": "cassandra",
+      "text": "Four of them are reloading at once. I counted. They were counting too, in a different order.",
+      "hint": "Reloading together leaves a gap. Let one rank fire while another reloads.",
+      "when": "three or more own units reload within one second"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "prop",
+      "id": "mod_hay_bale",
+      "mechanic": "cover",
+      "why": "Hay rows behind the enemy zone: cover previewed, never used by the fight (outline 0.3)."
+     },
+     {
+      "kind": "prop",
+      "id": "mod_sandbag_wall",
+      "mechanic": "cover",
+      "why": "Sandbag demo bay on each flank, at least 20 u off the lanes: previewed, never used."
+     }
+    ]
+   },
+   "teaches": ["reload"],
+   "tests": [],
+   "combines": [],
+   "requiresModules": ["M0","M1","M3","M2","M2b"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_live_fire",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"projectile_launches","gte":1},
+    "shot": {"from":{"anchor":"firing_line","offset":[0,0.9,0]},"to":{"anchor":"firing_line","offset":[0,7,0]},"hold":3.5,"ease":"inout","simSpeed":0.5},
+    "announcer": {
+     "category": "campaign_mod_boot_camp_dropout",
+     "sub": "start",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"Live fire! The dummies are UP! The dummies are down! Nobody was consulted!"},
+      {"who":"plato","text":"A cardboard soldier stands up to be shot at. Is that bravery, or a job description?"},
+      {"who":"cassandra","text":"They were never going to win. I said so to the dummies. They did not read it."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_whistle_snare","kind":"comic","secs":2},
+    "sfx": ["mod_loudspeaker_squelch","mod_whistle","mod_popup_clack","mod_confetti_pop"],
+    "notes": "Trigger: the first projectile_launch of the battle (existing event, no script). Shot looks along the firing line toward the dummies, rises over 3.5 s to the default framing. mod_popup_clack x9 (shuffle bag). Nine dummies spring up and fold to confetti."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.2,"star3":2},"computed":null},
+   "firstThreeMinutes": {
+    "doc": "docs/eras/design/modern/first_three_minutes.md",
+    "fresh": [
+     {"id":"arrival.modern","kind":"arrival"},
+     {"id":"b_place_line","kind":"beat"},
+     {"id":"fs_tin_hat_trooper","kind":"toast"},
+     {"id":"fs_toast_rack_runabout","kind":"toast"},
+     {"id":"b_fight","kind":"beat"},
+     {"id":"mod_ammo_pips","kind":"beat"},
+     {"id":"mod_sp_live_fire","kind":"setpiece"},
+     {"id":"fs_flowerpot_peashooter","kind":"toast"},
+     {"id":"b_speed","kind":"beat"},
+     {"id":"b_powers","kind":"beat"},
+     {"id":"mod_b_reload","kind":"beat"},
+     {"id":"mod_power_1","kind":"caption"},
+     {"id":"mod_punish_click","kind":"beat"},
+     {"id":"fs_trolley_rammer","kind":"toast"},
+     {"id":"mod_b_window","kind":"beat"},
+     {"id":"mod_stagger_reloads","kind":"beat"},
+     {"id":"b_done","kind":"beat"}
+    ],
+    "returning": [
+     {"id":"arrival.modern","kind":"arrival"},
+     {"id":"mod_ammo_pips","kind":"beat"},
+     {"id":"mod_sp_live_fire","kind":"setpiece"},
+     {"id":"fs_flowerpot_peashooter","kind":"toast"},
+     {"id":"mod_b_reload","kind":"beat"},
+     {"id":"mod_power_1","kind":"caption"},
+     {"id":"mod_punish_click","kind":"beat"},
+     {"id":"fs_trolley_rammer","kind":"toast"},
+     {"id":"mod_b_window","kind":"beat"},
+     {"id":"mod_stagger_reloads","kind":"beat"}
+    ],
+    "milestonesS": {"briefingDeployed":32,"fight":80,"setpiece":88,"firstEffect":100,"victory":168,"starsShown":175,"nextPrompt":180}
+   }
+  },
+  {
+   "id": "mod_hedgerow_picnic",
+   "act": 1,
+   "mood": "calm",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "The Hedgerow Picnic (Unscheduled)",
+    "blurb": "Hold the picnic blanket for 90 seconds. The clock stops while an enemy stands on it.",
+    "briefing": [
+     {"who":"brutus","text":"A PICNIC! On a hill! With hedges! The sandwiches have been tactically placed!"},
+     {"who":"plato","text":"The hedge does not stop the bullet. It persuades it to reconsider. Is that not the whole of diplomacy?"},
+     {"who":"cassandra","text":"Stand behind the hedge. In front of the hedge is where it happens. I drew a diagram. Brutus ate the diagram."}
+    ],
+    "victory": {"who":"brutus","text":"The hamper is in PIECES, the hill is ours, and somebody has handed me a sandwich!"},
+    "defeat": {"who":"cassandra","text":"They took the hill. They ate the sandwiches. I said they would eat the sandwiches."},
+    "stars": [
+     {"id":"win","text":"Hold the picnic blanket for 90 seconds. The clock stops while an enemy stands on it."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive. The hedge does not count as army."},
+     {"id":"reload_safe","text":"Take no more than six hits while reloading. Reload behind the hedge, not in front of it."}
+    ],
+    "reward": {"title":"Hedge Trimmer","blurb":"A green eyeshade for the Soldier Workshop. Sleeve garters not included."}
+   },
+   "arena": {
+    "recipe": "mod_hedgerow_meadow",
+    "size": "medium",
+    "seed": 7,
+    "env": {"time":15,"weather":"clear","fog":0.15,"wind":0.35,"theme":"mod_field"},
+    "markers": [{"id":"picnic","type":"hill","x":0,"z":0,"r":6},{"id":"hedge_cam","type":"waypoint","x":-8,"z":8,"r":2}],
+    "props": [{"t":"mod_picnic_hamper","x":0,"z":0}]
+   },
+   "playerFaction": "directorate",
+   "roster": ["clerk_rifleman"],
+   "caps": {},
+   "budget": 4200,
+   "par": {"type":"cost","value":3200},
+   "core": [{"defId":"clerk_rifleman","n":16}],
+   "fixed": [],
+   "reference": [{"defId":"clerk_rifleman","n":34}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.3,1]},
+   "botsWhy": "A patient army behind hedges holds the blanket; the hill is the objective, not the kills.",
+   "blind": {
+    "swap": {"clerk_rifleman":"clerk_rifleman"},
+    "why": "The blind army camps on the road side of the hedge and is flanked in cover (one-type roster: the difference is placement behaviour, not composition)."
+   },
+   "enemy": {
+    "faction": "marmalade",
+    "hired": [],
+    "style": "waves",
+    "difficulty": "normal",
+    "special": "the picnic party's catering",
+    "generals": [],
+    "bosses": [],
+    "groups": []
+   },
+   "objective": {"type":"hold_hill","params":{"time":90},"markerIds":["picnic"],"text":"Hold the picnic blanket for 90 seconds"},
+   "timeLimit": 300,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {
+    "waves": {
+     "placed": false,
+     "first": 6,
+     "interval": 28,
+     "list": [
+      {"groups":[{"defId":"tin_hat_trooper","n":6}]},
+      {"groups":[{"defId":"tin_hat_trooper","n":8},{"defId":"toast_rack_runabout","n":2}]},
+      {"groups":[{"defId":"tin_hat_trooper","n":8},{"defId":"toast_rack_runabout","n":3}]}
+     ]
+    },
+    "events": [
+     {
+      "id": "hamper_bursts",
+      "at": {"on":"counter","counter":"wave_spawns","gte":2},
+      "once": true,
+      "do": [{"op":"prop","act":"destroy","type":"mod_picnic_hamper","at":{"marker":"picnic"}},{"op":"setpiece","piece":"mod_sp_picnic_hamper"}]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Hold the blanket for 90 seconds in total; an enemy standing on it stops the clock.",
+    "Hedges, hay bales and sandbags are cover: hits from the front do half damage. Cover faces one way.",
+    "Three waves, 28 seconds apart. Star 3: take at most six hits while your own units are reloading."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"reload_safe","helper":"hitsWhileReloadingAtMost","args":[6]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_visor_eyeshade"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_visor_eyeshade"],
+    "quickUnlocks": [],
+    "codex": ["Cover (Hedges Are Not Walls)","clerk_rifleman"],
+    "substitution": {"class":"part","id":"mod_generic_face"}
+   },
+   "rewardId": "mod_r2_eyeshade",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_cover_brackets",
+      "trigger": "first_unit_in_cover",
+      "who": "plato",
+      "text": "A hedge does not stop the bullet. It persuades it to reconsider. Is that not the whole of diplomacy?",
+      "hint": "Cyan corner brackets mark cover. Stand behind it, not beside it.",
+      "when": "first friendly unit enters cover"
+     },
+     {
+      "id": "mod_b_cover",
+      "trigger": "cover_hit",
+      "who": "cassandra",
+      "text": "That hit was halved. The bag took half. I mention it because the bag deserves credit.",
+      "hint": "Cyan brackets mean cover: hits from the front do half damage. A flanked unit loses it.",
+      "mechanic": "cover"
+     },
+     {
+      "id": "mod_flanked_tick",
+      "trigger": "flanked_in_cover",
+      "who": "brutus",
+      "text": "FLANKED! The hedge has a back door and they found it!",
+      "hint": "Cover faces one way. Keep units behind the hedge, not beside it.",
+      "when": "first flanked_in_cover"
+     },
+     {
+      "id": "mod_hold_picnic",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Hold the blanket for 90 seconds in total. An enemy standing on it stops the clock.",
+      "hint": "Hold the blanket for 90 seconds in total. An enemy standing on it stops the clock."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["cover"],
+   "tests": ["reload"],
+   "combines": [],
+   "requiresModules": ["M9","M14","M12"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_picnic_hamper",
+    "role": "primary",
+    "trigger": null,
+    "shot": {"from":{"anchor":"hedge_cam","offset":[0,0.9,0]},"to":{"anchor":"picnic","offset":[0,1.2,0]},"hold":3,"ease":"out","simSpeed":0.5},
+    "announcer": {
+     "category": "hold_hill",
+     "sub": "mid",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"A stray round has found the hamper! The sandwiches are airborne! This is a picnic with CONSEQUENCES!"},
+      {"who":"plato","text":"Even a sandwich, in the end, takes cover. Where was its hedge?"},
+      {"who":"cassandra","text":"The hamper was in the open. I said so about the hamper."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_clarinet_sting","kind":"comic","secs":1.8},
+    "sfx": ["mod_cork_pop","mod_paper_rustle","mod_sandwich_splat","mod_leaf_rustle"],
+    "notes": "Fires from the script event hamper_bursts (wave 2 arrives, prop destroy). Slow push-in from behind the middle hedge to the blanket. mod_sandwich_splat x3, a far mod_leaf_rustle."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.6,"star3":2.6},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-2: blind swap is an identity (one-type roster); see missions_notes.md"
+  },
+  {
+   "id": "mod_trench_pardon",
+   "act": 1,
+   "mood": "tense",
+   "text": {
+    "title": "The Long Trench (Pardon Our Mud)",
+    "blurb": "Capture all three signal posts. Twelve seconds each, any order, mud included.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE LONG TRENCH! Mud, wire, and a new feature called pinning, which is when they cannot lift their heads and, today, neither can I!"
+     },
+     {
+      "who": "plato",
+      "text": "The machine gun does not kill the man. It persuades him to stay still. Is persuasion the weapon, and the bullet the footnote?"
+     },
+     {"who":"cassandra","text":"They pop up the moment you stop firing. Keep firing. I did not write that for fun."}
+    ],
+    "victory": {"who":"brutus","text":"All three posts are OURS! The lamps changed sides! The mud remains neutral!"},
+    "defeat": {"who":"plato","text":"We advanced while they were not pinned. The pin was on the map. Not on them."},
+    "stars": [
+     {"id":"win","text":"Capture all three signal posts. Twelve seconds each, any order, mud included."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"cover_frac","text":"Spend at least 35 percent of your unit-seconds in cover. The trench lip is there for a reason."}
+    ],
+    "reward": {
+     "title": "Pinned and Proud",
+     "blurb": "Red Tape for Quick Battle. Reloads take twice as long. Magazines hold twice as much. The announcer says 'in triplicate'."
+    }
+   },
+   "arena": {
+    "recipe": "mod_trench_line",
+    "size": "medium",
+    "seed": 3,
+    "env": {"time":17,"weather":"cloudy","fog":0.3,"wind":0.25,"theme":"mod_trench"},
+    "markers": [
+     {"id":"post_mid","type":"capture","x":-2,"z":0,"r":4},
+     {"id":"post_n","type":"capture","x":18,"z":-20,"r":4},
+     {"id":"post_s","type":"capture","x":18,"z":20,"r":4},
+     {"id":"trench_lip","type":"waypoint","x":-6,"z":0,"r":2}
+    ],
+    "props": [{"t":"mod_signal_post","x":-2,"z":0},{"t":"mod_signal_post","x":18,"z":-20},{"t":"mod_signal_post","x":18,"z":20}]
+   },
+   "playerFaction": "briefing",
+   "roster": ["tripod_mg_team","cub_reporter","long_lens_sharpshooter"],
+   "caps": {},
+   "budget": 6000,
+   "par": {"type":"cost","value":4500},
+   "core": [{"defId":"tripod_mg_team","n":6}],
+   "fixed": [],
+   "reference": [{"defId":"tripod_mg_team","n":8},{"defId":"long_lens_sharpshooter","n":3},{"defId":"cub_reporter","n":34}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"tripod_mg_team":"long_lens_sharpshooter"},
+    "why": "The blind army has no machine guns to pin with: it charges unpinned across no-man's land into 32 rifles."
+   },
+   "enemy": {
+    "faction": "directorate",
+    "hired": ["caution"],
+    "style": "hold",
+    "difficulty": "normal",
+    "special": "dug in",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {"defId":"clerk_rifleman","n":11,"at":{"x":18,"z":-20},"order":"hold","squad":11,"formation":"line"},
+     {"defId":"clerk_rifleman","n":11,"at":{"x":18,"z":0},"order":"hold","squad":11,"formation":"line"},
+     {"defId":"clerk_rifleman","n":10,"at":{"x":18,"z":20},"order":"hold","squad":10,"formation":"line"},
+     {"defId":"dynamite_thrower","n":3,"at":{"x":22,"z":-10},"order":"hold","hired":true},
+     {"defId":"dynamite_thrower","n":3,"at":{"x":22,"z":10},"order":"hold","hired":true}
+    ]
+   },
+   "objective": {
+    "type": "capture",
+    "params": {"points":["post_mid","post_n","post_s"],"need":3,"hold":0,"flip":12},
+    "markerIds": ["post_mid","post_n","post_s"],
+    "text": "Capture all three signal posts"
+   },
+   "timeLimit": 330,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {
+    "events": [
+     {
+      "id": "over_the_top",
+      "at": {"on":"counter","counter":"captures","gte":1},
+      "once": true,
+      "do": [{"op":"weather","kind":"fog"},{"op":"setpiece","piece":"mod_sp_over_the_top"}]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Hold each signal post's ring for 12 seconds to capture it; the lamp takes your team colour. Own all three at once to win.",
+    "Tripod gunners pin whatever they fire near: a pinned unit crouches, cannot advance and aims badly. Pin the trench, then flank it.",
+    "Cover halves hits from the front. Star 3: at least 35 percent of your unit-seconds in cover."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"cover_frac","helper":"coverFracAtLeast","args":[0.35]}],
+   "rewards": {
+    "primary": {"class":"mutator","id":"mod_red_tape"},
+    "unlockMutators": ["mod_red_tape"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["tripod_mg_team"],
+    "substitution": null
+   },
+   "rewardId": "mod_r3_red_tape",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_pin",
+      "trigger": "pin_applied",
+      "who": "brutus",
+      "text": "A PUSHPIN! He is stuck to the map! He cannot advance! He cannot aim!",
+      "hint": "Pinned units duck, cannot advance and shoot wide. Pin first, then flank.",
+      "mechanic": "pin"
+     },
+     {
+      "id": "mod_pin_snap",
+      "trigger": "bullet_snap",
+      "who": "cassandra",
+      "text": "Near-miss streaks fill the pin meter. You do not have to hit him to hold him.",
+      "hint": "Near-miss streaks fill the pin meter. You do not have to hit him to hold him.",
+      "when": "first bullet_snap near a unit"
+     },
+     {
+      "id": "mod_pin_ends",
+      "trigger": "pin_released",
+      "who": "cassandra",
+      "text": "They pop up the moment you stop firing. Keep firing. I did not write that for fun.",
+      "hint": "A pin lasts 2.5 seconds after the last near miss.",
+      "when": "first unit released from a pin"
+     },
+     {
+      "id": "mod_pin_flank",
+      "trigger": "pinned_kill_by_flanker",
+      "who": "plato",
+      "text": "The machine gun does not kill the man. It persuades him to stay still. Is persuasion the weapon, and the bullet the footnote?",
+      "when": "first kill of a pinned unit by a unit not pinning it"
+     },
+     {
+      "id": "mod_red_dot",
+      "trigger": "red_dot",
+      "who": "cassandra",
+      "text": "The red dot is a warning. It is also a promise.",
+      "hint": "A red dot on a target means a shot is one second away. Smoke and cover break it.",
+      "when": "first sharpshooter red dot"
+     },
+     {
+      "id": "mod_capture_how",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Stand inside a post's ring for 12 seconds to capture it. The lamp takes your team colour.",
+      "hint": "Stand inside a post's ring for 12 seconds to capture it. The lamp takes your team colour."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "dynamite_thrower",
+      "mechanic": "shells",
+      "why": "Area thrower with a 5 u minimum range, no groundOnly, no crater: the ladder enemy and the clumping foil, not the M5 lesson."
+     },
+     {
+      "kind": "unit",
+      "id": "long_lens_sharpshooter",
+      "mechanic": "shells",
+      "why": "Hitscan sniper with minRange 10 (a shells field in outline 0.3): no arc, no crater, not the M5 lesson."
+     }
+    ]
+   },
+   "teaches": ["pin"],
+   "tests": ["cover"],
+   "combines": ["reload","cover","pin"],
+   "requiresModules": ["M3","M2","M14","M9","M10"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_over_the_top",
+    "role": "primary",
+    "trigger": null,
+    "shot": {"from":{"anchor":"trench_lip","offset":[0,1.4,-24]},"to":{"anchor":"trench_lip","offset":[0,1.4,24]},"hold":4,"ease":"inout","simSpeed":0.5},
+    "announcer": {
+     "category": "capture",
+     "sub": "first",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"The whistle! The smoke! Everybody goes OVER the top and nobody has checked what the top is!"},
+      {"who":"plato","text":"Smoke hides the enemy. It also hides the plan. Which of them was more visible beforehand?"},
+      {"who":"cassandra","text":"The smoke is theirs. It drifts toward us. I said it would drift toward us."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_whistle_drumroll","kind":"swell","secs":3},
+    "sfx": ["mod_whistle","mod_smoke_pop","mod_boots_planks","mod_bugle_wrong"],
+    "notes": "Fires from the script event over_the_top (first post captured; weather fog tint, visual only). Tracking shot along the trench lip looking at no-man's land. mod_whistle x3, mod_smoke_pop x4, a far mod_bugle_wrong."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.9,"star3":3.2},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-3: A1/A3 capture markers and rule text; extra exception long_lens_sharpshooter; see missions_notes.md"
+  },
+  {
+   "id": "mod_bridge_too_far",
+   "act": 2,
+   "mood": "tense",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "A Bridge Slightly Too Far",
+    "blurb": "Get the Parcel Van to the far bank. It drives itself once the road is clear.",
+    "briefing": [
+     {"who":"brutus","text":"A BRIDGE! The Parcel Van must cross it! Nobody knows what is in the Parcel! The van has not been told either!"},
+     {"who":"plato","text":"What is a tank for? It is a house that wants to be a gun, and a gun that wants to stay home."},
+     {
+      "who": "cassandra",
+      "text": "Armour has a front and a back. The dozer has a blade at the front. The drainpipes wait at the back. People always pick the back."
+     }
+    ],
+    "victory": {"who":"brutus","text":"ACROSS! The bridge is narrower than the brochure and wider than the tank! Barely!"},
+    "defeat": {"who":"plato","text":"The bridge now has a gap. Does a gap have a purpose? It seems to be a river."},
+    "stars": [
+     {"id":"win","text":"Get the Parcel Van to the far bank. It drives itself once the road is clear."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"tanks_home","text":"Win without losing a single Biscuit-Tin Tank. They are attached to the good biscuits."}
+    ],
+    "reward": {"title":"Bridge Burner (Not Literally)","blurb":"Driving goggles for the Soldier Workshop. They do not make the bridge any wider."}
+   },
+   "arena": {
+    "recipe": "mod_bridge_gorge",
+    "size": "medium",
+    "seed": 6,
+    "env": {"time":18,"weather":"clear","fog":0.15,"wind":0.4,"theme":"mod_industrial"},
+    "markers": [
+     {"id":"van_start","type":"vip_start","x":-40,"z":0,"r":3},
+     {"id":"far_bank","type":"exit","x":40,"z":0,"r":4},
+     {"id":"deck_mid","type":"waypoint","x":0,"z":0,"r":3},
+     {"id":"ford","type":"waypoint","x":8,"z":30,"r":4}
+    ]
+   },
+   "playerFaction": "marmalade",
+   "roster": ["tin_hat_trooper","toast_rack_runabout","biscuit_tank","lunchbox_apc"],
+   "caps": {},
+   "budget": 8000,
+   "par": {"type":"cost","value":6400},
+   "core": [{"defId":"biscuit_tank","n":4}],
+   "fixed": [
+    {
+     "defId": "lunchbox_apc",
+     "marker": "van_start",
+     "vip": true,
+     "heading": 1.5707963267948966,
+     "name": "The Parcel Van",
+     "override": {"disarm":true,"disableAbilities":["bailout"],"hp":700,"name":"The Parcel Van"},
+     "free": true
+    }
+   ],
+   "reference": [{"defId":"tin_hat_trooper","n":14},{"defId":"toast_rack_runabout","n":4},{"defId":"biscuit_tank","n":8},{"defId":"lunchbox_apc","n":8}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"lunchbox_apc":"toast_rack_runabout"},
+    "why": "The blind army lets the drainpipes hit the column side and parks tanks side-on at the exit; its carriers are flat-armour runabouts that never use a face."
+   },
+   "enemy": {
+    "faction": "caution",
+    "hired": ["shed"],
+    "style": "ambush",
+    "difficulty": "normal",
+    "special": "the ford flank is open",
+    "generals": [],
+    "bosses": [],
+    "groups": [
+     {"defId":"dozer_plough","n":1,"at":{"x":32,"z":0},"id":"dozer_lead","order":"hold"},
+     {"defId":"dozer_plough","n":1,"at":{"x":36,"z":-4},"order":"hold"},
+     {"defId":"dozer_plough","n":1,"at":{"x":36,"z":0},"order":"hold"},
+     {"defId":"dozer_plough","n":1,"at":{"x":36,"z":4},"order":"hold"},
+     {"defId":"hoarding_bearer","n":5,"at":{"x":18,"z":0},"order":"hold","formation":"line"},
+     {"defId":"hoarding_bearer","n":5,"at":{"x":26,"z":0},"order":"hold","formation":"line"},
+     {"defId":"dynamite_thrower","n":7,"at":{"x":33,"z":-8},"order":"hold"},
+     {"defId":"dynamite_thrower","n":7,"at":{"x":33,"z":8},"order":"hold"},
+     {"defId":"drainpipe_launcher","n":2,"at":{"x":36,"z":-14},"order":"hold","hired":true},
+     {"defId":"drainpipe_launcher","n":2,"at":{"x":36,"z":14},"order":"hold","hired":true},
+     {"defId":"drainpipe_launcher","n":4,"at":{"x":30,"z":0},"order":"hold","formation":"line","hired":true},
+     {"defId":"flowerpot_peashooter","n":12,"at":{"x":38,"z":0},"id":"pea_screen","order":"hold","formation":"line","hired":true}
+    ]
+   },
+   "objective": {
+    "type": "escort",
+    "params": {"vip":"lunchbox_apc","exit":"far_bank","mode":"path"},
+    "markerIds": ["van_start","far_bank"],
+    "binding": true,
+    "text": "Get the Parcel Van across the bridge"
+   },
+   "timeLimit": 270,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {
+    "vipMarch": {"to":"far_bank","delay":12,"clear":14,"patience":60},
+    "events": [
+     {
+      "id": "wrecking_toll",
+      "at": {"on":"objective","progress":0.5},
+      "once": true,
+      "do": [
+       {"op":"order","group":"dozer_lead","order":"advance"},
+       {"op":"order","group":"pea_screen","order":"advance"},
+       {"op":"beat","beat":"dozer_released"},
+       {"op":"setpiece","piece":"mod_sp_wrecking_toll"}
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "The Parcel Van drives itself over the bridge once nothing hostile stands near the way. If it is destroyed, you lose.",
+    "Tanks and vans have faces: the front shrugs bullets, the sides and rear do not. Present your front, hit their back.",
+    "Star 3: lose no Biscuit-Tin Tank."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"tanks_home","helper":"noLoss","args":[["biscuit_tank"]]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_goggles"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_goggles"],
+    "quickUnlocks": [],
+    "codex": ["biscuit_tank","lunchbox_apc"],
+    "substitution": {"class":"part","id":"mod_generic_face"}
+   },
+   "rewardId": "mod_r4_goggles",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_plink",
+      "trigger": "armour_plink",
+      "who": "plato",
+      "text": "Plink. The rifle did one point. Is that damage, or a compliment?",
+      "hint": "Tank fronts shrug off bullets. Hit the side or rear, and present your own front.",
+      "mechanic": "armour"
+     },
+     {
+      "id": "mod_armour_bonk",
+      "trigger": "armour_bonk",
+      "who": "brutus",
+      "text": "BONK! That is the rear! The rear is where the biscuits are!",
+      "hint": "An orange BONK means a side or rear hit: far more damage than the front.",
+      "when": "first side or rear hit on a vehicle"
+     },
+     {
+      "id": "mod_turret_slew",
+      "trigger": "turret_slew",
+      "who": "cassandra",
+      "text": "The turret turns faster than the hull. A tank fires only when its barrel is aimed.",
+      "hint": "The turret turns faster than the hull. A tank fires only when its barrel is aimed.",
+      "when": "first turret slew"
+     },
+     {
+      "id": "mod_escort_rule",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "The Parcel Van drives itself once the road is clear. If it falls, you lose.",
+      "hint": "The Parcel Van drives itself once the road is clear. If it falls, you lose."
+     },
+     {
+      "id": "mod_bailout_lunch",
+      "trigger": "apc_bailout",
+      "who": "cassandra",
+      "text": "The crew bailed out. They are fine. They are holding sandwiches.",
+      "hint": "A destroyed Lunchbox APC drops three dazed troopers",
+      "when": "first APC bailout, not cb.ancient_trojan"
+     },
+     {
+      "id": "mod_bailout_lunch_trojan",
+      "trigger": "apc_bailout",
+      "who": "plato",
+      "text": "A horse of men in a box. We keep returning to this shape.",
+      "when": "first APC bailout, cb.ancient_trojan"
+     },
+     {
+      "id": "mod_dozer_blade",
+      "trigger": "dozer_blade_hit",
+      "who": "cassandra",
+      "text": "The blade is the front. Do not argue with the front.",
+      "hint": "A Dozer Plough is armoured at the blade and soft at the sides and rear.",
+      "when": "first bullet on a dozer blade"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "dynamite_thrower",
+      "mechanic": "shells",
+      "why": "Hired area thrower with minRange 5 (declared in mission 3 already): no arc, no crater, not the M5 lesson."
+     },
+     {
+      "kind": "unit",
+      "id": "drainpipe_launcher",
+      "mechanic": "shells",
+      "why": "Hired anti-tank launcher with minRange 6, a groundOnly rocket: no arc, no crater, not the M5 lesson."
+     }
+    ]
+   },
+   "teaches": ["armour"],
+   "tests": [],
+   "combines": [],
+   "requiresModules": ["M8","M7","M14","M12","M13","M17e","M15"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_wrecking_toll",
+    "role": "primary",
+    "trigger": null,
+    "shot": {"from":{"anchor":"deck_mid","offset":[-2,0.9,0]},"to":{"anchor":"deck_mid","offset":[22,3.5,0]},"hold":3.5,"ease":"out","simSpeed":0.5},
+    "announcer": {
+     "category": "escort",
+     "sub": "mid",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"cassandra","text":"Armour has a front and a back. The blade is the front. We are at the back."},
+      {"who":"brutus","text":"The dozer is coming through the barricade like a wall that took up running! Guard rails are SNAPPING!"},
+      {"who":"plato","text":"A wall that moves is merely a door in a hurry. Who holds the other side of it?"}
+     ]
+    },
+    "stinger": {"id":"mod_stg_brass_stab_boom","kind":"hit","secs":2.4},
+    "sfx": ["mod_plough_rumble","mod_girder_clang","mod_rail_snap","mod_reversing_beep"],
+    "notes": "Fires from the script event wrecking_toll (the van passes the midpoint, objective progress 0.5): the lead dozer shoulders through the far barricade (structDmg x3), guard rails and lamp posts snap, ground-shake event. mod_rail_snap x3."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":2.4,"star3":3.2},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-4: A4 escort params, closed override of the Parcel Van, exceptions thrower and drainpipe; see missions_notes.md"
+  },
+  {
+   "id": "mod_rail_yard_fireworks",
+   "act": 2,
+   "mood": "comic",
+   "text": {
+    "title": "Wagon Delivery (Fireworks Sold Separately)",
+    "blurb": "Destroy all four boxcars. Their cargo is described as miscellaneous.",
+    "briefing": [
+     {"who":"brutus","text":"THE RAIL YARD! Four wagons, one filing cabinet, and the cabinet has a GUN in it!"},
+     {"who":"plato","text":"A shell announces itself with a whistle and then arrives anyway. Is a warning that changes nothing still a warning?"},
+     {"who":"cassandra","text":"The howitzer cannot hit anything close. Everything close will be a reporter. I said reporters."}
+    ],
+    "victory": {"who":"brutus","text":"FOUR wagons! Four wagons of fireworks and toys! Somebody has just signed for the confetti!"},
+    "defeat": {"who":"cassandra","text":"They reached the guns. The guns were close. That is the whole problem with close."},
+    "stars": [
+     {"id":"win","text":"Destroy all four boxcars. Their cargo is described as miscellaneous."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"howitzers_home","text":"Win without losing a Filing-Cabinet Howitzer. You have a pair, and both have already filed the paperwork."}
+    ],
+    "reward": {"title":"Wagon Master","blurb":"A radio backpack with a whip antenna. The antenna has a bulb on it and no flag."}
+   },
+   "arena": {
+    "recipe": "mod_rail_yard",
+    "size": "large",
+    "seed": 8,
+    "env": {"time":13,"weather":"clear","fog":0.1,"wind":0.3,"theme":"mod_industrial"},
+    "markers": [
+     {"id":"throat","type":"waypoint","x":-44,"z":0,"r":3},
+     {"id":"siding","type":"waypoint","x":50,"z":0,"r":4},
+     {"id":"last_siding","type":"waypoint","x":58,"z":10,"r":3}
+    ],
+    "props": [
+     {"t":"mod_boxcar_cargo","x":50,"z":-18},
+     {"t":"mod_boxcar_cargo","x":50,"z":-6},
+     {"t":"mod_boxcar_cargo","x":50,"z":6},
+     {"t":"mod_boxcar_cargo","x":50,"z":18}
+    ]
+   },
+   "playerFaction": "directorate",
+   "roster": ["clerk_rifleman","signal_officer","mortar_pair","filing_howitzer"],
+   "caps": {},
+   "budget": 9000,
+   "par": {"type":"cost","value":7200},
+   "core": [{"defId":"filing_howitzer","n":2}],
+   "fixed": [],
+   "reference": [{"defId":"clerk_rifleman","n":28},{"defId":"signal_officer","n":6},{"defId":"mortar_pair","n":12},{"defId":"filing_howitzer","n":4}],
+   "bots": {"greedy":[0.15,0.6],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "The greedy bot sends the guns forward with no screen and the reporters reach the minimum range, so its ceiling is lower than the default.",
+   "blind": {
+    "swap": {"mortar_pair":"signal_officer"},
+    "why": "The blind army sends the howitzers forward with no screen and lets the reporters reach the minimum range."
+   },
+   "enemy": {
+    "faction": "briefing",
+    "hired": [],
+    "style": "defend",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": ["broadcast_behemoth"],
+    "groups": [
+     {"defId":"tripod_mg_team","n":2,"at":{"x":40,"z":-16},"order":"hold"},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":40,"z":-8},"order":"hold"},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":40,"z":0},"order":"hold"},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":40,"z":8},"order":"hold"},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":40,"z":16},"order":"hold"},
+     {"defId":"long_lens_sharpshooter","n":2,"at":{"x":48,"z":-6},"order":"hold"},
+     {"defId":"long_lens_sharpshooter","n":2,"at":{"x":48,"z":6},"order":"hold"},
+     {"defId":"cub_reporter","n":14,"at":{"x":33,"z":0},"id":"reporters","order":"hold","formation":"skirmish"},
+     {"defId":"chief_spokesperson","n":1,"at":{"x":40,"z":0},"order":"hold"},
+     {"defId":"broadcast_behemoth","n":1,"at":{"marker":"last_siding"},"id":"behemoth","order":"hold"}
+    ]
+   },
+   "objective": {
+    "type": "destroy",
+    "params": {"props":[{"type":"mod_boxcar_cargo","count":4}],"eliminate":false},
+    "markerIds": [],
+    "text": "Destroy the four boxcars in the far siding"
+   },
+   "timeLimit": 360,
+   "friendlyFire": true,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {
+    "events": [
+     {"id":"reporters_go","at":75,"once":true,"do":[{"op":"order","group":"reporters","order":"advance"},{"op":"beat","beat":"reporters_go"}]},
+     {
+      "id": "behemoth_advances",
+      "at": {"on":"prop_destroyed","type":"mod_boxcar_cargo","count":2},
+      "once": true,
+      "do": [{"op":"order","group":"behemoth","order":"advance"},{"op":"setpiece","piece":"mod_sp_behemoth_dish"}]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Destroy the four boxcars in the far siding; shells chew them from a distance.",
+    "A red ring and a rising whistle mean a shell lands in two seconds. Guns cannot hit inside their minimum range, and mortars cannot hit anything in the air. Screen the guns.",
+    "Star 3: lose no Filing-Cabinet Howitzer."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"howitzers_home","helper":"noLoss","args":[["filing_howitzer"]]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_back_radio"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_back_radio"],
+    "quickUnlocks": [{"kind":"arena","id":"mod_desert_outpost","name":"Desert Outpost"}],
+    "codex": ["signal_officer","mortar_pair","filing_howitzer"],
+    "substitution": {"class":"part","id":"mod_generic_back"}
+   },
+   "rewardId": "mod_r5_back_radio",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_arc",
+      "trigger": "first_indirect",
+      "who": "cassandra",
+      "text": "That shell is in the air. In two seconds it will be on something. Not on anything close.",
+      "hint": "Artillery cannot hit inside its minimum range. Screen it. Craters change the ground.",
+      "mechanic": "shells"
+     },
+     {
+      "id": "mod_min_range",
+      "trigger": "target_inside_min_range",
+      "who": "plato",
+      "text": "A mortar cannot hit what is near. It can only hit what is far. Is that a weapon, or an opinion?",
+      "hint": "Mortars cannot hit inside 14 units, the howitzer inside 26. Put riflemen in front.",
+      "when": "first target inside a gun minimum range"
+     },
+     {
+      "id": "mod_call_strike",
+      "trigger": "call_strike",
+      "who": "brutus",
+      "text": "He CALLED it in! Three shells, one pointing finger, zero responsibility!",
+      "hint": "The Signal Officer's strike lands after 2.2 seconds. Aim ahead of the target.",
+      "when": "first call_strike"
+     },
+     {
+      "id": "mod_gun_setup",
+      "trigger": "gun_setup",
+      "who": "cassandra",
+      "text": "Crews need 1.5 to 2.5 seconds to set up. Move a gun and it must set up again.",
+      "hint": "Crews need 1.5 to 2.5 seconds to set up. Move a gun and it must set up again.",
+      "when": "first crew setup"
+     },
+     {
+      "id": "mod_friendly_splash",
+      "trigger": "friendly_splash",
+      "who": "cassandra",
+      "text": "That shell had no sense of loyalty. It landed where it was told.",
+      "hint": "Shells hurt everyone inside the ring, friend or foe.",
+      "when": "first friendly splash"
+     },
+     {
+      "id": "mod_crater_note",
+      "trigger": "first_crater",
+      "who": "cassandra",
+      "text": "Craters stay. Wheels route around them and boots slow down in them.",
+      "hint": "Craters stay. Wheels route around them and boots slow down in them.",
+      "when": "first crater"
+     },
+     {
+      "id": "mod_reporter_rush",
+      "trigger": "reporters_go",
+      "who": "cassandra",
+      "text": "The reporters are running at the guns. The guns cannot shoot them. I said that was the plan.",
+      "hint": "Cub Reporters live inside a gun's minimum range. Keep riflemen in front of the guns.",
+      "when": "the reporters_go event fires"
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["shells"],
+   "tests": [],
+   "combines": [],
+   "requiresModules": ["M10","M2","M13","M12","M14","M3","M15"],
+   "softModules": ["M8"],
+   "setpiece": {
+    "id": "mod_sp_boxcar_chain",
+    "role": "primary",
+    "trigger": {"on":"prop_destroyed","type":"mod_boxcar_cargo","count":4},
+    "shot": {"from":{"anchor":"siding","offset":[-2,12,0]},"to":{"anchor":"siding","offset":[-44,30,0]},"hold":5,"ease":"out","simSpeed":0.5},
+    "announcer": {
+     "category": "destroy",
+     "sub": "complete",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"Wagon four goes up and they ALL go! Fireworks! Toy trains! A parade of cargo marked miscellaneous!"},
+      {"who":"plato","text":"Cargo that was never described turns out to be a celebration. Was it ours to open?"},
+      {"who":"cassandra","text":"Miscellaneous means someone did not want to write it down. I said so at the depot."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_fireworks","kind":"comic","secs":2.6},
+    "sfx": ["mod_firework_rocket","mod_party_horn","mod_wagon_pop","mod_confetti_pop"],
+    "notes": "Fires when the fourth boxcar dies (prop_destroyed): every wagon pops open into fireworks and toys (cosmetic particle sheet). mod_firework_rocket x4, mod_party_horn x3, mod_wagon_pop x4."
+   },
+   "extraSetpieces": [
+    {
+     "id": "mod_sp_behemoth_dish",
+     "role": "secondary",
+     "trigger": null,
+     "shot": {
+      "from": {"anchor":"last_siding","offset":[-2,14,0]},
+      "to": {"anchor":"unit:broadcast_behemoth","offset":[0,5,0]},
+      "hold": 4,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "boss_enters",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"We go LIVE in five! Four! Technical difficulties!"},
+       {"who":"plato","text":"A dish the size of a roof, pointed at us. Is it listening, or merely large?"},
+       {"who":"cassandra","text":"The pulse every six seconds is the pin. I said pulse. I said six."}
+      ]
+     },
+     "stinger": {"id":"mod_stg_hold_music","kind":"comic","secs":3},
+     "sfx": ["mod_radio_squelch","mod_dish_motor","mod_door_clang"],
+     "notes": "Fires from the script event behemoth_advances (the second boxcar falls and the Behemoth first advances). Crane-down 4.0 s from (x 56, z 10, 14 u) to the dish at 5 u."
+    }
+   ],
+   "attempts": {"design":{"star1":2.5,"star3":3.4},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-5: star 3 text two -> a pair (MS-K05); reporters_go at 75 s only; see missions_notes.md"
+  },
+  {
+   "id": "mod_switchboard_hold",
+   "act": 2,
+   "mood": "tense",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "Please Hold (The Switchboard)",
+    "blurb": "Keep the Switchboard Tower standing through all four waves.",
+    "briefing": [
+     {"who":"brutus","text":"THE SWITCHBOARD! If it falls, there are no more calls! Hold the tower! And the line! Please HOLD!"},
+     {"who":"plato","text":"A mine is a decision made earlier by somebody who is no longer present. Is that not what most laws are?"},
+     {"who":"cassandra","text":"The sappers ring every mine with tape. The tape says Caution. Nobody reads the tape. I read the tape."}
+    ],
+    "victory": {"who":"brutus","text":"The tower STANDS! Four waves, four mines, and one extremely satisfied switchboard!"},
+    "defeat": {"who":"plato","text":"The tower fell. The line is now in the hands of whoever answers it. Who answers it?"},
+    "stars": [
+     {"id":"win","text":"Keep the Switchboard Tower standing through all four waves."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"rear_hits","text":"Hit enemy vehicles on the side or rear at least twelve times. Armour has a back; use it."}
+    ],
+    "reward": {"title":"Mine Host","blurb":"A yellow hard hat with a chin strap. It will not stop a mine. It looks like it might."}
+   },
+   "arena": {
+    "recipe": "mod_downtown",
+    "size": "large",
+    "seed": 12,
+    "env": {"time":21,"weather":"clear","fog":0.2,"wind":0.2,"theme":"mod_city"},
+    "markers": [{"id":"tower","type":"core","x":-14,"z":0,"r":5}],
+    "props": [
+     {"t":"mod_switchboard_tower","x":-14,"z":0},
+     {"t":"mod_tape_ring","x":2,"z":-3},
+     {"t":"mod_tape_ring","x":2,"z":3},
+     {"t":"mod_tape_ring","x":14,"z":-3},
+     {"t":"mod_tape_ring","x":14,"z":3}
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": ["caution_sapper","dynamite_thrower","hoarding_bearer","clerk_rifleman","tripod_mg_team","mortar_pair"],
+   "caps": {},
+   "budget": 9500,
+   "par": {"type":"cost","value":7600},
+   "core": [{"defId":"caution_sapper","n":4}],
+   "fixed": [],
+   "reference": [
+    {"defId":"caution_sapper","n":8},
+    {"defId":"hoarding_bearer","n":14},
+    {"defId":"dynamite_thrower","n":12},
+    {"defId":"clerk_rifleman","n":16},
+    {"defId":"tripod_mg_team","n":6},
+    {"defId":"mortar_pair","n":4}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.35,1]},
+   "botsWhy": "The tower holds behind its sandbags; a passive army needs only mines to win.",
+   "blind": {
+    "swap": {"caution_sapper":"hoarding_bearer"},
+    "why": "The blind army lays no mines when it matters: it has no Sappers, and the column is already on the avenue."
+   },
+   "enemy": {"faction":"marmalade","hired":["shed"],"style":"waves","difficulty":"normal","special":"","generals":[],"bosses":[],"groups":[]},
+   "objective": {
+    "type": "defend_core",
+    "params": {"core":"tower","prop":"mod_switchboard_tower"},
+    "markerIds": ["tower"],
+    "text": "Keep the Switchboard Tower standing through four waves"
+   },
+   "timeLimit": 300,
+   "friendlyFire": true,
+   "godPowers": true,
+   "powers": {"disable":["mod_gp_minefield_gift"],"override":{}},
+   "script": {
+    "waves": {
+     "placed": false,
+     "first": 12,
+     "interval": 36,
+     "list": [
+      {"groups":[{"defId":"toast_rack_runabout","n":4},{"defId":"tin_hat_trooper","n":12}]},
+      {"groups":[{"defId":"biscuit_tank","n":3},{"defId":"lunchbox_apc","n":2}]},
+      {"groups":[{"defId":"teapot_heavy","n":1},{"defId":"biscuit_tank","n":2},{"defId":"tin_hat_trooper","n":8}]},
+      {"groups":[{"defId":"lunchbox_apc","n":3},{"defId":"tin_hat_trooper","n":14},{"defId":"ride_on_mower","n":2,"hired":true}]}
+     ]
+    },
+    "events": [
+     {
+      "id": "hold_music",
+      "at": {"on":"hp_frac","target":{"prop":"mod_switchboard_tower"},"below":0.5},
+      "once": true,
+      "do": [
+       {"op":"spawn","team":"enemy","groups":[{"defId":"fishbowl_chopper","n":1,"override":{"passive":true}}],"at":{"marker":"tower"}},
+       {"op":"setpiece","piece":"mod_sp_hold_music"}
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Defend the Switchboard Tower through four waves; if it falls, you lose.",
+    "Four friendly mines lie on the main street, ringed with tape. A mine arms in three seconds and hurts whatever steps on it; Sappers lay up to four more.",
+    "Star 3: hit enemy vehicles on the side or rear at least twelve times."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"rear_hits","helper":"usedMechanic","args":["armour",12]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_hard_hat"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_hard_hat"],
+    "quickUnlocks": [{"kind":"arena","id":"mod_roadworks","name":"Roadworks Without End"}],
+    "codex": ["Mines (Tape Is a Suggestion)"],
+    "substitution": {"class":"part","id":"mod_generic_helm"}
+   },
+   "rewardId": "mod_r6_hard_hat",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_mine",
+      "trigger": "mine_armed",
+      "who": "plato",
+      "text": "The light is blinking. It has decided. Do not stand where it has decided.",
+      "hint": "Mines arm after 3 seconds. Lay them early, off the lane your own units use.",
+      "mechanic": "mines"
+     },
+     {
+      "id": "mod_tape_means_mines",
+      "trigger": "tape_ring_seen",
+      "who": "cassandra",
+      "text": "The tape says Caution. Nobody reads the tape. I read the tape.",
+      "hint": "Yellow tape rings mark mines. A blinking light means armed.",
+      "when": "first tape ring in view"
+     },
+     {
+      "id": "mod_mine_boing",
+      "trigger": "mine_trigger",
+      "who": "brutus",
+      "text": "BOING! That was a mine! It had tape and everything!",
+      "hint": "A mine hurts whatever steps on it once armed. Vehicles take extra.",
+      "when": "first mine trigger on an enemy"
+     },
+     {
+      "id": "mod_lay_early",
+      "trigger": "battle_start",
+      "who": "cassandra",
+      "text": "Sappers lay up to four mines, three seconds to arm. Lay them before the column arrives.",
+      "hint": "Sappers lay up to four mines, three seconds to arm. Lay them before the column arrives."
+     },
+     {
+      "id": "mod_hold_tower",
+      "trigger": "battle_start",
+      "who": "cassandra",
+      "text": "Keep the Switchboard standing. Its hit points sit on the HUD.",
+      "hint": "Keep the Switchboard standing. Its hit points sit on the HUD."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "fishbowl_chopper",
+      "mechanic": "air",
+      "why": "Scripted unarmed passive flyover (air layer, request R3): the chopper cameo of the set-piece."
+     }
+    ]
+   },
+   "teaches": ["mines"],
+   "tests": ["armour"],
+   "combines": ["armour","shells","pin","mines"],
+   "requiresModules": ["M11","M14","M12","M8","M9","M7","M10","M15"],
+   "softModules": [],
+   "marginWaiver": {
+    "ref": "docs/eras/cuts.md (COORD logs it, OI-MS6)",
+    "reason": "Mines (M11, landing #16) is the last module of the Modern E-FREEZE prefix, margin 0. Request R2 (M11 before M8) is open with SIM/COORD; M6 content is written against the spec/M mine contract and first runs at the mechanic slice."
+   },
+   "setpiece": {
+    "id": "mod_sp_hold_music",
+    "role": "primary",
+    "trigger": null,
+    "shot": {"from":{"anchor":"tower","offset":[16,6,0]},"to":{"anchor":"tower","offset":[-8,6,13.86]},"hold":4.5,"ease":"inout","simSpeed":0.5},
+    "announcer": {
+     "category": "defend_core",
+     "sub": "low",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"cassandra","text":"I filed a risk assessment on the helicopter. It came back stamped APPROVED. By the helicopter."},
+      {"who":"brutus","text":"The tower is blinking! It is playing HOLD music! Is that a distress call or a concert?"},
+      {"who":"plato","text":"There is a helicopter and it is not shooting. Is that mercy, or a scheduling conflict?"}
+     ]
+    },
+    "stinger": {"id":"mod_stg_hold_music","kind":"comic","secs":3.2},
+    "sfx": ["mod_phone_ring","mod_rotor_flyby","mod_tower_buzz","mod_hold_music_sting"],
+    "notes": "Fires from the script event hold_music (tower below 50 percent): the city PA plays hold music, the tower windows blink in time, the passive Fishbowl Chopper makes its unarmed pass. Orbit round the tower at radius 16 through 120 degrees."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":2.8,"star3":4.2},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-6: A2 defend_core params and core marker; pre-laid mines have no MS field; see missions_notes.md"
+  },
+  {
+   "id": "mod_airfield_open_day",
+   "act": 3,
+   "mood": "epic",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "Airfield Open Day",
+    "blurb": "Bring down Deputy Director Pellmell. He holds the control tower and a clipboard.",
+    "briefing": [
+     {"who":"brutus","text":"AIRFIELD OPEN DAY! The flypast is ours! Please keep all arms inside the helicopter!"},
+     {"who":"plato","text":"Their cannons cannot shoot upwards. A cannon that cannot look up is a cannon with excellent manners."},
+     {"who":"cassandra","text":"I filed a risk assessment on the helicopter currently overhead. It was approved. By the helicopter. Over."}
+    ],
+    "victory": {"who":"plato","text":"Fifty-three flights delayed, none landed. A perfect record."},
+    "defeat": {"who":"brutus","text":"Pellmell is STILL standing under his tower! The flypast has been moved to next year!"},
+    "stars": [
+     {"id":"win","text":"Bring down Deputy Director Pellmell. He holds the control tower and a clipboard."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"balloon_up","text":"Win without losing a Spotter Balloon. It is a buff on a string and everyone is looking at it."}
+    ],
+    "reward": {
+     "title": "Frequent Flyer",
+     "blurb": "Airmail for Quick Battle: a 40-damage parcel lands every twenty seconds, on whoever is underneath. Insurance sold separately."
+    }
+   },
+   "arena": {
+    "recipe": "mod_airfield",
+    "size": "large",
+    "seed": 5,
+    "env": {"time":11,"weather":"clear","fog":0.1,"wind":0.45,"theme":"mod_air"},
+    "markers": [{"id":"deputy_start","type":"general_spawn","x":52,"z":-30,"r":3},{"id":"runway_cam","type":"waypoint","x":-34,"z":4,"r":3}]
+   },
+   "playerFaction": "skyclub",
+   "roster": ["hobby_drone","fishbowl_chopper","spotter_balloon"],
+   "caps": {},
+   "budget": 7500,
+   "par": {"type":"cost","value":6000},
+   "core": [{"defId":"fishbowl_chopper","n":4}],
+   "fixed": [],
+   "reference": [{"defId":"hobby_drone","n":30},{"defId":"fishbowl_chopper","n":9},{"defId":"spotter_balloon","n":4}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"spotter_balloon":"hobby_drone"},
+    "why": "The blind army ignores the air layer and the Spot ring: raw drones in place of the buff balloons, no one kept behind the line."
+   },
+   "enemy": {
+    "faction": "directorate",
+    "hired": ["briefing","skyclub"],
+    "style": "guarded general",
+    "difficulty": "normal",
+    "special": "",
+    "generals": ["deputy_director"],
+    "bosses": [],
+    "groups": [
+     {"defId":"deputy_director","n":1,"at":{"marker":"deputy_start"},"order":"hold"},
+     {"defId":"clerk_rifleman","n":4,"at":{"x":44,"z":-30},"order":"hold"},
+     {"defId":"clerk_rifleman","n":4,"at":{"x":48,"z":-24},"order":"hold"},
+     {"defId":"clerk_rifleman","n":4,"at":{"x":48,"z":-36},"order":"hold"},
+     {"defId":"clerk_rifleman","n":4,"at":{"x":40,"z":-30},"order":"hold"},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":36,"z":-34},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":2,"at":{"x":44,"z":-34},"order":"hold","hired":true},
+     {"defId":"parasol_missileer","n":2,"at":{"x":38,"z":-37},"order":"hold","hired":true},
+     {"defId":"parasol_missileer","n":2,"at":{"x":42,"z":-37},"order":"hold","hired":true},
+     {"defId":"filing_howitzer","n":1,"at":{"x":48,"z":-40},"order":"hold"},
+     {"defId":"filing_howitzer","n":1,"at":{"x":54,"z":-40},"order":"hold"},
+     {"defId":"mortar_pair","n":2,"at":{"x":46,"z":-36},"order":"hold"},
+     {"defId":"mortar_pair","n":1,"at":{"x":56,"z":-36},"order":"hold"}
+    ]
+   },
+   "objective": {"type":"kill_general","params":{},"markerIds":["deputy_start"],"binding":true,"text":"Kill Deputy Director Pellmell"},
+   "timeLimit": 270,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Kill the Deputy Director; the rest of his army does not matter, but it will try to matter.",
+    "Air units fly over ground-only guns: howitzers and mortars cannot shoot up. Tripod gunners and Parasol Missileers can, so remove them first.",
+    "Star 3: lose no Spotter Balloon."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"balloon_up","helper":"noLoss","args":[["spotter_balloon"]]}],
+   "rewards": {
+    "primary": {"class":"mutator","id":"mod_airmail"},
+    "unlockMutators": ["mod_airmail"],
+    "unlockParts": ["mod_aviator_goggles"],
+    "quickUnlocks": [],
+    "codex": ["Air Layer (Please Look Up)"],
+    "substitution": null
+   },
+   "rewardId": "mod_r7_airmail",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_air",
+      "trigger": "air_spawn",
+      "who": "brutus",
+      "text": "AIRCRAFT! Overhead! Your mortars cannot see them, which is unfortunate for the mortars!",
+      "hint": "Air units fly over artillery. Parasols, machine guns and rifles can hit them.",
+      "mechanic": "air"
+     },
+     {
+      "id": "mod_shadow_blob",
+      "trigger": "air_unit_placed",
+      "who": "cassandra",
+      "text": "A shadow on the ground marks an air unit. It shrinks as the unit climbs.",
+      "hint": "A shadow on the ground marks an air unit. It shrinks as the unit climbs.",
+      "when": "first air unit placed"
+     },
+     {
+      "id": "mod_ground_only",
+      "trigger": "ground_only_idle",
+      "who": "plato",
+      "text": "Their cannons cannot shoot upwards. A cannon that cannot look up is a cannon with excellent manners.",
+      "hint": "Howitzers and mortars are GROUND ONLY. Tripods, rifles and Parasols can hit air.",
+      "when": "first ground-only gun with no valid target"
+     },
+     {
+      "id": "mod_lock_on",
+      "trigger": "homing_line",
+      "who": "brutus",
+      "text": "A dotted line! That is a MISSILE! It has a lock-on and an opinion!",
+      "hint": "Dotted lines show homing missiles. Parasol Missileers are the only reliable AA: remove them first.",
+      "when": "first homing missile line"
+     },
+     {
+      "id": "mod_spot_ring",
+      "trigger": "spot_ring_seen",
+      "who": "cassandra",
+      "text": "The Spotter Balloon adds damage to allies inside its ring. It is fragile: keep it behind your line.",
+      "hint": "The Spotter Balloon adds damage to allies inside its ring. It is fragile: keep it behind your line.",
+      "when": "first balloon aura in view"
+     },
+     {
+      "id": "mod_kill_general",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Kill Deputy Director Pellmell. He holds under the control tower.",
+      "hint": "Kill Deputy Director Pellmell. He holds under the control tower."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["air"],
+   "tests": [],
+   "combines": [],
+   "requiresModules": ["M7","M2","M14","M15"],
+   "softModules": ["M13"],
+   "setpiece": {
+    "id": "mod_sp_flypast",
+    "role": "primary",
+    "trigger": 0,
+    "shot": {"from":{"anchor":"runway_cam","offset":[-6,1.2,0]},"to":{"anchor":"runway_cam","offset":[0,9,0]},"hold":3.5,"ease":"out","simSpeed":0.5},
+    "announcer": {
+     "category": "mission_start",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"LIFT-OFF! The goldfish is in the front seat! The pilot is in the back! The fish is, I am told, confident!"},
+      {"who":"plato","text":"A fish at altitude. Is it the fish that is out of its element, or the rest of us?"},
+      {"who":"cassandra","text":"I filed a risk assessment on the helicopter. It is already overhead. The form has a section for already overhead."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_bigband_sting","kind":"swell","secs":2.8},
+    "sfx": ["mod_rotor_flyby","mod_runway_horn","mod_pa_chime","mod_propeller_toy"],
+    "notes": "Fires at deploy (battle_start). Toy planes taxi and the Fishbowl Chopper lifts off past the camera with the goldfish in its bowl. Mission openers never cover the first volley; first contact is at 8 to 12 s."
+   },
+   "extraSetpieces": [
+    {
+     "id": "mod_sp_pellmell_falls",
+     "role": "secondary",
+     "trigger": {"on":"unit_kill","def":"deputy_director"},
+     "shot": {"from":{"anchor":"deputy_start","offset":[0,1,0]},"to":{"anchor":"deputy_start","offset":[0,8,0]},"hold":3,"ease":"inout","simSpeed":0.5},
+     "announcer": {
+      "category": "kill_general",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"Pellmell is DOWN! The Deputy Director has been, I believe, redeployed!"},
+       {"who":"plato","text":"A deputy has been brought down from under his own tower. Was it the altitude, or the clipboard?"},
+       {"who":"cassandra","text":"He fell. The tower did not. I said which one was load-bearing."}
+      ]
+     },
+     "stinger": {"id":"mod_stg_bigband_sting","kind":"swell","secs":2.8},
+     "sfx": ["mod_pa_chime"],
+     "notes": "The general's death: a 3.0 s low-up on the control tower."
+    }
+   ],
+   "attempts": {"design":{"star1":2.3,"star3":3},"computed":null},
+   "firstThreeMinutes": null,
+   "designAmendment": "AM-7: Plato and Cassandra lines of pellmell_falls added; air-only blind swap; see missions_notes.md"
+  },
+  {
+   "id": "mod_harbour_tour",
+   "act": 3,
+   "mood": "ominous",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "Harbour Tour (Mind the Barge)",
+    "blurb": "Survive all four waves. The fourth comes with a barge.",
+    "briefing": [
+     {"who":"brutus","text":"THE HARBOUR! Four waves from the sea, and the fourth is a mower on a BARGE! You heard that correctly!"},
+     {"who":"plato","text":"The medic mends the man, the mechanic mends the machine. Neither mends the argument. That remains my department."},
+     {"who":"cassandra","text":"The mower arrives on the fourth wave. It will cut a path. I wrote 'path'. 'Lane' sounded optimistic."}
+    ],
+    "victory": {"who":"brutus","text":"The barge is aground! The mower has stalled! The harbour is trimmed and THANKFUL!"},
+    "defeat": {"who":"cassandra","text":"The mower cut a lane. The lane was us. I wrote lane."},
+    "stars": [
+     {"id":"win","text":"Survive all four waves. The fourth comes with a barge."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"mines_eight","text":"Have mines trigger at least eight times. Everything arrives by the same ramp."}
+    ],
+    "reward": {
+     "title": "Harbour Master (Provisional)",
+     "blurb": "A wrench the length of a bench. It repairs nothing in the Workshop and everything in the matinee."
+    }
+   },
+   "arena": {
+    "recipe": "mod_harbour",
+    "size": "medium",
+    "seed": 9,
+    "env": {"time":7,"weather":"cloudy","fog":0.3,"wind":0.5,"theme":"mod_harbour"},
+    "markers": [
+     {"id":"barge_ramp","type":"waypoint","x":14,"z":-40,"r":4},
+     {"id":"quay","type":"waypoint","x":0,"z":8,"r":5},
+     {"id":"pier_roots","type":"waypoint","x":-16,"z":-24,"r":4}
+    ]
+   },
+   "playerFaction": "mixed",
+   "roster": ["tin_hat_trooper","biscuit_tank","teapot_heavy","dozer_plough","caution_sapper","site_first_aider","spanner_mechanic"],
+   "caps": {},
+   "budget": 10000,
+   "par": {"type":"cost","value":8000},
+   "core": [{"defId":"biscuit_tank","n":3},{"defId":"site_first_aider","n":2},{"defId":"spanner_mechanic","n":2}],
+   "fixed": [],
+   "reference": [
+    {"defId":"tin_hat_trooper","n":20},
+    {"defId":"biscuit_tank","n":5},
+    {"defId":"teapot_heavy","n":2},
+    {"defId":"dozer_plough","n":2},
+    {"defId":"caution_sapper","n":6},
+    {"defId":"site_first_aider","n":6},
+    {"defId":"spanner_mechanic","n":6}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.15,0.8]},
+   "botsWhy": "A passive army with mines on the ramp and the pier roots and both support units behind the line holds the quay; the objective rewards patience.",
+   "blind": {"swap":{"spanner_mechanic":"site_first_aider"},"why":"The blind army heals machines with the medic and runs out of both."},
+   "enemy": {"faction":"shed","hired":[],"style":"waves","difficulty":"normal","special":"from the sea","generals":[],"bosses":["grand_mower"],"groups":[]},
+   "objective": {"type":"survive_waves","params":{"waves":4},"markerIds":[],"text":"Survive four waves from the sea"},
+   "timeLimit": 420,
+   "friendlyFire": true,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "waves": {
+     "placed": false,
+     "first": 15,
+     "list": [
+      {"groups":[{"defId":"flowerpot_peashooter","n":16},{"defId":"trolley_rammer","n":4}],"after":60},
+      {"groups":[{"defId":"trolley_rammer","n":10},{"defId":"ride_on_mower","n":3}],"after":65},
+      {"groups":[{"defId":"wheelbarrow_cannon","n":4},{"defId":"drainpipe_launcher","n":6},{"defId":"flowerpot_peashooter","n":20}],"after":75},
+      {"groups":[{"defId":"grand_mower","n":1,"at":{"marker":"barge_ramp"}},{"defId":"ride_on_mower","n":4}]}
+     ]
+    },
+    "events": [],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Survive four waves from the sea. The fourth arrives on a landing barge.",
+    "A First-Aider's mint sparkle heals people only; a Spanner Mechanic's glint repairs machines only. The Tea Break god power does both, in smaller doses. Bring both units or neither stays up.",
+    "Star 3: mines must trigger at least eight times."
+   ],
+   "starTests": [{"id":"win"},{"id":"half","helper":"aliveCostFrac","args":[0.5]},{"id":"mines_eight","helper":"usedMechanic","args":["mines",8]}],
+   "rewards": {
+    "primary": {"class":"part","id":"mod_wrench_big"},
+    "unlockMutators": [],
+    "unlockParts": ["mod_wrench_big"],
+    "quickUnlocks": [{"kind":"arena","id":"mod_garden_centre","name":"Garden Centre"}],
+    "codex": ["site_first_aider","spanner_mechanic","grand_mower"],
+    "substitution": {"class":"part","id":"mod_generic_weapon"}
+   },
+   "rewardId": "mod_r8_wrench_big",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_b_repair",
+      "trigger": "repair_first",
+      "who": "cassandra",
+      "text": "The mechanic mended the tank. The medic looked at the tank. The tank did not mind.",
+      "hint": "A spanner glint repairs machines only; a mint sparkle heals people only.",
+      "mechanic": "repair"
+     },
+     {
+      "id": "mod_heal_sparkle",
+      "trigger": "heal_first",
+      "who": "plato",
+      "text": "The medic mends the man, the mechanic mends the machine. Neither mends the argument. That remains my department.",
+      "hint": "First-Aiders heal soldiers, not machines.",
+      "when": "first heal pulse on organics"
+     },
+     {
+      "id": "mod_repair_glint",
+      "trigger": "repair_pulse",
+      "who": "brutus",
+      "text": "The spanner is OUT! He fixes the tank by hitting it! Success rate: tight!",
+      "hint": "Mechanics repair tanks, ploughs and APCs, not people.",
+      "when": "first repair pulse"
+     },
+     {
+      "id": "mod_pulse_range",
+      "trigger": "pulse_cast",
+      "who": "cassandra",
+      "text": "Heal and repair pulses reach six to seven units. Keep support inside the line, not in front of it.",
+      "hint": "Heal and repair pulses reach six to seven units. Keep support inside the line, not in front of it."
+     },
+     {
+      "id": "mod_barge_warning",
+      "trigger": "wave_cleared",
+      "who": "cassandra",
+      "text": "Four waves. The fourth has a barge. I have said barge three times.",
+      "when": "wave 3 cleared"
+     },
+     {
+      "id": "mod_mines_where",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Everything from the sea lands on the ramp and the pier roots. Mines laid there trigger often.",
+      "hint": "Everything from the sea lands on the ramp and the pier roots. Mines laid there trigger often."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["repair"],
+   "tests": ["mines"],
+   "combines": [],
+   "requiresModules": ["M6a","M14","M12","M8","M15"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_landing_barge",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"wave_spawns","gte":4},
+    "shot": {"from":{"anchor":"barge_ramp","offset":[0,14,32]},"to":{"anchor":"barge_ramp","offset":[0,4,4]},"hold":4,"ease":"inout","simSpeed":0.5},
+    "announcer": {
+     "category": "boss_enters",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"A MOWER the size of a bungalow! Please keep all feet inside the garden!"},
+      {"who":"plato","text":"It cuts a swathe, then another, for symmetry. Is a lawn a battlefield, or only a very tidy argument?"},
+      {"who":"cassandra","text":"I wrote 'path'. 'Lane' sounded optimistic. It is a lane."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_engine_rev_brass","kind":"dread","secs":3},
+    "sfx": ["mod_ramp_slam","mod_pull_cord","mod_engine_roar","mod_gull_far"],
+    "notes": "Fires when wave 4 begins: the barge ramp slams, the pull-cord roars (2 s) and the Grand Mower mows its first stripe across the quay. Crane-down at the ramp from (x 14, z -8, 14 u) to (x 14, z -36, 4 u)."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":2.8,"star3":4.4},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "mod_dam_finale",
+   "act": 3,
+   "mood": "epic",
+   "text": {
+    "title": "The Dam Finale",
+    "blurb": "Kill the Grand Teapot. It holds the crest and the kettle.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE DAM! A teapot the size of a bandstand! A chandelier! A cabinet with a gun! I have run out of capital letters and am borrowing Plato's!"
+     },
+     {"who":"plato","text":"I have been speaking for nine missions. I now learn I was heard. This is unsettling."},
+     {"who":"cassandra","text":"The dam holds. Then it does not. I am so tired of being right about concrete."}
+    ],
+    "victory": {"who":"plato","text":"I was heard. I would like it noted that I mostly said that this was a bad idea."},
+    "defeat": {"who":"cassandra","text":"You were put on hold. The hold was indefinite. I said so."},
+    "stars": [
+     {"id":"win","text":"Kill the Grand Teapot. It holds the crest and the kettle."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"bingo","text":"Use cover, pins, armour hits, shells, mines, air kills and repair at least three times each. The Bingo Card is checked."}
+    ],
+    "reward": {"title":"Chief of Staples","blurb":"Everything Else: the page nobody wanted written. It is now in the Codex."}
+   },
+   "arena": {
+    "recipe": "mod_dam",
+    "size": "large",
+    "seed": 2,
+    "env": {"time":18,"weather":"clear","fog":0.25,"wind":0.4,"theme":"mod_industrial"},
+    "markers": [
+     {"id":"teapot_start","type":"general_spawn","x":46,"z":0,"r":3},
+     {"id":"left_gate","type":"waypoint","x":40,"z":-22,"r":3},
+     {"id":"right_gate","type":"waypoint","x":40,"z":22,"r":3},
+     {"id":"upstream_cam","type":"waypoint","x":60,"z":0,"r":3},
+     {"id":"parcel","type":"waypoint","x":46,"z":14,"r":2}
+    ],
+    "props": [{"t":"mod_dam_gate","x":40,"z":-22},{"t":"mod_dam_gate","x":40,"z":22},{"t":"mod_crate_stack","x":46,"z":14,"v":3}]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "biscuit_tank",
+    "caution_sapper",
+    "chief_spokesperson",
+    "clerk_rifleman",
+    "cub_reporter",
+    "deputy_director",
+    "dozer_plough",
+    "drainpipe_launcher",
+    "dynamite_thrower",
+    "filing_howitzer",
+    "fishbowl_chopper",
+    "flowerpot_peashooter",
+    "hoarding_bearer",
+    "hobby_drone",
+    "long_lens_sharpshooter",
+    "lunchbox_apc",
+    "mortar_pair",
+    "parasol_missileer",
+    "ride_on_mower",
+    "signal_officer",
+    "site_first_aider",
+    "spanner_mechanic",
+    "spotter_balloon",
+    "teapot_heavy",
+    "tin_hat_trooper",
+    "toast_rack_runabout",
+    "tripod_mg_team",
+    "trolley_rammer",
+    "wheelbarrow_cannon"
+   ],
+   "caps": {},
+   "budget": 15000,
+   "par": {"type":"none","value":0},
+   "core": [],
+   "fixed": [],
+   "reference": [
+    {"defId":"biscuit_tank","n":6},
+    {"defId":"teapot_heavy","n":2},
+    {"defId":"dozer_plough","n":2},
+    {"defId":"tripod_mg_team","n":6},
+    {"defId":"parasol_missileer","n":8},
+    {"defId":"mortar_pair","n":6},
+    {"defId":"filing_howitzer","n":2},
+    {"defId":"clerk_rifleman","n":12},
+    {"defId":"caution_sapper","n":6},
+    {"defId":"spanner_mechanic","n":4},
+    {"defId":"site_first_aider","n":4},
+    {"defId":"fishbowl_chopper","n":3},
+    {"defId":"spotter_balloon","n":2}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"caution_sapper":"clerk_rifleman","spanner_mechanic":"clerk_rifleman","site_first_aider":"clerk_rifleman"},
+    "why": "The blind army ignores half the tools: no mines, no repair, no healing, and it runs out of time."
+   },
+   "enemy": {
+    "faction": "marmalade",
+    "hired": ["directorate","briefing","skyclub","shed"],
+    "style": "guarded general",
+    "difficulty": "normal",
+    "special": "a mixed final stand",
+    "generals": ["grand_teapot"],
+    "bosses": ["final_notice","chandelier_gunship"],
+    "groups": [
+     {"defId":"grand_teapot","n":1,"at":{"marker":"teapot_start"},"order":"hold"},
+     {"defId":"teapot_heavy","n":1,"at":{"x":44,"z":-10},"order":"hold"},
+     {"defId":"teapot_heavy","n":1,"at":{"x":44,"z":10},"order":"hold"},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":-23},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":-18},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":-13},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":13},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":18},"order":"hold","hired":true},
+     {"defId":"tripod_mg_team","n":1,"at":{"x":42,"z":23},"order":"hold","hired":true},
+     {"defId":"parasol_missileer","n":2,"at":{"x":53,"z":-12},"order":"hold","hired":true},
+     {"defId":"parasol_missileer","n":2,"at":{"x":53,"z":0},"order":"hold","hired":true},
+     {"defId":"parasol_missileer","n":2,"at":{"x":53,"z":12},"order":"hold","hired":true},
+     {"defId":"clerk_rifleman","n":5,"at":{"x":48,"z":-18},"order":"hold","formation":"line","hired":true},
+     {"defId":"clerk_rifleman","n":5,"at":{"x":48,"z":18},"order":"hold","formation":"line","hired":true},
+     {"defId":"clerk_rifleman","n":5,"at":{"x":36,"z":-30},"order":"hold","formation":"line","hired":true},
+     {"defId":"clerk_rifleman","n":5,"at":{"x":36,"z":30},"order":"hold","formation":"line","hired":true},
+     {"defId":"flowerpot_peashooter","n":5,"at":{"x":40,"z":-28},"order":"advance","hired":true},
+     {"defId":"flowerpot_peashooter","n":5,"at":{"x":40,"z":28},"order":"advance","hired":true},
+     {"defId":"final_notice","n":1,"at":{"x":62,"z":20},"order":"hold","hired":true}
+    ]
+   },
+   "objective": {"type":"kill_general","params":{},"markerIds":["teapot_start"],"binding":true,"text":"Kill the Grand Teapot on the dam crest"},
+   "timeLimit": 480,
+   "friendlyFire": true,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "events": [
+     {
+      "id": "chandelier_arrives",
+      "at": 90,
+      "once": true,
+      "do": [
+       {"op":"spawn","team":"enemy","groups":[{"defId":"chandelier_gunship","n":1}],"at":{"marker":"upstream_cam"}},
+       {"op":"setpiece","piece":"mod_sp_chandelier_enters"}
+      ]
+     },
+     {
+      "id": "final_notice_shell",
+      "at": 150,
+      "once": true,
+      "do": [
+       {"op":"strike","kind":"shell","at":{"marker":"left_gate"},"r":7,"dmg":180,"delay":2,"n":1,"team":1},
+       {"op":"prop","act":"destroy","type":"mod_dam_gate","at":{"marker":"left_gate"}},
+       {"op":"setpiece","piece":"mod_sp_dam_gate"}
+      ]
+     }
+    ],
+    "counters": []
+   },
+   "inputs": [],
+   "rules": [
+    "Kill the Grand Teapot on the dam crest. Its front shrugs bullets; the handle side does not.",
+    "A Chandelier Gunship arrives from upstream at 90 seconds; at 150 seconds the Final Notice bursts the left sluice gate. The Notice cannot hit inside 35 units.",
+    "Star 3: use cover, pins, armour hits, shells, mines, air kills and repair at least three times each."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"bingo","helper":"usedAll","args":[["cover","pin","armour","shells","mines","air","repair"],3]}
+   ],
+   "rewards": {
+    "primary": {"class":"codex_write","id":"everything_else"},
+    "unlockMutators": [],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["everything_else"],
+    "substitution": null
+   },
+   "rewardId": "mod_r9_everything_else",
+   "teaching": {
+    "beats": [
+     {
+      "id": "mod_bingo_card",
+      "trigger": "placement_start",
+      "who": "cassandra",
+      "text": "Star 3 asks for seven tools, three uses each: cover, pins, armour hits, shells, mines, air kills and repair.",
+      "hint": "Star 3 asks for seven tools, three uses each: cover, pins, armour hits, shells, mines, air kills and repair."
+     },
+     {
+      "id": "mod_final_notice_ring",
+      "trigger": "notice_ring",
+      "who": "cassandra",
+      "text": "There have been fourteen. This is the fifteenth. I will not read the paragraph.",
+      "hint": "A huge red ring means a notice shell lands in two seconds. It cannot hit inside 35 units.",
+      "when": "first Final Notice telegraph ring"
+     },
+     {
+      "id": "mod_chandelier_up",
+      "trigger": "chandelier_arrives",
+      "who": "cassandra",
+      "text": "A gunship strafes armour and guns that cannot look up. Parasols, tripods and rifles answer it.",
+      "hint": "A gunship strafes armour and guns that cannot look up. Parasols, tripods and rifles answer it.",
+      "when": "when it arrives"
+     },
+     {
+      "id": "mod_teapot_front",
+      "trigger": "teapot_front_hit",
+      "who": "plato",
+      "text": "The Teapot has not poured. It has only aimed. I find that more menacing.",
+      "hint": "The Grand Teapot's front shrugs bullets. Go round to the handle.",
+      "when": "first bullet on the Grand Teapot's front"
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": [],
+   "tests": ["cover","pin","armour","shells","mines","air","repair"],
+   "combines": ["pin","cover","shells","armour","mines","air","repair"],
+   "requiresModules": ["M0","M1","M3","M2","M2b","M10","M6a","M7","M12","M14","M13","M15","M17e","M8","M9","M11"],
+   "softModules": [],
+   "setpiece": {
+    "id": "mod_sp_dam_gate",
+    "role": "primary",
+    "trigger": null,
+    "shot": {"from":{"anchor":"upstream_cam","offset":[0,14,0]},"to":{"anchor":"upstream_cam","offset":[-30,8,0]},"hold":6,"ease":"inout","simSpeed":0.5},
+    "announcer": {
+     "category": "finale",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"The gate! The Final Notice has served it! The water has been, how do I say, RELEASED!"},
+      {"who":"plato","text":"The gate was opened by a notice. Is a notice a kind of key?"},
+      {"who":"cassandra","text":"Concrete has a limit. The limit has a notice. I wrote the notice."}
+     ]
+    },
+    "stinger": {"id":"mod_stg_full_fanfare","kind":"fanfare","secs":3.2,"bypassLimiter":true},
+    "sfx": ["mod_gate_groan","mod_water_rush","mod_teapot_whistle","mod_stamp_thud"],
+    "notes": "Fires from the script event final_notice_shell at 150 s (white-water sheet down the spillway, visual only). Plato label is PLATO from here. Victory coda, non-blocking: the crate on the crest opens in confetti, one sandwich arcs over the dam, the Parcel card follows."
+   },
+   "extraSetpieces": [
+    {
+     "id": "mod_sp_chandelier_enters",
+     "role": "secondary",
+     "trigger": null,
+     "shot": {
+      "from": {"anchor":"upstream_cam","offset":[0,1,0]},
+      "to": {"anchor":"unit:chandelier_gunship","offset":[0,9,0]},
+      "hold": 4,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "boss_enters",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"A chandelier! It is hanging from the SKY! Nobody dusts it!"},
+       {"who":"plato","text":"Six toy planes on strings. Is it a gunship, or a nursery?"},
+       {"who":"cassandra","text":"I filed a risk assessment on 'mobile'. It came back stamped APPROVED. By the mobile."}
+      ]
+     },
+     "stinger": {"id":"mod_stg_bigband_sting","kind":"swell","secs":2.8},
+     "sfx": ["mod_rotor_flyby"],
+     "notes": "Fires from the script event chandelier_arrives at 90 s. Low-up 4.0 s from the basin floor to the rotor."
+    }
+   ],
+   "attempts": {"design":{"star1":4,"star3":6.5},"computed":null},
+   "firstThreeMinutes": null
+  }
+ ],
+ "puzzles": [
+  {
+   "id": "mod_pz_duck_cover",
+   "title": "Duck, Duck, Cover",
+   "blurb": "Six tin hats, three sandbag walls and one very small yard; the walls are not where the fight is.",
+   "hint": "Creep from wall to wall: cover halves the incoming damage at every step, and the troopers cannot afford their reload windows.",
+   "goalText": "Defeat all six troopers",
+   "arena": {
+    "recipe": "mod_parade_yard",
+    "size": "small",
+    "seed": 31,
+    "env": {},
+    "markers": [],
+    "props": [
+     {"t":"mod_sandbag_wall","x":-24,"z":-8.4,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-24,"z":-7.2,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-24,"z":-6,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-24,"z":-4.8,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-24,"z":-3.6,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-17,"z":3.6,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-17,"z":4.8,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-17,"z":6,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-17,"z":7.2,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-17,"z":8.4,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-10,"z":-8.4,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-10,"z":-7.2,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-10,"z":-6,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-10,"z":-4.8,"r":1.5707963267948966},
+     {"t":"mod_sandbag_wall","x":-10,"z":-3.6,"r":1.5707963267948966}
+    ]
+   },
+   "player": {"faction":"directorate","roster":["clerk_rifleman"],"budget":1000},
+   "par": {"type":"cost","value":960},
+   "enemy": {
+    "faction": "marmalade",
+    "placements": [
+     {"defId":"tin_hat_trooper","x":-8,"z":-4,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-8,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-8,"z":4,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-5,"z":-4,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-5,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-5,"z":4,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"no_losses","text":"Lose no unit","helper":"lossesAtMost","args":[0]},
+   "teaches": ["cover"],
+   "requiresModules": ["M9"],
+   "mechanicFired": {"counter":"cover_hit","min":20},
+   "firstSightBeat": {
+    "id": "mod_pz_fs_cover",
+    "trigger": "placement_start",
+    "who": "cassandra",
+    "text": "Cyan brackets mean cover: hits from the front do half damage. A flanked unit loses it."
+   }
+  },
+  {
+   "id": "mod_pz_pin_cushion",
+   "title": "Pin Cushion",
+   "blurb": "Ten peas, one machine gun and four reporters with a deadline.",
+   "hint": "Set up the machine gun before the reporters move; send the reporters only after the first pin ring fills.",
+   "goalText": "Defeat all ten peashooters",
+   "arena": {"recipe":"mod_trench_line","size":"medium","seed":32,"env":{},"markers":[],"props":[]},
+   "player": {"faction":"briefing","roster":["tripod_mg_team","cub_reporter"],"budget":800},
+   "par": {"type":"cost","value":700},
+   "enemy": {
+    "faction": "shed",
+    "placements": [
+     {"defId":"flowerpot_peashooter","x":-6,"z":-9,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":-7,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":-5,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":-3,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":-1,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":1,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":3,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":5,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":7,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"},
+     {"defId":"flowerpot_peashooter","x":-6,"z":9,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"line"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 150,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"reporters_home","text":"Lose no reporter","helper":"noLoss","args":[["cub_reporter"]]},
+   "teaches": ["pin"],
+   "requiresModules": ["M3","M2"],
+   "mechanicFired": {"counter":"pin_applied","min":6},
+   "firstSightBeat": {"id":"mod_pz_fs_pin","trigger":"placement_start","who":"brutus","text":"Pinned units duck, cannot advance and shoot wide. Pin first, then flank."}
+  },
+  {
+   "id": "mod_pz_plink_crunch",
+   "title": "Plink, Plink, Crunch",
+   "blurb": "One tank facing east, six rifles that cannot hurt it and three gutters that can.",
+   "hint": "Keep the rifles on the front as bait while the three drainpipes walk the long way round to the tank's side and rear.",
+   "goalText": "Defeat the tank and its escort",
+   "arena": {"recipe":"mod_desert_outpost","size":"medium","seed":33,"env":{},"markers":[],"props":[]},
+   "player": {"faction":"mixed","roster":["drainpipe_launcher","clerk_rifleman"],"budget":900},
+   "par": {"type":"cost","value":800},
+   "enemy": {
+    "faction": "marmalade",
+    "placements": [
+     {"defId":"biscuit_tank","x":-20,"z":0,"heading":1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-14,"z":14,"heading":1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"tin_hat_trooper","x":-14,"z":16,"heading":1.5707963267948966,"order":"hold","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 90,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"quick_kill","text":"Win within 50 seconds","helper":"underTime","args":[50]},
+   "teaches": ["armour"],
+   "requiresModules": ["M8"],
+   "mechanicFired": {"counter":"armour_flank_hit","min":3},
+   "firstSightBeat": {
+    "id": "mod_pz_fs_armour",
+    "trigger": "placement_start",
+    "who": "plato",
+    "text": "Tank fronts shrug off bullets. Hit the side or rear, and present your own front."
+   }
+  },
+  {
+   "id": "mod_pz_too_close",
+   "title": "Too Close For Comfort",
+   "blurb": "One very large filing cabinet, eight small reporters and the rule that the cabinet cannot see anything near it.",
+   "hint": "Place the howitzer deep, set it up at once and screen it: it cannot hit inside 26 units.",
+   "goalText": "Defeat all eight reporters",
+   "arena": {"recipe":"mod_garden_centre","size":"medium","seed":34,"env":{},"markers":[],"props":[]},
+   "player": {"faction":"mixed","roster":["filing_howitzer","clerk_rifleman","tripod_mg_team"],"budget":1200},
+   "par": {"type":"cost","value":1100},
+   "enemy": {
+    "faction": "briefing",
+    "placements": [
+     {"defId":"cub_reporter","x":14,"z":-2,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":14,"z":-0.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":14,"z":0.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":14,"z":2,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":15.5,"z":-2,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":15.5,"z":-0.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":15.5,"z":0.7,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"cub_reporter","x":15.5,"z":2,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 100,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"shells_on_reporters","text":"Land shells on at least three reporters","helper":"shellsOnTarget","args":["cub_reporter",3]},
+   "teaches": ["shells"],
+   "requiresModules": ["M10","M8"],
+   "mechanicFired": {"counter":"shell_hit","min":3},
+   "firstSightBeat": {
+    "id": "mod_pz_fs_shells",
+    "trigger": "placement_start",
+    "who": "cassandra",
+    "text": "Artillery cannot hit inside its minimum range. Screen it. Craters change the ground."
+   }
+  },
+  {
+   "id": "mod_pz_mind_the_gaps",
+   "title": "Mind The Gaps",
+   "blurb": "Three tanks, one narrow gap and a small amount of tape.",
+   "hint": "Start laying mines the moment the column appears, in the choke, then get out of the road: mines arm after 3 seconds.",
+   "goalText": "Defeat all three tanks",
+   "arena": {"recipe":"mod_bridge_gorge","size":"medium","seed":35,"env":{},"markers":[],"props":[]},
+   "player": {"faction":"caution","roster":["caution_sapper","dynamite_thrower","hoarding_bearer"],"budget":1000},
+   "par": {"type":"cost","value":920},
+   "enemy": {
+    "faction": "marmalade",
+    "placements": [
+     {"defId":"biscuit_tank","x":30,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"biscuit_tank","x":36,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"},
+     {"defId":"biscuit_tank","x":42,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"column"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"no_losses","text":"Lose no unit","helper":"lossesAtMost","args":[0]},
+   "teaches": ["mines"],
+   "requiresModules": ["M11"],
+   "mechanicFired": {"counter":"mine_hit","min":3},
+   "firstSightBeat": {
+    "id": "mod_pz_fs_mines",
+    "trigger": "placement_start",
+    "who": "plato",
+    "text": "Mines arm after 3 seconds. Lay them early, off the lane your own units use."
+   }
+  },
+  {
+   "id": "mod_pz_cassandra_helicopter",
+   "title": "Cassandra Was Right About The Helicopter",
+   "blurb": "A gunship, two drones and a mortar that has never once looked up.",
+   "hint": "The mortar cannot fire at the air. Keep two Parasol Missileers behind the clerks, who are bait.",
+   "goalText": "Defeat the chopper and both drones",
+   "arena": {"recipe":"mod_harbour","size":"medium","seed":36,"env":{},"markers":[],"props":[]},
+   "player": {"faction":"mixed","roster":["parasol_missileer","clerk_rifleman","mortar_pair"],"budget":1000},
+   "par": {"type":"cost","value":900},
+   "enemy": {
+    "faction": "skyclub",
+    "placements": [
+     {"defId":"fishbowl_chopper","x":0,"z":-40,"heading":0,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"hobby_drone","x":-4,"z":-42,"heading":0,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"hobby_drone","x":4,"z":-42,"heading":0,"order":"advance","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 120,
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "bonus": {"id":"parasols_home","text":"Lose no parasol","helper":"noLoss","args":[["parasol_missileer"]]},
+   "teaches": ["air"],
+   "requiresModules": ["M7","M10"],
+   "mechanicFired": {"counter":"air_kill","min":3},
+   "firstSightBeat": {
+    "id": "mod_pz_fs_air",
+    "trigger": "placement_start",
+    "who": "brutus",
+    "text": "Air units fly over artillery. Parasols, machine guns and rifles can hit them."
+   }
+  }
+ ]
+}

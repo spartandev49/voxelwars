@@ -1,0 +1,2595 @@
+{
+ "$schema": "../../spec/ms.schema.json",
+ "msVersion": 1,
+ "era": "medieval",
+ "idPrefix": "med_",
+ "acts": [
+  {"id":1,"title":"Act I: Pageant Season","blurb":"Bunting, lances and a rota nobody follows."},
+  {"id":2,"title":"Act II: Siege Season","blurb":"Fire, plague and a gate with a clause."},
+  {"id":3,"title":"Act III: Dragon Season","blurb":"It was in the programme, in small print."}
+ ],
+ "rewardParts": {
+  "med_plumed_great_helm": {"name":"Plumed Great Helm","blurb":"A fan plume the size of a hay bale."},
+  "med_long_pike": {"name":"Long Pike","blurb":"4.8 u of pole, the longest the grid allows."},
+  "med_lance_used": {"name":"Lance (Used)","blurb":"Couched, long reach, previously owned."},
+  "med_mantlet_shield": {"name":"Mantlet Shield","blurb":"A Workshop offhand: a wall you carry."},
+  "med_beak_mask": {"name":"Beak Mask","blurb":"A mint beak, 3 voxels across."},
+  "med_cauldron_helm": {"name":"Cauldron Helm","blurb":"A Workshop helm with a handle on each side."},
+  "med_toll_club": {"name":"Toll Club","blurb":"A toll gate on a stick."},
+  "med_gilded_spoon": {"name":"Gilded Spoon","blurb":"The largest spoon ever issued as a weapon."}
+ },
+ "missions": [
+  {
+   "id": "med_dress_rehearsal",
+   "act": 1,
+   "mood": "festive",
+   "text": {
+    "title": "Dress Rehearsal (Swords Are Foam)",
+    "blurb": "A pageant, a crowd and a cavalry charge nobody rehearsed. Pikes brace only while they stand still: hold them, point them at the horses and spend little.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "WELCOME to the Grand Pageant of Marrowby! Bunting! A crowd! And a cavalry charge that is, I am assured, TRADITIONAL!"
+     },
+     {
+      "who": "plato",
+      "text": "The Yeomen have been cast as the peasants who get charged. Is a part still a part if you are paid in pikes?"
+     },
+     {
+      "who": "cassandra",
+      "text": "The foam lances were swapped for real ones at the interval. I wrote 'interval' on the form. Nobody reads the form."
+     }
+    ],
+    "victory": {
+     "who": "brutus",
+     "text": "THE POLES HELD! The horses are reviewing their decisions and the grandstand wants to know if that was in the programme!"
+    },
+    "defeat": {"who":"cassandra","text":"The pikes were crooked. The horses were not."},
+    "stars": [
+     {"id":"win","text":"Win the rehearsal. The grandstand will hold its applause until the end."},
+     {"id":"half","text":"Win with at least half your army (by cost) still standing. The crowd does not count as army."},
+     {"id":"med_thrift","text":"Win while spending 2,250 groats or less. Frugal is the new fearless."}
+    ],
+    "reward": {
+     "title": "Extra With Lines",
+     "blurb": "Foam swords for Quick Battle. Damage down, knockback up, and a bonk on every hit. The foam was supplied by the production."
+    }
+   },
+   "arena": {
+    "recipe": "med_pageant_green",
+    "size": "medium",
+    "seed": 21,
+    "env": {},
+    "markers": [{"id":"bugle","type":"waypoint","x":0,"z":24,"r":3}]
+   },
+   "playerFaction": "yeomen",
+   "roster": ["pikeman","longbowman","billman","peasant_levy"],
+   "caps": {},
+   "budget": 3000,
+   "par": {"type":"cost","value":2250},
+   "core": [{"defId":"pikeman","n":8}],
+   "fixed": [],
+   "reference": [{"defId":"pikeman","n":12},{"defId":"longbowman","n":8},{"defId":"billman","n":5},{"defId":"peasant_levy","n":20}],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"pikeman":"billman"},
+    "why": "The blind army trades its pikes for billhooks, which cannot brace: the same line, no standing pole for the horses to meet."
+   },
+   "enemy": {
+    "faction": "marrowby",
+    "style": "hired actors",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": [],
+    "hired": [],
+    "groups": [
+     {"id":"lancers_a","defId":"lancer","n":3,"at":{"u":0.05,"v":-0.35},"order":"hold"},
+     {"id":"lancers_b","defId":"lancer","n":3,"at":{"u":0.05,"v":0.35},"order":"hold"},
+     {"defId":"squire","n":14,"at":{"u":0.55,"v":0},"order":"advance"},
+     {"defId":"pageant_dragon","n":1,"at":{"u":0.95,"v":0},"order":"advance"}
+    ]
+   },
+   "objective": {"type":"eliminate","params":{},"markerIds":[],"text":"Defeat the enemy army"},
+   "timeLimit": 240,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "events": [
+     {
+      "id": "med_m1_wrong_cue",
+      "at": 16,
+      "once": true,
+      "do": [
+       {"op":"order","group":"lancers_a","order":"advance"},
+       {"op":"order","group":"lancers_b","order":"advance"},
+       {"op":"beat","beat":"wrong_cue"},
+       {"op":"setpiece","piece":"med_sp_wrong_cue"}
+      ]
+     }
+    ]
+   },
+   "inputs": [{"at":0,"kind":"order","defId":"pikeman","order":"hold"}],
+   "rules": [
+    "Pikemen brace only while standing still: keep them on Hold, points toward the horses.",
+    "Lancers charge from twelve units out and hit like a tree. A braced pike turns that around.",
+    "Star 3: spend at most 2,250 of your 3,000 groats."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_thrift","helper":"thrift","args":[2250]}
+   ],
+   "rewards": {
+    "primary": {"class":"mutator","id":"med_foam_swords"},
+    "unlockMutators": ["med_foam_swords"],
+    "unlockParts": [],
+    "quickUnlocks": [],
+    "codex": ["pikeman","lancer","squire","pageant_dragon"],
+    "substitution": {"class":"part","id":"med_foam_sword"}
+   },
+   "rewardId": "med_r1_foam_swords",
+   "teaching": {
+    "beats": [
+     {
+      "id": "b_place_line",
+      "trigger": "placement_start",
+      "delay": 0,
+      "who": "plato",
+      "text": "Pick a card, then drag across the field to draw a line. It looks simple because it is.",
+      "hint": "Choose the line brush, then drag.",
+      "target": "army",
+      "basics": true
+     },
+     {
+      "id": "med_brace_place",
+      "trigger": "placement_start",
+      "delay": 0,
+      "who": "plato",
+      "text": "Points toward the horses, please. A pike braces only if it is standing still.",
+      "hint": "Pikes brace on Hold. The Hold order is on the squad card.",
+      "target": "orders",
+      "mechanic": "brace",
+      "when": "queued behind b_place_line"
+     },
+     {
+      "id": "b_fight",
+      "trigger": "battle_start",
+      "delay": 0,
+      "who": "brutus",
+      "text": "FIGHT! Press the button, watch the line, and try not to narrate it.",
+      "basics": true
+     },
+     {
+      "id": "med_hold_order",
+      "trigger": "battle_start",
+      "delay": 3,
+      "who": "cassandra",
+      "text": "Keep the pikes on Hold. They brace while they wait. The horses will not wait for you to decide.",
+      "hint": "Moving a pike cancels its brace."
+     },
+     {
+      "id": "b_speed",
+      "trigger": "battle_start",
+      "delay": 8,
+      "who": "cassandra",
+      "text": "Space pauses. The speed keys change the pace. Nobody asked me, so I am telling you.",
+      "basics": true
+     },
+     {
+      "id": "med_brace_win",
+      "trigger": "brace_break",
+      "delay": 0,
+      "who": "plato",
+      "text": "The poles held and the horses reconsidered. Is a pike a weapon, or a very firm opinion on a stick?",
+      "mechanic": "brace"
+     },
+     {
+      "id": "b_powers",
+      "trigger": "first_contact",
+      "delay": 4,
+      "who": "cassandra",
+      "text": "Keys 1 to 6 are your god powers. Press 1.",
+      "hint": "Number keys 1 to 6 cast god powers. Each has a cooldown.",
+      "target": "powers",
+      "basics": true
+     },
+     {
+      "id": "b_done",
+      "trigger": "battle_end",
+      "delay": 0,
+      "who": "brutus",
+      "text": "THAT is how you win a battle! Do it again, smarter, for the stars!",
+      "basics": true
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "pageant_dragon",
+      "mechanic": "fire",
+      "why": "Mascot decoy: its fire panic is neither taught nor tested here (outline mission 1)."
+     }
+    ]
+   },
+   "teaches": ["brace"],
+   "tests": [],
+   "combines": [],
+   "requiresModules": ["M0","M2b"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_wrong_cue",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {"anchor":"player_line","offset":[-7,1.4,0]},
+     "to": {"anchor":"unit:lancer","offset":[0,1,0]},
+     "hold": 4,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_dress_rehearsal",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "THE BUGLE WENT OFF EARLY! Four seconds early! The horses have HEARD it and the horses are COMMITTED!"
+      },
+      {"who":"plato","text":"A bugle keeps its own timetable. Does a cavalry charge keep any?"},
+      {"who":"cassandra","text":"The bugle was early. I said so at the rehearsal. This is the rehearsal."}
+     ]
+    },
+    "stinger": {"id":"med_sting_wrong_cue","kind":"comic","secs":2.2},
+    "sfx": ["med_trumpet_crack","med_hoof_thunder","med_lance_shatter","med_crowd_ooh"],
+    "notes": "Script event at t=16: the bugle sounds four seconds early and both lancer squads are released from hold (order advance). Shot: low dolly from 7 u behind the pike line toward the charge; ends early on the first brace_break. lance_shatter plays x3; hoof_thunder is a swell."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.2,"star3":2.5},"computed":null},
+   "firstThreeMinutes": {
+    "doc": "design/medieval/first_three_minutes.md",
+    "fresh": [
+     {"id":"arrival.medieval","kind":"arrival"},
+     {"id":"b_place_line","kind":"beat"},
+     {"id":"med_brace_place","kind":"beat"},
+     {"id":"b_fight","kind":"beat"},
+     {"id":"med_hold_order","kind":"beat"},
+     {"id":"b_speed","kind":"beat"},
+     {"id":"fs_lancer","kind":"toast"},
+     {"id":"fs_charge_thunder","kind":"toast"},
+     {"id":"med_sp_wrong_cue","kind":"setpiece"},
+     {"id":"med_brace_win","kind":"beat"},
+     {"id":"b_powers","kind":"beat"},
+     {"id":"fs_squire","kind":"toast"},
+     {"id":"fs_pageant_dragon","kind":"toast"},
+     {"id":"fs_rout","kind":"toast"},
+     {"id":"b_done","kind":"beat"}
+    ],
+    "returning": [
+     {"id":"arrival.medieval","kind":"arrival"},
+     {"id":"med_brace_place","kind":"beat"},
+     {"id":"med_hold_order","kind":"beat"},
+     {"id":"fs_lancer","kind":"toast"},
+     {"id":"fs_charge_thunder","kind":"toast"},
+     {"id":"med_sp_wrong_cue","kind":"setpiece"},
+     {"id":"med_brace_win","kind":"beat"},
+     {"id":"med_power_1","kind":"caption"},
+     {"id":"fs_squire","kind":"toast"},
+     {"id":"fs_pageant_dragon","kind":"toast"}
+    ],
+    "milestonesS": {"briefingDeployed":32,"fight":80,"setpiece":96,"firstEffect":100,"victory":165,"starsShown":175,"nextPrompt":180}
+   }
+  },
+  {
+   "id": "med_tourney_trouble",
+   "act": 1,
+   "mood": "tense",
+   "text": {
+    "title": "Lances, Allegedly Blunted",
+    "blurb": "A tourney where the lances are allegedly blunted. Cut down the banners, break the charges on your pikes and unseat Ser Valiant under his three plumes.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE TOURNEY! Lances! Plumes! And a peasant uprising in the cheap seats, which is a first for the PROGRAMME!"
+     },
+     {
+      "who": "plato",
+      "text": "Ser Valiant has won every tournament he entered, having entered only the ones nobody else knew about. Is a victory still a victory if the other entrants were not told?"
+     },
+     {
+      "who": "cassandra",
+      "text": "Cut the banner and the army forgets why it came. I said so about the last banner. They were polite about it."
+     }
+    ],
+    "victory": {
+     "who": "plato",
+     "text": "The standard fell, the plumes followed and a hog went to find the judges. Whose idea was the ribbon?"
+    },
+    "defeat": {"who":"cassandra","text":"His plume was bigger than your plan. I mentioned the plume."},
+    "stars": [
+     {"id":"win","text":"Kill Ser Valiant. He is the one under three plumes."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_brace_four","text":"Break four cavalry charges on your braced pikes. The horses will want to talk."}
+    ],
+    "reward": {
+     "title": "Vexillophobe",
+     "blurb": "Workshop helm: the Plumed Great Helm, a fan plume the size of a hay bale. Plus the heraldry page, for the hopeless."
+    }
+   },
+   "arena": {
+    "recipe": "med_tourney_field",
+    "size": "medium",
+    "seed": 22,
+    "env": {},
+    "markers": [{"id":"valiant_start","type":"general_spawn","x":40,"z":0,"r":3}]
+   },
+   "playerFaction": "yeomen",
+   "roster": ["pikeman","billman","longbowman","peasant_levy","reeve"],
+   "caps": {},
+   "budget": 5200,
+   "par": {"type":"time","value":150},
+   "core": [{"defId":"pikeman","n":10}],
+   "fixed": [],
+   "reference": [
+    {"defId":"pikeman","n":17},
+    {"defId":"billman","n":8},
+    {"defId":"longbowman","n":15},
+    {"defId":"peasant_levy","n":21},
+    {"defId":"reeve","n":1}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"longbowman":"billman"},
+    "why": "The blind army has no reach to the pennant: billmen stand where the archers were and hit whatever is nearest."
+   },
+   "enemy": {
+    "faction": "marrowby",
+    "style": "guarded banner",
+    "difficulty": "normal",
+    "special": "",
+    "generals": ["ser_valiant"],
+    "bosses": [],
+    "hired": ["yeomen"],
+    "groups": [
+     {"id":"valiant","defId":"ser_valiant","n":1,"at":{"marker":"valiant_start"},"order":"hold"},
+     {"defId":"standard_bearer","n":1,"at":{"marker":"valiant_start","dx":0,"dz":3.5},"order":"hold"},
+     {"defId":"standard_bearer","n":1,"at":{"u":0.55,"v":-0.8},"order":"hold"},
+     {"defId":"standard_bearer","n":1,"at":{"u":0.55,"v":0.8},"order":"hold"},
+     {"defId":"great_hog","n":1,"at":{"u":0.05,"v":-0.25},"order":"advance","hired":true},
+     {"defId":"lancer","n":4,"at":{"u":0.05,"v":0.25},"order":"advance"},
+     {"defId":"squire","n":16,"at":{"u":0.4,"v":0},"order":"advance"}
+    ]
+   },
+   "objective": {"type":"kill_general","params":{},"markerIds":["valiant_start"],"binding":true,"text":"Kill Ser Valiant"},
+   "timeLimit": 270,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": null,
+   "inputs": [{"at":0,"kind":"order","defId":"pikeman","order":"hold"}],
+   "rules": [
+    "Banner bearers (standard bearers and Ser Valiant) strengthen friends inside their ring; drop one and the men under it flinch and run.",
+    "Kill Ser Valiant. He waits at the far pavilion behind his standard.",
+    "Star 3: break four charges on braced pikes."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_brace_four","helper":"usedMechanic","args":["brace",4]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"med_plumed_great_helm"},
+    "unlockMutators": [],
+    "unlockParts": ["med_plumed_great_helm"],
+    "quickUnlocks": [],
+    "codex": ["standard_bearer","ser_valiant","great_hog","reeve","med_codex_heraldry"],
+    "substitution": {"class":"codex_write","id":"med_codex_heraldry"}
+   },
+   "rewardId": "med_r2_plumed_great_helm",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_colours_first",
+      "trigger": "sight_enemy_banner",
+      "delay": 0,
+      "who": "brutus",
+      "text": "Kill the BANNER! Everything under it fights harder and breaks later.",
+      "mechanic": "colours"
+     },
+     {
+      "id": "med_colours_ring",
+      "trigger": "hover_banner",
+      "delay": 0,
+      "who": "plato",
+      "text": "The ring is the banner's reach. Inside it, friends hit harder and keep their nerve.",
+      "hint": "The ring is the banner's reach. Inside it, friends hit harder and keep their nerve."
+     },
+     {
+      "id": "med_colours_fall",
+      "trigger": "banner_fall",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "When the banner falls they run. I said so about the last banner.",
+      "mechanic": "colours"
+     },
+     {
+      "id": "med_tilt_lane",
+      "trigger": "charge_in_lists",
+      "delay": 0,
+      "who": "plato",
+      "text": "The fence keeps the charge in its lane. Horses are not consulted about lanes."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["colours"],
+   "tests": ["brace"],
+   "combines": [],
+   "requiresModules": ["M0","M13"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_colours_down",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"banner_fall_crowd","gte":1},
+    "shot": {
+     "from": {"anchor":"unit:standard_bearer","offset":[-2,0.8,0]},
+     "to": {"anchor":"enemy_centroid","offset":[0,9,0]},
+     "hold": 4,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_tourney_trouble",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"THE FLAG IS DOWN! They are running! They have DROPPED THE BUNTING!"},
+      {
+       "who": "plato",
+       "text": "The banner fell and the army discovered it had other places to be. Was it ever an army, or only a very tidy crowd?"
+      },
+      {"who":"cassandra","text":"That is what a flag is for. Falling. I wrote it down."}
+     ]
+    },
+    "stinger": {"id":"med_sting_colours_down","kind":"hit","secs":1.8},
+    "sfx": ["med_banner_fall","med_bell","med_crowd_gasp","med_hoof_thunder"],
+    "notes": "Fires on the first enemy banner to fall while at least 6 allies stand inside its ring (counter banner_fall_crowd). Shot: from low behind the falling pole (0.8 u) rising to a high wide over the fleeing line (9 u)."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.5,"star3":3},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_ford_dithering",
+   "act": 1,
+   "mood": "epic",
+   "text": {
+    "title": "The Ford at Dithering (Please Hold Still II)",
+    "blurb": "Hold the west lip of the ford against three marching waves. Plate turns arrows, bolts go through it, and the bearers keep the rest steady.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE FORD AT DITHERING! A river, a bridge, and nobody can decide which one to use! HUZZAH! ...is that right yet?"
+     },
+     {"who":"plato","text":"Plate stops arrows beautifully. Has anyone consulted the arrows?"},
+     {
+      "who": "cassandra",
+      "text": "The arrows will bounce. I said so before the arrows were bought. The receipts are still in the quiver."
+     }
+    ],
+    "victory": {"who":"brutus","text":"THE FORD HELD! Three waves, four banners, and the horses are still ARGUING with the river!"},
+    "defeat": {"who":"plato","text":"We paid in arrows. They had asked for bolts. Both parties were unmoved."},
+    "stars": [
+     {"id":"win","text":"Hold the ford for 150 seconds."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_banners_three","text":"Topple three banners. Standard bearers hate this one trick."}
+    ],
+    "reward": {"title":"Ford Keeper","blurb":"Workshop polearm: the Long Pike, 4.8 u of pole, the longest the grid allows."}
+   },
+   "arena": {
+    "recipe": "med_ford_of_dithering",
+    "size": "medium",
+    "seed": 23,
+    "env": {},
+    "markers": [{"id":"ford","type":"hill","x":-8,"z":0,"r":7}]
+   },
+   "playerFaction": "mixed",
+   "roster": ["crossbowman","pavise_bearer","pikeman","billman","longbowman","reeve"],
+   "caps": {},
+   "budget": 7000,
+   "par": {"type":"none","value":0},
+   "core": [{"defId":"crossbowman","n":8},{"defId":"pikeman","n":8}],
+   "fixed": [],
+   "reference": [
+    {"defId":"crossbowman","n":18},
+    {"defId":"pavise_bearer","n":11},
+    {"defId":"pikeman","n":18},
+    {"defId":"reeve","n":1},
+    {"defId":"billman","n":8}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"crossbowman":"longbowman"},
+    "why": "The blind army is the longbow foil of the outline: arrows against plate, no bolts to pierce it."
+   },
+   "enemy": {
+    "faction": "marrowby",
+    "style": "marching column",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": [],
+    "hired": [],
+    "groups": []
+   },
+   "objective": {"type":"hold_hill","params":{"time":150},"markerIds":["ford"],"text":"Hold the ford for 150 seconds"},
+   "timeLimit": 240,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "waves": {
+     "placed": false,
+     "first": 15,
+     "interval": 30,
+     "list": [
+      {"name":"Wave 1","groups":[{"defId":"lancer","n":8},{"defId":"squire","n":14},{"defId":"standard_bearer","n":1}]},
+      {
+       "name": "Wave 2",
+       "groups": [
+        {"defId":"knight_afoot","n":8},
+        {"defId":"lancer","n":6},
+        {"defId":"squire","n":8},
+        {"defId":"standard_bearer","n":1}
+       ]
+      },
+      {
+       "name": "Wave 3",
+       "groups": [{"defId":"knight_afoot","n":10},{"defId":"lancer","n":4},{"defId":"standard_bearer","n":2}]
+      }
+     ]
+    }
+   },
+   "inputs": [{"at":0,"kind":"order","defId":"pikeman","order":"hold"}],
+   "rules": [
+    "Hold the marked ground on the west lip of the ford for 150 seconds; an enemy standing on it stops the clock.",
+    "Bolts pierce plate; arrows do not. A crossbowman is helpless while it reloads.",
+    "Three waves, 30 seconds apart. Pikes and stakes stop the horses; the bearers keep the rest steady."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_banners_three","helper":"usedMechanic","args":["colours",3]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"med_long_pike"},
+    "unlockMutators": [],
+    "unlockParts": ["med_long_pike"],
+    "quickUnlocks": [],
+    "codex": ["knight_afoot","crossbowman","pavise_bearer"],
+    "substitution": {"class":"codex_write","id":"med_codex_armour"}
+   },
+   "rewardId": "med_r3_long_pike",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_bolts_clink",
+      "trigger": "armour_plink",
+      "delay": 0,
+      "who": "plato",
+      "text": "Plate stops arrows beautifully. Has anyone consulted the arrows?",
+      "mechanic": "bolts"
+     },
+     {
+      "id": "med_bolts_reload",
+      "trigger": "reload_start",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Nine seconds. Well, two and a half. It feels like nine."
+     },
+     {
+      "id": "med_bolts_ap",
+      "trigger": "bolt_pierce",
+      "delay": 0,
+      "who": "plato",
+      "text": "Bolts pierce armour that arrows only polish.",
+      "hint": "Bolts pierce armour that arrows only polish.",
+      "mechanic": "bolts"
+     },
+     {
+      "id": "med_hold_how",
+      "trigger": "placement_start",
+      "delay": 0,
+      "who": "plato",
+      "text": "Hold the marked ground until the clock runs out. An enemy standing on it stops the clock.",
+      "hint": "Hold the marked ground until the clock runs out. An enemy standing on it stops the clock."
+     },
+     {
+      "id": "med_ford_slow",
+      "trigger": "unit_in_ford",
+      "delay": 0,
+      "who": "plato",
+      "text": "The ford slows everyone. It is nothing personal. It is water."
+     },
+     {
+      "id": "med_blind_foil",
+      "trigger": "scout_no_anti_armor",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Arrows. Against plate. I will say nothing.",
+      "when": "placement, when the army is 100 percent longbows (scout code no_anti_armor)"
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["bolts"],
+   "tests": ["colours"],
+   "combines": ["brace","colours"],
+   "requiresModules": ["M1","M2","M13"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_brace_break",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"brace_break","gte":6,"within":10},
+    "shot": {
+     "from": {"anchor":"player_line","offset":[-6,10,0]},
+     "to": {"anchor":"ford","offset":[-2,8,0]},
+     "hold": 5,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_ford_dithering",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"THE FORD HELD! Six horses, ONE river and a very firm line of opinions!"},
+      {"who":"plato","text":"Is a ford a place, or a decision the horses had already made?"},
+      {
+       "who": "cassandra",
+       "text": "Plant the butts in the ground. The horse will not stop. The horse will not be consulted."
+      }
+     ]
+    },
+    "stinger": {"id":"med_sting_brace","kind":"hit","secs":2},
+    "sfx": ["med_brace_thunk","med_splash_big","med_horse_neigh_chorus","med_crowd_ooh"],
+    "notes": "Fires on six or more cavalry brace_break events inside 10 s. Shot: high and wide over the pike line toward the ford (10 u), a slow push forward through dust and splashes. brace_thunk plays x4."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.8,"star3":3.5},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_mizzlemoor_beacons",
+   "act": 2,
+   "mood": "ominous",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "Beacons of Mild Concern",
+    "blurb": "Three beacons, a great deal of fog and a cavalry charge with no sense of direction. Light all three together and keep them for twenty seconds.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "BEACONS! Three braziers, a great deal of FOG and a cavalry charge with absolutely no sense of direction!"
+     },
+     {"who":"plato","text":"Heavy cavalry are unstoppable until they stop. Who tells the horse?"},
+     {
+      "who": "cassandra",
+      "text": "Your knights will fall off. Knights on foot are still knights. They are simply upset ones."
+     }
+    ],
+    "victory": {"who":"cassandra","text":"All three beacons lit. Mildly. I said mildly."},
+    "defeat": {"who":"plato","text":"The fog won the argument. Nobody had thought to bring a second opinion."},
+    "stars": [
+     {"id":"win","text":"Hold all three beacons at once for twenty seconds."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_borrowed_banner","text":"Drop the borrowed banner within 75 seconds. It was on loan, after all."}
+    ],
+    "reward": {
+     "title": "Tilt Enthusiast",
+     "blurb": "Workshop weapon class: Lance (Used), couched, long reach. Plus a Quick style: Charge of the Wobbly Brigade."
+    }
+   },
+   "arena": {
+    "recipe": "med_mizzlemoor",
+    "size": "medium",
+    "seed": 24,
+    "env": {},
+    "markers": [
+     {"id":"beacon_a","type":"capture","x":0,"z":-18,"r":5},
+     {"id":"beacon_b","type":"capture","x":-14,"z":8,"r":5},
+     {"id":"beacon_c","type":"capture","x":14,"z":8,"r":5}
+    ]
+   },
+   "playerFaction": "marrowby",
+   "roster": ["squire","lancer","knight_errant","knight_afoot","standard_bearer"],
+   "caps": {},
+   "budget": 8500,
+   "par": {"type":"time","value":150},
+   "core": [{"defId":"knight_errant","n":8}],
+   "fixed": [],
+   "reference": [
+    {"defId":"knight_errant","n":11},
+    {"defId":"lancer","n":8},
+    {"defId":"knight_afoot","n":8},
+    {"defId":"squire","n":12},
+    {"defId":"standard_bearer","n":4}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"lancer":"knight_afoot"},
+    "why": "The blind army swaps its lancers for plate on foot at the same price: no run-up to use, no horse to unseat."
+   },
+   "enemy": {
+    "faction": "free_company",
+    "style": "hired defenders",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": [],
+    "hired": ["marrowby","gatehouse"],
+    "groups": [
+     {"id":"guard_a","defId":"sellsword","n":6,"at":{"marker":"beacon_a"},"order":"hold"},
+     {"id":"guard_b","defId":"sellsword","n":5,"at":{"marker":"beacon_b"},"order":"hold"},
+     {"id":"guard_c","defId":"sellsword","n":5,"at":{"marker":"beacon_c"},"order":"hold"},
+     {"defId":"poacher","n":4,"at":{"marker":"beacon_a","dx":7,"dz":0},"order":"hold"},
+     {"defId":"poacher","n":4,"at":{"marker":"beacon_b","dx":7,"dz":0},"order":"hold"},
+     {"defId":"poacher","n":4,"at":{"marker":"beacon_c","dx":7,"dz":0},"order":"hold"},
+     {"defId":"standard_bearer","n":1,"at":{"marker":"beacon_a","dx":3,"dz":2},"order":"hold","hired":true},
+     {
+      "id": "parked_engines",
+      "defId": "trebuchet",
+      "n": 2,
+      "at": {"u":0.9,"v":0},
+      "spread": 8,
+      "order": "hold",
+      "hired": true,
+      "override": {"disarm":true}
+     }
+    ]
+   },
+   "objective": {
+    "type": "capture",
+    "params": {"points":["beacon_a","beacon_b","beacon_c"],"need":3,"hold":20},
+    "markerIds": ["beacon_a","beacon_b","beacon_c"],
+    "text": "Hold all three beacons for 20 seconds"
+   },
+   "timeLimit": 270,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {
+    "disable": ["med_mud_season"],
+    "override": {},
+    "reasons": {"med_mud_season":"Mud Season is off here: the charge lesson needs dry ground."}
+   },
+   "script": null,
+   "inputs": [],
+   "rules": [
+    "Capture the three beacons and hold them together for twenty seconds.",
+    "A knight whose horse dies stands up and fights on foot. Nets root horses.",
+    "Star 3: drop the Company's borrowed banner within 75 seconds."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_borrowed_banner","helper":"bannerDownBy","args":["standard_bearer",75]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"med_lance_used"},
+    "unlockMutators": [],
+    "unlockParts": ["med_lance_used"],
+    "quickUnlocks": [{"kind":"style","id":"med_qp_wobbly","name":"Charge of the Wobbly Brigade"}],
+    "codex": ["knight_errant","sellsword","poacher","trebuchet"],
+    "substitution": {"class":"quick_unlock","id":"med_qp_wobbly"}
+   },
+   "rewardId": "med_r4_lance_used",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_charge_runup",
+      "trigger": "placement_start",
+      "delay": 0,
+      "who": "plato",
+      "text": "A charge needs room. Place cavalry far back, on the ridgeline, and aim them at open ground.",
+      "hint": "A charge needs room. Place cavalry far back, on the ridgeline, and aim them at open ground.",
+      "mechanic": "charge"
+     },
+     {
+      "id": "med_charge_hit",
+      "trigger": "charge_first",
+      "delay": 0,
+      "who": "brutus",
+      "text": "That is what a run-up buys you! Twelve units of RUN and one unit of apology!"
+     },
+     {
+      "id": "med_unhorse",
+      "trigger": "knight_unhorsed",
+      "delay": 0,
+      "who": "brutus",
+      "text": "He stood up! He brushed himself off! He said AHEM!",
+      "mechanic": "charge"
+     },
+     {
+      "id": "med_net_root",
+      "trigger": "horse_netted",
+      "delay": 0,
+      "who": "plato",
+      "text": "Nets root horses. Kill the poacher or go around.",
+      "hint": "Nets root horses. Kill the poacher or go around."
+     },
+     {
+      "id": "med_fog_range",
+      "trigger": "battle_start",
+      "delay": 0,
+      "who": "plato",
+      "text": "Fog shortens everyone's sight. Ranged units hit less often at a distance.",
+      "hint": "Fog shortens everyone's sight. Ranged units hit less often at a distance."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "trebuchet",
+      "mechanic": "arc",
+      "why": "Parked and disarmed engines (override.disarm): scenery for the codex, never fired."
+     }
+    ]
+   },
+   "teaches": ["charge"],
+   "tests": ["colours"],
+   "combines": [],
+   "requiresModules": ["M2b","M13","M14"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_lance_chorus",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"charge_hit","gte":5,"within":1.5},
+    "shot": {
+     "from": {"anchor":"player_line","offset":[0,0.8,6]},
+     "to": {"anchor":"beacon_a","offset":[0,10,12]},
+     "hold": 4,
+     "ease": "out",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_mizzlemoor_beacons",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"FIVE LANCES! One CHORUS! The beacons have never been so well attended!"},
+      {
+       "who": "plato",
+       "text": "A lance is a tree that has been given a purpose, and will be given a second one in a moment."
+      },
+      {"who":"cassandra","text":"Hooves in fog. I said fog. I said hooves. I did not say in what order."}
+     ]
+    },
+    "stinger": {"id":"med_sting_charge","kind":"swell","secs":3},
+    "sfx": ["med_lance_shatter","med_hoof_thunder","med_horn_charge","med_sheep_bleat_far"],
+    "notes": "Fires on five or more charge_hit events inside 1.5 s. Shot: low side-on tilt track (0.8 u) parallel to the charge, then a pull-back to show the beacons through the fog. lance_shatter plays x5."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":1.6,"star3":3.2},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_castle_dour",
+   "act": 2,
+   "mood": "tense",
+   "text": {
+    "title": "Please Knock (We Did)",
+    "blurb": "Castle Dour has locked its gate against its own league. Break the oak gate and the portcullis behind it; the rams do the knocking.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "CASTLE DOUR! A gate! A SECOND gate behind the first gate! HUZZAH for gate-based INFRASTRUCTURE!"
+     },
+     {
+      "who": "plato",
+      "text": "The castle has locked its gate against its own league. Is a siege merely a conversation conducted at volume?"
+     },
+     {"who":"cassandra","text":"The oil is on back-order. It arrives Thursday. Do not be here on Thursday."}
+    ],
+    "victory": {"who":"brutus","text":"THE DOOR HAS GIVEN NOTICE! The garrison has been asked to take its coats and leave!"},
+    "defeat": {"who":"cassandra","text":"Thursday came early. It always does."},
+    "stars": [
+     {"id":"win","text":"Destroy the gate and the portcullis."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {
+      "id": "med_cranks_slow",
+      "text": "Hit ten wall crossbowmen while they reload. Their cranks are slower than your ram."
+     }
+    ],
+    "reward": {
+     "title": "Door Handler",
+     "blurb": "The Siege Season preset for Quick Battle: castle map plus garrison. Plus a Mantlet Shield for the Workshop."
+    }
+   },
+   "arena": {
+    "recipe": "med_castle_dour",
+    "size": "large",
+    "seed": 26,
+    "env": {},
+    "markers": [{"id":"gate","type":"waypoint","x":22,"z":0,"r":4}]
+   },
+   "playerFaction": "mixed",
+   "roster": ["battering_ram","rolling_keep","sellsword","poacher","pikeman","billman","longbowman"],
+   "caps": {"rolling_keep":1},
+   "budget": 10500,
+   "par": {"type":"time","value":270},
+   "core": [{"defId":"battering_ram","n":2}],
+   "fixed": [],
+   "reference": [
+    {"defId":"battering_ram","n":6},
+    {"defId":"rolling_keep","n":1},
+    {"defId":"sellsword","n":15},
+    {"defId":"pikeman","n":18},
+    {"defId":"longbowman","n":18},
+    {"defId":"billman","n":12},
+    {"defId":"poacher","n":7}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,1]},
+   "botsWhy": "The garrison holds behind the walls and never attacks: a patient army wins however it stands, as at Troy.",
+   "blind": {
+    "swap": {"pikeman":"longbowman"},
+    "why": "The blind army spreads arrows at the wall: bows take the pikemen's place and the gate gets no more attention than the rest of the masonry."
+   },
+   "enemy": {
+    "faction": "gatehouse",
+    "style": "defenders",
+    "difficulty": "normal",
+    "special": "oil is on back-order",
+    "generals": [],
+    "bosses": [],
+    "hired": [],
+    "groups": [
+     {"defId":"crossbowman","n":4,"at":{"u":0.92,"v":-0.6},"order":"hold"},
+     {"defId":"crossbowman","n":4,"at":{"u":0.92,"v":0.6},"order":"hold"},
+     {"defId":"crossbowman","n":4,"at":{"u":0.5,"v":-0.62},"order":"hold"},
+     {"defId":"crossbowman","n":4,"at":{"u":0.5,"v":0.62},"order":"hold"},
+     {"defId":"pavise_bearer","n":4,"at":{"u":0.05,"v":-0.45},"order":"hold"},
+     {"defId":"pavise_bearer","n":4,"at":{"u":0.05,"v":0},"order":"hold"},
+     {"defId":"pavise_bearer","n":4,"at":{"u":0.05,"v":0.45},"order":"hold"},
+     {"defId":"springald","n":2,"at":{"u":0.45,"v":0},"spread":8,"order":"hold"},
+     {"defId":"castellan","n":1,"at":{"u":0.6,"v":0},"order":"hold","override":{"disableAbilities":["call_strike"]}}
+    ]
+   },
+   "objective": {
+    "type": "destroy",
+    "params": {"props":[{"type":"med_castle_gate","count":1},{"type":"med_portcullis","count":1}],"eliminate":false},
+    "markerIds": [],
+    "text": "Destroy the gate and the portcullis"
+   },
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "events": [
+     {
+      "id": "med_m5_postern_sortie",
+      "at": 80,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"pavise_bearer","n":6},{"defId":"crossbowman","n":6}],
+        "at": {"x":20,"z":-30}
+       }
+      ]
+     }
+    ]
+   },
+   "inputs": [],
+   "rules": [
+    "Destroy the oak gate and the portcullis behind it.",
+    "Rams and heavy blows break structures; arrows barely mark them. Mantlets shield the crews; the Rolling Keep is one allowed.",
+    "A sortie comes out of the postern at 80 seconds."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_cranks_slow","helper":"hitsDuringReload","args":[10]}
+   ],
+   "rewards": {
+    "primary": {"class":"quick_unlock","id":"med_qp_siege_season"},
+    "unlockMutators": [],
+    "unlockParts": ["med_mantlet_shield"],
+    "quickUnlocks": [{"kind":"preset","id":"med_qp_siege_season","name":"Siege Season"}],
+    "codex": ["battering_ram","rolling_keep","castellan","springald"],
+    "substitution": {"class":"part","id":"med_mantlet_shield"}
+   },
+   "rewardId": "med_r5_siege_season",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_gate_owner",
+      "trigger": "hover_gate",
+      "delay": 0,
+      "who": "plato",
+      "text": "Gates belong to the defenders. Arrows scratch them; rams and boulders break them.",
+      "hint": "Gates belong to the defenders. Arrows scratch them; rams and boulders break them.",
+      "mechanic": "gates"
+     },
+     {
+      "id": "med_ram_roof",
+      "trigger": "ram_contact",
+      "delay": 0,
+      "who": "brutus",
+      "text": "Knock knock! Structurally!",
+      "mechanic": "gates"
+     },
+     {
+      "id": "med_portcullis",
+      "trigger": "portcullis_exposed",
+      "delay": 0,
+      "who": "plato",
+      "text": "A second door behind the first door. Who designed this, a committee?"
+     },
+     {
+      "id": "med_oil_pending",
+      "trigger": "sight_oil_cauldron",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Oil pending. It arrives Thursday. Do not be here on Thursday."
+     },
+     {
+      "id": "med_keep_bailout",
+      "trigger": "keep_bailout",
+      "delay": 0,
+      "who": "brutus",
+      "text": "The castle is OPEN! Everyone inside is leaving, in a line, politely!"
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "castellan",
+      "mechanic": "fire",
+      "why": "His oil call is disabled (override.disableAbilities call_strike); the oil is on back-order."
+     },
+     {
+      "kind": "prop",
+      "id": "med_oil_cauldron",
+      "mechanic": "fire",
+      "why": "Inert \"pending\" variant: six cauldrons that never burn in this mission."
+     }
+    ]
+   },
+   "teaches": ["gates"],
+   "tests": ["bolts"],
+   "combines": [],
+   "requiresModules": ["M2","M12","M14"],
+   "softModules": ["M13"],
+   "setpiece": {
+    "id": "med_sp_gate_falls",
+    "role": "primary",
+    "trigger": {"on":"prop_destroyed","type":"med_castle_gate"},
+    "shot": {
+     "from": {"anchor":"gate","offset":[6,1.6,0]},
+     "to": {"anchor":"player_line","offset":[8,2,0]},
+     "hold": 5,
+     "ease": "in",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_castle_dour",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"THE DOOR HAS BEEN OPENED! There was a knock! There was definitely a KNOCK!"},
+      {
+       "who": "plato",
+       "text": "The portcullis asks that you remove your shoes. Is a siege merely a conversation conducted at volume?"
+      },
+      {"who":"cassandra","text":"Thursday came early. The oil is still on back-order. Count that as luck."}
+     ]
+    },
+    "stinger": {"id":"med_sting_breach","kind":"hit","secs":2.4},
+    "sfx": ["med_ram_gate_boom","med_wood_split","med_chain_rattle","med_wall_collapse","med_dust_whump"],
+    "notes": "Fires when the oak gate falls. Shot: from inside the bailey looking out through the gateway (1.6 u) toward the dust and the roofed ram. If the gate fell to the Rolling Keep drawbridge slam, the shot instead cranes over the wall."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":2.2,"star3":4},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_bell_tolls_lunch",
+   "act": 2,
+   "mood": "ominous",
+   "moodAlso": ["comic"],
+   "text": {
+    "title": "The Bell Tolls For Lunch",
+    "blurb": "Bellfount Abbey under three paid raids. Physicians heal flesh and poison ignores armour: hold the gate and keep the bell tower standing until noon.",
+    "briefing": [
+     {"who":"brutus","text":"BELLFOUNT ABBEY! Seventeen bells, one cellar and an alarming number of HERBS!"},
+     {
+      "who": "plato",
+      "text": "The medicine cupboard and the poison cupboard are the same cupboard. Which arrangement is more honest?"
+     },
+     {
+      "who": "cassandra",
+      "text": "There will be a plague. Green. Sneezing. I said so in Act One. I did not expect it to be ours."
+     }
+    ],
+    "victory": {"who":"cassandra","text":"Told you. I do not enjoy it. The soup is excellent."},
+    "defeat": {"who":"plato","text":"The bell tolled for lunch. Lunch was unavailable."},
+    "stars": [
+     {"id":"win","text":"Keep the bell tower standing until noon."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_gate_stands","text":"The abbey gate is still on its hinges at noon. The abbess takes it personally."}
+    ],
+    "reward": {
+     "title": "Soup du Jour",
+     "blurb": "Plague Season for Quick Battle: healing halved, a mint cloud drifts across the field every 40 s, units sneeze politely. Plus the Beak Mask."
+    }
+   },
+   "arena": {
+    "recipe": "med_bellfount_abbey",
+    "size": "medium",
+    "seed": 25,
+    "env": {},
+    "markers": [{"id":"bell","type":"core","x":24,"z":0,"r":4}]
+   },
+   "playerFaction": "mixed",
+   "roster": ["physician","bellringer","apothecary","abbess","pikeman","longbowman"],
+   "caps": {},
+   "budget": 8500,
+   "par": {"type":"none","value":0},
+   "core": [{"defId":"physician","n":3},{"defId":"pikeman","n":8}],
+   "fixed": [],
+   "reference": [
+    {"defId":"physician","n":8},
+    {"defId":"bellringer","n":6},
+    {"defId":"apothecary","n":8},
+    {"defId":"abbess","n":1},
+    {"defId":"pikeman","n":27},
+    {"defId":"longbowman","n":16}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"physician":"pikeman","apothecary":"longbowman"},
+    "why": "The blind army has no physician and no flask: pikes and bows where the healers stood, so the gas and the poison have no answer."
+   },
+   "enemy": {
+    "faction": "free_company",
+    "style": "hired raids",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": [],
+    "hired": ["yeomen"],
+    "groups": []
+   },
+   "objective": {
+    "type": "defend_core",
+    "params": {"core":"bell","prop":"med_bell_tower","time":150},
+    "markerIds": ["bell"],
+    "binding": true,
+    "text": "Keep the bell tower standing until noon"
+   },
+   "timeLimit": 180,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "events": [
+     {
+      "id": "med_m6_raid_1",
+      "at": 10,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"sellsword","n":12},{"defId":"poacher","n":8}],
+        "at": {"x":-44,"z":0}
+       }
+      ]
+     },
+     {
+      "id": "med_m6_raid_2",
+      "at": 55,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"sellsword","n":8},{"defId":"poacher","n":6},{"defId":"battering_ram","n":1}],
+        "at": {"x":-44,"z":0}
+       }
+      ]
+     },
+     {
+      "id": "med_m6_sniffle",
+      "at": 70,
+      "once": true,
+      "do": [{"op":"strike","kind":"gas","n":3,"team":-1,"at":{"x":0,"z":0}},{"op":"setpiece","piece":"med_sp_great_sniffle"}]
+     },
+     {
+      "id": "med_m6_raid_3",
+      "at": 100,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"sellsword","n":12},{"defId":"poacher","n":6},{"defId":"great_hog","n":1,"hired":true}],
+        "at": {"x":-44,"z":0}
+       }
+      ]
+     },
+     {
+      "id": "med_m6_plague_cart",
+      "at": 100,
+      "once": true,
+      "do": [{"op":"spawn","team":"player","groups":[{"defId":"plague_cart","n":1}],"at":{"x":30,"z":0},"free":true}]
+     }
+    ]
+   },
+   "inputs": [{"at":0,"kind":"order","defId":"pikeman","order":"hold"}],
+   "rules": [
+    "Keep the bell tower alive for 150 seconds.",
+    "Physicians heal flesh, not wood. Poison and gas ignore armour and block healing.",
+    "Three raids, at 10, 55 and 100 seconds. The gate is yours: hold it."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_gate_stands","helper":"propStanding","args":["med_castle_gate"]}
+   ],
+   "rewards": {
+    "primary": {"class":"mutator","id":"med_plague_season"},
+    "unlockMutators": ["med_plague_season"],
+    "unlockParts": ["med_beak_mask"],
+    "quickUnlocks": [],
+    "codex": ["physician","bellringer","apothecary","plague_cart","abbess","med_codex_infirmary"],
+    "substitution": {"class":"part","id":"med_beak_mask"}
+   },
+   "rewardId": "med_r6_plague_season",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_heal_first",
+      "trigger": "heal_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "Heals everyone in range. Does it ask who is on whose side?",
+      "mechanic": "healers"
+     },
+     {
+      "id": "med_poison_first",
+      "trigger": "poison_first",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Poison goes through armour and past the healer. I said so about the apothecary.",
+      "mechanic": "healers"
+     },
+     {
+      "id": "med_gas_drift",
+      "trigger": "gas_cloud_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "Gas drifts with the wind and hurts both sides. Stand upwind.",
+      "hint": "Gas drifts with the wind and hurts both sides. Stand upwind."
+     },
+     {
+      "id": "med_noheal",
+      "trigger": "noheal_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "Poisoned units cannot be healed until it wears off.",
+      "hint": "Poisoned units cannot be healed until it wears off."
+     },
+     {
+      "id": "med_bell_stun",
+      "trigger": "bell_stun_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "The bell stuns a charge in progress. Time it for the hog.",
+      "hint": "The bell stuns a charge in progress. Time it for the hog."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["healers"],
+   "tests": ["gates"],
+   "combines": ["gates","brace","colours"],
+   "requiresModules": ["M6a","M12","M13","M14"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_great_sniffle",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {"anchor":"bell","offset":[0,11,0]},
+     "to": {"anchor":"bell","offset":[-14,3,0]},
+     "hold": 5,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_bell_tolls_lunch",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"THE SNIFFLE! Green clouds! Polite sneezes! Everybody is sitting down and apologising!"},
+      {"who":"plato","text":"The abbey heals anyone who asks. Do we count the healed as guests, or as inventory?"},
+      {"who":"cassandra","text":"Plague. I said plague. Tuesday. It is Thursday. For once I am early."}
+     ]
+    },
+    "stinger": {"id":"med_sting_plague","kind":"comic","secs":2.6},
+    "sfx": ["med_bell","med_gas_hiss","med_sneeze_chorus","med_cart_squeak"],
+    "notes": "Script strike gas n=3 at t=70 (\"three barrels in the cellar have burst\"): three green clouds drift over the cloister, neutral, hurting both sides. Shot: from the top of the bell tower (11 u) craning slowly down and across the cloister."
+   },
+   "extraSetpieces": [],
+   "attempts": {"design":{"star1":2,"star3":4},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_pennywhistle_blaze",
+   "act": 3,
+   "mood": "tense",
+   "text": {
+    "title": "Pennywhistle Is Not On Fire (Yet)",
+    "blurb": "Walk a costume dragon through a village that wishes to be on fire. Take the cobble lanes, mind the roofs and keep the Float alive.",
+    "briefing": [
+     {"who":"brutus","text":"PENNYWHISTLE! Thirty roofs, a windmill and a costume dragon that is VERY flammable!"},
+     {
+      "who": "plato",
+      "text": "We must walk a costume dragon through a village that wishes to be on fire. Is the dragon the cargo, or the plan?"
+     },
+     {"who":"cassandra","text":"Fire follows thatch. Thatch follows fire. Take the cobble lane and watch the roofs."}
+    ],
+    "victory": {"who":"plato","text":"He arrived with his costume and an interesting hairstyle. Both are charred."},
+    "defeat": {"who":"brutus","text":"THE FLOAT IS TOAST! Literally! Look at the toast!"},
+    "stars": [
+     {"id":"win","text":"Walk the Float to the green."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_ladle","text":"Ladle 1,000 hit points back into your escort. Receipts available."}
+    ],
+    "reward": {
+     "title": "Smoke Detector",
+     "blurb": "Pennywhistle, Dry Summer for Quick Battle: dry weather, wind and extra hay. Plus the Cauldron Helm."
+    }
+   },
+   "arena": {
+    "recipe": "med_pennywhistle",
+    "size": "medium",
+    "seed": 27,
+    "env": {},
+    "markers": [{"id":"float_start","type":"vip_start","x":-40,"z":-10,"r":3},{"id":"green","type":"exit","x":42,"z":8,"r":7}]
+   },
+   "playerFaction": "mixed",
+   "roster": ["billman","pikeman","longbowman","peasant_levy","reeve","physician"],
+   "caps": {},
+   "budget": 7500,
+   "par": {"type":"time","value":120},
+   "core": [{"defId":"physician","n":2}],
+   "fixed": [
+    {
+     "defId": "pageant_dragon",
+     "marker": "float_start",
+     "vip": true,
+     "heading": 1.5707963267948966,
+     "name": "The Float (Wilfred and Dennis)",
+     "free": true,
+     "override": {"hp":260,"speed":1.6}
+    }
+   ],
+   "reference": [
+    {"defId":"physician","n":9},
+    {"defId":"pikeman","n":17},
+    {"defId":"billman","n":13},
+    {"defId":"longbowman","n":17},
+    {"defId":"peasant_levy","n":27},
+    {"defId":"reeve","n":1}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"physician":"pikeman"},
+    "why": "The blind army has no physician to ladle hit points back into the Float; pikes stand in the same places."
+   },
+   "enemy": {
+    "faction": "free_company",
+    "style": "arson",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": [],
+    "hired": ["gatehouse"],
+    "groups": [
+     {"defId":"mangonel","n":3,"at":{"x":6,"z":-32},"spread":5,"order":"hold"},
+     {"defId":"crossbowman","n":12,"at":{"u":0.2,"v":-0.4},"order":"advance","hired":true},
+     {"defId":"pavise_bearer","n":8,"at":{"u":0.05,"v":0.3},"order":"advance","hired":true},
+     {"id":"flankers","defId":"sellsword","n":8,"at":{"u":0.3,"v":0.85},"order":"hold"},
+     {"defId":"poacher","n":6,"at":{"u":0.6,"v":-0.3},"order":"advance"}
+    ]
+   },
+   "objective": {
+    "type": "escort",
+    "params": {"vip":"pageant_dragon","exit":"green","mode":"path"},
+    "markerIds": ["float_start","green"],
+    "binding": true,
+    "text": "Walk the Float to the green"
+   },
+   "timeLimit": 210,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "vipMarch": {"to":"green","delay":8,"clear":6,"patience":20},
+    "counters": [{"id":"med_windmill_hit","kind":"event","event":"prop_damaged","where":{"type":"med_windmill"}}],
+    "events": [
+     {"id":"med_m7_arson_1","at":55,"once":true,"do":[{"op":"strike","kind":"fire","at":{"x":-8,"z":-12}}]},
+     {"id":"med_m7_flank","at":70,"once":true,"do":[{"op":"order","group":"flankers","order":"advance"}]},
+     {"id":"med_m7_arson_2","at":85,"once":true,"do":[{"op":"strike","kind":"fire","at":{"x":16,"z":12}}]},
+     {
+      "id": "med_m7_flyby",
+      "at": 150,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"cinderwyrm","n":1,"override":{"passive":true}}],
+        "at": {"x":-46,"z":0}
+       },
+       {"op":"setpiece","piece":"med_sp_dragon_shadow"}
+      ]
+     }
+    ]
+   },
+   "inputs": [],
+   "rules": [
+    "The Float must reach the green. If it falls, the mission is lost.",
+    "Fire spreads along thatch, hay and wood. Cobble lanes are safe. Barrels explode.",
+    "Mangonels shell from the hill; a second group flanks at 70 seconds."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_ladle","helper":"usedMechanic","args":["healers",1000]}
+   ],
+   "rewards": {
+    "primary": {"class":"quick_unlock","id":"med_qp_dry_summer"},
+    "unlockMutators": [],
+    "unlockParts": ["med_cauldron_helm"],
+    "quickUnlocks": [{"kind":"preset","id":"med_qp_dry_summer","name":"Pennywhistle, Dry Summer"}],
+    "codex": ["mangonel","pageant_dragon","med_pitch_barrel"],
+    "substitution": {"class":"part","id":"med_cauldron_helm"}
+   },
+   "rewardId": "med_r7_dry_summer",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_fire_thatch",
+      "trigger": "thatch_ignited",
+      "delay": 0,
+      "who": "plato",
+      "text": "Thatch is a roof that has made a decision.",
+      "mechanic": "fire"
+     },
+     {
+      "id": "med_fire_stone",
+      "trigger": "unit_on_cobble",
+      "delay": 0,
+      "who": "plato",
+      "text": "Cobble lanes do not burn. Roofs, hay and wood do.",
+      "hint": "Cobble lanes do not burn. Roofs, hay and wood do."
+     },
+     {
+      "id": "med_oil_boom",
+      "trigger": "barrel_explosion",
+      "delay": 0,
+      "who": "brutus",
+      "text": "OIL! BOOM! Somebody label the barrels!",
+      "mechanic": "fire"
+     },
+     {
+      "id": "med_fire_panic",
+      "trigger": "levy_panic",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Levies and fire. I wrote it down. In water, ideally."
+     }
+    ],
+    "exceptions": [
+     {
+      "kind": "unit",
+      "id": "mangonel",
+      "mechanic": "arc",
+      "why": "The pitch-pot mangonels are the fire source; their arc is neither taught nor tested until mission 8."
+     },
+     {
+      "kind": "unit",
+      "id": "cinderwyrm",
+      "mechanic": "air",
+      "why": "Passive, untargetable flyby cameo (override.passive); it never attacks and does not count toward the objective."
+     }
+    ]
+   },
+   "teaches": ["fire"],
+   "tests": ["healers"],
+   "combines": [],
+   "requiresModules": ["M6a","M12","M14"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_windmill_blaze",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"med_windmill_hit","gte":1},
+    "shot": {
+     "from": {"anchor":"enemy_centroid","offset":[2,9,0]},
+     "to": {"anchor":"unit:pageant_dragon","offset":[0,2,0]},
+     "hold": 4,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_pennywhistle_blaze",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"THE WINDMILL IS DOING A BIT! The sails are ON FIRE and still going round!"},
+      {"who":"plato","text":"The village consents to its own burning. Is it arson if everyone has signed?"},
+      {"who":"cassandra","text":"The windmill burns first. Then the barn. Then Dennis's feelings. Keep the soup close."}
+     ]
+    },
+    "stinger": {"id":"med_sting_fire","kind":"comic","secs":2.2},
+    "sfx": ["med_fire_whoomph","med_fire_crackle","med_wood_crack","med_crowd_gasp"],
+    "notes": "Fires on the first pitch pot to hit the windmill (local counter med_windmill_hit on prop_damaged; prop_ignited once M12 emits it). Shot: orbit the burning sails (2 u off, 9 u high) for 2.5 s, then pan to the Float trotting past; 4 s total. Reduce Motion = cut."
+   },
+   "extraSetpieces": [
+    {
+     "id": "med_sp_dragon_shadow",
+     "role": "secondary",
+     "trigger": null,
+     "shot": {
+      "from": {"anchor":"green","offset":[0,1,0]},
+      "to": {"anchor":"green","offset":[-6,14,0]},
+      "hold": 3,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "campaign_med_pennywhistle_blaze",
+      "sub": "setpiece",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"A SHADOW! Over the thatch! Nobody tell the windmill!"},
+       {"who":"plato","text":"Something large has passed over the village. Is it a cloud, or a rumour with wings?"},
+       {"who":"cassandra","text":"Lovely day for it."}
+      ]
+     },
+     "stinger": {"id":"med_sting_dragon_shadow","kind":"dread","secs":1.8},
+     "sfx": ["med_dragon_roar_far","med_wing_whomp"],
+     "notes": "Second package at t = 150 s (passive Cinderwyrm flyby): skipped if a beat is active."
+    }
+   ],
+   "attempts": {"design":{"star1":2.2,"star3":4},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_toll_bridge",
+   "act": 3,
+   "mood": "epic",
+   "text": {
+    "title": "The Toll Bridge Is Currently Closed (For You)",
+    "blurb": "Four waves, one stone bridge and a rival guild that hired everybody. Bring engines, screen them from what gets close, and let the wood burn.",
+    "briefing": [
+     {"who":"brutus","text":"THE TOLL BRIDGE! A troll with a TILL! Bring exact change and a very long pole!"},
+     {
+      "who": "plato",
+      "text": "Leverage in the physical sense is simple. Is the commercial sense not the same sense, with paperwork?"
+     },
+     {"who":"cassandra","text":"He will say the bridge is closed. The bridge is open. Neither of us will be consulted."}
+    ],
+    "victory": {"who":"plato","text":"The rival guild has withdrawn its claim and some of its bridge."},
+    "defeat": {"who":"cassandra","text":"She was bigger. I said bigger."},
+    "stars": [
+     {"id":"win","text":"Survive four waves."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {"id":"med_burn_engines","text":"Burn two enemy engines. Wood is a lifestyle choice."}
+    ],
+    "reward": {
+     "title": "Counterweight of Evidence",
+     "blurb": "The codex page Siege Engines: A Guide For The Late. Plus the Toll Club for the Workshop, a toll gate on a stick."
+    }
+   },
+   "arena": {
+    "recipe": "med_long_bridge",
+    "size": "medium",
+    "seed": 28,
+    "env": {},
+    "markers": [{"id":"battery","type":"waypoint","x":-34,"z":0,"r":4}]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "trebuchet",
+    "mangonel",
+    "springald",
+    "pikeman",
+    "billman",
+    "longbowman",
+    "crossbowman",
+    "pavise_bearer",
+    "physician",
+    "reeve",
+    "standard_bearer"
+   ],
+   "caps": {"trebuchet":2},
+   "budget": 12000,
+   "par": {"type":"time","value":330},
+   "core": [{"defId":"trebuchet","n":2}],
+   "fixed": [],
+   "reference": [
+    {"defId":"trebuchet","n":2},
+    {"defId":"mangonel","n":4},
+    {"defId":"pavise_bearer","n":19},
+    {"defId":"crossbowman","n":22},
+    {"defId":"springald","n":4},
+    {"defId":"pikeman","n":19},
+    {"defId":"physician","n":6},
+    {"defId":"reeve","n":1}
+   ],
+   "bots": {"greedy":[0.25,0.7],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "",
+   "blind": {
+    "swap": {"mangonel":"springald"},
+    "why": "The blind army has no arc fire left to learn on: springalds replace the mangonels at the same price and shoot flat."
+   },
+   "enemy": {
+    "faction": "mixed",
+    "style": "hired everybody",
+    "difficulty": "normal",
+    "special": "",
+    "generals": [],
+    "bosses": ["lady_counterweight"],
+    "hired": [],
+    "groups": []
+   },
+   "objective": {"type":"survive_waves","params":{"waves":4},"markerIds":[],"text":"Survive four waves"},
+   "timeLimit": 480,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "counters": [{"id":"med_bridge_edits","kind":"event","event":"terrain_edit"}],
+    "waves": {
+     "placed": false,
+     "first": 6,
+     "interval": 40,
+     "breather": 5,
+     "list": [
+      {"name":"Wave 1","groups":[{"defId":"sellsword","n":14},{"defId":"poacher","n":10}]},
+      {"name":"Wave 2","groups":[{"defId":"hoardling","n":40},{"defId":"coin_golem","n":1}]},
+      {
+       "name": "Wave 3",
+       "groups": [
+        {"defId":"trebuchet","n":1,"at":{"u":0.6,"v":-0.3},"order":"hold"},
+        {"defId":"mangonel","n":2,"at":{"u":0.35,"v":0.35},"spread":6,"order":"hold"},
+        {"defId":"sellsword","n":10,"at":{"u":0.05,"v":0},"order":"advance"}
+       ]
+      },
+      {
+       "name": "Wave 4",
+       "groups": [
+        {"defId":"lady_counterweight","n":1,"at":{"u":0.7,"v":0},"order":"hold"},
+        {"defId":"bridge_troll","n":1,"at":{"x":0,"z":0},"order":"advance"},
+        {"defId":"hoardling","n":20,"at":{"u":0.05,"v":0},"order":"advance"}
+       ]
+      }
+     ]
+    }
+   },
+   "inputs": [],
+   "rules": [
+    "Survive four waves; a wave counts when every one of its units is down or running.",
+    "Trebuchets cannot hit anything inside their minimum range. Screen them.",
+    "Craters and wood: engines burn, and so do the people who built them."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_burn_engines","helper":"burnKills","args":["siege",2]}
+   ],
+   "rewards": {
+    "primary": {"class":"codex_write","id":"med_codex_siegecraft"},
+    "unlockMutators": [],
+    "unlockParts": ["med_toll_club"],
+    "quickUnlocks": [],
+    "codex": ["lady_counterweight","bridge_troll","hoardling","coin_golem","med_codex_siegecraft"],
+    "substitution": {"class":"part","id":"med_toll_club"}
+   },
+   "rewardId": "med_r8_siegecraft",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_arc_minrange",
+      "trigger": "select_trebuchet",
+      "delay": 0,
+      "who": "plato",
+      "text": "The ring is the minimum range. Nothing inside it can be hit.",
+      "hint": "The ring is the minimum range. Nothing inside it can be hit.",
+      "mechanic": "arc"
+     },
+     {
+      "id": "med_arc_crater",
+      "trigger": "crater_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "A crater is a decision that is too late to reverse.",
+      "mechanic": "arc"
+     },
+     {
+      "id": "med_counter_battery",
+      "trigger": "enemy_engines_fire",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "They are shooting back. Their engines are wooden. Fire exists."
+     },
+     {
+      "id": "med_pavise_screen",
+      "trigger": "engine_in_min_range",
+      "delay": 0,
+      "who": "plato",
+      "text": "Screen the engines with pavises. Anything close is invisible to them.",
+      "hint": "Screen the engines with pavises. Anything close is invisible to them."
+     }
+    ],
+    "exceptions": []
+   },
+   "teaches": ["arc"],
+   "tests": ["fire"],
+   "combines": [],
+   "requiresModules": ["M10","M12","M14"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_lady_arrives",
+    "role": "primary",
+    "trigger": {"on":"counter","counter":"wave_spawns","gte":4},
+    "shot": {
+     "from": {"anchor":"battery","offset":[0,1.8,0]},
+     "to": {"anchor":"unit:lady_counterweight","offset":[0,4,0]},
+     "hold": 5,
+     "ease": "in",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_toll_bridge",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {
+       "who": "brutus",
+       "text": "LADY COUNTERWEIGHT! A three-storey FRAME and a hat the size of a BARN! And under the bridge, A TROLL!"
+      },
+      {"who":"plato","text":"Leverage in the physical sense is simple. In the commercial sense it is how we got here."},
+      {"who":"cassandra","text":"Her trebuchet is bigger. I said bigger. I used the word."}
+     ]
+    },
+    "stinger": {"id":"med_sting_lady","kind":"dread","secs":3},
+    "sfx": ["med_trebuchet_groan","med_counterweight_whump","med_shell_whistle","med_wood_groan"],
+    "notes": "Fires when wave 4 begins (wave_spawns >= 4). Shot: long-lens push from the battery (1.8 u) across the river to her silhouette; in the last second the frame drops to the bridge as the troll climbs out."
+   },
+   "extraSetpieces": [
+    {
+     "id": "med_sp_bridge_drop",
+     "role": "conditional",
+     "trigger": {"on":"counter","counter":"med_bridge_edits","gte":1},
+     "shot": {
+      "from": {"anchor":"unit:bridge_troll","offset":[0,1.5,10]},
+      "to": {"anchor":"unit:bridge_troll","offset":[0,1,0]},
+      "hold": 5,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "campaign_med_toll_bridge",
+      "sub": "setpiece",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"THE BRIDGE IS GONE! He paid the toll in FULL!"},
+       {"who":"plato","text":"He asked for exact change. We gave him the river."},
+       {"who":"cassandra","text":"The toll was always going to be the bridge."}
+      ]
+     },
+     "stinger": {"id":"med_sting_troll","kind":"comic","secs":2},
+     "sfx": ["med_boulder_impact","med_wall_collapse","med_splash_big","med_troll_groan"],
+     "notes": "Conditional: a crater lands within 3 u of the troll while he stands on the deck and editTerrain removes the deck section (event terrain_edit). Shot: side-on along the deck (1.5 u); the span folds and the troll drops into the river."
+    }
+   ],
+   "attempts": {"design":{"star1":2.5,"star3":4.5},"computed":null},
+   "firstThreeMinutes": null
+  },
+  {
+   "id": "med_grand_pageant",
+   "act": 3,
+   "mood": "epic",
+   "text": {
+    "title": "The Grand Pageant (Real Dragon Edition)",
+    "blurb": "A real dragon on the keep of the Grand Pageant. Bring bolts for the sky, shells for the ground, and an eye on Dennis.",
+    "briefing": [
+     {
+      "who": "brutus",
+      "text": "THE GRAND PAGEANT! FINALLY! Bunting! A crowd! A REAL dragon! I bought a better tabard for this one!"
+     },
+     {
+      "who": "plato",
+      "text": "We have rehearsed for nine battles. Is a rehearsal still a rehearsal when the dragon is real?"
+     },
+     {"who":"cassandra","text":"That is not Dennis. Nobody listen to me. I will sit here with the tonic."}
+    ],
+    "victory": {"who":"cassandra","text":"Told you. Twice. I am retiring from being right."},
+    "defeat": {"who":"brutus","text":"THE KEEP IS GONE! Also the roof! Also the hoard! Also my TABARD!"},
+    "stars": [
+     {"id":"win","text":"Kill the Cinderwyrm."},
+     {"id":"half","text":"Win with at least half your army (by cost) alive."},
+     {
+      "id": "med_shell_dragon",
+      "text": "Land a trebuchet shell on the grounded dragon. She will want a word with the guild."
+     }
+    ],
+    "reward": {
+     "title": "Dragon-Adjacent Person",
+     "blurb": "The Gilded Spoon, the largest spoon ever issued as a weapon. Plus the Dragon Day preset and every remaining codex page."
+    }
+   },
+   "arena": {
+    "recipe": "med_dour_courtyard",
+    "size": "medium",
+    "seed": 29,
+    "env": {},
+    "markers": [{"id":"perch","type":"general_spawn","x":0,"z":40,"r":3}]
+   },
+   "playerFaction": "mixed",
+   "roster": [
+    "squire",
+    "lancer",
+    "knight_errant",
+    "standard_bearer",
+    "longbowman",
+    "pikeman",
+    "crossbowman",
+    "pavise_bearer",
+    "springald",
+    "trebuchet",
+    "physician",
+    "abbess",
+    "bellringer",
+    "castellan"
+   ],
+   "caps": {"springald":6,"trebuchet":2},
+   "budget": 14000,
+   "par": {"type":"time","value":300},
+   "core": [{"defId":"springald","n":4}],
+   "fixed": [
+    {"defId":"pageant_dragon","x":-27,"z":0,"heading":1.5707963267948966,"name":"Dennis","free":true,"selectable":false}
+   ],
+   "reference": [
+    {"defId":"springald","n":6},
+    {"defId":"crossbowman","n":19},
+    {"defId":"longbowman","n":19},
+    {"defId":"pikeman","n":19},
+    {"defId":"pavise_bearer","n":15},
+    {"defId":"physician","n":8},
+    {"defId":"standard_bearer","n":4},
+    {"defId":"abbess","n":1},
+    {"defId":"trebuchet","n":2},
+    {"defId":"castellan","n":1}
+   ],
+   "bots": {"greedy":[0,0.4],"counter":[0.6,1],"turtle":[0.1,0.6]},
+   "botsWhy": "Random armies lack bolts: the dragon cannot be hit without anti-air.",
+   "blind": {
+    "swap": {"springald":"physician","crossbowman":"pavise_bearer","longbowman":"pikeman"},
+    "why": "The blind army has no anti-air: every springald, crossbow and bow is replaced by a unit that cannot hit the sky."
+   },
+   "enemy": {
+    "faction": "wyrmkin",
+    "style": "dragon and hoard",
+    "difficulty": "normal",
+    "special": "",
+    "generals": ["cinderwyrm"],
+    "bosses": ["cinderwyrm"],
+    "hired": [],
+    "groups": [{"id":"cinderwyrm","defId":"cinderwyrm","n":1,"at":{"marker":"perch"},"order":"hold"}]
+   },
+   "objective": {"type":"kill_general","params":{},"markerIds":["perch"],"binding":true,"text":"Kill the Cinderwyrm"},
+   "timeLimit": 420,
+   "friendlyFire": false,
+   "godPowers": true,
+   "powers": {"disable":[],"override":{}},
+   "script": {
+    "counters": [
+     {
+      "id": "med_dragon_landed",
+      "kind": "event",
+      "event": "unit_air_state",
+      "of": "id",
+      "side": "enemy",
+      "where": {"state":6,"id.def":"cinderwyrm"}
+     }
+    ],
+    "events": [
+     {
+      "id": "med_m9_dragon_wakes",
+      "at": 20,
+      "once": true,
+      "do": [
+       {"op":"order","group":"cinderwyrm","order":"advance"},
+       {"op":"beat","beat":"dragon_wakes"},
+       {"op":"setpiece","piece":"med_sp_dragon_wakes"}
+      ]
+     },
+     {
+      "id": "med_m9_wave_1",
+      "at": 20,
+      "once": true,
+      "do": [
+       {
+        "op": "spawn",
+        "team": "enemy",
+        "groups": [{"defId":"hoardling","n":50,"dz":-6},{"defId":"wyvern","n":6,"dz":6}],
+        "at": {"x":44,"z":0}
+       }
+      ]
+     },
+     {
+      "id": "med_m9_wave_2",
+      "at": 60,
+      "once": true,
+      "do": [{"op":"spawn","team":"enemy","groups":[{"defId":"coin_golem","n":2}],"at":{"x":44,"z":0}}]
+     },
+     {
+      "id": "med_m9_wave_3",
+      "at": 100,
+      "once": true,
+      "do": [{"op":"spawn","team":"enemy","groups":[{"defId":"bridge_troll","n":1}],"at":{"x":44,"z":0}}]
+     },
+     {
+      "id": "med_m9_dragon_falls",
+      "at": {"on":"unit_kill","def":"cinderwyrm"},
+      "once": true,
+      "do": [{"op":"beat","beat":"dragon_falls"}]
+     }
+    ]
+   },
+   "inputs": [],
+   "rules": [
+    "Kill the Cinderwyrm. She wakes at 20 seconds and burns what she can reach.",
+    "Only crossbows, longbows and springalds can hit what flies. Everything else waits for her to land.",
+    "Dennis is free and cannot be controlled. Keep an eye on him."
+   ],
+   "starTests": [
+    {"id":"win"},
+    {"id":"half","helper":"aliveCostFrac","args":[0.5]},
+    {"id":"med_shell_dragon","helper":"shellsOnTarget","args":["cinderwyrm",1]}
+   ],
+   "rewards": {
+    "primary": {"class":"part","id":"med_gilded_spoon"},
+    "unlockMutators": [],
+    "unlockParts": ["med_gilded_spoon"],
+    "quickUnlocks": [{"kind":"preset","id":"med_qp_dragon_day","name":"Dragon Day"}],
+    "codex": ["billman","longbowman","peasant_levy","cinderwyrm","wyvern"],
+    "substitution": {"class":"quick_unlock","id":"med_qp_dragon_day"}
+   },
+   "rewardId": "med_r9_gilded_spoon",
+   "teaching": {
+    "beats": [
+     {
+      "id": "med_air_first",
+      "trigger": "air_spawn",
+      "delay": 0,
+      "who": "cassandra",
+      "text": "Bring bolts. I said bolts.",
+      "mechanic": "air"
+     },
+     {
+      "id": "med_air_aa",
+      "trigger": "select_ranged",
+      "delay": 0,
+      "who": "plato",
+      "text": "Crossbows, longbows and springalds can hit the sky. Swords cannot.",
+      "hint": "Crossbows, longbows and springalds can hit the sky. Swords cannot.",
+      "mechanic": "air"
+     },
+     {
+      "id": "med_air_shadow",
+      "trigger": "air_dive_first",
+      "delay": 0,
+      "who": "plato",
+      "text": "The shadow shows where she is going to land.",
+      "hint": "The shadow shows where she is going to land."
+     },
+     {
+      "id": "med_air_land",
+      "trigger": "dragon_landed",
+      "delay": 0,
+      "who": "plato",
+      "text": "She has come down. Is she tired, or curious?"
+     },
+     {"id":"med_air_dennis","trigger":"dennis_approaches","delay":0,"who":"brutus","text":"NO, DENNIS!"}
+    ],
+    "exceptions": []
+   },
+   "teaches": ["air"],
+   "tests": ["arc"],
+   "combines": ["bolts","healers","colours","fire","arc"],
+   "requiresModules": ["M7","M10","M13","M14","M15"],
+   "softModules": [],
+   "setpiece": {
+    "id": "med_sp_dragon_wakes",
+    "role": "primary",
+    "trigger": null,
+    "shot": {
+     "from": {"anchor":"perch","offset":[0,0.6,-4]},
+     "to": {"anchor":"player_line","offset":[0,14,0]},
+     "hold": 5.5,
+     "ease": "inout",
+     "simSpeed": 0.5
+    },
+    "announcer": {
+     "category": "campaign_med_grand_pageant",
+     "sub": "setpiece",
+     "pri": 5,
+     "bypassAlternation": true,
+     "lines": [
+      {"who":"brutus","text":"A DRAGON! On a KEEP! This is the best day of my life and it is also on FIRE!"},
+      {
+       "who": "plato",
+       "text": "The insurers have classed this as a weather event. I find the class generous, and the dragon more so."
+      },
+      {"who":"cassandra","text":"I said dragon in the first briefing. You said boring. Bring the bolts."}
+     ]
+    },
+    "stinger": {"id":"med_sting_dragon","kind":"dread","secs":3.5,"bypassLimiter":true},
+    "sfx": ["med_dragon_roar","med_wing_whomp","med_masonry_fall","med_fire_whoosh"],
+    "notes": "Script beat dragon_wakes at t=20: the Cinderwyrm leaves the keep and banks over the army. A second beat dragon_falls on her death is a 3 s side-on cut (crash into the keep, coin shower, one spoon that clinks). Shot: low angle at the base of the keep tracking up the wall."
+   },
+   "extraSetpieces": [
+    {
+     "id": "med_sp_dennis_meets_dragon",
+     "role": "coda",
+     "trigger": {"on":"counter","counter":"med_dragon_landed","gte":1},
+     "shot": {
+      "from": {"anchor":"unit:pageant_dragon","offset":[3,0.9,3]},
+      "to": {"anchor":"unit:pageant_dragon","offset":[1.5,0.9,1.5]},
+      "hold": 6,
+      "ease": "inout",
+      "simSpeed": 0.5
+     },
+     "announcer": {
+      "category": "campaign_med_grand_pageant",
+      "sub": "setpiece",
+      "pri": 5,
+      "bypassAlternation": true,
+      "lines": [
+       {"who":"brutus","text":"DENNIS IS WALKING UP TO THE DRAGON! Nobody TOLD him! Somebody tell Wilfred!"},
+       {"who":"plato","text":"Two dragons meet. One is real. Is the other less real, or merely less certain?"},
+       {"who":"cassandra","text":"That is not Dennis."}
+      ]
+     },
+     "stinger": {"id":"med_sting_finale","kind":"fanfare","secs":3,"bypassLimiter":true},
+     "sfx": ["med_dragon_sniff","med_kazoo_blat","med_crowd_gasp"],
+     "notes": "Coda on the first landing (unit_air_state GROUNDED of the Cinderwyrm). Dennis steps toward her; the real dragon plays its sniff clip (the 2 s pause is a render-only clip, MS 3.6.3). Low two-shot (0.9 u), slow push in."
+    }
+   ],
+   "attempts": {"design":{"star1":3,"star3":5},"computed":null},
+   "firstThreeMinutes": null
+  }
+ ],
+ "puzzles": [
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "id": "med_stake_your_claim",
+   "title": "Stake Your Claim",
+   "blurb": "Five horses and one line of sticks; only one side has read the programme.",
+   "hint": "Pikes brace only while standing still: put them on Hold at the ford's west lip in two offset ranks, archers behind them. Advance orders walk the pikes into the charge.",
+   "goalText": "Defeat the lancers and the squires",
+   "arena": {"recipe":"med_ford_of_dithering","size":"medium","seed":23,"env":{},"markers":[]},
+   "player": {"faction":"yeomen","roster":["pikeman","longbowman","billman"],"budget":1400},
+   "par": {"type":"cost","value":1100},
+   "enemy": {
+    "faction": "marrowby",
+    "placements": [
+     {"defId":"lancer","x":40,"z":-14.4,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"line"},
+     {"defId":"lancer","x":40,"z":-10.8,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"line"},
+     {"defId":"lancer","x":40,"z":-7.2,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"line"},
+     {"defId":"lancer","x":40,"z":-3.6,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"line"},
+     {"defId":"lancer","x":40,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"line"},
+     {"defId":"squire","x":43,"z":-5.4,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43,"z":-3.6,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43,"z":-1.8,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 150,
+   "bonus": {"id":"med_few_losses","text":"Lose at most 2 units","helper":"lossesAtMost","args":[2]},
+   "teaches": ["brace"],
+   "requiresModules": ["M2b"],
+   "mechanicFired": {"counter":"brace_break","min":3},
+   "firstSightBeat": {
+    "id": "med_pz_first_brace",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "plato",
+    "text": "Brace and hold: a pike braces only while it stands still, so keep the pikes on Hold and point them at the horses.",
+    "mechanic": "brace"
+   }
+  },
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "id": "med_standard_deviation",
+   "title": "Standard Deviation",
+   "blurb": "Fourteen brave volunteers and one flag; the flag is the only one who knows the plan.",
+   "hint": "The block is strong with its banner and weak without it. Spend on reach, not weight: archers on the pennant, a few levies for the runners.",
+   "goalText": "Defeat the banner block",
+   "arena": {"recipe":"med_tourney_field","size":"medium","seed":22,"env":{},"markers":[]},
+   "player": {"faction":"yeomen","roster":["longbowman","pikeman","peasant_levy"],"budget":1500},
+   "par": {"type":"cost","value":1300},
+   "enemy": {
+    "faction": "marrowby",
+    "placements": [
+     {"defId":"squire","x":-4.9,"z":-3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-4.9,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-4.9,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-4.9,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-4.9,"z":3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-3.1,"z":-3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-3.1,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-3.1,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-3.1,"z":3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-1.3,"z":-3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-1.3,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-1.3,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-1.3,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {"defId":"squire","x":-1.3,"z":3.6,"heading":-1.5707963267948966,"order":"hold","squadId":1,"formation":"block"},
+     {
+      "defId": "standard_bearer",
+      "x": -3.1,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 2,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 150,
+   "bonus": {"id":"med_archers_alive","text":"Win with all three longbowmen alive","helper":"keptAlive","args":["longbowman",3]},
+   "teaches": ["colours"],
+   "requiresModules": ["M13"],
+   "mechanicFired": {"counter":"banner_fall","min":1},
+   "firstSightBeat": {
+    "id": "med_pz_first_colours",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "brutus",
+    "text": "Kill the BANNER! The block fights harder under it and runs without it.",
+    "mechanic": "colours"
+   }
+  },
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "id": "med_oil_you_need",
+   "title": "Oil You Need",
+   "blurb": "A lane of fireworks with a hat shop; the mangonel is the hat shop.",
+   "hint": "Shoot the barrels, not the rams. One mangonel pot on the lead barrel chains the rest; the pavise screen buys the second shot.",
+   "goalText": "Defeat the rams and their escort",
+   "arena": {
+    "recipe": "med_siege_camp",
+    "size": "medium",
+    "seed": 24,
+    "env": {},
+    "markers": [],
+    "props": [
+     {"t":"med_pitch_barrel","x":33,"z":-2.5},
+     {"t":"med_pitch_barrel","x":33,"z":2.5},
+     {"t":"med_pitch_barrel","x":29,"z":-2.5},
+     {"t":"med_pitch_barrel","x":29,"z":2.5},
+     {"t":"med_pitch_barrel","x":25,"z":-2.5},
+     {"t":"med_pitch_barrel","x":25,"z":2.5},
+     {"t":"med_pitch_barrel","x":21,"z":-2.5},
+     {"t":"med_pitch_barrel","x":21,"z":2.5},
+     {"t":"med_oil_cauldron","x":27,"z":-5.5},
+     {"t":"med_oil_cauldron","x":19,"z":5.5}
+    ]
+   },
+   "player": {"faction":"mixed","roster":["mangonel","longbowman","pikeman","pavise_bearer"],"budget":900},
+   "par": {"type":"cost","value":750},
+   "enemy": {
+    "faction": "free_company",
+    "placements": [
+     {
+      "defId": "battering_ram",
+      "x": 40,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     },
+     {
+      "defId": "battering_ram",
+      "x": 43.2,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "formation": "column"
+     },
+     {
+      "defId": "sellsword",
+      "x": 37.5,
+      "z": -3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "sellsword",
+      "x": 39.3,
+      "z": -3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "sellsword",
+      "x": 41.1,
+      "z": -3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "sellsword",
+      "x": 37.5,
+      "z": 3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "formation": "block"
+     },
+     {
+      "defId": "sellsword",
+      "x": 39.3,
+      "z": 3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "formation": "block"
+     },
+     {
+      "defId": "sellsword",
+      "x": 41.1,
+      "z": 3.5,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 120,
+   "bonus": {"id":"med_no_losses","text":"Lose no unit","helper":"lossesAtMost","args":[0]},
+   "teaches": ["fire"],
+   "requiresModules": ["M12"],
+   "mechanicFired": {"counter":"fire_kill","min":4},
+   "firstSightBeat": {
+    "id": "med_pz_first_fire",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "cassandra",
+    "text": "Barrels burn and burst. Hit the barrels, not the rams. I said so about oil.",
+    "mechanic": "fire"
+   }
+  },
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": null,
+   "id": "med_physician_heal_thyself",
+   "title": "Physician, Heal Thyself",
+   "blurb": "A clinic that treats everyone, including the visitors; the label fell off the cupboard.",
+   "hint": "Damage alone is out-healed. Put the apothecary flask on the healer cluster first, then bolts on the plate while the healers are silenced.",
+   "goalText": "Defeat the clinic",
+   "arena": {"recipe":"med_bellfount_abbey","size":"medium","seed":25,"env":{},"markers":[]},
+   "player": {"faction":"mixed","roster":["apothecary","crossbowman","longbowman","bellringer"],"budget":1300},
+   "par": {"type":"cost","value":1100},
+   "enemy": {
+    "faction": "mixed",
+    "placements": [
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": -4.5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": -2.7,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": -0.9,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": 0.9,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": 2.7,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {
+      "defId": "knight_afoot",
+      "x": 26.5,
+      "z": 4.5,
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "formation": "block"
+     },
+     {"defId":"physician","x":30,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"physician","x":30,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"physician","x":30,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"abbess","x":33.5,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":3,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 150,
+   "bonus": {"id":"med_clinic_closes","text":"Win in under 90 s","helper":"underTime","args":[90]},
+   "teaches": ["healers"],
+   "requiresModules": ["M6a"],
+   "mechanicFired": {"counter":"heal_hp","min":1},
+   "firstSightBeat": {
+    "id": "med_pz_first_healers",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "plato",
+    "text": "Healers keep a front line topped up. Poison blocks healing: silence the healers first.",
+    "mechanic": "healers"
+   }
+  },
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": {
+    "events": [
+     {
+      "id": "med_pz5_sally",
+      "at": {"on":"counter","counter":"props_siege","gte":1},
+      "once": true,
+      "do": [{"op":"order","group":"sally","order":"advance"}]
+     }
+    ]
+   },
+   "id": "med_counterweight_calculus",
+   "title": "Counterweight Calculus",
+   "blurb": "One gate, one catapult with opinions, and a clause about minimum distances nobody read.",
+   "hint": "The trebuchet needs 26 to 72 u of range and a screen: pavises and crossbows cover it while it works the gate. Firing early wastes the first shell.",
+   "goalText": "Destroy the castle gate",
+   "arena": {
+    "recipe": "med_siege_camp",
+    "size": "medium",
+    "seed": 26,
+    "env": {},
+    "markers": [],
+    "props": [{"t":"med_castle_gate","x":38,"z":0},{"t":"med_curtain_wall","x":38,"z":-9},{"t":"med_curtain_wall","x":38,"z":9}]
+   },
+   "player": {"faction":"gatehouse","roster":["trebuchet","pavise_bearer","crossbowman"],"budget":1450},
+   "par": {"type":"cost","value":1350},
+   "enemy": {
+    "faction": "marrowby",
+    "placements": [
+     {"defId":"squire","x":42,"z":-3.6,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":42,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":42,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":42,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":42,"z":3.6,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43.8,"z":-3.6,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43.8,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43.8,"z":0,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43.8,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"squire","x":43.8,"z":3.6,"heading":-1.5707963267948966,"order":"hold","squadId":2,"formation":"block"},
+     {"defId":"lancer","x":45.6,"z":-1.8,"heading":-1.5707963267948966,"order":"hold","squadId":3,"formation":"block"},
+     {"defId":"lancer","x":45.6,"z":1.8,"heading":-1.5707963267948966,"order":"hold","squadId":3,"formation":"block"}
+    ]
+   },
+   "goal": {"type":"destroy","params":{"props":[{"type":"med_castle_gate","count":1}],"eliminate":false},"markerIds":[]},
+   "timeLimit": 180,
+   "bonus": {"id":"med_trebuchet_lives","text":"The trebuchet survives","helper":"keptAlive","args":["trebuchet",1]},
+   "teaches": ["arc"],
+   "requiresModules": ["M10","M12"],
+   "mechanicFired": {"counter":"props_siege","min":1800},
+   "firstSightBeat": {
+    "id": "med_pz_first_arc",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "plato",
+    "text": "An engine cannot hit anything inside its minimum range. Stand it back, behind a screen.",
+    "mechanic": "arc"
+   }
+  },
+  {
+   "godPowers": false,
+   "fixed": [],
+   "script": {
+    "events": [
+     {
+      "id": "med_pz6_second_flight",
+      "at": 20,
+      "once": true,
+      "do": [{"op":"spawn","team":"enemy","groups":[{"defId":"wyvern","n":2}],"at":{"x":30,"z":0}}]
+     }
+    ]
+   },
+   "id": "med_mind_the_gap",
+   "title": "Mind the Gap",
+   "blurb": "Four flying cousins and a small stairwell; mind the gap, mind the dive.",
+   "hint": "Melee cannot touch the sky. Space the springalds six units apart, put the bows behind a pavise board and the pikemen in front as bait.",
+   "goalText": "Defeat the wyverns and their bait",
+   "arena": {"recipe":"med_moat_keep","size":"small","seed":27,"env":{},"markers":[]},
+   "player": {"faction":"mixed","roster":["springald","longbowman","pikeman","pavise_bearer"],"budget":1300},
+   "par": {"type":"cost","value":1150},
+   "enemy": {
+    "faction": "wyrmkin",
+    "placements": [
+     {"defId":"wyvern","x":30,"z":-4,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {"defId":"wyvern","x":30,"z":4,"heading":-1.5707963267948966,"order":"advance","squadId":1,"formation":"block"},
+     {
+      "defId": "hoardling",
+      "x": 24,
+      "z": -3.6,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 24,
+      "z": -1.8,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {"defId":"hoardling","x":24,"z":0,"heading":-1.5707963267948966,"order":"advance","squadId":2,"formation":"block"},
+     {
+      "defId": "hoardling",
+      "x": 24,
+      "z": 1.8,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 24,
+      "z": 3.6,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 25.8,
+      "z": -3.6,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 25.8,
+      "z": -1.8,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 25.8,
+      "z": 0,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 25.8,
+      "z": 1.8,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     },
+     {
+      "defId": "hoardling",
+      "x": 25.8,
+      "z": 3.6,
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "formation": "block"
+     }
+    ]
+   },
+   "goal": {"type":"eliminate","params":{},"markerIds":[]},
+   "timeLimit": 120,
+   "bonus": {"id":"med_springald_safe","text":"Lose no springald","helper":"noLoss","args":[["springald"]]},
+   "teaches": ["air"],
+   "requiresModules": ["M7"],
+   "mechanicFired": {"counter":"air_kill","min":4},
+   "firstSightBeat": {
+    "id": "med_pz_first_air",
+    "trigger": "placement_start",
+    "delay": 0,
+    "who": "cassandra",
+    "text": "Melee cannot reach the sky. Bring bolts, and keep the bait in front.",
+    "mechanic": "air"
+   }
+  }
+ ]
+}

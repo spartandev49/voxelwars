@@ -1,3 +1,4 @@
+// @serial  wall-clock-sensitive: the gate runs this file alone in the serial lane (tools/gate.mjs, docs/eras/spec/VF-impl.md)
 // UI6 / UI13 / X1 / X4 (HUD half): the battle HUD against the fake Game (tests/ui_battle/mockhud.js) in headless Chromium.
 //  - every HUD part exists; DOM text writes <= 10 Hz (MutationObserver) and no layout reads inside update() (instrumented, with a negative control)
 //  - HUD coverage <= 25% at 1280x720; Tab hides it; layouts at 4 viewports have no horizontal scroll

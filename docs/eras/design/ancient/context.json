@@ -1,0 +1,1132 @@
+{
+ "abilities": [
+  "aura",
+  "breaks_shield",
+  "bribe",
+  "cc_field",
+  "chain_lightning",
+  "cluck",
+  "crowd_favorite",
+  "dash",
+  "dot_cloud",
+  "execute",
+  "fire_every",
+  "fire_panic",
+  "heal_pulse",
+  "hook",
+  "kick",
+  "misaim",
+  "misfire",
+  "net",
+  "pack_bonus",
+  "poison",
+  "rage",
+  "revive",
+  "stance",
+  "summon_on_death",
+  "tantrum",
+  "throne",
+  "war_horn"
+ ],
+ "bosses": [
+  "minotaur",
+  "cyclops",
+  "war_elephant",
+  "medusa",
+  "pharaoh"
+ ],
+ "contextVersion": 1,
+ "currency": {
+  "id": "drachma",
+  "name": "drachmae",
+  "symbol": "dr"
+ },
+ "eFreeze": {
+  "ancient": 0,
+  "medieval": 13,
+  "modern": 16,
+  "scifi": 19
+ },
+ "era": "ancient",
+ "factions": [
+  "barbarians",
+  "carthage",
+  "egyptians",
+  "hellenes",
+  "mythic",
+  "persians",
+  "romans",
+  "mixed"
+ ],
+ "formations": [
+  "block",
+  "line",
+  "phalanx",
+  "wedge",
+  "column",
+  "skirmish",
+  "circle",
+  "hollow"
+ ],
+ "godPowers": [
+  "zeus_lightning",
+  "meteor",
+  "earthquake",
+  "heal_wave",
+  "wine_rain",
+  "raise_chickens"
+ ],
+ "heroes": [
+  "centurion",
+  "chieftain",
+  "hannibal",
+  "pharaoh",
+  "strategos",
+  "xerxes"
+ ],
+ "ladder": [],
+ "missionIds": [
+  "marathon_sort_of",
+  "thermopylae_snack",
+  "pyramid_scheme",
+  "nile_crossing",
+  "alps_elephant",
+  "teutoburg_peekaboo",
+  "troy_giftshop",
+  "cyclops_meet",
+  "zeus_bad_day"
+ ],
+ "modules": [
+  {
+   "S": "S28",
+   "deps": [],
+   "id": "M0",
+   "pos": 1
+  },
+  {
+   "S": "S29",
+   "deps": [
+    "M0"
+   ],
+   "id": "M1",
+   "pos": 2
+  },
+  {
+   "S": "S30",
+   "deps": [
+    "M0"
+   ],
+   "id": "M3",
+   "pos": 3
+  },
+  {
+   "S": "S31",
+   "deps": [
+    "M0",
+    "M1",
+    "M3"
+   ],
+   "id": "M2",
+   "pos": 4
+  },
+  {
+   "S": "S32",
+   "deps": [
+    "M1",
+    "M2",
+    "M3"
+   ],
+   "id": "M2b",
+   "pos": 5
+  },
+  {
+   "S": "S33",
+   "deps": [
+    "M1",
+    "M2"
+   ],
+   "id": "M10",
+   "pos": 6
+  },
+  {
+   "S": "S34",
+   "deps": [
+    "M2b"
+   ],
+   "id": "M6a",
+   "pos": 7
+  },
+  {
+   "S": "S35",
+   "deps": [
+    "M2",
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M7",
+   "pos": 8
+  },
+  {
+   "S": "S36",
+   "deps": [
+    "M7",
+    "M10"
+   ],
+   "id": "M12",
+   "pos": 9
+  },
+  {
+   "S": "S37",
+   "deps": [
+    "M10",
+    "M12"
+   ],
+   "id": "M14",
+   "pos": 10
+  },
+  {
+   "S": "S38",
+   "deps": [
+    "M2b",
+    "M3",
+    "M10"
+   ],
+   "id": "M13",
+   "pos": 11
+  },
+  {
+   "S": "S45",
+   "deps": [
+    "M0",
+    "M2",
+    "M10",
+    "M14"
+   ],
+   "id": "M15",
+   "pos": 12
+  },
+  {
+   "S": "S46",
+   "deps": [
+    "M1",
+    "M3",
+    "M12"
+   ],
+   "id": "M17e",
+   "pos": 13
+  },
+  {
+   "S": "S39",
+   "deps": [
+    "M1",
+    "M2",
+    "M7"
+   ],
+   "id": "M8",
+   "pos": 14
+  },
+  {
+   "S": "S40",
+   "deps": [
+    "M2",
+    "M8",
+    "M12",
+    "M13"
+   ],
+   "id": "M9",
+   "pos": 15
+  },
+  {
+   "S": "S41",
+   "deps": [
+    "M10",
+    "M12",
+    "M13"
+   ],
+   "id": "M11",
+   "pos": 16
+  },
+  {
+   "S": "S42",
+   "deps": [
+    "M1",
+    "M3",
+    "M15"
+   ],
+   "id": "M4",
+   "pos": 17
+  },
+  {
+   "S": "S43",
+   "deps": [
+    "M2b",
+    "M3",
+    "M13"
+   ],
+   "id": "M5",
+   "pos": 18
+  },
+  {
+   "S": "S44",
+   "deps": [
+    "M3",
+    "M4",
+    "M6a",
+    "M13"
+   ],
+   "id": "M6b",
+   "pos": 19
+  }
+ ],
+ "mutatorStars": {
+  "big_heads": 3,
+  "chicken_rain": 12,
+  "friendly_fire_fiesta": 18,
+  "glass_cannons": 27,
+  "moon_gravity": 9,
+  "ragdoll_frenzy": 24,
+  "speedy_soldiers": 21,
+  "tiny_titans": 6,
+  "wine_rain_always": 15
+ },
+ "mutators": [
+  "big_heads",
+  "tiny_titans",
+  "moon_gravity",
+  "chicken_rain",
+  "wine_rain_always",
+  "friendly_fire_fiesta",
+  "speedy_soldiers",
+  "ragdoll_frenzy",
+  "glass_cannons"
+ ],
+ "props": {
+  "arch_gate": {
+   "cat": "architecture",
+   "hp": 700
+  },
+  "banner_post": {
+   "cat": "props",
+   "hp": 40
+  },
+  "barrel": {
+   "cat": "props",
+   "hp": 30
+  },
+  "bones": {
+   "cat": "nature",
+   "hp": null
+  },
+  "bush": {
+   "cat": "nature",
+   "hp": 30
+  },
+  "cactus": {
+   "cat": "nature",
+   "hp": 40
+  },
+  "campfire": {
+   "cat": "props",
+   "hp": null
+  },
+  "cave_mouth": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "cloud_island": {
+   "cat": "props",
+   "hp": null
+  },
+  "column_broken": {
+   "cat": "architecture",
+   "hp": 150
+  },
+  "column_marble": {
+   "cat": "architecture",
+   "hp": 250
+  },
+  "crate": {
+   "cat": "props",
+   "hp": 30
+  },
+  "crowd": {
+   "cat": "props",
+   "hp": null
+  },
+  "fire_pit": {
+   "cat": "props",
+   "hp": null
+  },
+  "gate_door": {
+   "cat": "architecture",
+   "hp": 700
+  },
+  "goat_pen": {
+   "cat": "props",
+   "hp": 100
+  },
+  "log": {
+   "cat": "nature",
+   "hp": 80
+  },
+  "obelisk": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "palm": {
+   "cat": "nature",
+   "hp": 90
+  },
+  "pyramid": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "reeds": {
+   "cat": "nature",
+   "hp": 10
+  },
+  "rock_big": {
+   "cat": "nature",
+   "hp": null
+  },
+  "rock_small": {
+   "cat": "nature",
+   "hp": null
+  },
+  "ruin_wall": {
+   "cat": "architecture",
+   "hp": 300
+  },
+  "ship": {
+   "cat": "props",
+   "hp": 300
+  },
+  "skull_pile": {
+   "cat": "nature",
+   "hp": null
+  },
+  "sphinx_statue": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "statue_lion": {
+   "cat": "monuments",
+   "hp": 400
+  },
+  "statue_zeus": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "temple": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "tent": {
+   "cat": "props",
+   "hp": 120
+  },
+  "throne": {
+   "cat": "monuments",
+   "hp": null
+  },
+  "torch": {
+   "cat": "props",
+   "hp": 20
+  },
+  "tower": {
+   "cat": "architecture",
+   "hp": 900
+  },
+  "tree_cypress": {
+   "cat": "nature",
+   "hp": 100
+  },
+  "tree_dead": {
+   "cat": "nature",
+   "hp": 70
+  },
+  "tree_oak": {
+   "cat": "nature",
+   "hp": 120
+  },
+  "tree_olive": {
+   "cat": "nature",
+   "hp": 110
+  },
+  "tree_pine": {
+   "cat": "nature",
+   "hp": 110
+  },
+  "wall_stone": {
+   "cat": "architecture",
+   "hp": 600
+  },
+  "wheat": {
+   "cat": "nature",
+   "hp": 10
+  }
+ },
+ "puzzles": [
+  {
+   "arena": "marathon",
+   "budget": 1400,
+   "id": "spear_wall",
+   "par": 1000,
+   "roster": [
+    "hoplite",
+    "peltast"
+   ],
+   "seed": 11,
+   "size": "medium",
+   "title": "Please Hold Still"
+  },
+  {
+   "arena": "oasis",
+   "budget": 1200,
+   "id": "kiting_101",
+   "par": 900,
+   "roster": [
+    "cretan_archer",
+    "peltast"
+   ],
+   "seed": 15,
+   "size": "small",
+   "title": "Kiting for Beginners"
+  },
+  {
+   "arena": "marathon",
+   "budget": 2000,
+   "id": "elephant_room",
+   "par": 1600,
+   "roster": [
+    "hoplite",
+    "peltast",
+    "nubian_archer"
+   ],
+   "seed": 11,
+   "size": "medium",
+   "title": "The Elephant in the Room"
+  },
+  {
+   "arena": "troy",
+   "budget": 1500,
+   "id": "knock_knock",
+   "par": 1200,
+   "roster": [
+    "catapult",
+    "hoplite",
+    "peltast"
+   ],
+   "seed": 12,
+   "size": "large",
+   "title": "Knock Knock"
+  },
+  {
+   "arena": "nile",
+   "budget": 1000,
+   "id": "goat_logistics",
+   "par": 700,
+   "roster": [
+    "hoplite",
+    "peltast",
+    "cretan_archer"
+   ],
+   "seed": 4,
+   "size": "medium",
+   "title": "Goat Logistics"
+  },
+  {
+   "arena": "oasis",
+   "budget": 1100,
+   "id": "gaze_avoidance",
+   "par": 800,
+   "roster": [
+    "cretan_archer",
+    "peltast",
+    "companion_cavalry"
+   ],
+   "seed": 15,
+   "size": "small",
+   "title": "Do Not Look Directly"
+  }
+ ],
+ "recipes": {
+  "alpine": {},
+  "arenalab": {},
+  "carthage": {},
+  "colosseum": {},
+  "cyclops": {},
+  "giza": {},
+  "marathon": {},
+  "nile": {},
+  "oasis": {},
+  "olympus": {},
+  "persepolis": {},
+  "random": {},
+  "styx": {},
+  "teutoburg": {},
+  "thermopylae": {},
+  "troy": {}
+ },
+ "rewardParts": [
+  "baguette",
+  "colander_helm",
+  "fish",
+  "foam_finger",
+  "frying_pan",
+  "giant_moustache",
+  "golden_toga",
+  "olive_branch",
+  "rubber_chicken",
+  "silly_helms",
+  "silly_weapons",
+  "traffic_cone_helm",
+  "wings"
+ ],
+ "sizes": {
+  "large": 256,
+  "medium": 192,
+  "small": 128
+ },
+ "source": "real",
+ "units": {
+  "anubis_guard": {
+   "abilities": [
+    "execute"
+   ],
+   "cost": 230,
+   "faction": "egyptians",
+   "hp": 266,
+   "role": "melee",
+   "tags": [
+    "elite",
+    "fearless"
+   ]
+  },
+  "axe_thrower": {
+   "abilities": [],
+   "cost": 105,
+   "faction": "barbarians",
+   "hp": 158,
+   "role": "ranged",
+   "tags": [
+    "skirmisher"
+   ]
+  },
+  "ballista": {
+   "abilities": [],
+   "cost": 260,
+   "faction": "romans",
+   "hp": 228,
+   "role": "siege",
+   "tags": [
+    "siege"
+   ]
+  },
+  "battle_goat": {
+   "abilities": [
+    "dash"
+   ],
+   "cost": 51,
+   "faction": "mythic",
+   "hp": 90,
+   "role": "beast",
+   "tags": [
+    "animal"
+   ]
+  },
+  "berserker": {
+   "abilities": [
+    "rage"
+   ],
+   "cost": 120,
+   "faction": "barbarians",
+   "hp": 191,
+   "role": "melee",
+   "tags": []
+  },
+  "camel_rider": {
+   "abilities": [
+    "cc_field"
+   ],
+   "cost": 150,
+   "faction": "persians",
+   "hp": 320,
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "spear"
+   ]
+  },
+  "cataphract": {
+   "abilities": [],
+   "cost": 275,
+   "faction": "persians",
+   "hp": 417,
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "heavy",
+    "lance"
+   ]
+  },
+  "catapult": {
+   "abilities": [
+    "misfire"
+   ],
+   "cost": 266,
+   "faction": "carthage",
+   "hp": 230,
+   "role": "siege",
+   "tags": [
+    "siege"
+   ]
+  },
+  "centaur_archer": {
+   "abilities": [],
+   "cost": 203,
+   "faction": "mythic",
+   "hp": 316,
+   "role": "ranged",
+   "tags": [
+    "archer",
+    "cavalry"
+   ]
+  },
+  "centurion": {
+   "abilities": [
+    "aura"
+   ],
+   "cost": 260,
+   "faction": "romans",
+   "hp": 340,
+   "role": "hero",
+   "tags": [
+    "elite",
+    "officer"
+   ]
+  },
+  "chariot_archer": {
+   "abilities": [],
+   "cost": 212,
+   "faction": "egyptians",
+   "hp": 362,
+   "role": "cavalry",
+   "tags": [
+    "archer",
+    "cavalry"
+   ]
+  },
+  "chieftain": {
+   "abilities": [
+    "war_horn"
+   ],
+   "cost": 340,
+   "faction": "barbarians",
+   "hp": 662,
+   "role": "hero",
+   "tags": [
+    "elite",
+    "general",
+    "officer"
+   ]
+  },
+  "companion_cavalry": {
+   "abilities": [],
+   "cost": 200,
+   "faction": "hellenes",
+   "hp": 300,
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "lance"
+   ]
+  },
+  "cretan_archer": {
+   "abilities": [],
+   "cost": 90,
+   "faction": "hellenes",
+   "hp": 113,
+   "role": "ranged",
+   "tags": [
+    "archer"
+   ]
+  },
+  "cyclops": {
+   "abilities": [
+    "misaim"
+   ],
+   "cost": 620,
+   "faction": "mythic",
+   "hp": 1223,
+   "role": "monster",
+   "tags": [
+    "boss",
+    "large"
+   ]
+  },
+  "druid": {
+   "abilities": [
+    "chain_lightning",
+    "heal_pulse"
+   ],
+   "cost": 180,
+   "faction": "barbarians",
+   "hp": 129,
+   "role": "support",
+   "tags": [
+    "support"
+   ]
+  },
+  "equites": {
+   "abilities": [],
+   "cost": 168,
+   "faction": "romans",
+   "hp": 287,
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "spear"
+   ]
+  },
+  "gladiator": {
+   "abilities": [
+    "net",
+    "crowd_favorite"
+   ],
+   "cost": 142,
+   "faction": "romans",
+   "hp": 258,
+   "role": "melee",
+   "tags": [
+    "spear"
+   ]
+  },
+  "hannibal": {
+   "abilities": [
+    "aura"
+   ],
+   "cost": 360,
+   "faction": "carthage",
+   "hp": 565,
+   "role": "hero",
+   "tags": [
+    "cavalry",
+    "elite",
+    "general",
+    "officer"
+   ]
+  },
+  "hoplite": {
+   "abilities": [
+    "stance"
+   ],
+   "cost": 100,
+   "faction": "hellenes",
+   "hp": 150,
+   "role": "melee",
+   "tags": [
+    "spear"
+   ]
+  },
+  "immortal": {
+   "abilities": [
+    "revive"
+   ],
+   "cost": 120,
+   "faction": "persians",
+   "hp": 167,
+   "role": "melee",
+   "tags": [
+    "spear"
+   ]
+  },
+  "khopesh_warrior": {
+   "abilities": [
+    "hook"
+   ],
+   "cost": 100,
+   "faction": "egyptians",
+   "hp": 165,
+   "role": "melee",
+   "tags": []
+  },
+  "legionary": {
+   "abilities": [
+    "stance"
+   ],
+   "cost": 129,
+   "faction": "romans",
+   "hp": 176,
+   "role": "melee",
+   "tags": []
+  },
+  "medjay": {
+   "abilities": [],
+   "cost": 85,
+   "faction": "egyptians",
+   "hp": 160,
+   "role": "melee",
+   "tags": [
+    "spear"
+   ]
+  },
+  "medusa": {
+   "abilities": [
+    "poison",
+    "cc_field"
+   ],
+   "cost": 248,
+   "faction": "mythic",
+   "hp": 407,
+   "role": "monster",
+   "tags": []
+  },
+  "minotaur": {
+   "abilities": [
+    "dash"
+   ],
+   "cost": 480,
+   "faction": "mythic",
+   "hp": 773,
+   "role": "monster",
+   "tags": [
+    "large"
+   ]
+  },
+  "mummy": {
+   "abilities": [
+    "aura"
+   ],
+   "cost": 124,
+   "faction": "egyptians",
+   "hp": 389,
+   "role": "melee",
+   "tags": [
+    "fearless",
+    "fire_weak",
+    "undead"
+   ]
+  },
+  "nubian_archer": {
+   "abilities": [
+    "fire_every"
+   ],
+   "cost": 95,
+   "faction": "egyptians",
+   "hp": 116,
+   "role": "ranged",
+   "tags": [
+    "archer"
+   ]
+  },
+  "numidian": {
+   "abilities": [],
+   "cost": 125,
+   "faction": "carthage",
+   "hp": 189,
+   "role": "cavalry",
+   "tags": [
+    "cavalry",
+    "skirmisher"
+   ]
+  },
+  "peltast": {
+   "abilities": [],
+   "cost": 85,
+   "faction": "hellenes",
+   "hp": 122,
+   "role": "ranged",
+   "tags": [
+    "skirmisher"
+   ]
+  },
+  "pharaoh": {
+   "abilities": [
+    "dot_cloud",
+    "aura"
+   ],
+   "cost": 420,
+   "faction": "egyptians",
+   "hp": 341,
+   "role": "hero",
+   "tags": [
+    "elite",
+    "general",
+    "officer"
+   ]
+  },
+  "philosopher": {
+   "abilities": [
+    "cc_field"
+   ],
+   "cost": 120,
+   "faction": "hellenes",
+   "hp": 110,
+   "role": "support",
+   "tags": [
+    "support"
+   ]
+  },
+  "pilum_thrower": {
+   "abilities": [
+    "breaks_shield"
+   ],
+   "cost": 110,
+   "faction": "romans",
+   "hp": 124,
+   "role": "ranged",
+   "tags": [
+    "skirmisher"
+   ]
+  },
+  "priest_of_ra": {
+   "abilities": [
+    "heal_pulse"
+   ],
+   "cost": 150,
+   "faction": "egyptians",
+   "hp": 110,
+   "role": "support",
+   "tags": [
+    "support"
+   ]
+  },
+  "sacred_chicken": {
+   "abilities": [
+    "tantrum",
+    "cluck"
+   ],
+   "cost": 28,
+   "faction": "mythic",
+   "hp": 38,
+   "role": "swarm",
+   "tags": [
+    "animal"
+   ]
+  },
+  "senator": {
+   "abilities": [
+    "bribe",
+    "cc_field"
+   ],
+   "cost": 140,
+   "faction": "romans",
+   "hp": 92,
+   "role": "support",
+   "tags": [
+    "support"
+   ]
+  },
+  "sparabara": {
+   "abilities": [
+    "stance"
+   ],
+   "cost": 118,
+   "faction": "persians",
+   "hp": 114,
+   "role": "ranged",
+   "tags": [
+    "archer"
+   ]
+  },
+  "spartan": {
+   "abilities": [
+    "kick"
+   ],
+   "cost": 190,
+   "faction": "hellenes",
+   "hp": 234,
+   "role": "melee",
+   "tags": [
+    "elite",
+    "fearless",
+    "spear"
+   ]
+  },
+  "strategos": {
+   "abilities": [
+    "aura"
+   ],
+   "cost": 380,
+   "faction": "hellenes",
+   "hp": 377,
+   "role": "hero",
+   "tags": [
+    "elite",
+    "fearless",
+    "officer"
+   ]
+  },
+  "trojan_horse": {
+   "abilities": [
+    "summon_on_death"
+   ],
+   "cost": 504,
+   "faction": "mythic",
+   "hp": 706,
+   "role": "siege",
+   "tags": [
+    "fire_weak",
+    "large",
+    "siege"
+   ]
+  },
+  "war_elephant": {
+   "abilities": [
+    "cc_field",
+    "fire_panic"
+   ],
+   "cost": 728,
+   "faction": "carthage",
+   "hp": 1148,
+   "role": "monster",
+   "tags": [
+    "boss",
+    "fire_panic",
+    "large"
+   ]
+  },
+  "warhound": {
+   "abilities": [
+    "pack_bonus"
+   ],
+   "cost": 55,
+   "faction": "barbarians",
+   "hp": 76,
+   "role": "beast",
+   "tags": [
+    "animal"
+   ]
+  },
+  "xerxes": {
+   "abilities": [
+    "throne",
+    "aura"
+   ],
+   "cost": 400,
+   "faction": "persians",
+   "hp": 555,
+   "role": "hero",
+   "tags": [
+    "general",
+    "officer"
+   ]
+  }
+ },
+ "unlocks": [
+  "silly_helms",
+  "silly_weapons",
+  "wings"
+ ],
+ "weather": [
+  "clear",
+  "cloudy",
+  "rain",
+  "storm",
+  "snow",
+  "sandstorm",
+  "fog"
+ ]
+}
