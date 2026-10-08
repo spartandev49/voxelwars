@@ -21,7 +21,6 @@ export function tierRank(t) {
 }
 export const tierName = (rank) => (rank <= 0 ? 'T-fast' : rank === 1 ? 'T-era' : rank === 2 ? 'T-full' : rank === 3 ? 'release' : 'heavy');
 const sha256 = (b) => crypto.createHash('sha256').update(b).digest('hex');
-const posix = (p) => p.split(path.sep).join('/');
 
 // ---------------------------------------------------------------------------------------------------------------- ER natural order
 export function erCompare(a, b) {
@@ -382,4 +381,3 @@ export function finalizeCriteria(doc, root) {
   doc.manifest = manifest ? { path: 'tools/lib/criteria_manifest.json', count: manifest.criteria.length, hash: manifestHash(manifest) } : null;
   return doc;
 }
-export { posix };
