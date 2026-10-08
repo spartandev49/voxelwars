@@ -2,7 +2,7 @@
 export default {
   id: 'NC-VF-T26-wbs-tolerance', criterion: 'VF-T26-wbs',
   expectRed: ['VF-T26-wbs/class_tolerance_five_percent'],
-  alsoRed: ['VF-T26-wbs/class_formula_factors', 'VF-T26-wbs/cli_check_and_class_failure'],
+  alsoRed: ['VF-T26-wbs/class_formula_factors', 'VF-T26-wbs/cli_check_and_class_failure', 'VF-T26-wbs/cli_paste_refuses_a_failing_breakdown'],
   tier: 'T-fast', needs: [], costS: 12,
   mutate(c) {
   c.edit('tools/wbs.mjs', /Math\.floor\(\(rules\.tolerance \?\? 0\.05\) \* expected \+ 1e-9\)/, 'expected');

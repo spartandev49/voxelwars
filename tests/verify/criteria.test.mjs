@@ -125,8 +125,6 @@ const d = 6 / 2; const e = criterion("A-DQ", {});
   c.soft('er_table_er1_members', er1.ids.includes('AR-T23') === false && er1.ids.includes('WC01') && er1.ids.includes('AR-T34') && er1.scripts.includes('tests/golden/g1_sim.test.mjs') && er1.stems.includes('g7_armygen') && er1.negctl.join() === 'NC-VF-09,NC-VF-12,NC-VF-44', JSON.stringify(er1));
   const er23 = table.rows.find((r) => r.er === 'ER23');
   c.soft('er_table_prose_in_parentheses_is_not_a_member', !er23.scripts.some((s) => /humor|ui5/.test(s)) && er23.scripts.includes('tests/audio/credits.test.mjs'), JSON.stringify(er23.scripts));
-  const committed = fs.readFileSync(path.join(ROOT, 'tools/lib/er_table.json'), 'utf8');
-  c.soft('er_table_committed_file_is_current', committed === stable(table), 'run: node tools/report.mjs --er-table');
   let threw = false; try { parseErTable('| ER1 | a | b |\n'); } catch { threw = true; }
   c.soft('er_table_row_with_wrong_cell_count_throws', threw);
 

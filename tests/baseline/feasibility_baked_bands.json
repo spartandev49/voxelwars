@@ -1,0 +1,11 @@
+{
+ "schema": 1,
+ "record": "tests/campaign/feasibility.ancient.json",
+ "regime": "baked",
+ "status": "REPORTED, awaiting COORD (VF 3.7 RP0: an Ancient band that fails under `baked` is reported, not fixed; COORD decides a `botsWhy` note or a DA row, two signatures)",
+ "note": "Re-taken 2026-10-08 from the baseline worktree (4aafd2e), regime baked (registerAllClips like app/main.js), the same 536 battles as the legacy record (regime default_meta, tests/campaign/feasibility.v8.json, where all 27 bands held). 25 of the 27 counter / greedy / turtle bands hold; the two below do not. tests/golden/feasibility_record.test.mjs demands that the failing set of the record equals this list exactly, so a new failure or a recovered band is noticed. Nobody edits a band to make this go away (AR 3.8.3).",
+ "failing": [
+  { "id": "alps_elephant/greedy", "bot": "greedy", "mission": "alps_elephant", "wins": 4, "n": 20, "rate": 0.2, "band": [0.25, 0.7], "legacyRate": 0.35, "note": "naive deployment wins 20% (band floor 25%): the elephants-vs-naive-army mission is harsher under baked attack timing; below the band on the FRIENDLY side of the check (the naive player is not supposed to win too often, nor to be hopeless)" },
+  { "id": "marathon_sort_of/turtle", "bot": "turtle", "mission": "marathon_sort_of", "wins": 7, "n": 10, "rate": 0.7, "band": [0.1, 0.6], "legacyRate": 0.3, "note": "the all-hold deployment wins 70% (band ceiling 60%): under baked timing the first mission is easier for a passive army; a 10-seed band, binomial 95% interval about 35-93%" }
+ ]
+}

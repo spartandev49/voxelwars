@@ -14,6 +14,7 @@ export default {
   expectRed: ['VF-G6w/lines_listed', 'VF-G6w/lines_present', 'VF-G6w/list_shape', 'VF-G6w/g6_independent'],
   alsoRed: [],
   tier: 'T-fast', needs: [], costS: 3,
+  mayEdit: ['tests/baseline/harness_workarounds.json'],       // the list IS the thing under test (fault list_shape); the runner bars every other tests/baseline/** edit (VF 3.13)
   mutate(c) { for (const f of Object.values(faults)) f.apply(c); },
   run: ['node', 'tests/golden/harness_workarounds.test.mjs'],
 };

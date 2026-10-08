@@ -43,6 +43,8 @@ export async function openPage(html, { viewport = { width: 1280, height: 720 }, 
   const ctx = await browser.newContext({ viewport }), page = await ctx.newPage(), problems = [];
   page.on('console', (m) => { const t = m.type(); if (t === 'error' || t === 'warning') problems.push(`console.${t}: ${m.text()}`); });
   page.on('pageerror', (e) => problems.push('pageerror: ' + e.message));
+  page.on('crash', () => problems.push('page crashed (renderer process died)'));
+  browser.on('disconnected', () => problems.push('browser disconnected'));
   page.on('requestfailed', (r) => { const u = r.url(); if (/fonts\.(googleapis|gstatic)\.com/.test(u)) return; problems.push('requestfailed: ' + u + ' ' + (r.failure() && r.failure().errorText)); });
   await page.exposeFunction('__vwCsp', (v) => problems.push('CSP violation: ' + v));
   await page.addInitScript(() => { document.addEventListener('securitypolicyviolation', (e) => window.__vwCsp(e.violatedDirective + ' blocked ' + e.blockedURI)); });

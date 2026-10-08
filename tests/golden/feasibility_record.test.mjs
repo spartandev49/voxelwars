@@ -30,8 +30,9 @@ if (!rec) { finish(c); process.exit(1); }
 // the legacy record is still there, marked, and lists the same battles
 let legacy = null;
 try { legacy = JSON.parse(fs.readFileSync(path.join(ROOT, LEGACY), 'utf8')); } catch { /* reported below */ }
-const jobsLegacy = legacy ? jobsFromLegacy(path.join(ROOT, LEGACY)) : [];
-const jobsNew = Object.entries(d.runs).flatMap(([id, r]) => Object.entries(r.bots).map(([bot, b]) => ({ id, bot, n: b.n })));
+const byKey = (a, b) => (a.id + '/' + a.bot < b.id + '/' + b.bot ? -1 : 1);
+const jobsLegacy = legacy ? jobsFromLegacy(path.join(ROOT, LEGACY)).sort(byKey) : [];
+const jobsNew = Object.entries(d.runs).flatMap(([id, r]) => Object.entries(r.bots).map(([bot, b]) => ({ id, bot, n: b.n }))).sort(byKey);
 red(c, 'legacy_kept', !!legacy && legacy.legacy === true && Object.keys(legacy.runs).length === 9 && canonicalJSON(jobsLegacy) === canonicalJSON(jobsNew) && jobsNew.length === 36, 'tests/campaign/feasibility.v8.json must exist with legacy:true and list exactly the 36 (mission, bot) jobs of the new record');
 
 // mission data of the tree is what the record was made on

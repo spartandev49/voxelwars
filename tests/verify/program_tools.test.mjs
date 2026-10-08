@@ -1,3 +1,4 @@
+// @nocache  (runs plan_lint and p0_exit against the real documents and gate state as well as against scratch projects)
 // VF-T26 (the part TOOLS-VERIFY built so far): tools/plan_lint.mjs (PL01-PL16, each failing on its seeded defect), tools/wbs.mjs (csv, critical path, durations, classes,
 // ladder, reviewer queue, paste) and tools/p0_exit.mjs (P0E-01..16 and REG, each with a passing and a failing tree). ledger_stats and reds are not built; their rows stay open.
 // Three criteria: VF-T26-lint (NC-VF-73: skip PL12 -> label PL12), VF-T26-wbs, VF-T26-p0exit.

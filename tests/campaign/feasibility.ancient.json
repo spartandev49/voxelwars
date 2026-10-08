@@ -1,0 +1,3153 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "battles": [
+   {
+    "id": "marathon_sort_of/counter/1",
+    "tuple": [0,3960,0,1710525575]
+   },
+   {
+    "id": "marathon_sort_of/counter/2",
+    "tuple": [0,2490,0,1960322097]
+   },
+   {
+    "id": "marathon_sort_of/counter/3",
+    "tuple": [1,2972,2,2798713675]
+   },
+   {
+    "id": "marathon_sort_of/counter/4",
+    "tuple": [0,3780,0,3993164389]
+   },
+   {
+    "id": "marathon_sort_of/counter/5",
+    "tuple": [1,4260,1,2275521643]
+   },
+   {
+    "id": "marathon_sort_of/counter/6",
+    "tuple": [1,2460,2,1996325775]
+   },
+   {
+    "id": "marathon_sort_of/counter/7",
+    "tuple": [0,3060,0,4120679995]
+   },
+   {
+    "id": "marathon_sort_of/counter/8",
+    "tuple": [1,3435,1,2917673395]
+   },
+   {
+    "id": "marathon_sort_of/counter/9",
+    "tuple": [1,2463,1,93542760]
+   },
+   {
+    "id": "marathon_sort_of/counter/10",
+    "tuple": [1,3105,1,2012327898]
+   },
+   {
+    "id": "marathon_sort_of/counter/11",
+    "tuple": [1,3975,1,1690274481]
+   },
+   {
+    "id": "marathon_sort_of/counter/12",
+    "tuple": [1,3105,1,3782577563]
+   },
+   {
+    "id": "marathon_sort_of/counter/13",
+    "tuple": [1,3450,1,1155306300]
+   },
+   {
+    "id": "marathon_sort_of/counter/14",
+    "tuple": [1,3714,1,1541609065]
+   },
+   {
+    "id": "marathon_sort_of/counter/15",
+    "tuple": [1,3510,1,4203075263]
+   },
+   {
+    "id": "marathon_sort_of/counter/16",
+    "tuple": [1,3660,1,3091291013]
+   },
+   {
+    "id": "marathon_sort_of/counter/17",
+    "tuple": [1,3120,1,3831369745]
+   },
+   {
+    "id": "marathon_sort_of/counter/18",
+    "tuple": [1,2131,1,3687125175]
+   },
+   {
+    "id": "marathon_sort_of/counter/19",
+    "tuple": [1,3240,1,4010712435]
+   },
+   {
+    "id": "marathon_sort_of/counter/20",
+    "tuple": [1,3099,1,2839861600]
+   },
+   {
+    "id": "marathon_sort_of/greedy/1",
+    "tuple": [0,2715,0,3928606875]
+   },
+   {
+    "id": "marathon_sort_of/greedy/2",
+    "tuple": [1,4035,1,3551297160]
+   },
+   {
+    "id": "marathon_sort_of/greedy/3",
+    "tuple": [0,4110,0,3387352310]
+   },
+   {
+    "id": "marathon_sort_of/greedy/4",
+    "tuple": [1,3390,1,985552227]
+   },
+   {
+    "id": "marathon_sort_of/greedy/5",
+    "tuple": [0,4716,0,2218909538]
+   },
+   {
+    "id": "marathon_sort_of/greedy/6",
+    "tuple": [0,4155,0,1389557063]
+   },
+   {
+    "id": "marathon_sort_of/greedy/7",
+    "tuple": [0,4065,0,2173612746]
+   },
+   {
+    "id": "marathon_sort_of/greedy/8",
+    "tuple": [1,3900,1,702688413]
+   },
+   {
+    "id": "marathon_sort_of/greedy/9",
+    "tuple": [1,2246,1,173064912]
+   },
+   {
+    "id": "marathon_sort_of/greedy/10",
+    "tuple": [0,3270,0,317962988]
+   },
+   {
+    "id": "marathon_sort_of/greedy/11",
+    "tuple": [0,3825,0,2145039077]
+   },
+   {
+    "id": "marathon_sort_of/greedy/12",
+    "tuple": [0,3615,0,62041891]
+   },
+   {
+    "id": "marathon_sort_of/greedy/13",
+    "tuple": [1,3315,1,4247102123]
+   },
+   {
+    "id": "marathon_sort_of/greedy/14",
+    "tuple": [0,4065,0,3802473596]
+   },
+   {
+    "id": "marathon_sort_of/greedy/15",
+    "tuple": [0,4245,0,1014384001]
+   },
+   {
+    "id": "marathon_sort_of/greedy/16",
+    "tuple": [1,3765,1,134561749]
+   },
+   {
+    "id": "marathon_sort_of/greedy/17",
+    "tuple": [1,2791,1,4549663]
+   },
+   {
+    "id": "marathon_sort_of/greedy/18",
+    "tuple": [0,3000,0,837220599]
+   },
+   {
+    "id": "marathon_sort_of/greedy/19",
+    "tuple": [0,3900,0,3374781091]
+   },
+   {
+    "id": "marathon_sort_of/greedy/20",
+    "tuple": [0,2700,0,861876594]
+   },
+   {
+    "id": "marathon_sort_of/turtle/1",
+    "tuple": [0,2670,0,2946089446]
+   },
+   {
+    "id": "marathon_sort_of/turtle/2",
+    "tuple": [1,3435,1,4219601505]
+   },
+   {
+    "id": "marathon_sort_of/turtle/3",
+    "tuple": [1,2847,1,2313503667]
+   },
+   {
+    "id": "marathon_sort_of/turtle/4",
+    "tuple": [0,3165,0,791384854]
+   },
+   {
+    "id": "marathon_sort_of/turtle/5",
+    "tuple": [1,2540,1,4154874233]
+   },
+   {
+    "id": "marathon_sort_of/turtle/6",
+    "tuple": [1,2805,1,1886610341]
+   },
+   {
+    "id": "marathon_sort_of/turtle/7",
+    "tuple": [1,2776,1,3727370093]
+   },
+   {
+    "id": "marathon_sort_of/turtle/8",
+    "tuple": [0,3150,0,4211280738]
+   },
+   {
+    "id": "marathon_sort_of/turtle/9",
+    "tuple": [1,2929,1,3540788149]
+   },
+   {
+    "id": "marathon_sort_of/turtle/10",
+    "tuple": [1,2835,1,1160798924]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/1",
+    "tuple": [1,1230,3,123903212]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/2",
+    "tuple": [1,1110,3,2930419684]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/3",
+    "tuple": [1,975,3,3136142911]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/4",
+    "tuple": [1,1305,3,1113167888]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/5",
+    "tuple": [1,1020,3,1397902592]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/6",
+    "tuple": [1,1110,3,2199395043]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/7",
+    "tuple": [1,1305,3,966139747]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/8",
+    "tuple": [1,1185,3,3934755243]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/9",
+    "tuple": [1,1050,3,3522319646]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/10",
+    "tuple": [1,1305,3,3322184993]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/11",
+    "tuple": [1,1095,3,4046011397]
+   },
+   {
+    "id": "marathon_sort_of/thrifty/12",
+    "tuple": [1,1170,3,665334948]
+   },
+   {
+    "id": "thermopylae_snack/counter/1",
+    "tuple": [1,3795,2,754870559]
+   },
+   {
+    "id": "thermopylae_snack/counter/2",
+    "tuple": [1,3570,2,2256282609]
+   },
+   {
+    "id": "thermopylae_snack/counter/3",
+    "tuple": [1,4185,1,3797004]
+   },
+   {
+    "id": "thermopylae_snack/counter/4",
+    "tuple": [1,3225,2,2027355553]
+   },
+   {
+    "id": "thermopylae_snack/counter/5",
+    "tuple": [1,3315,2,1031535670]
+   },
+   {
+    "id": "thermopylae_snack/counter/6",
+    "tuple": [1,3615,3,230385036]
+   },
+   {
+    "id": "thermopylae_snack/counter/7",
+    "tuple": [1,3165,2,19251648]
+   },
+   {
+    "id": "thermopylae_snack/counter/8",
+    "tuple": [1,3210,2,148361069]
+   },
+   {
+    "id": "thermopylae_snack/counter/9",
+    "tuple": [1,3315,3,3440372505]
+   },
+   {
+    "id": "thermopylae_snack/counter/10",
+    "tuple": [1,3480,3,3204679594]
+   },
+   {
+    "id": "thermopylae_snack/counter/11",
+    "tuple": [1,3270,2,3019888464]
+   },
+   {
+    "id": "thermopylae_snack/counter/12",
+    "tuple": [1,3315,2,3547670433]
+   },
+   {
+    "id": "thermopylae_snack/counter/13",
+    "tuple": [1,3540,2,2913965370]
+   },
+   {
+    "id": "thermopylae_snack/counter/14",
+    "tuple": [1,3480,2,1994019932]
+   },
+   {
+    "id": "thermopylae_snack/counter/15",
+    "tuple": [1,3495,2,2202286788]
+   },
+   {
+    "id": "thermopylae_snack/counter/16",
+    "tuple": [1,3255,2,2563085234]
+   },
+   {
+    "id": "thermopylae_snack/counter/17",
+    "tuple": [1,3255,2,1098905483]
+   },
+   {
+    "id": "thermopylae_snack/counter/18",
+    "tuple": [1,3285,2,274993727]
+   },
+   {
+    "id": "thermopylae_snack/counter/19",
+    "tuple": [1,3525,2,2010540534]
+   },
+   {
+    "id": "thermopylae_snack/counter/20",
+    "tuple": [1,3675,2,189109708]
+   },
+   {
+    "id": "thermopylae_snack/greedy/1",
+    "tuple": [0,4170,0,2034357700]
+   },
+   {
+    "id": "thermopylae_snack/greedy/2",
+    "tuple": [1,4560,1,2956130824]
+   },
+   {
+    "id": "thermopylae_snack/greedy/3",
+    "tuple": [0,3975,0,2651274470]
+   },
+   {
+    "id": "thermopylae_snack/greedy/4",
+    "tuple": [1,3915,1,3061711278]
+   },
+   {
+    "id": "thermopylae_snack/greedy/5",
+    "tuple": [0,4080,0,828886491]
+   },
+   {
+    "id": "thermopylae_snack/greedy/6",
+    "tuple": [1,3825,2,1128610583]
+   },
+   {
+    "id": "thermopylae_snack/greedy/7",
+    "tuple": [1,4005,1,2926176849]
+   },
+   {
+    "id": "thermopylae_snack/greedy/8",
+    "tuple": [1,3825,2,2289416753]
+   },
+   {
+    "id": "thermopylae_snack/greedy/9",
+    "tuple": [0,3960,0,1576405014]
+   },
+   {
+    "id": "thermopylae_snack/greedy/10",
+    "tuple": [1,3975,1,3446534702]
+   },
+   {
+    "id": "thermopylae_snack/greedy/11",
+    "tuple": [1,4305,1,3687682980]
+   },
+   {
+    "id": "thermopylae_snack/greedy/12",
+    "tuple": [0,3885,0,868836322]
+   },
+   {
+    "id": "thermopylae_snack/greedy/13",
+    "tuple": [0,3675,0,2386776198]
+   },
+   {
+    "id": "thermopylae_snack/greedy/14",
+    "tuple": [0,4785,0,2101661670]
+   },
+   {
+    "id": "thermopylae_snack/greedy/15",
+    "tuple": [1,4125,1,3036943536]
+   },
+   {
+    "id": "thermopylae_snack/greedy/16",
+    "tuple": [0,4339,0,3660141237]
+   },
+   {
+    "id": "thermopylae_snack/greedy/17",
+    "tuple": [1,4215,1,2171610486]
+   },
+   {
+    "id": "thermopylae_snack/greedy/18",
+    "tuple": [0,4050,0,2670851224]
+   },
+   {
+    "id": "thermopylae_snack/greedy/19",
+    "tuple": [0,4554,0,3799323892]
+   },
+   {
+    "id": "thermopylae_snack/greedy/20",
+    "tuple": [0,3840,0,1185405754]
+   },
+   {
+    "id": "thermopylae_snack/turtle/1",
+    "tuple": [0,4455,0,3988866877]
+   },
+   {
+    "id": "thermopylae_snack/turtle/2",
+    "tuple": [1,3724,1,2368007648]
+   },
+   {
+    "id": "thermopylae_snack/turtle/3",
+    "tuple": [1,3735,1,179936845]
+   },
+   {
+    "id": "thermopylae_snack/turtle/4",
+    "tuple": [1,4065,1,4111184833]
+   },
+   {
+    "id": "thermopylae_snack/turtle/5",
+    "tuple": [1,4215,1,2549012174]
+   },
+   {
+    "id": "thermopylae_snack/turtle/6",
+    "tuple": [0,3705,0,232692844]
+   },
+   {
+    "id": "thermopylae_snack/turtle/7",
+    "tuple": [1,3769,2,995231716]
+   },
+   {
+    "id": "thermopylae_snack/turtle/8",
+    "tuple": [0,3705,0,1183374408]
+   },
+   {
+    "id": "thermopylae_snack/turtle/9",
+    "tuple": [0,3705,0,675127859]
+   },
+   {
+    "id": "thermopylae_snack/turtle/10",
+    "tuple": [1,3749,1,747554358]
+   },
+   {
+    "id": "thermopylae_snack/melee/1",
+    "tuple": [0,3375,0,2116419483]
+   },
+   {
+    "id": "thermopylae_snack/melee/2",
+    "tuple": [0,3434,0,732865656]
+   },
+   {
+    "id": "thermopylae_snack/melee/3",
+    "tuple": [0,3108,0,2896811797]
+   },
+   {
+    "id": "thermopylae_snack/melee/4",
+    "tuple": [0,3980,0,1636773572]
+   },
+   {
+    "id": "thermopylae_snack/melee/5",
+    "tuple": [0,3353,0,914467202]
+   },
+   {
+    "id": "thermopylae_snack/melee/6",
+    "tuple": [0,3014,0,1514476998]
+   },
+   {
+    "id": "thermopylae_snack/melee/7",
+    "tuple": [0,3368,0,4254979982]
+   },
+   {
+    "id": "thermopylae_snack/melee/8",
+    "tuple": [0,3819,0,2724660788]
+   },
+   {
+    "id": "thermopylae_snack/melee/9",
+    "tuple": [0,3189,0,4243197771]
+   },
+   {
+    "id": "thermopylae_snack/melee/10",
+    "tuple": [0,3857,0,1858008076]
+   },
+   {
+    "id": "thermopylae_snack/expert/1",
+    "tuple": [1,2310,2,1140060289]
+   },
+   {
+    "id": "thermopylae_snack/expert/2",
+    "tuple": [1,2325,1,1494970184]
+   },
+   {
+    "id": "thermopylae_snack/expert/3",
+    "tuple": [1,2550,2,3711226905]
+   },
+   {
+    "id": "thermopylae_snack/expert/4",
+    "tuple": [1,2220,1,1395966737]
+   },
+   {
+    "id": "thermopylae_snack/expert/5",
+    "tuple": [1,2325,2,2742663468]
+   },
+   {
+    "id": "thermopylae_snack/expert/6",
+    "tuple": [1,2310,2,1092989747]
+   },
+   {
+    "id": "thermopylae_snack/expert/7",
+    "tuple": [1,2475,3,1562502076]
+   },
+   {
+    "id": "thermopylae_snack/expert/8",
+    "tuple": [1,2385,2,712505737]
+   },
+   {
+    "id": "pyramid_scheme/counter/1",
+    "tuple": [1,2234,2,4189972658]
+   },
+   {
+    "id": "pyramid_scheme/counter/2",
+    "tuple": [1,2073,3,668529886]
+   },
+   {
+    "id": "pyramid_scheme/counter/3",
+    "tuple": [1,4724,1,728119588]
+   },
+   {
+    "id": "pyramid_scheme/counter/4",
+    "tuple": [0,4787,0,2119733766]
+   },
+   {
+    "id": "pyramid_scheme/counter/5",
+    "tuple": [0,5946,0,1677116897]
+   },
+   {
+    "id": "pyramid_scheme/counter/6",
+    "tuple": [0,3816,0,1890686881]
+   },
+   {
+    "id": "pyramid_scheme/counter/7",
+    "tuple": [1,1781,3,916727400]
+   },
+   {
+    "id": "pyramid_scheme/counter/8",
+    "tuple": [1,2581,2,864870223]
+   },
+   {
+    "id": "pyramid_scheme/counter/9",
+    "tuple": [1,1914,3,2460452163]
+   },
+   {
+    "id": "pyramid_scheme/counter/10",
+    "tuple": [1,3060,1,544660424]
+   },
+   {
+    "id": "pyramid_scheme/counter/11",
+    "tuple": [1,3356,2,3600205981]
+   },
+   {
+    "id": "pyramid_scheme/counter/12",
+    "tuple": [1,4336,1,466242866]
+   },
+   {
+    "id": "pyramid_scheme/counter/13",
+    "tuple": [0,4992,0,3606839739]
+   },
+   {
+    "id": "pyramid_scheme/counter/14",
+    "tuple": [1,2737,1,2585285086]
+   },
+   {
+    "id": "pyramid_scheme/counter/15",
+    "tuple": [1,1718,3,1164666416]
+   },
+   {
+    "id": "pyramid_scheme/counter/16",
+    "tuple": [0,3788,0,1886081090]
+   },
+   {
+    "id": "pyramid_scheme/counter/17",
+    "tuple": [1,1719,3,1633570472]
+   },
+   {
+    "id": "pyramid_scheme/counter/18",
+    "tuple": [1,1962,2,3221862691]
+   },
+   {
+    "id": "pyramid_scheme/counter/19",
+    "tuple": [1,4747,1,3848327233]
+   },
+   {
+    "id": "pyramid_scheme/counter/20",
+    "tuple": [1,2253,2,3653530702]
+   },
+   {
+    "id": "pyramid_scheme/greedy/1",
+    "tuple": [0,3849,0,4022329268]
+   },
+   {
+    "id": "pyramid_scheme/greedy/2",
+    "tuple": [1,4892,1,2106981704]
+   },
+   {
+    "id": "pyramid_scheme/greedy/3",
+    "tuple": [1,3932,1,2797281214]
+   },
+   {
+    "id": "pyramid_scheme/greedy/4",
+    "tuple": [0,4526,0,694139263]
+   },
+   {
+    "id": "pyramid_scheme/greedy/5",
+    "tuple": [0,3884,0,2555264345]
+   },
+   {
+    "id": "pyramid_scheme/greedy/6",
+    "tuple": [0,4571,0,512935740]
+   },
+   {
+    "id": "pyramid_scheme/greedy/7",
+    "tuple": [0,3699,0,47803847]
+   },
+   {
+    "id": "pyramid_scheme/greedy/8",
+    "tuple": [0,4540,0,136433747]
+   },
+   {
+    "id": "pyramid_scheme/greedy/9",
+    "tuple": [0,4560,0,1449456092]
+   },
+   {
+    "id": "pyramid_scheme/greedy/10",
+    "tuple": [0,4003,0,655158870]
+   },
+   {
+    "id": "pyramid_scheme/greedy/11",
+    "tuple": [0,3775,0,3814303047]
+   },
+   {
+    "id": "pyramid_scheme/greedy/12",
+    "tuple": [1,4266,1,4231019299]
+   },
+   {
+    "id": "pyramid_scheme/greedy/13",
+    "tuple": [1,4035,1,3375663393]
+   },
+   {
+    "id": "pyramid_scheme/greedy/14",
+    "tuple": [1,5521,1,4156164009]
+   },
+   {
+    "id": "pyramid_scheme/greedy/15",
+    "tuple": [0,4794,0,4222196012]
+   },
+   {
+    "id": "pyramid_scheme/greedy/16",
+    "tuple": [0,4482,0,1215504613]
+   },
+   {
+    "id": "pyramid_scheme/greedy/17",
+    "tuple": [0,3703,0,3969396115]
+   },
+   {
+    "id": "pyramid_scheme/greedy/18",
+    "tuple": [0,4197,0,3007205229]
+   },
+   {
+    "id": "pyramid_scheme/greedy/19",
+    "tuple": [1,3557,1,943517718]
+   },
+   {
+    "id": "pyramid_scheme/greedy/20",
+    "tuple": [0,3669,0,1965800329]
+   },
+   {
+    "id": "pyramid_scheme/turtle/1",
+    "tuple": [0,4440,0,665767432]
+   },
+   {
+    "id": "pyramid_scheme/turtle/2",
+    "tuple": [0,4058,0,2544335372]
+   },
+   {
+    "id": "pyramid_scheme/turtle/3",
+    "tuple": [0,4983,0,699405008]
+   },
+   {
+    "id": "pyramid_scheme/turtle/4",
+    "tuple": [0,4390,0,2217042829]
+   },
+   {
+    "id": "pyramid_scheme/turtle/5",
+    "tuple": [0,5383,0,2873039942]
+   },
+   {
+    "id": "pyramid_scheme/turtle/6",
+    "tuple": [1,3788,1,1506333024]
+   },
+   {
+    "id": "pyramid_scheme/turtle/7",
+    "tuple": [1,4034,1,2724811648]
+   },
+   {
+    "id": "pyramid_scheme/turtle/8",
+    "tuple": [0,4535,0,2081507753]
+   },
+   {
+    "id": "pyramid_scheme/turtle/9",
+    "tuple": [0,4382,0,1075741990]
+   },
+   {
+    "id": "pyramid_scheme/turtle/10",
+    "tuple": [0,4436,0,2081336237]
+   },
+   {
+    "id": "pyramid_scheme/raid/1",
+    "tuple": [0,5195,0,1168455753]
+   },
+   {
+    "id": "pyramid_scheme/raid/2",
+    "tuple": [0,4277,0,836953]
+   },
+   {
+    "id": "pyramid_scheme/raid/3",
+    "tuple": [1,4796,1,1762564112]
+   },
+   {
+    "id": "pyramid_scheme/raid/4",
+    "tuple": [0,4232,0,800258458]
+   },
+   {
+    "id": "pyramid_scheme/raid/5",
+    "tuple": [0,4842,0,3074888386]
+   },
+   {
+    "id": "pyramid_scheme/raid/6",
+    "tuple": [0,5131,0,1568178380]
+   },
+   {
+    "id": "pyramid_scheme/raid/7",
+    "tuple": [1,2438,2,929572580]
+   },
+   {
+    "id": "pyramid_scheme/raid/8",
+    "tuple": [1,4215,1,3904443604]
+   },
+   {
+    "id": "pyramid_scheme/raid/9",
+    "tuple": [1,4551,1,1477969067]
+   },
+   {
+    "id": "pyramid_scheme/raid/10",
+    "tuple": [1,2977,1,3744501070]
+   },
+   {
+    "id": "pyramid_scheme/expert/1",
+    "tuple": [1,1309,3,2809978162]
+   },
+   {
+    "id": "pyramid_scheme/expert/2",
+    "tuple": [1,1265,3,1192606978]
+   },
+   {
+    "id": "pyramid_scheme/expert/3",
+    "tuple": [1,1164,3,2365280357]
+   },
+   {
+    "id": "pyramid_scheme/expert/4",
+    "tuple": [1,1278,3,852493887]
+   },
+   {
+    "id": "pyramid_scheme/expert/5",
+    "tuple": [1,1213,3,3080412075]
+   },
+   {
+    "id": "pyramid_scheme/expert/6",
+    "tuple": [1,1294,3,3404117153]
+   },
+   {
+    "id": "pyramid_scheme/expert/7",
+    "tuple": [1,1511,3,1953873914]
+   },
+   {
+    "id": "pyramid_scheme/expert/8",
+    "tuple": [1,1343,3,3107936129]
+   },
+   {
+    "id": "nile_crossing/counter/1",
+    "tuple": [1,2211,2,354370621]
+   },
+   {
+    "id": "nile_crossing/counter/2",
+    "tuple": [1,2254,2,2851859601]
+   },
+   {
+    "id": "nile_crossing/counter/3",
+    "tuple": [1,2220,2,747039618]
+   },
+   {
+    "id": "nile_crossing/counter/4",
+    "tuple": [1,2234,2,923863482]
+   },
+   {
+    "id": "nile_crossing/counter/5",
+    "tuple": [1,2220,2,2674984134]
+   },
+   {
+    "id": "nile_crossing/counter/6",
+    "tuple": [1,2199,2,754346967]
+   },
+   {
+    "id": "nile_crossing/counter/7",
+    "tuple": [1,2208,2,2746530635]
+   },
+   {
+    "id": "nile_crossing/counter/8",
+    "tuple": [1,2239,2,2386184591]
+   },
+   {
+    "id": "nile_crossing/counter/9",
+    "tuple": [1,2930,2,3262391567]
+   },
+   {
+    "id": "nile_crossing/counter/10",
+    "tuple": [1,2208,2,1710647648]
+   },
+   {
+    "id": "nile_crossing/counter/11",
+    "tuple": [1,2199,2,1696666924]
+   },
+   {
+    "id": "nile_crossing/counter/12",
+    "tuple": [1,2239,2,3585218282]
+   },
+   {
+    "id": "nile_crossing/counter/13",
+    "tuple": [1,2238,2,3682787478]
+   },
+   {
+    "id": "nile_crossing/counter/14",
+    "tuple": [0,4501,0,2302259749]
+   },
+   {
+    "id": "nile_crossing/counter/15",
+    "tuple": [1,2214,2,3131316195]
+   },
+   {
+    "id": "nile_crossing/counter/16",
+    "tuple": [1,2196,2,2146396885]
+   },
+   {
+    "id": "nile_crossing/counter/17",
+    "tuple": [1,2199,2,490006057]
+   },
+   {
+    "id": "nile_crossing/counter/18",
+    "tuple": [0,3809,0,4264845654]
+   },
+   {
+    "id": "nile_crossing/counter/19",
+    "tuple": [1,2266,2,2735180501]
+   },
+   {
+    "id": "nile_crossing/counter/20",
+    "tuple": [1,2211,2,1369088399]
+   },
+   {
+    "id": "nile_crossing/greedy/1",
+    "tuple": [0,3532,0,3549543526]
+   },
+   {
+    "id": "nile_crossing/greedy/2",
+    "tuple": [0,4501,0,378829766]
+   },
+   {
+    "id": "nile_crossing/greedy/3",
+    "tuple": [0,2172,0,2695605874]
+   },
+   {
+    "id": "nile_crossing/greedy/4",
+    "tuple": [1,2241,2,1590251881]
+   },
+   {
+    "id": "nile_crossing/greedy/5",
+    "tuple": [0,2120,0,628897059]
+   },
+   {
+    "id": "nile_crossing/greedy/6",
+    "tuple": [0,2121,0,2534957896]
+   },
+   {
+    "id": "nile_crossing/greedy/7",
+    "tuple": [0,3193,0,1284979359]
+   },
+   {
+    "id": "nile_crossing/greedy/8",
+    "tuple": [0,3791,0,3794858782]
+   },
+   {
+    "id": "nile_crossing/greedy/9",
+    "tuple": [0,4055,0,1474874736]
+   },
+   {
+    "id": "nile_crossing/greedy/10",
+    "tuple": [1,2237,2,739039205]
+   },
+   {
+    "id": "nile_crossing/greedy/11",
+    "tuple": [0,2123,0,938402555]
+   },
+   {
+    "id": "nile_crossing/greedy/12",
+    "tuple": [0,3386,0,1678468249]
+   },
+   {
+    "id": "nile_crossing/greedy/13",
+    "tuple": [1,2239,2,1193521027]
+   },
+   {
+    "id": "nile_crossing/greedy/14",
+    "tuple": [1,2283,2,3674087088]
+   },
+   {
+    "id": "nile_crossing/greedy/15",
+    "tuple": [0,2254,0,1676052560]
+   },
+   {
+    "id": "nile_crossing/greedy/16",
+    "tuple": [1,2203,1,1212501928]
+   },
+   {
+    "id": "nile_crossing/greedy/17",
+    "tuple": [1,2220,2,3492571400]
+   },
+   {
+    "id": "nile_crossing/greedy/18",
+    "tuple": [0,2159,0,2129448593]
+   },
+   {
+    "id": "nile_crossing/greedy/19",
+    "tuple": [1,2197,2,2516225328]
+   },
+   {
+    "id": "nile_crossing/greedy/20",
+    "tuple": [0,2025,0,774052587]
+   },
+   {
+    "id": "nile_crossing/turtle/1",
+    "tuple": [1,2269,3,3949461591]
+   },
+   {
+    "id": "nile_crossing/turtle/2",
+    "tuple": [0,2219,0,1118761125]
+   },
+   {
+    "id": "nile_crossing/turtle/3",
+    "tuple": [0,2292,0,1212047187]
+   },
+   {
+    "id": "nile_crossing/turtle/4",
+    "tuple": [0,2117,0,627319058]
+   },
+   {
+    "id": "nile_crossing/turtle/5",
+    "tuple": [1,2209,2,377641716]
+   },
+   {
+    "id": "nile_crossing/turtle/6",
+    "tuple": [1,2250,2,2934335876]
+   },
+   {
+    "id": "nile_crossing/turtle/7",
+    "tuple": [0,2238,0,905492346]
+   },
+   {
+    "id": "nile_crossing/turtle/8",
+    "tuple": [1,2205,2,1191501291]
+   },
+   {
+    "id": "nile_crossing/turtle/9",
+    "tuple": [1,2221,2,1474366878]
+   },
+   {
+    "id": "nile_crossing/turtle/10",
+    "tuple": [0,2283,0,4223682002]
+   },
+   {
+    "id": "alps_elephant/counter/1",
+    "tuple": [1,1155,3,2746282688]
+   },
+   {
+    "id": "alps_elephant/counter/2",
+    "tuple": [1,1305,3,74743652]
+   },
+   {
+    "id": "alps_elephant/counter/3",
+    "tuple": [1,1261,3,3601081460]
+   },
+   {
+    "id": "alps_elephant/counter/4",
+    "tuple": [1,1252,3,2472696097]
+   },
+   {
+    "id": "alps_elephant/counter/5",
+    "tuple": [1,1334,3,3678123629]
+   },
+   {
+    "id": "alps_elephant/counter/6",
+    "tuple": [1,1223,3,315017104]
+   },
+   {
+    "id": "alps_elephant/counter/7",
+    "tuple": [1,1201,3,259156203]
+   },
+   {
+    "id": "alps_elephant/counter/8",
+    "tuple": [1,1268,3,2255929529]
+   },
+   {
+    "id": "alps_elephant/counter/9",
+    "tuple": [1,1275,3,4185440724]
+   },
+   {
+    "id": "alps_elephant/counter/10",
+    "tuple": [1,1195,3,2583581845]
+   },
+   {
+    "id": "alps_elephant/counter/11",
+    "tuple": [1,1350,3,4081496818]
+   },
+   {
+    "id": "alps_elephant/counter/12",
+    "tuple": [1,1470,3,2489981630]
+   },
+   {
+    "id": "alps_elephant/counter/13",
+    "tuple": [1,1260,3,2971708838]
+   },
+   {
+    "id": "alps_elephant/counter/14",
+    "tuple": [1,1241,3,3382107288]
+   },
+   {
+    "id": "alps_elephant/counter/15",
+    "tuple": [1,1335,3,2977422911]
+   },
+   {
+    "id": "alps_elephant/counter/16",
+    "tuple": [1,1135,3,1611185622]
+   },
+   {
+    "id": "alps_elephant/counter/17",
+    "tuple": [1,1480,3,2051504830]
+   },
+   {
+    "id": "alps_elephant/counter/18",
+    "tuple": [1,1251,3,687877175]
+   },
+   {
+    "id": "alps_elephant/counter/19",
+    "tuple": [1,1216,3,1892559224]
+   },
+   {
+    "id": "alps_elephant/counter/20",
+    "tuple": [1,1245,3,3484691654]
+   },
+   {
+    "id": "alps_elephant/greedy/1",
+    "tuple": [1,2265,2,2047592536]
+   },
+   {
+    "id": "alps_elephant/greedy/2",
+    "tuple": [0,2265,0,624965686]
+   },
+   {
+    "id": "alps_elephant/greedy/3",
+    "tuple": [0,2355,0,3440420766]
+   },
+   {
+    "id": "alps_elephant/greedy/4",
+    "tuple": [0,2535,0,4266196944]
+   },
+   {
+    "id": "alps_elephant/greedy/5",
+    "tuple": [0,2325,0,1677388764]
+   },
+   {
+    "id": "alps_elephant/greedy/6",
+    "tuple": [0,2430,0,3695307159]
+   },
+   {
+    "id": "alps_elephant/greedy/7",
+    "tuple": [0,2460,0,1255552356]
+   },
+   {
+    "id": "alps_elephant/greedy/8",
+    "tuple": [0,2385,0,2107843252]
+   },
+   {
+    "id": "alps_elephant/greedy/9",
+    "tuple": [1,2460,2,1117012038]
+   },
+   {
+    "id": "alps_elephant/greedy/10",
+    "tuple": [0,2730,0,2929968604]
+   },
+   {
+    "id": "alps_elephant/greedy/11",
+    "tuple": [0,2340,0,1446747422]
+   },
+   {
+    "id": "alps_elephant/greedy/12",
+    "tuple": [1,2220,2,4222445504]
+   },
+   {
+    "id": "alps_elephant/greedy/13",
+    "tuple": [0,2415,0,1559137715]
+   },
+   {
+    "id": "alps_elephant/greedy/14",
+    "tuple": [0,2535,0,3141940955]
+   },
+   {
+    "id": "alps_elephant/greedy/15",
+    "tuple": [0,2565,0,2545476179]
+   },
+   {
+    "id": "alps_elephant/greedy/16",
+    "tuple": [1,2280,2,176650988]
+   },
+   {
+    "id": "alps_elephant/greedy/17",
+    "tuple": [0,2340,0,1922371803]
+   },
+   {
+    "id": "alps_elephant/greedy/18",
+    "tuple": [0,2535,0,1114238359]
+   },
+   {
+    "id": "alps_elephant/greedy/19",
+    "tuple": [0,2340,0,3674519315]
+   },
+   {
+    "id": "alps_elephant/greedy/20",
+    "tuple": [0,2325,0,3812336898]
+   },
+   {
+    "id": "alps_elephant/turtle/1",
+    "tuple": [0,2790,0,484536643]
+   },
+   {
+    "id": "alps_elephant/turtle/2",
+    "tuple": [0,2415,0,3064215237]
+   },
+   {
+    "id": "alps_elephant/turtle/3",
+    "tuple": [0,2580,0,2895605744]
+   },
+   {
+    "id": "alps_elephant/turtle/4",
+    "tuple": [0,2625,0,478714781]
+   },
+   {
+    "id": "alps_elephant/turtle/5",
+    "tuple": [0,2475,0,2578499676]
+   },
+   {
+    "id": "alps_elephant/turtle/6",
+    "tuple": [0,2295,0,1656152725]
+   },
+   {
+    "id": "alps_elephant/turtle/7",
+    "tuple": [0,2595,0,3308050668]
+   },
+   {
+    "id": "alps_elephant/turtle/8",
+    "tuple": [0,2685,0,6044215]
+   },
+   {
+    "id": "alps_elephant/turtle/9",
+    "tuple": [0,2385,0,3675863473]
+   },
+   {
+    "id": "alps_elephant/turtle/10",
+    "tuple": [0,2370,0,1185519181]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/1",
+    "tuple": [1,3905,1,880147117]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/2",
+    "tuple": [1,5189,1,3412981738]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/3",
+    "tuple": [1,5267,1,499226083]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/4",
+    "tuple": [1,4812,1,4003789479]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/5",
+    "tuple": [1,4825,1,3517286846]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/6",
+    "tuple": [1,2984,1,1959862982]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/7",
+    "tuple": [1,4075,1,62827226]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/8",
+    "tuple": [1,6684,1,112552740]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/9",
+    "tuple": [1,4719,1,3205787945]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/10",
+    "tuple": [1,3033,2,695540166]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/11",
+    "tuple": [1,3340,1,3214023357]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/12",
+    "tuple": [1,4622,1,1522113420]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/13",
+    "tuple": [1,3750,1,797792964]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/14",
+    "tuple": [1,3272,1,948129520]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/15",
+    "tuple": [1,5544,1,1204077566]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/16",
+    "tuple": [1,3404,1,3327365947]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/17",
+    "tuple": [1,3248,1,39335533]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/18",
+    "tuple": [0,7201,0,1182566120]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/19",
+    "tuple": [1,5707,1,3364096225]
+   },
+   {
+    "id": "teutoburg_peekaboo/counter/20",
+    "tuple": [0,5474,0,3047722151]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/1",
+    "tuple": [0,5021,0,2437290787]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/2",
+    "tuple": [0,4397,0,1309320561]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/3",
+    "tuple": [1,5393,1,1264889814]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/4",
+    "tuple": [1,4390,1,2282351846]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/5",
+    "tuple": [1,4911,1,2959363658]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/6",
+    "tuple": [0,5369,0,3736035404]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/7",
+    "tuple": [0,4594,0,2780070199]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/8",
+    "tuple": [1,4677,1,1784613018]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/9",
+    "tuple": [1,4532,1,3698997201]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/10",
+    "tuple": [1,3842,1,2741301796]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/11",
+    "tuple": [1,4789,1,1729288327]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/12",
+    "tuple": [1,4967,1,273327161]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/13",
+    "tuple": [1,4255,1,728854325]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/14",
+    "tuple": [0,4646,0,102550091]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/15",
+    "tuple": [1,3087,1,1741699263]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/16",
+    "tuple": [1,4505,1,2881209291]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/17",
+    "tuple": [0,4260,0,1922874783]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/18",
+    "tuple": [1,5082,1,103160585]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/19",
+    "tuple": [0,5233,0,3197236015]
+   },
+   {
+    "id": "teutoburg_peekaboo/greedy/20",
+    "tuple": [0,4404,0,790065768]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/1",
+    "tuple": [0,4795,0,1994041426]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/2",
+    "tuple": [0,4224,0,142955617]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/3",
+    "tuple": [1,4739,1,194818413]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/4",
+    "tuple": [0,4877,0,1288837580]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/5",
+    "tuple": [1,4939,1,280575021]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/6",
+    "tuple": [1,5032,1,40707511]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/7",
+    "tuple": [0,4789,0,2149003846]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/8",
+    "tuple": [0,6391,0,4001006079]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/9",
+    "tuple": [1,4987,1,4136314786]
+   },
+   {
+    "id": "teutoburg_peekaboo/turtle/10",
+    "tuple": [0,4008,0,3504711628]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/1",
+    "tuple": [1,3199,1,2212410771]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/2",
+    "tuple": [0,3715,0,2160153163]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/3",
+    "tuple": [1,2838,1,3047679781]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/4",
+    "tuple": [1,2896,1,857506262]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/5",
+    "tuple": [1,4821,1,3725325211]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/6",
+    "tuple": [1,2665,1,1573405644]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/7",
+    "tuple": [1,4061,1,1220051163]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/8",
+    "tuple": [1,5087,1,4114953191]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/9",
+    "tuple": [1,3164,1,702518211]
+   },
+   {
+    "id": "teutoburg_peekaboo/raid/10",
+    "tuple": [1,3757,1,3775717378]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/1",
+    "tuple": [1,1643,3,3686392810]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/2",
+    "tuple": [1,2251,2,554482653]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/3",
+    "tuple": [1,2039,3,2801668305]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/4",
+    "tuple": [1,1642,3,1550833822]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/5",
+    "tuple": [1,2198,3,2535017957]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/6",
+    "tuple": [1,1715,3,523351039]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/7",
+    "tuple": [1,1840,3,1164250017]
+   },
+   {
+    "id": "teutoburg_peekaboo/expert/8",
+    "tuple": [1,1942,3,2243995082]
+   },
+   {
+    "id": "troy_giftshop/counter/1",
+    "tuple": [1,1981,3,1210416272]
+   },
+   {
+    "id": "troy_giftshop/counter/2",
+    "tuple": [1,3456,3,2735695424]
+   },
+   {
+    "id": "troy_giftshop/counter/3",
+    "tuple": [1,3149,2,607605646]
+   },
+   {
+    "id": "troy_giftshop/counter/4",
+    "tuple": [1,4111,2,1277293330]
+   },
+   {
+    "id": "troy_giftshop/counter/5",
+    "tuple": [1,3142,3,581079413]
+   },
+   {
+    "id": "troy_giftshop/counter/6",
+    "tuple": [1,2918,3,1395353562]
+   },
+   {
+    "id": "troy_giftshop/counter/7",
+    "tuple": [1,3174,2,1506702792]
+   },
+   {
+    "id": "troy_giftshop/counter/8",
+    "tuple": [1,3636,2,3333159797]
+   },
+   {
+    "id": "troy_giftshop/counter/9",
+    "tuple": [1,3858,3,4127129322]
+   },
+   {
+    "id": "troy_giftshop/counter/10",
+    "tuple": [1,2974,3,672736027]
+   },
+   {
+    "id": "troy_giftshop/counter/11",
+    "tuple": [1,3040,3,2980876405]
+   },
+   {
+    "id": "troy_giftshop/counter/12",
+    "tuple": [1,2630,2,1099488497]
+   },
+   {
+    "id": "troy_giftshop/counter/13",
+    "tuple": [1,2324,2,2900646099]
+   },
+   {
+    "id": "troy_giftshop/counter/14",
+    "tuple": [1,3830,2,3315691934]
+   },
+   {
+    "id": "troy_giftshop/counter/15",
+    "tuple": [1,2869,3,868273581]
+   },
+   {
+    "id": "troy_giftshop/counter/16",
+    "tuple": [1,2381,3,1483500719]
+   },
+   {
+    "id": "troy_giftshop/counter/17",
+    "tuple": [1,3415,3,4010978007]
+   },
+   {
+    "id": "troy_giftshop/counter/18",
+    "tuple": [1,4275,3,2494622437]
+   },
+   {
+    "id": "troy_giftshop/counter/19",
+    "tuple": [1,3459,2,2824038267]
+   },
+   {
+    "id": "troy_giftshop/counter/20",
+    "tuple": [1,2910,2,1795598846]
+   },
+   {
+    "id": "troy_giftshop/greedy/1",
+    "tuple": [1,3094,2,4066993765]
+   },
+   {
+    "id": "troy_giftshop/greedy/2",
+    "tuple": [0,4011,0,2670184644]
+   },
+   {
+    "id": "troy_giftshop/greedy/3",
+    "tuple": [1,3629,2,1829196735]
+   },
+   {
+    "id": "troy_giftshop/greedy/4",
+    "tuple": [0,4501,0,662144912]
+   },
+   {
+    "id": "troy_giftshop/greedy/5",
+    "tuple": [0,4211,0,506562538]
+   },
+   {
+    "id": "troy_giftshop/greedy/6",
+    "tuple": [1,2726,2,2663410847]
+   },
+   {
+    "id": "troy_giftshop/greedy/7",
+    "tuple": [1,3253,2,4097992944]
+   },
+   {
+    "id": "troy_giftshop/greedy/8",
+    "tuple": [1,2513,3,295295080]
+   },
+   {
+    "id": "troy_giftshop/greedy/9",
+    "tuple": [0,4632,0,1231875864]
+   },
+   {
+    "id": "troy_giftshop/greedy/10",
+    "tuple": [1,3419,3,1412691799]
+   },
+   {
+    "id": "troy_giftshop/greedy/11",
+    "tuple": [0,4971,0,3997224314]
+   },
+   {
+    "id": "troy_giftshop/greedy/12",
+    "tuple": [0,4449,0,21332099]
+   },
+   {
+    "id": "troy_giftshop/greedy/13",
+    "tuple": [0,4854,0,2895223534]
+   },
+   {
+    "id": "troy_giftshop/greedy/14",
+    "tuple": [0,4167,0,1256421660]
+   },
+   {
+    "id": "troy_giftshop/greedy/15",
+    "tuple": [1,3001,3,794676221]
+   },
+   {
+    "id": "troy_giftshop/greedy/16",
+    "tuple": [0,4940,0,1645788773]
+   },
+   {
+    "id": "troy_giftshop/greedy/17",
+    "tuple": [1,3631,2,4189372420]
+   },
+   {
+    "id": "troy_giftshop/greedy/18",
+    "tuple": [0,4579,0,679284250]
+   },
+   {
+    "id": "troy_giftshop/greedy/19",
+    "tuple": [0,3812,0,786917562]
+   },
+   {
+    "id": "troy_giftshop/greedy/20",
+    "tuple": [0,6376,0,3014748652]
+   },
+   {
+    "id": "troy_giftshop/turtle/1",
+    "tuple": [1,3830,2,115350541]
+   },
+   {
+    "id": "troy_giftshop/turtle/2",
+    "tuple": [1,2604,3,1053505936]
+   },
+   {
+    "id": "troy_giftshop/turtle/3",
+    "tuple": [1,3836,2,3127910060]
+   },
+   {
+    "id": "troy_giftshop/turtle/4",
+    "tuple": [1,3361,2,4123139444]
+   },
+   {
+    "id": "troy_giftshop/turtle/5",
+    "tuple": [1,2642,3,3332001850]
+   },
+   {
+    "id": "troy_giftshop/turtle/6",
+    "tuple": [1,3931,2,3425736941]
+   },
+   {
+    "id": "troy_giftshop/turtle/7",
+    "tuple": [1,3075,3,3779180711]
+   },
+   {
+    "id": "troy_giftshop/turtle/8",
+    "tuple": [1,2803,2,2443099695]
+   },
+   {
+    "id": "troy_giftshop/turtle/9",
+    "tuple": [1,3607,2,3669302995]
+   },
+   {
+    "id": "troy_giftshop/turtle/10",
+    "tuple": [1,2810,3,3794725784]
+   },
+   {
+    "id": "cyclops_meet/counter/1",
+    "tuple": [1,3611,1,1264422734]
+   },
+   {
+    "id": "cyclops_meet/counter/2",
+    "tuple": [1,3192,1,2164685454]
+   },
+   {
+    "id": "cyclops_meet/counter/3",
+    "tuple": [1,4064,1,2589508916]
+   },
+   {
+    "id": "cyclops_meet/counter/4",
+    "tuple": [1,2821,1,2912661481]
+   },
+   {
+    "id": "cyclops_meet/counter/5",
+    "tuple": [1,3431,1,3774440321]
+   },
+   {
+    "id": "cyclops_meet/counter/6",
+    "tuple": [1,5758,1,485265302]
+   },
+   {
+    "id": "cyclops_meet/counter/7",
+    "tuple": [1,3449,1,3473480059]
+   },
+   {
+    "id": "cyclops_meet/counter/8",
+    "tuple": [1,3529,1,2407230907]
+   },
+   {
+    "id": "cyclops_meet/counter/9",
+    "tuple": [1,2761,1,2526972247]
+   },
+   {
+    "id": "cyclops_meet/counter/10",
+    "tuple": [1,2495,1,1116936034]
+   },
+   {
+    "id": "cyclops_meet/counter/11",
+    "tuple": [1,2484,1,2903590134]
+   },
+   {
+    "id": "cyclops_meet/counter/12",
+    "tuple": [1,5508,1,3807323571]
+   },
+   {
+    "id": "cyclops_meet/counter/13",
+    "tuple": [1,3619,1,1650289454]
+   },
+   {
+    "id": "cyclops_meet/counter/14",
+    "tuple": [1,3475,1,345218486]
+   },
+   {
+    "id": "cyclops_meet/counter/15",
+    "tuple": [1,2518,1,3250517805]
+   },
+   {
+    "id": "cyclops_meet/counter/16",
+    "tuple": [1,3781,1,2718730400]
+   },
+   {
+    "id": "cyclops_meet/counter/17",
+    "tuple": [0,1831,0,3511666661]
+   },
+   {
+    "id": "cyclops_meet/counter/18",
+    "tuple": [1,2996,1,3922048411]
+   },
+   {
+    "id": "cyclops_meet/counter/19",
+    "tuple": [1,4769,1,2884245719]
+   },
+   {
+    "id": "cyclops_meet/counter/20",
+    "tuple": [1,2981,1,2845916667]
+   },
+   {
+    "id": "cyclops_meet/greedy/1",
+    "tuple": [0,1687,0,1400044725]
+   },
+   {
+    "id": "cyclops_meet/greedy/2",
+    "tuple": [0,1364,0,1402741840]
+   },
+   {
+    "id": "cyclops_meet/greedy/3",
+    "tuple": [0,1287,0,719876594]
+   },
+   {
+    "id": "cyclops_meet/greedy/4",
+    "tuple": [1,3134,1,3781699510]
+   },
+   {
+    "id": "cyclops_meet/greedy/5",
+    "tuple": [0,1111,0,3634265555]
+   },
+   {
+    "id": "cyclops_meet/greedy/6",
+    "tuple": [0,1184,0,2060827438]
+   },
+   {
+    "id": "cyclops_meet/greedy/7",
+    "tuple": [0,1095,0,2280561785]
+   },
+   {
+    "id": "cyclops_meet/greedy/8",
+    "tuple": [1,2813,1,2456562716]
+   },
+   {
+    "id": "cyclops_meet/greedy/9",
+    "tuple": [0,5227,0,386942044]
+   },
+   {
+    "id": "cyclops_meet/greedy/10",
+    "tuple": [0,2825,0,3704366616]
+   },
+   {
+    "id": "cyclops_meet/greedy/11",
+    "tuple": [0,1360,0,2837833424]
+   },
+   {
+    "id": "cyclops_meet/greedy/12",
+    "tuple": [0,1518,0,66035403]
+   },
+   {
+    "id": "cyclops_meet/greedy/13",
+    "tuple": [0,1648,0,2064615789]
+   },
+   {
+    "id": "cyclops_meet/greedy/14",
+    "tuple": [0,1271,0,4159609146]
+   },
+   {
+    "id": "cyclops_meet/greedy/15",
+    "tuple": [0,1458,0,2615136656]
+   },
+   {
+    "id": "cyclops_meet/greedy/16",
+    "tuple": [1,2545,1,3733396351]
+   },
+   {
+    "id": "cyclops_meet/greedy/17",
+    "tuple": [0,4944,0,2892570108]
+   },
+   {
+    "id": "cyclops_meet/greedy/18",
+    "tuple": [0,2045,0,1105322645]
+   },
+   {
+    "id": "cyclops_meet/greedy/19",
+    "tuple": [0,1434,0,1468277131]
+   },
+   {
+    "id": "cyclops_meet/greedy/20",
+    "tuple": [1,2925,1,2987461628]
+   },
+   {
+    "id": "cyclops_meet/turtle/1",
+    "tuple": [0,1191,0,3010957702]
+   },
+   {
+    "id": "cyclops_meet/turtle/2",
+    "tuple": [0,1170,0,3185099680]
+   },
+   {
+    "id": "cyclops_meet/turtle/3",
+    "tuple": [0,1203,0,3566335591]
+   },
+   {
+    "id": "cyclops_meet/turtle/4",
+    "tuple": [0,1334,0,3115373459]
+   },
+   {
+    "id": "cyclops_meet/turtle/5",
+    "tuple": [0,1127,0,4130821604]
+   },
+   {
+    "id": "cyclops_meet/turtle/6",
+    "tuple": [1,4594,1,1819456594]
+   },
+   {
+    "id": "cyclops_meet/turtle/7",
+    "tuple": [1,3654,1,312486960]
+   },
+   {
+    "id": "cyclops_meet/turtle/8",
+    "tuple": [0,1353,0,3261964171]
+   },
+   {
+    "id": "cyclops_meet/turtle/9",
+    "tuple": [0,2057,0,835925981]
+   },
+   {
+    "id": "cyclops_meet/turtle/10",
+    "tuple": [0,1294,0,1720635914]
+   },
+   {
+    "id": "cyclops_meet/melee/1",
+    "tuple": [1,2878,2,2062983443]
+   },
+   {
+    "id": "cyclops_meet/melee/2",
+    "tuple": [1,1168,3,2872862756]
+   },
+   {
+    "id": "cyclops_meet/melee/3",
+    "tuple": [1,3317,2,3251589644]
+   },
+   {
+    "id": "cyclops_meet/melee/4",
+    "tuple": [1,3521,2,3524789082]
+   },
+   {
+    "id": "cyclops_meet/melee/5",
+    "tuple": [1,3052,2,977558511]
+   },
+   {
+    "id": "cyclops_meet/melee/6",
+    "tuple": [1,2449,3,3459790467]
+   },
+   {
+    "id": "cyclops_meet/melee/7",
+    "tuple": [1,2459,3,343136041]
+   },
+   {
+    "id": "cyclops_meet/melee/8",
+    "tuple": [1,2350,3,751167790]
+   },
+   {
+    "id": "cyclops_meet/melee/9",
+    "tuple": [1,3091,2,2487353001]
+   },
+   {
+    "id": "cyclops_meet/melee/10",
+    "tuple": [1,1211,3,2567499696]
+   },
+   {
+    "id": "cyclops_meet/melee/11",
+    "tuple": [1,4471,2,2109359553]
+   },
+   {
+    "id": "cyclops_meet/melee/12",
+    "tuple": [1,1170,3,3375509576]
+   },
+   {
+    "id": "zeus_bad_day/counter/1",
+    "tuple": [1,5193,2,2104660750]
+   },
+   {
+    "id": "zeus_bad_day/counter/2",
+    "tuple": [1,2952,2,2650858041]
+   },
+   {
+    "id": "zeus_bad_day/counter/3",
+    "tuple": [1,2492,2,1067368250]
+   },
+   {
+    "id": "zeus_bad_day/counter/4",
+    "tuple": [1,3186,1,2890489868]
+   },
+   {
+    "id": "zeus_bad_day/counter/5",
+    "tuple": [1,3331,2,444504518]
+   },
+   {
+    "id": "zeus_bad_day/counter/6",
+    "tuple": [1,3042,2,3999837967]
+   },
+   {
+    "id": "zeus_bad_day/counter/7",
+    "tuple": [1,3029,2,4095629885]
+   },
+   {
+    "id": "zeus_bad_day/counter/8",
+    "tuple": [1,2652,2,3738096475]
+   },
+   {
+    "id": "zeus_bad_day/counter/9",
+    "tuple": [1,4099,2,2679249538]
+   },
+   {
+    "id": "zeus_bad_day/counter/10",
+    "tuple": [0,5278,0,4049049105]
+   },
+   {
+    "id": "zeus_bad_day/counter/11",
+    "tuple": [1,2728,2,622453064]
+   },
+   {
+    "id": "zeus_bad_day/counter/12",
+    "tuple": [1,2711,2,2709199547]
+   },
+   {
+    "id": "zeus_bad_day/counter/13",
+    "tuple": [1,2753,2,2004416532]
+   },
+   {
+    "id": "zeus_bad_day/counter/14",
+    "tuple": [1,5117,2,2077683090]
+   },
+   {
+    "id": "zeus_bad_day/counter/15",
+    "tuple": [1,2947,2,1022522528]
+   },
+   {
+    "id": "zeus_bad_day/counter/16",
+    "tuple": [0,5060,0,589363015]
+   },
+   {
+    "id": "zeus_bad_day/counter/17",
+    "tuple": [1,5357,2,1525588908]
+   },
+   {
+    "id": "zeus_bad_day/counter/18",
+    "tuple": [1,2485,2,1629999696]
+   },
+   {
+    "id": "zeus_bad_day/counter/19",
+    "tuple": [1,2806,2,2754253111]
+   },
+   {
+    "id": "zeus_bad_day/counter/20",
+    "tuple": [1,2646,2,3963650830]
+   },
+   {
+    "id": "zeus_bad_day/greedy/1",
+    "tuple": [1,4274,1,1239316074]
+   },
+   {
+    "id": "zeus_bad_day/greedy/2",
+    "tuple": [0,5936,0,572649079]
+   },
+   {
+    "id": "zeus_bad_day/greedy/3",
+    "tuple": [1,2870,1,2250094852]
+   },
+   {
+    "id": "zeus_bad_day/greedy/4",
+    "tuple": [1,3876,1,3457921059]
+   },
+   {
+    "id": "zeus_bad_day/greedy/5",
+    "tuple": [0,5622,0,1009938735]
+   },
+   {
+    "id": "zeus_bad_day/greedy/6",
+    "tuple": [0,4163,0,3777837563]
+   },
+   {
+    "id": "zeus_bad_day/greedy/7",
+    "tuple": [0,5468,0,737228668]
+   },
+   {
+    "id": "zeus_bad_day/greedy/8",
+    "tuple": [0,5545,0,592412512]
+   },
+   {
+    "id": "zeus_bad_day/greedy/9",
+    "tuple": [0,5364,0,235172884]
+   },
+   {
+    "id": "zeus_bad_day/greedy/10",
+    "tuple": [1,3056,1,3253276590]
+   },
+   {
+    "id": "zeus_bad_day/greedy/11",
+    "tuple": [1,2651,1,303973661]
+   },
+   {
+    "id": "zeus_bad_day/greedy/12",
+    "tuple": [1,2466,2,904807110]
+   },
+   {
+    "id": "zeus_bad_day/greedy/13",
+    "tuple": [0,5069,0,1702144659]
+   },
+   {
+    "id": "zeus_bad_day/greedy/14",
+    "tuple": [1,2313,2,1650853263]
+   },
+   {
+    "id": "zeus_bad_day/greedy/15",
+    "tuple": [1,5478,1,3534220894]
+   },
+   {
+    "id": "zeus_bad_day/greedy/16",
+    "tuple": [1,2712,2,903643457]
+   },
+   {
+    "id": "zeus_bad_day/greedy/17",
+    "tuple": [0,5690,0,2171694212]
+   },
+   {
+    "id": "zeus_bad_day/greedy/18",
+    "tuple": [0,5557,0,985527526]
+   },
+   {
+    "id": "zeus_bad_day/greedy/19",
+    "tuple": [0,5054,0,3241530554]
+   },
+   {
+    "id": "zeus_bad_day/greedy/20",
+    "tuple": [0,4917,0,3682425828]
+   },
+   {
+    "id": "zeus_bad_day/turtle/1",
+    "tuple": [0,4560,0,1518209561]
+   },
+   {
+    "id": "zeus_bad_day/turtle/2",
+    "tuple": [0,4344,0,1953770191]
+   },
+   {
+    "id": "zeus_bad_day/turtle/3",
+    "tuple": [0,6269,0,2162935960]
+   },
+   {
+    "id": "zeus_bad_day/turtle/4",
+    "tuple": [0,3647,0,248136045]
+   },
+   {
+    "id": "zeus_bad_day/turtle/5",
+    "tuple": [0,5091,0,1084787626]
+   },
+   {
+    "id": "zeus_bad_day/turtle/6",
+    "tuple": [0,4367,0,3388746949]
+   },
+   {
+    "id": "zeus_bad_day/turtle/7",
+    "tuple": [0,4768,0,1564017964]
+   },
+   {
+    "id": "zeus_bad_day/turtle/8",
+    "tuple": [0,5674,0,2366932360]
+   },
+   {
+    "id": "zeus_bad_day/turtle/9",
+    "tuple": [0,5829,0,2706510640]
+   },
+   {
+    "id": "zeus_bad_day/turtle/10",
+    "tuple": [0,5009,0,901379863]
+   },
+   {
+    "id": "zeus_bad_day/expert/1",
+    "tuple": [1,2268,2,2948418899]
+   },
+   {
+    "id": "zeus_bad_day/expert/2",
+    "tuple": [1,2315,2,339809110]
+   },
+   {
+    "id": "zeus_bad_day/expert/3",
+    "tuple": [1,2527,2,132743896]
+   },
+   {
+    "id": "zeus_bad_day/expert/4",
+    "tuple": [1,2319,2,638106793]
+   },
+   {
+    "id": "zeus_bad_day/expert/5",
+    "tuple": [1,2297,2,2614966129]
+   },
+   {
+    "id": "zeus_bad_day/expert/6",
+    "tuple": [1,2576,2,4244589716]
+   },
+   {
+    "id": "zeus_bad_day/expert/7",
+    "tuple": [1,2225,2,1681553445]
+   },
+   {
+    "id": "zeus_bad_day/expert/8",
+    "tuple": [1,2252,2,1817568871]
+   }
+  ],
+  "legacy": "feasibility.v8.json",
+  "runs": {
+   "alps_elephant": {
+    "bots": {
+     "counter": {
+      "avgWinT": 42.42000000000016,
+      "budget": 11000,
+      "hash": "9e5e929c",
+      "n": 20,
+      "perSeed": [
+       [1,38.5,3],
+       [1,43.5,3],
+       [1,42,3],
+       [1,41.7,3],
+       [1,44.5,3],
+       [1,40.8,3],
+       [1,40,3],
+       [1,42.3,3],
+       [1,42.5,3],
+       [1,39.8,3],
+       [1,45,3],
+       [1,49,3],
+       [1,42,3],
+       [1,41.4,3],
+       [1,44.5,3],
+       [1,37.8,3],
+       [1,49.3,3],
+       [1,41.7,3],
+       [1,40.5,3],
+       [1,41.5,3]
+      ],
+      "rate": 1,
+      "starHits": [20,20,20],
+      "wins": 20
+     },
+     "greedy": {
+      "avgWinT": 76.8749999999982,
+      "budget": 11000,
+      "hash": "9e5e929c",
+      "n": 20,
+      "perSeed": [
+       [1,75.5,2],
+       [0,75.5,0],
+       [0,78.5,0],
+       [0,84.5,0],
+       [0,77.5,0],
+       [0,81,0],
+       [0,82,0],
+       [0,79.5,0],
+       [1,82,2],
+       [0,91,0],
+       [0,78,0],
+       [1,74,2],
+       [0,80.5,0],
+       [0,84.5,0],
+       [0,85.5,0],
+       [1,76,2],
+       [0,78,0],
+       [0,84.5,0],
+       [0,78,0],
+       [0,77.5,0]
+      ],
+      "rate": 0.2,
+      "starHits": [4,0,4],
+      "wins": 4
+     },
+     "turtle": {
+      "avgWinT": 0,
+      "budget": 11000,
+      "hash": "9e5e929c",
+      "n": 10,
+      "perSeed": [
+       [0,93,0],
+       [0,80.5,0],
+       [0,86,0],
+       [0,87.5,0],
+       [0,82.5,0],
+       [0,76.5,0],
+       [0,86.5,0],
+       [0,89.5,0],
+       [0,79.5,0],
+       [0,79,0]
+      ],
+      "rate": 0,
+      "starHits": [0,0,0],
+      "wins": 0
+     }
+    },
+    "hash": "9e5e929c"
+   },
+   "cyclops_meet": {
+    "bots": {
+     "counter": {
+      "avgWinT": 117.96842105262746,
+      "budget": 8000,
+      "hash": "eab0102e",
+      "n": 20,
+      "perSeed": [
+       [1,120.4,1],
+       [1,106.4,1],
+       [1,135.5,1],
+       [1,94,1],
+       [1,114.4,1],
+       [1,191.9,1],
+       [1,115,1],
+       [1,117.6,1],
+       [1,92,1],
+       [1,83.2,1],
+       [1,82.8,1],
+       [1,183.6,1],
+       [1,120.6,1],
+       [1,115.8,1],
+       [1,83.9,1],
+       [1,126,1],
+       [0,61,0],
+       [1,99.9,1],
+       [1,159,1],
+       [1,99.4,1]
+      ],
+      "rate": 0.95,
+      "starHits": [19,0,0],
+      "wins": 19
+     },
+     "greedy": {
+      "avgWinT": 95.14166666666384,
+      "budget": 8000,
+      "hash": "eab0102e",
+      "n": 20,
+      "perSeed": [
+       [0,56.2,0],
+       [0,45.5,0],
+       [0,42.9,0],
+       [1,104.5,1],
+       [0,37,0],
+       [0,39.5,0],
+       [0,36.5,0],
+       [1,93.8,1],
+       [0,174.2,0],
+       [0,94.2,0],
+       [0,45.3,0],
+       [0,50.6,0],
+       [0,54.9,0],
+       [0,42.4,0],
+       [0,48.6,0],
+       [1,84.8,1],
+       [0,164.8,0],
+       [0,68.2,0],
+       [0,47.8,0],
+       [1,97.5,1]
+      ],
+      "rate": 0.2,
+      "starHits": [4,0,0],
+      "wins": 4
+     },
+     "melee": {
+      "avgWinT": 86.49166666666433,
+      "budget": 8000,
+      "hash": "eab0102e",
+      "n": 12,
+      "perSeed": [
+       [1,95.9,2],
+       [1,38.9,3],
+       [1,110.6,2],
+       [1,117.4,2],
+       [1,101.7,2],
+       [1,81.6,3],
+       [1,82,3],
+       [1,78.3,3],
+       [1,103,2],
+       [1,40.4,3],
+       [1,149,2],
+       [1,39,3]
+      ],
+      "rate": 1,
+      "starHits": [12,6,12],
+      "wins": 12
+     },
+     "turtle": {
+      "avgWinT": 137.46666666666144,
+      "budget": 8000,
+      "hash": "eab0102e",
+      "n": 10,
+      "perSeed": [
+       [0,39.7,0],
+       [0,39,0],
+       [0,40.1,0],
+       [0,44.5,0],
+       [0,37.6,0],
+       [1,153.1,1],
+       [1,121.8,1],
+       [0,45.1,0],
+       [0,68.6,0],
+       [0,43.1,0]
+      ],
+      "rate": 0.2,
+      "starHits": [2,0,0],
+      "wins": 2
+     }
+    },
+    "hash": "eab0102e"
+   },
+   "marathon_sort_of": {
+    "bots": {
+     "counter": {
+      "avgWinT": 107.70624999999646,
+      "budget": 3000,
+      "hash": "c2ce5c90",
+      "n": 20,
+      "perSeed": [
+       [0,132,0],
+       [0,83,0],
+       [1,99.1,2],
+       [0,126,0],
+       [1,142,1],
+       [1,82,2],
+       [0,102,0],
+       [1,114.5,1],
+       [1,82.1,1],
+       [1,103.5,1],
+       [1,132.5,1],
+       [1,103.5,1],
+       [1,115,1],
+       [1,123.8,1],
+       [1,117,1],
+       [1,122,1],
+       [1,104,1],
+       [1,71,1],
+       [1,108,1],
+       [1,103.3,1]
+      ],
+      "rate": 0.8,
+      "starHits": [16,2,0],
+      "wins": 16
+     },
+     "greedy": {
+      "avgWinT": 111.62857142856764,
+      "budget": 3000,
+      "hash": "c2ce5c90",
+      "n": 20,
+      "perSeed": [
+       [0,90.5,0],
+       [1,134.5,1],
+       [0,137,0],
+       [1,113,1],
+       [0,157.2,0],
+       [0,138.5,0],
+       [0,135.5,0],
+       [1,130,1],
+       [1,74.9,1],
+       [0,109,0],
+       [0,127.5,0],
+       [0,120.5,0],
+       [1,110.5,1],
+       [0,135.5,0],
+       [0,141.5,0],
+       [1,125.5,1],
+       [1,93,1],
+       [0,100,0],
+       [0,130,0],
+       [0,90,0]
+      ],
+      "rate": 0.35,
+      "starHits": [7,0,0],
+      "wins": 7
+     },
+     "thrifty": {
+      "avgWinT": 38.50000000000038,
+      "budget": 2250,
+      "hash": "c2ce5c90",
+      "n": 12,
+      "perSeed": [
+       [1,41,3],
+       [1,37,3],
+       [1,32.5,3],
+       [1,43.5,3],
+       [1,34,3],
+       [1,37,3],
+       [1,43.5,3],
+       [1,39.5,3],
+       [1,35,3],
+       [1,43.5,3],
+       [1,36.5,3],
+       [1,39,3]
+      ],
+      "rate": 1,
+      "starHits": [12,12,12],
+      "wins": 12
+     },
+     "turtle": {
+      "avgWinT": 96.03333333333045,
+      "budget": 3000,
+      "hash": "c2ce5c90",
+      "n": 10,
+      "perSeed": [
+       [0,89,0],
+       [1,114.5,1],
+       [1,94.9,1],
+       [0,105.5,0],
+       [1,84.7,1],
+       [1,93.5,1],
+       [1,92.5,1],
+       [0,105,0],
+       [1,97.6,1],
+       [1,94.5,1]
+      ],
+      "rate": 0.7,
+      "starHits": [7,0,0],
+      "wins": 7
+     }
+    },
+    "hash": "c2ce5c90"
+   },
+   "nile_crossing": {
+    "bots": {
+     "counter": {
+      "avgWinT": 75.34259259259089,
+      "budget": 6500,
+      "hash": "2ad552d8",
+      "n": 20,
+      "perSeed": [
+       [1,73.7,2],
+       [1,75.1,2],
+       [1,74,2],
+       [1,74.5,2],
+       [1,74,2],
+       [1,73.3,2],
+       [1,73.6,2],
+       [1,74.6,2],
+       [1,97.7,2],
+       [1,73.6,2],
+       [1,73.3,2],
+       [1,74.6,2],
+       [1,74.6,2],
+       [0,150,0],
+       [1,73.8,2],
+       [1,73.2,2],
+       [1,73.3,2],
+       [0,127,0],
+       [1,75.5,2],
+       [1,73.7,2]
+      ],
+      "rate": 0.9,
+      "starHits": [18,0,18],
+      "wins": 18
+     },
+     "greedy": {
+      "avgWinT": 74.38095238095072,
+      "budget": 6500,
+      "hash": "2ad552d8",
+      "n": 20,
+      "perSeed": [
+       [0,117.7,0],
+       [0,150,0],
+       [0,72.4,0],
+       [1,74.7,2],
+       [0,70.7,0],
+       [0,70.7,0],
+       [0,106.4,0],
+       [0,126.4,0],
+       [0,135.2,0],
+       [1,74.6,2],
+       [0,70.8,0],
+       [0,112.9,0],
+       [1,74.6,2],
+       [1,76.1,2],
+       [0,75.1,0],
+       [1,73.4,1],
+       [1,74,2],
+       [0,72,0],
+       [1,73.2,2],
+       [0,67.5,0]
+      ],
+      "rate": 0.35,
+      "starHits": [7,0,6],
+      "wins": 7
+     },
+     "turtle": {
+      "avgWinT": 74.35999999999835,
+      "budget": 6500,
+      "hash": "2ad552d8",
+      "n": 10,
+      "perSeed": [
+       [1,75.6,3],
+       [0,74,0],
+       [0,76.4,0],
+       [0,70.6,0],
+       [1,73.6,2],
+       [1,75,2],
+       [0,74.6,0],
+       [1,73.5,2],
+       [1,74,2],
+       [0,76.1,0]
+      ],
+      "rate": 0.5,
+      "starHits": [5,2,4],
+      "wins": 5
+     }
+    },
+    "hash": "2ad552d8"
+   },
+   "pyramid_scheme": {
+    "bots": {
+     "counter": {
+      "avgWinT": 91.54444444444184,
+      "budget": 7500,
+      "hash": "c63a41b9",
+      "n": 20,
+      "perSeed": [
+       [1,74.5,2],
+       [1,69.1,3],
+       [1,157.5,1],
+       [0,159.6,0],
+       [0,198.2,0],
+       [0,127.2,0],
+       [1,59.4,3],
+       [1,86,2],
+       [1,63.8,3],
+       [1,102,1],
+       [1,111.9,2],
+       [1,144.5,1],
+       [0,166.4,0],
+       [1,91.2,1],
+       [1,57.3,3],
+       [0,126.3,0],
+       [1,57.3,3],
+       [1,65.4,2],
+       [1,158.2,1],
+       [1,75.1,2]
+      ],
+      "rate": 0.75,
+      "starHits": [15,6,9],
+      "wins": 15
+     },
+     "expert": {
+      "avgWinT": 43.23750000000011,
+      "budget": 7500,
+      "hash": "c63a41b9",
+      "n": 8,
+      "perSeed": [
+       [1,43.6,3],
+       [1,42.2,3],
+       [1,38.8,3],
+       [1,42.6,3],
+       [1,40.4,3],
+       [1,43.1,3],
+       [1,50.4,3],
+       [1,44.8,3]
+      ],
+      "rate": 1,
+      "starHits": [8,8,8],
+      "wins": 8
+     },
+     "greedy": {
+      "avgWinT": 145.57222222221654,
+      "budget": 7500,
+      "hash": "c63a41b9",
+      "n": 20,
+      "perSeed": [
+       [0,128.3,0],
+       [1,163.1,1],
+       [1,131.1,1],
+       [0,150.9,0],
+       [0,129.5,0],
+       [0,152.4,0],
+       [0,123.3,0],
+       [0,151.3,0],
+       [0,152,0],
+       [0,133.4,0],
+       [0,125.8,0],
+       [1,142.2,1],
+       [1,134.5,1],
+       [1,184,1],
+       [0,159.8,0],
+       [0,149.4,0],
+       [0,123.4,0],
+       [0,139.9,0],
+       [1,118.6,1],
+       [0,122.3,0]
+      ],
+      "rate": 0.3,
+      "starHits": [6,0,0],
+      "wins": 6
+     },
+     "raid": {
+      "avgWinT": 126.51333333332873,
+      "budget": 7500,
+      "hash": "c63a41b9",
+      "n": 10,
+      "perSeed": [
+       [0,173.2,0],
+       [0,142.6,0],
+       [1,159.9,1],
+       [0,141.1,0],
+       [0,161.4,0],
+       [0,171,0],
+       [1,81.3,2],
+       [1,140.5,1],
+       [1,151.7,1],
+       [1,99.2,1]
+      ],
+      "rate": 0.5,
+      "starHits": [5,0,1],
+      "wins": 5
+     },
+     "turtle": {
+      "avgWinT": 130.36666666666184,
+      "budget": 7500,
+      "hash": "c63a41b9",
+      "n": 10,
+      "perSeed": [
+       [0,148,0],
+       [0,135.3,0],
+       [0,166.1,0],
+       [0,146.3,0],
+       [0,179.4,0],
+       [1,126.3,1],
+       [1,134.5,1],
+       [0,151.2,0],
+       [0,146.1,0],
+       [0,147.9,0]
+      ],
+      "rate": 0.2,
+      "starHits": [2,0,0],
+      "wins": 2
+     }
+    },
+    "hash": "c63a41b9"
+   },
+   "teutoburg_peekaboo": {
+    "bots": {
+     "counter": {
+      "avgWinT": 145.14814814814247,
+      "budget": 7500,
+      "hash": "bb7b94c3",
+      "n": 20,
+      "perSeed": [
+       [1,130.2,1],
+       [1,173,1],
+       [1,175.6,1],
+       [1,160.4,1],
+       [1,160.8,1],
+       [1,99.5,1],
+       [1,135.8,1],
+       [1,222.8,1],
+       [1,157.3,1],
+       [1,101.1,2],
+       [1,111.3,1],
+       [1,154.1,1],
+       [1,125,1],
+       [1,109.1,1],
+       [1,184.8,1],
+       [1,113.5,1],
+       [1,108.3,1],
+       [0,240,0],
+       [1,190.2,1],
+       [0,182.5,0]
+      ],
+      "rate": 0.9,
+      "starHits": [18,1,0],
+      "wins": 18
+     },
+     "expert": {
+      "avgWinT": 63.62499999999895,
+      "budget": 7500,
+      "hash": "bb7b94c3",
+      "n": 8,
+      "perSeed": [
+       [1,54.8,3],
+       [1,75,2],
+       [1,68,3],
+       [1,54.7,3],
+       [1,73.3,3],
+       [1,57.2,3],
+       [1,61.3,3],
+       [1,64.7,3]
+      ],
+      "rate": 1,
+      "starHits": [8,8,7],
+      "wins": 8
+     },
+     "greedy": {
+      "avgWinT": 151.1944444444384,
+      "budget": 7500,
+      "hash": "bb7b94c3",
+      "n": 20,
+      "perSeed": [
+       [0,167.4,0],
+       [0,146.6,0],
+       [1,179.8,1],
+       [1,146.3,1],
+       [1,163.7,1],
+       [0,179,0],
+       [0,153.1,0],
+       [1,155.9,1],
+       [1,151.1,1],
+       [1,128.1,1],
+       [1,159.6,1],
+       [1,165.6,1],
+       [1,141.8,1],
+       [0,154.9,0],
+       [1,102.9,1],
+       [1,150.2,1],
+       [0,142,0],
+       [1,169.4,1],
+       [0,174.4,0],
+       [0,146.8,0]
+      ],
+      "rate": 0.6,
+      "starHits": [12,0,0],
+      "wins": 12
+     },
+     "raid": {
+      "avgWinT": 120.32592592592167,
+      "budget": 7500,
+      "hash": "bb7b94c3",
+      "n": 10,
+      "perSeed": [
+       [1,106.6,1],
+       [0,123.8,0],
+       [1,94.6,1],
+       [1,96.5,1],
+       [1,160.7,1],
+       [1,88.8,1],
+       [1,135.4,1],
+       [1,169.6,1],
+       [1,105.5,1],
+       [1,125.2,1]
+      ],
+      "rate": 0.9,
+      "starHits": [9,0,0],
+      "wins": 9
+     },
+     "turtle": {
+      "avgWinT": 164.14166666665994,
+      "budget": 7500,
+      "hash": "bb7b94c3",
+      "n": 10,
+      "perSeed": [
+       [0,159.8,0],
+       [0,140.8,0],
+       [1,158,1],
+       [0,162.6,0],
+       [1,164.6,1],
+       [1,167.7,1],
+       [0,159.6,0],
+       [0,213,0],
+       [1,166.2,1],
+       [0,133.6,0]
+      ],
+      "rate": 0.4,
+      "starHits": [4,0,0],
+      "wins": 4
+     }
+    },
+    "hash": "bb7b94c3"
+   },
+   "thermopylae_snack": {
+    "bots": {
+     "counter": {
+      "avgWinT": 114.94999999999602,
+      "budget": 6000,
+      "hash": "ff1c858d",
+      "n": 20,
+      "perSeed": [
+       [1,126.5,2],
+       [1,119,2],
+       [1,139.5,1],
+       [1,107.5,2],
+       [1,110.5,2],
+       [1,120.5,3],
+       [1,105.5,2],
+       [1,107,2],
+       [1,110.5,3],
+       [1,116,3],
+       [1,109,2],
+       [1,110.5,2],
+       [1,118,2],
+       [1,116,2],
+       [1,116.5,2],
+       [1,108.5,2],
+       [1,108.5,2],
+       [1,109.5,2],
+       [1,117.5,2],
+       [1,122.5,2]
+      ],
+      "rate": 1,
+      "starHits": [20,19,3],
+      "wins": 20
+     },
+     "expert": {
+      "avgWinT": 78.7499999999981,
+      "budget": 6000,
+      "hash": "ff1c858d",
+      "n": 8,
+      "perSeed": [
+       [1,77,2],
+       [1,77.5,1],
+       [1,85,2],
+       [1,74,1],
+       [1,77.5,2],
+       [1,77,2],
+       [1,82.5,3],
+       [1,79.5,2]
+      ],
+      "rate": 1,
+      "starHits": [8,6,1],
+      "wins": 8
+     },
+     "greedy": {
+      "avgWinT": 136.11111111110597,
+      "budget": 6000,
+      "hash": "ff1c858d",
+      "n": 20,
+      "perSeed": [
+       [0,139,0],
+       [1,152,1],
+       [0,132.5,0],
+       [1,130.5,1],
+       [0,136,0],
+       [1,127.5,2],
+       [1,133.5,1],
+       [1,127.5,2],
+       [0,132,0],
+       [1,132.5,1],
+       [1,143.5,1],
+       [0,129.5,0],
+       [0,122.5,0],
+       [0,159.5,0],
+       [1,137.5,1],
+       [0,144.6,0],
+       [1,140.5,1],
+       [0,135,0],
+       [0,151.8,0],
+       [0,128,0]
+      ],
+      "rate": 0.45,
+      "starHits": [9,2,0],
+      "wins": 9
+     },
+     "melee": {
+      "avgWinT": 0,
+      "budget": 6000,
+      "hash": "ff1c858d",
+      "n": 10,
+      "perSeed": [
+       [0,112.5,0],
+       [0,114.5,0],
+       [0,103.6,0],
+       [0,132.7,0],
+       [0,111.8,0],
+       [0,100.5,0],
+       [0,112.3,0],
+       [0,127.3,0],
+       [0,106.3,0],
+       [0,128.6,0]
+      ],
+      "rate": 0,
+      "starHits": [0,0,0],
+      "wins": 0
+     },
+     "turtle": {
+      "avgWinT": 129.2055555555508,
+      "budget": 6000,
+      "hash": "ff1c858d",
+      "n": 10,
+      "perSeed": [
+       [0,148.5,0],
+       [1,124.1,1],
+       [1,124.5,1],
+       [1,135.5,1],
+       [1,140.5,1],
+       [0,123.5,0],
+       [1,125.6,2],
+       [0,123.5,0],
+       [0,123.5,0],
+       [1,125,1]
+      ],
+      "rate": 0.6,
+      "starHits": [6,1,0],
+      "wins": 6
+     }
+    },
+    "hash": "ff1c858d"
+   },
+   "troy_giftshop": {
+    "bots": {
+     "counter": {
+      "avgWinT": 105.88666666666322,
+      "budget": 10000,
+      "hash": "dde19497",
+      "n": 20,
+      "perSeed": [
+       [1,66,3],
+       [1,115.2,3],
+       [1,105,2],
+       [1,137,2],
+       [1,104.7,3],
+       [1,97.3,3],
+       [1,105.8,2],
+       [1,121.2,2],
+       [1,128.6,3],
+       [1,99.1,3],
+       [1,101.3,3],
+       [1,87.7,2],
+       [1,77.5,2],
+       [1,127.7,2],
+       [1,95.6,3],
+       [1,79.4,3],
+       [1,113.8,3],
+       [1,142.5,3],
+       [1,115.3,2],
+       [1,97,2]
+      ],
+      "rate": 1,
+      "starHits": [20,11,20],
+      "wins": 20
+     },
+     "greedy": {
+      "avgWinT": 105.27499999999658,
+      "budget": 10000,
+      "hash": "dde19497",
+      "n": 20,
+      "perSeed": [
+       [1,103.1,2],
+       [0,133.7,0],
+       [1,121,2],
+       [0,150,0],
+       [0,140.4,0],
+       [1,90.9,2],
+       [1,108.4,2],
+       [1,83.8,3],
+       [0,154.4,0],
+       [1,114,3],
+       [0,165.7,0],
+       [0,148.3,0],
+       [0,161.8,0],
+       [0,138.9,0],
+       [1,100,3],
+       [0,164.7,0],
+       [1,121,2],
+       [0,152.6,0],
+       [0,127.1,0],
+       [0,212.5,0]
+      ],
+      "rate": 0.4,
+      "starHits": [8,3,8],
+      "wins": 8
+     },
+     "turtle": {
+      "avgWinT": 108.32999999999643,
+      "budget": 10000,
+      "hash": "dde19497",
+      "n": 10,
+      "perSeed": [
+       [1,127.7,2],
+       [1,86.8,3],
+       [1,127.9,2],
+       [1,112,2],
+       [1,88.1,3],
+       [1,131,2],
+       [1,102.5,3],
+       [1,93.4,2],
+       [1,120.2,2],
+       [1,93.7,3]
+      ],
+      "rate": 1,
+      "starHits": [10,4,10],
+      "wins": 10
+     }
+    },
+    "hash": "dde19497"
+   },
+   "zeus_bad_day": {
+    "bots": {
+     "counter": {
+      "avgWinT": 110.23333333332964,
+      "budget": 15000,
+      "hash": "18b2a11b",
+      "n": 20,
+      "perSeed": [
+       [1,173.1,2],
+       [1,98.4,2],
+       [1,83.1,2],
+       [1,106.2,1],
+       [1,111,2],
+       [1,101.4,2],
+       [1,101,2],
+       [1,88.4,2],
+       [1,136.6,2],
+       [0,175.9,0],
+       [1,90.9,2],
+       [1,90.4,2],
+       [1,91.8,2],
+       [1,170.6,2],
+       [1,98.2,2],
+       [0,168.7,0],
+       [1,178.6,2],
+       [1,82.8,2],
+       [1,93.5,2],
+       [1,88.2,2]
+      ],
+      "rate": 0.9,
+      "starHits": [18,0,17],
+      "wins": 18
+     },
+     "expert": {
+      "avgWinT": 78.24583333333146,
+      "budget": 15000,
+      "hash": "18b2a11b",
+      "n": 8,
+      "perSeed": [
+       [1,75.6,2],
+       [1,77.2,2],
+       [1,84.2,2],
+       [1,77.3,2],
+       [1,76.6,2],
+       [1,85.9,2],
+       [1,74.2,2],
+       [1,75.1,2]
+      ],
+      "rate": 1,
+      "starHits": [8,0,8],
+      "wins": 8
+     },
+     "greedy": {
+      "avgWinT": 109.9851851851815,
+      "budget": 15000,
+      "hash": "18b2a11b",
+      "n": 20,
+      "perSeed": [
+       [1,142.5,1],
+       [0,197.9,0],
+       [1,95.7,1],
+       [1,129.2,1],
+       [0,187.4,0],
+       [0,138.8,0],
+       [0,182.3,0],
+       [0,184.8,0],
+       [0,178.8,0],
+       [1,101.9,1],
+       [1,88.4,1],
+       [1,82.2,2],
+       [0,169,0],
+       [1,77.1,2],
+       [1,182.6,1],
+       [1,90.4,2],
+       [0,189.7,0],
+       [0,185.2,0],
+       [0,168.5,0],
+       [0,163.9,0]
+      ],
+      "rate": 0.45,
+      "starHits": [9,1,2],
+      "wins": 9
+     },
+     "turtle": {
+      "avgWinT": 0,
+      "budget": 15000,
+      "hash": "18b2a11b",
+      "n": 10,
+      "perSeed": [
+       [0,152,0],
+       [0,144.8,0],
+       [0,209,0],
+       [0,121.6,0],
+       [0,169.7,0],
+       [0,145.6,0],
+       [0,158.9,0],
+       [0,189.1,0],
+       [0,194.3,0],
+       [0,167,0]
+      ],
+      "rate": 0,
+      "starHits": [0,0,0],
+      "wins": 0
+     }
+    },
+    "hash": "18b2a11b"
+   }
+  },
+  "seedsFrom": 1,
+  "version": 2,
+  "workarounds": ["trojan_horse.siege=false (tests/campaign/_lib.mjs:12, SIM bug docs/requests/campaign_sim_bugs.md #1)"]
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "feasibility",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

@@ -66,6 +66,8 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
   const setRange = (sel, v) => page.$eval(sel, (el, val) => { el.value = String(val); el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }, v);
   // a real pointer click on the element's centre; `force` skips Playwright's "stable" wait, which never succeeds on the pulsing DEPLOY / FIGHT buttons and on panels that slide in
   const click = (sel) => page.locator(sel).first().click({ force: true, timeout: 60000 });
+  // toasts ("Achievement unlocked ...") sit on top of the bottom bars for a few seconds: a person waits for them to go before pressing the button underneath
+  const quiet = async () => { await page.waitForSelector('.vw-toast', { state: 'detached', timeout: 20000 }).catch(() => {}); await sleep(150); };
 
   // ---- the page starts on the splash: Space continues to the title
   await ev(() => window.__vw.seed(1));
@@ -78,7 +80,7 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
       const before = await ev(() => JSON.parse(JSON.stringify(window.__vw.app.settings.all())));
       const toggle = async (tab, id) => { await click('#set-tabs-' + tab); await sleep(150); const was = await page.getAttribute('#' + id, 'aria-checked'); await click('#' + id); await sleep(120); const now = await page.getAttribute('#' + id, 'aria-checked'); must(was !== now, `toggle ${id} did not flip (${was} -> ${now})`); };
       const range = async (tab, id, v) => { await click('#set-tabs-' + tab); await sleep(150); await setRange('#' + id, v); await sleep(120); };
-      const radio = async (tab, id, value) => { await click('#set-tabs-' + tab); await sleep(150); const b = await page.$(`#${id} [role=radio][data-value="${value}"]`); must(!!b, `${id} has no option ${value}`); await b.click(); await sleep(120); };
+      const radio = async (tab, id, value) => { await click('#set-tabs-' + tab); await sleep(150); must((await page.locator(`#${id} [role=radio][data-value="${value}"]`).count()) === 1, `${id} has no option ${value}`); await click(`#${id} [role=radio][data-value="${value}"]`); await sleep(120); };
       // graphics (kept light for the software GL of this box: papyrus, 0.5 resolution, no shadows / bloom / clouds)
       await radio('graphics', 'set-quality', 'papyrus');
       await toggle('graphics', 'set-autoscale'); await range('graphics', 'set-resscale', 0.5); await toggle('graphics', 'set-shadows'); /* bloom: the papyrus preset already turned it off (PRESET_FLAGS of settings.js), toggling it would put it back to the default */ await toggle('graphics', 'set-clouds'); await toggle('graphics', 'set-fpscounter');
@@ -175,22 +177,32 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
 
     // ------------------------------------------------------------------------------------------------ daily
     async daily() {
+      // the Daily records a day only when it is WON (a lost day is practice): each day is fought again with another style of army until the day is on the board
+      const ALL = ['balanced', 'elite', 'ranged', 'rush', 'chaos', 'counter'], FIRST = ['ranged', 'elite', 'rush'];        // the style that won each day on the first recording is tried first (the days are deterministic)
       for (let d = 0; d < 3; d++) {
+        const STYLES = [FIRST[d], ...ALL.filter((x) => x !== FIRST[d])];
+        const date = new Date(Date.parse(DAY0) + d * 86400000).toISOString().slice(0, 10);
         await ctx.clock.setFixedTime(new Date(Date.parse(DAY0) + d * 86400000));
-        await toMenu();
-        await gotoScreen('daily');
-        await click('#daily-play'); await sleep(1800);
-        await ev(() => { const g = window.__vw.game; g.autoFill(0, { style: 'balanced', budget: g.info.budget(0).cap }); });
-        await ev(() => window.__vw.game.fight()); await sleep(500);
-        await runUntil('daily day ' + d, () => false, { max: 40000 });
-        const r = await ev(() => { const r = window.__vw.game.results(); return { kind: r.kind, winner: r.winner, daily: !!r.daily }; });
-        must(r.kind === 'daily' && r.daily, 'daily results lack the daily block: ' + JSON.stringify(r));
-        await sleep(1500);
-        if (d === 0) await snap('daily_results');
+        let won = false;
+        for (const style of STYLES) {
+          await toMenu();
+          await gotoScreen('daily');
+          await click('#daily-play'); await sleep(1800);
+          await ev((st) => { const g = window.__vw.game; g.autoFill(0, { style: st, budget: g.info.budget(0).cap }); }, style);
+          await ev(() => window.__vw.game.fight()); await sleep(500);
+          await runUntil('daily day ' + d, () => false, { max: 40000 });
+          const r = await ev(() => { const r = window.__vw.game.results(); return { winner: r.winner, daily: !!r.daily }; });
+          must(r.daily, 'daily results lack the daily block: ' + JSON.stringify(r));
+          await sleep(1500);
+          const hist = await ev(() => window.__vw.app.docs.daily.get('history', []));
+          log(`daily ${date} style ${style}: winner ${r.winner}, on the board: ${hist.some((h) => h.date === date)}`);
+          if (hist.some((h) => h.date === date)) { won = true; if (d === 0) await snap('daily_results'); break; }
+        }
+        must(won, 'no style of army won the daily of ' + date);
         await toMenu();
       }
       const dd = await ev(() => window.__vw.app.docs.daily.all());
-      must(dd.history.length === 3 && dd.history.map((h) => h.date).join() === '2026-10-05,2026-10-06,2026-10-07'.split(',').reverse().join() || dd.history.length === 3, 'daily history is not three days: ' + JSON.stringify(dd.history.map((h) => h.date)));
+      must(dd.history.length === 3 && dd.history.map((h) => h.date).join() === '2026-10-07,2026-10-06,2026-10-05' && dd.streak === 3, 'the daily doc is not a three-day streak: ' + JSON.stringify({ streak: dd.streak, dates: dd.history.map((h) => h.date) }));
       expect.daily = { streak: dd.streak, days: dd.history.length, last: dd.last, results: dd.history.map((h) => h.result) };
       await ctx.clock.setFixedTime(new Date(Date.parse(DAY0) + 3 * 86400000));          // the rest of the session happens on day 4
     },
@@ -219,13 +231,13 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
         await page.evaluate(() => document.querySelector('#ws-stats-reset').click()); await sleep(150);
         for (const k of ['hp', 'damage', 'attackSpeed', 'speed', 'armor', 'range', 'morale']) { await setSlider('#ws-stat-' + k, s.stats[k]); await sleep(60); }
         if (s.ability) { await click('#ws-rtabs-abilities'); await sleep(200); const dis = await page.$eval('#ws-ab-' + s.ability, (b) => b.disabled || b.getAttribute('aria-disabled') === 'true'); if (!dis) { await click('#ws-ab-' + s.ability); await sleep(150); } }
-        await click('#ws-save'); await sleep(900);
+        await quiet(); await click('#ws-save'); await sleep(900);
         await closeModals();
         const list = (await lsGet('vw.soldiers')).data;
         must(list.length === i + 1 && list.some((x) => x.name === s.name), `soldier ${i + 1} not in the roster: ` + JSON.stringify(list.map((x) => x.name)));
         if (i === 0) {                                                    // the share dialog of the real Workshop gives the soldier code
-          await click('#ws-share'); await sleep(900);
-          const code = await ev(() => { const e = document.querySelector('.vw-modal textarea, .vw-modal input[readonly], #ws-export-code'); return e ? e.value : ''; });
+          await quiet(); await click('#ws-share'); await page.waitForSelector('#ws-share-code', { timeout: 30000 }); await sleep(400);
+          const code = await page.inputValue('#ws-share-code');
           must(/^VW1\.soldier\./.test(code), 'the soldier share dialog shows no VW1.soldier code'); out.shareCodes.soldier = code; await closeModals();
         }
         await snap('soldier_' + (i + 1));
@@ -257,12 +269,12 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
         await sleep(800); await closeModals(); await sleep(600);
         const v = await view(), cx = v.x + v.w / 2, cy = v.y + v.h / 2;
         await s.tools(cx, cy);
-        await click('#ed-save'); await sleep(600);
+        await quiet(); await click('#ed-save'); await sleep(600);
         await page.fill('#ed-name-input', s.name); await click('#ed-name-ok'); await sleep(1100);
         const list = (await lsGet('vw.arenas')).data;
         must(list.length === i + 1 && list.some((x) => x.name === s.name), `arena ${i + 1} not in My Arenas: ` + JSON.stringify(list.map((x) => x.name)));
         if (i === 0) {
-          await click('#ed-share'); await sleep(900);
+          await quiet(); await click('#ed-share'); await sleep(900);
           const code = await page.$eval('#ed-export-code', (el) => el.value); must(/^VW1\.arena\./.test(code), 'the arena share dialog shows no VW1.arena code'); out.shareCodes.arena = code; await closeModals();
         }
         await snap('arena_' + (i + 1));
@@ -280,13 +292,13 @@ export async function drive(P, steps, { log = () => {}, shot = null } = {}) {
         await sleep(1500);
         await ev(([i]) => { const g = window.__vw.game; g.tools.clear(0); g.autoFill(0, { style: i ? 'ranged' : 'balanced', faction: i ? 'mixed' : 'hellenes' }); }, [i]);
         await sleep(400);
-        await click('#pl-save-army'); await page.waitForSelector('#pl-preset-name', { timeout: 10000 });
+        await quiet(); await click('#pl-save-army'); await page.waitForSelector('#pl-preset-name', { timeout: 10000 });
         await page.fill('#pl-preset-name', name); await click('#pl-preset-ok'); await sleep(900);
         await closeModals();
         const list = (await lsGet('vw.armies')).data;
         must(list.length === i + 1 && list.some((x) => x.name === name), `army ${i + 1} not saved: ` + JSON.stringify(list.map((x) => x.name)));
         if (i === 0) {
-          await click('#pl-export-army').catch(() => {}); await sleep(900);
+          await quiet(); await click('#pl-export-army').catch(() => {}); await sleep(900);
           const code = await ev(() => { const e = document.querySelector('.vw-modal textarea, .vw-modal input[readonly]'); return e ? e.value : ''; });
           must(/^VW1\.army\./.test(code), 'the army export shows no VW1.army code'); out.shareCodes.army = code; await closeModals();
         }
@@ -369,7 +381,7 @@ export async function main(argv) {
   }
   if (o.shots) fs.mkdirSync(o.shots, { recursive: true });
   const t0 = Date.now(), log = (m) => console.log(`[g5] ${m}`);
-  const P = await openPage(page.html, { viewport: { width: 1024, height: 576 } });
+  const P = await openPage(page.html, { viewport: { width: 1280, height: 720 } });
   try {
     await P.ctx.clock.setFixedTime(new Date(DAY0));
     const empty = await P.page.evaluate(() => localStorage.length);

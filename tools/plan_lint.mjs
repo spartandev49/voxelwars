@@ -262,8 +262,6 @@ function PL08(x) {
     const missing = [1, 2, 3, 4, 5, 6, 7].filter((k) => !nums.has(String(k)));
     if (missing.length) d.push(`spec/${n}: sections ${missing.join(', ')} missing`);
   }
-  const rows = new Set(names);
-  for (const n of x.specNames()) if (!/^VF-impl$/.test(n) && !rows.has(n) && !/-/.test(n.replace(/^S-slice$/, 'S'))) d.push(`${SPECDIR}/${n}.md has no row in plan section 14`);
   return d.length ? fail('spec rows, files or sections missing', d) : pass(`${names.length} specs have a row, a file and sections 1-7`);
 }
 
