@@ -29,7 +29,7 @@ const result = await build({
   entryPoints: [path.join(root, 'src/app/main.js')],
   bundle: true, write: false, format: 'iife', target: ['chrome100', 'firefox100', 'safari15'],
   minify, legalComments: 'none', logLevel: 'warning',
-  define: { __VW_VERSION__: JSON.stringify(VERSION), __VW_BUILD__: JSON.stringify(new Date().toISOString().slice(0, 10)) },
+  define: { __VW_VERSION__: JSON.stringify(VERSION), __VW_BUILD__: JSON.stringify(process.env.VW_BUILD_DATE || new Date().toISOString().slice(0, 10)) },
 });
 let js = result.outputFiles[0].text;
 // make the bundle safe to inline in a <script> element
