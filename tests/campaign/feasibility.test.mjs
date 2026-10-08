@@ -1,4 +1,4 @@
-// W6 / S21 feasibility gate: the win-rate bands of the scripted reference players are STORED (tests/campaign/feasibility.json, written by
+// W6 / S21 feasibility gate: the win-rate bands of the scripted reference players are STORED (tests/campaign/feasibility.v8.json, the LEGACY record: regime default_meta, made on sim 489eccc492, `legacy: true`; the going-forward record is feasibility.ancient.json, see feasibility_record.test.mjs; written by
 // `node tests/campaign/run_feasibility.mjs --report` after the long run) and this fast test checks them against the CURRENT mission data:
 //   - every mission has a record for counter (>= 20 seeds), greedy (>= 20) and turtle (>= 10) made on the same data (hash match; a changed mission fails
 //     here until the feasibility run is repeated),
@@ -9,9 +9,9 @@
 import fs from 'node:fs';
 import { test, finish, assert } from '../sim/_util.mjs';
 import { MISSIONS, missionHash } from '../../src/content/era_ancient/campaign.js';
-import { runMission, botGroups, simHash } from './_lib.mjs';
+import { runMission, botGroups, legacySimHash } from './_lib.mjs';
 
-const rec = JSON.parse(fs.readFileSync(new URL('./feasibility.json', import.meta.url), 'utf8'));
+const rec = JSON.parse(fs.readFileSync(new URL('./feasibility.v8.json', import.meta.url), 'utf8'));
 const MIN = { counter: 20, greedy: 20, turtle: 10 };
 
 await test('records exist for every mission and bot, made on the current mission data (hash), with enough seeds', () => {
@@ -45,10 +45,10 @@ await test('stars: every mission star 3 was earned by at least one recorded batt
 });
 
 await test('determinism: stored battles of missions 1 and 8 (counter, seed 1) replay to the same result and time when the sim sources are the ones the records were made on; after a sim or stats change the replay is only reported (STALE) and the slow re-measurement (feasibility.slow.test.mjs) is the check', () => {
-  const now = simHash();
+  const now = legacySimHash();
   for (const m of [MISSIONS[0], MISSIONS[7]]) {
     const b = rec.runs[m.id].bots.counter;
-    if (b.sim !== now) { console.log('  STALE: ' + m.id + ' records were made on sim ' + (b.sim || '?') + ', the sim is now ' + now + ': re-run tests/campaign/run_feasibility.mjs and --report (docs/campaign_report.md is of the old sim)'); continue; }
+    if (b.sim !== now) { console.log('  STALE-LEGACY: ' + m.id + ' records were made on sim ' + (b.sim || '?') + ', the sim is now ' + now + ': the legacy record is no longer replayed (VF 3.7); the going-forward record is tests/campaign/feasibility.ancient.json, checked by feasibility_record.test.mjs'); continue; }
     const r = runMission(m, 'counter', 1);
     assert.equal(r.win ? 1 : 0, b.perSeed[0][0], m.id + ' win/loss reproduces'); assert.equal(r.stars, b.perSeed[0][2], m.id + ' stars reproduce'); assert.ok(Math.abs(r.t - b.perSeed[0][1]) < 0.2, m.id + ' end time reproduces: ' + r.t.toFixed(1) + ' vs ' + b.perSeed[0][1]);
   }

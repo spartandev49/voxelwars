@@ -1,0 +1,600 @@
+{
+ "schema": 1,
+ "source": "docs/eras/spec/VF.md",
+ "rows": [
+  {
+   "er": "ER1",
+   "criterion": "Ancient identity G1..G12",
+   "owner": "TOOLS-GOLDEN",
+   "first": "P0",
+   "tier": "F 1.5 (G1 core 12, G3, G4, G6 replay 15, G7, G9 core, G11); U +2.5 (G1 83, G5, G10 title/map); R +6 (G8 3, G12 1, G10 all states 2)",
+   "ids": [
+    "WC01",
+    "AR-T13",
+    "AR-T20",
+    "AR-T21",
+    "AR-T06",
+    "AR-T07",
+    "AR-T08",
+    "AR-T09",
+    "AR-T10",
+    "AR-T33",
+    "AR-T34"
+   ],
+   "scripts": [
+    "tests/golden/g1_sim.test.mjs",
+    "tools/golden/g8_render.mjs",
+    "tools/golden/g10_dom.mjs"
+   ],
+   "stems": [
+    "g3_ids",
+    "g4_text",
+    "g6_campaign",
+    "g7_armygen",
+    "g9_audio",
+    "g5_fixture"
+   ],
+   "negctl": [
+    "NC-VF-09",
+    "NC-VF-12",
+    "NC-VF-44"
+   ],
+   "thresholds": "every digest equal to the baseline record in the same engine and regime; G8: 3.6.4 tolerances"
+  },
+  {
+   "er": "ER2",
+   "criterion": "registry integrity",
+   "owner": "REGISTRY / TOOLS-GATE",
+   "first": "P1",
+   "tier": "F 0.8",
+   "ids": [
+    "AR-T01",
+    "AR-T02",
+    "AR-T03",
+    "AR-T04",
+    "AR-T05",
+    "AR-T11",
+    "AR-T12",
+    "AR-T17",
+    "AR-T18",
+    "AR-T22",
+    "AR-T24",
+    "AR-T25",
+    "AR-T26",
+    "AR-T28",
+    "AR-T29",
+    "AR-T32"
+   ],
+   "scripts": [],
+   "stems": [],
+   "negctl": [
+    "NC-VF-01",
+    "NC-VF-10"
+   ],
+   "thresholds": "collisions throw naming both eras, DAG, freeze/verify, tombstones, generated files no diff"
+  },
+  {
+   "er": "ER3",
+   "criterion": "unit contract `UC` matrix + recolour",
+   "owner": "TOOLS-VERIFY (matrix, silhouette), UNITS (rows)",
+   "first": "P1 (Ancient 43 exemplars)",
+   "tier": "F 0.3 (Ancient), E 0.8 (era)",
+   "ids": [
+    "RA-T04",
+    "RA-T17",
+    "RA-T25"
+   ],
+   "scripts": [
+    "tools/contracts.mjs",
+    "tools/silhouette.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-02",
+    "NC-VF-03",
+    "NC-VF-17"
+   ],
+   "thresholds": "model not fallback, parts <= 48, tint floor per rig, clips resolve per rig, text limits, sound row, balance row; silhouette IoU < 0.85 against every sibling of the era"
+  },
+  {
+   "er": "ER3b",
+   "criterion": "visual-bible conformance",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "E 0.3",
+   "ids": [],
+   "scripts": [
+    "tools/vbscan.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-42"
+   ],
+   "thresholds": "3.23.3: palette CIEDE2000 >= VB minimum vs banned Lab list, emblems only registry bitmaps, no free decals, no three-band flag layout"
+  },
+  {
+   "er": "ER4",
+   "criterion": "far-mesh readability",
+   "owner": "RENDER (lint), TOOLS-VERIFY (`far_sil` metric, `far_truth`)",
+   "first": "P1",
+   "tier": "F 0.3, E 1.5",
+   "ids": [
+    "RA-T01",
+    "RA-T02",
+    "RA-T03"
+   ],
+   "scripts": [
+    "tools/farlint.mjs",
+    "tools/far_sil.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-43"
+   ],
+   "thresholds": "`FAR_*` lint zero; defining feature keeps >= 60% of near silhouette pixels at D, 0.35D, 80 u"
+  },
+  {
+   "er": "ER5",
+   "criterion": "clips, reactions, timing",
+   "owner": "ANIM-CLIPS, TOOLS-GOLDEN",
+   "first": "P1",
+   "tier": "F 0.8; R 4 (divergence)",
+   "ids": [
+    "RA-T05",
+    "RA-T06",
+    "RA-T07",
+    "RA-T08",
+    "RA-T09"
+   ],
+   "scripts": [
+    "tools/measure_divergence.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-44"
+   ],
+   "thresholds": "class (b) of 3.10 with the amended tolerances (n = 200: 12.9 points, 7.2%), first-divergence tick reported"
+  },
+  {
+   "er": "ER6",
+   "criterion": "mechanics S28..S46, X1..X9, ablation, coverage",
+   "owner": "SIM, TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "F 2.0 aggregate, E 0.5/era; H 18 (ablation)",
+   "ids": [],
+   "scripts": [
+    "tests/sim/m*.test.mjs",
+    "tools/ablate_run.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-45"
+   ],
+   "thresholds": "per M section 4; each ablation control shifts by its stated minimum (Wilson lower bound, >= 200 battles per cell); every ability id / projectile kind / doctrine fires >= 20 times in the 2,000-matchup fuzz"
+  },
+  {
+   "er": "ER7",
+   "criterion": "balance",
+   "owner": "TOOLS-VERIFY (tool), BALANCE (operator)",
+   "first": "P2",
+   "tier": "H 19/era full-reduced, 2.5 quick",
+   "ids": [
+    "WC10",
+    "WC11",
+    "WC12",
+    "WC13",
+    "WC14",
+    "WC15",
+    "WC23"
+   ],
+   "scripts": [
+    "tools/balance.mjs",
+    "tools/lib/bands.mjs",
+    "tools/power_fit.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-33"
+   ],
+   "thresholds": "asserted counters: >= 200 battles/pair, Wilson 95% lower >= 55% and point >= 65%; claimed non-counters interval contains 50%; mechanic-off control; U5c field win [30%, 62%] (support/siege/boss judged in their own modes); mirror 45-55%; fuzz termination >= 99%, median 60-120 s; S5..S9, U8, share fuzz; Spearman(power ratio, duel win) >= 0.8; pick-rate proxy: the `counter` bot buys every non-boss uni"
+  },
+  {
+   "er": "ER8",
+   "criterion": "`campaign_play`",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1 (mission 1/era)",
+   "tier": "E 1.2 (mission 1, no replay); R 14/era UI + 11/era margin",
+   "ids": [],
+   "scripts": [
+    "tools/campaign_play.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-27",
+    "NC-VF-28",
+    "NC-VF-29",
+    "NC-VF-30",
+    "NC-VF-31",
+    "NC-VF-32",
+    "NC-VF-57"
+   ],
+   "thresholds": "3.9"
+  },
+  {
+   "er": "ER9",
+   "criterion": "puzzles",
+   "owner": "TOOLS-VERIFY",
+   "first": "P2",
+   "tier": "H 2.5/era; E 1.0 (solutions, Node)",
+   "ids": [],
+   "scripts": [
+    "tools/puzzle_fuzz.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-34",
+    "NC-VF-35"
+   ],
+   "thresholds": "100 random legal armies per puzzle: win <= 15, star 3 <= 5 (counts of 100, fixed seeds); stored solution wins >= 8 of 10 seeds in Node AND >= 8 of 10 in Chromium and fires the taught mechanic"
+  },
+  {
+   "er": "ER10",
+   "criterion": "survival / daily / quick per era",
+   "owner": "TOOLS-GATE (modes), CAMPAIGN",
+   "first": "P1",
+   "tier": "E 1.7/era; R full",
+   "ids": [],
+   "scripts": [
+    "tools/modes.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-60"
+   ],
+   "thresholds": "every unit of the era appears in the survival pool and in >= 1 Quick faction; no unit removed to pass; daily draws 400 dates without exception"
+  },
+  {
+   "er": "ER11",
+   "criterion": "text safety and comedy",
+   "owner": "TOOLS-VERIFY (+ COMEDY-EDITOR)",
+   "first": "P1 (Ancient), P2",
+   "tier": "F 0.5 sweep, U 1.0/era copy-in-context; H panel",
+   "ids": [],
+   "scripts": [
+    "tools/text_sweep.mjs",
+    "tests/humor/text_*.test.mjs",
+    "tools/panel.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-08",
+    "NC-VF-46",
+    "NC-VF-47",
+    "NC-VF-48"
+   ],
+   "thresholds": "3.14"
+  },
+  {
+   "er": "ER12",
+   "criterion": "audio",
+   "owner": "TOOLS-VERIFY + AUDIO",
+   "first": "P1 (skeleton)",
+   "tier": "F 0.3 (cue trace), E 1.0, U 2.0 (pack_check), R 3/era (mixtest) + 3 (online licences)",
+   "ids": [],
+   "scripts": [
+    "tools/audit_sfx.mjs",
+    "tools/pack_check.mjs",
+    "tests/audio/cue_trace.test.mjs",
+    "tools/licence_check.mjs",
+    "tools/mixtest.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-04",
+    "NC-VF-18",
+    "NC-VF-19",
+    "NC-VF-58"
+   ],
+   "thresholds": "3.15"
+  },
+  {
+   "er": "ER13",
+   "criterion": "perf, sizes in time",
+   "owner": "TOOLS-VERIFY",
+   "first": "P0 (A/A)",
+   "tier": "U 5 (3 reps, serial); R 25 quiet + 13 soak",
+   "ids": [
+    "AR-T19",
+    "RA-T11",
+    "RA-T15",
+    "RA-T18",
+    "RA-T19",
+    "RA-T20",
+    "RA-T23",
+    "WC05",
+    "WC06"
+   ],
+   "scripts": [
+    "tools/perf_assert.mjs",
+    "tools/soak.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-05",
+    "NC-VF-11",
+    "NC-VF-39",
+    "NC-VF-40",
+    "NC-VF-49"
+   ],
+   "thresholds": "3.11"
+  },
+  {
+   "er": "ER14",
+   "criterion": "size and files",
+   "owner": "TOOLS-GATE",
+   "first": "P1",
+   "tier": "U 0.5",
+   "ids": [
+    "AR-T30",
+    "AR-T31"
+   ],
+   "scripts": [
+    "tests/verify/size_gate.test.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-06",
+    "NC-VF-07"
+   ],
+   "thresholds": "minified fragment <= 5,000,000 B (warn 4,500,000); server-side files <= 500; per-family report; a commit adding > 300,000 B warns"
+  },
+  {
+   "er": "ER15",
+   "criterion": "`uiscan`",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "E 1.0/era (1 viewport); R 18 full (60 screens x 3 viewports), 8 scoped to Ancient + one era",
+   "ids": [],
+   "scripts": [
+    "tools/uiscan.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-22",
+    "NC-VF-23",
+    "NC-VF-24",
+    "NC-VF-25",
+    "NC-VF-26",
+    "NC-VF-27"
+   ],
+   "thresholds": "3.17"
+  },
+  {
+   "er": "ER16",
+   "criterion": "save compat both directions",
+   "owner": "REGISTRY, TOOLS-GOLDEN",
+   "first": "P0",
+   "tier": "U 1.5",
+   "ids": [
+    "AR-T13",
+    "AR-T14",
+    "AR-T15",
+    "WC19"
+   ],
+   "scripts": [],
+   "stems": [
+    "g5_fixture"
+   ],
+   "negctl": [
+    "NC-VF-41"
+   ],
+   "thresholds": "AR 3.5.4 rows + 3.6.3 rollback round trip"
+  },
+  {
+   "er": "ER17",
+   "criterion": "readability / CVD",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "R 4.4/era, 19 final",
+   "ids": [],
+   "scripts": [
+    "tools/readability.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-37"
+   ],
+   "thresholds": "3.16"
+  },
+  {
+   "er": "ER18",
+   "criterion": "accessibility, flash limiter",
+   "owner": "TOOLS-VERIFY, UI",
+   "first": "P2",
+   "tier": "R 2",
+   "ids": [
+    "RA-T16"
+   ],
+   "scripts": [
+    "tools/flash_check.mjs",
+    "tests/ui/x2_a11y.test.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-36"
+   ],
+   "thresholds": "limiter ON <= 3 flash events/s and frame delta <= 0.12; OFF >= 4 (control); Reduce Motion cuts shots"
+  },
+  {
+   "er": "ER19",
+   "criterion": "teaching beats for EVERY mission",
+   "owner": "TOOLS-VERIFY",
+   "first": "P2",
+   "tier": "R (inside ER8 run); E for mission 1",
+   "ids": [],
+   "scripts": [],
+   "stems": [],
+   "negctl": [
+    "NC-VF-16"
+   ],
+   "thresholds": "every beat of the mission fires once; returning-skipper and Sci-Fi-first cases (CU5)"
+  },
+  {
+   "er": "ER20",
+   "criterion": "set-pieces",
+   "owner": "TOOLS-VERIFY",
+   "first": "P2",
+   "tier": "R (inside ER8)",
+   "ids": [],
+   "scripts": [],
+   "stems": [],
+   "negctl": [
+    "NC-VF-50"
+   ],
+   "thresholds": "all five channels fire (shot, announcer, stinger, sfx, sim event) for the mission's `setpiece.id`; 4-frame filmstrip written"
+  },
+  {
+   "er": "ER21",
+   "criterion": "chooser, maps, chrome census, release states",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "E 0.5, U 1.0, R agent step",
+   "ids": [
+    "AR-T35",
+    "WC17",
+    "RA-T21"
+   ],
+   "scripts": [
+    "tools/chrome_census.mjs",
+    "tools/era_classify.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-51"
+   ],
+   "thresholds": "no Ancient-only token in shared strings; fonts only Bungee/Rubik/Cinzel; blind era classification >= 90% over 30 screenshots (agent step, named as such)"
+  },
+  {
+   "er": "ER21b",
+   "criterion": "hidden-era leak",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "U 1 (current state), R 4 (4 states)",
+   "ids": [],
+   "scripts": [
+    "tools/leak_scan.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-15"
+   ],
+   "thresholds": "3.23.2: zero hits in DOM text, string tables, manifest rows, files, draws, totals, share codes, what's-new"
+  },
+  {
+   "er": "ER22",
+   "criterion": "Workshop / Builder era flows",
+   "owner": "EDITORS",
+   "first": "P2",
+   "tier": "U 3/era",
+   "ids": [
+    "WC17",
+    "WC18",
+    "AR-T27"
+   ],
+   "scripts": [],
+   "stems": [],
+   "negctl": [
+    "NC-VF-52"
+   ],
+   "thresholds": "per spec/W and AR"
+  },
+  {
+   "er": "ER23",
+   "criterion": "credits and licence truth",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "F 0.1, U 0.5, R 3",
+   "ids": [],
+   "scripts": [
+    "tools/licence_check.mjs",
+    "tests/audio/credits.test.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-19",
+    "NC-VF-20",
+    "NC-VF-53"
+   ],
+   "thresholds": "3.15.5"
+  },
+  {
+   "er": "ER24",
+   "criterion": "release provenance",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1 (dry run on v8)",
+   "tier": "R 12",
+   "ids": [],
+   "scripts": [
+    "tools/release_check.mjs",
+    "tools/readback.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-13",
+    "NC-VF-54"
+   ],
+   "thresholds": "3.12"
+  },
+  {
+   "er": "ER25",
+   "criterion": "settings / stats / gore auto",
+   "owner": "UI",
+   "first": "P2",
+   "tier": "F 0.2",
+   "ids": [
+    "AR-T15"
+   ],
+   "scripts": [
+    "tests/ui/settings_eras.test.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-55"
+   ],
+   "thresholds": "AR 3.5.3 table exact"
+  },
+  {
+   "er": "ER26",
+   "criterion": "console clean",
+   "owner": "TOOLS-VERIFY",
+   "first": "P1",
+   "tier": "free (aggregates)",
+   "ids": [],
+   "scripts": [
+    "tools/lib/console_guard.mjs",
+    "tools/console_audit.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-21"
+   ],
+   "thresholds": "zero console error/warning, pageerror, CSP violation, HTTP >= 400 across smoke, tour, flow, modes, campaign_play, uiscan; `tests/baseline/console_allowlist.json` equals `[]`"
+  },
+  {
+   "er": "ER27",
+   "criterion": "era fingerprint",
+   "owner": "TOOLS-VERIFY",
+   "first": "P2",
+   "tier": "H 1/era",
+   "ids": [],
+   "scripts": [
+    "tools/era_fingerprint.mjs"
+   ],
+   "stems": [],
+   "negctl": [
+    "NC-VF-38"
+   ],
+   "thresholds": "3.23.1: min pairwise distance between era vectors"
+  }
+ ]
+}

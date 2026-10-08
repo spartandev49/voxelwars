@@ -1,0 +1,3128 @@
+{
+ "doc": "Callback ledger of the three new eras (spec/H section 3.6). Machine-checked by tools/callbacks_lint.mjs (reference implementation: spec/H appendix B). Source of truth for: src/content/shared/callbacks_gen.js (generated, committed, no-diff gate), the announcer cond.cb flags, the briefing/card/progression renderers, and tests/humor/callbacks.test.mjs.",
+ "version": 1,
+ "owner": "COMEDY-EDITOR",
+ "date": "2026-10-08",
+ "format": {
+  "entry": "{id, aliases?, type, sourceEra, targetEra, requiresReleased[], source{key,surface,voice,text,frozen,class}, target{key,surface,voice,text,where}, gate, repeat, origin, check}",
+  "type": "setup-free = the TARGET is funny cold (no gate; must pass the cold-read comprehension check); gated = the TARGET renders only while its gate is open and at most once per profile (seen.callbacks[\"<id>:t\"])",
+  "keys": "<surface>:<id>[:<n>]; surfaces: ann (announcer template id), prog (results-card progression footer of the first win of a mission), brief (briefing line n or :tag), sp (set-piece line n), card (arrival/cleared card: card:<era>:<arrival|arrival.footer.<k>|cleared>), chooser, codex (codex:<unit>:<field>), power (god-power tooltip or cast line), load (loading screen), label (voice label), poster, defeat, progress (a save fact, no line). Ancient keys are real template ids of src/content/era_ancient/humor/announcer.js (frozen, source.frozen=true, source.text read from the live template).",
+  "gate": "null (setup-free) | {kind:\"cb\", flag, setBy} | {kind:\"derived\", expr, seq?} | {kind:\"any\"|\"all\", parts:[gate...]}",
+  "derivedVocabulary": {
+   "mission_star:<missionId>": "progress.stars[missionId] >= 1 (written by meta.recordMission; no new writer)",
+   "era_cleared:<eraId>": "progress.eras[eraId].cleared === true (AR 3.5.2; Ancient derived on migration from the nine mission stars)",
+   "era_opened:<eraId>": "progress.eras[eraId].opened === true",
+   "stat:<path>>=<n>": "lifetime stats path in the whitelist: chickenKills, trojanReveals, battles, wins, godPowers.<powerId>, byDef.<defId>.spawned, eraStats.<era>.<key> (statOf helper of CU 3.9.3)",
+   "ach:<id>": "progress.achievements[id] exists",
+   "codex_open:<unitId>": "progress.codex.open[unitId] exists (CU-D29)",
+   "any(a,b,..) | all(a,b,..)": "boolean combinations of the above"
+  },
+  "cb": "flag = seen.callbacks[flag] === true. Writer: callbacks.mark(flag) in src/ui/hud/_progress.js (CU 3.19.5), called from the single place named in setBy: the announcer adapter in meta.js when the emitted line key equals setBy (new-era templates carry cbSet; Ancient and reused ids go through the cbSources map below), the briefing/teaching/set-piece/card/loading renderer for their keys, or voiceLabel for label:*. The flag is set when the line is RENDERED, not when it is selected.",
+  "seq": "true on a derived gate whose source mission precedes the target mission in the same era: always satisfied in normal play because missions unlock in order; the lint proves the order"
+ },
+ "storage": {
+  "flags": "seen.callbacks[flag] (boolean, <= 400 keys, AR 3.5.2)",
+  "rendered": "seen.callbacks[\"<id>:t\"] (boolean; gated targets render once per profile)",
+  "capacity": "57 rendered marks + 12 flags = well under the 400-key cap"
+ },
+ "cbSources": {
+  "doc": "Ancient lines are frozen (G4) and carry no cbSet: the announcer adapter marks these flags when the named template id is RENDERED. eraScope limits where the mark is taken.",
+  "map": {
+   "battle_start_matchup": {
+    "flag": "ancient_grapes",
+    "eraScope": "ancient"
+   },
+   "battle_start_grapes": {
+    "flag": "ancient_grapes",
+    "eraScope": "ancient"
+   },
+   "victory_grapes": {
+    "flag": "ancient_grapes",
+    "eraScope": "ancient"
+   },
+   "idle_filler_grapes": {
+    "flag": "ancient_grapes",
+    "eraScope": "ancient"
+   },
+   "idle_filler_platypus": {
+    "flag": "platypus",
+    "eraScope": "any"
+   }
+  }
+ },
+ "counts": {
+  "total": 71,
+  "gated": 57,
+  "setupFree": 14,
+  "byTargetEra": {
+   "medieval": 20,
+   "modern": 21,
+   "scifi": 30
+  },
+  "bySourceEra": {
+   "ancient": 27,
+   "medieval": 21,
+   "modern": 15,
+   "scifi": 8
+  },
+  "crossEra": 41,
+  "gateKinds": {
+   "derived": 40,
+   "none": 14,
+   "cb": 16,
+   "any": 1
+  }
+ },
+ "entries": [
+  {
+   "id": "med_cb_delphi",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:prop_destroyed_insurance",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Property damage! Delphi Insurance says: we SAW this coming!",
+    "frozen": true,
+    "class": "convertible"
+   },
+   "target": {
+    "key": "ann:med_cb_delphi",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Perpetual Mutual was founded by an oracle. It saw the dragon coming. It sold the policy anyway.",
+    "where": "announcer prop_destroyed, Medieval"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:ancient"
+   },
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (new)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_cb_pizza",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:battle_start_welcome",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "WELCOME to {arena}! Today's carnage is brought to you by Pompeii Pizza, now with 20% more ash!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:med_cb_pizza",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Pompeii Pizza now delivers by PIGEON. The pigeon is missing.",
+    "where": "announcer sponsor read (idle_filler), Medieval, at most once per battle"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (new)",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "med_cb_wall",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:battle_start_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I wrote the result on a wall. You may read it afterwards. Not during.",
+    "frozen": true,
+    "class": "neutral"
+   },
+   "target": {
+    "key": "ann:med_cb_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The wall is full. I have started on the portcullis. It lifts, so I write fast.",
+    "where": "announcer battle_start, Medieval"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (x_cb_wall, Medieval face)",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "med_contract",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "prog:med_tourney_trouble",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "A feudal contract: one party speaks, the other kneels. Is that a dialogue?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "prog:med_castle_dour",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "I have read the contract. It is a monologue with witnesses.",
+    "where": "results footer of the first win of mission 5"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_tourney_trouble",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 3.2 and 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_dennis",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "codex:pageant_dragon:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Front half Wilfred, back half Dennis. Dennis has notes.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "sp:med_sp_dennis_meets_dragon:2",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "That is not Dennis.",
+    "where": "mission 9 set-piece, third voice"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:pageant_dragon,mission_star:med_pennywhistle_blaze)"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.med_dennis)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_goat",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:med_battle_start_goat",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Where is the goat? Somebody fetch the goat.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_goat",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "The goat stayed in the Ancient era. He is fine. He is always fine.",
+    "where": "announcer battle_start, Medieval"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:ancient"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.ancient_done)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_hedge",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "codex:yeomen:lore",
+    "surface": "codex",
+    "voice": null,
+    "text": "The hedge has never lost a battle, mostly because it has never moved.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_hedge",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "The Yeomen's hedge has been out-flanked by a fire. It declines to move.",
+    "where": "announcer idle_filler, Medieval missions 8 and 9"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_pennywhistle_blaze",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.med_hedge, set after M7)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_huzzah",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:med_retreat_huzzah",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "HUZZAH! ...was that a retreat? It looked like a retreat. Also HUZZAH.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_huzzah",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "Brutus has now said huzzah more than ten times. Three were correct. I counted for the record.",
+    "where": "announcer victory/defeat sub huzzah, Medieval, once per profile"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:eraStats.medieval.huzzahs>=11"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (stat huzzahs >= 11); text changed from \"eleven times\" to \"more than ten times\" so it stays true at any count",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_intern",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "progress:ancient:cleared",
+    "surface": "progress",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:medieval:arrival.footer.0",
+    "surface": "card",
+    "voice": null,
+    "text": "Zeus's intern said two minutes. That was four centuries ago.",
+    "where": "arrival card footer, exclusive (at most one footer)"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:ancient"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 3.1",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_intern_chooser",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "progress:ancient:cleared",
+    "surface": "progress",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "chooser:medieval:tooltip.cleared",
+    "surface": "chooser",
+    "voice": "plato",
+    "text": "Last time he asked for lightning. This time he brought a pageant.",
+    "where": "tooltip of the PAGEANT COMPLETE stamp on the Medieval chooser card"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "all(era_cleared:ancient,era_cleared:medieval)"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (med_intern, chooser post-clear)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_pigeon",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:med_dragon_pigeon",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "A DRAGON! The pigeon was supposed to warn us! The pigeon has not been seen since Tuesday!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_pigeon",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "THE PIGEON! It has returned with news from Tuesday!",
+    "where": "announcer battle_start, Medieval mission 8 and 9"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_pennywhistle_blaze",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.med_pigeon, set after M7)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_plague",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "sp:med_sp_great_sniffle:2",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "Plague. I said plague. Tuesday. It is Thursday. For once I am early.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_plague",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I predicted a plague once. It was green. Nobody apologised. Brutus sent a pie.",
+    "where": "announcer victory sub plague, Medieval missions 7 to 9"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "med_plague",
+    "setBy": "sp:med_sp_great_sniffle:2"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.med_plague, set by the M6 set-piece)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_plume",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "defeat:med_tourney_trouble",
+    "surface": "defeat",
+    "voice": "cassandra",
+    "text": "His plume was bigger than your plan. I mentioned the plume.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "brief:med_grand_pageant:tag",
+    "surface": "brief",
+    "voice": "cassandra",
+    "text": "Ser Valiant's plume is on the hoard. The dragon wears it badly.",
+    "where": "tail of the mission 9 briefing"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "med_plume",
+    "setBy": "defeat:med_tourney_trouble"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_snail",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "load:medieval:marginalia",
+    "surface": "load",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_snail",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "THE SNAIL! It has won AGAIN, and in the last mission, and in the one before!",
+    "where": "announcer battle_start, Medieval"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:eraStats.medieval.loadingSnail>=3"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (UI counter loadingSnail >= 3); the counter is incremented by the loading screen (request R-H-STATS)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_soup",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "power:med_soup_cart:tooltip",
+    "surface": "power",
+    "voice": null,
+    "text": "The soup is hot. The soup is, medically speaking, soup.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_soup",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Soup was served. It recovered nothing. Morale, however, was restored.",
+    "where": "announcer victory sub soup, after a won battle in which med_soup_cart was cast"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:godPowers.med_soup_cart>=1"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_sponsor",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "prog:med_ford_dithering",
+    "surface": "prog",
+    "voice": "brutus",
+    "text": "Brought to you by Perpetual Mutual: dragon cover for everything except DRAGONS!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "prog:med_toll_bridge",
+    "surface": "prog",
+    "voice": "brutus",
+    "text": "Our sponsor has withdrawn. They cited the dragon. They have not yet SEEN the dragon.",
+    "where": "results footer of the first win of mission 8"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_ford_dithering",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 3.2 and 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_spoon",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "codex:hoardling:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "A spoon is missing from the hoard.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "sp:med_grand_pageant:end",
+    "surface": "sp",
+    "voice": "brutus",
+    "text": "THE SPOON! Will someone RETURN the spoon!",
+    "where": "mission 9 victory line pool"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:hoardling,codex_open:coin_golem)"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_stool",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:med_banter_stool",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "The kingdom is ruled from a stool. The stool has not commented.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_stool",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The stool sat in the stands. Nothing hit it. Yet.",
+    "where": "announcer idle_filler, Medieval missions 3 to 9"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "med_stool",
+    "setBy": "ann:med_banter_stool"
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "med_tabard",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "medieval"
+   ],
+   "source": {
+    "key": "prog:med_dress_rehearsal",
+    "surface": "prog",
+    "voice": "brutus",
+    "text": "My tabard says I'M WITH THE KING. I have not asked which king.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:med_tabard",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The tabard survived the REHEARSAL. The rehearsal did not survive the tabard.",
+    "where": "announcer battle_start sub tabard, Medieval missions 2 to 9, at most one tabard line per battle"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_dress_rehearsal",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "medieval/humour.md 4 (cb.med_tabard)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "x_cb_vendor",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "medieval",
+   "requiresReleased": [
+    "ancient",
+    "medieval"
+   ],
+   "source": {
+    "key": "ann:battle_start_matchup",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "LIVE from {arena}: {faction} versus {faction2}! Place your bets with the man selling grapes!",
+    "frozen": true,
+    "class": "convertible"
+   },
+   "target": {
+    "key": "ann:x_cb_vendor",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "The snack vendor is the grape seller's great-grandchild. He has the same hat.",
+    "where": "announcer battle_start, any non-Ancient era (one pool entry, shared by id)"
+   },
+   "gate": {
+    "kind": "any",
+    "parts": [
+     {
+      "kind": "cb",
+      "flag": "ancient_grapes",
+      "setBy": "CB_SOURCES battle_start_matchup|battle_start_grapes|victory_grapes|idle_filler_grapes"
+     },
+     {
+      "kind": "derived",
+      "expr": "stat:battles>=15"
+     }
+    ]
+   },
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (new); the stat leg is a retroactive proxy for a v8 profile",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_beige",
+   "type": "setup-free",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "prog:mod_hedgerow_picnic",
+    "surface": "prog",
+    "voice": "brutus",
+    "text": "Brought to you by Beige Stationery: the OFFICIAL stapler of the front line!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_beige",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Beige Stationery has withdrawn its sponsorship. They cited the MOWER.",
+    "where": "mission 8 booth"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_biscuits",
+   "type": "setup-free",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "codex:tin_hat_trooper:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Morale: 80 percent biscuit.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_biscuits",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Morale is low. Biscuits are low. I said these were related.",
+    "where": "announcer army_low, Modern"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_chicken_cargo",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:chicken_kill",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The CHICKEN just killed {unit|a}! Somewhere a farmer is saying: told you!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:mod_cb_chicken_cargo",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Cargo marked miscellaneous! The miscellaneous is a CHICKEN!",
+    "where": "mission 5 boxcar pop"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:chickenKills>=1"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_contract",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "medieval",
+    "modern"
+   ],
+   "source": {
+    "key": "prog:med_tourney_trouble",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "A feudal contract: one party speaks, the other kneels. Is that a dialogue?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_contract",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "In the Middle Ages a contract was a monologue. Today it is a form.",
+    "where": "mission 3 booth"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_tourney_trouble"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4 (cb.med_contract)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_cow",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "ann:mod_roadworks_cow",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "A cow stands in the roundabout. It has right of way. Has it ever not?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_cow",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "No COW today! I checked the road twice! I am, I admit, a little disappointed!",
+    "where": "announcer battle_start on a column arena without the cow"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_cow",
+    "setBy": "ann:mod_roadworks_cow"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_dennis",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "medieval",
+    "modern"
+   ],
+   "source": {
+    "key": "codex:pageant_dragon:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Front half Wilfred, back half Dennis. Dennis has notes.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_dennis",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "That is a mower. It is not Dennis. I checked.",
+    "where": "mission 8 set-piece pool, on the Grand Mower entrance"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:pageant_dragon,mission_star:med_pennywhistle_blaze)"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4 (cb.med_dennis)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_footer_ancient",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "progress:ancient:cleared",
+    "surface": "progress",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:modern:arrival.footer.1",
+    "surface": "card",
+    "voice": null,
+    "text": "Zeus's intern said two minutes. The gate agent has checked. It has been twenty-five centuries.",
+    "where": "arrival card footer, exclusive, priority 2 (shown only when the Medieval footer does not apply)"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:ancient"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 3.1",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_goat_van",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "progress:ancient:nile_crossing",
+    "surface": "progress",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_goat_van",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The goat. Yes. Always the goat.",
+    "where": "mission 4 booth, on the Parcel Van entrance (the van name tag reads LIVESTOCK: DO NOT ASK)"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:nile_crossing"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_goldfish",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "codex:fishbowl_chopper:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Co-pilot is a goldfish with more flight hours than the pilot.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_goldfish",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "The goldfish has logged another hour. The pilot has logged a complaint.",
+    "where": "mission 7 victory, only if no Fishbowl Chopper took damage"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:fishbowl_chopper,mission_star:mod_airfield_open_day)"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4 (cb.mod_goldfish)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_headset",
+   "type": "setup-free",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "card:modern:arrival",
+    "surface": "card",
+    "voice": null,
+    "text": "Headsets issued. Brutus has also been issued a clipboard.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "brief:mod_bridge_too_far:tag",
+    "surface": "brief",
+    "voice": "brutus",
+    "text": "BRUTUS ACTUAL! No, that is not a rank, I checked! Over! No, wait, it is, and I have just promoted myself!",
+    "where": "tag under the mission 4 briefing"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_helicopter",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "sp:mod_sp_hold_music:0",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "I filed a risk assessment on the helicopter. It came back stamped APPROVED. By the helicopter.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_helicopter",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Same helicopter. Different Tuesday. Still approved by the helicopter.",
+    "where": "announcer helicopter category, Modern missions 7 to 9"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_helicopter",
+    "setBy": "sp:mod_sp_hold_music:0"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_intern_footer",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "medieval",
+    "modern"
+   ],
+   "source": {
+    "key": "card:medieval:cleared",
+    "surface": "card",
+    "voice": null,
+    "text": "Wrong century? Try the one with the engines. They will love it. - Intern",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:modern:arrival.footer.0",
+    "surface": "card",
+    "voice": null,
+    "text": "Last time he sent a pageant. This time he sent a boarding pass.",
+    "where": "arrival card footer, exclusive, priority 1"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:medieval"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 3.1 and 4 (cb.med_done)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_over",
+   "type": "setup-free",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "ann:mod_e1_over",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Is it over? Over!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_over",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "It is over. I mean the battle. Brutus means the other thing.",
+    "where": "mission 7 victory"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_parcel",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "brief:mod_bridge_too_far:0",
+    "surface": "brief",
+    "voice": "brutus",
+    "text": "Nobody knows what is in the Parcel!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_parcel",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The Parcel has been signed for by someone who is not here. I checked the signature. It was in a hurry.",
+    "where": "mission 8 booth"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_parcel",
+    "setBy": "brief:mod_bridge_too_far:0"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_pizza",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:battle_start_welcome",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "WELCOME to {arena}! Today's carnage is brought to you by Pompeii Pizza, now with 20% more ash!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:mod_cb_pizza",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Brought to you by Pompeii Pizza, now delivered by HELICOPTER, which Cassandra has reported!",
+    "where": "mission 7 booth sponsor read"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_plague",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "medieval",
+    "modern"
+   ],
+   "source": {
+    "key": "sp:med_sp_great_sniffle:2",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "Plague. I said plague. Tuesday. It is Thursday. For once I am early.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_cb_plague",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I predicted green once. Today's sparkle is orange. I take a smaller pleasure in it.",
+    "where": "mission 8 booth, on the first heal sparkle"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "med_plague",
+    "setBy": "sp:med_sp_great_sniffle:2"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4; text REWRITTEN (the bible reused the Medieval target verbatim)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_plato_muted",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "modern"
+   ],
+   "source": {
+    "key": "label:plato:muted",
+    "surface": "label",
+    "voice": null,
+    "text": "PLATO (MUTED)",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:mod_plato_muted_payoff",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "I was heard. I would like it noted that I mostly said that this was a bad idea.",
+    "where": "mission 9 victory line (Plato, label simply PLATO)"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_plato_muted",
+    "setBy": "label:plato:muted"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4 and 3.3",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_terms",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:battle_start_terms",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The Terms of Conquest are LAMINATED and posted. Clause seven: nobody stabs the grape seller.",
+    "frozen": true,
+    "class": "convertible"
+   },
+   "target": {
+    "key": "ann:mod_cb_terms",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The Terms of Conquest, Revision Nine, now in a plastic SLEEVE!",
+    "where": "mission 3 booth"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_trojan_box",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:trojan_open",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "THE HORSE HAS OPENED! Six hoplites! And I am told a small gift shop!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:mod_cb_trojan_box",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "A horse of men in a box. We keep returning to this shape.",
+    "where": "mission 4 booth, on the first lunchbox bailout"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:trojanReveals>=1"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4; gate re-expressed as the lifetime stat trojanReveals (retroactive for a v8 profile)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_wall",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:battle_start_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I wrote the result on a wall. You may read it afterwards. Not during.",
+    "frozen": true,
+    "class": "neutral"
+   },
+   "target": {
+    "key": "ann:mod_cb_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I ran out of wall at the briefing. The helicopter is next. It keeps leaving.",
+    "where": "announcer battle_start, Modern"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (x_cb_wall, Modern face)",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "mod_cb_wine_tea",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "modern",
+   "requiresReleased": [
+    "ancient",
+    "modern"
+   ],
+   "source": {
+    "key": "ann:god_power_wine",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "WINE RAIN! Everyone is tipsy! Damage is down forty percent, spirits up a hundred!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "power:mod_gp_tea_break:cast",
+    "surface": "power",
+    "voice": "plato",
+    "text": "Wine in the Ancient world, tea now. The intern's beverages are in decline.",
+    "where": "announcer god_power sub tea_break, first cast per profile"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:godPowers.wine_rain>=1"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "mod_cb_robots",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:mod_m7_drones",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I predicted the drones. Someone must have predicted the drones.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_drones",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The drones were not the robots. The robots come later. I filed it under later.",
+    "where": "Sci-Fi mission 5 booth"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_drones",
+    "setBy": "ann:mod_m7_drones"
+   },
+   "repeat": null,
+   "origin": "modern/humour.md 4 (mod_cb_robots) = scifi/humour.md 4 (sf_cb_drones): ONE callback, the two bibles described the same pair; the Modern target wording is dropped, the Sci-Fi wording kept",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   },
+   "aliases": [
+    "sf_cb_drones"
+   ]
+  },
+  {
+   "id": "sf_cb_chicken",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:chicken_kill",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The CHICKEN just killed {unit|a}! Somewhere a farmer is saying: told you!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:sf_cb_chicken",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "I have met a swarm like this. It was a chicken. It also called a meeting.",
+    "where": "announcer on a Skitterling swarm"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:chickenKills>=1"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_contract",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "medieval",
+    "scifi"
+   ],
+   "source": {
+    "key": "prog:med_tourney_trouble",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "A feudal contract: one party speaks, the other kneels. Is that a dialogue?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_contract",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "In the Middle Ages a contract was a monologue. Today it is a survey. Both end with a signature nobody reads.",
+    "where": "Courtesy Systems victory screen line"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:med_tourney_trouble"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_define",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:battle_start_define",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "Before we begin: what, precisely, is a battle?",
+    "frozen": true,
+    "class": "neutral"
+   },
+   "target": {
+    "key": "prog:sf_noise_complaint",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "I have defined 'battle' in three eras. Today's definition is 'noise'. I am not proud. I am accurate.",
+    "where": "results footer of the first win of mission 8"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "scifi/humour.md 3.2 (M8 progression) + 3.3; Plato's running definition",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "sf_cb_dennis",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "medieval",
+    "scifi"
+   ],
+   "source": {
+    "key": "codex:pageant_dragon:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Front half Wilfred, back half Dennis. Dennis has notes.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_dennis",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "Dennis would have liked a manta. Dennis would also have had notes.",
+    "where": "announcer on the Void Manta entrance"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:pageant_dragon,mission_star:med_pennywhistle_blaze)"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_footer_ancient",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "progress:ancient:cleared",
+    "surface": "progress",
+    "voice": null,
+    "text": null,
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:scifi:arrival.footer.2",
+    "surface": "card",
+    "voice": null,
+    "text": "Zeus's intern said two minutes. The remote now reads 'several thousand years, approximately.'",
+    "where": "arrival card footer, exclusive, priority 3"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:ancient"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 3.1",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_footer_med",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "medieval",
+    "scifi"
+   ],
+   "source": {
+    "key": "card:medieval:cleared",
+    "surface": "card",
+    "voice": null,
+    "text": "Wrong century? Try the one with the engines. They will love it. - Intern",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:scifi:arrival.footer.1",
+    "surface": "card",
+    "voice": null,
+    "text": "He skipped a few centuries. The remote says that is allowed.",
+    "where": "arrival card footer, exclusive, priority 2"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:medieval"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 3.1 (cb.med_done)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_footer_mod",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "card:modern:cleared",
+    "surface": "card",
+    "voice": null,
+    "text": "TO: Whom it may concern. RE: Next. FORWARDED TO: THE FUTURE. Please hold.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "card:scifi:arrival.footer.0",
+    "surface": "card",
+    "voice": null,
+    "text": "Last time he sent a boarding pass. This time he pressed button three.",
+    "where": "arrival card footer, exclusive, priority 1"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "era_cleared:modern"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 3.1 (cb.mod_done)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_gift",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:sf_pod_arrives",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "A pod arrives unsolicited, smiling. Should one open it?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_gift",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "It is a gift again. I said open it never. I said it in the other era too.",
+    "where": "announcer on the first Grazer Drop or stalemate pod"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:trojanReveals>=1"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4 (cb.ancient_trojan) re-expressed as the lifetime stat",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_goat",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:sf_goat_squint",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Is a grazer a goat? Everything is a goat if you squint!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_goat",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The goat's great-great-GRANDGRAZER! Same helmet! Better lighting!",
+    "where": "announcer, any Glow Grazer on the field"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:nile_crossing"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_goldfish",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "codex:fishbowl_chopper:codexJoke",
+    "surface": "codex",
+    "voice": null,
+    "text": "Co-pilot is a goldfish with more flight hours than the pilot.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_goldfish",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "A sphere with a bottle, hovering. It does not contain a goldfish. I checked twice.",
+    "where": "announcer on the first Spritz Medic"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "any(codex_open:fishbowl_chopper,mission_star:mod_airfield_open_day)"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_headset",
+   "type": "setup-free",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "card:scifi:arrival",
+    "surface": "card",
+    "voice": null,
+    "text": "Brutus has been issued a headset that fits a toga.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_headset",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The headset FITS! The toga has a collar! I am, at last, a complete broadcast!",
+    "where": "mission 9 booth"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "sf_cb_helicopter",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "sp:mod_sp_hold_music:0",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "I filed a risk assessment on the helicopter. It came back stamped APPROVED. By the helicopter.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_helicopter",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The helicopter retired. The trays took over. Approved by the trays.",
+    "where": "mission 5 booth, on the valet drones"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_helicopter",
+    "setBy": "sp:mod_sp_hold_music:0"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_lease",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "poster:sf_lunch_break",
+    "surface": "poster",
+    "voice": null,
+    "text": "HE CAME FOR THE MOON. HE STAYED FOR THE LEASE.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_lease",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "The lease is on the dais. I read it. It is a monologue with a queen.",
+    "where": "mission 9 victory"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "sf_lease",
+    "setBy": "poster:sf_lunch_break"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_mic",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "prog:sf_express_delivery",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "My microphone has a small red light. It is on. I have said everything I think in front of it. Is that courage, or a shortage of switches?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_mic",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "My microphone light has been on for nine missions. I have said nothing I would take back.",
+    "where": "mission 9 booth"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:sf_express_delivery",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_muted",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "label:plato:muted",
+    "surface": "label",
+    "voice": null,
+    "text": "PLATO (MUTED)",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_muted",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "In the last century I was muted. Today the light is on. I find I have less to say.",
+    "where": "Sci-Fi mission 1 booth"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_plato_muted",
+    "setBy": "label:plato:muted"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_parcel",
+   "type": "gated",
+   "sourceEra": "modern",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "modern",
+    "scifi"
+   ],
+   "source": {
+    "key": "brief:mod_bridge_too_far:0",
+    "surface": "brief",
+    "voice": "brutus",
+    "text": "Nobody knows what is in the Parcel!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "brief:sf_express_delivery:tag",
+    "surface": "brief",
+    "voice": "cassandra",
+    "text": "The Envoy is a parcel with a bubble. The last parcel was signed for by someone who was not here.",
+    "where": "tag under the Sci-Fi mission 4 briefing"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "mod_parcel",
+    "setBy": "brief:mod_bridge_too_far:0"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_philosopher",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:philosopher_monologue",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The Philosopher is monologuing! The enemy has gone quiet! This is the SCARIEST part!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:sf_cb_philosopher",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "My colleague the Philosopher confused a front rank once. This chassis confuses the philosophy.",
+    "where": "announcer on the Maitre D'Luxe please_wait"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:byDef.philosopher.spawned>=1"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_pizza",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:battle_start_welcome",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "WELCOME to {arena}! Today's carnage is brought to you by Pompeii Pizza, now with 20% more ash!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:sf_cb_pizza",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "Pompeii Pizza has been acquired by Low Orbit Pizza! The ash is now ZERO-gravity!",
+    "where": "announcer sponsor read, Sci-Fi"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "scifi/humour.md 4; was gated on progress.eras.ancient.opened, which is true for every profile (AR migration), so the gate was vacuous: made setup-free",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "sf_cb_plague",
+   "type": "gated",
+   "sourceEra": "medieval",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "medieval",
+    "scifi"
+   ],
+   "source": {
+    "key": "sp:med_sp_great_sniffle:2",
+    "surface": "sp",
+    "voice": "cassandra",
+    "text": "Plague. I said plague. Tuesday. It is Thursday. For once I am early.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_plague",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I predicted a plague once. It was green. The Hive is also green. I am not saying it is the same plague.",
+    "where": "announcer on the first spore cloud or acid hit"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "med_plague",
+    "setBy": "sp:med_sp_great_sniffle:2"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_popcorn",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "prog:sf_floor_lava",
+    "surface": "prog",
+    "voice": "brutus",
+    "text": "The booth has cup holders! I have filled them with POPCORN! It is a tactical decision and a snack!",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_popcorn",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The popcorn is GONE! The war and the snack have both been eaten!",
+    "where": "mission 9 booth"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:sf_floor_lava",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_robots",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:sf_m5_robots",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I predicted the robots. Nobody listened. Again.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "prog:sf_grand_reopening",
+    "surface": "prog",
+    "voice": "cassandra",
+    "text": "I predicted the robots. I was right. I am pleased. Four seconds. Three.",
+    "where": "results footer of the first win of mission 6"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:sf_turn_it_off",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4 and 3.2",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_sign",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "prog:sf_overclock_oops",
+    "surface": "prog",
+    "voice": "cassandra",
+    "text": "I said do not overclock it. The sign said it too. The sign is now part of the reactor.",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_sign",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Do not stand in the ring. I said it in capital letters. The capital letters are in the crater.",
+    "where": "mission 8 booth"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:sf_overclock_oops",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_survey",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "prog:sf_turn_it_off",
+    "surface": "prog",
+    "voice": "plato",
+    "text": "I asked the booth assistant to define 'battle'. It replied with a survey. Question one: how did we feel about the battle?",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_survey",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "Question one: how did we feel about the noise? Question two: define noise.",
+    "where": "mission 8 booth"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "mission_star:sf_turn_it_off",
+    "seq": true
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_terms",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:battle_start_terms",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The Terms of Conquest are LAMINATED and posted. Clause seven: nobody stabs the grape seller.",
+    "frozen": true,
+    "class": "convertible"
+   },
+   "target": {
+    "key": "ann:sf_cb_terms",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The Terms of Conquest are now HOLOGRAPHIC. Still laminated, in spirit.",
+    "where": "mission 3 booth"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "sf_cb_translator",
+   "type": "gated",
+   "sourceEra": "scifi",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:sf_translator_first",
+    "surface": "ann",
+    "voice": null,
+    "text": "[Translator: 'We come in peace.' Confidence: 11 percent. Alternate reading: 'We come in pieces.']",
+    "frozen": false,
+    "class": null
+   },
+   "target": {
+    "key": "ann:sf_cb_translator",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "The translator is at TWELVE percent! It is learning to be unsure better!",
+    "where": "announcer translator category, any later alien line"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "sf_translator",
+    "setBy": "ann:sf_translator_first"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_wall",
+   "type": "setup-free",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:battle_start_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I wrote the result on a wall. You may read it afterwards. Not during.",
+    "frozen": true,
+    "class": "neutral"
+   },
+   "target": {
+    "key": "ann:sf_cb_wall",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "I ran out of wall, ceiling and whiteboard. I have started on the hull. It is airtight about it.",
+    "where": "announcer battle_start, Sci-Fi"
+   },
+   "gate": null,
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (x_cb_wall, Sci-Fi face)",
+   "check": {
+    "kind": "cold",
+    "question": "In one sentence, what is the joke?",
+    "rater": "panel (3 raters, line alone, names masked)",
+    "pass": "at least 2 of 3 raters answer with a gist that is not \"I do not understand\" and none flags confusing"
+   }
+  },
+  {
+   "id": "sf_cb_wine",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:god_power_wine",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "WINE RAIN! Everyone is tipsy! Damage is down forty percent, spirits up a hundred!",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "power:sf_nano_spritz:cast",
+    "surface": "power",
+    "voice": "plato",
+    "text": "Wine in the Ancient world, a spray in the future. Hydration is in decline.",
+    "where": "announcer god_power sub nano_spritz, first cast per profile"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "stat:godPowers.wine_rain>=1"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "sf_cb_zeus_left",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:zeus_left",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "Zeus departs, and with him the battle. A draw. Even gods leave early.",
+    "frozen": true,
+    "class": "ancient"
+   },
+   "target": {
+    "key": "ann:sf_cb_zeus_left",
+    "surface": "ann",
+    "voice": "cassandra",
+    "text": "Zeus left the chat. Whoever pressed the button has stayed. I find that worse.",
+    "where": "announcer stalemate draw, Sci-Fi"
+   },
+   "gate": {
+    "kind": "derived",
+    "expr": "ach:zeus_left"
+   },
+   "repeat": null,
+   "origin": "scifi/humour.md 4",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  },
+  {
+   "id": "x_cb_platypus",
+   "type": "gated",
+   "sourceEra": "ancient",
+   "targetEra": "scifi",
+   "requiresReleased": [
+    "ancient",
+    "scifi"
+   ],
+   "source": {
+    "key": "ann:idle_filler_platypus",
+    "surface": "ann",
+    "voice": "brutus",
+    "text": "And now, back to PLATYPUS!",
+    "frozen": true,
+    "class": "neutral"
+   },
+   "target": {
+    "key": "ann:x_cb_platypus",
+    "surface": "ann",
+    "voice": "plato",
+    "text": "We have not returned to the platypus in some time. I find that I miss it.",
+    "where": "announcer idle_filler, Sci-Fi"
+   },
+   "gate": {
+    "kind": "cb",
+    "flag": "platypus",
+    "setBy": "CB_SOURCES idle_filler_platypus"
+   },
+   "repeat": null,
+   "origin": "ancient_announcer_classification.md 3.9 (new)",
+   "check": {
+    "kind": "gate",
+    "cases": [
+     {
+      "gateOpen": false,
+      "mustRender": false
+     },
+     {
+      "gateOpen": true,
+      "mustRender": true
+     }
+    ],
+    "note": "automatic: tests/humor/callbacks.test.mjs flips the gate in a stubbed save and asserts the selector"
+   }
+  }
+ ]
+}

@@ -17,7 +17,7 @@ const rm = (rel) => fs.rmSync(path.join(mini, rel), { force: true });
 
 // scratch project: the gate and its libraries, the criteria client, the syntax fixtures, node_modules linked
 for (const f of ['gate.mjs']) { fs.mkdirSync(path.join(mini, 'tools/lib'), { recursive: true }); fs.copyFileSync(path.join(ROOT, 'tools', f), path.join(mini, 'tools', f)); }
-for (const f of ['lanes', 'snapshot', 'syntax', 'gate_cache', 'criteria_merge', 'size_budget', 'paths']) fs.copyFileSync(path.join(ROOT, `tools/lib/${f}.mjs`), path.join(mini, `tools/lib/${f}.mjs`));
+for (const f of ['lanes', 'snapshot', 'syntax', 'gate_cache', 'criteria_merge', 'er_rollup', 'size_budget', 'paths']) fs.copyFileSync(path.join(ROOT, `tools/lib/${f}.mjs`), path.join(mini, `tools/lib/${f}.mjs`));
 fs.mkdirSync(path.join(mini, 'tests/lib'), { recursive: true }); fs.copyFileSync(path.join(ROOT, 'tests/lib/criteria.mjs'), path.join(mini, 'tests/lib/criteria.mjs'));
 fs.cpSync(path.join(ROOT, 'tests/fixtures/syntax_bad'), path.join(mini, 'tests/fixtures/syntax_bad'), { recursive: true });
 fs.symlinkSync(path.join(ROOT, 'node_modules'), path.join(mini, 'node_modules'));

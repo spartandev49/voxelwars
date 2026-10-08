@@ -11,6 +11,9 @@ import { fileURLToPath } from 'url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const TIERS = ['T-fast', 'T-era', 'T-full', 'release', 'heavy'];
+const JUDGES = ['script', 'panel', 'agent'];
+const ENGINES = ['node', 'chromium'];
+const arr = (v) => (v == null ? null : Array.isArray(v) ? v.map(String) : [String(v)]);
 const registry = new Map();       // id -> state of this process
 let hooked = false;
 
@@ -35,7 +38,7 @@ function flush(exitCode) {
     const failures = s.failures.slice();
     if (exitCode && !failures.length && !s.skipped) failures.push('exit:' + exitCode);
     lines.push(JSON.stringify({
-      id: s.id, er: s.meta.er || null, owner: s.meta.owner || null, tier: s.meta.tier || null, negctl: s.meta.negctl || null, text: s.meta.text || '',
+      id: s.id, er: arr(s.meta.er), owner: s.meta.owner || null, tier: s.meta.tier || null, negctl: s.meta.negctl || null, text: s.meta.text || '',
       judge: s.meta.judge || 'script', engine: s.meta.engine || 'node', era: s.meta.era || process.env.VW_ERA || null,
       file: s.file, scriptHash: s.scriptHash, assertions: s.n, failures, skipped: s.skipped || null,
       seconds: +((Date.now() - s.t0) / 1000).toFixed(3), treeHash: process.env.VW_TREEHASH || null, at: new Date().toISOString(),
@@ -52,6 +55,8 @@ function flush(exitCode) {
 export function criterion(id, meta = {}) {
   if (typeof id !== 'string' || !id) throw new TypeError('criterion(id): id must be a non-empty string');
   if (meta.tier && !TIERS.includes(meta.tier)) throw new RangeError(`criterion ${id}: tier must be one of ${TIERS.join(', ')}`);
+  if (meta.judge && !JUDGES.includes(meta.judge)) throw new RangeError(`criterion ${id}: judge must be one of ${JUDGES.join(', ')}`);
+  if (meta.engine && !ENGINES.includes(meta.engine)) throw new RangeError(`criterion ${id}: engine must be one of ${ENGINES.join(', ')}`);
   if (registry.has(id)) throw new Error(`criterion ${id} registered twice in one process`);
   const st = { id, meta, n: 0, failures: [], skipped: null, flushed: false, t0: Date.now(), ...scriptInfo() };
   registry.set(id, st);

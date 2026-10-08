@@ -1,0 +1,730 @@
+{
+ "schema": 1,
+ "criteria": [
+  {
+   "id": "AR-T13",
+   "file": "tests/save/compat_both_ways.test.mjs",
+   "line": 26,
+   "er": [
+    "ER16",
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/AR-T13.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "AR-T23",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 367,
+   "er": [
+    "ER1",
+    "ER13"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/AR-T23.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T01",
+   "file": "tests/gate/syntax.test.mjs",
+   "line": 11,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T01.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T02",
+   "file": "tests/gate/lanes.test.mjs",
+   "line": 5,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T02.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T03",
+   "file": "tests/gate/cache.test.mjs",
+   "line": 11,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T03.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T04",
+   "file": "tests/gate/snapshot.test.mjs",
+   "line": 11,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T04.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T05",
+   "file": "tests/gate/gate_cli.test.mjs",
+   "line": 12,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T05.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T06",
+   "file": "tests/gate/build.test.mjs",
+   "line": 13,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T06.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T07",
+   "file": "tests/gate/size.test.mjs",
+   "line": 6,
+   "er": [
+    "ER14"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T07.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "GATE-T08",
+   "file": "tests/gate/criteria.test.mjs",
+   "line": 11,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T08.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal",
+   "dup": [
+    "tests/gate/criteria.test.mjs"
+   ]
+  },
+  {
+   "id": "GATE-T09",
+   "file": "tests/gate/genreg.test.mjs",
+   "line": 12,
+   "er": [
+    "ER2"
+   ],
+   "owner": "TOOLS-GATE",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/GATE-T09.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "MS-T01",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T01.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T02",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T02.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T03",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T03.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T04",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T04.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T05",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T05.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T06",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T06.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T07",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T07.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T08",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T08.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T09",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T09.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "MS-T10",
+   "file": "tests/campaign/ms.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/MS-T10.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "VF-FEAS",
+   "file": "tests/golden/feasibility_record.test.mjs",
+   "line": 18,
+   "er": [
+    "ER1",
+    "ER24"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-FEAS.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G0",
+   "file": "tests/golden/golden_tools.test.mjs",
+   "line": 17,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G0.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G0g2",
+   "file": "tests/golden/golden_tools.g2.slow.test.mjs",
+   "line": 12,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-G0g2.mjs",
+   "judge": null,
+   "engine": "chromium",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G2",
+   "file": "tests/golden/g2_gen.test.mjs",
+   "line": 13,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G2.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G2c",
+   "file": "tests/golden/g2_gen_chromium.test.mjs",
+   "line": 17,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-era",
+   "negctl": "tests/negctl/VF-G2c.mjs",
+   "judge": null,
+   "engine": "chromium",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G3",
+   "file": "tests/golden/g3_ids.test.mjs",
+   "line": 15,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G3.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G4",
+   "file": "tests/golden/g4_text.test.mjs",
+   "line": 11,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G4.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G5",
+   "file": "tests/save/g5_fixture.test.mjs",
+   "line": 15,
+   "er": [
+    "ER16",
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G5.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G5c",
+   "file": "tests/golden/g5_customs.test.mjs",
+   "line": 14,
+   "er": [
+    "ER1",
+    "ER16"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G5c.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G6",
+   "file": "tests/golden/g6_campaign.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G6.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "VF-G6m",
+   "file": "tests/golden/g6_campaign.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-G6m.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "VF-G6s",
+   "file": "tests/golden/records_states.slow.test.mjs",
+   "line": 18,
+   "er": [
+    "ER1",
+    "ER24"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-G6s.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G6w",
+   "file": "tests/golden/harness_workarounds.test.mjs",
+   "line": 11,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G6w.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-G7",
+   "file": "tests/golden/g7_armygen.test.mjs",
+   "line": 14,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-G7.mjs",
+   "judge": null,
+   "engine": "node",
+   "source": "literal"
+  },
+  {
+   "id": "VF-L01",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 87,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-L01.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-L02",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 180,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-L02.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-L03",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 420,
+   "er": [
+    "ER24"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-L03.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-L04",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 436,
+   "er": [
+    "ER1",
+    "ER24"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-L04.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-L05",
+   "file": "tests/golden/negctl_lite.test.mjs",
+   "line": 9,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-L05.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-L06",
+   "file": "tests/golden/records_cli.test.mjs",
+   "line": 24,
+   "er": [
+    "ER1",
+    "ER7"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-L06.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T01",
+   "file": "tests/verify/provenance_tool.test.mjs",
+   "line": 25,
+   "er": [
+    "ER1",
+    "ER24"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T01.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T02",
+   "file": "tests/golden/lib.test.mjs",
+   "line": 272,
+   "er": [
+    "ER1",
+    "ER13"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T02.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T03",
+   "file": "tests/golden/g1_sim.test.mjs",
+   "line": 11,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T03.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T03-chromium",
+   "file": "tests/golden/g1_chromium.slow.test.mjs",
+   "line": 24,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-T03-chromium.mjs",
+   "judge": null,
+   "engine": "chromium",
+   "source": "literal"
+  },
+  {
+   "id": "VF-T03-full",
+   "file": "tests/golden/g1_sim_full.slow.test.mjs",
+   "line": 11,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-T03-full.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T03R",
+   "file": "tests/golden/g1_record.slow.test.mjs",
+   "line": 23,
+   "er": [
+    "ER1"
+   ],
+   "owner": "TOOLS-GOLDEN",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-T03R.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T13",
+   "file": "tests/verify/criteria.test.mjs",
+   "line": 14,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-VERIFY",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T13.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T13d",
+   "file": "tests/verify/registry_drift.slow.test.mjs",
+   "line": 11,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-VERIFY",
+   "tier": "T-full",
+   "negctl": "tests/negctl/VF-T13d.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T14",
+   "file": "tests/verify/negctl_runner.test.mjs",
+   "line": 15,
+   "er": [
+    "gate"
+   ],
+   "owner": "TOOLS-VERIFY",
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T14.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "literal"
+  },
+  {
+   "id": "VF-T26-lint",
+   "file": "tests/verify/program_tools.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T26-lint.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "VF-T26-p0exit",
+   "file": "tests/verify/program_tools.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T26-p0exit.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  },
+  {
+   "id": "VF-T26-wbs",
+   "file": "tests/verify/program_tools.test.mjs",
+   "line": 0,
+   "er": null,
+   "owner": null,
+   "tier": "T-fast",
+   "negctl": "tests/negctl/VF-T26-wbs.mjs",
+   "judge": null,
+   "engine": null,
+   "source": "negctl"
+  }
+ ]
+}

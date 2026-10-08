@@ -1,0 +1,69 @@
+{
+ "schema": 1,
+ "rows": [
+  {
+   "er": "EX1",
+   "criterion": "identity of the fixture",
+   "ids": [
+    "PX-OK",
+    "PX-OK2"
+   ],
+   "scripts": [],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P0"
+  },
+  {
+   "er": "EX2",
+   "criterion": "a failing member",
+   "ids": [],
+   "scripts": [],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P0"
+  },
+  {
+   "er": "EX3",
+   "criterion": "zero assertions",
+   "ids": [
+    "UX-ZERO",
+    "UX-MISSING"
+   ],
+   "scripts": [],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  {
+   "er": "EX4",
+   "criterion": "judged by a panel",
+   "ids": [],
+   "scripts": [],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  {
+   "er": "EX5",
+   "criterion": "no negative control",
+   "ids": [],
+   "scripts": [],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  {
+   "er": "EX6",
+   "criterion": "a heavier tier than the run",
+   "ids": [
+    "PX-LATER"
+   ],
+   "scripts": [
+    "tools/later_tool.mjs"
+   ],
+   "stems": [],
+   "owner": "FIXTURE",
+   "first": "P2"
+  }
+ ]
+}

@@ -1,0 +1,2618 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "kinds": {
+   "arrow": {
+    "a": [
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "centaur_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "centaur_archer"
+   },
+   "bolt": {
+    "a": [
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "ballista",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "ballista"
+   },
+   "boulder": {
+    "a": [
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "catapult"
+   },
+   "coin": {
+    "a": [
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "senator"
+   },
+   "francisca": {
+    "a": [
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "axe_thrower"
+   },
+   "javelin": {
+    "a": [
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "numidian",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "numidian"
+   },
+   "pilum": {
+    "a": [
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "pilum_thrower"
+   },
+   "scepter": {
+    "a": [
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "pharaoh"
+   },
+   "sunbeam": {
+    "a": [
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "priest_of_ra",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "priest_of_ra"
+   },
+   "thunderbolt": {
+    "a": [
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -7.2
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 7.2
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": 7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -7.2
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 17.4,
+      "z": 7.2
+     }
+    ],
+    "carrier": "druid"
+   }
+  },
+  "note": "carrier = first def (sorted id order) whose ranged.proj is the kind; 14 carriers vs 14 hoplites 30 u apart on arenalab",
+  "opponent": "hoplite"
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g1_kinds",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

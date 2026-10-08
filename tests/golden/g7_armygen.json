@@ -1,0 +1,1630 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "armies": [
+   {
+    "composition": "companion_cavalry:1,peltast:5,philosopher:2,spartan:3",
+    "compositionSha": "06e0f50c68bb",
+    "cost": 1435,
+    "key": "hellenes/balanced/easy/1500/1/t0",
+    "placements": 11,
+    "placementsSha": "3581fc5a2746",
+    "total": 11,
+    "types": 4
+   },
+   {
+    "composition": "companion_cavalry:12,hoplite:17,philosopher:1,spartan:6,strategos:1",
+    "compositionSha": "9a94b1fe5fe5",
+    "cost": 5740,
+    "key": "hellenes/rush/easy/6000/3/t1",
+    "placements": 37,
+    "placementsSha": "8615b3411cd1",
+    "total": 37,
+    "types": 5
+   },
+   {
+    "composition": "companion_cavalry:3,cretan_archer:27,hoplite:17,peltast:36,philosopher:11,spartan:11,strategos:2",
+    "compositionSha": "42e879ac8680",
+    "cost": 11960,
+    "key": "hellenes/ranged/easy/12000/5/t0",
+    "placements": 107,
+    "placementsSha": "531d14ded1d0",
+    "total": 107,
+    "types": 7
+   },
+   {
+    "composition": "companion_cavalry:12,hoplite:10,philosopher:2,spartan:10,strategos:1",
+    "compositionSha": "e6db59988c06",
+    "cost": 5920,
+    "key": "hellenes/elite/normal/6000/2/t1",
+    "placements": 35,
+    "placementsSha": "d7d887b56819",
+    "total": 35,
+    "types": 5
+   },
+   {
+    "composition": "companion_cavalry:12,cretan_archer:21,hoplite:22,peltast:18,philosopher:14,spartan:8,strategos:2",
+    "compositionSha": "82c02b8cc89f",
+    "cost": 11980,
+    "key": "hellenes/chaos/normal/12000/4/t0",
+    "placements": 97,
+    "placementsSha": "499750a76be9",
+    "total": 97,
+    "types": 7
+   },
+   {
+    "composition": "companion_cavalry:6,cretan_archer:9,hoplite:10,peltast:13,philosopher:6,spartan:4,strategos:1",
+    "compositionSha": "5477e069023e",
+    "cost": 5975,
+    "key": "hellenes/counter/hard/6000/1/t1/vs",
+    "placements": 49,
+    "placementsSha": "7175858714a6",
+    "total": 49,
+    "types": 7
+   },
+   {
+    "composition": "ballista:10,centurion:2,equites:11,gladiator:14,senator:1",
+    "compositionSha": "83113386bbdc",
+    "cost": 7096,
+    "key": "romans/balanced/hard/12000/3/t0/vs",
+    "placements": 38,
+    "placementsSha": "6662ce4f1487",
+    "total": 38,
+    "types": 5
+   },
+   {
+    "composition": "equites:3,legionary:6,pilum_thrower:2",
+    "compositionSha": "c1cb591766e0",
+    "cost": 1498,
+    "key": "romans/rush/easy/1500/5/t1",
+    "placements": 11,
+    "placementsSha": "c8e0d8e0f086",
+    "total": 11,
+    "types": 3
+   },
+   {
+    "composition": "ballista:10,centurion:2,equites:2,gladiator:11,legionary:12,senator:8",
+    "compositionSha": "e74affcca241",
+    "cost": 7686,
+    "key": "romans/ranged/easy/12000/2/t0",
+    "placements": 45,
+    "placementsSha": "b064b5b43cc7",
+    "total": 45,
+    "types": 6
+   },
+   {
+    "composition": "centurion:1,equites:2,gladiator:4,pilum_thrower:3",
+    "compositionSha": "9395b7520766",
+    "cost": 1494,
+    "key": "romans/elite/normal/1500/4/t1",
+    "placements": 10,
+    "placementsSha": "c76ddd3be31f",
+    "total": 10,
+    "types": 4
+   },
+   {
+    "composition": "ballista:14,centurion:2,equites:13,gladiator:12,legionary:8,senator:10",
+    "compositionSha": "fcb8ee7f0efb",
+    "cost": 10480,
+    "key": "romans/chaos/normal/12000/1/t0",
+    "placements": 59,
+    "placementsSha": "a0170c5cf3d4",
+    "total": 59,
+    "types": 6
+   },
+   {
+    "composition": "ballista:1,equites:2,gladiator:3,pilum_thrower:3,senator:1",
+    "compositionSha": "79da1724fdda",
+    "cost": 1492,
+    "key": "romans/counter/hard/1500/3/t1/vs",
+    "placements": 10,
+    "placementsSha": "b587e8685b64",
+    "total": 10,
+    "types": 5
+   },
+   {
+    "composition": "anubis_guard:1,chariot_archer:5,khopesh_warrior:9,medjay:9,nubian_archer:21,pharaoh:1,priest_of_ra:4",
+    "compositionSha": "44ffab564bb7",
+    "cost": 5970,
+    "key": "egyptians/balanced/hard/6000/5/t0/vs",
+    "placements": 50,
+    "placementsSha": "697b25b565dc",
+    "total": 50,
+    "types": 7
+   },
+   {
+    "composition": "chariot_archer:2,medjay:9,nubian_archer:3",
+    "compositionSha": "491560f8d0ff",
+    "cost": 1474,
+    "key": "egyptians/rush/easy/1500/2/t1",
+    "placements": 14,
+    "placementsSha": "ab5e9942afdc",
+    "total": 14,
+    "types": 3
+   },
+   {
+    "composition": "anubis_guard:3,chariot_archer:3,medjay:3,mummy:7,nubian_archer:29,priest_of_ra:5",
+    "compositionSha": "24f250913880",
+    "cost": 5954,
+    "key": "egyptians/ranged/easy/6000/4/t0",
+    "placements": 50,
+    "placementsSha": "b595afe04a1e",
+    "total": 50,
+    "types": 6
+   },
+   {
+    "composition": "anubis_guard:3,chariot_archer:2,nubian_archer:4",
+    "compositionSha": "679817f05f7b",
+    "cost": 1494,
+    "key": "egyptians/elite/normal/1500/1/t1",
+    "placements": 9,
+    "placementsSha": "6e853f59b3a3",
+    "total": 9,
+    "types": 3
+   },
+   {
+    "composition": "anubis_guard:9,chariot_archer:5,khopesh_warrior:4,mummy:5,nubian_archer:4,pharaoh:1,priest_of_ra:5",
+    "compositionSha": "4964438bf77b",
+    "cost": 5700,
+    "key": "egyptians/chaos/normal/6000/3/t0",
+    "placements": 33,
+    "placementsSha": "b65a610d5a9b",
+    "total": 33,
+    "types": 7
+   },
+   {
+    "composition": "anubis_guard:6,chariot_archer:10,khopesh_warrior:12,pharaoh:2,priest_of_ra:10",
+    "compositionSha": "64a143bfa382",
+    "cost": 7040,
+    "key": "egyptians/counter/normal/12000/5/t1/vs",
+    "placements": 40,
+    "placementsSha": "657fb3af4529",
+    "total": 40,
+    "types": 5
+   },
+   {
+    "composition": "camel_rider:3,cataphract:2,immortal:20,sparabara:18,xerxes:1",
+    "compositionSha": "6a0027ac4f4c",
+    "cost": 5924,
+    "key": "persians/balanced/hard/6000/2/t0/vs",
+    "placements": 44,
+    "placementsSha": "dc9b30eb04e9",
+    "total": 44,
+    "types": 5
+   },
+   {
+    "composition": "camel_rider:18,cataphract:4,immortal:51,sparabara:10,xerxes:2",
+    "compositionSha": "3821fa553e67",
+    "cost": 11900,
+    "key": "persians/rush/hard/12000/4/t1/vs",
+    "placements": 85,
+    "placementsSha": "0b6c61c7ca8a",
+    "total": 85,
+    "types": 5
+   },
+   {
+    "composition": "camel_rider:1,immortal:18,sparabara:27,xerxes:1",
+    "compositionSha": "506c81af3b61",
+    "cost": 5896,
+    "key": "persians/ranged/easy/6000/1/t0",
+    "placements": 47,
+    "placementsSha": "8cc3d41c3bf2",
+    "total": 47,
+    "types": 4
+   },
+   {
+    "composition": "camel_rider:8,cataphract:9,immortal:51,sparabara:11,xerxes:2",
+    "compositionSha": "0bc7328188b5",
+    "cost": 11893,
+    "key": "persians/elite/easy/12000/3/t1",
+    "placements": 81,
+    "placementsSha": "b13bee76a2cc",
+    "total": 81,
+    "types": 5
+   },
+   {
+    "composition": "cataphract:1,immortal:5,sparabara:5",
+    "compositionSha": "455c8a0f5bc7",
+    "cost": 1465,
+    "key": "persians/chaos/normal/1500/5/t0",
+    "placements": 11,
+    "placementsSha": "054e87291bf9",
+    "total": 11,
+    "types": 3
+   },
+   {
+    "composition": "camel_rider:7,cataphract:4,immortal:38,sparabara:38,xerxes:2",
+    "compositionSha": "83211c4bf29b",
+    "cost": 11994,
+    "key": "persians/counter/normal/12000/2/t1/vs",
+    "placements": 89,
+    "placementsSha": "38b95e52d380",
+    "total": 89,
+    "types": 5
+   },
+   {
+    "composition": "catapult:1,numidian:9",
+    "compositionSha": "fbbbe671e564",
+    "cost": 1391,
+    "key": "carthage/balanced/hard/1500/4/t0/vs",
+    "placements": 10,
+    "placementsSha": "aaf04a6359b9",
+    "total": 10,
+    "types": 2
+   },
+   {
+    "composition": "hannibal:2,numidian:78,war_elephant:2",
+    "compositionSha": "d444b1424536",
+    "cost": 11926,
+    "key": "carthage/rush/hard/12000/1/t1/vs",
+    "placements": 82,
+    "placementsSha": "8033e74af0e8",
+    "total": 82,
+    "types": 3
+   },
+   {
+    "composition": "catapult:3,hannibal:1,numidian:2",
+    "compositionSha": "6170c08b65c5",
+    "cost": 1408,
+    "key": "carthage/ranged/easy/1500/3/t0",
+    "placements": 6,
+    "placementsSha": "65aa29f1b4fc",
+    "total": 6,
+    "types": 3
+   },
+   {
+    "composition": "hannibal:1,numidian:33,war_elephant:2",
+    "compositionSha": "caed3301c3d7",
+    "cost": 5941,
+    "key": "carthage/elite/easy/6000/5/t1",
+    "placements": 36,
+    "placementsSha": "cd3620e59925",
+    "total": 36,
+    "types": 3
+   },
+   {
+    "composition": "catapult:1,numidian:9",
+    "compositionSha": "fbbbe671e564",
+    "cost": 1391,
+    "key": "carthage/chaos/normal/1500/2/t0",
+    "placements": 10,
+    "placementsSha": "aaf04a6359b9",
+    "total": 10,
+    "types": 2
+   },
+   {
+    "composition": "catapult:6,hannibal:1,numidian:20,war_elephant:2",
+    "compositionSha": "c31b1ca634dc",
+    "cost": 5912,
+    "key": "carthage/counter/normal/6000/4/t1/vs",
+    "placements": 29,
+    "placementsSha": "23c5ddb2080a",
+    "total": 29,
+    "types": 4
+   },
+   {
+    "composition": "axe_thrower:5,berserker:4,druid:1,warhound:5",
+    "compositionSha": "86194c1ea788",
+    "cost": 1460,
+    "key": "barbarians/balanced/hard/1500/1/t0/vs",
+    "placements": 15,
+    "placementsSha": "f12cb552e1f9",
+    "total": 15,
+    "types": 4
+   },
+   {
+    "composition": "axe_thrower:7,berserker:30,chieftain:1,druid:1,warhound:20",
+    "compositionSha": "755661abe9f6",
+    "cost": 5955,
+    "key": "barbarians/rush/hard/6000/3/t1/vs",
+    "placements": 59,
+    "placementsSha": "307e15255cef",
+    "total": 59,
+    "types": 5
+   },
+   {
+    "composition": "axe_thrower:54,berserker:35,chieftain:2,druid:8",
+    "compositionSha": "f1e98b3e807d",
+    "cost": 11990,
+    "key": "barbarians/ranged/hard/12000/5/t0/vs",
+    "placements": 99,
+    "placementsSha": "61759d273e57",
+    "total": 99,
+    "types": 4
+   },
+   {
+    "composition": "axe_thrower:9,berserker:34,chieftain:1,druid:3,warhound:1",
+    "compositionSha": "4bad0c4eb109",
+    "cost": 5960,
+    "key": "barbarians/elite/easy/6000/2/t1",
+    "placements": 48,
+    "placementsSha": "a7531d7a7d58",
+    "total": 48,
+    "types": 5
+   },
+   {
+    "composition": "axe_thrower:32,berserker:34,chieftain:2,druid:11,warhound:34",
+    "compositionSha": "15e8c0ffdd4e",
+    "cost": 11970,
+    "key": "barbarians/chaos/easy/12000/4/t0",
+    "placements": 113,
+    "placementsSha": "7e074bf0e809",
+    "total": 113,
+    "types": 5
+   },
+   {
+    "composition": "axe_thrower:20,berserker:17,chieftain:1,druid:4,warhound:14",
+    "compositionSha": "40da1631a395",
+    "cost": 5970,
+    "key": "barbarians/counter/normal/6000/1/t1/vs",
+    "placements": 56,
+    "placementsSha": "869e3d35eba2",
+    "total": 56,
+    "types": 5
+   },
+   {
+    "composition": "battle_goat:16,centaur_archer:33,cyclops:1,minotaur:2,sacred_chicken:31,trojan_horse:4",
+    "compositionSha": "b61c4b0e2cdb",
+    "cost": 11979,
+    "key": "mythic/balanced/normal/12000/3/t0",
+    "placements": 87,
+    "placementsSha": "7ed0a7146a1d",
+    "total": 87,
+    "types": 6
+   },
+   {
+    "composition": "battle_goat:11,centaur_archer:1,minotaur:1,sacred_chicken:9",
+    "compositionSha": "4f36edbaaab0",
+    "cost": 1496,
+    "key": "mythic/rush/hard/1500/5/t1/vs",
+    "placements": 22,
+    "placementsSha": "3c282503342c",
+    "total": 22,
+    "types": 4
+   },
+   {
+    "composition": "centaur_archer:45,sacred_chicken:30,trojan_horse:4",
+    "compositionSha": "6f30796aa104",
+    "cost": 11991,
+    "key": "mythic/ranged/hard/12000/2/t0/vs",
+    "placements": 79,
+    "placementsSha": "df4c39766dbd",
+    "total": 79,
+    "types": 3
+   },
+   {
+    "composition": "battle_goat:2,centaur_archer:2,minotaur:2,sacred_chicken:1",
+    "compositionSha": "7ba93c5df5e0",
+    "cost": 1496,
+    "key": "mythic/elite/easy/1500/4/t1",
+    "placements": 7,
+    "placementsSha": "35654538523f",
+    "total": 7,
+    "types": 4
+   },
+   {
+    "composition": "battle_goat:43,centaur_archer:15,medusa:7,minotaur:2,sacred_chicken:7,trojan_horse:4",
+    "compositionSha": "c1a7f67d089c",
+    "cost": 10146,
+    "key": "mythic/chaos/easy/12000/1/t0",
+    "placements": 78,
+    "placementsSha": "5b145c46c1b9",
+    "total": 78,
+    "types": 6
+   },
+   {
+    "composition": "battle_goat:3,centaur_archer:4,minotaur:1,sacred_chicken:1",
+    "compositionSha": "094ffa90440f",
+    "cost": 1473,
+    "key": "mythic/counter/normal/1500/3/t1/vs",
+    "placements": 9,
+    "placementsSha": "500924e3f099",
+    "total": 9,
+    "types": 4
+   },
+   {
+    "composition": "battle_goat:3,companion_cavalry:2,hoplite:8,khopesh_warrior:8,medusa:1,mummy:11,numidian:5,peltast:3,sparabara:6",
+    "compositionSha": "07e4e722f9ac",
+    "cost": 5353,
+    "key": "mixed/balanced/normal/6000/5/t0",
+    "placements": 47,
+    "placementsSha": "47c3bf3a4193",
+    "total": 47,
+    "types": 9
+   },
+   {
+    "composition": "camel_rider:2,medjay:7,nubian_archer:1,sacred_chicken:6,warhound:6",
+    "compositionSha": "b848b7fbec44",
+    "cost": 1488,
+    "key": "mixed/rush/hard/1500/2/t1/vs",
+    "placements": 22,
+    "placementsSha": "ff11f1ab2837",
+    "total": 22,
+    "types": 5
+   },
+   {
+    "composition": "ballista:2,berserker:5,chariot_archer:4,immortal:6,legionary:4,nubian_archer:9,numidian:1,peltast:9,pilum_thrower:9",
+    "compositionSha": "d810e457986e",
+    "cost": 5939,
+    "key": "mixed/ranged/hard/6000/4/t0/vs",
+    "placements": 49,
+    "placementsSha": "c65a1bc65adc",
+    "total": 49,
+    "types": 9
+   },
+   {
+    "composition": "chariot_archer:1,cretan_archer:3,immortal:4,medusa:2,sacred_chicken:1",
+    "compositionSha": "fe84e5b24cb2",
+    "cost": 1486,
+    "key": "mixed/elite/easy/1500/1/t1",
+    "placements": 11,
+    "placementsSha": "269153b401a6",
+    "total": 11,
+    "types": 5
+   },
+   {
+    "composition": "anubis_guard:2,axe_thrower:2,battle_goat:10,catapult:1,companion_cavalry:4,cretan_archer:2,druid:2,immortal:2,legionary:2,minotaur:1,nubian_archer:3,numidian:4,priest_of_ra:2,sacred_chicken:26,xerxes:1",
+    "compositionSha": "7c3da59befd2",
+    "cost": 5977,
+    "key": "mixed/chaos/easy/6000/3/t0",
+    "placements": 64,
+    "placementsSha": "6201d4f66e10",
+    "total": 64,
+    "types": 15
+   },
+   {
+    "composition": "anubis_guard:5,chieftain:1,companion_cavalry:8,cyclops:1,mummy:9,numidian:10,spartan:8,war_elephant:1,warhound:22",
+    "compositionSha": "5b3587d6921d",
+    "cost": 9534,
+    "key": "mixed/counter/easy/12000/5/t1/vs",
+    "placements": 65,
+    "placementsSha": "fd4880f4c1f9",
+    "total": 65,
+    "types": 9
+   }
+  ],
+  "counterTable": {
+   "rows": {
+    "anubis_guard": "counters=khopesh_warrior+mummy+berserker prey=senator+druid+pharaoh strong=1",
+    "axe_thrower": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "ballista": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "battle_goat": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1",
+    "berserker": "counters=axe_thrower+chariot_archer+khopesh_warrior prey=senator+druid+pharaoh strong=0",
+    "camel_rider": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "cataphract": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "catapult": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "centaur_archer": "counters=hoplite+spartan+anubis_guard prey=senator+druid+philosopher strong=1",
+    "centurion": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1",
+    "chariot_archer": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "chieftain": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=0",
+    "companion_cavalry": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "cretan_archer": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "druid": "counters=sacred_chicken+chariot_archer+camel_rider prey=senator+philosopher+priest_of_ra strong=1",
+    "equites": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "gladiator": "counters=axe_thrower+khopesh_warrior+pilum_thrower prey=senator+druid+pharaoh strong=1",
+    "hannibal": "counters=medjay+gladiator+hoplite prey=senator+druid+philosopher strong=1",
+    "hoplite": "counters=khopesh_warrior+mummy+berserker prey=senator+druid+pharaoh strong=1",
+    "immortal": "counters=axe_thrower+khopesh_warrior+pilum_thrower prey=senator+druid+pharaoh strong=1",
+    "khopesh_warrior": "counters=axe_thrower+chariot_archer+pilum_thrower prey=senator+druid+pharaoh strong=0",
+    "legionary": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+pharaoh strong=0",
+    "medjay": "counters=axe_thrower+khopesh_warrior+pilum_thrower prey=senator+druid+pharaoh strong=1",
+    "medusa": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1",
+    "minotaur": "counters=camel_rider+medjay+gladiator prey=senator+druid+philosopher strong=1",
+    "mummy": "counters=nubian_archer+axe_thrower+chariot_archer prey=senator+druid+pharaoh strong=1",
+    "nubian_archer": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "numidian": "counters=medjay+gladiator+hoplite prey=senator+catapult+ballista strong=1",
+    "peltast": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "pharaoh": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1",
+    "philosopher": "counters=sacred_chicken+chariot_archer+camel_rider prey=senator+druid+priest_of_ra strong=1",
+    "pilum_thrower": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "priest_of_ra": "counters=sacred_chicken+chariot_archer+camel_rider prey=senator+druid+philosopher strong=1",
+    "sacred_chicken": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=0",
+    "senator": "counters=sacred_chicken+chariot_archer+camel_rider prey=druid+philosopher+priest_of_ra strong=1",
+    "sparabara": "counters=chariot_archer+camel_rider+equites prey=senator+druid+philosopher strong=1",
+    "spartan": "counters=khopesh_warrior+mummy+berserker prey=senator+druid+pharaoh strong=1",
+    "strategos": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1",
+    "trojan_horse": "counters=camel_rider+equites+chariot_archer prey=senator+druid+philosopher strong=1",
+    "warhound": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=0",
+    "xerxes": "counters=chariot_archer+khopesh_warrior+mummy prey=senator+druid+philosopher strong=1"
+   },
+   "sha256": "786a48ab314854d9d97a13086a3a425b0db60b77883ed7a2328d300c0e93ee9d",
+   "units": 41
+  },
+  "dailyEnemies": [
+   ["2026-01-01","anubis_guard:1,chariot_archer:6,khopesh_warrior:10,nubian_archer:5",2977],
+   ["2026-01-11","battle_goat:11,centaur_archer:3,medusa:1,minotaur:1,sacred_chicken:21,trojan_horse:1",2990],
+   ["2026-01-21","catapult:8,hannibal:1,numidian:4",2988],
+   ["2026-01-31","chariot_archer:2,khopesh_warrior:5,medjay:5,nubian_archer:9,pharaoh:1,priest_of_ra:2",2924],
+   ["2026-02-10","catapult:3,hannibal:1,numidian:8,war_elephant:1",2886],
+   ["2026-02-20","anubis_guard:2,chariot_archer:3,khopesh_warrior:8,nubian_archer:4,pharaoh:1,priest_of_ra:2",2996],
+   ["2026-03-02","companion_cavalry:5,cretan_archer:1,hoplite:10,peltast:1,philosopher:2,spartan:3",2985],
+   ["2026-03-12","axe_thrower:6,berserker:13,chieftain:1,druid:1,warhound:5",2985],
+   ["2026-03-22","camel_rider:1,cataphract:1,immortal:13,sparabara:5,xerxes:1",2975],
+   ["2026-04-01","companion_cavalry:1,cretan_archer:5,hoplite:7,peltast:12,philosopher:2,spartan:2",2990],
+   ["2026-04-11","companion_cavalry:4,cretan_archer:4,hoplite:3,peltast:3,philosopher:4,spartan:2,strategos:1",2955],
+   ["2026-04-21","anubis_guard:2,chariot_archer:1,medjay:12,nubian_archer:10,priest_of_ra:2",2942],
+   ["2026-05-01","axe_thrower:9,berserker:12,druid:3,warhound:1",2980],
+   ["2026-05-11","ballista:1,centurion:1,equites:1,gladiator:7,legionary:4,pilum_thrower:6,senator:1",2998],
+   ["2026-05-21","centurion:1,equites:4,gladiator:8,legionary:4,pilum_thrower:2,senator:1",2944],
+   ["2026-05-31","ballista:1,centurion:1,equites:4,gladiator:1,legionary:4,pilum_thrower:6,senator:3",2930],
+   ["2026-06-10","camel_rider:3,cataphract:2,immortal:13,sparabara:3",2914],
+   ["2026-06-20","axe_thrower:16,berserker:9,druid:1,warhound:1",2995],
+   ["2026-06-30","ballista:2,equites:1,gladiator:2,legionary:4,pilum_thrower:11,senator:2",2978],
+   ["2026-07-10","camel_rider:2,cataphract:1,immortal:9,sparabara:8,xerxes:1",2999],
+   ["2026-07-20","battle_goat:2,centaur_archer:4,cyclops:1,minotaur:3",2974],
+   ["2026-07-30","hannibal:1,numidian:15,war_elephant:1",2963],
+   ["2026-08-09","anubis_guard:3,chariot_archer:2,medjay:4,nubian_archer:8,pharaoh:1,priest_of_ra:2",2934],
+   ["2026-08-19","anubis_guard:5,chariot_archer:1,mummy:4,nubian_archer:7,priest_of_ra:3",2973],
+   ["2026-08-29","immortal:11,sparabara:14",2972],
+   ["2026-09-08","anubis_guard:2,chariot_archer:3,mummy:4,nubian_archer:7,pharaoh:1,priest_of_ra:2",2977],
+   ["2026-09-18","hannibal:1,numidian:15,war_elephant:1",2963],
+   ["2026-09-28","axe_thrower:8,berserker:7,chieftain:1,druid:3,warhound:8",3000],
+   ["2026-10-08","battle_goat:23,centaur_archer:4,minotaur:1,sacred_chicken:19",2997],
+   ["2026-10-18","companion_cavalry:1,cretan_archer:3,hoplite:8,peltast:4,philosopher:2,spartan:4,strategos:1",2990],
+   ["2026-10-28","axe_thrower:13,berserker:10,druid:2,warhound:1",2980],
+   ["2026-11-07","ballista:1,centurion:1,equites:3,gladiator:3,legionary:6,pilum_thrower:5,senator:1",2914],
+   ["2026-11-17","battle_goat:3,centaur_archer:6,cyclops:1,minotaur:2,sacred_chicken:1",2979],
+   ["2026-11-27","ballista:1,equites:2,gladiator:2,legionary:3,pilum_thrower:11,senator:3",2897],
+   ["2026-12-07","chariot_archer:2,khopesh_warrior:8,medjay:9,nubian_archer:7,priest_of_ra:2",2954],
+   ["2026-12-17","ballista:2,equites:1,gladiator:2,legionary:3,pilum_thrower:11,senator:3",2989],
+   ["2026-12-27","companion_cavalry:4,cretan_archer:2,hoplite:4,peltast:1,philosopher:3,spartan:4,strategos:1",2965],
+   ["2027-01-06","axe_thrower:8,berserker:8,chieftain:1,druid:2,warhound:9",2995],
+   ["2027-01-16","ballista:1,equites:1,gladiator:3,legionary:3,pilum_thrower:12,senator:3",2981],
+   ["2027-01-26","camel_rider:5,cataphract:1,immortal:13,sparabara:3",2939]
+  ],
+  "dailyPlans": {
+   "rows": [
+    ["2026-01-01","f1ac755347f5","olympus|mythic|egyptians|rush|moon_gravity"],
+    ["2026-01-02","bd6dd9f9b4d3","carthage|persians|romans|rush|big_heads"],
+    ["2026-01-03","2096d38e8bd8","teutoburg|barbarians|carthage|balanced|ragdoll_frenzy"],
+    ["2026-01-04","bf911490a4e1","alpine|carthage|mythic|rush|big_heads"],
+    ["2026-01-05","b7f1734aba0c","carthage|barbarians|egyptians|ranged|friendly_fire_fiesta"],
+    ["2026-01-06","5ca84f038a9f","oasis|barbarians|hellenes|chaos|chicken_rain"],
+    ["2026-01-07","328853a1b291","thermopylae|hellenes|romans|elite|friendly_fire_fiesta"],
+    ["2026-01-08","6d46a190bec7","colosseum|persians|hellenes|chaos|big_heads"],
+    ["2026-01-09","299efb2d773f","cyclops|persians|carthage|counter|-"],
+    ["2026-01-10","5716c1dae34f","colosseum|egyptians|carthage|ranged|friendly_fire_fiesta"],
+    ["2026-01-11","a44cbd3617d7","oasis|carthage|mythic|chaos|-"],
+    ["2026-01-12","b336157a81b5","oasis|mythic|carthage|rush|wine_rain_always"],
+    ["2026-01-13","5e3931b5ade7","troy|carthage|hellenes|counter|-"],
+    ["2026-01-14","1aa42c03f159","alpine|romans|hellenes|chaos|wine_rain_always"],
+    ["2026-01-15","96595934ec4f","teutoburg|mythic|hellenes|counter|tiny_titans"],
+    ["2026-01-16","d323aa240daf","troy|barbarians|romans|balanced|-"],
+    ["2026-01-17","6a9346a4c1d2","olympus|carthage|egyptians|counter|chicken_rain"],
+    ["2026-01-18","a1a5d86c513e","giza|egyptians|carthage|rush|tiny_titans"],
+    ["2026-01-19","7b9eac8accad","giza|persians|barbarians|ranged|-"],
+    ["2026-01-20","4d83f4bf44c0","giza|persians|carthage|rush|glass_cannons"],
+    ["2026-01-21","8ee189fb9923","troy|persians|carthage|ranged|tiny_titans"],
+    ["2026-01-22","16d38b350a5f","marathon|romans|carthage|ranged|friendly_fire_fiesta"],
+    ["2026-01-23","05f7738cb03f","colosseum|egyptians|persians|rush|speedy_soldiers"],
+    ["2026-01-24","e1297e2c4a84","teutoburg|mythic|egyptians|counter|-"],
+    ["2026-01-25","b07e26d21346","oasis|barbarians|romans|chaos|glass_cannons"],
+    ["2026-01-26","5d006b8a33e9","alpine|persians|romans|rush|ragdoll_frenzy"],
+    ["2026-01-27","1a609d729f6d","troy|barbarians|persians|chaos|-"],
+    ["2026-01-28","a299591cf21c","colosseum|persians|carthage|counter|glass_cannons"],
+    ["2026-01-29","aabb7149bba8","colosseum|carthage|romans|rush|-"],
+    ["2026-01-30","d3574dcf93e6","carthage|romans|barbarians|rush|-"],
+    ["2026-01-31","f3406b4a78af","carthage|hellenes|egyptians|chaos|-"],
+    ["2026-02-01","e37107fca3d2","oasis|romans|hellenes|rush|tiny_titans"],
+    ["2026-02-02","c2259f4df748","troy|romans|mythic|elite|ragdoll_frenzy"],
+    ["2026-02-03","204a516fcafe","teutoburg|romans|barbarians|chaos|-"],
+    ["2026-02-04","1cdf965841dd","troy|hellenes|romans|counter|big_heads"],
+    ["2026-02-05","eb5ca1a032f2","oasis|carthage|romans|chaos|speedy_soldiers"],
+    ["2026-02-06","2bb8a483f19d","marathon|mythic|egyptians|counter|-"],
+    ["2026-02-07","7b1dbfdb1a8f","giza|persians|hellenes|counter|glass_cannons"],
+    ["2026-02-08","ab5e533fa85c","alpine|hellenes|carthage|balanced|-"],
+    ["2026-02-09","bdbdf80faa48","giza|egyptians|persians|elite|glass_cannons"],
+    ["2026-02-10","39a6d485a19e","colosseum|persians|carthage|chaos|wine_rain_always"],
+    ["2026-02-11","2aa629b8d519","marathon|persians|mythic|elite|moon_gravity"],
+    ["2026-02-12","b3f8ec1c2a14","colosseum|mythic|carthage|rush|-"],
+    ["2026-02-13","1ab0ba7f9f9b","nile|carthage|egyptians|balanced|-"],
+    ["2026-02-14","0a957d74db5e","styx|egyptians|mythic|counter|glass_cannons"],
+    ["2026-02-15","6026c513b013","giza|egyptians|persians|ranged|-"],
+    ["2026-02-16","e66561dce664","persepolis|carthage|mythic|rush|wine_rain_always"],
+    ["2026-02-17","ef0a58f6a22d","carthage|carthage|persians|elite|friendly_fire_fiesta"],
+    ["2026-02-18","a43ed4909c12","thermopylae|romans|barbarians|rush|friendly_fire_fiesta"],
+    ["2026-02-19","5bc70d151971","carthage|persians|mythic|elite|chicken_rain"],
+    ["2026-02-20","a54d1dbdbedf","cyclops|romans|egyptians|elite|tiny_titans"],
+    ["2026-02-21","b4fec84112e0","giza|mythic|barbarians|elite|wine_rain_always"],
+    ["2026-02-22","47a7ef9879de","marathon|persians|egyptians|elite|chicken_rain"],
+    ["2026-02-23","e47ccd7c21d0","oasis|barbarians|hellenes|elite|-"],
+    ["2026-02-24","6d08ad07c304","oasis|persians|hellenes|ranged|wine_rain_always"],
+    ["2026-02-25","3d9b1da0f45a","olympus|carthage|persians|balanced|chicken_rain"],
+    ["2026-02-26","624d2831c4b6","teutoburg|carthage|romans|chaos|speedy_soldiers"],
+    ["2026-02-27","a797e8d2a728","oasis|romans|persians|ranged|wine_rain_always"],
+    ["2026-02-28","0b8d422b1860","nile|persians|romans|balanced|moon_gravity"],
+    ["2026-03-01","c246e7185598","cyclops|barbarians|persians|counter|tiny_titans"],
+    ["2026-03-02","b6d3d0ca7d0a","cyclops|carthage|hellenes|rush|-"],
+    ["2026-03-03","29b5ee80376b","olympus|romans|mythic|ranged|tiny_titans"],
+    ["2026-03-04","76d1b55df112","troy|hellenes|egyptians|ranged|glass_cannons"],
+    ["2026-03-05","2a3a2acdde93","giza|persians|mythic|counter|big_heads"],
+    ["2026-03-06","69c6511c3be9","carthage|persians|romans|counter|glass_cannons"],
+    ["2026-03-07","8a9e5bcc6adb","giza|barbarians|romans|counter|tiny_titans"],
+    ["2026-03-08","71ff35c39f6c","teutoburg|romans|egyptians|elite|-"],
+    ["2026-03-09","13fd04264911","styx|romans|carthage|rush|-"],
+    ["2026-03-10","91aa159a66af","troy|persians|romans|counter|wine_rain_always"],
+    ["2026-03-11","441e37dc50c6","troy|carthage|barbarians|rush|-"],
+    ["2026-03-12","fc268fc87fbb","teutoburg|romans|barbarians|counter|moon_gravity"],
+    ["2026-03-13","defedc709ae9","carthage|egyptians|hellenes|elite|big_heads"],
+    ["2026-03-14","56aba34876fd","thermopylae|romans|egyptians|elite|-"],
+    ["2026-03-15","298657402af6","marathon|mythic|persians|rush|big_heads"],
+    ["2026-03-16","0d3cb669546c","alpine|egyptians|hellenes|counter|moon_gravity"],
+    ["2026-03-17","bd4fbddf7c37","oasis|carthage|persians|chaos|chicken_rain"],
+    ["2026-03-18","afd2e25ccb9f","oasis|mythic|persians|rush|big_heads"],
+    ["2026-03-19","8a28b2b0eacb","giza|mythic|romans|counter|chicken_rain"],
+    ["2026-03-20","359f50e8a57b","carthage|mythic|barbarians|chaos|-"],
+    ["2026-03-21","5993145cda54","styx|egyptians|barbarians|elite|chicken_rain"],
+    ["2026-03-22","75cd051b7e73","teutoburg|barbarians|persians|counter|ragdoll_frenzy"],
+    ["2026-03-23","56f86c53f212","thermopylae|carthage|egyptians|elite|-"],
+    ["2026-03-24","f5b90a3d8a19","colosseum|persians|egyptians|rush|moon_gravity"],
+    ["2026-03-25","45dd82a415ac","olympus|mythic|egyptians|chaos|tiny_titans"],
+    ["2026-03-26","121e53cbf554","olympus|barbarians|carthage|counter|big_heads"],
+    ["2026-03-27","0eb718fa6410","marathon|persians|mythic|counter|-"],
+    ["2026-03-28","e75b19b176ee","troy|hellenes|egyptians|counter|-"],
+    ["2026-03-29","6786538743ee","thermopylae|romans|barbarians|counter|-"],
+    ["2026-03-30","cd661de8994e","olympus|romans|mythic|elite|tiny_titans"],
+    ["2026-03-31","0e07bbb31e16","olympus|persians|egyptians|chaos|-"],
+    ["2026-04-01","f113e7542730","teutoburg|romans|hellenes|ranged|-"],
+    ["2026-04-02","358ce081ce8e","alpine|persians|barbarians|counter|-"],
+    ["2026-04-03","dba2480ffc5c","persepolis|egyptians|mythic|counter|-"],
+    ["2026-04-04","222f2a2bd705","marathon|mythic|barbarians|rush|ragdoll_frenzy"],
+    ["2026-04-05","32dcec821203","olympus|persians|mythic|counter|-"],
+    ["2026-04-06","c6f69bdc8767","thermopylae|egyptians|hellenes|counter|friendly_fire_fiesta"],
+    ["2026-04-07","d09f96ecea81","giza|persians|carthage|ranged|-"],
+    ["2026-04-08","2c1bdd722763","olympus|persians|hellenes|balanced|friendly_fire_fiesta"],
+    ["2026-04-09","6cb87f9d72cc","persepolis|egyptians|persians|ranged|ragdoll_frenzy"],
+    ["2026-04-10","0efe367654f6","thermopylae|mythic|egyptians|balanced|tiny_titans"],
+    ["2026-04-11","207069367203","olympus|persians|hellenes|chaos|-"],
+    ["2026-04-12","00a40d9f6367","teutoburg|mythic|carthage|chaos|glass_cannons"],
+    ["2026-04-13","482612a85c52","carthage|egyptians|barbarians|rush|-"],
+    ["2026-04-14","da013ac43b20","teutoburg|mythic|carthage|chaos|-"],
+    ["2026-04-15","9f2d8b7d0a68","alpine|persians|carthage|rush|ragdoll_frenzy"],
+    ["2026-04-16","d66423d85d42","colosseum|carthage|hellenes|chaos|moon_gravity"],
+    ["2026-04-17","a8e87a58ad27","carthage|romans|barbarians|ranged|ragdoll_frenzy"],
+    ["2026-04-18","88ea36a9b440","olympus|barbarians|persians|chaos|-"],
+    ["2026-04-19","a5a1751d34b5","olympus|romans|hellenes|elite|chicken_rain"],
+    ["2026-04-20","a85c3728e553","cyclops|romans|egyptians|ranged|friendly_fire_fiesta"],
+    ["2026-04-21","5b9c2e407aac","colosseum|barbarians|egyptians|counter|tiny_titans"],
+    ["2026-04-22","36f838048aac","teutoburg|egyptians|mythic|rush|friendly_fire_fiesta"],
+    ["2026-04-23","30397719edb0","teutoburg|persians|carthage|rush|moon_gravity"],
+    ["2026-04-24","1a30e9765b7f","styx|romans|mythic|balanced|tiny_titans"],
+    ["2026-04-25","7b8164aceee9","thermopylae|romans|barbarians|counter|chicken_rain"],
+    ["2026-04-26","caf475daca52","alpine|romans|persians|elite|wine_rain_always"],
+    ["2026-04-27","1bc2ab55eaaf","giza|persians|carthage|chaos|tiny_titans"],
+    ["2026-04-28","fab36b50e56f","colosseum|carthage|egyptians|elite|-"],
+    ["2026-04-29","22bf57f21e7f","olympus|mythic|egyptians|balanced|moon_gravity"],
+    ["2026-04-30","a4fd07e7483f","alpine|hellenes|barbarians|counter|tiny_titans"],
+    ["2026-05-01","a07287b52bb2","teutoburg|persians|barbarians|balanced|speedy_soldiers"],
+    ["2026-05-02","9ee6dab95ba0","troy|barbarians|carthage|balanced|-"],
+    ["2026-05-03","0d95c21e4258","troy|hellenes|romans|rush|wine_rain_always"],
+    ["2026-05-04","9664d8efa142","oasis|egyptians|romans|chaos|moon_gravity"],
+    ["2026-05-05","086577aa2f5d","troy|barbarians|carthage|elite|-"],
+    ["2026-05-06","f881fc226823","marathon|carthage|persians|balanced|-"],
+    ["2026-05-07","1f118e11089f","alpine|barbarians|persians|rush|chicken_rain"],
+    ["2026-05-08","3eb477b3e5ae","giza|barbarians|mythic|ranged|ragdoll_frenzy"],
+    ["2026-05-09","5b8fc6ba2989","colosseum|barbarians|egyptians|ranged|-"],
+    ["2026-05-10","c80ff4e61d15","persepolis|persians|mythic|chaos|ragdoll_frenzy"],
+    ["2026-05-11","a296926316c2","marathon|carthage|romans|counter|moon_gravity"],
+    ["2026-05-12","a7663a0965bb","marathon|mythic|hellenes|counter|-"],
+    ["2026-05-13","f4d715b1055b","marathon|barbarians|romans|chaos|tiny_titans"],
+    ["2026-05-14","b37ab0df5405","giza|carthage|egyptians|balanced|-"],
+    ["2026-05-15","96b8b09c5983","nile|mythic|barbarians|rush|friendly_fire_fiesta"],
+    ["2026-05-16","30770af4ce3a","nile|carthage|egyptians|counter|-"],
+    ["2026-05-17","18a2dac5df66","oasis|romans|carthage|rush|glass_cannons"],
+    ["2026-05-18","081ed4077c98","troy|mythic|barbarians|balanced|-"],
+    ["2026-05-19","47dc752c79ec","olympus|persians|barbarians|elite|glass_cannons"],
+    ["2026-05-20","e2b7fb21fc3b","troy|carthage|egyptians|elite|-"],
+    ["2026-05-21","4817707a914a","alpine|egyptians|romans|elite|-"],
+    ["2026-05-22","d11551fa8758","giza|mythic|romans|rush|friendly_fire_fiesta"],
+    ["2026-05-23","8c5bd2be410f","cyclops|romans|barbarians|rush|wine_rain_always"],
+    ["2026-05-24","2ac3035c5ed9","troy|hellenes|mythic|elite|-"],
+    ["2026-05-25","11ab6809a442","alpine|carthage|mythic|elite|big_heads"],
+    ["2026-05-26","dbd1c0b20837","marathon|mythic|egyptians|elite|tiny_titans"],
+    ["2026-05-27","bcddcf3ba031","marathon|romans|egyptians|ranged|big_heads"],
+    ["2026-05-28","5e42119442f2","carthage|hellenes|barbarians|chaos|moon_gravity"],
+    ["2026-05-29","8083c88dfcef","troy|barbarians|hellenes|ranged|-"],
+    ["2026-05-30","b1fd6bbcb624","cyclops|egyptians|carthage|chaos|friendly_fire_fiesta"],
+    ["2026-05-31","eb5712748bcf","thermopylae|mythic|romans|chaos|tiny_titans"],
+    ["2026-06-01","f88d983722f0","alpine|hellenes|romans|balanced|chicken_rain"],
+    ["2026-06-02","56ab0c1818db","troy|mythic|barbarians|counter|-"],
+    ["2026-06-03","d6160273980a","colosseum|romans|barbarians|counter|-"],
+    ["2026-06-04","3edbabf931d5","giza|barbarians|romans|ranged|chicken_rain"],
+    ["2026-06-05","b2bcbcc7db3a","colosseum|barbarians|egyptians|ranged|-"],
+    ["2026-06-06","4898c961d6c3","colosseum|romans|mythic|balanced|-"],
+    ["2026-06-07","738a9def447d","troy|barbarians|romans|balanced|-"],
+    ["2026-06-08","5a75c23d26f2","troy|persians|barbarians|elite|friendly_fire_fiesta"],
+    ["2026-06-09","fd22825537df","troy|hellenes|egyptians|rush|speedy_soldiers"],
+    ["2026-06-10","0d787a8192e3","persepolis|egyptians|persians|rush|chicken_rain"],
+    ["2026-06-11","f59c94cf9f2b","nile|barbarians|mythic|chaos|speedy_soldiers"],
+    ["2026-06-12","f93fcafb20ee","persepolis|persians|barbarians|ranged|-"],
+    ["2026-06-13","da562ff56ad6","colosseum|hellenes|carthage|ranged|-"],
+    ["2026-06-14","9331f8ba2dd0","troy|romans|mythic|elite|-"],
+    ["2026-06-15","19ac4b573e8e","oasis|carthage|romans|elite|-"],
+    ["2026-06-16","6b2aaf1ee5de","alpine|barbarians|romans|chaos|-"],
+    ["2026-06-17","a948628aa3fc","thermopylae|persians|hellenes|rush|friendly_fire_fiesta"],
+    ["2026-06-18","55e7837e24ce","colosseum|carthage|egyptians|chaos|glass_cannons"],
+    ["2026-06-19","1d59120c929e","olympus|barbarians|persians|counter|chicken_rain"],
+    ["2026-06-20","849f3bc79a15","teutoburg|mythic|barbarians|ranged|-"],
+    ["2026-06-21","bb96d4f266e5","styx|carthage|egyptians|rush|friendly_fire_fiesta"],
+    ["2026-06-22","a764eecde0ae","teutoburg|persians|carthage|counter|chicken_rain"],
+    ["2026-06-23","baade2ec92c3","thermopylae|persians|barbarians|balanced|friendly_fire_fiesta"],
+    ["2026-06-24","6504d4da0922","alpine|persians|hellenes|counter|-"],
+    ["2026-06-25","8d01fc00d8bf","cyclops|persians|carthage|counter|-"],
+    ["2026-06-26","4b3f87708b9d","giza|carthage|persians|elite|chicken_rain"],
+    ["2026-06-27","05aa5400dcd9","carthage|romans|mythic|ranged|tiny_titans"],
+    ["2026-06-28","20f609402f11","persepolis|hellenes|persians|chaos|-"],
+    ["2026-06-29","dad059843a57","thermopylae|carthage|barbarians|balanced|ragdoll_frenzy"],
+    ["2026-06-30","bca98c8f3fe9","styx|barbarians|romans|ranged|ragdoll_frenzy"],
+    ["2026-07-01","bd610c68bac0","cyclops|romans|mythic|elite|tiny_titans"],
+    ["2026-07-02","1914aa83780a","troy|carthage|romans|counter|tiny_titans"],
+    ["2026-07-03","cad6acec66f6","giza|persians|hellenes|balanced|chicken_rain"],
+    ["2026-07-04","dcdc4fcd958a","marathon|barbarians|mythic|elite|big_heads"],
+    ["2026-07-05","3623b6f0980e","thermopylae|carthage|mythic|balanced|-"],
+    ["2026-07-06","a0531064ec1d","thermopylae|mythic|egyptians|rush|-"],
+    ["2026-07-07","64b7ab3184e9","carthage|persians|carthage|rush|-"],
+    ["2026-07-08","68aa42219ef5","oasis|barbarians|persians|ranged|-"],
+    ["2026-07-09","b3086dd8c98f","oasis|hellenes|barbarians|rush|-"],
+    ["2026-07-10","f567ae6244fc","giza|egyptians|persians|chaos|chicken_rain"],
+    ["2026-07-11","c8a8f990ed8b","styx|persians|hellenes|chaos|speedy_soldiers"],
+    ["2026-07-12","738a8a3a52dc","colosseum|persians|hellenes|counter|chicken_rain"],
+    ["2026-07-13","4b7f46ead14f","alpine|mythic|barbarians|ranged|-"],
+    ["2026-07-14","ce018512416b","colosseum|mythic|persians|elite|wine_rain_always"],
+    ["2026-07-15","da43231174b6","colosseum|persians|carthage|chaos|ragdoll_frenzy"],
+    ["2026-07-16","0b306d90b336","marathon|romans|hellenes|balanced|moon_gravity"],
+    ["2026-07-17","c2446dbcaf5c","styx|romans|barbarians|elite|glass_cannons"],
+    ["2026-07-18","3b31466493ff","colosseum|egyptians|persians|ranged|moon_gravity"],
+    ["2026-07-19","fdcd2b3393e4","oasis|barbarians|romans|elite|-"],
+    ["2026-07-20","fda111240a8d","alpine|persians|mythic|elite|big_heads"],
+    ["2026-07-21","10563a1362e4","colosseum|barbarians|hellenes|balanced|-"],
+    ["2026-07-22","1896a85909f1","marathon|egyptians|persians|elite|ragdoll_frenzy"],
+    ["2026-07-23","483204c47adc","troy|carthage|romans|balanced|-"],
+    ["2026-07-24","55118bd97af8","carthage|persians|mythic|balanced|-"],
+    ["2026-07-25","9e7fcd8ca34e","styx|hellenes|mythic|chaos|-"],
+    ["2026-07-26","099f3ba451f6","persepolis|persians|egyptians|elite|-"],
+    ["2026-07-27","64af7f4c709e","olympus|carthage|hellenes|elite|big_heads"],
+    ["2026-07-28","9373f3dfec7e","cyclops|barbarians|romans|balanced|-"],
+    ["2026-07-29","a3a5d2b79dbf","colosseum|persians|hellenes|elite|glass_cannons"],
+    ["2026-07-30","d7a0c8a4af58","giza|persians|carthage|elite|moon_gravity"],
+    ["2026-07-31","b929897e410d","alpine|mythic|persians|balanced|-"],
+    ["2026-08-01","c5ad34e3567c","olympus|romans|carthage|chaos|chicken_rain"],
+    ["2026-08-02","91d3abf4e13d","persepolis|persians|egyptians|rush|wine_rain_always"],
+    ["2026-08-03","dc626f9cfb6a","teutoburg|persians|carthage|ranged|-"],
+    ["2026-08-04","57c08ed886f6","olympus|barbarians|egyptians|balanced|moon_gravity"],
+    ["2026-08-05","1d9d44943220","persepolis|carthage|persians|rush|-"],
+    ["2026-08-06","249f58356a28","marathon|persians|barbarians|counter|big_heads"],
+    ["2026-08-07","9b78e6630de1","alpine|egyptians|barbarians|elite|big_heads"],
+    ["2026-08-08","8065746e5b06","marathon|mythic|romans|rush|wine_rain_always"],
+    ["2026-08-09","d3618a40d1b1","cyclops|persians|egyptians|chaos|tiny_titans"],
+    ["2026-08-10","68a6d42c435d","colosseum|barbarians|persians|rush|ragdoll_frenzy"],
+    ["2026-08-11","c7b5c5f8b3db","oasis|egyptians|barbarians|rush|-"],
+    ["2026-08-12","de987ec79218","troy|mythic|barbarians|rush|-"],
+    ["2026-08-13","1764b401a18c","persepolis|carthage|persians|chaos|moon_gravity"],
+    ["2026-08-14","e387106dcc00","carthage|persians|hellenes|rush|-"],
+    ["2026-08-15","a69b4b43c2c5","teutoburg|hellenes|romans|elite|wine_rain_always"],
+    ["2026-08-16","2e169d1f6679","oasis|romans|carthage|chaos|big_heads"],
+    ["2026-08-17","fa21fe71c0b3","cyclops|romans|barbarians|balanced|-"],
+    ["2026-08-18","5c3d6103b800","marathon|carthage|barbarians|counter|wine_rain_always"],
+    ["2026-08-19","b982f059b649","cyclops|hellenes|egyptians|counter|wine_rain_always"],
+    ["2026-08-20","3f5a48fab49d","cyclops|persians|carthage|balanced|big_heads"],
+    ["2026-08-21","4f79450f49e6","nile|romans|hellenes|chaos|wine_rain_always"],
+    ["2026-08-22","07047b034ab9","colosseum|hellenes|persians|ranged|big_heads"],
+    ["2026-08-23","eed0cfb4cd56","teutoburg|persians|carthage|rush|glass_cannons"],
+    ["2026-08-24","5e91fce2f8b4","marathon|barbarians|mythic|ranged|wine_rain_always"],
+    ["2026-08-25","293c806c4db2","colosseum|mythic|romans|balanced|tiny_titans"],
+    ["2026-08-26","04e9a1d4e132","nile|barbarians|egyptians|rush|friendly_fire_fiesta"],
+    ["2026-08-27","771b59ffa25d","marathon|hellenes|mythic|balanced|chicken_rain"],
+    ["2026-08-28","df27afdeaf67","cyclops|mythic|barbarians|rush|moon_gravity"],
+    ["2026-08-29","c1750d1f728b","colosseum|barbarians|persians|ranged|wine_rain_always"],
+    ["2026-08-30","0c7c832e8347","carthage|carthage|persians|balanced|-"],
+    ["2026-08-31","3063553a093b","marathon|persians|egyptians|chaos|moon_gravity"],
+    ["2026-09-01","d6338d14fa04","thermopylae|carthage|hellenes|counter|-"],
+    ["2026-09-02","b2488bac5c54","nile|mythic|hellenes|elite|chicken_rain"],
+    ["2026-09-03","ed39a7a0ed27","olympus|persians|carthage|balanced|chicken_rain"],
+    ["2026-09-04","cbe32eee010e","marathon|barbarians|mythic|balanced|chicken_rain"],
+    ["2026-09-05","ab577f242de2","alpine|carthage|mythic|balanced|speedy_soldiers"],
+    ["2026-09-06","298defa05931","olympus|egyptians|barbarians|elite|-"],
+    ["2026-09-07","b2fb120e5ec1","marathon|carthage|romans|counter|big_heads"],
+    ["2026-09-08","42b5921b4168","thermopylae|barbarians|egyptians|chaos|tiny_titans"],
+    ["2026-09-09","edef2af3a555","carthage|persians|hellenes|counter|big_heads"],
+    ["2026-09-10","31f6db2608cc","oasis|barbarians|mythic|elite|chicken_rain"],
+    ["2026-09-11","081c25e7921f","cyclops|carthage|mythic|chaos|wine_rain_always"],
+    ["2026-09-12","c9e2a7327412","giza|persians|barbarians|elite|chicken_rain"],
+    ["2026-09-13","24cb508550ab","oasis|carthage|romans|ranged|friendly_fire_fiesta"],
+    ["2026-09-14","44384bcfcb3b","teutoburg|mythic|egyptians|rush|-"],
+    ["2026-09-15","af2f17ff6baa","nile|egyptians|hellenes|ranged|chicken_rain"],
+    ["2026-09-16","e0e264de0236","giza|carthage|egyptians|counter|chicken_rain"],
+    ["2026-09-17","c03bdafbb324","teutoburg|barbarians|egyptians|rush|-"],
+    ["2026-09-18","843e10f721f0","olympus|romans|carthage|elite|chicken_rain"],
+    ["2026-09-19","8717899533b3","alpine|persians|barbarians|chaos|friendly_fire_fiesta"],
+    ["2026-09-20","45cffb22e899","thermopylae|egyptians|mythic|elite|speedy_soldiers"],
+    ["2026-09-21","4528217fec00","styx|egyptians|hellenes|elite|ragdoll_frenzy"],
+    ["2026-09-22","a02cffafc6b2","giza|carthage|hellenes|ranged|-"],
+    ["2026-09-23","d80198ce53ec","giza|persians|egyptians|balanced|-"],
+    ["2026-09-24","ddb8fb4c3658","olympus|carthage|persians|balanced|ragdoll_frenzy"],
+    ["2026-09-25","8fcbcd5571aa","styx|romans|hellenes|balanced|-"],
+    ["2026-09-26","ffc97c2e8dac","olympus|romans|mythic|rush|moon_gravity"],
+    ["2026-09-27","aadaf1cecc33","oasis|persians|hellenes|counter|-"],
+    ["2026-09-28","e3fcd4b9a7da","nile|romans|barbarians|chaos|ragdoll_frenzy"],
+    ["2026-09-29","6b0536b055e5","giza|mythic|barbarians|chaos|speedy_soldiers"],
+    ["2026-09-30","f3d57f0235c0","troy|carthage|hellenes|chaos|-"],
+    ["2026-10-01","b8c3a738f35e","giza|carthage|romans|elite|tiny_titans"],
+    ["2026-10-02","6080c452e50f","styx|egyptians|romans|balanced|speedy_soldiers"],
+    ["2026-10-03","e1c499925cfa","cyclops|carthage|persians|chaos|chicken_rain"],
+    ["2026-10-04","add2569d8da9","troy|barbarians|carthage|elite|big_heads"],
+    ["2026-10-05","4c484c0e0318","styx|mythic|carthage|balanced|tiny_titans"],
+    ["2026-10-06","96a90fec62a3","styx|carthage|mythic|ranged|-"],
+    ["2026-10-07","ce58830ff84a","olympus|persians|romans|balanced|tiny_titans"],
+    ["2026-10-08","6f483e1bd2d3","olympus|carthage|mythic|rush|wine_rain_always"],
+    ["2026-10-09","f67be46e3d44","troy|mythic|persians|counter|-"],
+    ["2026-10-10","55c1fd788e29","carthage|mythic|carthage|rush|moon_gravity"],
+    ["2026-10-11","a878de318ce5","troy|persians|mythic|ranged|big_heads"],
+    ["2026-10-12","04fec6fff6b5","alpine|hellenes|carthage|counter|tiny_titans"],
+    ["2026-10-13","9f4f571f533b","alpine|mythic|persians|counter|speedy_soldiers"],
+    ["2026-10-14","f7b5a3e7570c","troy|mythic|barbarians|balanced|tiny_titans"],
+    ["2026-10-15","603fc3007e53","thermopylae|carthage|persians|elite|glass_cannons"],
+    ["2026-10-16","d2b62a6bfb7f","carthage|hellenes|romans|balanced|-"],
+    ["2026-10-17","ead42c67117b","olympus|egyptians|persians|elite|tiny_titans"],
+    ["2026-10-18","b79e98121e00","giza|mythic|hellenes|counter|ragdoll_frenzy"],
+    ["2026-10-19","220800f72f75","carthage|carthage|persians|ranged|-"],
+    ["2026-10-20","3bdcd22e4cc4","carthage|mythic|carthage|rush|moon_gravity"],
+    ["2026-10-21","83b20a9b9461","colosseum|egyptians|romans|elite|-"],
+    ["2026-10-22","50c9a6e7cecd","oasis|hellenes|barbarians|elite|ragdoll_frenzy"],
+    ["2026-10-23","6ffbcca47b62","oasis|persians|barbarians|ranged|tiny_titans"],
+    ["2026-10-24","da8906730113","alpine|persians|barbarians|elite|ragdoll_frenzy"],
+    ["2026-10-25","a120865e8814","teutoburg|egyptians|hellenes|balanced|tiny_titans"],
+    ["2026-10-26","e07aeedb13c4","olympus|egyptians|carthage|balanced|chicken_rain"],
+    ["2026-10-27","637485529ce1","teutoburg|barbarians|mythic|counter|-"],
+    ["2026-10-28","e7a4b7f2dd13","marathon|egyptians|barbarians|ranged|ragdoll_frenzy"],
+    ["2026-10-29","2a88b4bd5b6d","marathon|egyptians|persians|balanced|ragdoll_frenzy"],
+    ["2026-10-30","867dbbb94b9d","alpine|persians|hellenes|rush|big_heads"],
+    ["2026-10-31","c7a0a1c60b5f","troy|egyptians|mythic|rush|-"],
+    ["2026-11-01","642c0e9f5158","oasis|romans|persians|elite|-"],
+    ["2026-11-02","4f29e1252f4b","styx|romans|hellenes|rush|chicken_rain"],
+    ["2026-11-03","c19ef21f2a81","olympus|egyptians|mythic|ranged|chicken_rain"],
+    ["2026-11-04","fd9c5df78759","nile|carthage|persians|chaos|tiny_titans"],
+    ["2026-11-05","387c4d610d39","thermopylae|persians|carthage|ranged|speedy_soldiers"],
+    ["2026-11-06","e0e032982a11","olympus|egyptians|romans|elite|big_heads"],
+    ["2026-11-07","16ca9512ec7c","colosseum|barbarians|romans|balanced|-"],
+    ["2026-11-08","6a38c9dde105","persepolis|barbarians|persians|elite|glass_cannons"],
+    ["2026-11-09","0d625c1e3f5e","troy|egyptians|barbarians|balanced|speedy_soldiers"],
+    ["2026-11-10","2181289348d6","colosseum|carthage|persians|counter|moon_gravity"],
+    ["2026-11-11","8ae3fc25d620","olympus|mythic|hellenes|chaos|-"],
+    ["2026-11-12","0ea115016d8e","marathon|mythic|barbarians|elite|tiny_titans"],
+    ["2026-11-13","cda42da0f104","carthage|carthage|egyptians|rush|friendly_fire_fiesta"],
+    ["2026-11-14","d8676592645b","teutoburg|barbarians|carthage|rush|friendly_fire_fiesta"],
+    ["2026-11-15","6952fc02d825","persepolis|egyptians|barbarians|ranged|wine_rain_always"],
+    ["2026-11-16","6cedbb0da33c","marathon|egyptians|romans|chaos|-"],
+    ["2026-11-17","e109761730a7","giza|persians|mythic|elite|speedy_soldiers"],
+    ["2026-11-18","81459d89eabc","troy|egyptians|persians|ranged|-"],
+    ["2026-11-19","afc91c96b89d","cyclops|barbarians|hellenes|chaos|tiny_titans"],
+    ["2026-11-20","f0917e8e0a29","marathon|barbarians|egyptians|rush|speedy_soldiers"],
+    ["2026-11-21","3c72090a567b","teutoburg|persians|mythic|balanced|ragdoll_frenzy"],
+    ["2026-11-22","f5b237277dfa","thermopylae|persians|hellenes|chaos|speedy_soldiers"],
+    ["2026-11-23","83faf304f8b7","teutoburg|barbarians|hellenes|chaos|ragdoll_frenzy"],
+    ["2026-11-24","ee83fb0082ef","troy|barbarians|mythic|rush|glass_cannons"],
+    ["2026-11-25","027f3eb88d5d","alpine|romans|hellenes|ranged|chicken_rain"],
+    ["2026-11-26","56a7cccbb2d4","alpine|carthage|mythic|chaos|moon_gravity"],
+    ["2026-11-27","a86562c765dc","persepolis|carthage|romans|ranged|friendly_fire_fiesta"],
+    ["2026-11-28","59d64d6b4630","alpine|romans|carthage|chaos|chicken_rain"],
+    ["2026-11-29","87cc82abd7e9","alpine|egyptians|romans|counter|-"],
+    ["2026-11-30","f4dcbff566c7","alpine|barbarians|carthage|counter|big_heads"],
+    ["2026-12-01","1ca4f9132b21","cyclops|mythic|barbarians|chaos|speedy_soldiers"],
+    ["2026-12-02","63f24a393470","marathon|mythic|hellenes|rush|ragdoll_frenzy"],
+    ["2026-12-03","d1f25ba91742","alpine|hellenes|persians|counter|-"],
+    ["2026-12-04","06f2c8a80fb5","persepolis|mythic|hellenes|rush|moon_gravity"],
+    ["2026-12-05","71d0c4e49f25","thermopylae|hellenes|romans|elite|wine_rain_always"],
+    ["2026-12-06","ee6915048726","marathon|mythic|hellenes|rush|-"],
+    ["2026-12-07","9836aa783b9b","troy|persians|egyptians|counter|wine_rain_always"],
+    ["2026-12-08","e209d40120e1","olympus|persians|egyptians|ranged|big_heads"],
+    ["2026-12-09","2b96f4b635f2","thermopylae|persians|egyptians|elite|big_heads"],
+    ["2026-12-10","7a6d87d1cbd1","alpine|carthage|hellenes|chaos|speedy_soldiers"],
+    ["2026-12-11","84eee31cc49e","carthage|barbarians|mythic|ranged|big_heads"],
+    ["2026-12-12","b2495c4960d3","cyclops|persians|hellenes|rush|-"],
+    ["2026-12-13","b8fb4dd3ec30","troy|mythic|carthage|rush|wine_rain_always"],
+    ["2026-12-14","c762eaf81eee","troy|barbarians|egyptians|ranged|wine_rain_always"],
+    ["2026-12-15","9aae9d733366","styx|carthage|hellenes|balanced|-"],
+    ["2026-12-16","0d9cd173b30a","persepolis|egyptians|barbarians|balanced|-"],
+    ["2026-12-17","6f245b7f09a9","carthage|hellenes|romans|ranged|chicken_rain"],
+    ["2026-12-18","7801b9ec40a8","oasis|persians|egyptians|elite|glass_cannons"],
+    ["2026-12-19","07878cf29688","thermopylae|hellenes|carthage|rush|wine_rain_always"],
+    ["2026-12-20","a499a0f143ae","giza|egyptians|barbarians|chaos|-"],
+    ["2026-12-21","b63746daa56d","colosseum|barbarians|egyptians|chaos|glass_cannons"],
+    ["2026-12-22","282fa2c681e4","persepolis|persians|romans|balanced|friendly_fire_fiesta"],
+    ["2026-12-23","453c7d8a05eb","marathon|egyptians|romans|counter|-"],
+    ["2026-12-24","8f87c267656a","giza|romans|barbarians|elite|-"],
+    ["2026-12-25","be369b9cff9b","thermopylae|egyptians|hellenes|ranged|ragdoll_frenzy"],
+    ["2026-12-26","4329abdb4a35","cyclops|egyptians|barbarians|elite|-"],
+    ["2026-12-27","df59b36db09e","carthage|romans|hellenes|elite|wine_rain_always"],
+    ["2026-12-28","d1434c723e6e","nile|carthage|persians|chaos|big_heads"],
+    ["2026-12-29","ae40326a8462","thermopylae|persians|hellenes|ranged|ragdoll_frenzy"],
+    ["2026-12-30","045d56970675","alpine|persians|carthage|ranged|-"],
+    ["2026-12-31","4c4d0c51b408","carthage|romans|mythic|ranged|-"],
+    ["2027-01-01","c531d93cc8f7","giza|persians|mythic|chaos|speedy_soldiers"],
+    ["2027-01-02","0f57f95315fa","styx|barbarians|persians|ranged|glass_cannons"],
+    ["2027-01-03","750be3f2e5db","troy|hellenes|carthage|elite|friendly_fire_fiesta"],
+    ["2027-01-04","688b4668796c","troy|romans|barbarians|ranged|chicken_rain"],
+    ["2027-01-05","baace5dd375c","styx|romans|mythic|ranged|big_heads"],
+    ["2027-01-06","988c05df688a","troy|persians|barbarians|chaos|ragdoll_frenzy"],
+    ["2027-01-07","facbb9ca766a","nile|romans|egyptians|chaos|-"],
+    ["2027-01-08","5b772a902cd8","olympus|barbarians|mythic|counter|speedy_soldiers"],
+    ["2027-01-09","be7055aa2446","teutoburg|carthage|mythic|ranged|-"],
+    ["2027-01-10","a4f0d1352084","marathon|mythic|carthage|balanced|-"],
+    ["2027-01-11","6cbe86df39e0","giza|egyptians|carthage|elite|ragdoll_frenzy"],
+    ["2027-01-12","3b9de6c9522b","colosseum|romans|egyptians|elite|-"],
+    ["2027-01-13","560d13e05b83","persepolis|romans|mythic|balanced|-"],
+    ["2027-01-14","7a321965f51d","styx|egyptians|carthage|counter|ragdoll_frenzy"],
+    ["2027-01-15","c76d92ebdd5a","persepolis|egyptians|carthage|chaos|moon_gravity"],
+    ["2027-01-16","afbdecd3b2b1","teutoburg|hellenes|romans|ranged|ragdoll_frenzy"],
+    ["2027-01-17","1ec6318c9fb0","carthage|mythic|persians|elite|speedy_soldiers"],
+    ["2027-01-18","f18235dc9972","giza|mythic|romans|counter|speedy_soldiers"],
+    ["2027-01-19","74d0ca813169","cyclops|hellenes|romans|ranged|ragdoll_frenzy"],
+    ["2027-01-20","78a7e6c8c8a1","styx|persians|egyptians|elite|friendly_fire_fiesta"],
+    ["2027-01-21","851441727fdd","teutoburg|persians|carthage|balanced|wine_rain_always"],
+    ["2027-01-22","0331513adab7","nile|barbarians|egyptians|elite|chicken_rain"],
+    ["2027-01-23","e2f3796f097b","nile|persians|mythic|rush|speedy_soldiers"],
+    ["2027-01-24","9685060960ea","giza|barbarians|carthage|counter|moon_gravity"],
+    ["2027-01-25","92661ca55d97","styx|romans|egyptians|ranged|chicken_rain"],
+    ["2027-01-26","78ded8fd1b75","nile|barbarians|persians|rush|big_heads"],
+    ["2027-01-27","26c6214bcaeb","teutoburg|barbarians|romans|balanced|wine_rain_always"],
+    ["2027-01-28","2253c5eec1a5","oasis|romans|mythic|rush|big_heads"],
+    ["2027-01-29","a972a9e43d71","teutoburg|carthage|romans|balanced|big_heads"],
+    ["2027-01-30","30d9da1a51af","thermopylae|hellenes|egyptians|balanced|big_heads"],
+    ["2027-01-31","91744e943e95","carthage|mythic|barbarians|chaos|-"],
+    ["2027-02-01","4e24ff2b0018","persepolis|hellenes|barbarians|elite|-"],
+    ["2027-02-02","20ec9a9969af","oasis|barbarians|romans|chaos|-"],
+    ["2027-02-03","2ccd2d50d1d6","colosseum|romans|egyptians|balanced|moon_gravity"],
+    ["2027-02-04","ded6de589902","olympus|barbarians|persians|rush|glass_cannons"]
+   ],
+   "sha256": "1e2ad110e05dccd3bad6b92eb1c2b05bbb338cd335fe5b7f438c2f130714ff90"
+  },
+  "inputs": {
+   "against": [
+    ["hoplite",40],
+    ["peltast",12],
+    ["cretan_archer",12],
+    ["companion_cavalry",10]
+   ],
+   "arena": {
+    "recipe": "marathon",
+    "seed": 5,
+    "size": "medium"
+   },
+   "budgets": [1500,6000,12000],
+   "content": {
+    "arenas": [
+     {
+      "id": "marathon",
+      "name": "Marathon Plain",
+      "size": "medium"
+     },
+     {
+      "id": "thermopylae",
+      "name": "The Hot Gates",
+      "size": "medium"
+     },
+     {
+      "id": "colosseum",
+      "name": "The Colosseum",
+      "size": "medium"
+     },
+     {
+      "id": "nile",
+      "name": "Nile Delta",
+      "size": "medium"
+     },
+     {
+      "id": "giza",
+      "name": "Giza Plateau",
+      "size": "large"
+     },
+     {
+      "id": "persepolis",
+      "name": "Persepolis Courtyard",
+      "size": "medium"
+     },
+     {
+      "id": "carthage",
+      "name": "Carthage Harbor",
+      "size": "medium"
+     },
+     {
+      "id": "teutoburg",
+      "name": "Teutoburg Forest",
+      "size": "large"
+     },
+     {
+      "id": "alpine",
+      "name": "Alpine Pass",
+      "size": "medium"
+     },
+     {
+      "id": "olympus",
+      "name": "Mount Olympus",
+      "size": "large"
+     },
+     {
+      "id": "troy",
+      "name": "Siege of Troy",
+      "size": "large"
+     },
+     {
+      "id": "styx",
+      "name": "The River Styx",
+      "size": "medium"
+     },
+     {
+      "id": "cyclops",
+      "name": "Cyclops Isle",
+      "size": "medium"
+     },
+     {
+      "id": "oasis",
+      "name": "Oasis Duel",
+      "size": "small"
+     },
+     {
+      "id": "arenalab",
+      "name": "Arena Lab",
+      "size": "medium"
+     },
+     {
+      "id": "random",
+      "name": "Random Field",
+      "size": "medium"
+     }
+    ],
+    "factions": [
+     [
+      "hellenes",
+      {
+       "name": "Hellenes"
+      }
+     ],
+     [
+      "romans",
+      {
+       "name": "Romans"
+      }
+     ],
+     [
+      "egyptians",
+      {
+       "name": "Egyptians"
+      }
+     ],
+     [
+      "persians",
+      {
+       "name": "Persians"
+      }
+     ],
+     [
+      "carthage",
+      {
+       "name": "Carthaginians"
+      }
+     ],
+     [
+      "barbarians",
+      {
+       "name": "Barbarians"
+      }
+     ],
+     [
+      "mythic",
+      {
+       "name": "Mythic"
+      }
+     ]
+    ],
+    "mutators": [
+     {
+      "id": "big_heads"
+     },
+     {
+      "id": "tiny_titans"
+     },
+     {
+      "id": "moon_gravity"
+     },
+     {
+      "id": "chicken_rain"
+     },
+     {
+      "id": "wine_rain_always"
+     },
+     {
+      "id": "friendly_fire_fiesta"
+     },
+     {
+      "id": "speedy_soldiers"
+     },
+     {
+      "id": "ragdoll_frenzy"
+     },
+     {
+      "id": "glass_cannons"
+     }
+    ]
+   },
+   "dates": {
+    "n": 400,
+    "start": "2026-01-01"
+   },
+   "difficulties": ["easy","normal","hard"],
+   "factions": ["hellenes","romans","egyptians","persians","carthage","barbarians","mythic","mixed"],
+   "scouts": [
+    {
+     "enemy": [],
+     "mine": [
+      ["hoplite",50]
+     ],
+     "name": "mass_hoplites_vs_nothing"
+    },
+    {
+     "enemy": [],
+     "mine": [
+      ["companion_cavalry",20]
+     ],
+     "name": "cavalry_only_vs_nothing"
+    },
+    {
+     "enemy": [],
+     "mine": [
+      ["cretan_archer",40]
+     ],
+     "name": "archers_only_vs_nothing"
+    },
+    {
+     "enemy": [
+      ["companion_cavalry",20],
+      ["equites",10]
+     ],
+     "mine": [
+      ["cretan_archer",40],
+      ["hoplite",6]
+     ],
+     "name": "archers_vs_cavalry"
+    },
+    {
+     "enemy": [
+      ["companion_cavalry",20],
+      ["equites",10]
+     ],
+     "mine": [
+      ["hoplite",40],
+      ["peltast",8]
+     ],
+     "name": "hoplites_vs_cavalry"
+    },
+    {
+     "enemy": [
+      ["cataphract",14],
+      ["camel_rider",10]
+     ],
+     "mine": [
+      ["hoplite",6],
+      ["cretan_archer",20],
+      ["philosopher",3]
+     ],
+     "name": "mixed_vs_cavalry_wall"
+    },
+    {
+     "enemy": [
+      ["cretan_archer",40],
+      ["nubian_archer",20]
+     ],
+     "mine": [
+      ["hoplite",40]
+     ],
+     "name": "hoplites_vs_archers"
+    },
+    {
+     "enemy": [
+      ["ballista",6],
+      ["catapult",4]
+     ],
+     "mine": [
+      ["legionary",40],
+      ["gladiator",6]
+     ],
+     "name": "legion_vs_ballistae"
+    },
+    {
+     "enemy": [
+      ["catapult",5],
+      ["ballista",4],
+      ["cretan_archer",20]
+     ],
+     "mine": [
+      ["hoplite",50],
+      ["spartan",5]
+     ],
+     "name": "hoplites_vs_siege_and_archers"
+    },
+    {
+     "enemy": [
+      ["minotaur",4]
+     ],
+     "mine": [
+      ["hoplite",30],
+      ["peltast",10]
+     ],
+     "name": "hoplites_vs_minotaurs"
+    },
+    {
+     "enemy": [
+      ["medusa",3],
+      ["cyclops",1]
+     ],
+     "mine": [
+      ["cretan_archer",30],
+      ["philosopher",4]
+     ],
+     "name": "archers_vs_medusa_cyclops"
+    },
+    {
+     "enemy": [
+      ["legionary",20],
+      ["pilum_thrower",12],
+      ["equites",5],
+      ["senator",3]
+     ],
+     "mine": [
+      ["hoplite",20],
+      ["cretan_archer",12],
+      ["companion_cavalry",5],
+      ["philosopher",3]
+     ],
+     "name": "balanced_vs_balanced"
+    },
+    {
+     "enemy": [],
+     "mine": [
+      ["hoplite",20],
+      ["cretan_archer",12],
+      ["companion_cavalry",5],
+      ["philosopher",3]
+     ],
+     "name": "balanced_vs_nothing"
+    },
+    {
+     "enemy": [
+      ["legionary",30]
+     ],
+     "mine": [
+      ["spartan",12],
+      ["strategos",1],
+      ["priest_of_ra",2]
+     ],
+     "name": "elite_few"
+    },
+    {
+     "enemy": [
+      ["equites",18],
+      ["centurion",2]
+     ],
+     "mine": [
+      ["khopesh_warrior",20],
+      ["nubian_archer",20],
+      ["priest_of_ra",4]
+     ],
+     "name": "egyptian_vs_roman_cav"
+    },
+    {
+     "enemy": [
+      ["hoplite",30],
+      ["spartan",6],
+      ["peltast",10]
+     ],
+     "mine": [
+      ["immortal",24],
+      ["sparabara",20],
+      ["xerxes",1]
+     ],
+     "name": "persian_vs_greek"
+    },
+    {
+     "enemy": [
+      ["war_elephant",1],
+      ["minotaur",2],
+      ["hoplite",10]
+     ],
+     "mine": [
+      ["berserker",30],
+      ["axe_thrower",20],
+      ["chieftain",2]
+     ],
+     "name": "barbarian_horde"
+    },
+    {
+     "enemy": [
+      ["cretan_archer",20],
+      ["ballista",2]
+     ],
+     "mine": [
+      ["warhound",10],
+      ["battle_goat",6],
+      ["sacred_chicken",16]
+     ],
+     "name": "animals_and_chickens"
+    },
+    {
+     "enemy": [
+      ["catapult",3],
+      ["nubian_archer",20],
+      ["camel_rider",6]
+     ],
+     "mine": [
+      ["trojan_horse",1],
+      ["companion_cavalry",6],
+      ["hannibal",1]
+     ],
+     "name": "trojan_horse_and_cavalry"
+    },
+    {
+     "enemy": [
+      ["sparabara",30],
+      ["pilum_thrower",20],
+      ["ballista",3]
+     ],
+     "mine": [
+      ["medjay",40],
+      ["mummy",10],
+      ["anubis_guard",6],
+      ["pharaoh",1]
+     ],
+     "name": "one_support_blob"
+    }
+   ],
+   "seeds": [1,2,3,4,5],
+   "styles": ["balanced","rush","ranged","elite","chaos","counter"],
+   "unitIds": ["hoplite","spartan","peltast","cretan_archer","companion_cavalry","philosopher","strategos","legionary","pilum_thrower","centurion","gladiator","equites","ballista","senator","medjay","nubian_archer","khopesh_warrior","chariot_archer","mummy","anubis_guard","priest_of_ra","pharaoh","immortal","sparabara","cataphract","camel_rider","xerxes","war_elephant","numidian","catapult","hannibal","berserker","axe_thrower","druid","warhound","chieftain","minotaur","cyclops","medusa","centaur_archer","trojan_horse","sacred_chicken","battle_goat"],
+   "waveSeeds": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+   "waves": 12
+  },
+  "scouts": [
+   {
+    "codes": "one_note,no_ranged,no_support",
+    "name": "mass_hoplites_vs_nothing",
+    "sha": "7cb28e555bc6"
+   },
+   {
+    "codes": "one_note,no_ranged,no_support",
+    "name": "cavalry_only_vs_nothing",
+    "sha": "7cb28e555bc6"
+   },
+   {
+    "codes": "one_note,no_support",
+    "name": "archers_only_vs_nothing",
+    "sha": "df1c21d2d35d"
+   },
+   {
+    "codes": "exposed_archers,no_anti_cav,one_note,no_support",
+    "name": "archers_vs_cavalry",
+    "sha": "cdaec0b92a8b"
+   },
+   {
+    "codes": "one_note,no_support",
+    "name": "hoplites_vs_cavalry",
+    "sha": "409872727e29"
+   },
+   {
+    "codes": "exposed_archers",
+    "name": "mixed_vs_cavalry_wall",
+    "sha": "39686820f1c6"
+   },
+   {
+    "codes": "no_cavalry,blob_vs_ranged,one_note,no_ranged,no_support",
+    "name": "hoplites_vs_archers",
+    "sha": "fb0defb1455b"
+   },
+   {
+    "codes": "siege_exposed,blob_vs_ranged,one_note,no_ranged,no_support",
+    "name": "legion_vs_ballistae",
+    "sha": "edf214e42619"
+   },
+   {
+    "codes": "siege_exposed,blob_vs_ranged,one_note,no_cavalry,no_ranged,no_support",
+    "name": "hoplites_vs_siege_and_archers",
+    "sha": "c1bb61394e1b"
+   },
+   {
+    "codes": "monster_incoming,one_note,no_support",
+    "name": "hoplites_vs_minotaurs",
+    "sha": "ec79d5928ed6"
+   },
+   {
+    "codes": "monster_incoming,one_note",
+    "name": "archers_vs_medusa_cyclops",
+    "sha": "73971593e233"
+   },
+   {
+    "codes": "",
+    "name": "balanced_vs_balanced",
+    "sha": "4f53cda18c2b"
+   },
+   {
+    "codes": "",
+    "name": "balanced_vs_nothing",
+    "sha": "4f53cda18c2b"
+   },
+   {
+    "codes": "one_note",
+    "name": "elite_few",
+    "sha": "f03d7797c6c4"
+   },
+   {
+    "codes": "no_anti_cav,exposed_archers",
+    "name": "egyptian_vs_roman_cav",
+    "sha": "9bb1dea5eccb"
+   },
+   {
+    "codes": "no_support",
+    "name": "persian_vs_greek",
+    "sha": "88c6506d2dbd"
+   },
+   {
+    "codes": "monster_incoming,no_support",
+    "name": "barbarian_horde",
+    "sha": "f4cb81beb1cd"
+   },
+   {
+    "codes": "no_cavalry,siege_exposed,no_ranged,no_support",
+    "name": "animals_and_chickens",
+    "sha": "33ca3eeb4f00"
+   },
+   {
+    "codes": "no_ranged,no_anti_cav,no_support",
+    "name": "trojan_horse_and_cavalry",
+    "sha": "9424078af70b"
+   },
+   {
+    "codes": "no_cavalry,blob_vs_ranged,one_note,siege_exposed,no_support",
+    "name": "one_support_blob",
+    "sha": "8d772916a679"
+   }
+  ],
+  "waves": {
+   "1": {
+    "cost": [3294,4171,5082,5984,6892,7777,8690,9569,10497,11340,12280,13177],
+    "count": [38,40,43,34,70,61,78,83,99,55,85,102],
+    "rows": ["976a61a6aa02","bc4085fe1384","ac0e6bc3a4e2","5d978a89c885","bd7cfadd9837","f83180bce67c","66ff7c58499c","086ae17dccfd","1d1739f389b1","871702162048","d44e1953268f","9b4c3474e67d"],
+    "sha256": "84bef595a9e1119005a78722de5504264857cc3335063b6c750c25acc2390de2"
+   },
+   "10": {
+    "cost": [3287,4200,5024,5990,6892,7789,8690,9579,10428,11359,12295,13185],
+    "count": [31,55,44,29,63,67,73,92,72,56,92,91],
+    "rows": ["a7e6c53d7947","8a96b24b2e61","3fc66b46b3ed","1ab8ddc9bfb4","0a0507f6c861","b62aba5eef90","de21cf9e8d9e","84f7a15f63c7","428c5ef67987","32d04be72993","71523a3b8a7b","354550d8f1f1"],
+    "sha256": "a9e604e5557f7fe4f1071433a305df0844c40a8b744cf767b885bd9c2e56f651"
+   },
+   "11": {
+    "cost": [3290,4189,5096,5938,6900,7747,8662,9585,10412,11395,12285,13189],
+    "count": [33,50,43,29,70,60,68,81,88,54,83,101],
+    "rows": ["0af1f9db7acd","b4b87ab4b8d1","cf77f3aea763","97484e31705c","4c78b08d0a68","68e27da6838f","e98fa2b07912","ae81ca5b9fce","9bc0d7802b05","55a166318b55","0e54d03287a8","f6039c347650"],
+    "sha256": "e3f8184a41a69f809ffe5e6275a4bb03c8514cc53835704a624665dd0052b9ea"
+   },
+   "12": {
+    "cost": [3278,4198,5052,5924,6893,7796,8674,9563,10500,11385,12259,13171],
+    "count": [28,39,40,32,70,67,73,86,87,57,87,102],
+    "rows": ["58d5881d4e09","afcc34f2fa5c","a1d1a027b635","fa560e36693a","f626e7709de6","9e91ce913de3","a0984db48d7f","f35fd79d6f9f","687f2b730df8","527c2090cc6e","edfd297ba8d1","76b2ea5fbc9b"],
+    "sha256": "2b9f102418a464d0af7ab447662b5f8ee21cc64435cb77c3f822e0c5d7d2f222"
+   },
+   "13": {
+    "cost": [3289,4176,5083,5896,6884,7760,8692,9576,10493,11396,12300,13190],
+    "count": [26,46,39,22,66,58,82,89,85,69,93,97],
+    "rows": ["e0ea1c228d7a","eefdd53580f3","a32754336c15","a497d07fb882","7d2e51cbdde7","a1f17339bfab","457776789e16","8b3ee7905c9e","afa4432a469d","16decdcb178c","1c3f05ebc0b4","052d85645bb1"],
+    "sha256": "82632ac1c7a24f249531842b8946a618c6c0eca2657816bf79556132f2333b9a"
+   },
+   "14": {
+    "cost": [3254,4160,5095,5992,6875,7799,8670,9597,10410,11380,12278,13190],
+    "count": [32,36,41,29,64,60,77,78,72,57,94,105],
+    "rows": ["aead909209eb","614f0c9948eb","a0ddecd3943f","84a1fd37c770","06f61b66b0b3","44b3496069cf","fba91c9455ec","088bb39f12d6","8859da4d04bb","2af90a34a518","c3689fc86b0b","b20d3e83c75a"],
+    "sha256": "5d0586a4cabfa09e42f650df3a71607066867348ff2e599c8d0a6a71fbf98a9b"
+   },
+   "15": {
+    "cost": [3281,4150,5036,5956,6898,7760,8671,9571,10488,11387,12264,13160],
+    "count": [29,41,42,30,72,69,73,81,72,51,85,107],
+    "rows": ["130e822507ea","4e1a4ae92a1c","13b1cb770527","1a3563ced145","99d1960d96f0","fa1ec3ad7bea","f0652d8e001a","49ddad664436","4d08383470d3","a73528096d9f","55bdd062996f","178754764d9d"],
+    "sha256": "0d099278d7f486bb5f826938927c5cd2628291807f28fc61b62a53a9c3bda2da"
+   },
+   "16": {
+    "cost": [3274,4188,5022,5951,6898,7800,8683,9573,10434,11390,12295,13179],
+    "count": [30,50,42,33,69,71,76,88,82,58,89,106],
+    "rows": ["7bc5b876691e","90b6aaf9e07f","4c4146146146","aaed779bbe84","1cb10942898a","96abe88b63c1","4e5346f8ebe9","19df39660c6c","c354ed65deb5","44b5410d3dd3","bbe54d7b826a","b1c0644662ca"],
+    "sha256": "dc8a33de6c124d959392c3fdd2459ebfb32cdb301b2023e3dd2b7db6a26dba58"
+   },
+   "17": {
+    "cost": [3299,4180,5034,5927,6883,7766,8698,9569,10497,11397,12299,13169],
+    "count": [29,49,37,25,72,62,74,88,89,64,91,81],
+    "rows": ["26ffd18a9e88","5611bd7d93c1","415c2ff109cc","5092b8d678e6","f4dc30209ce9","ec6365ea3e8e","4e0ac5531b47","8a40144b4a86","66c604b772bf","31aefdd6736f","4c6087e4dd37","4ec728456e34"],
+    "sha256": "ca234eefd7816f5651ce28eb1cb8ea680d76987e2e71d2572dbb683974e94512"
+   },
+   "18": {
+    "cost": [3290,4188,5071,5948,6874,7753,8670,9557,10492,11304,12269,13175],
+    "count": [33,37,39,34,75,63,62,96,81,55,91,98],
+    "rows": ["55d312240c4d","92cd7c2b4247","a5350a4af04c","bc5fd75a86e1","46a1903c0ae7","3d361f4d1f20","ed2a9bfb3bfe","347411bba1a4","949fcc3ca47f","92404f86525f","559e8a6ac8fb","f30ba2b83b50"],
+    "sha256": "6f132402aa9e97e11a612d75e82f276c091826274a893b1a7623f4f844fccd1f"
+   },
+   "19": {
+    "cost": [3248,4186,5070,5936,6895,7774,8670,9569,10466,11374,12287,13189],
+    "count": [26,41,46,35,73,70,64,92,81,53,86,99],
+    "rows": ["d3e10c137fac","93123474fd89","e65b4deb18e2","e1c6a0a7aaa0","1e1d58a00f6b","edf8efb4e36c","cbed437322b5","e695528dbcb0","3463ced2b1e5","eed741ac9857","73e96430104a","77e9c3d771b1"],
+    "sha256": "57e2690428402e3c604fd1f0d69582dcf33b1e162f867cc537ffd5bfe02ba687"
+   },
+   "2": {
+    "cost": [3284,4168,5070,5964,6887,7791,8700,9593,10491,11377,12285,13162],
+    "count": [32,37,38,31,70,63,82,81,80,53,89,97],
+    "rows": ["a77905ebedbf","edaf5b60d356","79926ca52989","6a7b947f018e","b98f694cc522","5845904fe302","3f378ea0f660","2c4eb68b012e","fc128732270a","ba2ec94cacc8","a82ac0199cd0","48c634ade456"],
+    "sha256": "6884ad048b2c15d1a00247b66c5d468f6567c5bda6e5df61b0c45f9d07977e91"
+   },
+   "20": {
+    "cost": [3278,4180,5087,5902,6878,7770,8663,9599,10416,11318,12291,13193],
+    "count": [30,41,38,28,70,60,70,81,81,51,83,105],
+    "rows": ["38e88bb7f472","fba78169e731","3ef27e1819ed","4a48f63ff9cb","6518c143d9b4","c50f0bad9a29","6f671d68e770","99777865af81","deb1bce2d428","ac7e3f59cbe2","946fa20ed4d5","2727c61995fd"],
+    "sha256": "969406010a2d648cae7ddaadefab9f962a4409857bcc19c81b27720608ca3c30"
+   },
+   "3": {
+    "cost": [3299,4173,5091,5942,6880,7761,8649,9597,10480,11374,12299,13169],
+    "count": [26,39,44,35,71,65,68,89,76,57,84,99],
+    "rows": ["b94608353072","b28b902ebab6","262a56ea8362","b4517fe60cfd","d05e2de3faae","3faec1844cf2","d8dfc803dffd","320a3fb45457","ad3d70c32b84","97a94590979f","8347d802802b","4f2063ec1027"],
+    "sha256": "20f7923be020a440a8f07305da01cbe7e396d5562e11c9a38d6d1f3c5ff99df6"
+   },
+   "4": {
+    "cost": [3299,4147,5012,5980,6874,7796,8679,9583,10450,11331,12289,13171],
+    "count": [28,41,33,30,62,69,75,88,75,69,90,110],
+    "rows": ["b31e3447e8bb","73550edf1ac5","a5adbdc1c239","0c0c559eb5c0","fea0e4ba4984","db58539cf029","8c214f12b564","5267c2cac7bb","a2d32fb99437","b6fa90d8d31d","639178288d28","9c2ce56443c0"],
+    "sha256": "4b0dee878c0def008fd0450277f1b1e3d8bee93763bb31b17c1c228e9da35082"
+   },
+   "5": {
+    "cost": [3295,4187,5097,5996,6887,7763,8676,9575,10448,11281,12288,13175],
+    "count": [32,48,44,32,65,77,76,90,90,67,92,85],
+    "rows": ["335306350091","a427950dfa6b","a2be8a8a632c","892175d16d4b","7d1148ecb7c3","705ce5a084be","5548afbc6b51","cfc18ec66f10","21a2739264cf","c44b7722a1ba","88d02f7ef17c","8cb984b16bb6"],
+    "sha256": "b8cbee6f8588a530ee471e72f1b9f0f72d161008b6a6da7491ed4d1400d61aef"
+   },
+   "6": {
+    "cost": [3292,4198,5087,5980,6877,7767,8668,9550,10489,11399,12283,13178],
+    "count": [32,53,41,27,64,50,64,78,78,60,83,112],
+    "rows": ["d33f58a7be00","8814b5536046","50c0b7768f06","e7ca927eabb9","dad02ffbe363","2ddc1b9369b0","c44b512f3d63","bb467b64a5f2","5208fa282cdf","14fdf847858e","f62061a9c601","baa4fca7be25"],
+    "sha256": "805a2b7399aa0753b4a19cbc7ad5d97b0443af8c6c73bb863c2a60af7b5dc059"
+   },
+   "7": {
+    "cost": [3296,4171,5056,5954,6900,7754,8675,9600,10424,11364,12295,13153],
+    "count": [35,34,45,30,67,67,77,95,80,45,90,104],
+    "rows": ["d194c03f4783","3cfd0d2e48e5","fe13468f4bfa","38ab5faf4fc6","ec705f071744","7fba68befdee","0c6d206df516","39b0ecf5cf52","357ff4525ac4","a48f2d30ab36","e77200574bb3","7571caf205bf"],
+    "sha256": "775151c334efe75589184c4c7a970c7f36720b67d1062db7f47a137371925470"
+   },
+   "8": {
+    "cost": [3292,4181,5029,5995,6900,7750,8696,9591,10499,11383,12284,13194],
+    "count": [30,41,43,29,68,68,77,93,80,55,86,117],
+    "rows": ["886a5901e951","158d49cf5df5","4416ea191337","42e66de58fd9","53a4c5ee56e5","255dc87e8b97","841f67e552b9","b73ba2438b16","f181a803b46c","9fa10d35f1e8","ca7fc34d6765","834aeb578f80"],
+    "sha256": "156c072f293a57572a202af078939edbc6b7a45c0fbaadd0f476c77507d0f73a"
+   },
+   "9": {
+    "cost": [3263,4194,5047,5958,6879,7778,8664,9566,10418,11374,12248,13185],
+    "count": [28,39,40,33,69,60,68,82,80,57,84,98],
+    "rows": ["3844456f4781","4c102dc0a224","c4f076a13388","117cf9a8f541","fd59a3461282","2a4f24f2f14e","b8d037b3e4d2","29880fc361d6","0bdaf4fb2d9c","e80dea2d4494","2fd6beb0c787","cafef6e6eba1"],
+    "sha256": "a687c55a8d3b2530ca5cfefafcdf69f8ff9ae2621fb6bff2fdd8611e506aa266"
+   }
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g7_armygen",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

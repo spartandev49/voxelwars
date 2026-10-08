@@ -1,0 +1,257 @@
+{
+ "schema": 1,
+ "run": {
+  "id": "g-fixture-0001",
+  "tier": "full",
+  "era": "all",
+  "treeHash": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+  "startedAt": "2026-10-08T00:00:00.000Z",
+  "node": "22.22.0",
+  "box": {
+   "cpus": 4,
+   "load1": 0.5
+  }
+ },
+ "criteria": {
+  "PX-OK": {
+   "er": [
+    "EX1"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "PASS",
+   "assertions": 4,
+   "failures": [],
+   "seconds": 0.25,
+   "negctl": {
+    "path": "tests/negctl/x.mjs",
+    "result": "red-as-expected"
+   },
+   "file": "tests/ok.test.mjs"
+  },
+  "PX-OK2": {
+   "er": [
+    "EX1",
+    "EX2"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "PASS",
+   "assertions": 12,
+   "failures": [],
+   "seconds": 1.5,
+   "negctl": {
+    "path": "tests/negctl/x.mjs",
+    "result": "red-as-expected"
+   },
+   "file": "tests/ok2.test.mjs"
+  },
+  "FX-FAIL": {
+   "er": [
+    "EX2"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "FAIL",
+   "assertions": 3,
+   "failures": [
+    "digest_equal"
+   ],
+   "seconds": 1.5,
+   "negctl": {
+    "path": "tests/negctl/x.mjs",
+    "result": "red-as-expected"
+   },
+   "file": "tests/fail.test.mjs",
+   "reason": "digest_equal"
+  },
+  "UX-ZERO": {
+   "er": [
+    "EX3"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "UNVERIFIED",
+   "assertions": 0,
+   "failures": [],
+   "seconds": 1.5,
+   "negctl": {
+    "path": "tests/negctl/x.mjs",
+    "result": "red-as-expected"
+   },
+   "file": "tests/zero.test.mjs",
+   "reason": "U2 zero assertions"
+  },
+  "PX-PANEL": {
+   "er": [
+    "EX4"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "PANEL",
+   "assertions": 4,
+   "failures": [],
+   "seconds": 1.5,
+   "negctl": {
+    "path": "tests/negctl/x.mjs",
+    "result": "red-as-expected"
+   },
+   "file": "tests/panel.test.mjs",
+   "judge": "panel"
+  },
+  "UX-NONEG": {
+   "er": [
+    "EX5"
+   ],
+   "owner": "FIXTURE",
+   "tier": "T-fast",
+   "status": "UNVERIFIED",
+   "assertions": 4,
+   "failures": [],
+   "seconds": 1.5,
+   "negctl": null,
+   "file": "tests/noneg.test.mjs",
+   "reason": "U3 no negative control"
+  },
+  "PX-LATER": {
+   "er": [
+    "EX6"
+   ],
+   "tier": "T-full",
+   "status": "UNVERIFIED",
+   "reason": "U1 not executed",
+   "assertions": 0,
+   "failures": [],
+   "notExecuted": true,
+   "file": "tests/later.test.mjs"
+  }
+ },
+ "er": {
+  "EX1": {
+   "status": "PASS",
+   "members": [
+    "PX-OK",
+    "PX-OK2"
+   ],
+   "missing": [],
+   "requiredTier": "T-fast",
+   "reason": "",
+   "counts": {
+    "pass": 2,
+    "fail": 0,
+    "unverified": 0,
+    "panel": 0,
+    "partial": 0
+   },
+   "criterion": "identity of the fixture",
+   "owner": "FIXTURE",
+   "first": "P0"
+  },
+  "EX2": {
+   "status": "FAIL",
+   "members": [
+    "FX-FAIL",
+    "PX-OK2"
+   ],
+   "missing": [],
+   "requiredTier": "T-fast",
+   "reason": "1 member(s) FAIL",
+   "counts": {
+    "pass": 1,
+    "fail": 1,
+    "unverified": 0,
+    "panel": 0,
+    "partial": 0
+   },
+   "criterion": "a failing member",
+   "owner": "FIXTURE",
+   "first": "P0"
+  },
+  "EX3": {
+   "status": "UNVERIFIED",
+   "members": [
+    "UX-MISSING",
+    "UX-ZERO"
+   ],
+   "missing": [
+    "UX-MISSING (not built)"
+   ],
+   "requiredTier": "T-fast",
+   "reason": "UX-ZERO U2 zero assertions; missing UX-MISSING (not built)",
+   "counts": {
+    "pass": 0,
+    "fail": 0,
+    "unverified": 3,
+    "panel": 0,
+    "partial": 0
+   },
+   "criterion": "zero assertions",
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  "EX4": {
+   "status": "PANEL",
+   "members": [
+    "PX-PANEL"
+   ],
+   "missing": [],
+   "requiredTier": "T-fast",
+   "reason": "1 member(s) judged by models, not accepted by a signed row in docs/eras/panel_acceptance.md",
+   "counts": {
+    "pass": 0,
+    "fail": 0,
+    "unverified": 0,
+    "panel": 1,
+    "partial": 0
+   },
+   "criterion": "judged by a panel",
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  "EX5": {
+   "status": "UNVERIFIED",
+   "members": [
+    "UX-NONEG"
+   ],
+   "missing": [],
+   "requiredTier": "T-fast",
+   "reason": "UX-NONEG U3 no negative control",
+   "counts": {
+    "pass": 0,
+    "fail": 0,
+    "unverified": 1,
+    "panel": 0,
+    "partial": 0
+   },
+   "criterion": "no negative control",
+   "owner": "FIXTURE",
+   "first": "P1"
+  },
+  "EX6": {
+   "status": "UNVERIFIED",
+   "members": [
+    "PX-LATER"
+   ],
+   "missing": [
+    "script:tools/later_tool.mjs (not built)"
+   ],
+   "requiredTier": "T-full",
+   "reason": "PX-LATER U1 not executed; missing script:tools/later_tool.mjs (not built)",
+   "counts": {
+    "pass": 0,
+    "fail": 0,
+    "unverified": 2,
+    "panel": 0,
+    "partial": 0
+   },
+   "criterion": "a heavier tier than the run",
+   "owner": "FIXTURE",
+   "first": "P2"
+  }
+ },
+ "manifest": {
+  "path": "tools/lib/criteria_manifest.json",
+  "count": 7,
+  "hash": "fixture"
+ }
+}

@@ -1,0 +1,241 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "algo": "fnv1a32 over UTF-16 code units of JSON.stringify(...) of arena.toJSON() and of its h, m, props and remaining fields",
+  "cases": {
+   "alpine/large/1": ["198d6491","d671c27c","a630f51e","84169b7e","72c42d35"],
+   "alpine/large/7": ["52aac474","3d976342","dd2cea7a","0e904809","c7946ccf"],
+   "alpine/medium/1": ["4bbc285e","4ad215ee","4f57c91e","9b9781a6","a0023ece"],
+   "alpine/medium/7": ["872830fa","a557faba","bf11a9de","2d1e9d90","f8f9caac"],
+   "alpine/small/1": ["b0e9d328","2582deec","5b4810d6","64196c31","987663df"],
+   "alpine/small/7": ["d65e9939","64231fc4","e106bfc4","33d95b0a","5968d045"],
+   "arenalab/large/1": ["9e6154df","744321fc","5ef96fa4","741638a5","7455e7f2"],
+   "arenalab/large/7": ["cce6b485","744321fc","5ef96fa4","741638a5","df1b5188"],
+   "arenalab/medium/1": ["9e6da655","31dece35","9cfc20e2","741638a5","48e49299"],
+   "arenalab/medium/7": ["f7f71be7","31dece35","9cfc20e2","741638a5","28ec845b"],
+   "arenalab/small/1": ["4666959c","7c4392ec","fcbf0b6d","741638a5","ebe3c7ea"],
+   "arenalab/small/7": ["b6f2d986","7c4392ec","fcbf0b6d","741638a5","29251a8c"],
+   "carthage/large/1": ["5f3593ca","88d8a924","52a2aef4","30b89a2f","4ff5c12b"],
+   "carthage/large/7": ["c06c1ab3","d0ed38fe","339f9f01","7113f1b7","11213485"],
+   "carthage/medium/1": ["ac42d005","2a6e7fea","572a521d","8bf021c2","b61b6ee2"],
+   "carthage/medium/7": ["1b9deb14","fe4ce684","daaebf6a","c2569510","b457b300"],
+   "carthage/small/1": ["93adf508","c71ca011","4a75c103","954e9685","f7d01365"],
+   "carthage/small/7": ["8aebee62","270ab386","12228ff1","e4707634","3f71feeb"],
+   "colosseum/large/1": ["8b48e5d0","59d20ead","003a8fa7","c2123ea2","db924dd4"],
+   "colosseum/large/7": ["91ce3ce1","59d20ead","d15e02c4","14620120","c92c0072"],
+   "colosseum/medium/1": ["a47396d2","2e22c81b","6aa6214e","1e4a23e2","249a473d"],
+   "colosseum/medium/7": ["53d9e3ef","2e22c81b","83639ea4","a3c016db","c2f5a107"],
+   "colosseum/small/1": ["e50c5bfe","ec6bc18b","e1d54e5c","c99e771d","b1ddbb16"],
+   "colosseum/small/7": ["883ef003","ec6bc18b","5d44a9cf","c935ff91","9617ffa0"],
+   "cyclops/large/1": ["61b218d7","e5e79c2c","7a8f74fa","f8d33d96","cad045bb"],
+   "cyclops/large/7": ["9623debc","151a7c8c","4ec25bb5","d0ba941e","c859eddd"],
+   "cyclops/medium/1": ["e12f55e3","776f8896","ab85cfb8","ca4294a5","687d33f0"],
+   "cyclops/medium/7": ["6ede1740","0fc547b9","b52fa39b","9edf1ed6","87087a5e"],
+   "cyclops/small/1": ["05b41307","ccb71d00","d576e1b7","15f7a327","323a55ab"],
+   "cyclops/small/7": ["ab3318f1","acd40188","ae3e2219","5a4fec75","6a3698b9"],
+   "giza/large/1": ["e79445cc","73e94c94","ffcc4d0d","194ac1f6","91713c0f"],
+   "giza/large/7": ["ef910ea7","3cd7397e","c282ed46","b696d7f0","4d2f9aad"],
+   "giza/medium/1": ["d413c93e","004c03f7","78ed544d","0be133c4","ca72e0f0"],
+   "giza/medium/7": ["87db8ed0","ecb159c1","3e3fce3a","7c93aec3","da096c32"],
+   "giza/small/1": ["b53ecc2f","8a6585ad","12228e4f","245a5aa2","33b23f8f"],
+   "giza/small/7": ["87f7ff90","7aaa070c","ca290cfd","17ba0a7a","d3f44599"],
+   "marathon/large/1": ["56d12ca3","4d2664fa","bd225b3d","0e3bb390","a3f88fba"],
+   "marathon/large/7": ["ced2fb60","2262b5cb","7731ddf7","bf1546dc","1eca009c"],
+   "marathon/medium/1": ["9edc9484","7c6b2b07","7a59b75d","2c08968f","f82eb557"],
+   "marathon/medium/7": ["04d29d67","3227a60b","ea3ff1de","ed489879","7028738d"],
+   "marathon/small/1": ["455bb366","f9180b41","e39fbc55","dac07924","fd6ad15a"],
+   "marathon/small/7": ["e7d66137","6e1e87ee","a7ab507d","3077ea4a","2d0dc380"],
+   "nile/large/1": ["7b7cba06","5848bab6","b37513e9","e08d04b8","df64bdb1"],
+   "nile/large/7": ["e8e0798f","6aa455e6","4e2c7da1","b3e84f55","17ff0c53"],
+   "nile/medium/1": ["20968904","bea10beb","aff5bd4b","b7415ef3","ac71ab8f"],
+   "nile/medium/7": ["80eb34bc","13f182a4","07a9d3f5","b5872470","b823bef1"],
+   "nile/small/1": ["432c6043","c74ad4b0","11c8be25","645c81bf","4e78a33f"],
+   "nile/small/7": ["eb4c7845","c480a79c","3cedde10","0f1e9280","6c4f55a5"],
+   "oasis/large/1": ["7194295f","252a447c","0a12d5ff","409f6c15","8cf00a5b"],
+   "oasis/large/7": ["795271aa","43992f52","5e691c8f","1c793c10","d265dbd1"],
+   "oasis/medium/1": ["9345a407","4af08336","907b572f","e5c571f6","a780b934"],
+   "oasis/medium/7": ["c0fe9e73","23bf5960","b48a078a","4a5d1a5f","104069e6"],
+   "oasis/small/1": ["86692402","31aaa2a0","b995c8e4","9db4d6fb","1b39d97d"],
+   "oasis/small/7": ["4fa07f7e","362a0022","aa382d54","47b27187","8f3ad597"],
+   "olympus/large/1": ["e7cb02c5","9b85d191","64496b65","542e2a3d","1968ef10"],
+   "olympus/large/7": ["6aec75a2","ba578f5c","6b159f3b","c8297909","50163bda"],
+   "olympus/medium/1": ["a91e1b33","e7f17b40","9deaeaff","fe6d4f09","f1f408c5"],
+   "olympus/medium/7": ["3d2c3270","b211656a","d94d1d96","132a87ab","031d045b"],
+   "olympus/small/1": ["e9dc38da","c9d56a43","51b321b0","6a34ae71","d99bb23c"],
+   "olympus/small/7": ["5abe8ec8","a49e6f6a","87d726f5","161cc15b","98ab82d2"],
+   "persepolis/large/1": ["a243c968","16a02748","e4fc81b2","5ccac78d","cd4d81b1"],
+   "persepolis/large/7": ["b034636c","eed1a0bb","533cd663","36c7a29f","4c2fa7a3"],
+   "persepolis/medium/1": ["63c2f7cf","311a2df4","0d8bf0a7","4bdabe3e","5af8129e"],
+   "persepolis/medium/7": ["86dd65cb","c6c6f9ad","6811951e","5660884a","f7380f84"],
+   "persepolis/small/1": ["334f0278","8fb3e675","caad6fe0","5f0ab714","9b82f795"],
+   "persepolis/small/7": ["06994223","0b9cc127","208daebd","064cf4cc","9c9424eb"],
+   "random/large/1": ["208e8dae","d671c27c","a630f51e","9b610370","6638f8f2"],
+   "random/large/7": ["e873e380","2262b5cb","7731ddf7","8894ceb5","4f6a577f"],
+   "random/medium/1": ["6ac53394","4ad215ee","4f57c91e","b2b209d9","a8395025"],
+   "random/medium/7": ["f835dff4","3227a60b","ea3ff1de","514beb09","f3f87766"],
+   "random/small/1": ["270d2cf4","2582deec","5b4810d6","3a8becda","d13c65f4"],
+   "random/small/7": ["08f4c6f7","6e1e87ee","a7ab507d","96f8e59d","5ec9ad07"],
+   "styx/large/1": ["29ea8491","46ddb449","30667117","686905ef","0883d7aa"],
+   "styx/large/7": ["fcdb464f","2cf7b82a","908fca28","13559191","efb37f40"],
+   "styx/medium/1": ["3c1ed543","6e490092","0f465f85","b194359f","beddf4cf"],
+   "styx/medium/7": ["f383fcc9","a08e75ba","84f034fa","19058fd4","7096e841"],
+   "styx/small/1": ["d22c29c0","ee3c1115","9c24e9c2","e6f5b967","f07fddf4"],
+   "styx/small/7": ["d02f6bf9","dd4ef26e","f1324f6b","8d842d28","1c11f4ce"],
+   "teutoburg/large/1": ["ef16934c","7266eec5","943393ea","8b64970f","12f3fc36"],
+   "teutoburg/large/7": ["72e2592b","93bc0766","5308c2ea","394573bf","5e303098"],
+   "teutoburg/medium/1": ["a8f8edca","375941b3","3d9fc3dd","20848239","d2b71813"],
+   "teutoburg/medium/7": ["fcf01c4c","bcdf0413","b4900668","a03dc9da","601489e9"],
+   "teutoburg/small/1": ["540d57f5","bda15441","5b31e9d9","7dc06a99","b2c48512"],
+   "teutoburg/small/7": ["cfc232a2","de741854","07f5a24f","e27dc0f3","00ee3610"],
+   "thermopylae/large/1": ["bae9c8fe","e27eafc3","22e58a3e","f5b2eaed","6eb43892"],
+   "thermopylae/large/7": ["e7dc2e39","80dcd37d","5eac6139","75292291","4d012558"],
+   "thermopylae/medium/1": ["b8c4a945","463f68cc","267fcd86","f6380160","0090049f"],
+   "thermopylae/medium/7": ["653f1ae8","173dad72","90274ba9","03ceef3a","99e63959"],
+   "thermopylae/small/1": ["2941ce6f","7df66a30","4b37115b","a82f3174","3a12e8ae"],
+   "thermopylae/small/7": ["52e73a36","4a50146f","0c0f3e72","a5038a8f","f95b67b0"],
+   "troy/large/1": ["983f493c","3c5f01bb","45c27be2","55a027a5","7c47a2ce"],
+   "troy/large/7": ["4f861af4","630404fc","ed1758fb","2f54bc6d","1852938c"],
+   "troy/medium/1": ["8d36b8e2","0997a25e","43421297","be29e833","2eccffea"],
+   "troy/medium/7": ["435d5345","7633c46a","d264a018","54c5bb6f","f33886c8"],
+   "troy/small/1": ["85180929","0abe04e3","b29084e8","188bcf3d","00bab4bd"],
+   "troy/small/7": ["30ca8e7c","a407d3f5","9b6e600c","3d87b8f2","91100cf3"]
+  },
+  "parts": ["full","terrain","materials","props","meta"],
+  "presets": [
+   {
+    "d": ["69180a92","55128eee","1d3628e1","1991d0b5","43f93d16"],
+    "id": "marathon",
+    "recipe": "marathon",
+    "seed": 11,
+    "size": "medium"
+   },
+   {
+    "d": ["67e1ad1b","1aa192ac","147f0871","78ceda4f","4cbe48f5"],
+    "id": "thermopylae",
+    "recipe": "thermopylae",
+    "seed": 3,
+    "size": "medium"
+   },
+   {
+    "d": ["6f4c0945","2e22c81b","5f2dd926","86e17f96","119ddfcc"],
+    "id": "colosseum",
+    "recipe": "colosseum",
+    "seed": 2,
+    "size": "medium"
+   },
+   {
+    "d": ["96a91af5","6b2d5d26","f8c7bc58","d7391073","68b5be90"],
+    "id": "nile",
+    "recipe": "nile",
+    "seed": 4,
+    "size": "medium"
+   },
+   {
+    "d": ["14bd8981","01fe16fa","a0fe9c70","ee84d562","a138460b"],
+    "id": "giza",
+    "recipe": "giza",
+    "seed": 5,
+    "size": "large"
+   },
+   {
+    "d": ["4bea79f7","441a7be6","ffd481e2","5aa612c2","0fb7a8d9"],
+    "id": "persepolis",
+    "recipe": "persepolis",
+    "seed": 6,
+    "size": "medium"
+   },
+   {
+    "d": ["1b9deb14","fe4ce684","daaebf6a","c2569510","b457b300"],
+    "id": "carthage",
+    "recipe": "carthage",
+    "seed": 7,
+    "size": "medium"
+   },
+   {
+    "d": ["cefe23ae","8515eeb0","e96a3ff5","0b92ede0","f8e7728d"],
+    "id": "teutoburg",
+    "recipe": "teutoburg",
+    "seed": 8,
+    "size": "large"
+   },
+   {
+    "d": ["c0bce31a","06eb99bc","a36e674b","8282ced5","d73630a6"],
+    "id": "alpine",
+    "recipe": "alpine",
+    "seed": 9,
+    "size": "medium"
+   },
+   {
+    "d": ["d44f87ad","82ac77c1","4ae4a149","3208bf3b","c3b4eef0"],
+    "id": "olympus",
+    "recipe": "olympus",
+    "seed": 10,
+    "size": "large"
+   },
+   {
+    "d": ["e8837ad3","a316ac85","3070a173","366e4c0d","47fd33de"],
+    "id": "troy",
+    "recipe": "troy",
+    "seed": 12,
+    "size": "large"
+   },
+   {
+    "d": ["279dc860","05f0392f","5a20f3d9","69d25a5e","d628358e"],
+    "id": "styx",
+    "recipe": "styx",
+    "seed": 13,
+    "size": "medium"
+   },
+   {
+    "d": ["5e3c83c5","2c949820","ffb02c73","9dc4051c","8d138be0"],
+    "id": "cyclops",
+    "recipe": "cyclops",
+    "seed": 14,
+    "size": "medium"
+   },
+   {
+    "d": ["ec4f0881","9e14afc9","150111de","eefa91bc","901b9ba4"],
+    "id": "oasis",
+    "recipe": "oasis",
+    "seed": 15,
+    "size": "small"
+   },
+   {
+    "d": ["9e6da655","31dece35","9cfc20e2","741638a5","48e49299"],
+    "id": "arenalab",
+    "recipe": "arenalab",
+    "seed": 1,
+    "size": "medium"
+   },
+   {
+    "d": ["6ac53394","4ad215ee","4f57c91e","b2b209d9","a8395025"],
+    "id": "random",
+    "recipe": "random",
+    "seed": 1,
+    "size": "medium"
+   }
+  ],
+  "recipes": ["marathon","thermopylae","colosseum","nile","giza","persepolis","carthage","teutoburg","alpine","olympus","troy","styx","cyclops","oasis","arenalab","random"],
+  "seeds": [1,7],
+  "sizes": ["small","medium","large"]
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g2_arena_hashes",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

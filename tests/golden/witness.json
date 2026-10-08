@@ -1,0 +1,6 @@
+{
+ "ancient": [
+  ["node", "tests/golden/g1_sim.test.mjs", "--core"],
+  ["node", "tests/golden/g6_campaign.test.mjs"]
+ ]
+}

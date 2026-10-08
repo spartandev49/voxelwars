@@ -174,7 +174,7 @@
    ],
    "below_min": [],
    "stingers": 11,
-   "aliases": 31,
+   "aliases": 34,
    "ambience": 6,
    "meets_target": true,
    "reuse_declared": [],
@@ -578,7 +578,7 @@
    "host": "opengameart.org",
    "slug": "shotgun-shoot-reload",
    "title": "Shotgun Shoot + Reload",
-   "author": "Mike Koenig (Soundbible",
+   "author": "Mike Koenig (Soundbible.com)",
    "submitter": "qubodup",
    "page": "https://opengameart.org/content/shotgun-shoot-reload",
    "licences_listed": [
@@ -9754,6 +9754,7 @@
    "reached_by_tables": [
     "ERA_HEAVY.air",
     "ERA_HEAVY.vehicle",
+    "EVENT.unit_withdraw",
     "GOD.mod_gp_strafing_run",
     "SETPIECE.mod_sp_chandelier_enters",
     "SETPIECE.mod_sp_flypast",
@@ -12561,6 +12562,7 @@
    "reached_by_tables": [
     "ABILITY_CUES.blink",
     "EVENT.unit_blink",
+    "EVENT.unit_withdraw",
     "GOD.sf_arc_tickle"
    ]
   },
@@ -16406,6 +16408,7 @@
    "reached_by_tables": [
     "ABILITY_CUES.kick",
     "EVENT.air_landed",
+    "EVENT.unit_withdraw",
     "SETPIECE.med_sp_dragon_shadow",
     "SETPIECE.med_sp_dragon_wakes"
    ]
@@ -22680,6 +22683,33 @@
    "pitch": 1.0,
    "vol": 1.0,
    "note": "",
+   "layers": []
+  },
+  "sf_steam_hiss": {
+   "era": "scifi",
+   "family": "sf_airlock_hiss",
+   "tag": "",
+   "pitch": 1.0,
+   "vol": 1.0,
+   "note": "SF-DA-20 steam hiss = the airlock rows",
+   "layers": []
+  },
+  "sf_egg_pop": {
+   "era": "scifi",
+   "family": "sf_alien_goo",
+   "tag": "splorp",
+   "pitch": 1.3,
+   "vol": 1.0,
+   "note": "SF-DA-20 egg pops = splorp rows pitched up",
+   "layers": []
+  },
+  "sf_wet_thump": {
+   "era": "scifi",
+   "family": "sf_alien_goo",
+   "tag": "splorp",
+   "pitch": 0.7,
+   "vol": 1.0,
+   "note": "SF-DA-20 wet thump = splorp rows pitched down",
    "layers": []
   }
  },
@@ -33234,6 +33264,9 @@
     "unit_brace": [
      "med_brace_thunk"
     ],
+    "unit_withdraw": [
+     "med_wing_whomp"
+    ],
     "banner_fall": [
      "med_banner#fall",
      "med_banner#aww"
@@ -33279,6 +33312,9 @@
     "unit_suppressed": [
      "mod_pin_thunk",
      "mod_bullet_snap"
+    ],
+    "unit_withdraw": [
+     "mod_rotor_flyby"
     ],
     "unit_reload": [
      "mod_reload_clack"
@@ -33340,6 +33376,9 @@
     "unit_blink": [
      "sf_blink_pop#origin",
      "sf_blink_pop#target"
+    ],
+    "unit_withdraw": [
+     "sf_blink_pop#origin"
     ],
     "unit_bailout": [
      "sf_shield_pop#pop"
@@ -34531,6 +34570,16 @@
     "event": "unit_blink",
     "source": "M13",
     "handler": "sf_blink_pop #origin at (x0,z0), #target at (x1,z1) +0.05 s"
+   },
+   {
+    "event": "unit_withdraw",
+    "source": "M-layers 3.6.6 (OI-L1)",
+    "handler": "an air unit leaves the field: Medieval med_wing_whomp, Modern mod_rotor_flyby, Sci-Fi sf_blink_pop #origin, at 0.6 of the family volume (EVENT_DIRECT)"
+   },
+   {
+    "event": "air_remnant",
+    "source": "M-layers 3.6.6 (OI-L1)",
+    "handler": "stages 1-3 of the air remnant clock carry text barks (spec/H); no cue by design, the event is listed in IGNORED_EVENTS so cue_trace accepts it"
    },
    {
     "event": "unit_bailout",
@@ -36538,7 +36587,7 @@
      "multi_licence_note": ""
     },
     {
-     "author": "Mike Koenig (Soundbible",
+     "author": "Mike Koenig (Soundbible.com)",
      "title": "Shotgun Shoot + Reload",
      "page": "https://opengameart.org/content/shotgun-shoot-reload",
      "licence": "CC BY 3.0",

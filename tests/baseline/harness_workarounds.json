@@ -1,0 +1,17 @@
+{
+ "schema": 1,
+ "note": "The complete list of harness workarounds: lines in the test harnesses that change the sim's defs or AI info to dodge a sim defect. VF 3.6.2: G6 does NOT apply them (the shipped game does not); the feasibility harness (tests/campaign/_lib.mjs) does, as it always did. tests/golden/harness_workarounds.test.mjs fails when a workaround line appears that is not in this list (or one listed disappears), so none can be added silently. Adding or removing a row needs two golden_log.md entries (author excluded).",
+ "scanned": ["tools/lib/harness.mjs", "tests/campaign/_lib.mjs", "tests/campaign/_solver.mjs", "tests/sim/_util.mjs"],
+ "patterns": ["aiInfo\\(", "\\bdefs\\.[a-z_]+\\.[A-Za-z_.]+\\s*=[^=]", "\\bdefs\\[[^\\]]+\\]\\.[A-Za-z_.]+\\s*=[^=]", "\\.siege\\s*="],
+ "workarounds": [
+  {
+   "id": "trojan_horse_siege",
+   "file": "tests/campaign/_lib.mjs",
+   "line": "if (defs.trojan_horse && !defs.trojan_horse.ranged) aiInfo(defs.trojan_horse).siege = false;",
+   "reason": "SIM defect docs/requests/campaign_sim_bugs.md #1: a siege-role unit without a ranged weapon (the Trojan horse) crashed breachBehaviour; the harness switches the siege AI flag off so the missions can be measured.",
+   "appliedBy": ["tests/campaign/_lib.mjs (every feasibility battle, legacy and RP0 records)"],
+   "notAppliedBy": ["tools/golden/g6_collect.mjs (G6)", "tools/golden/g1_*.mjs (G1)"],
+   "measured": "baseline 4aafd2e, regime default_meta and baked, seed 1, deployment of the counter bot: mission 7 (troy_giftshop, player horse) identical with and without (win, t 104.00, 3 stars in default_meta); mission 9 (zeus_bad_day, enemy horse in wave 3) differs: with 85.57 s / 3 stars, without 91.10 s / 2 stars (default_meta). Neither run crashed. G6 therefore records the unworked-around battle."
+  }
+ ]
+}

@@ -148,13 +148,22 @@ export function runPuzzle(p, placements, o = {}) {
 }
 export { PUZZLES };
 
-/** Fingerprint of the simulation sources (src/sim + src/world + the unit stat table): feasibility records carry it, so a record made on another sim is recognisable. */
+/**
+ * LEGACY fingerprint of the simulation sources (the direct children of src/sim and src/world + the unit stat table), kept ONLY so the legacy record
+ * tests/campaign/feasibility.v8.json (`legacy: true`, made on sim "489eccc492") can say whether its stored battles still replay on this tree: when this value differs the
+ * fast test reports STALE-LEGACY and skips the replay (VF 3.7). It is NOT a fingerprint any more: it misses the 30 files of src/sim/abilities/ (heal, poison, bribe,
+ * dash ...). The definition that counts is tools/lib/fingerprint.mjs (recursive, AR 3.7.6), re-exported below; records written since RP0 carry engineHash / eraHash.
+ */
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-export function simHash() {
+export function legacySimHash() {
   const h = crypto.createHash('sha1'), root = path.resolve(new URL('../../src', import.meta.url).pathname);
   for (const d of ['sim', 'world']) for (const f of fs.readdirSync(path.join(root, d)).filter((x) => x.endsWith('.js')).sort()) h.update(f).update(fs.readFileSync(path.join(root, d, f)));
   h.update('stats').update(fs.readFileSync(path.join(root, 'content/era_ancient/stats.js')));          // unit stats and costs decide every battle too
   return h.digest('hex').slice(0, 10);
 }
+/** Old name of legacySimHash (tests/campaign/run_feasibility.mjs still stamps its per-run files with it). */
+export const simHash = legacySimHash;
+/** The recursive fingerprint of this tree: { engineHash: {simCore, shared}, eraHash: {ancient}, ... } (tools/lib/fingerprint.mjs; AR 3.7.6, VF 3.7). */
+export { fingerprint, engineHash, eraHash } from '../../tools/lib/fingerprint.mjs';

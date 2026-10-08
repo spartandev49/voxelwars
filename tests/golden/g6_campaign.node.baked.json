@@ -1,0 +1,5795 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "inputs": {
+   "chainEvery": 300,
+   "missions": [
+    {
+     "groups": [
+      ["cretan_archer",6],
+      ["hoplite",22],
+      ["peltast",3]
+     ],
+     "hash": "c2ce5c90",
+     "id": "marathon_sort_of",
+     "index": 1,
+     "placements": [
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": -3.33125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": -1.99875
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": -0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": 0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": 1.9987499999999998
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.099999999999994,
+       "z": 3.3312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": -3.33125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": -1.99875
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": -0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": 0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": 1.9987499999999998
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.432499999999997,
+       "z": 3.3312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": -3.33125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": -1.99875
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": -0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": 0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": 1.9987499999999998
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.764999999999997,
+       "z": 3.3312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.097499999999997,
+       "z": -3.33125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.097499999999997,
+       "z": -1.99875
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.097499999999997,
+       "z": -0.6662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.097499999999997,
+       "z": 0.6662500000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -26.83,
+       "z": -0.575
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -26.83,
+       "z": 0.575
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -27.979999999999997,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.729999999999997,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.729999999999997,
+       "z": 0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.879999999999995,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.879999999999995,
+       "z": 0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -33.029999999999994,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -33.029999999999994,
+       "z": 0.575
+      }
+     ],
+     "source": "counter_pick"
+    },
+    {
+     "groups": [
+      ["spartan",8],
+      ["hoplite",6],
+      ["strategos",7],
+      ["philosopher",6],
+      ["cretan_archer",5]
+     ],
+     "hash": "ff1c858d",
+     "id": "thermopylae_snack",
+     "index": 2,
+     "placements": [
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.019999999999996,
+       "z": -3.8312500000000007
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.019999999999996,
+       "z": -2.4987500000000002
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -23.3525,
+       "z": -3.8312500000000007
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -23.3525,
+       "z": -2.4987500000000002
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.685,
+       "z": -3.8312500000000007
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.685,
+       "z": -2.4987500000000002
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -26.0175,
+       "z": -3.8312500000000007
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -26.0175,
+       "z": -2.4987500000000002
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -22.019999999999996,
+       "z": -0.6662500000000005
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -22.019999999999996,
+       "z": 0.6662499999999996
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -23.3525,
+       "z": -0.6662500000000005
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -23.3525,
+       "z": 0.6662499999999996
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -24.685,
+       "z": -0.6662500000000005
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -24.685,
+       "z": 0.6662499999999996
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -26.0175,
+       "z": -0.6662500000000005
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.019999999999996,
+       "z": 2.4987499999999994
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.019999999999996,
+       "z": 3.83125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -23.3525,
+       "z": 2.4987499999999994
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -23.3525,
+       "z": 3.83125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -24.685,
+       "z": 2.4987499999999994
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -24.685,
+       "z": 3.83125
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -28.75,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -28.75,
+       "z": 0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -29.9,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -29.9,
+       "z": 0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -31.049999999999997,
+       "z": -0.575
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -33.8,
+       "z": -1.15
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -33.8,
+       "z": 0
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -33.8,
+       "z": 1.1500000000000001
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -34.95,
+       "z": -1.15
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -34.95,
+       "z": 0
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -34.95,
+       "z": 1.1500000000000001
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["equites",15],
+      ["gladiator",8],
+      ["centurion",8],
+      ["pilum_thrower",3],
+      ["ballista",2],
+      ["senator",4],
+      ["legionary",2]
+     ],
+     "hash": "c63a41b9",
+     "id": "pyramid_scheme",
+     "index": 3,
+     "placements": [
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -3.165
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -1.8324999999999998
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -29.112499999999997,
+       "z": -3.165
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -29.112499999999997,
+       "z": -1.8324999999999998
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.445,
+       "z": -3.165
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.445,
+       "z": -1.8324999999999998
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.7775,
+       "z": -3.165
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.7775,
+       "z": -1.8324999999999998
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -27.78,
+       "z": 2.220446049250313e-16
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -27.78,
+       "z": 1.3325000000000002
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -29.112499999999997,
+       "z": 2.220446049250313e-16
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -29.112499999999997,
+       "z": 1.3325000000000002
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -30.445,
+       "z": 2.220446049250313e-16
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -30.445,
+       "z": 1.3325000000000002
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -31.7775,
+       "z": 2.220446049250313e-16
+      },
+      {
+       "defId": "centurion",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -31.7775,
+       "z": 1.3325000000000002
+      },
+      {
+       "defId": "legionary",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 3.165
+      },
+      {
+       "defId": "legionary",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.112499999999997,
+       "z": 3.165
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -27.78,
+       "z": -31.14
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -27.78,
+       "z": -29.5
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -27.78,
+       "z": -27.86
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -29.42,
+       "z": -31.14
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -29.42,
+       "z": -29.5
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -29.42,
+       "z": -27.86
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -31.06,
+       "z": -31.14
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -31.06,
+       "z": -29.5
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -27.78,
+       "z": 27.86
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -27.78,
+       "z": 29.5
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -27.78,
+       "z": 31.14
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -29.42,
+       "z": 27.86
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -29.42,
+       "z": 29.5
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -29.42,
+       "z": 31.14
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -31.06,
+       "z": 27.86
+      },
+      {
+       "defId": "pilum_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.51,
+       "z": -0.575
+      },
+      {
+       "defId": "pilum_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.51,
+       "z": 0.575
+      },
+      {
+       "defId": "pilum_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -35.66,
+       "z": -0.575
+      },
+      {
+       "defId": "senator",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.41,
+       "z": -0.575
+      },
+      {
+       "defId": "senator",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.41,
+       "z": 0.575
+      },
+      {
+       "defId": "senator",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.56,
+       "z": -0.575
+      },
+      {
+       "defId": "senator",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.56,
+       "z": 0.575
+      },
+      {
+       "defId": "ballista",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -42.71,
+       "z": -0.9225
+      },
+      {
+       "defId": "ballista",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -42.71,
+       "z": 0.9225000000000001
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["anubis_guard",8],
+      ["medjay",20],
+      ["khopesh_warrior",14],
+      ["priest_of_ra",4],
+      ["mummy",6]
+     ],
+     "hash": "2ad552d8",
+     "id": "nile_crossing",
+     "index": 4,
+     "placements": [
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -33.49132347181243
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -32.158823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -30.826323471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -29.493823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -28.161323471812427
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -33.49132347181243
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -32.158823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -30.826323471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -29.493823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -28.161323471812427
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -33.49132347181243
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -32.158823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -30.826323471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -29.493823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -28.161323471812427
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -33.49132347181243
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -32.158823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -30.826323471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -29.493823471812426
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -28.161323471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -18.18,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -19.512500000000003,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -20.845000000000002,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -22.177500000000002,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -23.51,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "mummy",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -24.8425,
+       "z": -26.328823471812427
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.18,
+       "z": -24.496323471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.18,
+       "z": -23.163823471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -19.512500000000003,
+       "z": -24.496323471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -19.512500000000003,
+       "z": -23.163823471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.845000000000002,
+       "z": -24.496323471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.845000000000002,
+       "z": -23.163823471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.177500000000002,
+       "z": -24.496323471812428
+      },
+      {
+       "defId": "anubis_guard",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.177500000000002,
+       "z": -23.163823471812428
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -18.18,
+       "z": -21.331323471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -18.18,
+       "z": -19.998823471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -18.18,
+       "z": -18.666323471812426
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -19.512500000000003,
+       "z": -21.331323471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -19.512500000000003,
+       "z": -19.998823471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -19.512500000000003,
+       "z": -18.666323471812426
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -20.845000000000002,
+       "z": -21.331323471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -20.845000000000002,
+       "z": -19.998823471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -20.845000000000002,
+       "z": -18.666323471812426
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -22.177500000000002,
+       "z": -21.331323471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -22.177500000000002,
+       "z": -19.998823471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -22.177500000000002,
+       "z": -18.666323471812426
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -23.51,
+       "z": -21.331323471812425
+      },
+      {
+       "defId": "khopesh_warrior",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -23.51,
+       "z": -19.998823471812425
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -27.575000000000003,
+       "z": -26.653823471812427
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -27.575000000000003,
+       "z": -25.503823471812428
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -28.725,
+       "z": -26.653823471812427
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -28.725,
+       "z": -25.503823471812428
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["war_elephant",3],
+      ["catapult",12],
+      ["hannibal",3],
+      ["chieftain",2],
+      ["warhound",10],
+      ["numidian",8],
+      ["axe_thrower",10],
+      ["berserker",5],
+      ["nubian_archer",3],
+      ["medjay",2],
+      ["cretan_archer",1],
+      ["hoplite",1]
+     ],
+     "hash": "9e5e929c",
+     "id": "alps_elephant",
+     "index": 5,
+     "placements": [
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.059999999999995,
+       "z": -17.261194233521344
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -24.134999999999998,
+       "z": -17.261194233521344
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -21.059999999999995,
+       "z": -13.686194233521347
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -24.134999999999998,
+       "z": -13.686194233521347
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -27.209999999999997,
+       "z": -13.686194233521347
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -30.284999999999997,
+       "z": -13.686194233521347
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -33.36,
+       "z": -13.686194233521347
+      },
+      {
+       "defId": "hannibal",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -21.059999999999995,
+       "z": -10.111194233521347
+      },
+      {
+       "defId": "hannibal",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -24.134999999999998,
+       "z": -10.111194233521347
+      },
+      {
+       "defId": "hannibal",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.209999999999997,
+       "z": -10.111194233521347
+      },
+      {
+       "defId": "war_elephant",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -21.059999999999995,
+       "z": -6.536194233521347
+      },
+      {
+       "defId": "war_elephant",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -24.134999999999998,
+       "z": -6.536194233521347
+      },
+      {
+       "defId": "war_elephant",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -27.209999999999997,
+       "z": -6.536194233521347
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -21.059999999999995,
+       "z": -2.961194233521348
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -24.134999999999998,
+       "z": -2.961194233521348
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -21.059999999999995,
+       "z": 0.6138057664786523
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -21.059999999999995,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -24.134999999999998,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -27.209999999999997,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -30.284999999999997,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -33.36,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -36.434999999999995,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.51,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -42.584999999999994,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -45.66,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -48.73499999999999,
+       "z": 4.1888057664786515
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.059999999999995,
+       "z": -12.936194233521345
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.059999999999995,
+       "z": -11.398694233521345
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.059999999999995,
+       "z": -9.861194233521346
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.059999999999995,
+       "z": -8.323694233521346
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.059999999999995,
+       "z": -6.786194233521346
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -22.597499999999997,
+       "z": -12.936194233521345
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -22.597499999999997,
+       "z": -11.398694233521345
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -22.597499999999997,
+       "z": -9.861194233521346
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -22.597499999999997,
+       "z": -8.323694233521346
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -22.597499999999997,
+       "z": -6.786194233521346
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -21.059999999999995,
+       "z": -4.748694233521346
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -21.059999999999995,
+       "z": -3.2111942335213457
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -21.059999999999995,
+       "z": -1.6736942335213456
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -21.059999999999995,
+       "z": -0.13619423352134596
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -22.597499999999997,
+       "z": -4.748694233521346
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -22.597499999999997,
+       "z": -3.2111942335213457
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -22.597499999999997,
+       "z": -1.6736942335213456
+      },
+      {
+       "defId": "numidian",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -22.597499999999997,
+       "z": -0.13619423352134596
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 10,
+       "x": -21.059999999999995,
+       "z": -7.3611942335213465
+      },
+      {
+       "defId": "nubian_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -21.059999999999995,
+       "z": -5.711194233521346
+      },
+      {
+       "defId": "nubian_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -22.209999999999997,
+       "z": -5.711194233521346
+      },
+      {
+       "defId": "nubian_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -23.359999999999996,
+       "z": -5.711194233521346
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -17.81119423352135
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -15.556194233521346
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -13.301194233521347
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -11.046194233521346
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -8.791194233521347
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -6.536194233521346
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -4.281194233521347
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": -2.0261942335213483
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": 0.22880576647865425
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.059999999999995,
+       "z": 2.4838057664786533
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -23.314999999999998,
+       "z": -17.81119423352135
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -23.314999999999998,
+       "z": -15.556194233521346
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["warhound",29],
+      ["berserker",21],
+      ["druid",6],
+      ["chieftain",4],
+      ["axe_thrower",9]
+     ],
+     "hash": "bb7b94c3",
+     "id": "teutoburg_peekaboo",
+     "index": 6,
+     "placements": [
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -7.974999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -6.824999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -5.674999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -4.5249999999999995
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.78,
+       "z": -3.374999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -28.93,
+       "z": -7.974999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -28.93,
+       "z": -6.824999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -28.93,
+       "z": -5.674999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -28.93,
+       "z": -4.5249999999999995
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -28.93,
+       "z": -3.374999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.08,
+       "z": -7.974999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.08,
+       "z": -6.824999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.08,
+       "z": -5.674999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.08,
+       "z": -4.5249999999999995
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.08,
+       "z": -3.374999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.229999999999997,
+       "z": -7.974999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.229999999999997,
+       "z": -6.824999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.229999999999997,
+       "z": -5.674999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.229999999999997,
+       "z": -4.5249999999999995
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -31.229999999999997,
+       "z": -3.374999999999999
+      },
+      {
+       "defId": "berserker",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -32.379999999999995,
+       "z": -7.974999999999999
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -27.78,
+       "z": -1.724999999999999
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -28.93,
+       "z": -1.724999999999999
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -30.08,
+       "z": -1.724999999999999
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -31.229999999999997,
+       "z": -1.724999999999999
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": -0.07499999999999907
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 1.0750000000000008
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 2.225000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 3.3750000000000004
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 4.525
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 5.675000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 6.825000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.78,
+       "z": 7.975000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": -0.07499999999999907
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 1.0750000000000008
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 2.225000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 3.3750000000000004
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 4.525
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 5.675000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 6.825000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -28.93,
+       "z": 7.975000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": -0.07499999999999907
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 1.0750000000000008
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 2.225000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 3.3750000000000004
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 4.525
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 5.675000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 6.825000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.08,
+       "z": 7.975000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.229999999999997,
+       "z": -0.07499999999999907
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.229999999999997,
+       "z": 1.0750000000000008
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.229999999999997,
+       "z": 2.225000000000001
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.229999999999997,
+       "z": 3.3750000000000004
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -31.229999999999997,
+       "z": 4.525
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -34.93,
+       "z": -2.3
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -34.93,
+       "z": -1.1500000000000001
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -34.93,
+       "z": 0
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -34.93,
+       "z": 1.1499999999999995
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -34.93,
+       "z": 2.3
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -36.08,
+       "z": -2.3
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -36.08,
+       "z": -1.1500000000000001
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -36.08,
+       "z": 0
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 4,
+       "x": -36.08,
+       "z": 1.1499999999999995
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -38.83,
+       "z": -1.15
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -38.83,
+       "z": 0
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -38.83,
+       "z": 1.1500000000000001
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -39.980000000000004,
+       "z": -1.15
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -39.980000000000004,
+       "z": 0
+      },
+      {
+       "defId": "druid",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -39.980000000000004,
+       "z": 1.1500000000000001
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["trojan_horse",1],
+      ["hoplite",28],
+      ["spartan",8],
+      ["cretan_archer",22],
+      ["catapult",5],
+      ["peltast",10],
+      ["strategos",1],
+      ["companion_cavalry",2]
+     ],
+     "hash": "dde19497",
+     "id": "troy_giftshop",
+     "index": 7,
+     "placements": [
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -26.5,
+       "z": -6.49625
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -26.5,
+       "z": -5.163749999999999
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.832499999999996,
+       "z": -6.49625
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -27.832499999999996,
+       "z": -5.163749999999999
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -29.165,
+       "z": -6.49625
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -29.165,
+       "z": -5.163749999999999
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.4975,
+       "z": -6.49625
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -30.4975,
+       "z": -5.163749999999999
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -26.5,
+       "z": -3.33125
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": -1.4987499999999996
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": -0.16624999999999956
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": 1.1662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": 2.4987500000000007
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": 3.8312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": 5.16375
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -26.5,
+       "z": 6.496250000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": -1.4987499999999996
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": -0.16624999999999956
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": 1.1662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": 2.4987500000000007
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": 3.8312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": 5.16375
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -27.832499999999996,
+       "z": 6.496250000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": -1.4987499999999996
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": -0.16624999999999956
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": 1.1662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": 2.4987500000000007
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": 3.8312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": 5.16375
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -29.165,
+       "z": 6.496250000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": -1.4987499999999996
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": -0.16624999999999956
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": 1.1662500000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": 2.4987500000000007
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": 3.8312500000000003
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": 5.16375
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -30.4975,
+       "z": 6.496250000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -26.5,
+       "z": -28.22
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -26.5,
+       "z": 28.22
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -33.23,
+       "z": -2.3
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -33.23,
+       "z": -1.1500000000000001
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -33.23,
+       "z": 0
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -33.23,
+       "z": 1.1499999999999995
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -33.23,
+       "z": 2.3
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.379999999999995,
+       "z": -2.3
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.379999999999995,
+       "z": -1.1500000000000001
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.379999999999995,
+       "z": 0
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.379999999999995,
+       "z": 1.1499999999999995
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -34.379999999999995,
+       "z": 2.3
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": -4.0249999999999995
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": -2.875
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": -1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": -0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": 2.875
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -37.129999999999995,
+       "z": 4.025
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": -4.0249999999999995
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": -2.875
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": -1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": -0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": 2.875
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -38.28,
+       "z": 4.025
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": -4.0249999999999995
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": -2.875
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": -1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": -0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -39.43,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "trojan_horse",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -42.18,
+       "z": -7.425
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -42.18,
+       "z": -4.055000000000001
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -42.18,
+       "z": -1.1850000000000005
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -42.18,
+       "z": 1.6849999999999987
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -42.18,
+       "z": 4.554999999999998
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 9,
+       "x": -42.18,
+       "z": 7.424999999999999
+      }
+     ],
+     "source": "reference"
+    },
+    {
+     "groups": [
+      ["companion_cavalry",6],
+      ["cretan_archer",12],
+      ["hoplite",14],
+      ["peltast",8],
+      ["philosopher",6],
+      ["spartan",13],
+      ["strategos",1]
+     ],
+     "hash": "eab0102e",
+     "id": "cyclops_meet",
+     "index": 8,
+     "placements": [
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -4.4975000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -3.165
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.18,
+       "z": -1.8325000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -4.4975000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -3.165
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.512500000000003,
+       "z": -1.8325000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -4.4975000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -3.165
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.845000000000002,
+       "z": -1.8325000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -4.4975000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -3.165
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -22.177500000000002,
+       "z": -1.8325000000000005
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -23.51,
+       "z": -4.4975000000000005
+      },
+      {
+       "defId": "strategos",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -18.18,
+       "z": 2.220446049250313e-16
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.18,
+       "z": 1.8325000000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.18,
+       "z": 3.165
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.18,
+       "z": 4.4975000000000005
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -19.512500000000003,
+       "z": 1.8325000000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -19.512500000000003,
+       "z": 3.165
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -19.512500000000003,
+       "z": 4.4975000000000005
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.845000000000002,
+       "z": 1.8325000000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.845000000000002,
+       "z": 3.165
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.845000000000002,
+       "z": 4.4975000000000005
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.177500000000002,
+       "z": 1.8325000000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.177500000000002,
+       "z": 3.165
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -22.177500000000002,
+       "z": 4.4975000000000005
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -23.51,
+       "z": 1.8325000000000002
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -23.51,
+       "z": 3.165
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -18.18,
+       "z": -14.522800000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -19.82,
+       "z": -14.522800000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 4,
+       "x": -21.46,
+       "z": -14.522800000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -18.18,
+       "z": 14.522800000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -19.82,
+       "z": 14.522800000000002
+      },
+      {
+       "defId": "companion_cavalry",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 5,
+       "x": -21.46,
+       "z": 14.522800000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -22.99024981631154,
+       "z": -1.7249999999999999
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -22.99024981631154,
+       "z": -0.575
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -22.99024981631154,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -22.99024981631154,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -24.140249816311538,
+       "z": -1.7249999999999999
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -24.140249816311538,
+       "z": -0.575
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -24.140249816311538,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -24.140249816311538,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -25.317068332108747,
+       "z": -1.7249999999999999
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -25.317068332108747,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -25.317068332108747,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -25.317068332108747,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -26.467068332108745,
+       "z": -1.7249999999999999
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -26.467068332108745,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -26.467068332108745,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -26.467068332108745,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -27.617068332108744,
+       "z": -1.7249999999999999
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -27.617068332108744,
+       "z": -0.575
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -27.617068332108744,
+       "z": 0.5750000000000002
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -27.617068332108744,
+       "z": 1.7249999999999996
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -28.330000000000002,
+       "z": -1.15
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -28.330000000000002,
+       "z": 0
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -28.330000000000002,
+       "z": 1.1500000000000001
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -29.480000000000004,
+       "z": -1.15
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -29.480000000000004,
+       "z": 0
+      },
+      {
+       "defId": "philosopher",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -29.480000000000004,
+       "z": 1.1500000000000001
+      }
+     ],
+     "source": "counter_pick"
+    },
+    {
+     "groups": [
+      ["axe_thrower",7],
+      ["ballista",2],
+      ["centaur_archer",4],
+      ["chieftain",1],
+      ["equites",8],
+      ["gladiator",9],
+      ["medjay",10],
+      ["medusa",6],
+      ["minotaur",5],
+      ["peltast",9],
+      ["priest_of_ra",2],
+      ["spartan",9],
+      ["trojan_horse",1],
+      ["warhound",26],
+      ["hoplite",3],
+      ["cretan_archer",2]
+     ],
+     "hash": "18b2a11b",
+     "id": "zeus_bad_day",
+     "index": 9,
+     "placements": [
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -15.689999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -14.049999999999997
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -12.409999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -10.77
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -9.129999999999999
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -7.489999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.900000000000002,
+       "z": -5.849999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -15.689999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -14.049999999999997
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -12.409999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -10.77
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -9.129999999999999
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -7.489999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.540000000000003,
+       "z": -5.849999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -15.689999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -14.049999999999997
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -12.409999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -10.77
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -9.129999999999999
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -7.489999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -20.18,
+       "z": -5.849999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.82,
+       "z": -15.689999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.82,
+       "z": -14.049999999999997
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.82,
+       "z": -12.409999999999998
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.82,
+       "z": -10.77
+      },
+      {
+       "defId": "warhound",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.82,
+       "z": -9.129999999999999
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -16.900000000000002,
+       "z": -3.7099999999999995
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -16.900000000000002,
+       "z": -2.0699999999999994
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -18.540000000000003,
+       "z": -3.7099999999999995
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -16.900000000000002,
+       "z": 0.0700000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -16.900000000000002,
+       "z": 1.7100000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.540000000000003,
+       "z": 0.0700000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -18.540000000000003,
+       "z": 1.7100000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.18,
+       "z": 0.0700000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -20.18,
+       "z": 1.7100000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -21.82,
+       "z": 0.0700000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -21.82,
+       "z": 1.7100000000000004
+      },
+      {
+       "defId": "spartan",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 3,
+       "x": -23.46,
+       "z": 0.0700000000000004
+      },
+      {
+       "defId": "chieftain",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 4,
+       "x": -16.900000000000002,
+       "z": 3.85
+      },
+      {
+       "defId": "minotaur",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -16.900000000000002,
+       "z": 5.99
+      },
+      {
+       "defId": "minotaur",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -18.540000000000003,
+       "z": 5.99
+      },
+      {
+       "defId": "minotaur",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -20.18,
+       "z": 5.99
+      },
+      {
+       "defId": "minotaur",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -21.82,
+       "z": 5.99
+      },
+      {
+       "defId": "minotaur",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 5,
+       "x": -23.46,
+       "z": 5.99
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -16.900000000000002,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -18.540000000000003,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -20.18,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -21.82,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -23.46,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "medusa",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 6,
+       "x": -25.1,
+       "z": 8.129999999999999
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -16.900000000000002,
+       "z": 10.27
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -16.900000000000002,
+       "z": 11.91
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -18.540000000000003,
+       "z": 10.27
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -18.540000000000003,
+       "z": 11.91
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -20.18,
+       "z": 10.27
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -20.18,
+       "z": 11.91
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -21.82,
+       "z": 10.27
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -21.82,
+       "z": 11.91
+      },
+      {
+       "defId": "gladiator",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 7,
+       "x": -23.46,
+       "z": 10.27
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -16.900000000000002,
+       "z": 14.049999999999999
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -16.900000000000002,
+       "z": 15.689999999999998
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -18.540000000000003,
+       "z": 14.049999999999999
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -18.540000000000003,
+       "z": 15.689999999999998
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -20.18,
+       "z": 14.049999999999999
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -20.18,
+       "z": 15.689999999999998
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.82,
+       "z": 14.049999999999999
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -21.82,
+       "z": 15.689999999999998
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -23.46,
+       "z": 14.049999999999999
+      },
+      {
+       "defId": "medjay",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 8,
+       "x": -23.46,
+       "z": 15.689999999999998
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 9,
+       "x": -16.900000000000002,
+       "z": -19.586000000000002
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 9,
+       "x": -16.900000000000002,
+       "z": -17.946
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 9,
+       "x": -18.540000000000003,
+       "z": -19.586000000000002
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 9,
+       "x": -18.540000000000003,
+       "z": -17.946
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 10,
+       "x": -16.900000000000002,
+       "z": 17.946
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 10,
+       "x": -16.900000000000002,
+       "z": 19.586000000000002
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 10,
+       "x": -18.540000000000003,
+       "z": 17.946
+      },
+      {
+       "defId": "equites",
+       "formation": "wedge",
+       "heading": 1.5707963267948966,
+       "order": "flank",
+       "squadId": 10,
+       "x": -18.540000000000003,
+       "z": 19.586000000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -20.602398854278555,
+       "z": -4.2749999999999995
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -20.602398854278555,
+       "z": -3.125
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -20.602398854278555,
+       "z": -1.9749999999999996
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -20.602398854278555,
+       "z": -0.8250000000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -20.602398854278555,
+       "z": 0.3250000000000002
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -21.752398854278557,
+       "z": -4.2749999999999995
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -21.752398854278557,
+       "z": -3.125
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -21.752398854278557,
+       "z": -1.9749999999999996
+      },
+      {
+       "defId": "peltast",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 11,
+       "x": -21.752398854278557,
+       "z": -0.8250000000000002
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -20.602398854278555,
+       "z": 1.9750000000000003
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -20.602398854278555,
+       "z": 3.125
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -20.602398854278555,
+       "z": 4.275
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.752398854278557,
+       "z": 1.9750000000000003
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.752398854278557,
+       "z": 3.125
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -21.752398854278557,
+       "z": 4.275
+      },
+      {
+       "defId": "axe_thrower",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 12,
+       "x": -22.902398854278555,
+       "z": 1.9750000000000003
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 13,
+       "x": -22.265843179377015,
+       "z": -0.9674999999999999
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 13,
+       "x": -23.700843179377017,
+       "z": -0.9674999999999999
+      },
+      {
+       "defId": "centaur_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 14,
+       "x": -22.265843179377015,
+       "z": 0.9674999999999999
+      },
+      {
+       "defId": "centaur_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 14,
+       "x": -23.700843179377017,
+       "z": 0.9674999999999999
+      },
+      {
+       "defId": "centaur_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 14,
+       "x": -25.135843179377016,
+       "z": 0.9674999999999999
+      },
+      {
+       "defId": "centaur_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 14,
+       "x": -26.570843179377015,
+       "z": 0.9674999999999999
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 15,
+       "x": -24.683601861797353,
+       "z": 0
+      },
+      {
+       "defId": "priest_of_ra",
+       "formation": "block",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 15,
+       "x": -25.83360186179735,
+       "z": 0
+      },
+      {
+       "defId": "ballista",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 16,
+       "x": -26.1,
+       "z": -3.12
+      },
+      {
+       "defId": "ballista",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 16,
+       "x": -26.1,
+       "z": -0.25
+      },
+      {
+       "defId": "trojan_horse",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 17,
+       "x": -26.1,
+       "z": 3.119999999999999
+      }
+     ],
+     "source": "reference"
+    }
+   ],
+   "puzzles": [
+    {
+     "id": "spear_wall",
+     "placements": [
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": 6.75
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": 5.25
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": 3.75
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": 2.25
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": 0.75
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": -0.75
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": -2.25
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": -3.75
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": -5.25
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -21,
+       "z": -6.75
+      }
+     ],
+     "seed": 11
+    },
+    {
+     "id": "kiting_101",
+     "placements": [
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": 5.45
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": 4.24
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": 3.03
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": 1.82
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": 0.61
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": -0.61
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": -1.82
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": -3.03
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": -4.24
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -24,
+       "z": -5.45
+      }
+     ],
+     "seed": 15
+    },
+    {
+     "id": "elephant_room",
+     "placements": [
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -33.99,
+       "z": 5.89
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -34.11,
+       "z": 3.51
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -34.5,
+       "z": 1.58
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -34.9,
+       "z": -0.32
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -33.9,
+       "z": -2.31
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -37.02,
+       "z": 5.43
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -36.74,
+       "z": 3.83
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -36.16,
+       "z": 1.6
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -36.28,
+       "z": -0.41
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -36.99,
+       "z": -3.3
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -37.8,
+       "z": 6.01
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -37.8,
+       "z": 3.69
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -35.95,
+       "z": 3.28
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -35.98,
+       "z": 1.26
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -35.33,
+       "z": -0.43
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -35.56,
+       "z": -2.82
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -37.59,
+       "z": 3.74
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -37.8,
+       "z": 0.97
+      }
+     ],
+     "seed": 11
+    },
+    {
+     "id": "knock_knock",
+     "placements": [
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -46,
+       "z": 4.5
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -46,
+       "z": 1.5
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -46,
+       "z": -1.5
+      },
+      {
+       "defId": "catapult",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "hold",
+       "squadId": 1,
+       "x": -46,
+       "z": -4.5
+      }
+     ],
+     "seed": 12
+    },
+    {
+     "id": "goat_logistics",
+     "placements": [
+      {
+       "defId": "cretan_archer",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -32.77,
+       "z": -17.08
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -32.89,
+       "z": -17.08
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -33.28,
+       "z": -17.08
+      },
+      {
+       "defId": "cretan_archer",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -35.86,
+       "z": -17.08
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -19.9,
+       "z": -17.08
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -19.9,
+       "z": -17.08
+      },
+      {
+       "defId": "hoplite",
+       "formation": "line",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 2,
+       "x": -19.9,
+       "z": -17.08
+      }
+     ],
+     "seed": 4
+    },
+    {
+     "id": "gaze_avoidance",
+     "placements": [
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.71,
+       "z": -1.67
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -16.84,
+       "z": -4.05
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -17.23,
+       "z": -5.97
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -17.62,
+       "z": -7.87
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.81,
+       "z": -1.16
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.75,
+       "z": -4.3
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -19.47,
+       "z": -5.9
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -18.88,
+       "z": -8.14
+      },
+      {
+       "defId": "peltast",
+       "formation": "skirmish",
+       "heading": 1.5707963267948966,
+       "order": "advance",
+       "squadId": 1,
+       "x": -21.19,
+       "z": -1.44
+      }
+     ],
+     "seed": 15
+    }
+   ],
+   "seed": 1
+  },
+  "order": ["marathon_sort_of","thermopylae_snack","pyramid_scheme","nile_crossing","alps_elephant","teutoburg_peekaboo","troy_giftshop","cyclops_meet","zeus_bad_day","spear_wall","kiting_101","elephant_room","knock_knock","goat_logistics","gaze_avoidance"],
+  "results": {
+   "alps_elephant": {
+    "chain": [2665276104,317014129,3712442168],
+    "final": 2746282688,
+    "result": {
+     "alive": [41,2],
+     "dead": [19,78],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "rout",
+     "kills": [82,15],
+     "spent": 10981,
+     "stars": 3,
+     "t": 38.50000000000038,
+     "tickN": 1155,
+     "win": true
+    },
+    "stateHash": 2746282688,
+    "walk": [2698529922,4258587307,1695385053],
+    "walkFinal": 991044463
+   },
+   "cyclops_meet": {
+    "chain": [4175289450,477163254,56291797,826403852,1948529729,1781185661,3112271973,3506159978,2891491775,3091546699,3029924028,3446782485],
+    "final": 1264422734,
+    "result": {
+     "alive": [8,2],
+     "dead": [52,110],
+     "draw": false,
+     "earned": [true,false,false],
+     "endReason": "objective",
+     "kills": [119,37],
+     "spent": 7930,
+     "stars": 1,
+     "t": 120.3666666666624,
+     "tickN": 3611,
+     "win": true
+    },
+    "stateHash": 1264422734,
+    "walk": [1099941794,3402269715,3869796333,569160372,51181820,834998012,2831400301,3373495778,3781716019,3642497392,1653058527,2388340745],
+    "walkFinal": 911032355
+   },
+   "elephant_room": {
+    "chain": [3042631012,3052519684,2655204946,2187781182,279060631],
+    "final": 3218244807,
+    "result": {
+     "alive": [17,0],
+     "dead": [1,7],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "elimination",
+     "kills": [7,1],
+     "spent": 1530,
+     "stars": 3,
+     "t": 58.89999999999922,
+     "tickN": 1767,
+     "win": true
+    },
+    "stateHash": 3218244807,
+    "walk": [1948953622,1285750702,4276916575,2542926247,1959799996],
+    "walkFinal": 1805079203
+   },
+   "gaze_avoidance": {
+    "chain": [897351296,871199942,60966862],
+    "final": 268749792,
+    "result": {
+     "alive": [9,0],
+     "dead": [0,6],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "objective",
+     "kills": [3,0],
+     "spent": 765,
+     "stars": 3,
+     "t": 36.46666666666716,
+     "tickN": 1094,
+     "win": true
+    },
+    "stateHash": 268749792,
+    "walk": [2918835306,3764909352,6797128],
+    "walkFinal": 733261371
+   },
+   "goat_logistics": {
+    "chain": [1103047603,477620988,2427305007,365026242,1235509409],
+    "final": 688603110,
+    "result": {
+     "alive": [5,3],
+     "dead": [3,6],
+     "draw": false,
+     "earned": [true,true,false],
+     "endReason": "objective",
+     "kills": [6,3],
+     "spent": 660,
+     "stars": 2,
+     "t": 59.099999999999206,
+     "tickN": 1773,
+     "win": true
+    },
+    "stateHash": 688603110,
+    "walk": [3664725671,2509664202,326911924,1142728730,1250495051],
+    "walkFinal": 4078700821
+   },
+   "kiting_101": {
+    "chain": [1935948790,500267231,1786869959],
+    "final": 3088442697,
+    "result": {
+     "alive": [10,0],
+     "dead": [0,6],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "elimination",
+     "kills": [6,0],
+     "spent": 900,
+     "stars": 3,
+     "t": 33.30000000000067,
+     "tickN": 999,
+     "win": true
+    },
+    "stateHash": 3088442697,
+    "walk": [3213620667,1525869002,4262443004],
+    "walkFinal": 1567431464
+   },
+   "knock_knock": {
+    "chain": [1711582964],
+    "final": 3752158106,
+    "result": {
+     "alive": [4,8],
+     "dead": [0,2],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "objective",
+     "kills": [2,0],
+     "spent": 1064,
+     "stars": 3,
+     "t": 18.200000000000063,
+     "tickN": 546,
+     "win": true
+    },
+    "stateHash": 3752158106,
+    "walk": [2535068768],
+    "walkFinal": 2586559730
+   },
+   "marathon_sort_of": {
+    "chain": [3719514033,2557823422,523984015,116864190,871888856,3998680383,903758738,3648882224,2652995903,2565599802,2371610776,2532574436,467038050],
+    "final": 1710525575,
+    "result": {
+     "alive": [5,6],
+     "dead": [26,18],
+     "draw": false,
+     "earned": [false,false,false],
+     "endReason": "rout",
+     "kills": [18,26],
+     "spent": 2995,
+     "stars": 0,
+     "t": 131.99999999999508,
+     "tickN": 3960,
+     "win": false
+    },
+    "stateHash": 1710525575,
+    "walk": [1882212826,558388967,4115032494,3818622006,2311093769,60009436,780111749,870106191,8635102,3709092933,1771834815,3212885946,2753983458],
+    "walkFinal": 670907666
+   },
+   "nile_crossing": {
+    "chain": [3694627804,2344856517,2732746497,736119930,721350170,1994878208,3290747529],
+    "final": 354370621,
+    "result": {
+     "alive": [13,14],
+     "dead": [40,28],
+     "draw": false,
+     "earned": [true,false,true],
+     "endReason": "objective",
+     "kills": [23,23],
+     "spent": 6284,
+     "stars": 2,
+     "t": 73.69999999999838,
+     "tickN": 2211,
+     "win": true
+    },
+    "stateHash": 354370621,
+    "walk": [474536331,2010345592,3863246176,3388460891,1753193537,2352348131,3665630879],
+    "walkFinal": 676691534
+   },
+   "pyramid_scheme": {
+    "chain": [3849095691,3846545939,4087786132,3589527439,66954847,133927458,2655254375],
+    "final": 4189972658,
+    "result": {
+     "alive": [21,0],
+     "dead": [23,65],
+     "draw": false,
+     "earned": [true,false,true],
+     "endReason": "objective",
+     "kills": [65,19],
+     "spent": 7404,
+     "stars": 2,
+     "t": 74.466666666665,
+     "tickN": 2234,
+     "win": true
+    },
+    "stateHash": 4189972658,
+    "walk": [3954128521,650498321,3704914874,2158452845,2584122106,3578188853,19538374],
+    "walkFinal": 2363635196
+   },
+   "spear_wall": {
+    "chain": [1942896486,976436283,100452277],
+    "final": 2140409294,
+    "result": {
+     "alive": [10,0],
+     "dead": [0,4],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "elimination",
+     "kills": [4,0],
+     "spent": 1000,
+     "stars": 3,
+     "t": 37.533333333333765,
+     "tickN": 1126,
+     "win": true
+    },
+    "stateHash": 2140409294,
+    "walk": [3589590374,3513122254,2581100996],
+    "walkFinal": 1531923260
+   },
+   "teutoburg_peekaboo": {
+    "chain": [946507428,1406894022,771830913,354072497,4168478641,1445717555,2965089706,1322248827,2829770742,443020889,3286691183,3602361598,2136163110],
+    "final": 880147117,
+    "result": {
+     "alive": [12,1],
+     "dead": [57,68],
+     "draw": false,
+     "earned": [true,false,false],
+     "endReason": "objective",
+     "kills": [68,51],
+     "spent": 7500,
+     "stars": 1,
+     "t": 130.16666666666185,
+     "tickN": 3905,
+     "win": true
+    },
+    "stateHash": 880147117,
+    "walk": [3690570840,2190171522,2106234591,3587943085,403353301,902145920,3788214629,2794472145,3891593952,3891418638,1011230998,2268508899,288215772],
+    "walkFinal": 1632900417
+   },
+   "thermopylae_snack": {
+    "chain": [670606688,1001792594,3373313804,216759892,432947345,3828869677,1810494174,748760450,3133409504,222275896,3683886823,492553368],
+    "final": 754870559,
+    "result": {
+     "alive": [16,8],
+     "dead": [16,65],
+     "draw": false,
+     "earned": [true,true,false],
+     "endReason": "rout",
+     "kills": [65,16],
+     "spent": 5950,
+     "stars": 2,
+     "t": 126.49999999999538,
+     "tickN": 3795,
+     "win": true
+    },
+    "stateHash": 754870559,
+    "walk": [1608246786,2056937836,2689130119,3971911064,186194977,3884184504,2891243100,2532778566,417449158,1054762815,1322197473,2039712695],
+    "walkFinal": 2525456753
+   },
+   "troy_giftshop": {
+    "chain": [3136398325,4250505614,1056518361,2416503470,2107683095,233899669],
+    "final": 3888844562,
+    "result": {
+     "alive": [59,0],
+     "dead": [18,65],
+     "draw": false,
+     "earned": [true,true,true],
+     "endReason": "objective",
+     "kills": [69,14],
+     "spent": 9764,
+     "stars": 3,
+     "t": 64.66666666666556,
+     "tickN": 1940,
+     "win": true
+    },
+    "stateHash": 3888844562,
+    "walk": [3232005868,2985401514,968453050,2089621571,2585572614,986543262],
+    "walkFinal": 3023821584
+   },
+   "zeus_bad_day": {
+    "chain": [828901124,3344366796,1292144565,1241902944,1246581462,588726863,1323092850,3113286682],
+    "final": 2552049287,
+    "result": {
+     "alive": [37,43],
+     "dead": [73,202],
+     "draw": false,
+     "earned": [true,false,true],
+     "endReason": "objective",
+     "kills": [191,67],
+     "spent": 15556,
+     "stars": 2,
+     "t": 86.79999999999764,
+     "tickN": 2604,
+     "win": true
+    },
+    "stateHash": 2552049287,
+    "walk": [3971076879,1081962865,3591948153,3565116911,506859019,3458124093,974500010,464841951],
+    "walkFinal": 1383214950
+   }
+  },
+  "workaround": "none"
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g6_campaign",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

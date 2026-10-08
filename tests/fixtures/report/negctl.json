@@ -1,0 +1,23 @@
+{
+ "PX-OK": {
+  "result": "red-as-expected",
+  "scriptHash": "h",
+  "controls": {
+   "NC-PX-OK": {
+    "result": "red-as-expected"
+   },
+   "NC-PX-OK-2": {
+    "result": "red-as-expected"
+   }
+  }
+ },
+ "PX-OK2": {
+  "result": "incomplete",
+  "controls": {
+   "NC-PX-OK2": {
+    "result": "stayed-green",
+    "detail": "nothing went red"
+   }
+  }
+ }
+}

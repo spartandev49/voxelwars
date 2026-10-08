@@ -1,0 +1,1151 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "cases": [
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-marathon-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 1,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-marathon-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 2,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-marathon-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 3,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-thermopylae-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 4,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-thermopylae-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 5,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-thermopylae-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 6,
+    "size": "medium"
+   },
+   {
+    "arena": "troy",
+    "arenaSeed": 5,
+    "armies": "troy",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-troy-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 7,
+    "size": "medium"
+   },
+   {
+    "arena": "troy",
+    "arenaSeed": 5,
+    "armies": "troy",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-troy-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 8,
+    "size": "medium"
+   },
+   {
+    "arena": "troy",
+    "arenaSeed": 5,
+    "armies": "troy",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-troy-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 9,
+    "size": "medium"
+   },
+   {
+    "arena": "styx",
+    "arenaSeed": 5,
+    "armies": "styx",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-styx-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 10,
+    "size": "medium"
+   },
+   {
+    "arena": "styx",
+    "arenaSeed": 5,
+    "armies": "styx",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-styx-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 11,
+    "size": "medium"
+   },
+   {
+    "arena": "styx",
+    "arenaSeed": 5,
+    "armies": "styx",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-styx-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 12,
+    "size": "medium"
+   },
+   {
+    "arena": "alpine",
+    "arenaSeed": 5,
+    "armies": "alpine",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-alpine-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 13,
+    "size": "medium"
+   },
+   {
+    "arena": "alpine",
+    "arenaSeed": 5,
+    "armies": "alpine",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-alpine-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 14,
+    "size": "medium"
+   },
+   {
+    "arena": "alpine",
+    "arenaSeed": 5,
+    "armies": "alpine",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-alpine-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 15,
+    "size": "medium"
+   },
+   {
+    "arena": "oasis",
+    "arenaSeed": 5,
+    "armies": "oasis",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-oasis-easy",
+    "rules": {
+     "difficulty": "easy"
+    },
+    "seed": 16,
+    "size": "medium"
+   },
+   {
+    "arena": "oasis",
+    "arenaSeed": 5,
+    "armies": "oasis",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-oasis-normal",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 17,
+    "size": "medium"
+   },
+   {
+    "arena": "oasis",
+    "arenaSeed": 5,
+    "armies": "oasis",
+    "cap": 6000,
+    "group": "A",
+    "id": "A-oasis-hard",
+    "rules": {
+     "difficulty": "hard"
+    },
+    "seed": 18,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-big_heads",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["big_heads"]
+    },
+    "seed": 20,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-tiny_titans",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["tiny_titans"]
+    },
+    "seed": 21,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-moon_gravity",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["moon_gravity"]
+    },
+    "seed": 22,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-chicken_rain",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["chicken_rain"]
+    },
+    "seed": 23,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-wine_rain_always",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["wine_rain_always"]
+    },
+    "seed": 24,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-friendly_fire_fiesta",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["friendly_fire_fiesta"]
+    },
+    "seed": 25,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-speedy_soldiers",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["speedy_soldiers"]
+    },
+    "seed": 26,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-ragdoll_frenzy",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["ragdoll_frenzy"]
+    },
+    "seed": 27,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "B",
+    "id": "B-glass_cannons",
+    "rules": {
+     "difficulty": "normal",
+     "mutators": ["glass_cannons"]
+    },
+    "seed": 28,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-friendly_fire",
+    "rules": {
+     "difficulty": "normal",
+     "friendlyFire": true
+    },
+    "seed": 40,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-morale_off",
+    "rules": {
+     "difficulty": "normal",
+     "morale": false
+    },
+    "seed": 41,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-nokite",
+    "rules": {
+     "difficulty": "normal",
+     "noKite": true
+    },
+    "seed": 42,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-rain",
+    "rules": {
+     "difficulty": "normal",
+     "weather": "rain"
+    },
+    "seed": 43,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-storm",
+    "rules": {
+     "difficulty": "normal",
+     "weather": "storm"
+    },
+    "seed": 44,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-snow",
+    "rules": {
+     "difficulty": "normal",
+     "weather": "snow"
+    },
+    "seed": 45,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-sandstorm",
+    "rules": {
+     "difficulty": "normal",
+     "weather": "sandstorm"
+    },
+    "seed": 46,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "C",
+    "id": "C-fog",
+    "rules": {
+     "difficulty": "normal",
+     "weather": "fog"
+    },
+    "seed": 47,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:javelin",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-javelin",
+    "rules": {},
+    "seed": 60,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:arrow",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-arrow",
+    "rules": {},
+    "seed": 61,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:pilum",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-pilum",
+    "rules": {},
+    "seed": 62,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:bolt",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-bolt",
+    "rules": {},
+    "seed": 63,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:coin",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-coin",
+    "rules": {},
+    "seed": 64,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:sunbeam",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-sunbeam",
+    "rules": {},
+    "seed": 65,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:scepter",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-scepter",
+    "rules": {},
+    "seed": 66,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:boulder",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-boulder",
+    "rules": {},
+    "seed": 67,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:francisca",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-francisca",
+    "rules": {},
+    "seed": 68,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "kind:thunderbolt",
+    "cap": 1500,
+    "group": "D",
+    "id": "D-thunderbolt",
+    "rules": {},
+    "seed": 69,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:breaks_shield",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-breaks_shield",
+    "rules": {},
+    "seed": 80,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:bribe",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-bribe",
+    "rules": {},
+    "seed": 81,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:chain_lightning",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-chain_lightning",
+    "rules": {},
+    "seed": 82,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:fire_every",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-fire_every",
+    "rules": {},
+    "seed": 83,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:hook",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-hook",
+    "rules": {},
+    "seed": 84,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:misaim",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-misaim",
+    "rules": {},
+    "seed": 85,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:misfire",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-misfire",
+    "rules": {},
+    "seed": 86,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:poison",
+    "cap": 1500,
+    "group": "E",
+    "id": "E-poison",
+    "rules": {},
+    "seed": 87,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:stance",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-stance",
+    "rules": {},
+    "seed": 100,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:kick",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-kick",
+    "rules": {},
+    "seed": 101,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:cc_field",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-cc_field",
+    "rules": {},
+    "seed": 102,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:aura",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-aura",
+    "rules": {},
+    "seed": 103,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:net",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-net",
+    "rules": {},
+    "seed": 104,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:crowd_favorite",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-crowd_favorite",
+    "rules": {},
+    "seed": 105,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:execute",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-execute",
+    "rules": {},
+    "seed": 106,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:heal_pulse",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-heal_pulse",
+    "rules": {},
+    "seed": 107,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:dot_cloud",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-dot_cloud",
+    "rules": {},
+    "seed": 108,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:revive",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-revive",
+    "rules": {},
+    "seed": 109,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:throne",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-throne",
+    "rules": {},
+    "seed": 110,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:fire_panic",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-fire_panic",
+    "rules": {},
+    "seed": 111,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:rage",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-rage",
+    "rules": {},
+    "seed": 112,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:pack_bonus",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-pack_bonus",
+    "rules": {},
+    "seed": 113,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:war_horn",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-war_horn",
+    "rules": {},
+    "seed": 114,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:dash",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-dash",
+    "rules": {},
+    "seed": 115,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:summon_on_death",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-summon_on_death",
+    "rules": {},
+    "seed": 116,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:tantrum",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-tantrum",
+    "rules": {},
+    "seed": 117,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "ability:cluck",
+    "cap": 1500,
+    "group": "F",
+    "id": "F-cluck",
+    "rules": {},
+    "seed": 118,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-zeus_lightning",
+    "inputs": "zeus_lightning",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 130,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-meteor",
+    "inputs": "meteor",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 131,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-earthquake",
+    "inputs": "earthquake",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 132,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-heal_wave",
+    "inputs": "heal_wave",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 133,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-wine_rain",
+    "inputs": "wine_rain",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 134,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-raise_chickens",
+    "inputs": "raise_chickens",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 135,
+    "size": "medium"
+   },
+   {
+    "arena": "thermopylae",
+    "arenaSeed": 5,
+    "armies": "thermopylae",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-orders",
+    "inputs": "orders",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 136,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon+hero",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-possess",
+    "inputs": "possess",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 137,
+    "size": "medium"
+   },
+   {
+    "arena": "troy",
+    "arenaSeed": 5,
+    "armies": "troy+hero",
+    "cap": 6000,
+    "group": "G",
+    "id": "G-combined",
+    "inputs": "combined",
+    "rules": {
+     "difficulty": "normal"
+    },
+    "seed": 138,
+    "size": "medium"
+   },
+   {
+    "arena": "arenalab",
+    "arenaSeed": 5,
+    "armies": "stalemate",
+    "cap": 6000,
+    "group": "H",
+    "id": "H-stalemate",
+    "rules": {
+     "timeLimit": 240
+    },
+    "seed": 150,
+    "size": "medium"
+   },
+   {
+    "arena": "marathon",
+    "arenaSeed": 5,
+    "armies": "marathon-player",
+    "cap": 6000,
+    "group": "H",
+    "id": "H-waves",
+    "rules": {
+     "objective": {
+      "id": "survive_waves",
+      "markerIds": [],
+      "params": {
+       "waves": 3
+      },
+      "playerTeam": 0,
+      "type": "survive_waves"
+     },
+     "timeLimit": 0,
+     "waves": {
+      "autoAdvance": true,
+      "faction": "mixed",
+      "interval": 40,
+      "maxWaves": 3
+     }
+    },
+    "seed": 151,
+    "size": "medium"
+   }
+  ],
+  "core": ["A-marathon-normal","A-thermopylae-hard","A-troy-normal","A-styx-normal","A-alpine-easy","A-oasis-normal","B-glass_cannons","C-rain","D-boulder","E-chain_lightning","G-meteor","G-combined"],
+  "eventFields": {
+   "ability_cast": ["id","ability","x","z","team"],
+   "ability_channel_end": ["id","ability","duration"],
+   "ability_channel_start": ["id","ability","duration"],
+   "army_low": ["team","frac"],
+   "bark": ["id","text"],
+   "battle_countdown": ["n"],
+   "battle_end": ["winner","reason","t","stats","perDef"],
+   "battle_start": ["teams"],
+   "big_swing": ["team","ratio","flank","cluster"],
+   "catapult_misfire": ["id"],
+   "charge_hit": ["id","dst","mul"],
+   "chicken_tantrum": ["id","x","z"],
+   "crater": ["x","z","r","x0","z0","x1","z1"],
+   "crowd_roar": ["x","z"],
+   "cyclops_misaim": ["id"],
+   "explosion": ["kind","x","y","z","r"],
+   "fire_started": ["x","z","r"],
+   "first_blood": ["src","dst","srcDef","dstDef"],
+   "friendly_fire": ["src","dst","dmg"],
+   "god_power": ["kind","x","z","team"],
+   "hazard_trigger": ["kind","x","z","r"],
+   "hero_down": ["id","def","team"],
+   "intervention": ["kind"],
+   "kill_streak": ["id","count","def"],
+   "lead_change": ["team","ratio"],
+   "lightning_arc": ["x0","y0","z0","x1","y1","z1"],
+   "objective_update": ["id","state","progress"],
+   "philosopher_monologue": ["id","x","z"],
+   "possess": ["id","on"],
+   "projectile_hit": ["kind","x","y","z","onUnit","blocked"],
+   "projectile_launch": ["kind","team","x","y","z","tx","tz","id"],
+   "prop_damaged": ["id","type","hpFrac","x","y","z"],
+   "prop_destroyed": ["id","type","x","y","z","s"],
+   "prop_spawned": ["id","type","x","z"],
+   "stalemate_warning": ["t"],
+   "status_apply": ["id","status"],
+   "stone_gaze": ["src","count"],
+   "telegraph": ["kind","x","z","r","t","h","a","team"],
+   "throne_sit": ["id","x","z","sitting"],
+   "trample": ["id","count","team"],
+   "trojan_reveal": ["id","x","z","count"],
+   "unit_block": ["src","dst","x","y","z","kind"],
+   "unit_brace": ["id","dst"],
+   "unit_convert": ["id","team"],
+   "unit_corpse_done": ["id","def","team","x","y","z"],
+   "unit_heal": ["id","amount"],
+   "unit_hit": ["src","dst","srcDef","dstDef","dmg","type","crit","backstab","charge","proj","aoe","x","y","z"],
+   "unit_kill": ["src","dst","srcDef","dstDef","srcTeam","dstTeam","friendly","byPlayer","revived","cause","x","y","z"],
+   "unit_rally": ["id","team"],
+   "unit_revive": ["id"],
+   "unit_rout": ["id","team"],
+   "unit_spawn": ["id","team","def","x","z"],
+   "unit_stagger": ["id"],
+   "wave_intermission": ["n","budget","name","boss"],
+   "wave_spawn": ["n","count"]
+  },
+  "groups": {
+   "A": "arena x difficulty",
+   "B": "mutators",
+   "C": "rules and weather",
+   "D": "projectile kinds",
+   "E": "hooking abilities",
+   "F": "other abilities",
+   "G": "input logs",
+   "H": "special"
+  },
+  "params": {
+   "abilityCap": 1500,
+   "arenaSeed": 5,
+   "arenaSize": "medium",
+   "armyBudget": 6000,
+   "armyCap": 300,
+   "armyStyle": "balanced",
+   "cap": 6000,
+   "chainEvery": 100,
+   "walkEvery": 300
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g1_matrix",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

@@ -145,3 +145,138 @@ Gate tests register GATE-T01 (syntax), T02 (lanes), T03 (cache), T04 (snapshot),
 ### Not covered / honest limits
 
 Two gate runs on the same tree hash at the same time share the snapshot directory (tests that write fixed paths under `.cache/` can collide); the `quiet` lock and tier budget enforcement are TOOLS-VERIFY's (3.19, `tier_budget.mjs`); `--era` scoping inside tests/tools waits for the registry (`VW_ERA` is exported and part of the cache key already); the default 3-lane configuration was not measured here (session limit of 2 worker processes), see perf_log G1.
+
+
+## T4 TOOLS-GOLDEN: G2 arenas, G3 id ledger, G4 text, G7 generators (2026-10-08)
+
+Owner: TOOLS-GOLDEN (VO1). Spec: VF 3.6 (common rules), 3.6.2 (G2, G3, G4, G7), 3.13 (negative controls); AR 3.3.1 (rule zero), AR-T06; W 3.1.3. Recorded from `.cache/baseline/ancient-v8` (HEAD verified = 4aafd2e3...) with `regime baked`, each recording after TWO identical collections in two fresh child processes. All tools: `--help`, exit 0 ok / 1 refused, mismatch or failure / 2 usage; no source under `src/` was touched.
+
+### Files
+
+| path | what |
+|---|---|
+| `tools/golden/{g2,g3,g4,g7}_record.mjs` | the recorders and checkers: `node tools/golden/g<N>_record.mjs [--worktree=<dir>] [--out=<file>] [--check] [--regime=baked] [--help]` (g2 adds `--engine=node\|chromium`). Default: refuse unless the worktree HEAD is the baseline sha, collect twice, refuse to write unless both runs are byte-identical, write through `makeRecord`/`writeRecord`. `--check`: collect once and compare with the committed file (first differences printed as `path: recorded X \| fresh Y`). `--regime=default_meta` exits 2 (only G1 has that variant) |
+| `tools/golden/common.mjs` | `recordCli` (the common CLI above, companions, `--emit` child mode), `deepDiff`, `mapDiff`, `norm` (data-only clone that throws on non-JSON values), `sha256`, `sha12`, `fnv32`, `isMain` |
+| `tools/golden/tree.mjs` | `openTree(root, {regime})`: THE path table (`SOURCES`) of the collectors, `T.src(key)`, the baked clip registration, `OWNER_KINDS`, `T.ownerOf()` (uses `registry.owner(kind, id)` as soon as `src/content/registry.js` exists). When a later package moves a source, its owner edits one line here |
+| `tools/golden/g2_core.mjs`, `hash_core.mjs` | import-free G2 core (runs in Node and, bundled by esbuild, in Chromium); `g2_collect.mjs` (Node), `g2_chromium.mjs` (esbuild bundle + headless Chromium with the SwiftShader flags of `tools/lib/paths.mjs`) |
+| `tools/golden/g3_collect.mjs`, `g4_collect.mjs`, `g7_collect.mjs` | the collectors; the tests import the same functions and run them on this repo instead of the baseline |
+| `tests/world/gen_golden.json`, `gen_golden_chromium.json` | G2 records (Node 22.22.0, Chromium 141.0.7390.37) |
+| `tests/fixtures/shipped_ids.json`, `tests/golden/g3_defs.json` | G3: the ledger and def digests; per-def key order and JSON text (the file AR-T06 names) |
+| `tests/golden/g4_text.json`, `g7_armygen.json` | G4, G7 records |
+| `tests/golden/{g2_gen,g2_gen_chromium,g3_ids,g4_text,g7_armygen}.test.mjs`, `golden_tools.test.mjs`, `golden_tools.g2.slow.test.mjs`, `_golden.mjs` | the tests (`_golden.mjs` = helpers, not a test) |
+| `tests/negctl/VF-G0.mjs`, `VF-G0g2.mjs`, `VF-G2.mjs`, `VF-G2c.mjs`, `VF-G3.mjs`, `VF-G4.mjs` (NC-VF-63), `VF-G7.mjs` (NC-VF-66) | negative controls, one fault per label |
+
+### What each golden holds
+
+* **G2** (112 cases): `generateArena(recipe, size, seed)` for the 16 recipes x {small, medium, large} x seeds {1, 7} (96) and the 16 `ARENAS` preset defaults. Each case = five FNV-1a-32 hashes `[full arena JSON (the hash of W.md F1), terrain h, materials m, props, meta]`, so a red case names the part that moved (the full hash of 46 cases equals the independent F1 measurement of the W spec). Node and Chromium are recorded separately and never merged. **Finding:** the engines agree on 109 of 112 cases; `alpine/small/1`, `alpine/small/7`, `random/small/1` differ in the full and meta hash by ONE ulp of a zone z coordinate (`zc = Math.sin(x / 23) * 7 + Math.sin(x / 9) * 1.2`, `gen.js:611`; Node 22 vs Chromium 141). The W claim "46 of 46 equal" sampled 5 recipes without alpine. The list is frozen in `g2_gen_chromium.test.mjs` (`cross_engine_known`).
+* **G3**: `ids[kind]` for 21 kinds (units 43, factions 7, arenas 16, recipes 16, props 41, propCategories 4, missions 9, puzzles 6, parts 254 as `category/id`, achievements 24, mutators 9, abilities 27, projectileKinds 10, godPowers 6, rigs 8, clips 93 plain + 157 qualified, music 8, sfx 374, cues 116, unlockKeys 3), `cueCount` (recorded, not asserted), tombstone kinds (7 at v8) with their entries, and `sha256(JSON.stringify(def))` of the 43 defs of `buildSimDefs()`. Test semantics: new eras ADD ids, so each ledger id must be live, the live ids that are in the ledger must keep the ledger order (sequence kinds), the digests, the first-27 key order of every def and the literal counts must be exact, ownership must be `ancient` (`registry.owner` once a registry exists; before that the tree must be single-era) and the recorded tombstone kinds and entries must still exist.
+* **G4** (19 entries): the 13 modules of `tests/humor/text.test.mjs`, `sim_text` (SIM_BARKS), `lesson_text`, `wave_names`, `custom_text`, `ui/strings`, and the six puzzle texts: `sha256` of the canonical JSON of the data exports, a hash per export, a hash per key (object key, array index, or announcer template id; 1,592 key hashes), function export names and the nested function fields (achievement predicates are dropped from the hash and listed), plus the announcer template id order (486).
+* **G7**: the record stores its INPUTS (43 unit ids, 8 factions, 20 scout compositions, the daily content lists, as `[key, value]` pairs where insertion order matters because canonical JSON sorts keys) and the results of 48 `generateArmy` tuples (composition string, composition and placements hashes, cost, units, types), `counterTable` (41 non-boss rows, readable), 20 `scoutReport` cases (codes + hash; the recorder refuses unless all 9 scout codes occur), `survivalWave(n, seed)` for n 1..12 and seeds 1..20, `dailyPlan` for 400 dates from 2026-01-01 (+ `dailyEnemy` every 10th). The test replays the recorded inputs with the defs restricted to the recorded 43 ids.
+
+### Deviations from VF text, each with the reason
+
+1. **48 tuples**: "every 45th of 2160" always lands on the same (difficulty, budget, seed) corner because 45 = 3 x 3 x 5. Each of the 48 (faction, style) pairs gets one (difficulty, budget, seed) cell by the stride-7 walk `j = 7k mod 45` (coprime: all 45 cells are hit once by the first 45 pairs). Styles `counter` and difficulty `hard` carry a frozen `against` army so the counter-pick branch is exercised; placements are laid out on `marathon medium 5`, team = k mod 2.
+2. **Criterion ids**: VF-T04 is split into `VF-G3` and `VF-G4` (one criterion per negctl file and per test process: the merge keeps one line per id), VF-T07 = `VF-G7`, WC01 = `VF-G2` (`VF-G2c` in Chromium, tier T-era), plus `VF-G0` / `VF-G0g2` for the recorders themselves. The report's ER1 member table must list these ids (VF-T04 -> VF-G3 + VF-G4, VF-T07 -> VF-G7, WC01 -> VF-G2).
+3. **G2 file location**: `tests/world/gen_golden.json` as VF 3.6.2/3.6.6 say; W.md 3.1.3 step 0 says `tests/fixtures/gen_golden.json` + `gen_golden_chromium.json`. One copy only (no drift); WORLD's WC01 may import `tests/golden/g2_gen.test.mjs` logic or read the VF path (request filed). W's "16 + 96 extension" and VF's "112" are the same set.
+4. **AR-T06's `tests/golden/g3_defs.json`** is produced by the same collection as the ledger (companion record), so the two cannot drift.
+5. **Tests replay recorded inputs**, not live lists (G2 recipes/presets, G7 unit ids/factions/arenas), which is what makes them era-proof; the live lists are checked separately (`recipes_list`, `presets_defaults`, `ids_present`, `ids_order`).
+
+### Criteria and negative controls (all `red-as-expected` with `node tools/lib/negctl_lite.mjs <id>`; each fault was also run alone: every fault turns exactly its own label red)
+
+| criterion | file | labels | negctl | tier | s |
+|---|---|---|---|---|---|
+| VF-G2 | `g2_gen.test.mjs` | recorded_from_baseline, record_shape, recipes_list, presets_defaults, cases_equal, presets_equal | `VF-G2.mjs` (Gen.put draw swap, W WC01) | F | 7 |
+| VF-G2c | `g2_gen_chromium.test.mjs` | recorded_from_baseline, engine_major, replay_equal, cross_engine_known | `VF-G2c.mjs` | T-era (runs in F) | 8 |
+| VF-G3 | `g3_ids.test.mjs` | recorded_from_baseline, counts_literal, ids_present, ids_order, ids_owner, owner_selftest, def_digests, def_keys, tombstones | `VF-G3.mjs` (8 faults, NC-X4 among them) | F | 0.5 |
+| VF-G4 | `g4_text.test.mjs` | recorded_from_baseline, module_set, module_hash, export_hashes, key_hashes, functions, announcer_order | `VF-G4.mjs` = NC-VF-63 | F | 0.2 |
+| VF-G7 | `g7_armygen.test.mjs` | recorded_from_baseline, inputs, compositions, placements, counter_table, scouts, scout_codes, waves, daily_plans, daily_enemies | `VF-G7.mjs` = NC-VF-66 | F | 0.8 |
+| VF-G0 | `golden_tools.test.mjs` | baseline_present, help, exit_codes, refuses_non_baseline, determinism_gate, record_roundtrip, checks_reproduce, tamper_detected | `VF-G0.mjs` | F | 7 |
+| VF-G0g2 | `golden_tools.g2.slow.test.mjs` | node_reproduces, chromium_reproduces, node_tamper_detected | `VF-G0g2.mjs` | T-full | 22 |
+
+`node tools/gate.mjs --fast --only=golden --jobs=2`: lint, syntax-nc, syntax, 10 of 10 golden tests green in 33 s wall. The criteria merge reports these ids UNVERIFIED (U4) until `tools/negcontrols.mjs` (TOOLS-VERIFY) records the proofs in `.cache/gate/negctl.json`.
+
+### Re-recording (the only way a golden file changes)
+
+`node tools/golden/g<N>_record.mjs` from the repo root with the baseline worktree present, then one `docs/eras/golden_log.md` entry per signer (the author of the change excluded). Never record from a tree other than the baseline: the record carries `sha`, `tag`, `dirty` and the tests refuse anything but `4aafd2e3...`, `ancient-v8`, `dirty:false`.
+
+### Left / limits
+
+* G1, G5, G6, G8..G12 belong to other work packages. G9 (audio) can reuse `tools/golden/tree.mjs`.
+* The registry branch of `ids_owner` (`registry.owner(kind, id)` with `OWNER_KINDS`) is exercised through its pure function `ownerProblems` (selftest and negctl) but not against a real registry, which does not exist yet; the kind names in `OWNER_KINDS` are AR 3.1.2's guess to be confirmed by REGISTRY.
+* Once AR1 moves `STAT_TABLE`, `PROP_CATALOG`, the humor modules or `buildSimDefs()` signature, the collectors keep working only after the one-line edit of `tools/golden/tree.mjs` (`SOURCES`) or `g4_collect.mjs` `G4_MODULES`; a collector that cannot find its source throws, it never skips (request `docs/requests/tools_golden_access_layer.md`).
+* Text hashes cover the data modules; strings hard-coded in `ui/screens/*` are G10's (DOM text), not G4's.
+
+## T3 TOOLS-GOLDEN: G1 sim matrix (83 cases, Node baked and default_meta, Chromium core 12) (2026-10-08)
+
+Owner: TOOLS-GOLDEN (VO1). Spec: VF 3.6 (common rules), 3.6.1 (G1), 3.10 (comparators), 3.13 (negative controls); AR 3.7.4/3.7.5. Exit codes everywhere: 0 ok, 1 differs / refused / failed, 2 usage. Every CLI has `--help`.
+
+### Files
+
+| path | what |
+|---|---|
+| `tools/golden/g1_core.mjs` | the IMPORT-FREE core: `makeEventHasher(eventFields)`, `simulate(w, spec, params, eventFields, deps, opts)`. Plain script text, so Node imports it and the Chromium column injects the same source into the page: both engines hash with identical code |
+| `tools/golden/g1_lib.mjs` | `loadTree(root, regime)`, `loadFixtures(dir)`, `runCase`, `buildCaseWorld`, `compareDigest` (labels), `digestShapeProblems`, `selectCases`, `fixtureHashes`; tree-agnostic: the recorder passes the baseline worktree, the test passes this tree |
+| `tools/golden/g1_fixtures.mjs` | `makeFixtures(B)`: the five fixture documents generated FROM THE BASELINE (called twice, must be identical) |
+| `tools/golden/g1_pool.mjs`, `g1_worker.mjs` | work queue over 1..N forked workers (one regime per worker process: the clip bake is process-global) |
+| `tools/golden/g1_record.mjs` | `[--worktree=] [--regime=baked\|default_meta\|both] [--engine=node\|chromium] [--jobs=2] [--only=ids] [--out-dir=] [--check] [--verbose]` |
+| `tools/golden/g1_chromium.mjs` | the Chromium column: `[--check] [--page=<html>] [--rebuild] [--worktree=] [--out-dir=] [--only=] [--timeout-s=]`; exports `checkCandidate` |
+| `tests/golden/g1_matrix.json`, `g1_placements.json`, `g1_kinds.json`, `g1_abilities.json`, `g1_inputs.json` | the frozen inputs (records of kind `g1_matrix` ... `g1_inputs`, engine node, tag ancient-v8, clean checkout of 4aafd2e) |
+| `tests/golden/g1_digests.node.baked.json`, `g1_digests.node.default_meta.json` | 83 digests each (kind `g1_digests`); `g1_digests.chromium.baked.json`: 12 digests, Chromium 141.0.7390.37, page sha256 `4f707d27...` = release/v8 |
+| `tests/golden/g1_suite.mjs` | shared body of the tests (labels below); `g1_sim.test.mjs` (core 12, T-fast), `g1_sim_full.slow.test.mjs` (all 83, T-full), `g1_chromium.slow.test.mjs` (core 12 in the built page, T-full), `g1_record.slow.test.mjs` (the recorder CLI, T-full) |
+| `tests/negctl/VF-T03*.mjs` | 21 negative controls (table below) |
+
+Existing, reused unchanged: `tests/golden/legacy_hash.mjs` (the frozen `stateHash` text; the test pins its sha256 `7447c986...` and asserts `legacyStateHash(w) === w.stateHash()` at every sampled tick), `tools/lib/statwalk*.mjs` + `v8_fields.json`, `tools/lib/records.mjs` (`makeRecord`, `firstDivergence`, `assertComparable`), `tests/lib/criteria.mjs`.
+
+### The 83 cases (VF 3.6.1 table, built by `g1_fixtures.mjs`)
+
+A 18 (6 arenas x easy/normal/hard, seeds 1..18), B 9 (mutators, 20+i), C 8 (friendly_fire, morale_off, nokite, rain, storm, snow, sandstorm, fog; 40+i), D 10 (projectile kinds, 60+i), E 8 (hooking abilities, 80+i), F 19 (other abilities, 100+i), G 9 (input logs, 130+i), H 2 (stalemate 150, waves 151). All on `getArena(recipe, 'medium', 5)`, world built through `tools/lib/harness.mjs buildWorld`, `w.start(0)`, ticked to `ended` or 6,000 ticks (D, E, F: 1,500; end reason `cap`, winner -1). Core 12 as in VF.
+
+What is hashed per case (`simulate` in g1_core.mjs): `chain` = legacy stateHash at ticks 100, 200, ... (+ `endHash`); `walk` = statwalk at 300, 600, ... (+ `endWalk`); `evHash` = FNV over every event in registration order observed with `w.ev.onAny`; `result` = the 15-number tuple `[winner, endReason, tick, round(time*1000), alive0, alive1, dead0, dead1, kills0, kills1, round(dmg0), round(dmg1), start0, start1, eventCount]`. 83 cases hold 2,205 values in the baked record (>= 40 digests required).
+
+### Deliberate refinements and deviations from the VF text (each with its reason)
+
+1. **evHash reads frozen per-type field lists** (`g1_matrix.json` `eventFields`, the baseline `EVENTS` table) instead of "the payload's own numeric fields": a field a later module adds to an existing payload, or a new event type emitted by a new mechanic, must not move an Ancient golden. Unknown event types are counted (`exercise.unknownEvents`), not hashed. Numbers are quantised `Math.fround(v)*1000|0` as specified; NaN and +-Infinity get their own words (a NaN in a payload moves the hash).
+2. **No hero in the generated armies.** `generateArmy(mixed balanced 6000, seeds 9 and 10, cap 300)` contains no hero on any of the six arenas (measured), so "the first hero of team 0" of `G-possess` and `G-combined` would not exist. The sets `marathon+hero` and `troy+hero` add ONE frozen `strategos` (squad 99) at the army centre; the possessed unit id is frozen in `g1_inputs.json` and the test checks the logs name it.
+3. **`H-stalemate` uses two armies of 14 mummies** (speed 1.9) on hold 70 u apart instead of mixed ones: with 2.6+ u/s units the first blow lands at about 26 s, before the zeus stage (30 s), and the case would never show the intervention. With mummies the log contains `stalemate_warning` and two `intervention` events (zeus, goat). The recorder refuses to write unless those events occur.
+4. **`H-waves`** uses the rule shape of `survivalRules()` (a `survive_waves` objective keeps the battle alive between waves; `rules.waves` alone ends the run when the first wave dies) with `maxWaves 3` and `timeLimit 0`.
+5. "id order" of the carrier choice (D, E, F) is the SORTED id order of the defs (registry order is not a contract): D carriers javelin=numidian, arrow=centaur_archer, pilum=pilum_thrower, bolt=ballista, coin=senator, sunbeam=priest_of_ra, scepter=pharaoh, boulder=catapult, francisca=axe_thrower, thunderbolt=druid; the E and F carriers are in `g1_abilities.json`.
+6. **Infinity is legitimate v8 state** (unset distances), so the recorder/test fail on NaN only (`g1/finite`); the count of Infinity values per case is kept in `exercise.inf`. NaN is counted at every walk sample and at the end, not only at the end (a unit that dies and leaves the list would hide it).
+7. **Instrumentation** (`opts.hooks`): the recorder wraps `w.abilityHook` to count the ability hooks that reached an implementation (E cases must have `onAim|onFire|onHitDealt` > 0, D cases a `projectile_launch` of their kind, G casts a `god_power`, the possession logs a `possess`, stalemate its interventions, waves >= 2 `wave_spawn`). Pass 1 runs with the wrapper, pass 2 without; the two digests must be identical, which proves the wrapper is inert. The tests run without it.
+8. **Files are records.** The fixtures are written through `makeRecord` (kinds `g1_matrix`, `g1_placements`, `g1_kinds`, `g1_abilities`, `g1_inputs`), so `lint_records` cannot flag them and the digest record names the sha256 of every fixture (`data.fixtures`): changing a fixture without re-recording turns `g1/fixtures` red.
+9. **Chromium page**: the record uses the shipped v8 fragment `release/v8/index.html` (its sha256 must equal `release/v8/PAGE.sha256`; VF-L04 proves that building the baseline sources reproduces it byte for byte; `--rebuild` repeats that build here). Arenas come from the page itself (`game.begin()` with `presetId = recipe`, `size medium`, `seed 5`, arena kept as a clone), the world from `new (game.world.constructor)({arena, seed, rules, defs: game.content.defs})`. Chromium digests differ from Node digests in `walk` and `evHash` for all 12 cases and in the whole trajectory for 3 (G-combined 6000 vs 5896 ticks): measured, expected (VF-D5), and the reason they are never compared across engines.
+10. The `full` column (`stateHashFull`, M spec PC-7) does not exist yet: it is recorded once at the M0 landing from the Ancient worlds (a follow-up of this tool: `g1_record --full-column`, not built because `stateHashFull` does not exist on the baseline).
+
+### Procedure and measured numbers (this box, 4 CPUs shared, `nice -n 10`)
+
+`node tools/golden/g1_record.mjs [--jobs=2]` = regenerate the fixtures (twice), run all 83 cases twice per regime (hooks on, hooks off), audit (legacy hash equal, no NaN, digest shapes, exercise rules), then write. Measured: 77 s (baked) + 82 s (default_meta) with 2 workers; the first baked recording and the final one were byte-identical (a third determinism witness). `--check` (fixtures regenerate equal, digests equal): 80 s for both regimes. Test timings: core 12 = 16-23 s in one process; full 83 = 38-52 s with 2 workers (VF budget 35 s in 3 lanes: `--jobs=3`); Chromium core 12 = 26-30 s (boot 7 s, a private build of this tree adds 8 s); recorder test = 18-28 s. The baked record covers 43 `rout`, 29 `elimination`, 10 `cap`, 1 `intervention` endings.
+
+### Criteria and negative controls (all proven red-as-expected with `node tools/lib/negctl_lite.mjs`)
+
+| criterion | file | tier | labels |
+|---|---|---|---|
+| `VF-T03` | `g1_sim.test.mjs` (`--core` default, `--full`, `--regime=`, `--case=`, `--jobs=`) | T-fast | `g1/digest_equal g1/chain g1/walk g1/evhash g1/tuple g1/legacy_hash g1/legacy_pin g1/finite g1/coverage g1/matrix_shape g1/fixtures g1/record g1/record_shape g1/exercise` (failure messages name the case and the first diverging tick) |
+| `VF-T03-full` | `g1_sim_full.slow.test.mjs` | T-full | same labels, all 83 cases, 2 workers |
+| `VF-T03-chromium` | `g1_chromium.slow.test.mjs` | T-full | same labels, engine chromium, `--page=` / `$VW_PAGE_FRAGMENT` / private build |
+| `VF-T03R` | `g1_record.slow.test.mjs` | T-full | `g1rec/help usage_errors refuses_wrong_worktree check_passes check_detects_digest check_detects_fixture chromium_delegates only_writes_nothing` |
+
+| negctl file (id) | mutation | must turn red |
+|---|---|---|
+| `VF-T03.mjs` (NC-VF-09) | flip one chain digest of the baked record | `g1/digest_equal` (+ `g1/chain`) |
+| `VF-T03-rng.mjs` (NC-VF-12) | extra `w.rng.next()` in `applyDamage` for ranged hits | `g1/chain` (+ walk, evhash, tuple, digest_equal) |
+| `VF-T03-walk.mjs`, `-evhash.mjs`, `-tuple.mjs` | flip a walk digest / an evHash / the winner of a tuple | `g1/walk`, `g1/evhash`, `g1/tuple` |
+| `VF-T03-legacy.mjs` | `World.stateHash()` stops hashing `tickN` | `g1/legacy_hash` only (the frozen copy keeps the chain equal) |
+| `VF-T03-pin.mjs` | edit the frozen `legacy_hash.mjs` | `g1/legacy_pin` |
+| `VF-T03-fixture.mjs`, `-shape.mjs`, `-exercise.mjs` | change a seed in `g1_matrix.json` / delete a chain sample / zero the boulder launches in the record | `g1/fixtures`, `g1/record_shape`, `g1/exercise` |
+| `VF-T03-finite.mjs` | NaN in the render-only `gait` of unit 1 | `g1/finite` |
+| `VF-T03-coverage.mjs`, `VF-T03-full-coverage.mjs` | the core / full selection silently shrinks (11 / 12 cases) | `g1/coverage` |
+| `VF-T03-full.mjs`, `-full-meta.mjs`, `-full-regime.mjs` | flip a digest of a non-core case through the 2-worker pool / of the default_meta record / the baked record claims regime default_meta | `VF-T03-full/g1/digest_equal`, `.../digest_equal`, `.../record` |
+| `VF-T03-chromium.mjs`, `-chromium-engine.mjs` | flip a Chromium digest / the engine mutation of NC-VF-12 with the page REBUILT from the mutated tree | `VF-T03-chromium/g1/digest_equal`, `.../g1/chain` |
+| `VF-T03R.mjs`, `-worktree.mjs`, `-chromium.mjs` | `--check` filters out chain divergences / `assertBaseline` accepts any checkout / no hand-over to the Chromium column | `g1rec/check_detects_digest`, `g1rec/refuses_wrong_worktree`, `g1rec/chromium_delegates` |
+
+A criterion has one `negctl:` path; further controls of the same criterion are separate files that name it in `criterion:` (the runner indexes by file, VF 3.13). The tests carry `// @nocache`: a golden is never served from the closure cache.
+
+### Left / for others
+
+* The `full` (`stateHashFull`) column, see 10. G9 reuses the 12 core battles (`g1_lib.buildCaseWorld`/`runCase` give it the worlds). The M-spec per-era golden set (X6: 12 digests + 9 missions + 6 puzzles) can reuse `g1_core.simulate`.
+* The criteria manifest (`tools/lib/criteria_manifest.json`, `report.mjs --scan`) must list `VF-T03`, `VF-T03-full`, `VF-T03-chromium`, `VF-T03R` (ER1); VF's ER table names `g1_sim.test.mjs` only.
+* The gate runs the three slow files in the full tier only; the Chromium one counts as a browser test (2 CPU units).

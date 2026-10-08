@@ -1,0 +1,8150 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "note": "generateArmy(mixed balanced 6000, seeds 9 and 10, cap 300) per arena, frozen; +hero adds one strategos; stalemate = two armies of 14 mummies on hold 70 u apart",
+  "sets": {
+   "alpine": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.059999999999995,
+      "z": -11.949944233521347
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.059999999999995,
+      "z": -10.617444233521347
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.3925,
+      "z": -11.949944233521347
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.3925,
+      "z": -10.617444233521347
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.724999999999998,
+      "z": -11.949944233521347
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": -6.1199442335213465
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": -6.1199442335213465
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": -6.1199442335213465
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": -6.1199442335213465
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.059999999999995,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.3925,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -23.724999999999998,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -25.057499999999997,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.059999999999995,
+      "z": -2.4549442335213456
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.059999999999995,
+      "z": -1.122444233521346
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.3925,
+      "z": -2.4549442335213456
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.3925,
+      "z": -1.122444233521346
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.724999999999998,
+      "z": -2.4549442335213456
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.724999999999998,
+      "z": -1.122444233521346
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -25.057499999999997,
+      "z": -2.4549442335213456
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -25.057499999999997,
+      "z": -1.122444233521346
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -21.059999999999995,
+      "z": -16.566194233521344
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -21.059999999999995,
+      "z": 3.493805766478653
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -9.861194233521346
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -8.323694233521346
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -6.786194233521346
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -9.861194233521346
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -8.323694233521346
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -6.786194233521346
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -27.79,
+      "z": -4.748694233521347
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -27.79,
+      "z": -3.2111942335213466
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -29.327499999999997,
+      "z": -4.748694233521347
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.464999999999996,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.464999999999996,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.7975,
+      "z": -8.784944233521347
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.7975,
+      "z": -7.452444233521346
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.464999999999996,
+      "z": -5.6199442335213465
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.464999999999996,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.7975,
+      "z": -5.6199442335213465
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.7975,
+      "z": -4.287444233521346
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -35.129999999999995,
+      "z": -5.6199442335213465
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -35.129999999999995,
+      "z": -4.287444233521346
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.059999999999995,
+      "z": 1.7886942335213458
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.059999999999995,
+      "z": 3.1211942335213463
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.3925,
+      "z": 1.7886942335213458
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.3925,
+      "z": 3.1211942335213463
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.724999999999998,
+      "z": 1.7886942335213458
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.724999999999998,
+      "z": 3.1211942335213463
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 25.057499999999997,
+      "z": 1.7886942335213458
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 21.059999999999995,
+      "z": 4.953694233521346
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 22.3925,
+      "z": 4.953694233521346
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 23.724999999999998,
+      "z": 4.953694233521346
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 25.057499999999997,
+      "z": 4.953694233521346
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 21.059999999999995,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 22.3925,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 23.724999999999998,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 25.057499999999997,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 8.618694233521346
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 9.951194233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 11.283694233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 8.618694233521346
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 9.951194233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 11.283694233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 8.618694233521346
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 9.951194233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 11.283694233521345
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 25.057499999999997,
+      "z": 8.618694233521346
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 21.059999999999995,
+      "z": -3.493805766478653
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 22.699999999999996,
+      "z": -3.493805766478653
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 21.059999999999995,
+      "z": 16.566194233521344
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": 3.9799442335213464
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": 5.5174442335213465
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": 7.054944233521346
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.327499999999997,
+      "z": 3.9799442335213464
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.327499999999997,
+      "z": 5.5174442335213465
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 27.79,
+      "z": 9.092444233521347
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.327499999999997,
+      "z": 9.092444233521347
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.864999999999995,
+      "z": 9.092444233521347
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.0025,
+      "z": 3.9861942335213465
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 35.152499999999996,
+      "z": 3.9861942335213465
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 36.302499999999995,
+      "z": 3.9861942335213465
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 5.636194233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 7.936194233521347
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 9.086194233521345
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 5.636194233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 6.786194233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 7.936194233521347
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 9.086194233521345
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.302499999999995,
+      "z": 5.636194233521346
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.302499999999995,
+      "z": 6.786194233521346
+     }
+    ]
+   },
+   "marathon": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.764999999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -20.099999999999994,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.432499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.764999999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.097499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -20.099999999999994,
+      "z": -22.0108
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -20.099999999999994,
+      "z": 22.0108
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.367499999999996,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 2.2487500000000002
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 20.099999999999994,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 20.099999999999994,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.432499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.432499999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.764999999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.764999999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.097499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 20.099999999999994,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 21.432499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 22.764999999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.097499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 20.099999999999994,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 21.432499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 22.764999999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.097499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.097499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 20.099999999999994,
+      "z": -22.0108
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 21.739999999999995,
+      "z": -22.0108
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 20.099999999999994,
+      "z": 22.0108
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": 0.5187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.367499999999996,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.367499999999996,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 26.83,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.367499999999996,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.904999999999994,
+      "z": 2.55625
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 33.0425,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.192499999999995,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 35.342499999999994,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.342499999999994,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.342499999999994,
+      "z": 0.24999999999999978
+     }
+    ]
+   },
+   "marathon+hero": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.764999999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -20.099999999999994,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.432499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.764999999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.097499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -20.099999999999994,
+      "z": -22.0108
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -20.099999999999994,
+      "z": 22.0108
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.367499999999996,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "strategos",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 99,
+      "x": -22.8,
+      "z": 0
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 20.099999999999994,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 20.099999999999994,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.432499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.432499999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.764999999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.764999999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.097499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 20.099999999999994,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 21.432499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 22.764999999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.097499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 20.099999999999994,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 21.432499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 22.764999999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.097499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 20.099999999999994,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.432499999999997,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.764999999999997,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.097499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 20.099999999999994,
+      "z": -22.0108
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 21.739999999999995,
+      "z": -22.0108
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 20.099999999999994,
+      "z": 22.0108
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 26.83,
+      "z": 0.5187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.367499999999996,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.367499999999996,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 26.83,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.367499999999996,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.904999999999994,
+      "z": 2.55625
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 33.0425,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.192499999999995,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 35.342499999999994,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.0425,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.192499999999995,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.342499999999994,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.342499999999994,
+      "z": 0.24999999999999978
+     }
+    ]
+   },
+   "marathon-player": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.764999999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -20.099999999999994,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.432499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.764999999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.097499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -20.099999999999994,
+      "z": -22.0108
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -20.099999999999994,
+      "z": 22.0108
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.367499999999996,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 2.2487500000000002
+     }
+    ],
+    "b": []
+   },
+   "oasis": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.46,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.46,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -24.792499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -24.792499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -26.125,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -26.125,
+      "z": -4.08125
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.46,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.46,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.46,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.792499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.792499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.792499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.125,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.125,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.125,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -27.4575,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -27.4575,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -27.4575,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -23.46,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.792499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -26.125,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -27.4575,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.46,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.46,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.792499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.792499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -26.125,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -26.125,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -27.4575,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -27.4575,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -28.79,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -23.46,
+      "z": -13.774000000000004
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -25.305,
+      "z": -13.774000000000004
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -23.46,
+      "z": 13.774000000000004
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.06171736997056,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.06171736997056,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.06171736997056,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.599217369970557,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.599217369970557,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.599217369970557,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.06171736997056,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.06171736997056,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -29.599217369970557,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -30.729999999999997,
+      "z": -2.915
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -30.729999999999997,
+      "z": -1.5824999999999998
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.0625,
+      "z": -2.915
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.0625,
+      "z": -1.5824999999999998
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.394999999999996,
+      "z": -2.915
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -30.729999999999997,
+      "z": 0.2500000000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -30.729999999999997,
+      "z": 1.5825000000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -30.729999999999997,
+      "z": 2.915
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.0625,
+      "z": 0.2500000000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.0625,
+      "z": 1.5825000000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.0625,
+      "z": 2.915
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.394999999999996,
+      "z": 0.2500000000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.394999999999996,
+      "z": 1.5825000000000002
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.46,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.46,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.792499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.792499999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.125,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.125,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.4575,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.4575,
+      "z": -3.415
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 23.46,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.792499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 26.125,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 27.4575,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 23.46,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.792499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 26.125,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 27.4575,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 28.79,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.46,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.46,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.46,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.792499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.792499999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.792499999999997,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.125,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.125,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.125,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.4575,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.4575,
+      "z": 3.415
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 23.46,
+      "z": -13.774000000000004
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 25.099999999999998,
+      "z": -13.774000000000004
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 23.46,
+      "z": 13.774000000000004
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.06171736997056,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.06171736997056,
+      "z": -1.7875
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.06171736997056,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.599217369970557,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.599217369970557,
+      "z": -1.7875
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.06171736997056,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.06171736997056,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.599217369970557,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.599217369970557,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 30.729999999999997,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 31.879999999999995,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 33.029999999999994,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.17999999999999,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 30.729999999999997,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 30.729999999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 30.729999999999997,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 30.729999999999997,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.879999999999995,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.879999999999995,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.879999999999995,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.879999999999995,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.029999999999994,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.029999999999994,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.029999999999994,
+      "z": 1.4
+     }
+    ]
+   },
+   "stalemate": {
+    "a": [
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": -7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": -4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": -2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": 0
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": 2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": 4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -35,
+      "z": 7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": -7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": -4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": -2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": 0
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": 2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": 4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": -37.4,
+      "z": 7.2
+     }
+    ],
+    "b": [
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": -7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": -4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": -2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": 0
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": 2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": 4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 35,
+      "z": 7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": -7.2
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": -4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": -2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": 0
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": 2.4
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": 4.8
+     },
+     {
+      "defId": "mummy",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "hold",
+      "squadId": 1,
+      "x": 37.4,
+      "z": 7.2
+     }
+    ]
+   },
+   "styx": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.059999999999995,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.059999999999995,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.3925,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.3925,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.724999999999998,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.059999999999995,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.3925,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.724999999999998,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -25.057499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.059999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.3925,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -23.724999999999998,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -25.057499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.059999999999995,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.059999999999995,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.3925,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.3925,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.724999999999998,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.724999999999998,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -25.057499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -25.057499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -21.059999999999995,
+      "z": -21.262
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -21.059999999999995,
+      "z": 21.262
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -27.79,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -29.327499999999997,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -27.79,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -27.79,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -29.327499999999997,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.464999999999996,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.464999999999996,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.7975,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.7975,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.464999999999996,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.464999999999996,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.7975,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.7975,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -35.129999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -35.129999999999995,
+      "z": 2.2487500000000002
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.059999999999995,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 21.059999999999995,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.3925,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.3925,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.724999999999998,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.724999999999998,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 25.057499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 21.059999999999995,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 22.3925,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 23.724999999999998,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 25.057499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 21.059999999999995,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 22.3925,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 23.724999999999998,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 25.057499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 21.059999999999995,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.3925,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.724999999999998,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 25.057499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 21.059999999999995,
+      "z": -21.262
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 22.699999999999996,
+      "z": -21.262
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 21.059999999999995,
+      "z": 21.262
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 27.79,
+      "z": 0.5187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.327499999999997,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 29.327499999999997,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 27.79,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 29.327499999999997,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.864999999999995,
+      "z": 2.55625
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.0025,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 35.152499999999996,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 36.302499999999995,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.0025,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 35.152499999999996,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.302499999999995,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.302499999999995,
+      "z": 0.24999999999999978
+     }
+    ]
+   },
+   "thermopylae": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.019999999999996,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.019999999999996,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.3525,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -23.3525,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -24.685,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.019999999999996,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.019999999999996,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.019999999999996,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.3525,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.3525,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -23.3525,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.685,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.685,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.685,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.0175,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.0175,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -26.0175,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.019999999999996,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -23.3525,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.685,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -26.0175,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.019999999999996,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.019999999999996,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.3525,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -23.3525,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.685,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.685,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -26.0175,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -26.0175,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -22.019999999999996,
+      "z": -5.700000000000001
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -22.019999999999996,
+      "z": 5.700000000000001
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.75,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.75,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.75,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -30.287499999999998,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -30.287499999999998,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -30.287499999999998,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.75,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.75,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -30.287499999999998,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.425,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -33.425,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -34.7575,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -34.7575,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.425,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -33.425,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.7575,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.7575,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -36.089999999999996,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -36.089999999999996,
+      "z": 2.2487500000000002
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.019999999999996,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 22.019999999999996,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.3525,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 23.3525,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.685,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.685,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.0175,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 22.019999999999996,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 23.3525,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.685,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 26.0175,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 22.019999999999996,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 23.3525,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.685,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 26.0175,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.019999999999996,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.019999999999996,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 22.019999999999996,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.3525,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.3525,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 23.3525,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.685,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.685,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.685,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.0175,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 22.019999999999996,
+      "z": -5.700000000000001
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 23.659999999999997,
+      "z": -5.700000000000001
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 22.019999999999996,
+      "z": 5.700000000000001
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.75,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.75,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.75,
+      "z": 0.5187499999999998
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.287499999999998,
+      "z": -2.55625
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.287499999999998,
+      "z": -1.0187499999999998
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.75,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.287499999999998,
+      "z": 2.55625
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 31.824999999999996,
+      "z": 2.55625
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.9625,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 36.1125,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 37.262499999999996,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.9625,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.9625,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.9625,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 34.9625,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.1125,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.1125,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.1125,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 36.1125,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 37.262499999999996,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 37.262499999999996,
+      "z": 0.24999999999999978
+     }
+    ]
+   },
+   "troy": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.764999999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -20.099999999999994,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.432499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.764999999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.097499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -20.099999999999994,
+      "z": -20.513199999999998
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -20.099999999999994,
+      "z": 20.513199999999998
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.367499999999996,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 2.2487500000000002
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.9,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.9,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.232499999999998,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.232499999999998,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.564999999999998,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.564999999999998,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 28.897499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 28.897499999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.9,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 26.232499999999998,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 27.564999999999998,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 28.897499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.9,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 26.232499999999998,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 27.564999999999998,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 28.897499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 30.229999999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 28.897499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 28.897499999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 24.9,
+      "z": -17.518
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 26.54,
+      "z": -17.518
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 24.9,
+      "z": 17.518
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -1.7875
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.431562806673206,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.431562806673206,
+      "z": -1.7875
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.894062806673208,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.894062806673208,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.431562806673206,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.431562806673206,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 31.21,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 32.36,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 33.51,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.66,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": 1.4
+     }
+    ]
+   },
+   "troy+hero": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -20.099999999999994,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -21.432499999999997,
+      "z": -4.08125
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -22.764999999999997,
+      "z": -5.41375
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -20.099999999999994,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -21.432499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -22.764999999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": -0.91625
+     },
+     {
+      "defId": "hoplite",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": -24.097499999999997,
+      "z": 0.4162499999999998
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -20.099999999999994,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -21.432499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -22.764999999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "legionary",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": -24.097499999999997,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -20.099999999999994,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -21.432499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -22.764999999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 4.081250000000001
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": -24.097499999999997,
+      "z": 5.41375
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": -20.099999999999994,
+      "z": -20.513199999999998
+     },
+     {
+      "defId": "chariot_archer",
+      "formation": "wedge",
+      "heading": 1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": -20.099999999999994,
+      "z": 20.513199999999998
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -26.83,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -3.325
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -1.7875
+     },
+     {
+      "defId": "axe_thrower",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": -28.367499999999996,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -26.83,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": -28.367499999999996,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -31.504999999999995,
+      "z": -0.91625
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -2.2487500000000002
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": -32.8375,
+      "z": -0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -31.504999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -32.8375,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 0.91625
+     },
+     {
+      "defId": "sparabara",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": -34.169999999999995,
+      "z": 2.2487500000000002
+     },
+     {
+      "defId": "strategos",
+      "formation": "line",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 99,
+      "x": -22.8,
+      "z": 0
+     }
+    ],
+    "b": [
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.9,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 24.9,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.232499999999998,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 26.232499999999998,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.564999999999998,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 27.564999999999998,
+      "z": -3.415
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 28.897499999999997,
+      "z": -4.7475000000000005
+     },
+     {
+      "defId": "warhound",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 28.897499999999997,
+      "z": -3.415
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 24.9,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 26.232499999999998,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 27.564999999999998,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "mummy",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 28.897499999999997,
+      "z": -1.5825000000000002
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 24.9,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 26.232499999999998,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 27.564999999999998,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 28.897499999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 30.229999999999997,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 24.9,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 26.232499999999998,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 3.415
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 27.564999999999998,
+      "z": 4.7475
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 28.897499999999997,
+      "z": 2.0824999999999996
+     },
+     {
+      "defId": "medjay",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 28.897499999999997,
+      "z": 3.415
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 24.9,
+      "z": -17.518
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 5,
+      "x": 26.54,
+      "z": -17.518
+     },
+     {
+      "defId": "equites",
+      "formation": "wedge",
+      "heading": -1.5707963267948966,
+      "order": "flank",
+      "squadId": 6,
+      "x": 24.9,
+      "z": 17.518
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -1.7875
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 28.894062806673208,
+      "z": -0.25000000000000044
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.431562806673206,
+      "z": -3.325
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 30.431562806673206,
+      "z": -1.7875
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.894062806673208,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 28.894062806673208,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.431562806673206,
+      "z": 1.7874999999999996
+     },
+     {
+      "defId": "numidian",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 30.431562806673206,
+      "z": 3.3249999999999997
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 31.21,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 32.36,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 33.51,
+      "z": -2.55
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 34.66,
+      "z": -2.55
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 31.21,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 1.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 32.36,
+      "z": 2.5499999999999994
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": -0.9000000000000001
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": 0.24999999999999978
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "line",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 33.51,
+      "z": 1.4
+     }
+    ]
+   }
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g1_placements",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

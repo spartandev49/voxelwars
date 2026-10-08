@@ -1,0 +1,7 @@
+{
+ "schema": 1,
+ "note": "VF 3.2 names some members by their spec-test id although the criterion is registered under the golden's own id. An alias is an equality claim: the table id IS the registered one. Add a row only with the owner's agreement (COORD or the owning TOOLS role).",
+ "aliases": {
+  "WC01": "VF-G2"
+ }
+}

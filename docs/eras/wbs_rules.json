@@ -1,0 +1,97 @@
+{
+ "schema": 1,
+ "note": "Rules of tools/wbs.mjs (docs/eras/spec/VF.md 3.22). WP granularity per class: expected rows = eras x ceil(count x wpsPerItem x (1 + reserve) / itemsPerWp), compared with the number of wbs.csv rows whose wp id matches `match`, within `tolerance`. WP ids follow the convention UNIT-H-<ERA>-nn (humanoid units, 4 per WP), UNIT-X-<ERA>-nn (vehicles, mechs, bosses, siege, aliens: 1 per WP), PROP-<ERA>-nn (6 per batch), ARENA-<ERA>-nn, MISSION-<ERA>-nn, PUZZLE-<ERA>-nn (2 per WP), TEXT-<ERA>-<layer> (one per writer WP, +20% rewrite reserve), AUDIO-<ERA>-<family group> (4 families per WP), RIG-<rig>-TRACER|CLIPS|REACT (3 WPs per rig). <ERA> is MED, MOD or SF. A class whose manifest count is null is reported PENDING: set the count when the rosters are machine-readable (era manifests, registry phase P1); counts known from plan section 1 are filled in.",
+ "sessionHours": 1.3,
+ "cxu": {
+  "high": 3.5,
+  "mid": 2.5,
+  "low": 1.5
+ },
+ "uPath": {
+  "low": 0.8,
+  "high": 0.55
+ },
+ "floatLimitSessions": 4,
+ "tolerance": 0.05,
+ "startDate": "2026-10-08",
+ "review": {
+  "role": "REVIEWER",
+  "sessionsPerReview": 0.5,
+  "whenSpecColumnSet": true
+ },
+ "classes": [
+  {
+   "id": "units_humanoid",
+   "match": "^UNIT-H-",
+   "eras": 3,
+   "count": null,
+   "itemsPerWp": 4,
+   "note": "humanoid units per era"
+  },
+  {
+   "id": "units_special",
+   "match": "^UNIT-X-",
+   "eras": 3,
+   "count": null,
+   "itemsPerWp": 1,
+   "note": "vehicles, mechs, bosses, siege and aliens per era"
+  },
+  {
+   "id": "props",
+   "match": "^PROP-",
+   "eras": 3,
+   "count": 38,
+   "itemsPerWp": 6,
+   "note": "plan section 1: 38 era props per era, batches of 6"
+  },
+  {
+   "id": "arenas",
+   "match": "^ARENA-",
+   "eras": 3,
+   "count": 12,
+   "itemsPerWp": 1,
+   "note": "plan section 1: 12 arena recipes per era"
+  },
+  {
+   "id": "missions",
+   "match": "^MISSION-",
+   "eras": 3,
+   "count": 9,
+   "itemsPerWp": 1,
+   "note": "plan section 1: 9 missions per era"
+  },
+  {
+   "id": "puzzles",
+   "match": "^PUZZLE-",
+   "eras": 3,
+   "count": 6,
+   "itemsPerWp": 2,
+   "note": "plan section 1: 6 puzzles per era, 2 per WP"
+  },
+  {
+   "id": "text_layers",
+   "match": "^TEXT-",
+   "eras": 3,
+   "count": null,
+   "itemsPerWp": 1,
+   "reserve": 0.2,
+   "note": "one WP per writer WP of spec/H, plus a 20% rewrite reserve"
+  },
+  {
+   "id": "audio_families",
+   "match": "^AUDIO-",
+   "eras": 3,
+   "count": null,
+   "itemsPerWp": 4,
+   "note": "sfx families per era, 4 per WP"
+  },
+  {
+   "id": "rigs",
+   "match": "^RIG-",
+   "eras": 1,
+   "count": null,
+   "wpsPerItem": 3,
+   "note": "new rigs of spec/RA: tracer + clips + reactions = 3 WPs each"
+  }
+ ]
+}

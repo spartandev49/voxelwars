@@ -1,0 +1,5104 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "abilities": {
+   "aura": {
+    "a": [
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "centurion",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "centurion",
+    "hooking": false
+   },
+   "breaks_shield": {
+    "a": [
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "pilum_thrower",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "pilum_thrower",
+    "hooking": true
+   },
+   "bribe": {
+    "a": [
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "senator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "senator",
+    "hooking": true
+   },
+   "cc_field": {
+    "a": [
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "camel_rider",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "camel_rider",
+    "hooking": false
+   },
+   "chain_lightning": {
+    "a": [
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "druid",
+    "hooking": true
+   },
+   "cluck": {
+    "a": [
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "sacred_chicken",
+    "hooking": false
+   },
+   "crowd_favorite": {
+    "a": [
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "gladiator",
+    "hooking": false
+   },
+   "dash": {
+    "a": [
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "battle_goat",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "battle_goat",
+    "hooking": false
+   },
+   "dot_cloud": {
+    "a": [
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "pharaoh",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "pharaoh",
+    "hooking": false
+   },
+   "execute": {
+    "a": [
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "anubis_guard",
+    "hooking": false
+   },
+   "fire_every": {
+    "a": [
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "nubian_archer",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "nubian_archer",
+    "hooking": true
+   },
+   "fire_panic": {
+    "a": [
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "war_elephant",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "war_elephant",
+    "hooking": false
+   },
+   "heal_pulse": {
+    "a": [
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "druid",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "druid",
+    "hooking": false
+   },
+   "hook": {
+    "a": [
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "khopesh_warrior",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "khopesh_warrior",
+    "hooking": true
+   },
+   "kick": {
+    "a": [
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "spartan",
+    "hooking": false
+   },
+   "misaim": {
+    "a": [
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "cyclops",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "cyclops",
+    "hooking": true
+   },
+   "misfire": {
+    "a": [
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "catapult",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "catapult",
+    "hooking": true
+   },
+   "net": {
+    "a": [
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "gladiator",
+    "hooking": false
+   },
+   "pack_bonus": {
+    "a": [
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "warhound",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "warhound",
+    "hooking": false
+   },
+   "poison": {
+    "a": [
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "medusa",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "medusa",
+    "hooking": true
+   },
+   "rage": {
+    "a": [
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "berserker",
+    "hooking": false
+   },
+   "revive": {
+    "a": [
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "immortal",
+    "hooking": false
+   },
+   "stance": {
+    "a": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "hoplite",
+    "hooking": false
+   },
+   "summon_on_death": {
+    "a": [
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "trojan_horse",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "trojan_horse",
+    "hooking": false
+   },
+   "tantrum": {
+    "a": [
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "sacred_chicken",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "sacred_chicken",
+    "hooking": false
+   },
+   "throne": {
+    "a": [
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "xerxes",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "xerxes",
+    "hooking": false
+   },
+   "war_horn": {
+    "a": [
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -4.8
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": -2.4
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 0
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 2.4
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -15,
+      "z": 4.8
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 0
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "chieftain",
+      "formation": "block",
+      "heading": 1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": -17.4,
+      "z": 4.8
+     }
+    ],
+    "b": [
+     {
+      "defId": "hoplite",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 1,
+      "x": 15,
+      "z": -4.8
+     },
+     {
+      "defId": "spartan",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 2,
+      "x": 15,
+      "z": -2.4
+     },
+     {
+      "defId": "peltast",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 3,
+      "x": 15,
+      "z": 0
+     },
+     {
+      "defId": "cretan_archer",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 4,
+      "x": 15,
+      "z": 2.4
+     },
+     {
+      "defId": "companion_cavalry",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 5,
+      "x": 15,
+      "z": 4.8
+     },
+     {
+      "defId": "legionary",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 6,
+      "x": 17.4,
+      "z": -4.8
+     },
+     {
+      "defId": "gladiator",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 7,
+      "x": 17.4,
+      "z": -2.4
+     },
+     {
+      "defId": "immortal",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 8,
+      "x": 17.4,
+      "z": 0
+     },
+     {
+      "defId": "berserker",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 9,
+      "x": 17.4,
+      "z": 2.4
+     },
+     {
+      "defId": "anubis_guard",
+      "formation": "block",
+      "heading": -1.5707963267948966,
+      "order": "advance",
+      "squadId": 10,
+      "x": 17.4,
+      "z": 4.8
+     }
+    ],
+    "carrier": "chieftain",
+    "hooking": false
+   }
+  },
+  "note": "carrier = first def (sorted id order) with the ability; 10 carriers vs 10 mixed targets 30 u apart on arenalab",
+  "targets": ["hoplite","spartan","peltast","cretan_archer","companion_cavalry","legionary","gladiator","immortal","berserker","anubis_guard"]
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g1_abilities",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

@@ -1,0 +1,831 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "ids": {
+   "combined": {
+    "foe": 52,
+    "hero": 51,
+    "squads0": [1,2,3,4,5,6,7,8,9,10,11],
+    "squads1": [12,13,14,15,16,17,18,19,20,21]
+   },
+   "orders": {
+    "foe": 51,
+    "squads0": [1,2,3,4,5,6,7,8,9,10],
+    "squads1": [11,12,13,14,15,16,17,18,19,20]
+   },
+   "possess": {
+    "hero": 51
+   }
+  },
+  "logs": {
+   "combined": [
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess",
+      "unit": 51
+     },
+     "tick": 60
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 75
+    },
+    {
+     "cmd": {
+      "order": "move",
+      "squad": 1,
+      "type": "command",
+      "x": -12,
+      "z": 2
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "order": "hold",
+      "squad": 2,
+      "type": "command"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "order": "hold",
+      "squad": 12,
+      "type": "command"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 105
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 120
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 135
+    },
+    {
+     "cmd": {
+      "power": "zeus_lightning",
+      "team": 0,
+      "type": "cast",
+      "x": 2,
+      "z": -3
+     },
+     "tick": 150
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 150
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 165
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 180
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 195
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 210
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 225
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 240
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 255
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 270
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 285
+    },
+    {
+     "cmd": {
+      "order": "focus",
+      "squad": 3,
+      "target": 52,
+      "type": "command"
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "order": "move",
+      "squad": 4,
+      "type": "command",
+      "x": 0,
+      "z": -4
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 315
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 330
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 345
+    },
+    {
+     "cmd": {
+      "power": "meteor",
+      "team": 1,
+      "type": "cast",
+      "x": -4,
+      "z": 5
+     },
+     "tick": 360
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 360
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 375
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 390
+    },
+    {
+     "cmd": {
+      "power": "heal_wave",
+      "team": 0,
+      "type": "cast",
+      "x": -12,
+      "z": 0
+     },
+     "tick": 540
+    },
+    {
+     "cmd": {
+      "order": "retreat",
+      "squad": 1,
+      "type": "command"
+     },
+     "tick": 600
+    },
+    {
+     "cmd": {
+      "order": "advance",
+      "squad": 2,
+      "type": "command"
+     },
+     "tick": 600
+    },
+    {
+     "cmd": {
+      "order": "retreat",
+      "squad": 13,
+      "type": "command"
+     },
+     "tick": 600
+    }
+   ],
+   "earthquake": [
+    {
+     "cmd": {
+      "power": "earthquake",
+      "team": 0,
+      "type": "cast",
+      "x": 0,
+      "z": 0
+     },
+     "tick": 150
+    }
+   ],
+   "heal_wave": [
+    {
+     "cmd": {
+      "power": "heal_wave",
+      "team": 0,
+      "type": "cast",
+      "x": -12,
+      "z": 0
+     },
+     "tick": 150
+    }
+   ],
+   "meteor": [
+    {
+     "cmd": {
+      "power": "meteor",
+      "team": 0,
+      "type": "cast",
+      "x": -1.5,
+      "z": 4
+     },
+     "tick": 150
+    }
+   ],
+   "orders": [
+    {
+     "cmd": {
+      "order": "move",
+      "squad": 1,
+      "type": "command",
+      "x": -12,
+      "z": 2
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "order": "hold",
+      "squad": 2,
+      "type": "command"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "order": "hold",
+      "squad": 11,
+      "type": "command"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "order": "focus",
+      "squad": 3,
+      "target": 51,
+      "type": "command"
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "order": "move",
+      "squad": 4,
+      "type": "command",
+      "x": 0,
+      "z": -4
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "order": "retreat",
+      "squad": 1,
+      "type": "command"
+     },
+     "tick": 600
+    },
+    {
+     "cmd": {
+      "order": "advance",
+      "squad": 2,
+      "type": "command"
+     },
+     "tick": 600
+    },
+    {
+     "cmd": {
+      "order": "retreat",
+      "squad": 12,
+      "type": "command"
+     },
+     "tick": 600
+    },
+    {
+     "cmd": {
+      "order": "hold",
+      "squad": 3,
+      "type": "command"
+     },
+     "tick": 900
+    },
+    {
+     "cmd": {
+      "order": "advance",
+      "squad": 4,
+      "type": "command"
+     },
+     "tick": 900
+    },
+    {
+     "cmd": {
+      "order": "advance",
+      "squad": 1,
+      "type": "command"
+     },
+     "tick": 900
+    }
+   ],
+   "possess": [
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess",
+      "unit": 51
+     },
+     "tick": 60
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 75
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 90
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 105
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 120
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 135
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 150
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 165
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 180
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 195
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 210
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 225
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 240
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 255
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 270
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 285
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 300
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": 0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 315
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": 1
+      },
+      "type": "possess"
+     },
+     "tick": 330
+    },
+    {
+     "cmd": {
+      "ability": 1,
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": 0.7
+      },
+      "type": "possess"
+     },
+     "tick": 345
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": -1,
+       "z": 0
+      },
+      "type": "possess"
+     },
+     "tick": 360
+    },
+    {
+     "cmd": {
+      "attack": false,
+      "move": {
+       "x": -0.7,
+       "z": -0.7
+      },
+      "type": "possess"
+     },
+     "tick": 375
+    },
+    {
+     "cmd": {
+      "attack": true,
+      "move": {
+       "x": 0,
+       "z": -1
+      },
+      "type": "possess"
+     },
+     "tick": 390
+    }
+   ],
+   "raise_chickens": [
+    {
+     "cmd": {
+      "power": "raise_chickens",
+      "team": 0,
+      "type": "cast",
+      "x": -10,
+      "z": 5
+     },
+     "tick": 150
+    }
+   ],
+   "wine_rain": [
+    {
+     "cmd": {
+      "power": "wine_rain",
+      "team": 0,
+      "type": "cast",
+      "x": 4,
+      "z": 2
+     },
+     "tick": 150
+    }
+   ],
+   "zeus_lightning": [
+    {
+     "cmd": {
+      "power": "zeus_lightning",
+      "team": 0,
+      "type": "cast",
+      "x": 2,
+      "z": -3
+     },
+     "tick": 150
+    }
+   ]
+  },
+  "note": "tick-stamped inputs {tick, cmd} through World.input; ids of squads and the possessed hero frozen from the baseline"
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g1_inputs",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}

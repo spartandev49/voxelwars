@@ -1,0 +1,5194 @@
+{
+ "schema": "vb_data/1",
+ "owner": "DESIGN-ERA",
+ "spec": "docs/eras/spec/VB.md",
+ "tool": "tools/vb_distance.mjs",
+ "date": "2026-10-08",
+ "metric": {
+  "name": "CIEDE2000",
+  "formula": "Sharma, Wu, Dalal 2005",
+  "kL": 1,
+  "kC": 1,
+  "kH": 1,
+  "lab": "sRGB 8-bit -> linear -> XYZ D65 -> Lab",
+  "cvd": "Machado 2009 severity 1.0 in linear sRGB (protan, deutan, tritan)",
+  "selftest": "node tools/vb_distance.mjs selftest"
+ },
+ "thresholds": {
+  "primary": {
+   "in_era": 20,
+   "cross_era": 16.5,
+   "escape_floor": 12,
+   "escape_accent_min": 25
+  },
+  "accent": {
+   "internal_min": 12,
+   "vs_other_primary_in_era": null
+  },
+  "graded": {
+   "floor": 12
+  },
+  "banned": {
+   "block": 8,
+   "clear": 20,
+   "single_block": 10,
+   "single_clear": 20
+  },
+  "team": {
+   "carrier_pair_min": 15,
+   "body_dE": 12,
+   "body_dL": 20,
+   "edge_dL": 35,
+   "edge_perimeter": 0.6
+  },
+  "emblem": {
+   "max_w": 10,
+   "max_h": 10,
+   "min_n": 8,
+   "cross_bars": 0.8,
+   "cross_span": 0.75,
+   "glyph": 0.9,
+   "pinwheel_rot90": 0.8,
+   "pinwheel_mirror": 0.8,
+   "stripe_runs": 3
+  },
+  "model": {
+   "off_palette_dE": 12,
+   "off_palette_share": 0.08,
+   "glow_cap": {
+    "medieval": 0.06,
+    "modern": 0.04,
+    "scifi": 0.12
+   },
+   "trim_share_cap": 0.2,
+   "metal_share_cap": 0.15,
+   "uniform_share_cap": 0.6,
+   "face_glyph": 0.88,
+   "face_cross_span": 0.6,
+   "adjacency_tol": 6,
+   "adjacency_min_contact": 6,
+   "marking_min": 4,
+   "marking_max": 64,
+   "marking_dE": 15,
+   "glow_blade_section": 3,
+   "glow_blade_len": 12,
+   "flag_min_face": 3
+  },
+  "arena": {
+   "triple_clear": 20,
+   "triple_block": 8,
+   "faction_vs_floor_edge": 8
+  },
+  "chrome": {
+   "accent_min": 15
+  },
+  "looks": {
+   "near": 8
+  },
+  "body": {
+   "in_era_min": 8,
+   "clause_below": 20,
+   "clause_dL": 20,
+   "clause_edge_dE": 20,
+   "cvd_in_era_min": 4.5
+  }
+ },
+ "team": {
+  "source": "src/render/style.js TEAM_PALETTES",
+  "palettes": {
+   "classic": [
+    "#2f6bff",
+    "#e23b3b"
+   ],
+   "cvd": [
+    "#1b8cff",
+    "#ffa31a"
+   ],
+   "contrast": [
+    "#00e0ff",
+    "#ff2d95"
+   ]
+  },
+  "scopes": {
+   "classic": [
+    "normal"
+   ],
+   "cvd": [
+    "normal",
+    "protan",
+    "deutan",
+    "tritan"
+   ],
+   "contrast": [
+    "normal"
+   ]
+  },
+  "carrier_base": "#ffffff",
+  "tint_share": {
+   "hum1_pooled": 0.3,
+   "hum1_view": 0.15,
+   "other_mean": 0.15,
+   "other_view": 0.03,
+   "top_for_vehicle_air_mech_boss_siege": 0.08
+  }
+ },
+ "looks": {
+  "default": {
+   "era": "ancient",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1,
+   "contrast": 1,
+   "sky": [
+    "#3a78c4",
+    "#bfdcf2"
+   ]
+  },
+  "med_meadow": {
+   "era": "medieval",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.05,
+   "contrast": 1,
+   "sky": [
+    "#3f86d6",
+    "#cfe8f7"
+   ]
+  },
+  "med_ford": {
+   "era": "medieval",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 0.98,
+   "contrast": 1,
+   "sky": [
+    "#4a86c8",
+    "#c4dcea"
+   ]
+  },
+  "med_forest": {
+   "era": "medieval",
+   "sun": "#ffeec8",
+   "sunMul": 0.85,
+   "hemiMul": 1,
+   "exposure": 0.96,
+   "saturation": 1.05,
+   "contrast": 1,
+   "sky": [
+    "#3d7a9c",
+    "#b4cdb6"
+   ]
+  },
+  "med_village": {
+   "era": "medieval",
+   "sun": "#ffe2b0",
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.08,
+   "contrast": 1,
+   "sky": [
+    "#4a82c8",
+    "#f0dfc0"
+   ]
+  },
+  "med_abbey": {
+   "era": "medieval",
+   "sun": "#ffc08a",
+   "sunMul": 0.9,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1,
+   "contrast": 1,
+   "sky": [
+    "#4a4f98",
+    "#e8b896"
+   ]
+  },
+  "med_castle": {
+   "era": "medieval",
+   "sun": "#ff9a50",
+   "sunMul": 0.85,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.12,
+   "contrast": 1.1,
+   "sky": [
+    "#4b4f9a",
+    "#ffa25c"
+   ]
+  },
+  "med_moor": {
+   "era": "medieval",
+   "sun": null,
+   "sunMul": 0.8,
+   "hemiMul": 1,
+   "exposure": 0.98,
+   "saturation": 0.85,
+   "contrast": 1,
+   "sky": [
+    "#6f8fa8",
+    "#b9c4b8"
+   ]
+  },
+  "med_mountain": {
+   "era": "medieval",
+   "sun": null,
+   "sunMul": 1.1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1,
+   "contrast": 1.08,
+   "sky": [
+    "#2f6fc0",
+    "#d2e6f6"
+   ]
+  },
+  "mod_field": {
+   "era": "modern",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 0.98,
+   "contrast": 1.08,
+   "sky": [
+    "#3d7fd0",
+    "#c4def2"
+   ]
+  },
+  "mod_city": {
+   "era": "modern",
+   "sun": "#fff0dd",
+   "sunMul": 0.95,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 0.92,
+   "contrast": 1.12,
+   "sky": [
+    "#5b84b0",
+    "#b8c4cf"
+   ]
+  },
+  "mod_industrial": {
+   "era": "modern",
+   "sun": "#ffe6c0",
+   "sunMul": 0.9,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 0.85,
+   "contrast": 1.1,
+   "sky": [
+    "#6a82a0",
+    "#c9c2b0"
+   ]
+  },
+  "mod_water": {
+   "era": "modern",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.05,
+   "contrast": 1,
+   "sky": [
+    "#3f8ad8",
+    "#cfe6f6"
+   ]
+  },
+  "mod_air": {
+   "era": "modern",
+   "sun": null,
+   "sunMul": 1,
+   "hemiMul": 1,
+   "exposure": 1.04,
+   "saturation": 1,
+   "contrast": 1,
+   "sky": [
+    "#2f78d0",
+    "#d8ecfa"
+   ]
+  },
+  "mod_desert": {
+   "era": "modern",
+   "sun": "#ffeabc",
+   "sunMul": 1.1,
+   "hemiMul": 1,
+   "exposure": 1.06,
+   "saturation": 1.1,
+   "contrast": 1.08,
+   "sky": [
+    "#5a9ad0",
+    "#f0d9a8"
+   ]
+  },
+  "sf_neon_night": {
+   "era": "scifi",
+   "sun": "#9fb4ff",
+   "sunMul": 0.35,
+   "hemiMul": 1.1,
+   "exposure": 1,
+   "saturation": 1.25,
+   "contrast": 1.12,
+   "sky": [
+    "#12062e",
+    "#4a1060"
+   ]
+  },
+  "sf_lunar": {
+   "era": "scifi",
+   "sun": "#ffffff",
+   "sunMul": 1.6,
+   "hemiMul": 0.12,
+   "exposure": 1.05,
+   "saturation": 0.9,
+   "contrast": 1.15,
+   "sky": [
+    "#000004",
+    "#000004"
+   ]
+  },
+  "sf_jungle": {
+   "era": "scifi",
+   "sun": "#d8ffc8",
+   "sunMul": 0.85,
+   "hemiMul": 1.05,
+   "exposure": 1,
+   "saturation": 1.2,
+   "contrast": 1.08,
+   "sky": [
+    "#1d8f7a",
+    "#b8ff9a"
+   ]
+  },
+  "sf_ice": {
+   "era": "scifi",
+   "sun": "#eaf6ff",
+   "sunMul": 0.95,
+   "hemiMul": 1.1,
+   "exposure": 1.06,
+   "saturation": 0.9,
+   "contrast": 1.05,
+   "sky": [
+    "#5aa0e0",
+    "#e8f6ff"
+   ]
+  },
+  "sf_lava": {
+   "era": "scifi",
+   "sun": "#ff8a50",
+   "sunMul": 0.8,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.15,
+   "contrast": 1.1,
+   "sky": [
+    "#40181a",
+    "#e0572a"
+   ]
+  },
+  "sf_wreck": {
+   "era": "scifi",
+   "sun": "#cfe8e0",
+   "sunMul": 0.85,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 0.9,
+   "contrast": 1.1,
+   "sky": [
+    "#203a58",
+    "#90b8a8"
+   ]
+  },
+  "sf_redplanet": {
+   "era": "scifi",
+   "sun": "#ffd0a0",
+   "sunMul": 1.05,
+   "hemiMul": 1,
+   "exposure": 1,
+   "saturation": 1.1,
+   "contrast": 1.08,
+   "sky": [
+    "#7a3a2a",
+    "#e8a070"
+   ]
+  }
+ },
+ "eras": {
+  "medieval": {
+   "id": "medieval",
+   "prefix": "med_",
+   "direction": "saturated heraldic toy box with bunting",
+   "glow_cap": 0.06,
+   "neutrals": {
+    "cream": "#f1e4c0",
+    "parchment": "#efe2c0",
+    "walnut": "#5a3b22",
+    "thatch": "#c9a45c",
+    "flagstone": "#9aa0a6",
+    "cobble": "#8a8f94",
+    "moss": "#6b8f47",
+    "mud": "#6b4a2b",
+    "lists_sand": "#e0c98f",
+    "heather": "#8a5a8c",
+    "scree": "#7a6f66",
+    "ash": "#4a4540",
+    "lava": "#e2661f"
+   },
+   "factions": {
+    "marrowby": {
+     "name": "Crown of Marrowby",
+     "primary": "#d9661c",
+     "accent": "#f1e4c0",
+     "trim": "#7a3b12",
+     "metal": [
+      "#b9c2cc",
+      "#c9a227"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "med_stool",
+     "silhouette": "TALL and VERTICAL",
+     "tint": {
+      "carriers": [
+       "surcoat",
+       "caparison lozenges",
+       "plume"
+      ],
+      "kind": "panel",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [
+      "med_lozenge"
+     ],
+     "forbidden": [
+      "orange never beside white as a flag pair; no red",
+      "chequer, stripe, split or lozenge of orange + cream is banned (VB-A3); lattices use orange + umber"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "orange_white",
+       "a": "#d9661c",
+       "b": "#ffffff"
+      },
+      {
+       "id": "orange_red",
+       "a": "#d9661c",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    },
+    "yeomen": {
+     "name": "Long Hedge Yeomanry",
+     "primary": "#8bb12e",
+     "accent": "#5a3b22",
+     "trim": "#d9c9a0",
+     "metal": [
+      "#6b6f76"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "med_hedgehog",
+     "silhouette": "LEAN and LONG",
+     "tint": {
+      "carriers": [
+       "sash",
+       "hat band",
+       "banner cloth"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 2
+     },
+     "patterns": [],
+     "forbidden": [
+      "lime beside red",
+      "no green-white-red"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "lime_red",
+       "a": "#8bb12e",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    },
+    "gatehouse": {
+     "name": "Gatehouse League",
+     "primary": "#8c9aa8",
+     "accent": "#cfe0ee",
+     "trim": "#5d6a78",
+     "metal": [
+      "#c9d3dc"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "med_gate",
+     "silhouette": "SQUARE and BOXY",
+     "tint": {
+      "carriers": [
+       "pavise face",
+       "kettle brim",
+       "machine pennants"
+      ],
+      "kind": "panel",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [],
+     "forbidden": [
+      "steel and sky-blue beside white and red"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "frost_red",
+       "a": "#cfe0ee",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    },
+    "bellfount": {
+     "name": "Bellfount Abbey",
+     "primary": "#d9577f",
+     "accent": "#bfe3cf",
+     "trim": "#8e3a55",
+     "metal": [
+      "#b07a2c"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "med_bell",
+     "silhouette": "ROUND and SOFT",
+     "tint": {
+      "carriers": [
+       "bell-skirt hem",
+       "bell",
+       "beak trim"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 1
+     },
+     "patterns": [],
+     "forbidden": [
+      "rose with white and a cross-shaped charge",
+      "no black cloak with the beak"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "rose_white",
+       "a": "#d9577f",
+       "b": "#ffffff"
+      },
+      {
+       "id": "rose_black",
+       "a": "#d9577f",
+       "b": "#000000"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    },
+    "free_company": {
+     "name": "The Mostly Paid Company",
+     "primary": "#72421d",
+     "accent": "#2db5c9",
+     "trim": "#c9a97a",
+     "metal": [
+      "#6b6f76"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "med_coin",
+     "silhouette": "ASYMMETRIC and PATCHED",
+     "tint": {
+      "carriers": [
+       "the cyan patches (patch = team colour)"
+      ],
+      "kind": "patch",
+      "edge": true,
+      "failing_cells": 2
+     },
+     "patterns": [],
+     "forbidden": [
+      "cyan beside white and red"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "cyan_white",
+       "a": "#2db5c9",
+       "b": "#ffffff"
+      },
+      {
+       "id": "cyan_red",
+       "a": "#2db5c9",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    },
+    "wyrmkin": {
+     "name": "Hoard of Mount Perpetual",
+     "primary": "#6e2438",
+     "accent": "#dccb2c",
+     "trim": "#2b1a22",
+     "metal": [
+      "#e3d34a"
+     ],
+     "glass": [],
+     "glow": [
+      "#e3d34a"
+     ],
+     "body": "primary",
+     "emblem": "med_coins",
+     "silhouette": "SPIKY and WINGED",
+     "tint": {
+      "carriers": [
+       "coin sack",
+       "belly glow",
+       "wing-membrane edge"
+      ],
+      "kind": "glow",
+      "edge": true,
+      "failing_cells": 2
+     },
+     "patterns": [],
+     "forbidden": [
+      "oxblood with white and black",
+      "gold and black as a pair"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "oxblood_white",
+       "a": "#6e2438",
+       "b": "#ffffff"
+      },
+      {
+       "id": "sulphur_black",
+       "a": "#dccb2c",
+       "b": "#000000"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.06
+     }
+    }
+   }
+  },
+  "modern": {
+   "id": "modern",
+   "prefix": "mod_",
+   "direction": "retro-appliance showroom: pastels over charcoal trim",
+   "glow_cap": 0.04,
+   "neutrals": {
+    "concrete": "#c9cbc6",
+    "asphalt": "#4a4d52",
+    "paving": "#b9b4ac",
+    "lino": "#d8e0d4",
+    "felt": "#7fb089",
+    "ballast": "#8d8a85",
+    "steel": "#8e969f",
+    "pin_red": "#e2483d",
+    "amber": "#ffb300",
+    "black": "#1b1b1b",
+    "cover_cyan": "#35c8e8",
+    "tape": "#fbeb8f"
+   },
+   "factions": {
+    "marmalade": {
+     "name": "Marmalade Motor Pool",
+     "primary": "#f7b08c",
+     "accent": "#2e3036",
+     "trim": "#d98a63",
+     "metal": [
+      "#cfd3da",
+      "#f1e6d6"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "mod_wedge",
+     "silhouette": "boxy rounded kitchenware",
+     "tint": {
+      "carriers": [
+       "turret ring",
+       "helmet band",
+       "lunchbox side latches"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 1
+     },
+     "patterns": [],
+     "forbidden": [
+      "peach beside olive, khaki, tan or any mottle",
+      "peach + white + green as three fields",
+      "peach + charcoal + red"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "peach_olive",
+       "a": "#f7b08c",
+       "b": "#4b5320"
+      },
+      {
+       "id": "peach_khaki",
+       "a": "#f7b08c",
+       "b": "#c3b091"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    },
+    "directorate": {
+     "name": "Directorate of Convenient Logistics",
+     "primary": "#2b2f36",
+     "accent": "#e9e4d4",
+     "trim": "#59616b",
+     "metal": [
+      "#c4c9d2",
+      "#d9c27a"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "mod_clip",
+     "silhouette": "tall antennas, drawers, boxes on wheels",
+     "tint": {
+      "carriers": [
+       "tab dividers on the paper backpack",
+       "cabinet drawer fronts",
+       "Deputy's in-trays"
+      ],
+      "kind": "panel",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [],
+     "forbidden": [
+      "charcoal + cream as a split, band or check wider than 3 voxels (12.9 from black-and-white)",
+      "charcoal + red",
+      "charcoal beside field grey"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "charcoal_fieldgrey",
+       "a": "#2b2f36",
+       "b": "#6b7266"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    },
+    "skyclub": {
+     "name": "Paper Plane Flying Club",
+     "primary": "#98d8ff",
+     "accent": "#f7fbff",
+     "trim": "#5aa8e0",
+     "metal": [
+      "#eef3f8"
+     ],
+     "glass": [
+      "#cfeeff"
+     ],
+     "glow": [],
+     "body": "primary",
+     "emblem": "mod_plane",
+     "silhouette": "discs, long thin tails, hanging things",
+     "tint": {
+      "carriers": [
+       "rotor disc rim",
+       "balloon alternate segments",
+       "parasol canopy segments"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 1
+     },
+     "patterns": [
+      "mod_dots"
+     ],
+     "forbidden": [
+      "sky + white as stripes, bands or a split (11.8 from pale-blue-and-white flags)",
+      "any ring on a wing",
+      "sky beside butter as a flag-sized pair"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "sky_butter",
+       "a": "#98d8ff",
+       "b": "#fbeb8f"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    },
+    "caution": {
+     "name": "Caution Tape Company",
+     "primary": "#fbeb8f",
+     "accent": "#1b1b1b",
+     "trim": "#e0c84a",
+     "metal": [
+      "#9aa0a8"
+     ],
+     "glass": [],
+     "glow": [
+      "#ffb300"
+     ],
+     "body": "primary",
+     "emblem": "mod_chevron",
+     "silhouette": "wide hard hats, plywood, beacons",
+     "tint": {
+      "carriers": [
+       "beacon lamp",
+       "hard-hat brim"
+      ],
+      "kind": "lamp",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [
+      "mod_tape_chevron"
+     ],
+     "forbidden": [
+      "butter + black as three horizontal bands or a flag-sized split (11.2 from hazard yellow-black)",
+      "butter + black + red",
+      "butter + blue as a flag pair"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "butter_blue",
+       "a": "#fbeb8f",
+       "b": "#0057b7"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    },
+    "briefing": {
+     "name": "Briefing Room Brigade",
+     "primary": "#f2a8d2",
+     "accent": "#f6f3ec",
+     "trim": "#d878b0",
+     "metal": [
+      "#c9ced6",
+      "#d98a5a"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "mod_megaphone",
+     "silhouette": "booms, lenses, lecterns, dishes",
+     "tint": {
+      "carriers": [
+       "dish rim",
+       "lectern front",
+       "ammo-belt clip"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 1
+     },
+     "patterns": [],
+     "forbidden": [
+      "an equilateral pink triangle at emblem size",
+      "pink + black + white as bands"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "pink_black",
+       "a": "#f2a8d2",
+       "b": "#000000"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    },
+    "shed": {
+     "name": "Garden Shed Auxiliary",
+     "primary": "#8ff0c0",
+     "accent": "#4a2a55",
+     "trim": "#4fbf92",
+     "metal": [
+      "#d9835f",
+      "#b8c0c8",
+      "#2f8f6a"
+     ],
+     "glass": [],
+     "glow": [],
+     "body": "primary",
+     "emblem": "mod_seedling",
+     "silhouette": "terracotta, wire baskets, tubes, hoses",
+     "tint": {
+      "carriers": [
+       "hose coil",
+       "mower deck skirt",
+       "trolley handle"
+      ],
+      "kind": "panel",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [],
+     "forbidden": [
+      "mint + red + white",
+      "mint + orange + white as three fields",
+      "terracotta beside olive"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "mint_red",
+       "a": "#8ff0c0",
+       "b": "#d62828"
+      },
+      {
+       "id": "terracotta_olive",
+       "a": "#d9835f",
+       "b": "#4b5320"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.04
+     }
+    }
+   }
+  },
+  "scifi": {
+   "id": "scifi",
+   "prefix": "sf_",
+   "direction": "toy shop at night: neon on ink",
+   "glow_cap": 0.12,
+   "neutrals": {
+    "regolith": "#8d8a94",
+    "basalt": "#3c3a42",
+    "hull": "#7a828c",
+    "deck": "#c9ced6",
+    "ice": "#cfe6f2",
+    "resin": "#4a3a4c",
+    "goo": "#7bb04a",
+    "alien_moss": "#3f7d63",
+    "neon_pad": "#1c2340",
+    "chrome_cyan": "#35e0ff",
+    "asphalt_night": "#2a2c36",
+    "solar_glass": "#243a66",
+    "alarm_red": "#ff3d5a",
+    "amber": "#ffb02e"
+   },
+   "factions": {
+    "tidy_concord": {
+     "name": "Tidy Concord",
+     "primary": "#1288da",
+     "accent": "#eef1ea",
+     "trim": "#0b7fb5",
+     "metal": [
+      "#c9d2da"
+     ],
+     "glass": [
+      "#1b2b46",
+      "#9fdcff"
+     ],
+     "glow": [],
+     "body": "accent",
+     "emblem": "sf_orbit",
+     "silhouette": "ROUND",
+     "tint": {
+      "carriers": [
+       "shoulder pods",
+       "visor trim",
+       "dome rim",
+       "Dustpan pad ring"
+      ],
+      "kind": "panel",
+      "edge": true,
+      "failing_cells": 4
+     },
+     "edge": "#1288da",
+     "body_clause": {
+      "with": "courtesy",
+      "how": "ivory L* 95 against steel L* 73 (22 gap), round forms against boxy forms with a dark face"
+     },
+     "patterns": [],
+     "forbidden": [
+      "azure + ivory as a band, split or check (12.1 from pale-blue-and-white flags)",
+      "azure + ivory + red",
+      "black faceplate or black joints on ivory armour"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "ivory_black",
+       "a": "#eef1ea",
+       "b": "#000000"
+      },
+      {
+       "id": "azure_red",
+       "a": "#1288da",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    },
+    "rummage": {
+     "name": "Rummage Armada",
+     "primary": "#867a14",
+     "accent": "#2d2a28",
+     "trim": "#8f979e",
+     "metal": [
+      "#4a7f84",
+      "#c9b87a",
+      "#8a4b3a"
+     ],
+     "glass": [],
+     "glow": [
+      "#ffb02e"
+     ],
+     "body": "primary",
+     "emblem": "sf_sprocket",
+     "silhouette": "LOPSIDED",
+     "tint": {
+      "carriers": [
+       "shoulder patch panel",
+       "rocket-pod racks",
+       "cart push bar"
+      ],
+      "kind": "panel",
+      "edge": false,
+      "failing_cells": 0
+     },
+     "patterns": [
+      "sf_diag_chevron"
+     ],
+     "forbidden": [
+      "brass + soot + red",
+      "brass + black as a horizontal hazard band",
+      "patches larger than 6 percent of the visible pixels each",
+      "brass covering more than 60 percent of a humanoid (13.2 from plain olive drab)"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "brass_red",
+       "a": "#867a14",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    },
+    "courtesy": {
+     "name": "Courtesy Systems",
+     "primary": "#f21ae8",
+     "accent": "#aab4c0",
+     "trim": "#6b7683",
+     "metal": [
+      "#dfe4ea"
+     ],
+     "glass": [
+      "#ffc2fb",
+      "#35e0ff"
+     ],
+     "glow": [
+      "#f21ae8"
+     ],
+     "body": "accent",
+     "emblem": "sf_lens",
+     "silhouette": "BOXY",
+     "tint": {
+      "carriers": [
+       "lens ring",
+       "bow-tie light",
+       "cash-drawer trim"
+      ],
+      "kind": "lamp",
+      "edge": true,
+      "failing_cells": 2
+     },
+     "edge": "#f21ae8",
+     "body_clause": {
+      "with": "tidy_concord",
+      "how": "steel L* 73 against ivory L* 95, boxy forms with one saturated fuchsia lens against round forms"
+     },
+     "patterns": [],
+     "forbidden": [
+      "fuchsia + steel + red",
+      "a lens inside a triangle or pyramid",
+      "any letter or digit on the TV face"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "fuchsia_red",
+       "a": "#f21ae8",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    },
+    "skitter": {
+     "name": "Skitter Hive",
+     "primary": "#aff802",
+     "accent": "#2b0f2a",
+     "trim": "#5b2a5a",
+     "metal": [
+      "#4a1f40"
+     ],
+     "glass": [],
+     "glow": [
+      "#aff802",
+      "#c8ff4a"
+     ],
+     "body": "accent",
+     "emblem": "sf_hex",
+     "silhouette": "LOW AND MANY-LEGGED",
+     "tint": {
+      "carriers": [
+       "glowing hex dots on the shell",
+       "mandible tips",
+       "queen's egg clusters"
+      ],
+      "kind": "glow",
+      "edge": true,
+      "failing_cells": 1
+     },
+     "edge": "#aff802",
+     "body_clause": {
+      "with": "quiet_hour",
+      "how": "low wide many-legged carpet with lime tips at mouth and feet against a thin vertical sliver with one violet rim line"
+     },
+     "patterns": [],
+     "forbidden": [
+      "lime + plum + gold",
+      "lime + black as a split or three horizontal bands",
+      "blue-grey skin with cyan stripes"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "lime_black",
+       "a": "#aff802",
+       "b": "#000000"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    },
+    "glowmoss": {
+     "name": "Glowmoss Reach",
+     "primary": "#2fb07c",
+     "accent": "#ff9f1c",
+     "trim": "#1c7552",
+     "metal": [
+      "#cfeedd"
+     ],
+     "glass": [
+      "#ffd480"
+     ],
+     "glow": [
+      "#ff9f1c",
+      "#ff8fb6"
+     ],
+     "body": "primary",
+     "emblem": "sf_drop",
+     "silhouette": "HILLS WITH LAMPS",
+     "tint": {
+      "carriers": [
+       "lamp ring on the Grazer helmet",
+       "Shepherd's staff head",
+       "Hummock's lamp"
+      ],
+      "kind": "lamp",
+      "edge": true,
+      "failing_cells": 5
+     },
+     "patterns": [],
+     "forbidden": [
+      "jade + amber + white as three fields",
+      "jade + gold as a flag-sized pair",
+      "a green glowing ring worn on a hand",
+      "blue skin"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "jade_white",
+       "a": "#2fb07c",
+       "b": "#ffffff"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    },
+    "quiet_hour": {
+     "name": "Quiet Hour",
+     "primary": "#200f3e",
+     "accent": "#a25ffd",
+     "trim": "#3b2a7a",
+     "metal": [],
+     "glass": [
+      "#e4d6ff"
+     ],
+     "glow": [
+      "#a25ffd"
+     ],
+     "body": "primary",
+     "emblem": "sf_door",
+     "silhouette": "THIN VERTICAL SLIVERS",
+     "tint": {
+      "carriers": [
+       "single rim line along hood, lance and wing edges"
+      ],
+      "kind": "rim",
+      "edge": true,
+      "failing_cells": 2
+     },
+     "edge": "#a25ffd",
+     "body_clause": {
+      "with": "skitter",
+      "how": "thin vertical sliver with one violet rim line against a low wide carpet with lime tips; nothing else in the game is that thin"
+     },
+     "patterns": [],
+     "forbidden": [
+      "ink + violet + red",
+      "ink + red-lens hooded robes",
+      "a long glowing single-colour blade",
+      "pure black bodies"
+     ],
+     "adjacency_bans": [
+      {
+       "id": "ink_red",
+       "a": "#200f3e",
+       "b": "#d62828"
+      }
+     ],
+     "caps": {
+      "trim": 0.2,
+      "metal": 0.15,
+      "glow": 0.12
+     }
+    }
+   }
+  }
+ },
+ "banned": {
+  "uniform_eras": [
+   "medieval",
+   "modern",
+   "scifi"
+  ],
+  "refs": [
+   {
+    "id": "flag_rwb_01",
+    "class": "flag",
+    "colours": [
+     "#b31942",
+     "#ffffff",
+     "#0a3161"
+    ],
+    "src": "wikipedia:Flag_of_the_United_States",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_02",
+    "class": "flag",
+    "colours": [
+     "#b22234",
+     "#ffffff",
+     "#3c3b6e"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_03",
+    "class": "flag",
+    "colours": [
+     "#c8102e",
+     "#ffffff",
+     "#012169"
+    ],
+    "src": "wikipedia:Union_Jack",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_04",
+    "class": "flag",
+    "colours": [
+     "#ef4135",
+     "#ffffff",
+     "#0055a4"
+    ],
+    "src": "wikipedia:Flag_of_France",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_05",
+    "class": "flag",
+    "colours": [
+     "#e1000f",
+     "#ffffff",
+     "#000091"
+    ],
+    "src": "wikipedia:Flag_of_France",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_06",
+    "class": "flag",
+    "colours": [
+     "#ad1d25",
+     "#ffffff",
+     "#1e4785"
+    ],
+    "src": "wikipedia:Flag_of_the_Netherlands",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rwb_07",
+    "class": "flag",
+    "colours": [
+     "#da291c",
+     "#ffffff",
+     "#0032a0"
+    ],
+    "src": "wikipedia:Flag_of_Russia",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rw_01",
+    "class": "flag",
+    "colours": [
+     "#d4213d",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Poland",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rw_02",
+    "class": "flag",
+    "colours": [
+     "#ff0000",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Canada",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rw_03",
+    "class": "flag",
+    "colours": [
+     "#c8102e",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Austria",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_rw_04",
+    "class": "flag",
+    "colours": [
+     "#d62828",
+     "#ffffff"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_bw_01",
+    "class": "flag",
+    "colours": [
+     "#000000",
+     "#ffffff"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_brg_01",
+    "class": "flag",
+    "colours": [
+     "#000000",
+     "#d00000",
+     "#ffce00"
+    ],
+    "src": "wikipedia:Flag_of_Germany",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_brg_02",
+    "class": "flag",
+    "colours": [
+     "#000000",
+     "#dd0000",
+     "#ffce00"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_by_01",
+    "class": "flag",
+    "colours": [
+     "#0057b7",
+     "#ffd700"
+    ],
+    "src": "wikipedia:Flag_of_Ukraine",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_by_02",
+    "class": "flag",
+    "colours": [
+     "#005583",
+     "#ffc200"
+    ],
+    "src": "wikipedia:Flag_of_Sweden",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_by_03",
+    "class": "flag",
+    "colours": [
+     "#0058a3",
+     "#fbd914"
+    ],
+    "src": "commons:Ikea_logo.svg",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_gwr_01",
+    "class": "flag",
+    "colours": [
+     "#008c45",
+     "#f4f5f0",
+     "#cd212a"
+    ],
+    "src": "wikipedia:Flag_of_Italy",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_gwr_02",
+    "class": "flag",
+    "colours": [
+     "#006847",
+     "#ffffff",
+     "#ce1125"
+    ],
+    "src": "wikipedia:Flag_of_Mexico",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_owg_01",
+    "class": "flag",
+    "colours": [
+     "#ff671f",
+     "#ffffff",
+     "#046a38"
+    ],
+    "src": "wikipedia:Flag_of_India",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_owg_02",
+    "class": "flag",
+    "colours": [
+     "#ff9933",
+     "#ffffff",
+     "#138808"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_owg_03",
+    "class": "flag",
+    "colours": [
+     "#ff883e",
+     "#ffffff",
+     "#169b62"
+    ],
+    "src": "wikipedia:Flag_of_Ireland",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_ry_01",
+    "class": "flag",
+    "colours": [
+     "#ad1519",
+     "#fabd00"
+    ],
+    "src": "wikipedia:Flag_of_Spain",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_ry_02",
+    "class": "flag",
+    "colours": [
+     "#da291c",
+     "#ffc72c"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_pbw_01",
+    "class": "flag",
+    "colours": [
+     "#74acdf",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Argentina",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_pbw_02",
+    "class": "flag",
+    "colours": [
+     "#75aadb",
+     "#ffffff"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_bwh_01",
+    "class": "flag",
+    "colours": [
+     "#014488",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Greece",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_bwh_02",
+    "class": "flag",
+    "colours": [
+     "#0038b8",
+     "#ffffff"
+    ],
+    "src": "wikipedia:Flag_of_Israel",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "flag_bwh_03",
+    "class": "flag",
+    "colours": [
+     "#0d5eaf",
+     "#ffffff"
+    ],
+    "src": "bible",
+    "why": "national colour set (flag): bands, split, check, lozenge or a charge on a plain field in these colours reads as a real country"
+   },
+   {
+    "id": "uni_olive_01",
+    "class": "uniform",
+    "colours": [
+     "#6b8e23"
+    ],
+    "src": "wikipedia:Olive_(color)",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_olive_02",
+    "class": "uniform",
+    "colours": [
+     "#544f3d"
+    ],
+    "src": "wikipedia:Olive_(color)",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_olive_03",
+    "class": "uniform",
+    "colours": [
+     "#4b5320"
+    ],
+    "src": "bible",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_khaki_01",
+    "class": "uniform",
+    "colours": [
+     "#c3b091"
+    ],
+    "src": "wikipedia:Khaki",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_tan_01",
+    "class": "uniform",
+    "colours": [
+     "#c2b280"
+    ],
+    "src": "bible",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_coyote_01",
+    "class": "uniform",
+    "colours": [
+     "#81613c"
+    ],
+    "src": "wikipedia:Coyote_brown",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_grey_01",
+    "class": "uniform",
+    "colours": [
+     "#4d5d53"
+    ],
+    "src": "wikipedia:Feldgrau",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "uni_grey_02",
+    "class": "uniform",
+    "colours": [
+     "#6b7266"
+    ],
+    "src": "bible",
+    "why": "plain uniform colour of real armies: a body field of this colour reads as a real uniform"
+   },
+   {
+    "id": "haz_yb_01",
+    "class": "hazard",
+    "colours": [
+     "#eed202",
+     "#000000"
+    ],
+    "src": "wikipedia:Shades_of_yellow",
+    "why": "safety/hazard colour pair: reads as a real hazard or services livery"
+   },
+   {
+    "id": "haz_ob_01",
+    "class": "hazard",
+    "colours": [
+     "#ff7900",
+     "#000000"
+    ],
+    "src": "wikipedia:Safety_orange",
+    "why": "safety/hazard colour pair: reads as a real hazard or services livery"
+   },
+   {
+    "id": "agency_01",
+    "class": "agency",
+    "colours": [
+     "#0b3d91",
+     "#fc3d21",
+     "#ffffff"
+    ],
+    "src": "wikipedia:NASA_insignia",
+    "why": "space-agency / institutional insignia colours"
+   },
+   {
+    "id": "courier_01",
+    "class": "brand",
+    "colours": [
+     "#fecc00",
+     "#d50029"
+    ],
+    "src": "commons:DHL_Logo.svg",
+    "why": "courier / food brand livery colours"
+   },
+   {
+    "id": "courier_02",
+    "class": "brand",
+    "colours": [
+     "#301506",
+     "#fab80a"
+    ],
+    "src": "commons:United_Parcel_Service_logo_2014.svg",
+    "why": "courier / food brand livery colours"
+   },
+   {
+    "id": "courier_03",
+    "class": "brand",
+    "colours": [
+     "#2a007c",
+     "#ff5900"
+    ],
+    "src": "commons:FedEx_Express.svg",
+    "why": "courier / food brand livery colours"
+   },
+   {
+    "id": "food_01",
+    "class": "brand",
+    "colours": [
+     "#ffcc00",
+     "#da291c"
+    ],
+    "src": "commons:McDonald's_Golden_Arches.svg",
+    "why": "courier / food brand livery colours"
+   }
+  ]
+ },
+ "templates": [
+  {
+   "id": "cross3",
+   "kind": "cross",
+   "rows": [
+    ".#.",
+    "###",
+    ".#."
+   ],
+   "window": 0.99,
+   "whole": null
+  },
+  {
+   "id": "cross5",
+   "kind": "cross",
+   "rows": [
+    "..#..",
+    "..#..",
+    "#####",
+    "..#..",
+    "..#.."
+   ],
+   "window": 0.8,
+   "whole": 0.8
+  },
+  {
+   "id": "cross6_arm2",
+   "kind": "cross",
+   "rows": [
+    "..##..",
+    "..##..",
+    "######",
+    "######",
+    "..##..",
+    "..##.."
+   ],
+   "window": 0.92,
+   "whole": null
+  },
+  {
+   "id": "cross7",
+   "kind": "cross",
+   "rows": [
+    "...#...",
+    "...#...",
+    "...#...",
+    "#######",
+    "...#...",
+    "...#...",
+    "...#..."
+   ],
+   "window": 0.8,
+   "whole": 0.8
+  },
+  {
+   "id": "latin5x7",
+   "kind": "cross",
+   "rows": [
+    "..#..",
+    "..#..",
+    "#####",
+    "..#..",
+    "..#..",
+    "..#..",
+    "..#.."
+   ],
+   "window": 0.8,
+   "whole": null
+  },
+  {
+   "id": "saltire3",
+   "kind": "saltire",
+   "rows": [
+    "#.#",
+    ".#.",
+    "#.#"
+   ],
+   "window": 0.99,
+   "whole": null
+  },
+  {
+   "id": "saltire5",
+   "kind": "saltire",
+   "rows": [
+    "#...#",
+    ".#.#.",
+    "..#..",
+    ".#.#.",
+    "#...#"
+   ],
+   "window": 0.8,
+   "whole": 0.8
+  },
+  {
+   "id": "saltire7",
+   "kind": "saltire",
+   "rows": [
+    "#.....#",
+    ".#...#.",
+    "..#.#..",
+    "...#...",
+    "..#.#..",
+    ".#...#.",
+    "#.....#"
+   ],
+   "window": 0.8,
+   "whole": 0.8
+  },
+  {
+   "id": "star5",
+   "kind": "star",
+   "rows": [
+    "..#..",
+    ".###.",
+    "#####",
+    ".#.#.",
+    "#...#"
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "star7",
+   "kind": "star",
+   "rows": [
+    "...#...",
+    "...#...",
+    "..###..",
+    "#######",
+    ".#####.",
+    "..###..",
+    ".##.##."
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "star9",
+   "kind": "star",
+   "rows": [
+    "....#....",
+    "....#....",
+    "...###...",
+    "#########",
+    ".#######.",
+    "..#####..",
+    "..##.##..",
+    ".##...##.",
+    ".#.....#."
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "hexagram7",
+   "kind": "star",
+   "rows": [
+    "...#...",
+    "..#.#..",
+    "###.###",
+    ".#...#.",
+    "###.###",
+    "..#.#..",
+    "...#..."
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "crescent5",
+   "kind": "crescent",
+   "rows": [
+    ".###.",
+    "##...",
+    "##...",
+    "##...",
+    ".###."
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "crescent7",
+   "kind": "crescent",
+   "rows": [
+    "..###..",
+    ".##....",
+    "##.....",
+    "##.....",
+    "##.....",
+    ".##....",
+    "..###.."
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "hooked5",
+   "kind": "hooked",
+   "rows": [
+    "#.###",
+    "#.#..",
+    "#####",
+    "..#.#",
+    "###.#"
+   ],
+   "window": 0.85,
+   "whole": 0.8
+  },
+  {
+   "id": "rank2",
+   "kind": "rank_chevrons",
+   "rows": [
+    "..#..",
+    ".###.",
+    "##.##",
+    "..#..",
+    ".###.",
+    "##.##"
+   ],
+   "window": 0.75,
+   "whole": null
+  },
+  {
+   "id": "rank2_thick",
+   "kind": "rank_chevrons",
+   "rows": [
+    "..##..",
+    ".####.",
+    "##..##",
+    "......",
+    "..##..",
+    ".####.",
+    "##..##"
+   ],
+   "window": 0.75,
+   "whole": null
+  },
+  {
+   "id": "rank3",
+   "kind": "rank_chevrons",
+   "rows": [
+    "..#..",
+    ".###.",
+    "##.##",
+    "..#..",
+    ".###.",
+    "##.##",
+    "..#..",
+    ".###.",
+    "##.##"
+   ],
+   "window": 0.75,
+   "whole": null
+  }
+ ],
+ "glyphs": {
+  "0": [
+   ".###.",
+   "#...#",
+   "#..##",
+   "#.#.#",
+   "##..#",
+   "#...#",
+   ".###."
+  ],
+  "1": [
+   "..#..",
+   ".##..",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#..",
+   ".###."
+  ],
+  "2": [
+   ".###.",
+   "#...#",
+   "....#",
+   ".###.",
+   "#....",
+   "#....",
+   "#####"
+  ],
+  "3": [
+   "#####",
+   "....#",
+   "...#.",
+   "..##.",
+   "....#",
+   "#...#",
+   ".###."
+  ],
+  "4": [
+   "...#.",
+   "..##.",
+   ".#.#.",
+   "#..#.",
+   "#####",
+   "...#.",
+   "...#."
+  ],
+  "5": [
+   "#####",
+   "#....",
+   "####.",
+   "....#",
+   "....#",
+   "#...#",
+   ".###."
+  ],
+  "6": [
+   "..###",
+   ".#...",
+   "#....",
+   "####.",
+   "#...#",
+   "#...#",
+   ".###."
+  ],
+  "7": [
+   "#####",
+   "....#",
+   "....#",
+   "...#.",
+   "..#..",
+   ".#...",
+   "#...."
+  ],
+  "8": [
+   ".###.",
+   "#...#",
+   "#...#",
+   ".###.",
+   "#...#",
+   "#...#",
+   ".###."
+  ],
+  "9": [
+   ".###.",
+   "#...#",
+   "#...#",
+   ".####",
+   "....#",
+   "...#.",
+   "###.."
+  ],
+  "A": [
+   "..#..",
+   ".#.#.",
+   "#...#",
+   "#...#",
+   "#####",
+   "#...#",
+   "#...#"
+  ],
+  "B": [
+   "####.",
+   "#...#",
+   "#...#",
+   "####.",
+   "#...#",
+   "#...#",
+   "####."
+  ],
+  "C": [
+   ".###.",
+   "#...#",
+   "#....",
+   "#....",
+   "#....",
+   "#...#",
+   ".###."
+  ],
+  "D": [
+   "####.",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "####."
+  ],
+  "E": [
+   "#####",
+   "#....",
+   "#....",
+   "####.",
+   "#....",
+   "#....",
+   "#####"
+  ],
+  "F": [
+   "#####",
+   "#....",
+   "#....",
+   "####.",
+   "#....",
+   "#....",
+   "#...."
+  ],
+  "G": [
+   ".####",
+   "#...#",
+   "#....",
+   "#....",
+   "#..##",
+   "#...#",
+   ".####"
+  ],
+  "H": [
+   "#...#",
+   "#...#",
+   "#...#",
+   "#####",
+   "#...#",
+   "#...#",
+   "#...#"
+  ],
+  "I": [
+   ".###.",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#..",
+   ".###."
+  ],
+  "J": [
+   "..###",
+   "...#.",
+   "...#.",
+   "...#.",
+   "...#.",
+   "#..#.",
+   ".##.."
+  ],
+  "K": [
+   "#...#",
+   "#..#.",
+   "#.#..",
+   "##...",
+   "#.#..",
+   "#..#.",
+   "#...#"
+  ],
+  "L": [
+   "#....",
+   "#....",
+   "#....",
+   "#....",
+   "#....",
+   "#....",
+   "#####"
+  ],
+  "M": [
+   "#...#",
+   "##.##",
+   "#.#.#",
+   "#.#.#",
+   "#.#.#",
+   "#...#",
+   "#...#"
+  ],
+  "N": [
+   "#...#",
+   "#...#",
+   "##..#",
+   "#.#.#",
+   "#..##",
+   "#...#",
+   "#...#"
+  ],
+  "O": [
+   ".###.",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   ".###."
+  ],
+  "P": [
+   "####.",
+   "#...#",
+   "#...#",
+   "####.",
+   "#....",
+   "#....",
+   "#...."
+  ],
+  "Q": [
+   ".###.",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#.#.#",
+   "#..#.",
+   ".##.#"
+  ],
+  "R": [
+   "####.",
+   "#...#",
+   "#...#",
+   "####.",
+   "#.#..",
+   "#..#.",
+   "#...#"
+  ],
+  "S": [
+   ".###.",
+   "#...#",
+   "#....",
+   ".###.",
+   "....#",
+   "#...#",
+   ".###."
+  ],
+  "T": [
+   "#####",
+   "#.#.#",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#.."
+  ],
+  "U": [
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   ".###."
+  ],
+  "V": [
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   "#...#",
+   ".#.#.",
+   "..#.."
+  ],
+  "W": [
+   "#...#",
+   "#...#",
+   "#...#",
+   "#.#.#",
+   "#.#.#",
+   "#.#.#",
+   ".#.#."
+  ],
+  "X": [
+   "#...#",
+   "#...#",
+   ".#.#.",
+   "..#..",
+   ".#.#.",
+   "#...#",
+   "#...#"
+  ],
+  "Y": [
+   "#...#",
+   "#...#",
+   ".#.#.",
+   "..#..",
+   "..#..",
+   "..#..",
+   "..#.."
+  ],
+  "Z": [
+   "#####",
+   "....#",
+   "...#.",
+   ".###.",
+   ".#...",
+   "#....",
+   "#####"
+  ]
+ },
+ "glyph_source": "Adafruit-GFX-Library glcdfont.c classic 5x7 font (BSD 3-clause), 0-9 A-Z, retrieved 2026-10-08; test data only, never shipped",
+ "times": {
+  "dawn": {
+   "sun": "#ffc9a0",
+   "mul": 0.85
+  },
+  "noon": {
+   "sun": null,
+   "mul": 1
+  },
+  "dusk": {
+   "sun": "#ff9a50",
+   "mul": 0.85
+  },
+  "night": {
+   "sun": "#9fb4ff",
+   "mul": 0.35
+  }
+ },
+ "patterns": [
+  {
+   "id": "med_lozenge",
+   "era": "medieval",
+   "faction": "marrowby",
+   "rows": [
+    "...##...",
+    "..####..",
+    ".######.",
+    "########",
+    "########",
+    ".######.",
+    "..####..",
+    "...##..."
+   ],
+   "pair": [
+    "#d9661c",
+    "#7a3b12"
+   ],
+   "note": "caparison lattice; orange + cream is banned as a lattice (VB-A3)"
+  },
+  {
+   "id": "mod_tape_chevron",
+   "era": "modern",
+   "faction": "caution",
+   "rows": [
+    "...##...",
+    "..####..",
+    ".##..##.",
+    "##....##",
+    "........",
+    "........",
+    "........",
+    "........"
+   ],
+   "pair": [
+    "#fbeb8f",
+    "#1b1b1b"
+   ],
+   "note": "upward tape chevrons; the only black-on-butter layout"
+  },
+  {
+   "id": "mod_dots",
+   "era": "modern",
+   "faction": "skyclub",
+   "rows": [
+    "#..",
+    "...",
+    "..."
+   ],
+   "pair": [
+    "#98d8ff",
+    "#f7fbff"
+   ],
+   "note": "polka dots on a sky body"
+  },
+  {
+   "id": "sf_diag_chevron",
+   "era": "scifi",
+   "faction": "rummage",
+   "rows": [
+    "...##...",
+    "..####..",
+    ".##..##.",
+    "##....##",
+    "........",
+    "........",
+    "........",
+    "........"
+   ],
+   "pair": [
+    "#867a14",
+    "#2d2a28"
+   ],
+   "note": "diagonal chevron only, never a horizontal hazard band"
+  }
+ ],
+ "emblems": [
+  {
+   "id": "med_stool",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "marrowby",
+   "name": "three-legged stool wearing a crown that does not fit",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    ".#.#.#..",
+    ".#####..",
+    "########",
+    ".######.",
+    ".#.##.#.",
+    ".#.##.#.",
+    ".#.##.#.",
+    "##.##.##"
+   ],
+   "hash": "6abbc448",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "surcoat",
+    "caparison",
+    "banner cloth"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "med_hedgehog",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "yeomen",
+   "name": "a hedgehog sitting very still in a hedge",
+   "w": 8,
+   "h": 6,
+   "rows": [
+    "..#.#.#.",
+    ".######.",
+    "########",
+    ".######.",
+    "#.#..#.#",
+    "########"
+   ],
+   "hash": "36b0609d",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "sash",
+    "banner cloth",
+    "hat band"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "med_gate",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "gatehouse",
+   "name": "a castle gate with a very small cat flap",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    "..####..",
+    ".######.",
+    "########",
+    "########",
+    "########",
+    "###..###",
+    "###..###",
+    "########"
+   ],
+   "hash": "01cc8c78",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "pavise face",
+    "machine pennant"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "med_bell",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "bellfount",
+   "name": "a handbell with its clapper on the outside",
+   "w": 6,
+   "h": 8,
+   "rows": [
+    "..##..",
+    ".####.",
+    ".####.",
+    ".####.",
+    "######",
+    "######",
+    "....##",
+    "....##"
+   ],
+   "hash": "c79b7622",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "bell-skirt hem",
+    "banner cloth"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "med_coin",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "free_company",
+   "name": "a coin with a bite taken out",
+   "w": 6,
+   "h": 6,
+   "rows": [
+    ".####.",
+    "#####.",
+    "####..",
+    "#####.",
+    "######",
+    ".####."
+   ],
+   "hash": "184b9d8a",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "patch"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "med_coins",
+   "kind": "faction",
+   "era": "medieval",
+   "faction": "wyrmkin",
+   "name": "three coins and a spoon",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    "##.##.##",
+    "##.##.##",
+    "........",
+    "..####..",
+    "...##...",
+    "...#....",
+    "...#....",
+    "...#...."
+   ],
+   "hash": "fd7b7099",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "coin sack",
+    "banner cloth"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_wedge",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "marmalade",
+   "name": "a citrus wedge with a bite out of it",
+   "w": 6,
+   "h": 5,
+   "rows": [
+    "######",
+    "#####.",
+    ".###..",
+    ".####.",
+    "..##.."
+   ],
+   "hash": "88d439ce",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "turret lid",
+    "helmet band"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_clip",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "directorate",
+   "name": "a paperclip loop",
+   "w": 6,
+   "h": 8,
+   "rows": [
+    ".####.",
+    "#....#",
+    "#.##.#",
+    "#.#..#",
+    "#.#..#",
+    "#.#..#",
+    "#.####",
+    ".#...."
+   ],
+   "hash": "a7617273",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "drawer front",
+    "tab divider"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_plane",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "skyclub",
+   "name": "a folded paper plane",
+   "w": 8,
+   "h": 6,
+   "rows": [
+    "........",
+    ".......#",
+    "....####",
+    "..######",
+    "########",
+    "..##...."
+   ],
+   "hash": "c1bed2e5",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "rotor rim",
+    "pilot cap",
+    "plate"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_chevron",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "caution",
+   "name": "one upward chevron over a tape-end block (VB-A2: was stacked chevrons)",
+   "w": 6,
+   "h": 6,
+   "rows": [
+    "..##..",
+    ".####.",
+    "##..##",
+    "......",
+    "..##..",
+    "..##.."
+   ],
+   "hash": "41247d52",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "hat front",
+    "blade face",
+    "hoarding"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_megaphone",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "briefing",
+   "name": "a megaphone cone with three sound arcs",
+   "w": 8,
+   "h": 6,
+   "rows": [
+    ".......#",
+    "...#..##",
+    "####.###",
+    "####.###",
+    "...#..##",
+    ".......#"
+   ],
+   "hash": "de29c43c",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "dish rim",
+    "lectern front",
+    "belt clip"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "mod_seedling",
+   "kind": "faction",
+   "era": "modern",
+   "faction": "shed",
+   "name": "a seedling in a pot (two leaves, offset, never a cross)",
+   "w": 6,
+   "h": 8,
+   "rows": [
+    "...##.",
+    "..###.",
+    "##.#..",
+    ".##...",
+    "...#..",
+    "######",
+    ".####.",
+    ".####."
+   ],
+   "hash": "48c873c7",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "pot front",
+    "barrow side",
+    "mower deck skirt"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_orbit",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "tidy_concord",
+   "name": "an orbit ring with one small moon off-centre",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    "......##",
+    "......##",
+    "..####..",
+    ".#....#.",
+    ".#....#.",
+    ".#....#.",
+    ".#....#.",
+    "..####.."
+   ],
+   "hash": "c089381e",
+   "fg_role": "primary",
+   "bg_role": "accent",
+   "surfaces": [
+    "shoulder pod",
+    "backpack tank",
+    "scoop"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_sprocket",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "rummage",
+   "name": "a sprocket with one bent tooth",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    ".#.##..#",
+    "########",
+    ".##..##.",
+    "##....##",
+    "##....##",
+    ".##..##.",
+    "########",
+    ".#.##.#."
+   ],
+   "hash": "b46ccf9c",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "shoulder patch",
+    "cart push bar",
+    "buggy door"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_lens",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "courtesy",
+   "name": "a lens inside a rounded square (never a triangle)",
+   "w": 8,
+   "h": 8,
+   "rows": [
+    ".######.",
+    "#......#",
+    "#.####.#",
+    "#.####.#",
+    "#.####.#",
+    "#.####.#",
+    "#......#",
+    ".######."
+   ],
+   "hash": "d312a4c6",
+   "fg_role": "primary",
+   "bg_role": "accent",
+   "surfaces": [
+    "TV-face bezel",
+    "tray",
+    "drawer front"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_hex",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "skitter",
+   "name": "a cluster of three hex cells",
+   "w": 8,
+   "h": 6,
+   "rows": [
+    ".##..##.",
+    "########",
+    ".##..##.",
+    "..####..",
+    ".######.",
+    "..####.."
+   ],
+   "hash": "1aca5a14",
+   "fg_role": "primary",
+   "bg_role": "accent",
+   "surfaces": [
+    "beetle shell",
+    "crown plate",
+    "spire props"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_drop",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "glowmoss",
+   "name": "a drop with a stalk and a small lamp",
+   "w": 6,
+   "h": 10,
+   "rows": [
+    "....##",
+    "....##",
+    "...#..",
+    "..#...",
+    "..##..",
+    ".####.",
+    "######",
+    "######",
+    ".####.",
+    "..##.."
+   ],
+   "hash": "b0bf54ad",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "helmet band",
+    "staff head",
+    "lamp"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  },
+  {
+   "id": "sf_door",
+   "kind": "faction",
+   "era": "scifi",
+   "faction": "quiet_hour",
+   "name": "a hollow rectangle with a gap in one side (a door left ajar)",
+   "w": 6,
+   "h": 8,
+   "rows": [
+    "######",
+    "#....#",
+    "#....#",
+    ".....#",
+    ".....#",
+    "#....#",
+    "#....#",
+    "######"
+   ],
+   "hash": "248083b6",
+   "fg_role": "accent",
+   "bg_role": "primary",
+   "surfaces": [
+    "cape hem",
+    "bike fairing",
+    "manta belly"
+   ],
+   "status": "proposed",
+   "flag_size_allowed": false,
+   "signatures": [
+    {
+     "role": "author",
+     "by": "DESIGN-ERA",
+     "date": "2026-10-08",
+     "spec": "docs/eras/spec/VB.md 3.5"
+    }
+   ],
+   "reviewer_signature_required": true
+  }
+ ],
+ "fixtures": {
+  "emblem_negatives": {
+   "plus_thick": [
+    "...##...",
+    "...##...",
+    "...##...",
+    "########",
+    "########",
+    "...##...",
+    "...##...",
+    "...##..."
+   ],
+   "plus_thin": [
+    "...#...",
+    "...#...",
+    "...#...",
+    "#######",
+    "...#...",
+    "...#...",
+    "...#..."
+   ],
+   "latin_cross": [
+    "..##..",
+    "..##..",
+    "######",
+    "######",
+    "..##..",
+    "..##..",
+    "..##..",
+    "..##.."
+   ],
+   "saltire": [
+    "#......#",
+    ".#....#.",
+    "..#..#..",
+    "...##...",
+    "...##...",
+    "..#..#..",
+    ".#....#.",
+    "#......#"
+   ],
+   "star_5pt": [
+    "....#....",
+    "....#....",
+    "...###...",
+    "#########",
+    ".#######.",
+    "..#####..",
+    "..##.##..",
+    ".##...##.",
+    ".#.....#."
+   ],
+   "hexagram": [
+    "...#...",
+    "..#.#..",
+    "###.###",
+    ".#...#.",
+    "###.###",
+    "..#.#..",
+    "...#..."
+   ],
+   "crescent": [
+    "..####..",
+    ".##.....",
+    "##......",
+    "##......",
+    "##......",
+    "##......",
+    ".##.....",
+    "..####.."
+   ],
+   "hooked_5": [
+    "#.###",
+    "#.#..",
+    "#####",
+    "..#.#",
+    "###.#"
+   ],
+   "hooked_8": [
+    "##.#####",
+    "##.##...",
+    "##.##...",
+    "########",
+    "########",
+    "...##.##",
+    "...##.##",
+    "#####.##"
+   ],
+   "pinwheel": [
+    "##...###",
+    "#......#",
+    "#.......",
+    "........",
+    "........",
+    ".......#",
+    "#......#",
+    "###...##"
+   ],
+   "letter_A": [
+    "..#..",
+    ".#.#.",
+    "#...#",
+    "#...#",
+    "#####",
+    "#...#",
+    "#...#"
+   ],
+   "letter_K": [
+    "#...#",
+    "#..#.",
+    "#.#..",
+    "##...",
+    "#.#..",
+    "#..#.",
+    "#...#"
+   ],
+   "digit_4": [
+    "...#.",
+    "..##.",
+    ".#.#.",
+    "#..#.",
+    "#####",
+    "...#.",
+    "...#."
+   ],
+   "three_band": [
+    "########",
+    "########",
+    "........",
+    "########",
+    "########",
+    "........",
+    "########",
+    "########"
+   ],
+   "equals": [
+    "########",
+    "........",
+    "########"
+   ],
+   "rank_chevrons_2": [
+    "..##..",
+    ".####.",
+    "##..##",
+    "......",
+    "..##..",
+    ".####.",
+    "##..##"
+   ],
+   "rank_chevrons_3": [
+    "..#..",
+    ".###.",
+    "##.##",
+    "..#..",
+    ".###.",
+    "##.##",
+    "..#..",
+    ".###.",
+    "##.##"
+   ],
+   "tricolour_vertical": [
+    "##..##..",
+    "##..##..",
+    "##..##..",
+    "##..##.."
+   ]
+  },
+  "emblem_known_gaps": {
+   "star_irregular": {
+    "rows": [
+     "...##...",
+     "...##...",
+     "########",
+     ".######.",
+     "..####..",
+     ".######.",
+     ".##..##.",
+     "##....##"
+    ],
+    "note": "hand-drawn irregular star: not caught at 8x8 (Jaccard below the whole-mode limit); held by the reviewer rubric item 5"
+   },
+   "crescent_thin": {
+    "rows": [
+     "..#####.",
+     ".##..##.",
+     "##....##",
+     "#......#",
+     "#......#",
+     "........",
+     "........",
+     "........"
+    ],
+    "note": "thin top arc: not caught; held by the reviewer"
+   }
+  },
+  "layouts": [
+   {
+    "id": "plain",
+    "rows": [
+     "aaaaaaaa",
+     "aaaaaaaa",
+     "aaaaaaaa",
+     "aaaaaaaa"
+    ],
+    "map": {
+     "a": 0
+    },
+    "expect_kind": "plain"
+   },
+   {
+    "id": "split_h",
+    "rows": [
+     "aaaaaaaa",
+     "aaaaaaaa",
+     "aaaaaaaa",
+     "bbbbbbbb",
+     "bbbbbbbb",
+     "bbbbbbbb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "split"
+   },
+   {
+    "id": "tri_h",
+    "rows": [
+     "aaaaaaaa",
+     "aaaaaaaa",
+     "bbbbbbbb",
+     "bbbbbbbb",
+     "cccccccc",
+     "cccccccc"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1,
+     "c": 2
+    },
+    "expect_kind": "bands"
+   },
+   {
+    "id": "tri_v",
+    "rows": [
+     "aabbcc",
+     "aabbcc",
+     "aabbcc",
+     "aabbcc",
+     "aabbcc",
+     "aabbcc"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1,
+     "c": 2
+    },
+    "expect_kind": "bands"
+   },
+   {
+    "id": "stripes5",
+    "rows": [
+     "aaaaaa",
+     "bbbbbb",
+     "aaaaaa",
+     "bbbbbb",
+     "aaaaaa"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "bands"
+   },
+   {
+    "id": "check1",
+    "rows": [
+     "babababa",
+     "abababab",
+     "babababa",
+     "abababab",
+     "babababa",
+     "abababab",
+     "babababa",
+     "abababab"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "check"
+   },
+   {
+    "id": "check2",
+    "rows": [
+     "bbaabbaabb",
+     "bbaabbaabb",
+     "aabbaabbaa",
+     "aabbaabbaa",
+     "bbaabbaabb",
+     "bbaabbaabb",
+     "aabbaabbaa",
+     "aabbaabbaa",
+     "bbaabbaabb",
+     "bbaabbaabb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "check"
+   },
+   {
+    "id": "check3",
+    "rows": [
+     "bbbaaabbbaaa",
+     "bbbaaabbbaaa",
+     "bbbaaabbbaaa",
+     "aaabbbaaabbb",
+     "aaabbbaaabbb",
+     "aaabbbaaabbb",
+     "bbbaaabbbaaa",
+     "bbbaaabbbaaa",
+     "bbbaaabbbaaa",
+     "aaabbbaaabbb",
+     "aaabbbaaabbb",
+     "aaabbbaaabbb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "check"
+   },
+   {
+    "id": "lozenge",
+    "rows": [
+     "aaabbaaaaaabbaaa",
+     "aabbbbaaaabbbbaa",
+     "abbbbbbaabbbbbba",
+     "bbbbbbbbbbbbbbbb",
+     "bbbbbbbbbbbbbbbb",
+     "abbbbbbaabbbbbba",
+     "aabbbbaaaabbbbaa",
+     "aaabbaaaaaabbaaa",
+     "aaabbaaaaaabbaaa",
+     "aabbbbaaaabbbbaa",
+     "abbbbbbaabbbbbba",
+     "bbbbbbbbbbbbbbbb",
+     "bbbbbbbbbbbbbbbb",
+     "abbbbbbaabbbbbba",
+     "aabbbbaaaabbbbaa",
+     "aaabbaaaaaabbaaa"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "check"
+   },
+   {
+    "id": "diag_stripes",
+    "rows": [
+     "aabbaabbaabb",
+     "abbaabbaabba",
+     "bbaabbaabbaa",
+     "baabbaabbaab",
+     "aabbaabbaabb",
+     "abbaabbaabba",
+     "bbaabbaabbaa",
+     "baabbaabbaab",
+     "aabbaabbaabb",
+     "abbaabbaabba",
+     "bbaabbaabbaa",
+     "baabbaabbaab"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "diagonal"
+   },
+   {
+    "id": "glyph_on_field",
+    "rows": [
+     "aaaaaaaa",
+     "aaabbaaa",
+     "aabbbbaa",
+     "aaabbaaa",
+     "aaaaaaaa",
+     "aaaaaaaa"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_kind": "charge"
+   },
+   {
+    "id": "camo14",
+    "rows": [
+     "cdddccccccddaa",
+     "cddddcccccddda",
+     "cddddccccccddd",
+     "ccdddccccccddd",
+     "ccddddaaaacddd",
+     "cccddaaaaaaddd",
+     "ccbbbbaaaaaadd",
+     "aabbbbbdaaaaad",
+     "aabbbbbddaaaaa",
+     "aabbbbdddddbbb",
+     "aaabbbbdddbbbb",
+     "aaaabbbbbbbbbb",
+     "aaaaaabbbbbbbb",
+     "acaaaaabbbbbbb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1,
+     "c": 2,
+     "d": 3
+    },
+    "expect_kind": "mottle"
+   },
+   {
+    "id": "cross_flag",
+    "rows": [
+     "bbaabb",
+     "bbaabb",
+     "aaaaaa",
+     "aaaaaa",
+     "bbaabb",
+     "bbaabb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_shape": "cross"
+   },
+   {
+    "id": "crescent_field",
+    "rows": [
+     "bbaaaabbb",
+     "baabbbbbb",
+     "aabbbbbbb",
+     "aabbbbbbb",
+     "aabbbbbbb",
+     "aabbbbbbb",
+     "baabbbbbb",
+     "bbaaaabbb",
+     "bbbbbbbbb"
+    ],
+    "map": {
+     "a": 0,
+     "b": 1
+    },
+    "expect_shape": "crescent"
+   }
+  ],
+  "markings": [
+   {
+    "id": "MK-1",
+    "name": "registered paperclip on a charcoal field",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkcccckkkkk",
+     "kkkkckkkkckkkk",
+     "kkkkckcckckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckcccckkkk",
+     "kkkkkckkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [
+     "mod_clip"
+    ],
+    "expect_undeclared": 0
+   },
+   {
+    "id": "MK-2",
+    "name": "the same emblem mirrored left-right",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkcccckkkkk",
+     "kkkkckkkkckkkk",
+     "kkkkckcckckkkk",
+     "kkkkckkckckkkk",
+     "kkkkckkckckkkk",
+     "kkkkckkckckkkk",
+     "kkkkcccckckkkk",
+     "kkkkkkkkckkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [
+     "mod_clip"
+    ],
+    "expect_undeclared": 0
+   },
+   {
+    "id": "MK-3",
+    "name": "a free 3 x 3 blob",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkccckkkkkk",
+     "kkkkkccckkkkkk",
+     "kkkkkccckkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [],
+    "expect_undeclared": 1
+   },
+   {
+    "id": "MK-4",
+    "name": "the emblem with one extra voxel is a free decal",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkcccckkkkk",
+     "kkkkckckkckkkk",
+     "kkkkckcckckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckckkckkkk",
+     "kkkkckcccckkkk",
+     "kkkkkckkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [],
+    "expect_undeclared_min": 1
+   },
+   {
+    "id": "MK-5",
+    "name": "a 2-voxel rivet is body paint",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkcckkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [],
+    "expect_undeclared": 0
+   },
+   {
+    "id": "MK-6",
+    "name": "a 10 x 10 panel (100 voxels) is body paint",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkcccccccccckk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#e9e4d4"
+    },
+    "expect_registered": [],
+    "expect_undeclared": 0
+   },
+   {
+    "id": "MK-7",
+    "name": "a low-contrast patch (dE00 under 15) is shading, not a marking",
+    "rows": [
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkcccckkkkk",
+     "kkkkkcccckkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk",
+     "kkkkkkkkkkkkkk"
+    ],
+    "map": {
+     "k": 0,
+     "c": 1
+    },
+    "colours": {
+     "0": "#2b2f36",
+     "1": "#3a3f47"
+    },
+    "expect_registered": [],
+    "expect_undeclared": 0
+   }
+  ],
+  "reject": [
+   {
+    "id": "MED-R1",
+    "era": "medieval",
+    "name": "The Crusader Special",
+    "face": {
+     "rows": [
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "rrrrrrrrrrrr",
+      "rrrrrrrrrrrr",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww"
+     ],
+     "map": {
+      "w": 0,
+      "r": 1
+     },
+     "colours": {
+      "0": "#ffffff",
+      "1": "#c8102e"
+     },
+     "flagRole": true
+    },
+    "expect": [
+     "shape:cross",
+     "ref:"
+    ]
+   },
+   {
+    "id": "MED-R2",
+    "era": "medieval",
+    "name": "The Tricolour Herald",
+    "face": {
+     "rows": [
+      "rrrrrrrrrrrr",
+      "rrrrrrrrrrrr",
+      "rrrrrrrrrrrr",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "bbbbbbbbbbbb",
+      "bbbbbbbbbbbb",
+      "bbbbbbbbbbbb"
+     ],
+     "map": {
+      "r": 0,
+      "w": 1,
+      "b": 2
+     },
+     "colours": {
+      "0": "#c8102e",
+      "1": "#ffffff",
+      "2": "#0a3161"
+     },
+     "flagRole": true
+    },
+    "expect": [
+     "layout:three_band",
+     "ref:"
+    ]
+   },
+   {
+    "id": "MED-R3",
+    "era": "medieval",
+    "name": "Lion Rampant Pavise",
+    "face": {
+     "rows": [
+      "rrrrrrrrrrrr",
+      "rrrrggrrrrrr",
+      "rrrgggggrrrr",
+      "rrrrggggrrrr",
+      "rrrgggggggrr",
+      "rrggggggggrr",
+      "rrgggrrrgggr",
+      "rrrrrrrrrrrr",
+      "rrrrrrrrrrrr"
+     ],
+     "map": {
+      "r": 0,
+      "g": 1
+     },
+     "colours": {
+      "0": "#d62828",
+      "1": "#ffc72c"
+     },
+     "flagRole": true
+    },
+    "expect": [
+     "ref:"
+    ]
+   },
+   {
+    "id": "MED-X1",
+    "era": "medieval",
+    "name": "orange + cream chequer (Marrowby rule)",
+    "face": {
+     "rows": [
+      "cccooocccooo",
+      "cccooocccooo",
+      "cccooocccooo",
+      "ooocccoooccc",
+      "ooocccoooccc",
+      "ooocccoooccc",
+      "cccooocccooo",
+      "cccooocccooo",
+      "cccooocccooo",
+      "ooocccoooccc",
+      "ooocccoooccc",
+      "ooocccoooccc"
+     ],
+     "map": {
+      "o": 0,
+      "c": 1
+     },
+     "colours": {
+      "0": "#d9661c",
+      "1": "#f1e4c0"
+     },
+     "flagRole": true
+    },
+    "expect": [
+     "ref:"
+    ]
+   },
+   {
+    "id": "MOD-R1a",
+    "era": "modern",
+    "name": "The Army Surplus Special (camouflage jacket)",
+    "face": {
+     "rows": [
+      "aaaabbbbbbdddd",
+      "aaaaabbbbbdddd",
+      "aaaaaabbbbdddd",
+      "aaaaaaabbbbbbb",
+      "aaaaacccbbbbbb",
+      "aaaaccccbbbbbb",
+      "aaaacaaabbbbbb",
+      "dddaaaaabbbbbd",
+      "dddcaaadddbddd",
+      "ddcccddddddddd",
+      "ddcccddddddddd",
+      "ddcccccddccddd",
+      "dcccccccccccdd",
+      "dccccccccccccc"
+     ],
+     "map": {
+      "a": 0,
+      "b": 1,
+      "c": 2,
+      "d": 3
+     },
+     "colours": {
+      "0": "#4b5320",
+      "1": "#c3b091",
+      "2": "#5b4636",
+      "3": "#3a4a2c"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "layout:mottle"
+    ]
+   },
+   {
+    "id": "MOD-R1b",
+    "era": "modern",
+    "name": "The Army Surplus Special (shoulder number)",
+    "face": {
+     "rows": [
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "wwwkkkkkwwww",
+      "wwwwwwwkwwww",
+      "wwwwwwwkwwww",
+      "wwwwwwkwwwww",
+      "wwwwwkwwwwww",
+      "wwwwkwwwwwww",
+      "wwwkwwwwwwww",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww"
+     ],
+     "map": {
+      "w": 0,
+      "k": 1
+     },
+     "colours": {
+      "0": "#ffffff",
+      "1": "#000000"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "glyph:7"
+    ]
+   },
+   {
+    "id": "MOD-R2a",
+    "era": "modern",
+    "name": "The Roundel Flypast (white star)",
+    "face": {
+     "rows": [
+      "bbbbbbbbbbbb",
+      "bbbbbwbbbbbb",
+      "bbbbbwbbbbbb",
+      "bbbbwwwbbbbb",
+      "bwwwwwwwwwbb",
+      "bbwwwwwwwbbb",
+      "bbbwwwwwbbbb",
+      "bbbwwbwwbbbb",
+      "bbwwbbbwwbbb",
+      "bbwbbbbbwbbb",
+      "bbbbbbbbbbbb",
+      "bbbbbbbbbbbb"
+     ],
+     "map": {
+      "b": 0,
+      "w": 1
+     },
+     "colours": {
+      "0": "#0d5eaf",
+      "1": "#ffffff"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "shape:star"
+    ]
+   },
+   {
+    "id": "MOD-R2b",
+    "era": "modern",
+    "name": "The Roundel Flypast (invasion stripes)",
+    "face": {
+     "rows": [
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "wwwwwwwwwwww",
+      "wwwwwwwwwwww",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk"
+     ],
+     "map": {
+      "k": 0,
+      "w": 1
+     },
+     "colours": {
+      "0": "#000000",
+      "1": "#ffffff"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "layout:three_band",
+     "ref:"
+    ]
+   },
+   {
+    "id": "MOD-R3",
+    "era": "modern",
+    "name": "The Red Cross Satchel",
+    "face": {
+     "rows": [
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "rrrrrrrrrrrr",
+      "rrrrrrrrrrrr",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww",
+      "wwwwwrrwwwww"
+     ],
+     "map": {
+      "w": 1,
+      "r": 0
+     },
+     "colours": {
+      "0": "#c8102e",
+      "1": "#ffffff"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "shape:cross"
+    ]
+   },
+   {
+    "id": "MOD-X1",
+    "era": "modern",
+    "name": "butter + black horizontal bands (hoarding)",
+    "face": {
+     "rows": [
+      "yyyyyyyyyyyy",
+      "yyyyyyyyyyyy",
+      "yyyyyyyyyyyy",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "yyyyyyyyyyyy",
+      "yyyyyyyyyyyy",
+      "yyyyyyyyyyyy",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk"
+     ],
+     "map": {
+      "y": 0,
+      "k": 1
+     },
+     "colours": {
+      "0": "#fbeb8f",
+      "1": "#1b1b1b"
+     },
+     "flagRole": false
+    },
+    "expect": [
+     "ref:"
+    ]
+   },
+   {
+    "id": "SF-R1",
+    "era": "scifi",
+    "name": "The Plastic Patrol (black joints on ivory)",
+    "face": {
+     "rows": [
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "kkkkkkkkkkkk",
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "kkkkkkkkkkkk",
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "iiikiiikiiik",
+      "kkkkkkkkkkkk"
+     ],
+     "map": {
+      "i": 0,
+      "k": 1
+     },
+     "colours": {
+      "0": "#eef1ea",
+      "1": "#000000"
+     },
+     "flagRole": false,
+     "bans": [
+      {
+       "id": "ivory_black",
+       "a": "#eef1ea",
+       "b": "#000000"
+      },
+      {
+       "id": "azure_red",
+       "a": "#1288da",
+       "b": "#d62828"
+      }
+     ]
+    },
+    "expect": [
+     "adjacency:ivory_black"
+    ]
+   },
+   {
+    "id": "SF-R2",
+    "era": "scifi",
+    "name": "The Humming Blade (long single-colour glow blade)",
+    "blade": {
+     "dims": [
+      2,
+      2,
+      20
+     ],
+     "glowShare": 1
+    },
+    "expect": [
+     "glow_blade"
+    ]
+   }
+  ],
+  "accept": [
+   {
+    "id": "MED-A1",
+    "era": "medieval",
+    "name": "Marrowby banner: orange field, one cream stool glyph",
+    "face": {
+     "rows": [
+      "oooooooooooo",
+      "oooooooooooo",
+      "ooocococoooo",
+      "ooocccccoooo",
+      "ooccccccccoo",
+      "oooccccccooo",
+      "ooococcocooo",
+      "ooococcocooo",
+      "ooococcocooo",
+      "ooccoccoccoo",
+      "oooooooooooo",
+      "oooooooooooo"
+     ],
+     "map": {
+      "o": 0,
+      "c": 1
+     },
+     "colours": {
+      "0": "#d9661c",
+      "1": "#f1e4c0"
+     },
+     "flagRole": true
+    }
+   },
+   {
+    "id": "MED-A2",
+    "era": "medieval",
+    "name": "Marrowby caparison: orange + umber lozenge lattice",
+    "face": {
+     "rows": [
+      "ooouuoooooouuooo",
+      "oouuuuoooouuuuoo",
+      "ouuuuuuoouuuuuuo",
+      "uuuuuuuuuuuuuuuu",
+      "uuuuuuuuuuuuuuuu",
+      "ouuuuuuoouuuuuuo",
+      "oouuuuoooouuuuoo",
+      "ooouuoooooouuooo",
+      "ooouuoooooouuooo",
+      "oouuuuoooouuuuoo",
+      "ouuuuuuoouuuuuuo",
+      "uuuuuuuuuuuuuuuu",
+      "uuuuuuuuuuuuuuuu",
+      "ouuuuuuoouuuuuuo",
+      "oouuuuoooouuuuoo",
+      "ooouuoooooouuooo"
+     ],
+     "map": {
+      "o": 0,
+      "u": 1
+     },
+     "colours": {
+      "0": "#d9661c",
+      "1": "#7a3b12"
+     },
+     "flagRole": true
+    }
+   },
+   {
+    "id": "MOD-A1",
+    "era": "modern",
+    "name": "Directorate hull: charcoal with one cream paperclip",
+    "face": {
+     "rows": [
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk",
+      "kkkkcccckkkk",
+      "kkkckkkkckkk",
+      "kkkckcckckkk",
+      "kkkckckkckkk",
+      "kkkckckkckkk",
+      "kkkckckkckkk",
+      "kkkckcccckkk",
+      "kkkkckkkkkkk",
+      "kkkkkkkkkkkk",
+      "kkkkkkkkkkkk"
+     ],
+     "map": {
+      "k": 0,
+      "c": 1
+     },
+     "colours": {
+      "0": "#2b2f36",
+      "1": "#e9e4d4"
+     },
+     "flagRole": false
+    }
+   },
+   {
+    "id": "MOD-A2",
+    "era": "modern",
+    "name": "Caution hoarding: butter + black tape chevrons",
+    "face": {
+     "rows": [
+      "yyykkyyyyyykkyyy",
+      "yykkkkyyyykkkkyy",
+      "ykkyykkyykkyykky",
+      "kkyyyykkkkyyyykk",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy",
+      "yyykkyyyyyykkyyy",
+      "yykkkkyyyykkkkyy",
+      "ykkyykkyykkyykky",
+      "kkyyyykkkkyyyykk",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy",
+      "yyyyyyyyyyyyyyyy"
+     ],
+     "map": {
+      "y": 0,
+      "k": 1
+     },
+     "colours": {
+      "0": "#fbeb8f",
+      "1": "#1b1b1b"
+     },
+     "flagRole": true
+    }
+   },
+   {
+    "id": "MOD-A3",
+    "era": "modern",
+    "name": "Skyclub balloon: sky body with white dots",
+    "face": {
+     "rows": [
+      "wsswsswsswss",
+      "ssssssssssss",
+      "ssssssssssss",
+      "wsswsswsswss",
+      "ssssssssssss",
+      "ssssssssssss",
+      "wsswsswsswss",
+      "ssssssssssss",
+      "ssssssssssss",
+      "wsswsswsswss",
+      "ssssssssssss",
+      "ssssssssssss"
+     ],
+     "map": {
+      "s": 0,
+      "w": 1
+     },
+     "colours": {
+      "0": "#98d8ff",
+      "1": "#f7fbff"
+     },
+     "flagRole": false
+    }
+   },
+   {
+    "id": "SF-A1",
+    "era": "scifi",
+    "name": "Quiet Hour cape: ink with a violet door-ajar emblem",
+    "face": {
+     "rows": [
+      "iiiiiiiiiiii",
+      "iiiiiiiiiiii",
+      "iiivvvvvviii",
+      "iiiviiiiviii",
+      "iiiviiiiviii",
+      "iiiiiiiiviii",
+      "iiiiiiiiviii",
+      "iiiviiiiviii",
+      "iiiviiiiviii",
+      "iiivvvvvviii",
+      "iiiiiiiiiiii",
+      "iiiiiiiiiiii"
+     ],
+     "map": {
+      "i": 0,
+      "v": 1
+     },
+     "colours": {
+      "0": "#200f3e",
+      "1": "#a25ffd"
+     },
+     "flagRole": false
+    }
+   }
+  ]
+ },
+ "chrome": {
+  "ancient": {
+   "navy": "#14163a",
+   "night": "#1d2150",
+   "gold": "#ffc93c",
+   "olive": "#8bc34a",
+   "lapis": "#3b6cf0"
+  },
+  "medieval": {
+   "accent": "#c8501e",
+   "accent_text": "#a8321f",
+   "gilt": "#c9a227",
+   "heal": "#6fa86a"
+  },
+  "modern": {
+   "accent": "#12a37f",
+   "accent_text": "#0b7a5e",
+   "tape": "#fbeb8f",
+   "pin": "#e2483d",
+   "cover": "#35c8e8"
+  },
+  "scifi": {
+   "accent": "#35e0ff",
+   "secondary": "#ff3da5",
+   "warn": "#ffb02e",
+   "alarm": "#ff3d5a"
+  }
+ },
+ "decisions_probe": [
+  {
+   "id": "Q-cyan",
+   "question": "Mostly Paid Company accent: #2db5c9 or the fallback #3fb8e0",
+   "self": "medieval:free_company",
+   "candidates": [
+    {
+     "hex": "#2db5c9",
+     "label": "kept",
+     "near_primaries": true,
+     "near_accents": true,
+     "pair": [
+      "#72421d",
+      "#2db5c9"
+     ],
+     "team": true,
+     "against": {
+      "egyptian_teal": "#1f8f8a",
+      "skyclub_sky": "#98d8ff",
+      "scifi_chrome_cyan": "#35e0ff",
+      "modern_cover_cyan": "#35c8e8"
+     }
+    },
+    {
+     "hex": "#3fb8e0",
+     "label": "fallback",
+     "near_primaries": true,
+     "near_accents": true,
+     "pair": [
+      "#72421d",
+      "#3fb8e0"
+     ],
+     "team": true,
+     "against": {
+      "egyptian_teal": "#1f8f8a",
+      "skyclub_sky": "#98d8ff",
+      "scifi_chrome_cyan": "#35e0ff",
+      "modern_cover_cyan": "#35c8e8"
+     }
+    }
+   ],
+   "verdict": "KEEP #2db5c9. It is an accent, so the primary bars do not apply; as a pair (tobacco, cyan) it clears every banned tuple (29.5); it is 32.3 / 25.1 from the classic / cvd team blue where the fallback is 27.5 / 19.0; its 15.3 (Egyptian teal) and 15.5 (Skyclub sky) are against primaries of other eras that never share a battlefield or a chip with it. The fallback #3fb8e0 leaves the teal (20.8) but lands 11.2 from Skyclub sky and 5.3 from the Modern cover cyan: a worse trade."
+  },
+  {
+   "id": "Q-sulphur",
+   "question": "Hoard accent: #dccb2c or the fallback #e3d34a",
+   "self": "medieval:wyrmkin",
+   "candidates": [
+    {
+     "hex": "#dccb2c",
+     "label": "kept",
+     "near_primaries": true,
+     "near_accents": true,
+     "pair": [
+      "#6e2438",
+      "#dccb2c"
+     ],
+     "against": {
+      "mythic_gold": "#d4a017",
+      "caution_butter": "#fbeb8f",
+      "safety_yellow": "#eed202"
+     }
+    },
+    {
+     "hex": "#e3d34a",
+     "label": "fallback",
+     "near_primaries": true,
+     "near_accents": true,
+     "pair": [
+      "#6e2438",
+      "#e3d34a"
+     ],
+     "against": {
+      "mythic_gold": "#d4a017",
+      "caution_butter": "#fbeb8f",
+      "safety_yellow": "#eed202"
+     }
+    }
+   ],
+   "verdict": "KEEP #dccb2c as the accent. The pair clearance is identical (18.7, RESTRICT against a brown-gold courier livery: no band, split or check; the Hoard cloth is a plain oxblood field with a glyph). It is 2.5 farther from Caution butter (10.6 against 8.1); the fallback #e3d34a is only 2.6 from it and is already the coin-metal glint, so using it as the accent would add nothing."
+  },
+  {
+   "id": "Q-concord",
+   "question": "Concord: azure #1288da as primary (ivory as accent) or ivory #eef1ea as primary",
+   "self": "scifi:tidy_concord",
+   "candidates": [
+    {
+     "hex": "#1288da",
+     "label": "azure primary (kept)",
+     "near_primaries": true,
+     "pair": [
+      "#1288da",
+      "#eef1ea"
+     ]
+    },
+    {
+     "hex": "#eef1ea",
+     "label": "ivory primary (fallback)",
+     "near_primaries": true,
+     "pair": [
+      "#eef1ea",
+      "#1288da"
+     ],
+     "against": {
+      "chip_paper_modern": "#eef1ec",
+      "chip_paper_medieval": "#efe2c0"
+     }
+    }
+   ],
+   "verdict": "KEEP azure #1288da as primary with ivory #eef1ea as accent. Azure is 16.8 from the Hellenes blue and 17.0 from the Gatehouse steel, above the 16.5 cross-era bar (both neighbours are frozen or fixed, so the margin cannot move). The ivory-primary fallback puts an ivory chip on Modern paper (0.9) and Medieval parchment (11.1): invisible; and the pair clearance stays 12.1 (RESTRICT against pale-blue-and-white) either way."
+  },
+  {
+   "id": "Q-sky",
+   "question": "Skyclub primary: #98d8ff or #a3dcff",
+   "self": "modern:skyclub",
+   "candidates": [
+    {
+     "hex": "#98d8ff",
+     "label": "kept",
+     "near_primaries": true,
+     "pair": [
+      "#98d8ff",
+      "#f7fbff"
+     ]
+    },
+    {
+     "hex": "#a3dcff",
+     "label": "alternative",
+     "near_primaries": true,
+     "pair": [
+      "#a3dcff",
+      "#f7fbff"
+     ]
+    }
+   ],
+   "verdict": "KEEP #98d8ff. #a3dcff buys 0.3 on the nearest primary (19.2 against 18.9) and 1.1 on the pale-blue-and-white pair (12.9 against 11.8); both stay inside the same bands, no verdict changes."
+  },
+  {
+   "id": "Q-butter",
+   "question": "Caution primary: butter #fbeb8f or #f5f2a6",
+   "self": "modern:caution",
+   "candidates": [
+    {
+     "hex": "#fbeb8f",
+     "label": "kept",
+     "near_primaries": true,
+     "pair": [
+      "#fbeb8f",
+      "#1b1b1b"
+     ],
+     "against": {
+      "mythic_gold": "#d4a017",
+      "safety_yellow": "#eed202"
+     }
+    },
+    {
+     "hex": "#f5f2a6",
+     "label": "alternative",
+     "near_primaries": true,
+     "pair": [
+      "#f5f2a6",
+      "#1b1b1b"
+     ],
+     "against": {
+      "mythic_gold": "#d4a017",
+      "safety_yellow": "#eed202"
+     }
+    }
+   ],
+   "verdict": "KEEP #fbeb8f. 20.0 from the Mythic gold clears 16.5 with 3.5 to spare. The fallback #f5f2a6 lifts the hazard-yellow pair from 11.2 to 15.2, still RESTRICT, so the registered tape-chevron pattern is the only black-on-butter layout either way."
+  },
+  {
+   "id": "Q-chequer",
+   "question": "Marrowby caparison: which partner for orange in a lattice or chequer",
+   "self": "medieval:marrowby",
+   "candidates": [
+    {
+     "hex": "#f1e4c0",
+     "label": "cream (design)",
+     "pair": [
+      "#d9661c",
+      "#f1e4c0"
+     ]
+    },
+    {
+     "hex": "#7a3b12",
+     "label": "umber",
+     "pair": [
+      "#d9661c",
+      "#7a3b12"
+     ]
+    },
+    {
+     "hex": "#5a3b22",
+     "label": "walnut",
+     "pair": [
+      "#d9661c",
+      "#5a3b22"
+     ]
+    },
+    {
+     "hex": "#e9c27a",
+     "label": "custard",
+     "pair": [
+      "#d9661c",
+      "#e9c27a"
+     ]
+    }
+   ],
+   "verdict": "RULE: a lattice, chequer, lozenge, stripe or split whose dominant pair is within 20 (max element, best assignment) of a banned tuple is rejected. Orange + cream is 14.5, so Marrowby never tiles cream against orange: the caparison lattice is orange + umber (27.7) or orange + walnut (24.5); cream stays as a plain field, a glyph, piping or the plume (charge-on-field is only held to the BLOCK band, 14.5 passes). Custard #e9c27a is no way out (15.4 from red-yellow)."
+  },
+  {
+   "id": "Q-tobacco",
+   "question": "Mostly Paid Company primary: tobacco #7d5434 sits 5.7 from a plain uniform brown",
+   "self": "medieval:free_company",
+   "candidates": [
+    {
+     "hex": "#7d5434",
+     "label": "design value",
+     "near_primaries": true,
+     "against": {
+      "coyote_brown": "#81613c",
+      "olive_drab_fs595": "#544f3d",
+      "khaki": "#c3b091"
+     }
+    },
+    {
+     "hex": "#72421d",
+     "label": "amended (VB-A1)",
+     "near_primaries": true,
+     "against": {
+      "coyote_brown": "#81613c",
+      "olive_drab_fs595": "#544f3d",
+      "khaki": "#c3b091"
+     }
+    }
+   ],
+   "verdict": "AMEND (VB-A1) #7d5434 -> #72421d. The design value is 5.7 from coyote brown (BLOCK < 10); the amended value is 11.0 from it, 17.2 from the FS595 olive drab, 22.6 from the nearest in-era primary (Wyrmkin, was 21.6) and 19.8 from the nearest cross-era one (Romans, was 20.0)."
+  },
+  {
+   "id": "Q-brass",
+   "question": "Rummage primary brass #867a14 against plain olive drab",
+   "self": "scifi:rummage",
+   "candidates": [
+    {
+     "hex": "#867a14",
+     "label": "kept (restricted single)",
+     "near_primaries": true,
+     "against": {
+      "olive_drab_web": "#6b8e23",
+      "olive_drab_fs595": "#544f3d",
+      "army_green": "#4b5320",
+      "coyote_brown": "#81613c"
+     }
+    }
+   ],
+   "verdict": "KEEP #867a14 as a RESTRICTED single: 13.2 from plain olive drab is above BLOCK (10) and below CLEAR (20), so the model arm caps the share of a humanoid's non-tint pixels within 12 of one uniform reference at 60 percent; the Rummage design is patchwork by construction (one brass shoulder, mismatched panels)."
+  }
+ ],
+ "amendments": [
+  {
+   "id": "VB-A1",
+   "target": "docs/eras/design/medieval/factions.md palette table, visual_bible.md section 1 (free_company row), ui_chrome chip",
+   "change": "free_company primary #7d5434 -> #72421d",
+   "why": "design value is 5.7 from coyote brown (plain uniform single, BLOCK < 10); amended 11.0; in-era minimum 21.6 -> 22.6; nearest Ancient 20.0 (Romans) -> 19.8, above the 16.5 cross-era bar",
+   "evidence": "vb_distance report --section decisions (Q-tobacco)"
+  },
+  {
+   "id": "VB-A2",
+   "target": "docs/eras/design/modern/visual_bible.md section 3 and factions.md section 4 (emblem)",
+   "change": "Caution emblem: stacked upward chevrons -> one upward chevron over a tape-end block (mod_chevron)",
+   "why": "two or more stacked chevrons on one axis read as rank stripes (rank_chevrons templates); the hazard tape pattern keeps its horizontal chevron repeat as a registered pattern (mod_tape_chevron)",
+   "evidence": "vb_distance selftest: rank_chevrons_2/3 negatives are caught, mod_chevron passes"
+  },
+  {
+   "id": "VB-A3",
+   "target": "docs/eras/design/medieval/visual_bible.md section 1 (marrowby tint zones, caparison lozenges) and section 4 rule 4",
+   "change": "Marrowby caparison lattice orange + cream -> orange + umber (#7a3b12) via the registered pattern med_lozenge; cream is a plain field, glyph, 1-voxel piping or plume only",
+   "why": "orange + cream is 14.5 from red/white sub-pairs of three national sets; any lattice, chequer, stripe or split of it is rejected by the plan rule (within 20 of red/white); orange + umber 27.7, orange + walnut 24.5",
+   "evidence": "Q-chequer; fixtures MED-X1 (rejected) and MED-A2 (accepted)"
+  },
+  {
+   "id": "VB-A4",
+   "target": "section 2 of all three visual_bible.md",
+   "change": "banned-reference semantics: statistic = max element dE00 of the best assignment; BLOCK < 8 (any layout), RESTRICT 8..20 (stripe, split, check, lozenge only), charge on a plain field only BLOCK; plain uniform singles BLOCK < 10 / RESTRICT < 20; replaces \"within 20 AND layout is band, split, check or plain charge\"",
+   "why": "the bibles accept their own soft spots (Directorate 12.9, Skyclub 11.8, Caution 11.2, Concord 12.1) while stating a rule that rejects them; and VF 3.23.3 mean-12 would fail 15 rows over 7 of the 18 new factions",
+   "evidence": "report --section banned; negatives NC-VB-03/04"
+  },
+  {
+   "id": "VB-A5",
+   "target": "docs/eras/design/scifi/visual_bible.md section 1 near-miss table (Glowmoss)",
+   "change": "Glowmoss jade + amber is 11.8 from the orange-green sub-pair of an orange-white-green set (the bible measured the full triple, 18.9); rule: jade and amber never form a stripe, split or check; the lamp stays a point",
+   "why": "the sub-pair is what a two-colour layout can show",
+   "evidence": "report --section banned (scifi:glowmoss flag_owg_03/ac)"
+  },
+  {
+   "id": "VB-A6",
+   "target": "docs/eras/spec/VF.md 3.23.3 and 3.16.1, plan section 9 ER3b/ER17",
+   "change": "see VB.md section 6 plan corrections PC-1 and PC-2",
+   "why": "metric and threshold definitions",
+   "evidence": "VB.md 3.3 and 3.7"
+  }
+ ],
+ "rubric": {
+  "common": [
+   {
+    "n": 1,
+    "q": "Does the silhouette read as the unit role (and, for Sci-Fi, the faction adjective in greyscale) at 40 px?",
+    "kind": "judged"
+   },
+   {
+    "n": 2,
+    "q": "Does the defining feature survive at the switch distance and at 80 u (RA-T25 farKeep recall)?",
+    "kind": "tool+judged"
+   },
+   {
+    "n": 3,
+    "q": "Is the tint carrier where the eye goes, at or above the UC floor, separable from the body (edge rule when tint.edge)?",
+    "kind": "tool+judged"
+   },
+   {
+    "n": 4,
+    "q": "Do all colours pass the palette test and every banned pair and layout (vbscan palette, model, lineup)?",
+    "kind": "tool"
+   },
+   {
+    "n": 5,
+    "q": "Is anything on the banned content list present: letter, number, cross, star, crescent, roundel, bird of prey, lion, hooked arm, camouflage, three-band layout, real uniform, real helmet, franchise silhouette?",
+    "kind": "tool+judged"
+   },
+   {
+    "n": 6,
+    "q": "Is it funny without a caption (the blurb could be guessed from the model)?",
+    "kind": "judged"
+   },
+   {
+    "n": 7,
+    "q": "Is the knock-out, power-down or splorp readable and kind (no wound, no blood, no scorch)?",
+    "kind": "judged"
+   },
+   {
+    "n": 8,
+    "q": "Era item: Medieval = no real arms and no order tabard; Modern = pastel hull reads on all four floors; Sci-Fi = bubble is the R3 layer, glow under 12 percent, dark body has its edge.",
+    "kind": "tool+judged"
+   }
+  ],
+  "hard_fail_items": [
+   4,
+   5
+  ],
+  "reject_rule": "a unit is REJECTED when item 4 or 5 fails, or when any two of the other items fail; a single failing item 1, 2, 3, 6, 7 or 8 is a FIX with a re-review, counted against the iteration cap of spec/RA 3.17",
+  "panel": {
+   "reviewer": "a named fresh agent that built nothing in the era and has not seen builder notes",
+   "sample": "12 units per era drawn by RNG(hash(era + \":VB\")) from the lineup, plus every hero and boss, plus the planted rejects",
+   "planted_rejects": "3 per era rendered from tests/fixtures/vb_rejects/<era>_<n> (the three named reject examples as real models); the reviewer must reject all 3 of 3 or the verdict CSV is void and the panel is rerun by another agent",
+   "output": "CSV (unit, item, verdict, reason); it appears in the PANEL/unverified list of the final message (plan section 9)"
+  }
+ },
+ "reject_examples": {
+  "medieval": [
+   {
+    "id": "MED-R1",
+    "name": "The Crusader Special",
+    "unit": "knight_errant",
+    "paint": "white tabard with a red cross on chest and shield",
+    "machine": [
+     "shape:cross at flag size",
+     "ref: red/white sets (BLOCK)"
+    ],
+    "model_arm": [],
+    "judged": [
+     "holy-war reference"
+    ],
+    "fix": "orange + umber lozenges and the stool glyph",
+    "fixture": "MED-R1"
+   },
+   {
+    "id": "MED-R2",
+    "name": "The Tricolour Herald",
+    "unit": "standard_bearer",
+    "paint": "banner cloth in three horizontal bands red, white, blue",
+    "machine": [
+     "layout:three_band",
+     "ref: red-white-blue sets"
+    ],
+    "model_arm": [],
+    "judged": [],
+    "fix": "two-colour swallow-tail in the faction primary with one glyph",
+    "fixture": "MED-R2"
+   },
+   {
+    "id": "MED-R3",
+    "name": "Lion Rampant Pavise",
+    "unit": "pavise_bearer",
+    "paint": "golden lion rampant on a red board",
+    "machine": [
+     "ref: red/gold sets (BLOCK band on a charge)"
+    ],
+    "model_arm": [],
+    "judged": [
+     "a lion is real heraldry"
+    ],
+    "fix": "pale steel board with the frost cat-flap gate",
+    "fixture": "MED-R3"
+   }
+  ],
+  "modern": [
+   {
+    "id": "MOD-R1",
+    "name": "The Army Surplus Special",
+    "unit": "tin_hat_trooper",
+    "paint": "olive drab, mottled camouflage jacket, flat-brim dish helmet with chin net, white shoulder number",
+    "machine": [
+     "layout:mottle",
+     "glyph:7"
+    ],
+    "model_arm": [
+     "M-8 uniform share cap and the olive single, on the planted model (OI-5)"
+    ],
+    "judged": [
+     "helmet silhouette of a real army"
+    ],
+    "fix": "peach jacket, biscuit-tin lid hat with knob, team-colour helmet band",
+    "fixture": "MOD-R1a, MOD-R1b"
+   },
+   {
+    "id": "MOD-R2",
+    "name": "The Roundel Flypast",
+    "unit": "fishbowl_chopper",
+    "paint": "concentric red/white/blue rings on the tail boom, white star on the cabin door, black-and-white stripes under the stub wings",
+    "machine": [
+     "shape:star",
+     "layout:three_band with black-white ref"
+    ],
+    "model_arm": [
+     "M-4 undeclared marking on the tail boom, on the planted model (OI-5)"
+    ],
+    "judged": [
+     "concentric roundel rings (no ring template)"
+    ],
+    "fix": "sky + white paper-plane emblem on the rotor rim and cap only",
+    "fixture": "MOD-R2a, MOD-R2b"
+   },
+   {
+    "id": "MOD-R3",
+    "name": "The Red Cross Satchel",
+    "unit": "site_first_aider",
+    "paint": "white cross on a red satchel flap and a red cross decal on the helmet",
+    "machine": [
+     "shape:cross at flag size"
+    ],
+    "model_arm": [
+     "M-4 undeclared marking on the helmet, on the planted model (OI-5)"
+    ],
+    "judged": [
+     "protected medical emblem"
+    ],
+    "fix": "mint-green first-aid box with one diagonal plaster, bandage roll, lollipop",
+    "fixture": "MOD-R3"
+   }
+  ],
+  "scifi": [
+   {
+    "id": "SF-R1",
+    "name": "The Plastic Patrol",
+    "unit": "tidy_trooper",
+    "paint": "glossy white armour with black joints, black chin-guard helmet with T visor, white carbine",
+    "machine": [
+     "adjacency ivory/black"
+    ],
+    "model_arm": [],
+    "judged": [
+     "chin-guard helmet and franchise trooper set"
+    ],
+    "fix": "fishbowl helmet with azure rim, ivory suit with round azure pods, tank backpack, slab pulse rifle",
+    "fixture": "SF-R1"
+   },
+   {
+    "id": "SF-R2",
+    "name": "The Humming Blade",
+    "unit": "veil_cutter",
+    "paint": "one-metre single-colour glowing blade, hooded black-and-red robe, red-lit chin vent",
+    "machine": [
+     "glow_blade (>= 90 percent glow, section <= 3x3, length >= 12 voxels)"
+    ],
+    "model_arm": [
+     "M-5 adjacency ink/red on the robe, on the planted model (OI-5)"
+    ],
+    "judged": [
+     "franchise weapon and dark-order robe"
+    ],
+    "fix": "hooded ink sliver with violet rim line, 2x2x6 silent shiv with edge glow only, door-ajar cape hem",
+    "fixture": "SF-R2"
+   },
+   {
+    "id": "SF-R3",
+    "name": "The Dome with Teeth",
+    "unit": "plate_beetle / hive_queen",
+    "paint": "glossy black ribbed elongated skull, inner jaw, tail, acid blood, ribs through the chest",
+    "machine": [],
+    "model_arm": [],
+    "judged": [
+     "biomechanical creature silhouette: judged only, planted-reject calibration applies"
+    ],
+    "fix": "plum shell with hex shimmer and a tiny head (beetle); egg-sac abdomen with antler crown and six legs (queen); lime glow tips; splorp death",
+    "fixture": null
+   }
+  ]
+ },
+ "era_constraints": {
+  "medieval": [
+   {
+    "id": "MED-RC1",
+    "text": "heraldic colour never replaces the tint zone; the zone is where the eye goes (surcoat, sash, pavise face, bell hem, cyan patch, coin sack) at or above the UC floor",
+    "check": "model M-7"
+   },
+   {
+    "id": "MED-RC2",
+    "text": "banner and cloth parts are flag-role faces: field + at most one glyph + one edge colour, cloth >= 3 voxels wide; faceVerdict applies",
+    "check": "model M-3"
+   },
+   {
+    "id": "MED-RC3",
+    "text": "Mostly Paid Company: the cyan patch IS the team colour in battle; cyan as paint exists on chips, borders and Codex only",
+    "check": "lineup L-4"
+   },
+   {
+    "id": "MED-RC4",
+    "text": "saturated grade: arena looks keep sat >= 0.85 (med_moor is the floor); no desaturated mud look",
+    "check": "THEME_LOOK row test (RA-T13)"
+   },
+   {
+    "id": "MED-RC5",
+    "text": "no blood or wound detail; glow <= 6 percent of voxels except the Cinderwyrm belly (declared in meta.vb.glowAllow)",
+    "check": "model M-2"
+   }
+  ],
+  "modern": [
+   {
+    "id": "MOD-RC1",
+    "text": "the tint carrier is a saturated panel in the team colour on the named part; the pastel hull around it stays untinted",
+    "check": "model M-7"
+   },
+   {
+    "id": "MOD-RC2",
+    "text": "every hull has a one-voxel charcoal ink edge on its lower silhouette; the charcoal share is darkened before the primary when a hull fails against concrete, asphalt, paving or lino",
+    "check": "lineup L-5"
+   },
+   {
+    "id": "MOD-RC3",
+    "text": "no brick-red buildings; pin red #e2483d only on the pushpin; houses use the pastel set at lower saturation",
+    "check": "props palette membership"
+   },
+   {
+    "id": "MOD-RC4",
+    "text": "muzzle flashes are round puffs and tracers pea-coloured dashes; knock-out is a hat pop and a ring of round dots",
+    "check": "judged (rubric 7)"
+   },
+   {
+    "id": "MOD-RC5",
+    "text": "no camouflage anywhere; the only stripes in the game are the Grand Mower lawn trail (two mint tones) and registered tape chevrons",
+    "check": "model M-3 mottle + pattern registry"
+   }
+  ],
+  "scifi": [
+   {
+    "id": "SF-RC1",
+    "text": "glow budget: emissive voxels (faction glow, tint carrier, lamps, pads, lens, rim) < 12 percent of a model; the 600-unit canonical battle (ER17) judges the bloom",
+    "check": "model M-2"
+   },
+   {
+    "id": "SF-RC2",
+    "text": "team tint is a glow strip, panel or lamp ring in the TEAM colour, never the faction colour; a cloaked unit keeps a 1-voxel team rim",
+    "check": "model M-7"
+   },
+   {
+    "id": "SF-RC3",
+    "text": "dark bodies (Skitter plum, Quiet Hour ink) carry a 1-voxel highlight edge on the upper silhouette; look-dev records the worst contrast against regolith, basalt, neon_pad and asphalt night",
+    "check": "lineup L-5"
+   },
+   {
+    "id": "SF-RC4",
+    "text": "greyscale read at 40 px matches the factions.md table (brightest = Concord, thin vertical sliver = Quiet Hour, ...)",
+    "check": "lineup L-3 + judged"
+   },
+   {
+    "id": "SF-RC5",
+    "text": "the bubble is the instanced R3 layer in the TEAM colour, never unit geometry and never the faction colour",
+    "check": "model M-6 + judged"
+   }
+  ]
+ },
+ "vbscan": {
+  "file": "tools/vbscan.mjs",
+  "owner": "TOOLS-VERIFY",
+  "imports": "tools/vb_distance.mjs",
+  "criterion": "ER3b",
+  "phase": "P1",
+  "tiers": {
+   "palette": "T-fast",
+   "emblem": "T-fast",
+   "model": "T-era",
+   "lineup": "R",
+   "panel": "agent"
+  },
+  "cli": "--era=<medieval|modern|scifi|ancient|all> --stage=<palette|emblem|model|lineup|panel|all> [--data docs/eras/spec/vb_data.json] [--registry .cache/gate/registry.json] [--baseline tests/baseline/vb_ancient.json] [--ids=<unit,prop,...>] [--allow-pending] [--json] [--record-ancient] [--emit-fixtures]",
+  "stages": [
+   {
+    "id": "palette",
+    "inputs": [
+     "vb_data.json",
+     "registry append arrays palettes (and FACTIONS rows)",
+     "Ancient sources via loadAncient()"
+    ],
+    "checks": [
+     "P-1 primaries in-era >= thresholds.primary.in_era",
+     "P-2 cross-era >= cross_era (accent escape per escape_*)",
+     "P-3 internal primary-accent contrast >= accent.internal_min",
+     "P-4 graded pre-pass >= graded.floor over the era looks",
+     "P-5 banned scan: zero BLOCK; RESTRICT rows listed",
+     "P-6 registry palette rows equal vb_data rows (no extra colours)",
+     "P-7 tint.edge equals the derived edge requirement",
+     "P-8 chrome accents >= chrome.accent_min",
+     "P-9 team carrier pairs >= team.carrier_pair_min under all four views"
+    ]
+   },
+   {
+    "id": "emblem",
+    "inputs": [
+     "registry append array emblems (id, rows, hash)",
+     "vb_data.emblems",
+     "vb_data.templates + glyphs"
+    ],
+    "checks": [
+     "E-1 every registry emblem has a vb_data row with the same hash and both signatures (author + reviewer; --allow-pending admits reviewer-less rows in dev lanes only)",
+     "E-2 evalEmblem pass for every row",
+     "E-3 every fixture in fixtures.emblem_negatives rejected",
+     "E-4 no model marking outside the registry (model M-4)",
+     "E-5 Ancient rows measured and ratcheted against tests/baseline/vb_ancient.json"
+    ]
+   },
+   {
+    "id": "model",
+    "inputs": [
+     "compiled ModelDef of every unit and prop of the era (voxel grids with F_TEAM / F_GLOW flags)",
+     "meta.vb = { flag:[partId], markings:[{part, face, at:[u,v], emblem, mirror}], patterns:[{part, face, id}], glowAllow }"
+    ],
+    "checks": [
+     "M-1 off-palette share (dE00 > off_palette_dE to the faction palette + era neutrals + shared skin/hair/eye + metal ramps) <= off_palette_share",
+     "M-2 role caps: trim, metal, glow (era cap)",
+     "M-3 flag-role faces: faceVerdict (layout, shapes, glyphs, ref bands, pattern whitelist)",
+     "M-4 markings: connected regions of 4..64 voxels on a face must be declared in meta.vb.markings and match the registry bitmap (identity or mirror) exactly, or be a registered pattern",
+     "M-5 adjacency bans of the faction",
+     "M-6 glow blade rule",
+     "M-7 tint carrier parts hold F_TEAM voxels at the UC floor; with tint.edge: >= edge_perimeter of the carrier perimeter has dL* >= edge_dL",
+     "M-8 uniform share cap (non-tint pixels within 12 of one uniform single <= uniform_share_cap)"
+    ]
+   },
+   {
+    "id": "lineup",
+    "inputs": [
+     "per faction: one PNG of all units side by side at the default camera plus the control frame (units hidden), from window.__vw.render.capture + unitRects (spec/RA 3.14)"
+    ],
+    "checks": [
+     "L-1 dominant clusters (k = 5, Lab, deterministic seed) within 12 of the declared palette, off-palette <= 8 percent",
+     "L-2 top-3 clusters (share >= 8 percent) through the banned bands",
+     "L-3 greyscale luminance order per factions.md (Sci-Fi) recorded, ratcheted",
+     "L-4 carrier-mask dE_team >= team.carrier_pair_min in every CVD view; whole-unit dE_team reported and ratcheted against the Ancient baseline (PC-2)",
+     "L-5 dE_ring and Lw against the era floors (ER17 numbers) for pastel and dark bodies",
+     "L-6 emissive share"
+    ]
+   },
+   {
+    "id": "panel",
+    "inputs": [
+     "lineup PNGs",
+     "planted rejects"
+    ],
+    "checks": [
+     "R-1 rubric CSV complete for the sample; 3 of 3 planted rejects rejected"
+    ]
+   }
+  ],
+  "outputs": {
+   "json": ".cache/gate/vbscan/<era>.json",
+   "csv": ".cache/gate/vbscan/<era>.csv (stage,item,check,value,limit,verdict,reason)",
+   "criteria": "criterion(\"ER3b\") rows with negctl NC-VB-01..14 (selftest) and NC-VF-42 mapped to NC-VB-03",
+   "exit": {
+    "0": "all checks pass (RESTRICT rows allowed, listed)",
+    "1": "at least one FAIL",
+    "2": "usage or input error",
+    "3": "UNVERIFIED: a render stage was requested and could not run (no Chromium); never counted as pass"
+   }
+  },
+  "ancient": "Ancient is measured once with --record-ancient into tests/baseline/vb_ancient.json (two signatures, author cannot sign); afterwards vbscan fails Ancient only on a value worse than the baseline, so the grandfathered BLOCK rows (Hellenes, Romans) cannot spread"
+ },
+ "ownership": [
+  {
+   "path": "docs/eras/spec/VB.md",
+   "owner": "DESIGN-ERA (all three eras)",
+   "reviewer": "REVIEWER",
+   "note": "this specification"
+  },
+  {
+   "path": "docs/eras/spec/vb_data.json",
+   "owner": "DESIGN-ERA",
+   "reviewer": "REVIEWER",
+   "note": "single source of truth; changes by signed append (banned refs, emblems, patterns) or logged amendment; tools regenerate fixtures from it"
+  },
+  {
+   "path": "tools/vb_distance.mjs",
+   "owner": "DESIGN-ERA until P0 exit, then TOOLS-VERIFY",
+   "reviewer": "REVIEWER",
+   "note": "library + report CLI; change = rerun selftest and check"
+  },
+  {
+   "path": "tools/vbscan.mjs",
+   "owner": "TOOLS-VERIFY",
+   "reviewer": "REVIEWER",
+   "note": "ER3b, P1"
+  },
+  {
+   "path": "tests/verify/vb_distance.test.mjs",
+   "owner": "TOOLS-VERIFY",
+   "reviewer": "REVIEWER",
+   "note": "runs selftest and check, T-fast"
+  },
+  {
+   "path": "tests/negctl/ER3b/NC-VB-01..14.mjs",
+   "owner": "TOOLS-VERIFY",
+   "reviewer": "REVIEWER",
+   "note": "mutation + expected failing check id"
+  },
+  {
+   "path": "tests/baseline/vb_ancient.json",
+   "owner": "TOOLS-GOLDEN",
+   "reviewer": "REVIEWER",
+   "note": "recorded once from the ancient-v8 baseline; two signatures"
+  },
+  {
+   "path": "tests/fixtures/vb_banned.json, tests/fixtures/emblems_allow.json",
+   "owner": "generated by vbscan --emit-fixtures",
+   "reviewer": "none (no hand edit)",
+   "note": "VF 3.23.3 names these paths; they are derived from vb_data.json"
+  },
+  {
+   "path": "tests/fixtures/vb_rejects/<era>_<n>.js",
+   "owner": "DESIGN-ERA + TOOLS-VERIFY",
+   "reviewer": "REVIEWER",
+   "note": "planted reject models for the panel, P2"
+  },
+  {
+   "path": "src/content/era_<id>/{palettes,emblems}.js (registry append arrays)",
+   "owner": "UNITS-<era> (rows), AR (kind)",
+   "reviewer": "REVIEWER",
+   "note": "rows must equal vb_data.json; the emblem append requires the signed row first"
+  },
+  {
+   "path": "docs/eras/design/<era>/{factions,visual_bible}.md",
+   "owner": "DESIGN-ERA-<era>",
+   "reviewer": "REVIEWER",
+   "note": "inputs; amendments VB-A1..A5 are integrated here by the era owner"
+  }
+ ]
+}

@@ -1,0 +1,241 @@
+{
+ "box": {
+  "arch": "x64",
+  "cpus": 4,
+  "platform": "linux"
+ },
+ "data": {
+  "defs": {
+   "anubis_guard": {
+    "json": "{\"id\":\"anubis_guard\",\"name\":\"anubis_guard\",\"faction\":\"egyptians\",\"role\":\"melee\",\"tags\":[\"elite\",\"fearless\"],\"cost\":230,\"hp\":266,\"armor\":0.4,\"speed\":2.9,\"mass\":1.3,\"radius\":0.65,\"scale\":1.15,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":17,\"cd\":1.1,\"range\":2.2,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":3.1},\"shield\":{\"arc\":70,\"block\":0.5,\"proj\":0.5},\"abilities\":[{\"id\":\"execute\",\"cd\":10,\"threshold\":0.2}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "da790755a263618ecde1cf7731cd973a716683a6bb2678fce9ee440f404e60ab"
+   },
+   "axe_thrower": {
+    "json": "{\"id\":\"axe_thrower\",\"name\":\"axe_thrower\",\"faction\":\"barbarians\",\"role\":\"ranged\",\"tags\":[\"skirmisher\"],\"cost\":105,\"hp\":158,\"armor\":0.1,\"speed\":3,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":12,\"cd\":1,\"range\":1.4,\"type\":\"slash\",\"style\":\"slash\"},\"ranged\":{\"proj\":\"francisca\",\"dmg\":21,\"cd\":2.4,\"range\":13,\"type\":\"slash\",\"speed\":26,\"spread\":0.05,\"gravity\":20},\"abilities\":[],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "73696da8a33962a39488e5ada26110af3512c7d50c6a8289214d85439f9638ae"
+   },
+   "ballista": {
+    "json": "{\"id\":\"ballista\",\"name\":\"ballista\",\"faction\":\"romans\",\"role\":\"siege\",\"tags\":[\"siege\"],\"cost\":260,\"hp\":228,\"armor\":0.2,\"speed\":1.2,\"mass\":2.5,\"radius\":0.9,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"ranged\":{\"proj\":\"bolt\",\"dmg\":62,\"cd\":4.5,\"range\":55,\"type\":\"pierce\",\"ap\":0.6,\"speed\":55,\"spread\":0.012,\"gravity\":8,\"pierceN\":3,\"minRange\":8},\"abilities\":[],\"ai\":{\"style\":\"siege\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "055a49914e63ab19eaa9489112ffcdb9e16c146fcdc4c2a6a0c4b41a4addd2fe"
+   },
+   "battle_goat": {
+    "json": "{\"id\":\"battle_goat\",\"name\":\"battle_goat\",\"faction\":\"mythic\",\"role\":\"beast\",\"tags\":[\"animal\"],\"cost\":51,\"hp\":90,\"armor\":0.05,\"speed\":4,\"mass\":1.2,\"radius\":0.4,\"scale\":1,\"height\":1.1,\"runMul\":1.4,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":8,\"cd\":1.5,\"range\":1.2,\"type\":\"blunt\",\"style\":\"headbutt\",\"kb\":6},\"abilities\":[{\"id\":\"dash\",\"kind\":\"goat_charge\",\"dist\":8,\"dmgMul\":2,\"cd\":9}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "da96067b0a6cc9a1ac378f87fb2491e24cfc63f259339abf90504ac8886f900c"
+   },
+   "berserker": {
+    "json": "{\"id\":\"berserker\",\"name\":\"berserker\",\"faction\":\"barbarians\",\"role\":\"melee\",\"tags\":[],\"cost\":120,\"hp\":191,\"armor\":0,\"speed\":3.4,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":19,\"cd\":0.9,\"range\":1.8,\"type\":\"slash\",\"style\":\"overhead\",\"kb\":2.5},\"abilities\":[{\"id\":\"rage\",\"hpFrac\":0.5,\"dmg\":1.5,\"speed\":1.3}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "e0446944406d853699190a0589fac0e5421b4cf0ae936f41a4c98ce4e352efd7"
+   },
+   "camel_rider": {
+    "json": "{\"id\":\"camel_rider\",\"name\":\"camel_rider\",\"faction\":\"persians\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"spear\"],\"cost\":150,\"hp\":320,\"armor\":0.15,\"speed\":3.3,\"mass\":2.6,\"radius\":0.8,\"scale\":1,\"height\":3.2,\"runMul\":2.2,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":19,\"cd\":1.3,\"range\":2.4,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":4},\"abilities\":[{\"id\":\"cc_field\",\"effect\":\"panic_cav\",\"shape\":\"cone\",\"radius\":6,\"passive\":true}],\"ai\":{\"style\":\"flank\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "b534f79d838aece5211ea6ca2a8ad9494eb1bed48371578b16fac11985cf1b23"
+   },
+   "cataphract": {
+    "json": "{\"id\":\"cataphract\",\"name\":\"cataphract\",\"faction\":\"persians\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"lance\",\"heavy\"],\"cost\":275,\"hp\":417,\"armor\":0.6,\"speed\":3,\"mass\":4,\"radius\":0.85,\"scale\":1,\"height\":3.2,\"runMul\":2.2,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":25,\"cd\":1.8,\"range\":2.7,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":3.1},\"shield\":{\"arc\":60,\"block\":0.3,\"proj\":0.4},\"abilities\":[],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "d5de872e455fd2757c88946ac01d13e70f31ed81f5d7c4dd420eafa04bb3a688"
+   },
+   "catapult": {
+    "json": "{\"id\":\"catapult\",\"name\":\"catapult\",\"faction\":\"carthage\",\"role\":\"siege\",\"tags\":[\"siege\"],\"cost\":266,\"hp\":230,\"armor\":0.15,\"speed\":1,\"mass\":3,\"radius\":1.1,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"ranged\":{\"proj\":\"boulder\",\"dmg\":62,\"cd\":7.5,\"range\":70,\"type\":\"blunt\",\"speed\":42,\"spread\":0.02,\"gravity\":24,\"minRange\":15,\"aoe\":4,\"crater\":true},\"abilities\":[{\"id\":\"misfire\",\"chance\":0.04}],\"ai\":{\"style\":\"siege\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "6c787a6b6d920b5cdce549444810d9aa732ca9bef9de60609aee47e841e24e4d"
+   },
+   "centaur_archer": {
+    "json": "{\"id\":\"centaur_archer\",\"name\":\"centaur_archer\",\"faction\":\"mythic\",\"role\":\"ranged\",\"tags\":[\"archer\",\"cavalry\"],\"cost\":203,\"hp\":316,\"armor\":0.1,\"speed\":3.9,\"mass\":2.6,\"radius\":0.7,\"scale\":1,\"height\":3.2,\"runMul\":1.7,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":14,\"cd\":1.2,\"range\":1.8,\"type\":\"blunt\",\"style\":\"bash\"},\"ranged\":{\"proj\":\"arrow\",\"dmg\":19,\"cd\":1.4,\"range\":38,\"type\":\"pierce\",\"speed\":42,\"spread\":0.035,\"gravity\":22},\"abilities\":[],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "dc7ffcc00c500d6a6afe1696220f2ad3cc72a868e2c2291a6c399ccf031c5603"
+   },
+   "centurion": {
+    "json": "{\"id\":\"centurion\",\"name\":\"centurion\",\"faction\":\"romans\",\"role\":\"hero\",\"tags\":[\"officer\",\"elite\"],\"cost\":260,\"hp\":340,\"armor\":0.42,\"speed\":2.9,\"mass\":1.1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":19,\"cd\":0.95,\"range\":1.7,\"type\":\"slash\",\"style\":\"slash\",\"kb\":3.1},\"shield\":{\"arc\":70,\"block\":0.45,\"proj\":0.5},\"abilities\":[{\"id\":\"aura\",\"effect\":\"discipline\",\"radius\":9}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "4cb218704fb7b4bdea49cb6542df1fa904a74b6aaaa6b2c1ed297f53cab22406"
+   },
+   "chariot_archer": {
+    "json": "{\"id\":\"chariot_archer\",\"name\":\"chariot_archer\",\"faction\":\"egyptians\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"archer\"],\"cost\":212,\"hp\":362,\"armor\":0.15,\"speed\":3.6,\"mass\":3.5,\"radius\":0.9,\"scale\":1,\"height\":3.2,\"runMul\":2.2,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":28,\"cd\":1,\"range\":1.4,\"type\":\"blunt\",\"style\":\"ram\",\"kb\":4},\"ranged\":{\"proj\":\"arrow\",\"dmg\":14,\"cd\":1.1,\"range\":30,\"type\":\"pierce\",\"speed\":38,\"spread\":0.06,\"gravity\":22,\"whileMoving\":true},\"abilities\":[],\"ai\":{\"style\":\"flank\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "75a50a67fb849cbac426b1a492481c3bb6f01bcecf3484d41e3f06ab2ec12a5e"
+   },
+   "chieftain": {
+    "json": "{\"id\":\"chieftain\",\"name\":\"chieftain\",\"faction\":\"barbarians\",\"role\":\"hero\",\"tags\":[\"officer\",\"elite\",\"general\"],\"cost\":340,\"hp\":662,\"armor\":0.25,\"speed\":3,\"mass\":1.5,\"radius\":0.55,\"scale\":1.2,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":39,\"cd\":1.4,\"range\":2,\"type\":\"blunt\",\"style\":\"overhead\",\"kb\":4.5},\"abilities\":[{\"id\":\"war_horn\",\"duration\":8,\"radius\":14,\"speed\":1.2,\"dmg\":1.2}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "c73459c27b09df12df235260d78aca38a5be39b6137dfba1e2006e3e64693322"
+   },
+   "companion_cavalry": {
+    "json": "{\"id\":\"companion_cavalry\",\"name\":\"companion_cavalry\",\"faction\":\"hellenes\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"lance\"],\"cost\":200,\"hp\":300,\"armor\":0.25,\"speed\":3.4,\"mass\":3,\"radius\":0.8,\"scale\":1,\"height\":3.2,\"runMul\":2.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":26.4,\"cd\":1.6,\"range\":2.6,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":3.3},\"shield\":{\"arc\":60,\"block\":0.25,\"proj\":0.4},\"abilities\":[],\"ai\":{\"style\":\"flank\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "b403d08f252c84a3bafdcc39ad5330df49c37b31b9fe4747218c1653deb3c1c7"
+   },
+   "cretan_archer": {
+    "json": "{\"id\":\"cretan_archer\",\"name\":\"cretan_archer\",\"faction\":\"hellenes\",\"role\":\"ranged\",\"tags\":[\"archer\"],\"cost\":90,\"hp\":113,\"armor\":0,\"speed\":2.7,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":6,\"cd\":1,\"range\":1,\"type\":\"blunt\",\"style\":\"bash\"},\"ranged\":{\"proj\":\"arrow\",\"dmg\":13,\"cd\":1.6,\"range\":34,\"type\":\"pierce\",\"speed\":40,\"spread\":0.045,\"gravity\":22},\"abilities\":[],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "bcef967f9cf23f7444596fb72402444627eb6223f454a41189f0f80bbe1feeda"
+   },
+   "cyclops": {
+    "json": "{\"id\":\"cyclops\",\"name\":\"cyclops\",\"faction\":\"mythic\",\"role\":\"monster\",\"tags\":[\"large\",\"boss\"],\"cost\":620,\"hp\":1223,\"armor\":0.2,\"speed\":2.4,\"mass\":10,\"radius\":1.1,\"scale\":2.2,\"height\":2.6,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":42,\"cd\":2.2,\"range\":3.5,\"type\":\"blunt\",\"style\":\"overhead\",\"kb\":8.1},\"ranged\":{\"proj\":\"boulder\",\"dmg\":52,\"cd\":7,\"range\":28,\"type\":\"blunt\",\"speed\":27,\"spread\":0.02,\"gravity\":22,\"minRange\":6,\"aoe\":2.5},\"abilities\":[{\"id\":\"misaim\",\"chance\":0.25}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "fe77ddae5e6d1b5832bd0268ed20cc4b0e7b722f6c46edf361351b419394969e"
+   },
+   "druid": {
+    "json": "{\"id\":\"druid\",\"name\":\"druid\",\"faction\":\"barbarians\",\"role\":\"support\",\"tags\":[\"support\"],\"cost\":180,\"hp\":129,\"armor\":0,\"speed\":2.6,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"ranged\":{\"proj\":\"thunderbolt\",\"dmg\":22,\"cd\":5,\"range\":22,\"type\":\"magic\",\"speed\":80,\"spread\":0,\"gravity\":0,\"chain\":3},\"abilities\":[{\"id\":\"chain_lightning\"},{\"id\":\"heal_pulse\",\"radius\":6,\"amount\":15,\"targets\":1,\"cd\":5,\"onlyIdle\":true}],\"ai\":{\"style\":\"support\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "395751346689573687510b30f5ac967445b97c53a62a78dc4fce80e9fe181495"
+   },
+   "equites": {
+    "json": "{\"id\":\"equites\",\"name\":\"equites\",\"faction\":\"romans\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"spear\"],\"cost\":168,\"hp\":287,\"armor\":0.22,\"speed\":3.5,\"mass\":2.8,\"radius\":0.8,\"scale\":1,\"height\":3.2,\"runMul\":2.4,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":21,\"cd\":1.4,\"range\":2.4,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":4.4},\"shield\":{\"arc\":50,\"block\":0.2,\"proj\":0.3},\"abilities\":[],\"ai\":{\"style\":\"flank\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "1f4e1f942c9850f33042ebbd771f6e93d0bc89fe83f3064b8d945616747ae68f"
+   },
+   "gladiator": {
+    "json": "{\"id\":\"gladiator\",\"name\":\"gladiator\",\"faction\":\"romans\",\"role\":\"melee\",\"tags\":[\"spear\"],\"cost\":142,\"hp\":258,\"armor\":0.1,\"speed\":3.1,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":17,\"cd\":1.1,\"range\":2.4,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":2.7},\"abilities\":[{\"id\":\"net\",\"radius\":10,\"root\":2.5,\"cd\":12},{\"id\":\"crowd_favorite\",\"enemies\":5,\"radius\":5,\"dmg\":1.2}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "acd1bc8b3a55c4eaf46fbafd23ffbb3f170ea6c41974f18e0eb682cb91bdc16c"
+   },
+   "hannibal": {
+    "json": "{\"id\":\"hannibal\",\"name\":\"hannibal\",\"faction\":\"carthage\",\"role\":\"hero\",\"tags\":[\"officer\",\"elite\",\"cavalry\",\"general\"],\"cost\":360,\"hp\":565,\"armor\":0.3,\"speed\":3.5,\"mass\":3,\"radius\":0.8,\"scale\":1,\"height\":3.2,\"runMul\":2.3,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":29,\"cd\":1.2,\"range\":2.4,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":3.3},\"shield\":{\"arc\":60,\"block\":0.3,\"proj\":0.4},\"abilities\":[{\"id\":\"aura\",\"effect\":\"pincer\",\"radius\":14}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "7b95780746a9fb2c333a9b8af9308aae53a5621fb39a30c4fa5e9433e4da8578"
+   },
+   "hoplite": {
+    "json": "{\"id\":\"hoplite\",\"name\":\"hoplite\",\"faction\":\"hellenes\",\"role\":\"melee\",\"tags\":[\"spear\"],\"cost\":100,\"hp\":150,\"armor\":0.3,\"speed\":2.6,\"mass\":1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":10,\"cd\":1.2,\"range\":2,\"type\":\"pierce\",\"style\":\"thrust\"},\"shield\":{\"arc\":70,\"block\":0.45,\"proj\":0.6},\"abilities\":[{\"id\":\"stance\",\"kind\":\"phalanx\"}],\"ai\":{\"style\":\"hold\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "41435e8980b7d372a763ec46e38c145d2469abbe918b99024b13a7dfc60ad695"
+   },
+   "immortal": {
+    "json": "{\"id\":\"immortal\",\"name\":\"immortal\",\"faction\":\"persians\",\"role\":\"melee\",\"tags\":[\"spear\"],\"cost\":120,\"hp\":167,\"armor\":0.22,\"speed\":2.8,\"mass\":1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":11,\"cd\":1.15,\"range\":2.1,\"type\":\"pierce\",\"style\":\"thrust\"},\"shield\":{\"arc\":55,\"block\":0.35,\"proj\":0.45},\"abilities\":[{\"id\":\"revive\",\"hpFrac\":0.4,\"delay\":3}],\"ai\":{\"style\":\"hold\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "e21568b1b2aeed8c08b8f1c2a7493b38a9a59c4263af759857cbce3b506a6d39"
+   },
+   "khopesh_warrior": {
+    "json": "{\"id\":\"khopesh_warrior\",\"name\":\"khopesh_warrior\",\"faction\":\"egyptians\",\"role\":\"melee\",\"tags\":[],\"cost\":100,\"hp\":165,\"armor\":0.2,\"speed\":3,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":14,\"cd\":1,\"range\":1.6,\"type\":\"slash\",\"style\":\"slash\",\"kb\":3.8},\"shield\":{\"arc\":50,\"block\":0.3,\"proj\":0.3},\"abilities\":[{\"id\":\"hook\",\"chance\":0.15,\"secs\":3}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "d10e90f6b9368176cdf35951187d20341e9bf173631c3b20251e5e791bfed51f"
+   },
+   "legionary": {
+    "json": "{\"id\":\"legionary\",\"name\":\"legionary\",\"faction\":\"romans\",\"role\":\"melee\",\"tags\":[],\"cost\":129,\"hp\":176,\"armor\":0.38,\"speed\":2.5,\"mass\":1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":12,\"cd\":1,\"range\":1.5,\"type\":\"slash\",\"style\":\"slash\"},\"shield\":{\"arc\":90,\"block\":0.5,\"proj\":0.75},\"abilities\":[{\"id\":\"stance\",\"kind\":\"testudo\"}],\"ai\":{\"style\":\"hold\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "2e61598761a7836cd57e58e730da43336d14b638b875aaed0b7241087af2557e"
+   },
+   "medjay": {
+    "json": "{\"id\":\"medjay\",\"name\":\"medjay\",\"faction\":\"egyptians\",\"role\":\"melee\",\"tags\":[\"spear\"],\"cost\":85,\"hp\":160,\"armor\":0.15,\"speed\":3,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":10,\"cd\":1.2,\"range\":2,\"type\":\"pierce\",\"style\":\"thrust\"},\"shield\":{\"arc\":55,\"block\":0.35,\"proj\":0.4},\"abilities\":[],\"ai\":{\"style\":\"hold\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "49a626addd0f6e0837310d498dbfe6cd391c8d81d36b69a3f9bc1e6699cc5a74"
+   },
+   "medusa": {
+    "json": "{\"id\":\"medusa\",\"name\":\"medusa\",\"faction\":\"mythic\",\"role\":\"monster\",\"tags\":[],\"cost\":248,\"hp\":407,\"armor\":0,\"speed\":2.8,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.6,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":18,\"cd\":1,\"range\":1.6,\"type\":\"pierce\",\"style\":\"thrust\"},\"abilities\":[{\"id\":\"poison\",\"dps\":3,\"secs\":3},{\"id\":\"cc_field\",\"effect\":\"stone\",\"shape\":\"cone\",\"radius\":14,\"angle\":40,\"duration\":4,\"cd\":9}],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "0183ad38ccc23c85799e399cb2c8b92ef90b7c36156a3875f1e9366c89bfe562"
+   },
+   "minotaur": {
+    "json": "{\"id\":\"minotaur\",\"name\":\"minotaur\",\"faction\":\"mythic\",\"role\":\"monster\",\"tags\":[\"large\"],\"cost\":480,\"hp\":773,\"armor\":0.25,\"speed\":3.2,\"mass\":6,\"radius\":0.8,\"scale\":1.7,\"height\":2.6,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":30,\"cd\":1.7,\"range\":2.8,\"type\":\"slash\",\"style\":\"overhead\",\"kb\":9.6},\"abilities\":[{\"id\":\"dash\",\"kind\":\"bull_charge\",\"dist\":12,\"dmg\":30,\"stun\":1,\"cd\":10}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "7697b77c23da280f0d2a66d381578776ad5b6af55975dda86f82092fca995893"
+   },
+   "mummy": {
+    "json": "{\"id\":\"mummy\",\"name\":\"mummy\",\"faction\":\"egyptians\",\"role\":\"melee\",\"tags\":[\"fearless\",\"undead\",\"fire_weak\"],\"cost\":124,\"hp\":389,\"armor\":0.1,\"speed\":1.9,\"mass\":1.4,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":15,\"cd\":1.4,\"range\":1.5,\"type\":\"blunt\",\"style\":\"bash\",\"kb\":3.2},\"abilities\":[{\"id\":\"aura\",\"effect\":\"curse\",\"radius\":5}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "892f0fa93fd5ce04cb2b98a93c8bfaa032fe6932af486fad6e683248183bec02"
+   },
+   "nubian_archer": {
+    "json": "{\"id\":\"nubian_archer\",\"name\":\"nubian_archer\",\"faction\":\"egyptians\",\"role\":\"ranged\",\"tags\":[\"archer\"],\"cost\":95,\"hp\":116,\"armor\":0,\"speed\":2.8,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":5,\"cd\":1,\"range\":1,\"type\":\"blunt\",\"style\":\"bash\"},\"ranged\":{\"proj\":\"arrow\",\"dmg\":12,\"cd\":1.5,\"range\":36,\"type\":\"pierce\",\"speed\":40,\"spread\":0.04,\"gravity\":22},\"abilities\":[{\"id\":\"fire_every\",\"n\":6}],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "62c97296ca0f273af926c6aa2c332eeb31716cd508d374f8c959b8ce338b0c01"
+   },
+   "numidian": {
+    "json": "{\"id\":\"numidian\",\"name\":\"numidian\",\"faction\":\"carthage\",\"role\":\"cavalry\",\"tags\":[\"cavalry\",\"skirmisher\"],\"cost\":125,\"hp\":189,\"armor\":0.05,\"speed\":4,\"mass\":2.4,\"radius\":0.75,\"scale\":1,\"height\":3.2,\"runMul\":1.9,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":10,\"cd\":1,\"range\":1.4,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":4},\"ranged\":{\"proj\":\"javelin\",\"dmg\":17,\"cd\":1.6,\"range\":16,\"type\":\"pierce\",\"speed\":30,\"spread\":0.05,\"gravity\":18},\"abilities\":[],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "345bf7cd326ceaed24cce84cf7e6fc05626e253bc36c2d32bd3fa4f528fe60a6"
+   },
+   "peltast": {
+    "json": "{\"id\":\"peltast\",\"name\":\"peltast\",\"faction\":\"hellenes\",\"role\":\"ranged\",\"tags\":[\"skirmisher\"],\"cost\":85,\"hp\":122,\"armor\":0.05,\"speed\":3.4,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":5,\"cd\":0.9,\"range\":1.2,\"type\":\"pierce\",\"style\":\"thrust\"},\"ranged\":{\"proj\":\"javelin\",\"dmg\":14,\"cd\":2,\"range\":18,\"type\":\"pierce\",\"ap\":0.25,\"speed\":30,\"spread\":0.05,\"gravity\":18},\"abilities\":[],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "abd51191dbb7af1ce83e4e04ae811002120fc3a03bafe0d7da27f8e3280503e8"
+   },
+   "pharaoh": {
+    "json": "{\"id\":\"pharaoh\",\"name\":\"pharaoh\",\"faction\":\"egyptians\",\"role\":\"hero\",\"tags\":[\"officer\",\"elite\",\"general\"],\"cost\":420,\"hp\":341,\"armor\":0.3,\"speed\":2.6,\"mass\":1.4,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":11,\"cd\":1.2,\"range\":1.6,\"type\":\"blunt\",\"style\":\"bash\",\"kb\":3.4},\"ranged\":{\"proj\":\"scepter\",\"dmg\":13,\"cd\":2.5,\"range\":16,\"type\":\"magic\",\"speed\":40,\"spread\":0.01,\"gravity\":0,\"aoe\":3},\"shield\":{\"arc\":60,\"block\":0.4,\"proj\":0.4},\"abilities\":[{\"id\":\"dot_cloud\",\"radius\":7,\"duration\":6,\"dps\":6,\"cd\":25},{\"id\":\"aura\",\"effect\":\"great_king\",\"radius\":8}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "ab90d94c9319cda1f70954ef3638b58160057cf4bfa0e2d59045ca1f28e27237"
+   },
+   "philosopher": {
+    "json": "{\"id\":\"philosopher\",\"name\":\"philosopher\",\"faction\":\"hellenes\",\"role\":\"support\",\"tags\":[\"support\"],\"cost\":120,\"hp\":110,\"armor\":0,\"speed\":2.4,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":4,\"cd\":1.4,\"range\":1,\"type\":\"blunt\",\"style\":\"bash\"},\"abilities\":[{\"id\":\"cc_field\",\"effect\":\"confuse\",\"shape\":\"circle\",\"radius\":7,\"channel\":3,\"cd\":14}],\"ai\":{\"style\":\"support\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "3e57e3eef695d53159271e4573305fec90263b87063b307c2828215b103a1aef"
+   },
+   "pilum_thrower": {
+    "json": "{\"id\":\"pilum_thrower\",\"name\":\"pilum_thrower\",\"faction\":\"romans\",\"role\":\"ranged\",\"tags\":[\"skirmisher\"],\"cost\":110,\"hp\":124,\"armor\":0.2,\"speed\":3,\"mass\":1,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":10,\"cd\":1,\"range\":1.4,\"type\":\"slash\",\"style\":\"slash\"},\"ranged\":{\"proj\":\"pilum\",\"dmg\":20,\"cd\":3,\"range\":14,\"type\":\"pierce\",\"ap\":0.5,\"speed\":28,\"spread\":0.04,\"gravity\":20},\"shield\":{\"arc\":50,\"block\":0.3,\"proj\":0.3},\"abilities\":[{\"id\":\"breaks_shield\",\"secs\":4}],\"ai\":{\"style\":\"skirmish\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "874e7697644bcf1bb8bf1d6f8a7a7590a6b3c09050e945f03f8765daff51a7c5"
+   },
+   "priest_of_ra": {
+    "json": "{\"id\":\"priest_of_ra\",\"name\":\"priest_of_ra\",\"faction\":\"egyptians\",\"role\":\"support\",\"tags\":[\"support\"],\"cost\":150,\"hp\":110,\"armor\":0,\"speed\":2.6,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"ranged\":{\"proj\":\"sunbeam\",\"dmg\":8,\"cd\":1.2,\"range\":14,\"type\":\"magic\",\"speed\":60,\"spread\":0.01,\"gravity\":0},\"abilities\":[{\"id\":\"heal_pulse\",\"radius\":8,\"amount\":25,\"targets\":4,\"cd\":6}],\"ai\":{\"style\":\"support\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "34cb4972ca47508b1e106ed9535b4c87ca5d12437630e3f5976319ba36a52ce7"
+   },
+   "sacred_chicken": {
+    "json": "{\"id\":\"sacred_chicken\",\"name\":\"sacred_chicken\",\"faction\":\"mythic\",\"role\":\"swarm\",\"tags\":[\"animal\"],\"cost\":28,\"hp\":38,\"armor\":0,\"speed\":4.6,\"mass\":0.3,\"radius\":0.25,\"scale\":1,\"height\":1.1,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":3,\"cd\":0.3,\"range\":0.8,\"type\":\"pierce\",\"style\":\"peck\"},\"abilities\":[{\"id\":\"tantrum\",\"chance\":0.3,\"duration\":5,\"dmg\":3,\"speed\":1.5},{\"id\":\"cluck\",\"radius\":5,\"taunt\":2,\"cd\":12}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "c7241e12594d24c25d5ca4fd194b0d0061dd472ffb4566b02bfaa771618620cf"
+   },
+   "senator": {
+    "json": "{\"id\":\"senator\",\"name\":\"senator\",\"faction\":\"romans\",\"role\":\"support\",\"tags\":[\"support\"],\"cost\":140,\"hp\":92,\"armor\":0,\"speed\":2.5,\"mass\":0.9,\"radius\":0.55,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"ranged\":{\"proj\":\"coin\",\"dmg\":3,\"cd\":2,\"range\":10,\"type\":\"pierce\",\"speed\":20,\"spread\":0.08,\"gravity\":18},\"abilities\":[{\"id\":\"bribe\",\"chance\":0.05,\"secs\":6},{\"id\":\"cc_field\",\"effect\":\"sleep\",\"shape\":\"circle\",\"radius\":9,\"channel\":4,\"cd\":16}],\"ai\":{\"style\":\"support\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "cf84fff3327fbdbdcd67439e397bed0d5774c42ff3e6a4b339b1b2e7bc805987"
+   },
+   "sparabara": {
+    "json": "{\"id\":\"sparabara\",\"name\":\"sparabara\",\"faction\":\"persians\",\"role\":\"ranged\",\"tags\":[\"archer\"],\"cost\":118,\"hp\":114,\"armor\":0.15,\"speed\":2.5,\"mass\":1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":7,\"cd\":1.1,\"range\":1.4,\"type\":\"pierce\",\"style\":\"thrust\"},\"ranged\":{\"proj\":\"arrow\",\"dmg\":9,\"cd\":1.7,\"range\":28,\"type\":\"pierce\",\"speed\":38,\"spread\":0.045,\"gravity\":22},\"shield\":{\"arc\":90,\"block\":0.65,\"proj\":0.8},\"abilities\":[{\"id\":\"stance\",\"kind\":\"shield_wall\"}],\"ai\":{\"style\":\"hold\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "6f4807fd4094b8cead5f108ef7c53d7e363032793ac700d98ddd13a259279d73"
+   },
+   "spartan": {
+    "json": "{\"id\":\"spartan\",\"name\":\"spartan\",\"faction\":\"hellenes\",\"role\":\"melee\",\"tags\":[\"spear\",\"elite\",\"fearless\"],\"cost\":190,\"hp\":234,\"armor\":0.35,\"speed\":2.9,\"mass\":1.1,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":14,\"cd\":1,\"range\":2,\"type\":\"pierce\",\"style\":\"thrust\",\"kb\":3.6},\"shield\":{\"arc\":80,\"block\":0.55,\"proj\":0.65},\"abilities\":[{\"id\":\"kick\",\"cd\":8}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "f151c7ea96059a6f83573a083b1d9654b65fd797842bd539240a4aa444633db4"
+   },
+   "strategos": {
+    "json": "{\"id\":\"strategos\",\"name\":\"strategos\",\"faction\":\"hellenes\",\"role\":\"hero\",\"tags\":[\"officer\",\"elite\",\"fearless\"],\"cost\":380,\"hp\":377,\"armor\":0.4,\"speed\":3,\"mass\":1.2,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":17,\"cd\":1,\"range\":1.8,\"type\":\"slash\",\"style\":\"slash\",\"kb\":2.8},\"shield\":{\"arc\":70,\"block\":0.45,\"proj\":0.5},\"abilities\":[{\"id\":\"aura\",\"effect\":\"rally\",\"radius\":10}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "5f78a2ced44a8dfe1a57895a8f38f2fc352a7452978a86f2912b67615a4b39a2"
+   },
+   "trojan_horse": {
+    "json": "{\"id\":\"trojan_horse\",\"name\":\"trojan_horse\",\"faction\":\"mythic\",\"role\":\"siege\",\"tags\":[\"large\",\"siege\",\"fire_weak\"],\"cost\":504,\"hp\":706,\"armor\":0.3,\"speed\":1.4,\"mass\":8,\"radius\":1.4,\"scale\":1,\"height\":2.6,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":29,\"cd\":1.5,\"range\":2.5,\"type\":\"blunt\",\"style\":\"ram\",\"kb\":12.1},\"abilities\":[{\"id\":\"summon_on_death\",\"spawn\":\"hoplite\",\"count\":6,\"onContact\":25,\"hpFrac\":0.3}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "c17173cc65bbf7846bb342ae58e60c1b83d1b2349c4e25f02e53a636a7015153"
+   },
+   "war_elephant": {
+    "json": "{\"id\":\"war_elephant\",\"name\":\"war_elephant\",\"faction\":\"carthage\",\"role\":\"monster\",\"tags\":[\"large\",\"boss\",\"fire_panic\"],\"cost\":728,\"hp\":1148,\"armor\":0.35,\"speed\":3.4,\"mass\":12,\"radius\":1.5,\"scale\":1,\"height\":2.6,\"runMul\":1.6,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":28,\"cd\":2,\"range\":3.2,\"type\":\"pierce\",\"style\":\"gore\",\"kb\":10},\"ranged\":{\"proj\":\"arrow\",\"dmg\":7,\"cd\":1.4,\"range\":28,\"type\":\"pierce\",\"speed\":38,\"spread\":0.06,\"gravity\":22,\"volley\":2},\"abilities\":[{\"id\":\"cc_field\",\"effect\":\"scare\",\"shape\":\"circle\",\"radius\":10,\"cd\":15},{\"id\":\"fire_panic\",\"hits\":3,\"flee\":6}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "b6fae3e99bd1531ec90eac794b5c89bef3421dbed200df5f7cbebf20c82e0115"
+   },
+   "warhound": {
+    "json": "{\"id\":\"warhound\",\"name\":\"warhound\",\"faction\":\"barbarians\",\"role\":\"beast\",\"tags\":[\"animal\"],\"cost\":55,\"hp\":76,\"armor\":0,\"speed\":4.2,\"mass\":0.6,\"radius\":0.35,\"scale\":1,\"height\":1.1,\"runMul\":1.55,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":7,\"cd\":0.7,\"range\":1,\"type\":\"pierce\",\"style\":\"bite\"},\"abilities\":[{\"id\":\"pack_bonus\",\"per\":0.08,\"max\":0.4,\"radius\":5}],\"ai\":{\"style\":\"charge\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "35f50ae2da4dd39872fb5faaf83b3c97c08db348cd957023fcf9328fcb8e9263"
+   },
+   "xerxes": {
+    "json": "{\"id\":\"xerxes\",\"name\":\"xerxes\",\"faction\":\"persians\",\"role\":\"hero\",\"tags\":[\"officer\",\"general\"],\"cost\":400,\"hp\":555,\"armor\":0.25,\"speed\":2.6,\"mass\":1.3,\"radius\":0.65,\"scale\":1,\"height\":2.5,\"runMul\":1.5,\"accel\":14,\"turnRate\":9,\"melee\":{\"dmg\":22,\"cd\":1,\"range\":1.7,\"type\":\"slash\",\"style\":\"slash\",\"kb\":2.4},\"shield\":{\"arc\":60,\"block\":0.4,\"proj\":0.4},\"abilities\":[{\"id\":\"throne\",\"idle\":4},{\"id\":\"aura\",\"effect\":\"great_king\",\"radius\":10}],\"ai\":{\"style\":\"hero\"}}",
+    "keys": ["id","name","faction","role","custom","tags","cost","hp","armor","speed","mass","radius","scale","height","runMul","accel","turnRate","moraleBonus","melee","ranged","shield","abilities","ai","model","text","weaponStyle","_ai"],
+    "sha256": "72897e074729e280b0a3e959966f6eb25c7e19a9f3a3873b9fc232377d79b975"
+   }
+  }
+ },
+ "dirty": false,
+ "engine": "node",
+ "engineHash": {
+  "shared": "f45fe9263f23c84d350fe670ee01202d6a8c666ec4ff2ecd5276222c1379ceeb",
+  "simCore": "6fdaff1eb029c5bf6179e7a89b7073b526b7dcf16d73d1c13ef69cf801301b7b"
+ },
+ "engineVersion": "v22.22.0",
+ "eraHash": {
+  "ancient": "4047fc09f04826bae7bfb6bb18a08e0d96ab484a69ab949192865f0616cc8edf"
+ },
+ "kind": "g3_defs",
+ "regime": "baked",
+ "schema": 1,
+ "sha": "4aafd2e3fb83f20e1b19e0db8465c117032ba3b7",
+ "tag": "ancient-v8"
+}
