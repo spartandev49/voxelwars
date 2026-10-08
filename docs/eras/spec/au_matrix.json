@@ -29347,6 +29347,10 @@
   "popcorn": {
    "desc": "a handful of pop() hits at random 40-180 ms spacing, 1.0 s",
    "max": 1.0
+  },
+  "slide_up": {
+   "desc": "reversed slide whistle: sine 300 -> 1800 Hz exponential glide over 0.8 s with 5 Hz vibrato, short 0.1 s release, 1.0 s",
+   "max": 1.0
   }
  },
  "packs": [
