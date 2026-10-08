@@ -8,7 +8,9 @@ Process (user preference): e.md -> plan.md -> Socratic q.md (subagent) -> regene
 - [x] maps 01..07 (code cartography) ; 08 (tests/tools/gate/build) in flight
 - [x] plan.md v1
 - [x] q1 round (5 critics: ~190 questions, 27 blockers) -> plan v2
-- [ ] q2 round (disposition audit + 3 critics) in flight
+- [x] q2 round (disposition audit + 3 critics): 75 new items, 14 blockers
+- [x] plan v3 written (honest estimate 550-700 sessions / 17-26 continuous days; E-FREEZE per era; Time Warp OUT)
+- [ ] q3 round (convergence check) in flight
 - [x] plan v2 written (WBS, 19-26 days est., ER1..ER24, M0..M17, G1..G10)
 - [ ] plan v3 ... until dry
 - [ ] spec.md + per-area specs + era design bibles
